@@ -50,6 +50,7 @@ To provide messages files with variables that are passed in then use the followi
 ```
 @Messages("cc.compare.total.household.spend", totalHouseholdSpend)
 cc.compare.total.household.spend = You told us your childcare costs are {0} a month
+```
 
 ### License
 
