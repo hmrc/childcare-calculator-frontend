@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.config
+package uk.gov.hmrc.childcarecalculatorfrontend
 
 import com.typesafe.config.Config
 import net.ceedubs.ficus.Ficus._
@@ -29,7 +29,6 @@ import uk.gov.hmrc.play.http.logging.filters.FrontendLoggingFilter
 import uk.gov.hmrc.play.filters.MicroserviceFilterSupport
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
-
 
 object FrontendGlobal
   extends DefaultFrontendGlobal {
