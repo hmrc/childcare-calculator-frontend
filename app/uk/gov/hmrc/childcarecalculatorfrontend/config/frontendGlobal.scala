@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.config
 
 import com.typesafe.config.Config
 import net.ceedubs.ficus.Ficus._
