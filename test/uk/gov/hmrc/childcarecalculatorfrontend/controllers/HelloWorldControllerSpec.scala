@@ -19,26 +19,23 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.http._
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
-import uk.gov.hmrc.play.test.{WithFakeApplication, UnitSpec}
+import play.api.i18n.Messages.Implicits.applicationMessagesApi
 
-
-class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication{
+class HelloWorldControllerSpec extends UnitSpec with FakeCCApplication {
 
   val fakeRequest = FakeRequest("GET", "/")
-
+  val sut = new HelloWorld(applicationMessagesApi)
 
   "GET /" should {
     "return 200" in {
-      val result = HelloWorld.helloWorld(fakeRequest)
+      val result = sut.helloWorld(fakeRequest)
       status(result) shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = HelloWorld.helloWorld(fakeRequest)
+      val result = sut.helloWorld(fakeRequest)
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
     }

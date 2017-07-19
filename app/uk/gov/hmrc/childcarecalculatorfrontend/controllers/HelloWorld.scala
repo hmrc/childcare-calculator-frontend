@@ -16,17 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.Play.current
-import play.api.i18n.Messages.Implicits._
+import javax.inject.{Singleton, Inject}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.play.frontend.controller.FrontendController
-
 import scala.concurrent.Future
 
-
-object HelloWorld extends HelloWorld
-
-trait HelloWorld extends FrontendController {
+@Singleton
+class HelloWorld @Inject()(val messagesApi: MessagesApi) extends I18nSupport with FrontendController {
   val helloWorld = Action.async { implicit request =>
 		Future.successful(Ok(uk.gov.hmrc.childcarecalculatorfrontend.views.html.helloworld.hello_world()))
   }
