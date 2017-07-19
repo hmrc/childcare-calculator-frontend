@@ -22,20 +22,21 @@ import org.scalatestplus.play.OneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
-import uk.gov.hmrc.play.http.{HeaderCarrier, SessionKeys}
+import uk.gov.hmrc.play.http.HeaderCarrier
+import play.api.inject._
+import org.scalatest.mock.MockitoSugar
 
-trait FakeCCApplication extends OneAppPerSuite {
+trait FakeCCApplication extends OneAppPerSuite with MockitoSugar {
   this: Suite =>
-
-  implicit val request = FakeRequest()
 
   val config: Map[String, _] = Map()
 
-  implicit override lazy val app: Application = new GuiceApplicationBuilder(
-    disabled = Seq(classOf[com.kenshoo.play.metrics.PlayModule])
-  ).configure(config)
+  implicit override lazy val app: Application = new GuiceApplicationBuilder()
+    .configure(config)
+    .overrides(bind[com.kenshoo.play.metrics.PlayModule].to(mock[com.kenshoo.play.metrics.PlayModule]))
     .build()
 
   implicit lazy val materializer: Materializer = app.materializer
+  implicit val request = FakeRequest()
   implicit val hc = HeaderCarrier()
 }
