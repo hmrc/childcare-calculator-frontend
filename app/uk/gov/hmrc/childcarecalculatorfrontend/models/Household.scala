@@ -3,15 +3,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsEnum.BenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
-
+import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum.TcUcBenefitsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureBothEnum.{YesNoUnsureBothEnum}
 
 case class Household(
-                     tcUcBenefits: Option[BenefitsEnum] =   None,
+                     tcUcBenefits: Option[TcUcBenefitsEnum] =   None,
                      location: Option[LocationEnum] =   None,
                      hasPartner: Boolean =   false,
                      children: List[Child],
@@ -23,12 +22,13 @@ object Household {
 }
 
 case class Claimant(
+                    ageRange: Option[AgeRangeEnum] = None,
                     benefits: Option[Benefits] = None,
                     lastYearlyIncome: Option[Income]  =   None,
                     currentYearlyIncome: Option[Income]  = None,
                     hours: Option[BigDecimal] =   None,
                     minimumEarnings: Option[MinimumEarnings]= None,
-                    escVouchers: Option[YesNoUnsureEnum] =   None
+                    escVouchers: Option[YesNoUnsureBothEnum] =   None
                    )
 object Claimant {
   implicit val formatClaimant = Json.format[Claimant]
@@ -65,7 +65,6 @@ object StatutoryIncome {
 
 case class MinimumEarnings(
                            amount: BigDecimal =   0.00,
-                           ageRange: Option[AgeRangeEnum] = None,
                            employmentStatus: Option[EmploymentStatusEnum] =   None,
                            selfEmployedIn12Months: Option[Boolean] =   None
                           )
@@ -74,7 +73,7 @@ object MinimumEarnings {
 }
 
 case class Child(
-                  id: Short,
+                 id: Short,
                  name: String,
                  dob: Option[LocalDate]=None,
                  disability: Option[Disability]=None,

@@ -1,18 +1,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-object BenefitsEnum extends Enumeration {
-  type BenefitsEnum = Value
+object TcUcBenefitsEnum extends Enumeration {
+  type TcUcBenefitsEnum = Value
   val TAXCREDITS,
-    UNIVERSALCREDITS,
-    INCOMESUPPORT,
-    INCOMEBASEDJOBSEEKER,
-    EMPLOYMENTSUPPORTALLOWANCE,
-    PENSIONCREDIT,
-    DISABILITY,
-    ATTENDANCE,
-    PERSONALINDEPENDENCE = Value
+    UNIVERSALCREDITS = Value
 }
 
+//,
+//INCOMESUPPORT,
+//INCOMEBASEDJOBSEEKER,
+//EMPLOYMENTSUPPORTALLOWANCE,
+//PENSIONCREDIT,
+//DISABILITY,
+//ATTENDANCE,
+//PERSONALINDEPENDENCE
 object LocationEnum extends Enumeration {
   type LocationEnum = Value
   val ENGLAND, SCOTLAND, WALES, NORTHERNIRELAND = Value
@@ -25,12 +26,12 @@ object AgeRangeEnum extends Enumeration {
 
 object EmploymentStatusEnum extends Enumeration {
   type EmploymentStatusEnum = Value
-  val EMPLOYED, SELFEMPLOYED, APPRENTICE, UNEMPLOYED = Value
+  val SELFEMPLOYED, APPRENTICE = Value
 }
 
-object YesNoUnsureEnum extends Enumeration {
-  type YesNoUnsureEnum = Value
-  val YES, NO, NOTSURE = Value
+object YesNoUnsureBothEnum extends Enumeration {
+  type YesNoUnsureBothEnum = Value
+  val YES, NO, NOTSURE, BOTH = Value
   }
 
 object PeriodEnum extends Enumeration {
