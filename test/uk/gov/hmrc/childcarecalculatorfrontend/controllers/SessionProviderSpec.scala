@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.scalatest.mock.MockitoSugar
 import play.api.http.HttpEntity
+import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc._
-import play.api.http.Status.{SEE_OTHER, OK}
-import play.api.test.FakeRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionProvider
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.http.SessionKeys
 import uk.gov.hmrc.play.test.UnitSpec
 
