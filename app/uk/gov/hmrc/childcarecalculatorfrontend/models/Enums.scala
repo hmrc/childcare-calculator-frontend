@@ -6,14 +6,6 @@ object TcUcBenefitsEnum extends Enumeration {
     UNIVERSALCREDITS = Value
 }
 
-//,
-//INCOMESUPPORT,
-//INCOMEBASEDJOBSEEKER,
-//EMPLOYMENTSUPPORTALLOWANCE,
-//PENSIONCREDIT,
-//DISABILITY,
-//ATTENDANCE,
-//PERSONALINDEPENDENCE
 object LocationEnum extends Enumeration {
   type LocationEnum = Value
   val ENGLAND, SCOTLAND, WALES, NORTHERNIRELAND = Value
