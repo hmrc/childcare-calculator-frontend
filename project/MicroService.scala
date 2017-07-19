@@ -20,7 +20,7 @@ trait MicroService {
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
-      ScoverageKeys.coverageExcludedPackages :=  "<empty>;Reverse.*;testOnlyDoNotUseInAppConf.*;uk.gov.hmrc.BuildInfo.*;app.Routes.*;prod.*;uk.gov.hmrc.childcarecalculatorfrontend.config.*;",
+      ScoverageKeys.coverageExcludedPackages :=  "<empty>;Reverse.*;uk.gov.hmrc.BuildInfo.*;app.Routes.*;prod.*;uk.gov.hmrc.childcarecalculatorfrontend.config.*;",
       ScoverageKeys.coverageMinimum := 95,
       ScoverageKeys.coverageFailOnMinimum := true,
       ScoverageKeys.coverageHighlighting := true
@@ -37,6 +37,7 @@ trait MicroService {
       libraryDependencies ++= appDependencies,
       retrieveManaged := true,
       evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
+      routesGenerator := StaticRoutesGenerator,
       scalaVersion := "2.11.7",
       crossScalaVersions := Seq("2.11.7"),
       ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
