@@ -1,4 +1,4 @@
 # microservice specific routes
 
-GET        /hello-world             @uk.gov.hmrc.childcarecalculatorfrontend.controllers.HelloWorld.helloWorld
-GET        /                        @uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
+GET        /hello-world             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HelloWorld.helloWorld
+GET        /                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad

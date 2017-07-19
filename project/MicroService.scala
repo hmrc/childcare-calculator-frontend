@@ -37,7 +37,6 @@ trait MicroService {
       libraryDependencies ++= appDependencies,
       retrieveManaged := true,
       evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-      routesGenerator := StaticRoutesGenerator,
       scalaVersion := "2.11.7",
       crossScalaVersions := Seq("2.11.7"),
       ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
