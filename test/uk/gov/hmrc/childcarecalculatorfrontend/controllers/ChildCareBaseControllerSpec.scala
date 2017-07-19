@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.mvc.Result
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.http.SessionKeys
 import uk.gov.hmrc.play.test.UnitSpec
 
