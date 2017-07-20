@@ -22,7 +22,7 @@ import org.scalatestplus.play.OneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
-import uk.gov.hmrc.play.http.HeaderCarrier
+import uk.gov.hmrc.play.http.{SessionKeys, HeaderCarrier}
 import play.api.inject._
 import org.scalatest.mock.MockitoSugar
 
@@ -39,4 +39,5 @@ trait FakeCCApplication extends OneAppPerSuite with MockitoSugar {
   implicit lazy val materializer: Materializer = app.materializer
   implicit val request = FakeRequest()
   implicit val hc = HeaderCarrier()
+  val validSession = SessionKeys.sessionId -> "session-id"
 }

@@ -26,11 +26,12 @@ trait SessionProvider {
 
   def withSession(f: => Request[AnyContent] => Future[Result]): Action[AnyContent] = {
     Action.async {
-      implicit request : Request[AnyContent] =>
+      implicit request: Request[AnyContent] =>
         getSessionId match {
           case None =>
             Future.successful(Results.Redirect(routes.ChildCareBaseController.onPageLoad()).withSession(generateSession()))
-          case _ => f(request)
+          case _ =>
+            f(request)
         }
     }
   }
