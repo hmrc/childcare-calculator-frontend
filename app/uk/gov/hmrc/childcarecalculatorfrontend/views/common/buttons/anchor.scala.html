@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@()(implicit request: Request[_], messages: Messages))
+@(href: Call, label: String)(implicit request: Request[_], messages: Messages)
 
-@uk.gov.hmrc.childcarecalculatorfrontend.views.html.main_template(title = "Hello from childcare-calculator-frontend", bodyClasses = None) {
-    <h1>Hello from childcare-calculator-frontend !</h1>
-}
+<a role="button" id="next-button" class="button"  href="@href" title="@label">
+    @label
+</a>

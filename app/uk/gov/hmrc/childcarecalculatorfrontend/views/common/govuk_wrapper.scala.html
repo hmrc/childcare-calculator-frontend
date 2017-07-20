@@ -28,6 +28,7 @@
 @import layouts.{govuk_template => hmrcGovUkTemplate}
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
 @import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 @head = {
     @uiLayouts.head(
@@ -40,8 +41,8 @@
 
 @insideHeader = {
     @uiLayouts.header_nav(
-      navTitle = Some("childcare-calculator-frontend"),
-      navTitleLink = None,
+      navTitle = Some(messages("nav.title")),
+      navTitleLink = Some(routes.ChildCareBaseController.onPageLoad()),
       showBetaLink = false,
       navLinks = Some(headerNavLinks))
 }
@@ -60,11 +61,21 @@
 @footerTop = {}
 @footerLinks = {}
 
+@betaBanner = {
+    @uiLayouts.betaBanner(
+        userLoggedIn = false,
+        betaFeedbackUrl = appConfig.betaFeedbackUrl,
+        betaFeedbackUnauthenticatedUrl = appConfig.betaFeedbackUnauthenticatedUrl,
+        showFeedbackLinkInBetaBanner = true
+    )
+}
+
 @serviceInfo = {
     @uiLayouts.serviceInfo(
-      betaBanner = HtmlFormat.empty,
+      betaBanner = betaBanner,
       includeGridWrapper = false,
-      serviceInfoContent = Some(serviceInfoContent))
+      serviceInfoContent = Some(serviceInfoContent),
+      includeHMRCBranding = false)
 }
 
 @mainContentHeader = {
