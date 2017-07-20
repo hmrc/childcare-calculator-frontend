@@ -16,24 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{Singleton, Inject}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{AnyContent, Action}
 import uk.gov.hmrc.play.frontend.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
 import scala.concurrent.Future
 
 @Singleton
-class ChildCareBaseController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider
-  with FrontendController {
-
-  val initialController = routes.WhatYouNeedController
+class WhatYouNeedController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController {
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    Future.successful {
-      Redirect(initialController.onPageLoad)
-    }
+    Future.successful(
+      Ok(whatYouNeed())
+    )
   }
 
 }
-
-

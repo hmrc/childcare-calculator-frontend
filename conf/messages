@@ -1,0 +1,15 @@
+####### Common #######
+nav.title = Childcare calculator
+next.button = Continue
+
+####### What you need #######
+what.you.need.title = What you need
+what.you.need.header = What you need
+what.you.need.info = You can give estimates, but the more accurate you are then the more accurate your results will be. You may be asked for things like:
+what.you.need.bullet.childcare.costs = estimated or known childcare costs
+what.you.need.bullet.employment = employment and working hours
+what.you.need.bullet.income = income this year and last
+what.you.need.bullet.tax.code = personal tax code
+what.you.need.bullet.pension = pension contributions
+what.you.need.bullet.benefits = family''s benefits
+what.you.need.bullet.statutory.leave = weeks and pay taken while on leave for a birth or an adoption

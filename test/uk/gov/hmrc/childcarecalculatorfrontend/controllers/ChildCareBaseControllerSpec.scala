@@ -19,30 +19,23 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.mvc.Result
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication}
 import uk.gov.hmrc.play.http.SessionKeys
 import uk.gov.hmrc.play.test.UnitSpec
 
-class ChildCareBaseControllerSpec extends UnitSpec with FakeCCApplication {
+class ChildCareBaseControllerSpec extends UnitSpec with FakeCCApplication with CCRoutes {
 
   val sut = new ChildCareBaseController(applicationMessagesApi)
 
   "ChildCareBaseController" should {
 
-    "load a page" when {
-      "request with session Id is received" in {
-
-        val res: Result = await(sut.onPageLoad()(request.withSession(SessionKeys.sessionId -> "session-id")))
-        status(res) shouldBe OK
-      }
-    }
-
     "load home page" when {
-      "request with no session Id is received" in {
-
-        val res: Result = await(sut.onPageLoad()(request.withSession()))
+      "request with session Id is received" in {
+        val res: Result = await(sut.onPageLoad()(request.withSession(validSession)))
         status(res) shouldBe SEE_OTHER
+        res.header.headers("Location") shouldBe whatYouNeedPath
       }
     }
+
   }
 }
