@@ -42,11 +42,6 @@ class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCR
     ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = rootPath)
   )
 
-  implicit val doc: Document = {
-    val template = whatYouNeed()(request, applicationMessages)
-    Jsoup.parse(contentAsString(template))
-  }
-
   "calling whatYouNeed template" should {
 
     "render template" in {
@@ -58,6 +53,10 @@ class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCR
     }
 
     "display correct content" in {
+      implicit val doc: Document = {
+        val template = whatYouNeed()(request, applicationMessages)
+        Jsoup.parse(contentAsString(template))
+      }
 
       verifyPageContent()
       verifyPageLinks()
