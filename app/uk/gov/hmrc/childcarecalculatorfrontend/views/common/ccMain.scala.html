@@ -14,7 +14,13 @@
  * limitations under the License.
  *@
 
-@(title: String, header: String)(mainContent: Html)(implicit request: Request[_], messages: Messages)
+@(title: String, header: String, backLink: Option[String] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
+
+@backButton = {
+    @if(backLink.isDefined) {
+        <a href="@{backLink.get}" class="link-back">Back</a>
+    }
+}
 
 @contentHeader = {
     <h1 id="page-title" class="heading-xlarge">
@@ -24,5 +30,6 @@
 
 @main_template(
     title = title,
-    contentHeader = Some(contentHeader)
+    contentHeader = Some(contentHeader),
+    backButton = backButton
 )(mainContent = mainContent)

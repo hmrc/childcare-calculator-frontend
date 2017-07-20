@@ -22,7 +22,8 @@
 
 @ccMain(
     title = messages("what.you.need.title"),
-    header = messages("what.you.need.header")
+    header = messages("what.you.need.header"),
+    backLink = Some(routes.ChildCareBaseController.onPageLoad().url)
 ) {
     <p>@messages("what.you.need.info")</p>
     <ul class="list list-bullet">
