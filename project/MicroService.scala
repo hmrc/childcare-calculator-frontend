@@ -20,7 +20,7 @@ trait MicroService {
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
-      ScoverageKeys.coverageExcludedPackages :=  "<empty>;Reverse.*;uk.gov.hmrc.BuildInfo.*;app.Routes.*;prod.*;uk.gov.hmrc.childcarecalculatorfrontend.config.*;",
+      ScoverageKeys.coverageExcludedPackages :=  "<empty>;Reverse.*;uk.gov.hmrc.BuildInfo.*;app.Routes.*;prod.*;uk.gov.hmrc.childcarecalculatorfrontend.config.*;uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.*",
       ScoverageKeys.coverageMinimum := 95,
       ScoverageKeys.coverageFailOnMinimum := true,
       ScoverageKeys.coverageHighlighting := true

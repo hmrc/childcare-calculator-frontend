@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.controllers
+package uk.gov.hmrc.childcarecalculatorfrontend
 
-import javax.inject.{Singleton, Inject}
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
-import uk.gov.hmrc.play.frontend.controller.FrontendController
-import scala.concurrent.Future
+trait CCRoutes {
 
-@Singleton
-class HelloWorld @Inject()(val messagesApi: MessagesApi) extends I18nSupport with FrontendController {
-  val helloWorld = Action.async { implicit request =>
-		Future.successful(Ok(uk.gov.hmrc.childcarecalculatorfrontend.views.html.helloworld.hello_world()))
-  }
+  val rootPath: String = "/childcare-calc"
+
+  private def path(endPoint: String): String = s"${rootPath}${endPoint}"
+
+  val whatYouNeedPath: String = path("/what-you-need")
 }
