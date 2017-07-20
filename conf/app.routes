@@ -1,4 +1,7 @@
 # microservice specific routes
 
 GET         /                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
+
 GET         /what-you-need              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
+
+GET         /location                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad

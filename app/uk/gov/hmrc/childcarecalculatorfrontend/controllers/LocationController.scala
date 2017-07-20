@@ -16,9 +16,23 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import javax.inject.Inject
 
-class LocationController  {
+import com.google.inject.Singleton
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.frontend.controller.FrontendController
+
+import scala.concurrent.Future
+
+@Singleton
+class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController {
+
+  def onPageLoad : Action[AnyContent] = withSession { implicit request =>
+    Future.successful(
+      Ok("")
+    )
+  }
 
 
 
