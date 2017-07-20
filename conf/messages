@@ -1,6 +1,7 @@
 ####### Common #######
 nav.title = Childcare calculator
 next.button = Continue
+back.button = Back
 
 ####### What you need #######
 what.you.need.title = What you need

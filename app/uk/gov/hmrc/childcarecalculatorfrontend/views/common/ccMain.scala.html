@@ -18,7 +18,7 @@
 
 @backButton = {
     @if(backLink.isDefined) {
-        <a href="@{backLink.get}" class="link-back">Back</a>
+        <a href=@{backLink.get} id="back-button" class="link-back">@messages("back.button")</a>
     }
 }
 
