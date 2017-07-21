@@ -21,6 +21,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
 
 @Singleton
 class ChildCareBaseController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider
@@ -31,6 +32,14 @@ class ChildCareBaseController @Inject()(val messagesApi: MessagesApi) extends I1
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     Future.successful {
       Redirect(initialController.onPageLoad)
+    }
+  }
+
+  def onTechnicalDifficulties: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful {
+      Ok(
+        technicalDifficulties()
+      )
     }
   }
 
