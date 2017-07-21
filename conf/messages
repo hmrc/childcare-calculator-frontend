@@ -3,6 +3,17 @@ nav.title = Childcare calculator
 next.button = Continue
 back.button = Back
 
+######Common errors#######
+cc.date.error.day.empty = You must enter a number in Day.
+cc.date.error.month.empty = You must enter a number in Month.
+cc.date.error.year.empty = You must enter a number in Year.
+cc.date.error.year.4.digits = You must enter a 4 digit Year.
+cc.date.error.empty = You must enter a date of birth.
+error.invalid.date.format = Give a valid date, for example 2 10 2003.
+cc.error.title = Check you have answered the question correctly
+cc.error.validation.title = There is a problem
+cc.yes.no.not.selected.error = You must select Yes or No
+
 ####### What you need #######
 what.you.need.title = What you need
 what.you.need.header = What you need
