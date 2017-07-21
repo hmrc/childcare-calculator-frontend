@@ -34,7 +34,7 @@ class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport w
 
     val form = Form[LocationFormType](
       mapping(
-        location -> optional(text).verifying(Messages("childcare.calculator.location.nothing.selected.error"), x => x.isDefined)
+        location -> optional(text).verifying(Messages("location.radio.not.selected.error"), x => x.isDefined)
       )((location) => location)((location : LocationFormType) => Some(location))
     )
 

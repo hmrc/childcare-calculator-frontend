@@ -21,6 +21,8 @@ import javax.inject.Inject
 import com.google.inject.Singleton
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 import scala.concurrent.Future
@@ -28,10 +30,18 @@ import scala.concurrent.Future
 @Singleton
 class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController {
 
+  val initialController = routes.WhatYouNeedController
+
   def onPageLoad : Action[AnyContent] = withSession { implicit request =>
     Future.successful(
-      Ok("")
+      Ok(location(new LocationForm(messagesApi).form))
     )
+  }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    Future.successful {
+      Redirect(initialController.onPageLoad())
+    }
   }
 
 
