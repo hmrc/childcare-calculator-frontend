@@ -20,10 +20,10 @@
   bodyClasses: Option[String] = None,
   mainClass: Option[String] = None,
   scriptElem: Option[Html] = None,
+  linkElement: Option[Html] = None,
   backButton: Html = HtmlFormat.empty)(mainContent: Html)(implicit request : Request[_], messages: Messages)
 
 @import uk.gov.hmrc.play.views.html.layouts
-
 
 @serviceInfoContent = {}
 
@@ -35,6 +35,7 @@
 
 
 @govuk_wrapper(appConfig = uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig,
+               linkElement = linkElement,
                title = title,
                mainClass = mainClass,
                bodyClasses = bodyClasses,

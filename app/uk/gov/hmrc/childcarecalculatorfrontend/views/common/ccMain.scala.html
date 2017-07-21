@@ -28,8 +28,13 @@
     </h1>
 }
 
+@linkElement = {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/cc.css")">
+}
+
 @main_template(
     title = title,
     contentHeader = Some(contentHeader),
+    linkElement = Some(linkElement),
     backButton = backButton
 )(mainContent = mainContent)

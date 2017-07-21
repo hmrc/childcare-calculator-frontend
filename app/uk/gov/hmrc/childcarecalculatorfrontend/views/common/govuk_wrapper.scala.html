@@ -15,6 +15,7 @@
  *@
 
 @(appConfig: uk.gov.hmrc.childcarecalculatorfrontend.config.AppConfig,
+  linkElement: Option[Html] = None,
   title: String,
   mainClass: Option[String] = None,
   mainDataAttributes: Option[Html] = None,
@@ -33,7 +34,7 @@
 
 @head = {
     @uiLayouts.head(
-      linkElem = None,
+      linkElem = linkElement,
       headScripts = None)
     <meta name="format-detection" content="telephone=no" />
 }
