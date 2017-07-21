@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-trait CCRoutes {
+import javax.inject.{Inject, Singleton}
 
-  val rootPath: String = "/childcare-calc"
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
-  private def path(endPoint: String): String = s"${rootPath}${endPoint}"
+import scala.concurrent.Future
 
-  val whatYouNeedPath: String = path("/what-you-need")
+@Singleton
+class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController {
 
-  val expectChildcareCostsPath: String = path("/expect-childcare-costs")
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    Future.successful(
+      Ok("")
+    )
+  }
+
 }

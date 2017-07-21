@@ -2,3 +2,4 @@
 
 GET         /                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
 GET         /what-you-need              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
+GET         /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad
