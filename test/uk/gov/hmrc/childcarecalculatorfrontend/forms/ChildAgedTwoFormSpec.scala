@@ -55,7 +55,7 @@ class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
       form.value shouldBe None
       form.hasErrors shouldBe true
       form.errors.length shouldBe 1
-      form.errors.head.message shouldBe applicationMessages.messages("cc.yes.no.not.selected.error")
+      form.errors.head.message shouldBe applicationMessages.messages("child.aged.two.yes.no.not.selected.error")
     }
   }
 }

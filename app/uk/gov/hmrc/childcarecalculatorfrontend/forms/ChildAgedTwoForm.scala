@@ -34,7 +34,7 @@ class ChildAgedTwoForm @Inject()(val messagesApi: MessagesApi) extends I18nSuppo
 
   val form = Form[ChildAgedTwoFormType](
     mapping(
-      childAgedTwo -> optional(boolean).verifying(Messages("cc.yes.no.not.selected.error"), x => x.isDefined)
+      childAgedTwo -> optional(boolean).verifying(Messages("child.aged.two.yes.no.not.selected.error"), x => x.isDefined)
     )((childAgedTwo) => childAgedTwo)((childAgedTwoForm : ChildAgedTwoFormType) => Some(childAgedTwoForm))
   )
 }

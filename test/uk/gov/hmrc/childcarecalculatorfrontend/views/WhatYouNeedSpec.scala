@@ -39,7 +39,7 @@ class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCR
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = rootPath)
+    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = childAgedTwoPath)
   )
 
   "calling whatYouNeed template" should {

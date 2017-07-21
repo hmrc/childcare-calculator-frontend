@@ -1,6 +1,10 @@
 ####### Common #######
 nav.title = Childcare calculator
 next.button = Continue
+back.button = Back
+
+cc.radio.yes = Yes
+cc.radio.no = No
 
 ######Common errors#######
 cc.date.error.day.empty = You must enter a number in Day.
@@ -27,4 +31,10 @@ what.you.need.bullet.statutory.leave = weeks and pay taken while on leave for a 
 
 ####### Location Page #######
 childcare.calculator.location.nothing.selected.error = You must tell the calculator where you live
+
+####### Child Aged two #######
+child.aged.two.title = Do you have a child aged 2
+child.aged.two.header = Do you have a child aged 2?
+child.aged.two.info = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.two.yes.no.not.selected.error = You must answer yes if you have a child aged 2
 
