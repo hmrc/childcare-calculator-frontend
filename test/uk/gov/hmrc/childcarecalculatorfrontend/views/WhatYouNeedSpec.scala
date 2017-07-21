@@ -35,11 +35,13 @@ class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCR
     ElementDetails(tagName = Some("li"), tagIndex = Some(4), value = "pension contributions"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(5), value = "family's benefits"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(6), value = "weeks and pay taken while on leave for a birth or an adoption"),
-    ElementDetails(id = Some("next-button"), value = "Continue")
+    ElementDetails(id = Some("next-button"), value = "Continue"),
+    ElementDetails(id = Some("back-button"), value = "Back")
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = childAgedTwoPath)
+    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = childAgedTwoPath),
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = "https://www.gov.uk/childcare-calculator")
   )
 
   "calling whatYouNeed template" should {

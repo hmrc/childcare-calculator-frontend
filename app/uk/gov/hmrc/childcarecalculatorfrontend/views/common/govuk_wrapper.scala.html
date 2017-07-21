@@ -15,6 +15,7 @@
  *@
 
 @(appConfig: uk.gov.hmrc.childcarecalculatorfrontend.config.AppConfig,
+  linkElement: Option[Html] = None,
   title: String,
   mainClass: Option[String] = None,
   mainDataAttributes: Option[Html] = None,
@@ -23,7 +24,8 @@
   contentHeader: Option[Html] = None,
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
-  scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
+  scriptElem: Option[Html] = None,
+  backButton: Html = HtmlFormat.empty)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
@@ -32,7 +34,7 @@
 
 @head = {
     @uiLayouts.head(
-      linkElem = None,
+      linkElem = linkElement,
       headScripts = None)
     <meta name="format-detection" content="telephone=no" />
 }
@@ -91,6 +93,7 @@
       article = mainContent,
       mainClass = mainClass,
       mainDataAttributes = mainDataAttributes,
+      actingAttorneyBanner = backButton,
       mainContentHeader = mainContentHeader,
       serviceInfo = serviceInfo,
       getHelpForm = getHelpForm,
