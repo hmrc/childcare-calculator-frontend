@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.pages
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.libs.json.Json
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+class ChildAgedTwoController {
 
-
-case class LocationPageModel (
-                             Location : Option[LocationEnum] = None
-                             )
-
-
-object LocationPageModel {
-  implicit val formatLocationPageModel = Json.format[LocationPageModel]
 }
-
