@@ -2,3 +2,5 @@
 
 GET         /                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
 GET         /what-you-need              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
+GET         /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad
+POST        /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit

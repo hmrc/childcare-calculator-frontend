@@ -1,0 +1,38 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@(startPageButton: Boolean = false, hideBackButton: Option[Boolean] = None, hrefMethod: Option[Call]= None, title: String, label: Option[String] = None, id: Option[String] = None, back: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
+
+@import views.html.helper._
+
+<div>
+    <div class="form-field">
+        <input type="submit"
+                @if(startPageButton) {class="button button--get-started"} else {class="button"}
+                title="@title"
+                id="@if(id.isDefined) {@id.getOrElse("next-button")} else {next-button}"
+                value="@if(label.isDefined){@label.getOrElse("").trim}else{@messages("childcare.button.next").toString.trim}"/>
+    </div>
+
+    <div class="form-field">
+        @hideBackButton match {
+            case Some(true) => {}
+            case _ => {
+            <a id="back-button" href="@if(hrefMethod.isDefined) {@hrefMethod} else { controllers.routes.CCController.onPageLoad }">@if(back.isDefined) { @back.get } else {@messages("back.button")}</a>
+            }
+        }
+    </div>
+</div>
