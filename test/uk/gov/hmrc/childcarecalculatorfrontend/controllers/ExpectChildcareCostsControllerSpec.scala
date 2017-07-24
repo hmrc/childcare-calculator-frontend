@@ -24,7 +24,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication}
 import uk.gov.hmrc.play.test.UnitSpec
 import org.mockito.Mockito._
 import org.mockito.Matchers.any
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication with CCRoutes {
