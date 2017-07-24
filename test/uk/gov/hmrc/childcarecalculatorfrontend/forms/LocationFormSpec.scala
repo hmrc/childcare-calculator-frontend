@@ -54,7 +54,7 @@ class LocationFormSpec extends UnitSpec with FakeCCApplication {
           ))
           result.hasErrors shouldBe true
           result.errors.length shouldBe 1
-          result.errors.head.message shouldBe "You must tell the calculator where you live"
+          result.errors.head.message shouldBe applicationMessages.messages("location.radio.not.selected.error")
           result.value shouldBe None
         }
       }

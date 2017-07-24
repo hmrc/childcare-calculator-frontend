@@ -27,7 +27,7 @@ class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
     "accept value true" in {
       val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
         Map(
-          "childAgedTwo" -> "true"
+          childAgedTwoKey -> "true"
         )
       )
       form.value.get.get shouldBe true
@@ -38,7 +38,7 @@ class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
     "accept value false" in {
       val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
         Map(
-          "childAgedTwo" -> "false"
+          childAgedTwoKey -> "false"
         )
       )
       form.value.get.get shouldBe false
@@ -49,7 +49,7 @@ class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
     "throw error if no value supplied" in {
       val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
         Map(
-          "childAgedTwo" -> ""
+          childAgedTwoKey -> ""
         )
       )
       form.value shouldBe None

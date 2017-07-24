@@ -52,23 +52,19 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       success => {
         val selectedLocation = success.get
         keystore.cacheEntryForSession(locationKey, selectedLocation).map { result =>
-          Redirect(redirectToNextPage(selectedLocation))
+          if(location == LocationEnum.NORTHERNIRELAND.toString) {
+            // TODO: Go to ChildAge3or4 page
+            Redirect(routes.ChildAgedTwoController.onPageLoad())
+          }
+          else {
+            Redirect(routes.ChildAgedTwoController.onPageLoad())
+          }
         } recover {
           case e: Exception =>
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
         }
       }
     )
-  }
-
-  def redirectToNextPage(location: String): Call = {
-    if(location == LocationEnum.NORTHERNIRELAND.toString) {
-      // TODO: Go to ChildAge3or4 page
-      routes.ChildAgedTwoController.onPageLoad()
-    }
-    else {
-      routes.ChildAgedTwoController.onPageLoad()
-    }
   }
 
 }

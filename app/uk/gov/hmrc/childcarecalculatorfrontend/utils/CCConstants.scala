@@ -19,5 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 trait CCConstants {
   
   lazy val locationKey = "location"
+  lazy val childAgedTwoKey = "childAgedTwo"
   
 }
