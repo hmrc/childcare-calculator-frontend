@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(startPageButton: Boolean = false, hideBackButton: Option[Boolean] = None, hrefMethod: Option[Call]= None, title: String, label: Option[String] = None, id: Option[String] = None, back: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
+@(startPageButton: Boolean = false, title: String, label: Option[String] = None, id: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
 
 @import views.html.helper._
 
@@ -23,16 +23,7 @@
         <input type="submit"
                 @if(startPageButton) {class="button button--get-started"} else {class="button"}
                 title="@title"
-                id="@if(id.isDefined) {@id.getOrElse("next-button")} else {next-button}"
+                id="next-button"
                 value="@if(label.isDefined){@label.getOrElse("").trim}else{@messages("childcare.button.next").toString.trim}"/>
-    </div>
-
-    <div class="form-field">
-        @hideBackButton match {
-            case Some(true) => {}
-            case _ => {
-            <a id="back-button" href="@if(hrefMethod.isDefined) {@hrefMethod} else { controllers.routes.CCController.onPageLoad }">@if(back.isDefined) { @back.get } else {@messages("back.button")}</a>
-            }
-        }
     </div>
 </div>

@@ -29,5 +29,4 @@ trait CCRoutes {
   val location: String = path("/location")
 
   val childAgedTwoPath: String = path("/child-aged-two")
-
 }
