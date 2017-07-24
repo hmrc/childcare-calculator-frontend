@@ -40,6 +40,13 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         result.isDefined shouldBe true
         status(result.get) should not be NOT_FOUND
       }
+
+      "POST request is made" in {
+        val req = FakeRequest(POST, expectChildcareCostsPath).withSession(validSession)
+        val result = route(app, req)
+        result.isDefined shouldBe true
+        status(result.get) should not be NOT_FOUND
+      }
     }
   }
 
