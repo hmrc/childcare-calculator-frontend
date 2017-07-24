@@ -39,5 +39,4 @@ trait KeystoreService {
   def fetchEntryForSession[T](key :String)(implicit hc: HeaderCarrier, rds: Reads[T]): Future[Option[T]] = {
     sessionCache.fetchAndGetEntry[T](key)
   }
-
 }

@@ -21,21 +21,21 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-
-
-trait LocationKeys{
-  val location = "location"
-}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with LocationKeys {
+class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
   type LocationFormType = Option[String]
 
-    val form = Form[LocationFormType](
-      mapping(
-        location -> optional(text).verifying(Messages("childcare.calculator.location.nothing.selected.error"), x => x.isDefined)
-      )((location) => location)((location : LocationFormType) => Some(location))
-    )
+  val form = Form[LocationFormType](
+    mapping(
+      locationKey -> optional(text).verifying(
+        Messages("location.radio.not.selected.error"),
+        x => LocationEnum.values.exists(_.toString == x.getOrElse(""))
+      )
+    )((location) => location)((location: LocationFormType) => Some(location))
+  )
 
 }
