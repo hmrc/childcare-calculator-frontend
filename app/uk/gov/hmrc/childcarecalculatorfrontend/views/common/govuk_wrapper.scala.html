@@ -34,8 +34,8 @@
 
 @head = {
     @uiLayouts.head(
-      linkElem = linkElement,
-      headScripts = None)
+        linkElem = linkElement,
+        headScripts = None)
     <meta name="format-detection" content="telephone=no" />
 }
 
@@ -43,21 +43,21 @@
 
 @insideHeader = {
     @uiLayouts.header_nav(
-      navTitle = Some(messages("nav.title")),
-      navTitleLink = Some(routes.ChildCareBaseController.onPageLoad()),
-      showBetaLink = false,
-      navLinks = Some(headerNavLinks))
+        navTitle = Some(messages("nav.title")),
+        navTitleLink = Some(routes.ChildCareBaseController.onPageLoad()),
+        showBetaLink = false,
+        navLinks = Some(headerNavLinks))
 }
 
 @afterHeader = {}
 
 @bodyEnd = {
     @uiLayouts.footer(
-      analyticsToken = Some(appConfig.analyticsToken),
-      analyticsHost = appConfig.analyticsHost,
-      ssoUrl = None,
-      scriptElem = scriptElem,
-      gaCalls = None)
+        analyticsToken = Some(appConfig.analyticsToken),
+        analyticsHost = appConfig.analyticsHost,
+        ssoUrl = None,
+        scriptElem = scriptElem,
+        gaCalls = None)
 }
 
 @footerTop = {}
@@ -81,16 +81,10 @@
 }
 
 @mainContentHeader = {
-    <div class="grid-layout grid-layout--stacked">
-        <div class="grid-layout__column grid-layout__column--2-3">
-            @if(contentHeader.isDefined) {
-                @uiLayouts.main_content_header(contentHeader = contentHeader.get)
-            }
-        </div>
-        <div class="grid-layout__column grid-layout__column--1-3">
-            @* empty for layout reasons *@
-        </div>
-    </div>
+
+    @if(contentHeader.isDefined) {
+        @uiLayouts.main_content_header(contentHeader = contentHeader.get)
+        }
 }
 
 @getHelpForm = @{uiHelpers.reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)}

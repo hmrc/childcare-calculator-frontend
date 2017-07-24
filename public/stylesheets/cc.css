@@ -1,4 +1,4 @@
-.link-back {
+/*.link-back {
   @include inline-block;
   position: relative;
 
@@ -45,4 +45,4 @@
     background: file-url("icon-arrow-left.png") no-repeat 0 4px;
   }
 
-}
+}*/
