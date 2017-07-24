@@ -14,6 +14,13 @@ cc.error.title = Check you have answered the question correctly
 cc.error.validation.title = There is a problem
 cc.yes.no.not.selected.error = You must select Yes or No
 
+####### Technical Difficulties #######
+technicalDifficulties.title = We''re experiencing technical difficulties
+technicalDifficulties.header = We''re experiencing technical difficulties
+technicalDifficulties.info = We''re having difficulties with the service, try again in a few minutes.
+technicalDifficulties.link.url = https://www.gov.uk/help-with-childcare-costs/approved-childcare
+technicalDifficulties.link.text = Return to GOV.UK
+
 ####### What you need #######
 what.you.need.title = What you need
 what.you.need.header = What you need
