@@ -23,7 +23,8 @@
 
 @ccMain(
 title = messages("child.aged.two.title"),
-header = messages("child.aged.two.header")
+header = messages("child.aged.two.header"),
+backLink = Some(routes.WhatYouNeedController.onPageLoad())
 ) {
     @helpers.form(
         action = routes.ChildAgedTwoController.onSubmit,
@@ -47,8 +48,7 @@ header = messages("child.aged.two.header")
         )
         @buttons.nextButton(
         title = messages("next.button"),
-        label = Some(messages("next.button")),
-        hrefMethod = Some(routes.WhatYouNeedController.onPageLoad())
+        label = Some(messages("next.button"))
         )
     }
 }

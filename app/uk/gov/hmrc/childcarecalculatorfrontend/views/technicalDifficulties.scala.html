@@ -14,16 +14,15 @@
  * limitations under the License.
  *@
 
-@(startPageButton: Boolean = false, title: String, label: Option[String] = None, id: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@import views.html.helper._
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.ccMain
 
-<div>
-    <div class="form-field">
-        <input type="submit"
-                @if(startPageButton) {class="button button--get-started"} else {class="button"}
-                title="@title"
-                id="next-button"
-                value="@if(label.isDefined){@label.getOrElse("").trim}else{@messages("childcare.button.next").toString.trim}"/>
-    </div>
-</div>
+@ccMain(
+    title = messages("technicalDifficulties.title"),
+    header = messages("technicalDifficulties.header"),
+    backLink = None
+) {
+    <p>@messages("technicalDifficulties.info")</p>
+    <a class="button-link" href="@messages("technicalDifficulties.link.url")" id="technical-difficulties-external">@messages("technicalDifficulties.link.text")</a>
+}

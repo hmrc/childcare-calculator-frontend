@@ -19,27 +19,40 @@
   contentHeader: Option[Html] = None,
   bodyClasses: Option[String] = None,
   mainClass: Option[String] = None,
-  scriptElem: Option[Html] = None)(mainContent: Html)(implicit request : Request[_], messages: Messages)
+  scriptElem: Option[Html] = None,
+  linkElement: Option[Html] = None,
+  backButton: Html = HtmlFormat.empty)(mainContent: Html)(implicit request : Request[_], messages: Messages)
 
 @import uk.gov.hmrc.play.views.html.layouts
 
-
 @serviceInfoContent = {}
 
-@sidebar = {
-    @if(sidebarLinks.isDefined) {
-        @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
-    }
+@content = {
+    <div class="grid-layout grid-layout--stacked">
+        @layouts.article(
+            content = mainContent,
+            articleClasses = Some("grid-layout__column grid-layout__column--2-3")
+        )
 }
 
+@sidebar = {
+        <div class="grid-layout__column grid-layout__column--1-3">
+            @if(sidebarLinks.isDefined) {
+            @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
+            }
+        </div>
+    </div>
+}
 
 @govuk_wrapper(appConfig = uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig,
+               linkElement = linkElement,
                title = title,
                mainClass = mainClass,
                bodyClasses = bodyClasses,
                sidebar = sidebar,
                contentHeader = contentHeader,
-               mainContent = layouts.article(mainContent),
+               mainContent = content,
                serviceInfoContent = serviceInfoContent,
-               scriptElem = scriptElem
+               scriptElem = scriptElem,
+               backButton = backButton
 )
