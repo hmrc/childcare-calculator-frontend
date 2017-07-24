@@ -117,28 +117,71 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
       }
 
       "saving in keystore is successful" should {
-        "redirect to next page" in {
-          val form = new LocationForm(applicationMessagesApi).form.bind(
-            Map(
-              locationKey -> LocationEnum.ENGLAND.toString
-            )
+        s"go to ${childAgedTwoPath}" when {
+          val childAgeTwoLocations = List(
+            LocationEnum.ENGLAND.toString,
+            LocationEnum.SCOTLAND.toString,
+            LocationEnum.WALES.toString
           )
+          childAgeTwoLocations.foreach { loc =>
+            s"${loc} is selected" in {
 
-          when(
-            sut.keystore.cacheEntryForSession[String](anyString, anyString)(any[HeaderCarrier], any[Format[String]])
-          ).thenReturn(
-            Future.successful(Some(LocationEnum.ENGLAND.toString))
-          )
+              val form = new LocationForm(applicationMessagesApi).form.bind(
+                Map(
+                  locationKey -> loc
+                )
+              )
 
-          val result = await(
-            sut.onSubmit(
-              request
-                .withFormUrlEncodedBody(form.data.toSeq: _*)
-                .withSession(validSession)
-            )
+              when(
+                sut.keystore.cacheEntryForSession[String](anyString, anyString)(any[HeaderCarrier], any[Format[String]])
+              ).thenReturn(
+                Future.successful(Some(loc))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(form.data.toSeq: _*)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe childAgedTwoPath
+            }
+          }
+        }
+
+        // TODO: Change childAgedTwoPath with childAge3or4Path for this test
+        s"go to '3 or 4 years old page' ${childAgedTwoPath}" when {
+          val childAgeTwoLocations = List(
+            LocationEnum.NORTHERNIRELAND.toString
           )
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") should not be technicalDifficultiesPath
+          childAgeTwoLocations.foreach { loc =>
+            s"${loc} is selected" in {
+
+              val form = new LocationForm(applicationMessagesApi).form.bind(
+                Map(
+                  locationKey -> loc
+                )
+              )
+
+              when(
+                sut.keystore.cacheEntryForSession[String](anyString, anyString)(any[HeaderCarrier], any[Format[String]])
+              ).thenReturn(
+                Future.successful(Some(loc))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(form.data.toSeq: _*)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe childAgedTwoPath
+            }
+          }
         }
       }
 
@@ -167,39 +210,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
       }
-    }
-
-    "redirectToNextPage" should {
-
-      s"go to ${childAgedTwoPath}" when {
-        val childAgeTwoLocations = List(
-          LocationEnum.ENGLAND.toString,
-          LocationEnum.SCOTLAND.toString,
-          LocationEnum.WALES.toString
-        )
-        childAgeTwoLocations.foreach { loc =>
-          s"${loc} is selected" in {
-            val result = sut.redirectToNextPage(loc)
-            result.url shouldBe childAgedTwoPath
-          }
-        }
-      }
-
-      // TODO: Change that to ChildAged3or4 page
-      s"go to ${childAgedTwoPath}" when {
-        val childAgeTwoLocations = List(
-          LocationEnum.NORTHERNIRELAND.toString
-        )
-        childAgeTwoLocations.foreach { loc =>
-          s"${loc} is selected" in {
-            val result = sut.redirectToNextPage(loc)
-            result.url shouldBe childAgedTwoPath
-          }
-        }
-      }
 
     }
-
   }
-
 }
