@@ -22,6 +22,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 import scala.concurrent.Future
@@ -29,16 +31,17 @@ import scala.concurrent.Future
 @Singleton
 class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
   with SessionProvider
-  with FrontendController {
+  with FrontendController
+  with CCConstants  {
 
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[Boolean]("expectChildcareCosts").map {
-      case  Some(x) =>
-        Ok("")
-      case None =>
-        Ok("")
+    keystore.fetchEntryForSession[Boolean](expectChildcareCostsKey).map {
+      res =>
+        Ok(
+          expectChildcareCosts(new ExpectChildcareCostsForm(messagesApi).form.fill(res))
+        )
     } recover {
       case e : Exception =>
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -48,10 +51,10 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ExpectChildcareCostsForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        Future(BadRequest(""))
+        Future(BadRequest(expectChildcareCosts(errors)))
       },
       success => {
-        keystore.cacheEntryForSession("expectChildcareCosts", success.get).map {
+        keystore.cacheEntryForSession(expectChildcareCostsKey, success.get).map {
           result =>
             Redirect(routes.WhatYouNeedController.onPageLoad())
         } recover {

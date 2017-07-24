@@ -56,14 +56,14 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         when(sut.keystore.fetchEntryForSession[Boolean](any())(any(),any())).thenReturn(Future.successful(Some(true)))
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
-        //result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "onPageLoad is called with none session data" in {
         when(sut.keystore.fetchEntryForSession[Boolean](any())(any(),any())).thenReturn(Future.successful(None))
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
-        //result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "onPageLoad is called with an exception from keystore service" in {
@@ -77,14 +77,14 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
     "submit successfully from the ExpectChildcareCosts page" when {
       "onSubmit is called with valid form and successful cacheEntry" in {
         when(sut.keystore.cacheEntryForSession[Boolean](any(), any())(any(),any())).thenReturn(Future.successful(Some(true)))
-        val result = await(sut.onSubmit(request.withFormUrlEncodedBody("expectChildcareCosts" -> "true").withSession(validSession)))
+        val result = await(sut.onSubmit(request.withFormUrlEncodedBody(expectChildcareCostsKey -> "true").withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers.get("Location").get.endsWith("/what-you-need") shouldBe true
       }
 
       "onSubmit is called with valid form and an exception from cacheEntry" in {
         when(sut.keystore.cacheEntryForSession[Boolean](any(), any())(any(),any())).thenReturn(Future.failed(new RuntimeException))
-        val result = await(sut.onSubmit(request.withFormUrlEncodedBody("expectChildcareCosts" -> "true").withSession(validSession)))
+        val result = await(sut.onSubmit(request.withFormUrlEncodedBody(expectChildcareCostsKey -> "true").withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers.get("Location").get.endsWith("/error") shouldBe true
       }

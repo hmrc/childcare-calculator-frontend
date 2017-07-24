@@ -21,20 +21,17 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-
-trait ExpectChildcareCostsFormKeys{
-  val expectChildcareCosts = "expectChildcareCosts"
-}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
 class ExpectChildcareCostsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport
-  with ExpectChildcareCostsFormKeys {
+  with CCConstants {
 
   type ExpectChildcareCostsFormType = Option[Boolean]
 
   val form = Form[ExpectChildcareCostsFormType](
     mapping(
-      expectChildcareCosts -> optional(boolean).verifying(Messages("cc.yes.no.not.selected.error"), x => x.isDefined)
+      expectChildcareCostsKey -> optional(boolean).verifying(Messages("expect.childcare.costs.yes.no.not.selected.error"), x => x.isDefined)
     )((expectChildcareCosts) => expectChildcareCosts)((expectChildcareCostsForm : ExpectChildcareCostsFormType) => Some(expectChildcareCostsForm))
   )
 }
