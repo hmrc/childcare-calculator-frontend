@@ -20,16 +20,45 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 import scala.concurrent.Future
 
 @Singleton
-class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController {
+class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
+  with SessionProvider
+  with FrontendController {
+
+  val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    Future.successful(
-      Ok("")
+    keystore.fetchEntryForSession[Boolean]("expectChildcareCosts").map {
+      case  Some(x) =>
+        Ok("")
+      case None =>
+        Ok("")
+    } recover {
+      case e : Exception =>
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    new ExpectChildcareCostsForm(messagesApi).form.bindFromRequest().fold(
+      errors => {
+        Future(BadRequest(""))
+      },
+      success => {
+        keystore.cacheEntryForSession("expectChildcareCosts", success.get).map {
+          result =>
+            Redirect(routes.WhatYouNeedController.onPageLoad())
+        } recover {
+          case e: Exception =>
+            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+        }
+      }
     )
   }
 
