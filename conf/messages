@@ -3,6 +3,9 @@ nav.title = Childcare calculator
 next.button = Continue
 back.button = Back
 
+cc.radio.yes = Yes
+cc.radio.no = No
+
 ######Common errors#######
 cc.date.error.day.empty = You must enter a number in Day.
 cc.date.error.month.empty = You must enter a number in Month.
@@ -33,3 +36,9 @@ what.you.need.bullet.pension = pension contributions
 what.you.need.bullet.benefits = family''s benefits
 what.you.need.bullet.statutory.leave = weeks and pay taken while on leave for a birth or an adoption
 what.you.need.back.url = https://www.gov.uk/childcare-calculator
+
+####### Child Aged two #######
+child.aged.two.title = Do you have a child aged 2
+child.aged.two.header = Do you have a child aged 2?
+child.aged.two.info = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.two.yes.no.not.selected.error = You must answer yes if you have a child aged 2

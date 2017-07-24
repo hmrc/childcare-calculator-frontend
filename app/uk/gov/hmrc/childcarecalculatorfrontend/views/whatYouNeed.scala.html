@@ -23,7 +23,7 @@
 @ccMain(
     title = messages("what.you.need.title"),
     header = messages("what.you.need.header"),
-    backLink = Some(messages("what.you.need.back.url"))
+    backLink = Some(Call("GET", messages("what.you.need.back.url", "")))
 ) {
     <p>@messages("what.you.need.info")</p>
     <ul class="list list-bullet">
@@ -36,7 +36,7 @@
         <li>@messages("what.you.need.bullet.statutory.leave")</li>
     </ul>
     @anchor(
-        href = routes.ChildCareBaseController.onPageLoad(),
+        href = routes.ChildAgedTwoController.onPageLoad(),
         label = messages("next.button")
     )
 }

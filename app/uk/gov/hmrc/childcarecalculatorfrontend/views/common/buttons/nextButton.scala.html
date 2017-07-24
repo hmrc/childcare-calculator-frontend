@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+@(startPageButton: Boolean = false, title: String, label: Option[String] = None, id: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
 
-trait CCRoutes {
+@import views.html.helper._
 
-  val rootPath: String = "/childcare-calc"
-
-  private def path(endPoint: String): String = s"${rootPath}${endPoint}"
-
-  val whatYouNeedPath: String = path("/what-you-need")
-  val childAgedTwoPath: String = path("/child-aged-two")
-  val technicalDifficultiesPath: String = path("/error")
-}
+<div>
+    <div class="form-field">
+        <input type="submit"
+                @if(startPageButton) {class="button button--get-started"} else {class="button"}
+                title="@title"
+                id="next-button"
+                value="@if(label.isDefined){@label.getOrElse("").trim}else{@messages("childcare.button.next").toString.trim}"/>
+    </div>
+</div>
