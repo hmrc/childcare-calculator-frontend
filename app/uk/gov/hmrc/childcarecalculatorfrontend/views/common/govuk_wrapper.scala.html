@@ -81,10 +81,13 @@
 }
 
 @mainContentHeader = {
-
+<div class="grid-layout grid-layout__column--2-3">
     @if(contentHeader.isDefined) {
         @uiLayouts.main_content_header(contentHeader = contentHeader.get)
         }
+</div>
+<div class="grid-layout grid-layout__column--1-3">
+</div>
 }
 
 @getHelpForm = @{uiHelpers.reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)}
