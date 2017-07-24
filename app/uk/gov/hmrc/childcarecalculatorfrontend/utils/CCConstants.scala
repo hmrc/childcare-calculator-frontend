@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-trait CCRoutes {
-
-  val rootPath: String = "/childcare-calc"
-
-  private def path(endPoint: String): String = s"${rootPath}${endPoint}"
-
-  val technicalDifficultiesPath: String = path("/error")
-
-  val whatYouNeedPath: String = path("/what-you-need")
-
-  val locationPath: String = path("/location")
-
-  val childAgedTwoPath: String = path("/child-aged-two")
-
-  val expectChildcareCostsPath: String = path("/expect-childcare-costs")
-
+trait CCConstants {
+  
+  lazy val locationKey = "location"
+  
 }

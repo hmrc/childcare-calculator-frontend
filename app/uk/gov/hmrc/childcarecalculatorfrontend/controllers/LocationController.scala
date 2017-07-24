@@ -16,53 +16,43 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
+import com.google.inject.Singleton
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
+import play.api.mvc.{Call, Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 import scala.concurrent.Future
 
 @Singleton
-class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
-  with SessionProvider
-  with FrontendController {
+class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController with CCConstants {
 
-  val keystore = KeystoreService
+  val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[Boolean]("childAgedTwo").map {
-      case  Some(x) =>
-        Ok(
-          childAgedTwo(
-            new ChildAgedTwoForm(messagesApi).form.fill(Some(x))
-          )
-        )
-      case None =>
-        Ok(
-          childAgedTwo(
-            new ChildAgedTwoForm(messagesApi).form
-          )
-        )
-    } recover {
-      case e : Exception =>
+    keystore.fetchEntryForSession[String](locationKey).map { loc =>
+      Ok(location(new LocationForm(messagesApi).form.fill(loc)))
+    }.recover {
+      case ex: Exception =>
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
+    new LocationForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-            Future(BadRequest(childAgedTwo(errors)))
+        Future(BadRequest(location(errors)))
       },
       success => {
-        keystore.cacheEntryForSession("childAgedTwo", success.get).map {
-          result =>
-            Redirect(routes.WhatYouNeedController.onPageLoad())
+        val selectedLocation = success.get
+        keystore.cacheEntryForSession(locationKey, selectedLocation).map { result =>
+          Redirect(redirectToNextPage(selectedLocation))
         } recover {
           case e: Exception =>
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -70,4 +60,15 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
       }
     )
   }
+
+  def redirectToNextPage(location: String): Call = {
+    if(location == LocationEnum.NORTHERNIRELAND.toString) {
+      // TODO: Go to ChildAge3or4 page
+      routes.ChildAgedTwoController.onPageLoad()
+    }
+    else {
+      routes.ChildAgedTwoController.onPageLoad()
+    }
+  }
+
 }

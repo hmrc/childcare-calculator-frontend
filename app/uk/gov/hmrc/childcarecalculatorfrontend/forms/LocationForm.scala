@@ -21,20 +21,21 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-
-trait ChildAgedTwoFormKeys{
-  val childAgedTwo = "childAgedTwo"
-}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class ChildAgedTwoForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport
-  with ChildAgedTwoFormKeys {
+class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  type ChildAgedTwoFormType = Option[Boolean]
+  type LocationFormType = Option[String]
 
-  val form = Form[ChildAgedTwoFormType](
+  val form = Form[LocationFormType](
     mapping(
-      childAgedTwo -> optional(boolean).verifying(Messages("child.aged.two.yes.no.not.selected.error"), x => x.isDefined)
-    )((childAgedTwo) => childAgedTwo)((childAgedTwoForm : ChildAgedTwoFormType) => Some(childAgedTwoForm))
+      locationKey -> optional(text).verifying(
+        Messages("location.radio.not.selected.error"),
+        x => LocationEnum.values.exists(_.toString == x.getOrElse(""))
+      )
+    )((location) => location)((location: LocationFormType) => Some(location))
   )
+
 }
