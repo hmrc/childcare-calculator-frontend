@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+@()(implicit request: Request[_], messages: Messages)
 
-trait CCRoutes {
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.ccMain
 
-  val rootPath: String = "/childcare-calc"
-
-  private def path(endPoint: String): String = s"${rootPath}${endPoint}"
-
-  val whatYouNeedPath: String = path("/what-you-need")
-
-  val expectChildcareCostsPath: String = path("/expect-childcare-costs")
-
-  val technicalDifficultiesPath: String = path("/error")
-
+@ccMain(
+    title = messages("technicalDifficulties.title"),
+    header = messages("technicalDifficulties.header"),
+    backLink = None
+) {
+    <p>@messages("technicalDifficulties.info")</p>
+    <a class="button-link" href="@messages("technicalDifficulties.link.url")" id="technical-difficulties-external">@messages("technicalDifficulties.link.text")</a>
 }

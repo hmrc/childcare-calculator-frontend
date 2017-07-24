@@ -1,5 +1,10 @@
 # microservice specific routes
 
 GET         /                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
+GET         /error                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onTechnicalDifficulties
+
 GET         /what-you-need              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
+
 GET         /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad
+
+GET         /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
