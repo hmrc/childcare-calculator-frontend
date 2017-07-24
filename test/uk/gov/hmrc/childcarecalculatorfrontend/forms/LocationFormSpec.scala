@@ -21,36 +21,43 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.play.test.UnitSpec
 
-
 class LocationFormSpec extends UnitSpec with FakeCCApplication {
 
   "LocationForm" should {
 
-    "accept when 'England' is selected" in {
-      new LocationForm(applicationMessagesApi).form.bind(Map(
-        "location" -> LocationEnum.ENGLAND.toString
-      )).fold(
-        errors =>
-           errors.errors shouldBe empty,
-        success =>
-          success shouldBe Some("ENGLAND")
-      )
-    }
-
-    "throw error when nothing is selected" in {
-      new LocationForm(applicationMessagesApi).form.bind(Map(
-        "location" -> ""
-      )).fold(
-        errors =>
-          errors.errors.head.message shouldBe "You must tell the calculator where you live",
-        success =>
-          success shouldBe empty
-      )
-    }
-
     "pre populate the form" in {
       val form = new LocationForm(applicationMessagesApi).form.fill(Some(LocationEnum.SCOTLAND.toString))
-      form.get shouldBe Some("SCOTLAND")
+      form.get shouldBe Some(LocationEnum.SCOTLAND.toString)
+    }
+
+    "accept valid value" when {
+      LocationEnum.values.foreach { loc => {
+        val locationValue = loc.toString
+        s"${locationValue} is selected" in {
+          val result = new LocationForm(applicationMessagesApi).form.bind(Map(
+            locationKey -> locationValue
+          ))
+          result.hasErrors shouldBe false
+          result.value.get.get shouldBe locationValue
+        }
+      }
+      }
+    }
+
+    "throw error" when {
+      val invalidValues = List("", "abcd", "123")
+
+      invalidValues.foreach { invalidValue =>
+        s"'${invalidValue}' is selected" in {
+          val result = new LocationForm(applicationMessagesApi).form.bind(Map(
+            locationKey -> invalidValue
+          ))
+          result.hasErrors shouldBe true
+          result.errors.length shouldBe 1
+          result.errors.head.message shouldBe "You must tell the calculator where you live"
+          result.value shouldBe None
+        }
+      }
     }
 
   }
