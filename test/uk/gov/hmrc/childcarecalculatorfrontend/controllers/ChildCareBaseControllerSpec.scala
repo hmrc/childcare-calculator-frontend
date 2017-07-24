@@ -19,6 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.mvc.Result
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication}
 import uk.gov.hmrc.play.http.SessionKeys
 import uk.gov.hmrc.play.test.UnitSpec
@@ -34,6 +36,15 @@ class ChildCareBaseControllerSpec extends UnitSpec with FakeCCApplication with C
         val res: Result = await(sut.onPageLoad()(request.withSession(validSession)))
         status(res) shouldBe SEE_OTHER
         res.header.headers("Location") shouldBe whatYouNeedPath
+      }
+    }
+
+    "load technical difficulties page" when {
+      s"receive GET request on ${technicalDifficultiesPath}" in {
+        val req = FakeRequest(GET, technicalDifficultiesPath)
+        val result = route(app, req)
+        result.isDefined shouldBe true
+        status(result.get) shouldBe OK
       }
     }
 

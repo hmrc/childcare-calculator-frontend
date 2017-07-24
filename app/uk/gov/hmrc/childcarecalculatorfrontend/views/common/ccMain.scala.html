@@ -14,7 +14,13 @@
  * limitations under the License.
  *@
 
-@(title: String, header: String)(mainContent: Html)(implicit request: Request[_], messages: Messages)
+@(title: String, header: String, backLink: Option[String] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
+
+@backButton = {
+    @if(backLink.isDefined) {
+        <a href=@{backLink.get} id="back-button" class="link-back">@messages("back.button")</a>
+    }
+}
 
 @contentHeader = {
     <h1 id="page-title" class="heading-xlarge">
@@ -22,7 +28,13 @@
     </h1>
 }
 
+@linkElement = {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/cc.css")">
+}
+
 @main_template(
     title = title,
-    contentHeader = Some(contentHeader)
+    contentHeader = Some(contentHeader),
+    linkElement = Some(linkElement),
+    backButton = backButton
 )(mainContent = mainContent)
