@@ -52,7 +52,7 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       success => {
         val selectedLocation = success.get
         keystore.cacheEntryForSession(locationKey, selectedLocation).map { result =>
-          if(location == LocationEnum.NORTHERNIRELAND.toString) {
+          if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
             // TODO: Go to ChildAge3or4 page
             Redirect(routes.ChildAgedTwoController.onPageLoad())
           }
