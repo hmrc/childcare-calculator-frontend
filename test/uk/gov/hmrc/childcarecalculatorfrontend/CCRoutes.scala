@@ -23,10 +23,6 @@ trait CCRoutes {
   private def path(endPoint: String): String = s"${rootPath}${endPoint}"
 
   val whatYouNeedPath: String = path("/what-you-need")
-<<<<<<< HEAD
   val childAgedTwoPath: String = path("/child-aged-two")
-
-=======
   val technicalDifficultiesPath: String = path("/error")
->>>>>>> master
 }
