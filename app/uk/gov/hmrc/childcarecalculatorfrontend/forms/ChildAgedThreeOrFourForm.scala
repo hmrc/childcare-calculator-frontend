@@ -17,24 +17,21 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class ChildAgedThreeOrFourForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  type LocationFormType = Option[String]
+  type ChildAgedThreeOrFourForm = Option[Boolean]
 
-  val form = Form[LocationFormType](
+  val form = Form[ChildAgedThreeOrFourForm](
     single(
-      locationKey -> optional(text).verifying(
-        Messages("location.radio.not.selected.error"),
-        location =>
-          LocationEnum.values.exists(_.toString == location.getOrElse(""))
+      childAgedThreeOrFourKey -> optional(boolean).verifying(
+        Messages("child.aged.three.or.four.yes.no.not.selected.error"),
+        _.isDefined
       )
     )
   )

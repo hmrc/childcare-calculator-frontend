@@ -29,7 +29,7 @@ backLink = Some(routes.WhatYouNeedController.onPageLoad())
     @helpers.form(
         action = routes.ExpectChildcareCostsController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
-        @error.ccErrorSummary(messages("cc.error.title"), form)
+        @error.ccErrorSummary(messages("error.title"), form)
 
         <p>@messages("expect.childcare.costs.info")</p>
 
@@ -37,8 +37,8 @@ backLink = Some(routes.WhatYouNeedController.onPageLoad())
         field = form("expectChildcareCosts"),
         fieldForm = form,
         radioOptions = Seq(
-        ("true", messages("cc.radio.yes")),
-        ("false", messages("cc.radio.no"))
+        ("true", messages("radio.yes")),
+        ("false", messages("radio.no"))
         ),
         args = '_groupClass -> "form-group inline",
         '_radioClass -> "block-label",
