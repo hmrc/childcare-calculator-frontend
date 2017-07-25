@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import play.api.libs.json.{Format, Json, Reads, Writes}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum.TcUcBenefitsEnum
+import play.api.libs.json.{Format, Reads, Writes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
 

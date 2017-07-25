@@ -2,7 +2,6 @@
 nav.title = Childcare calculator
 next.button = Continue
 back.button = Back
-
 cc.radio.yes = Yes
 cc.radio.no = No
 
@@ -36,6 +35,16 @@ what.you.need.bullet.pension = pension contributions
 what.you.need.bullet.benefits = family''s benefits
 what.you.need.bullet.statutory.leave = weeks and pay taken while on leave for a birth or an adoption
 what.you.need.back.url = https://www.gov.uk/childcare-calculator
+
+####### Location Page #######
+location.title = Where do you live?
+location.header = Where do you live?
+location.info = Free childcare hours are different between countries in the UK.
+location.radio.england = England
+location.radio.scotland = Scotland
+location.radio.wales = Wales
+location.radio.northern.ireland = Northern Ireland
+location.radio.not.selected.error = You must tell the calculator where you live
 
 ####### Child Aged two #######
 child.aged.two.title = Do you have a child aged 2

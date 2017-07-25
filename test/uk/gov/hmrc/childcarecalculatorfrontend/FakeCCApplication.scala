@@ -22,11 +22,12 @@ import org.scalatestplus.play.OneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.play.http.{SessionKeys, HeaderCarrier}
 import play.api.inject._
 import org.scalatest.mock.MockitoSugar
 
-trait FakeCCApplication extends OneAppPerSuite with MockitoSugar {
+trait FakeCCApplication extends OneAppPerSuite with MockitoSugar with CCRoutes with CCConstants {
   this: Suite =>
 
   val config: Map[String, _] = Map()

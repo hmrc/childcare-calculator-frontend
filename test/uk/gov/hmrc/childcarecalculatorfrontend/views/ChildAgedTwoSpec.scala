@@ -38,7 +38,7 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
   override val linksData: List[ElementDetails] = List(
     ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = childAgedTwoPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whatYouNeedPath)
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = locationPath)
   )
 
   def getTemplate(form: Form[Option[Boolean]]): Document = {
@@ -70,7 +70,7 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List("childAgedTwo-true")))
+        verifyChecks(Some(List(s"${childAgedTwoKey}-true")))
         verifyErrors()
       }
 
@@ -79,14 +79,14 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List("childAgedTwo-false")))
+        verifyChecks(Some(List(s"${childAgedTwoKey}-false")))
         verifyErrors()
       }
 
       "form is submitted without data" in {
         val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
           Map(
-            "childAgedTwo" -> ""
+            childAgedTwoKey -> ""
           )
         )
         implicit val doc: Document = getTemplate(form)
@@ -96,7 +96,7 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
         verifyErrors(
           errorTitle = Some("There is a problem"),
           errorHeading = Some("Check you have answered the question correctly"),
-          errors = Map("childAgedTwo" -> "You must answer yes if you have a child aged 2")
+          errors = Map("childAgedTwo" -> applicationMessages.messages("child.aged.two.yes.no.not.selected.error"))
         )
       }
 

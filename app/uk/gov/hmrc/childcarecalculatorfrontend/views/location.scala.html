@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]])(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[String]])(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
@@ -22,33 +22,36 @@
 @import uk.gov.hmrc.play.views.html._
 
 @ccMain(
-title = messages("child.aged.two.title"),
-header = messages("child.aged.two.header"),
-backLink = Some(routes.LocationController.onPageLoad())
+    title = messages("location.title"),
+    header = messages("location.header"),
+    backLink = Some(routes.WhatYouNeedController.onPageLoad())
 ) {
     @helpers.form(
-        action = routes.ChildAgedTwoController.onSubmit,
+        action = routes.LocationController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+
         @error.ccErrorSummary(messages("cc.error.title"), form)
 
-        <p>@messages("child.aged.two.info")</p>
+        <p>@messages("location.info")</p>
 
         @radio.ccRadioOptions(
-        field = form("childAgedTwo"),
-        fieldForm = form,
-        radioOptions = Seq(
-        ("true", messages("cc.radio.yes")),
-        ("false", messages("cc.radio.no"))
-        ),
-        args = '_groupClass -> "form-group inline",
-        '_radioClass -> "block-label",
-        '_legendClass -> "visuallyhidden",
-        '_legend -> messages("child.aged.two.header"),
-        '_globalErrorKey -> messages("child.aged.two.yes.no.not.selected.error")
-        )
+            field = form("location"),
+            fieldForm = form,
+            radioOptions = Seq(
+                ("ENGLAND", messages("location.radio.england")),
+                ("SCOTLAND", messages("location.radio.scotland")),
+                ("WALES", messages("location.radio.wales")),
+                ("NORTHERNIRELAND", messages("location.radio.northern.ireland"))
+            ),
+            args = '_groupClass -> "form-group",
+                '_radioClass -> "block-label",
+                '_legendClass -> "visuallyhidden",
+                '_legend -> messages("location.header"),
+                '_globalErrorKey -> messages("location.radio.not.selected.error")
+            )
         @buttons.nextButton(
-        title = messages("next.button"),
-        label = Some(messages("next.button"))
+            title = messages("next.button"),
+            label = Some(messages("next.button"))
         )
     }
 }
