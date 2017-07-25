@@ -51,3 +51,9 @@ child.aged.two.title = Do you have a child aged 2
 child.aged.two.header = Do you have a child aged 2?
 child.aged.two.info = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
 child.aged.two.yes.no.not.selected.error = You must answer yes if you have a child aged 2
+
+####### Expect Childcare Costs #######
+expect.childcare.costs.title = Do you have or expect to have childcare costs with an approved provider
+expect.childcare.costs.header = Do you have or expect to have childcare costs with an approved provider?
+expect.childcare.costs.info = Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or an Ofsted-registered childminding agency.
+expect.childcare.costs.yes.no.not.selected.error = You must answer yes if you expect to have childcare costs with an approved provider

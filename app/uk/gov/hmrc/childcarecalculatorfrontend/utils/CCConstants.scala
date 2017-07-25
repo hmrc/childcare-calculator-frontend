@@ -20,5 +20,6 @@ trait CCConstants {
   
   lazy val locationKey = "location"
   lazy val childAgedTwoKey = "childAgedTwo"
+  lazy val expectChildcareCostsKey = "expectChildcareCosts"
   
 }

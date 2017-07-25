@@ -1,4 +1,4 @@
-# microservice specific routes
+# microservice specific routes9381
 
 GET         /                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
 GET         /error                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onTechnicalDifficulties
@@ -10,6 +10,9 @@ POST        /location                   uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET         /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad
 POST        /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit
+
+GET         /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad
+POST        /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit
 
 GET         /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
