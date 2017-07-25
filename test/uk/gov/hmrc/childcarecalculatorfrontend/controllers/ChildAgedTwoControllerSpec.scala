@@ -100,16 +100,10 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "there are errors" should {
         "load same template and return BAD_REQUEST" in {
-          val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
-            Map(
-              childAgedTwoKey -> ""
-            )
-          )
-
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(form.data.toSeq: _*)
+                .withFormUrlEncodedBody(childAgedTwoKey -> "")
                 .withSession(validSession)
             )
           )
@@ -119,12 +113,6 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
       }
 
       "saving in keystore is successful" in {
-        val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
-          Map(
-            childAgedTwoKey -> "true"
-          )
-        )
-
         when(
           sut.keystore.cacheEntryForSession[Boolean](anyString, anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
         ).thenReturn(
@@ -134,7 +122,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(form.data.toSeq: _*)
+              .withFormUrlEncodedBody(childAgedTwoKey -> "true")
               .withSession(validSession)
           )
         )
@@ -146,12 +134,6 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
-        val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
-          Map(
-            childAgedTwoKey -> "false"
-          )
-        )
-
         when(
           sut.keystore.cacheEntryForSession[Boolean](anyString, anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
         ).thenReturn(
@@ -161,7 +143,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(form.data.toSeq: _*)
+              .withFormUrlEncodedBody(childAgedTwoKey -> "false")
               .withSession(validSession)
           )
         )
