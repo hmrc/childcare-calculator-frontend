@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-trait CCRoutes {
+import javax.inject.{Singleton, Inject}
 
-  val rootPath: String = "/childcare-calc"
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
-  private def path(endPoint: String): String = s"${rootPath}${endPoint}"
+@Singleton
+class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
+  with SessionProvider
+  with FrontendController
+  with CCConstants {
 
-  val technicalDifficultiesPath: String = path("/error")
+  def onPageLoad: Action[AnyContent] = ???
 
-  val whatYouNeedPath: String = path("/what-you-need")
-
-  val locationPath: String = path("/location")
-
-  val childAgedTwoPath: String = path("/child-aged-two")
-
-  val childAgedThreeOrFourPath: String = path("/child-aged-three-or-four")
+  def onSubmit: Action[AnyContent] = ???
 }
