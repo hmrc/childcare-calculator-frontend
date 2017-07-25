@@ -17,20 +17,23 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class ChildAgedTwoForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class ChildAgedThreeOrFourForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  type ChildAgedTwoFormType = Option[Boolean]
+  type ChildAgedThreeOrFourForm = Option[Boolean]
 
-  val form = Form[ChildAgedTwoFormType](
+  val form = Form[ChildAgedThreeOrFourForm](
     mapping(
-      childAgedTwoKey -> optional(boolean).verifying(Messages("child.aged.two.yes.no.not.selected.error"), x => x.isDefined)
-    )((childAgedTwo) => childAgedTwo)((childAgedTwoForm: ChildAgedTwoFormType) => Some(childAgedTwoForm))
+      childAgedThreeOrFourKey -> optional(boolean).verifying(
+        Messages("child.aged.three.or.four.yes.no.not.selected.error"),
+        _.isDefined
+      )
+    )((childAgedThreeOrFour) => childAgedThreeOrFour)((childAgedThreeOrFourForm: ChildAgedThreeOrFourForm) => Some(childAgedThreeOrFourForm))
   )
+
 }

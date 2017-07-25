@@ -20,7 +20,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 
-class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
+class ChildAgedTwoFormSpec extends UnitSpec with FakeCCApplication {
 
   "ChildAgedTwoForm" should {
 

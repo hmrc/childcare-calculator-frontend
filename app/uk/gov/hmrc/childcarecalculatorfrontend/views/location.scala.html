@@ -30,7 +30,7 @@
         action = routes.LocationController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
-        @error.ccErrorSummary(messages("cc.error.title"), form)
+        @error.ccErrorSummary(messages("error.title"), form)
 
         <p>@messages("location.info")</p>
 

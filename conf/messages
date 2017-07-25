@@ -2,19 +2,13 @@
 nav.title = Childcare calculator
 next.button = Continue
 back.button = Back
-cc.radio.yes = Yes
-cc.radio.no = No
+radio.yes = Yes
+radio.no = No
 
-######Common errors#######
-cc.date.error.day.empty = You must enter a number in Day.
-cc.date.error.month.empty = You must enter a number in Month.
-cc.date.error.year.empty = You must enter a number in Year.
-cc.date.error.year.4.digits = You must enter a 4 digit Year.
-cc.date.error.empty = You must enter a date of birth.
-error.invalid.date.format = Give a valid date, for example 2 10 2003.
-cc.error.title = Check you have answered the question correctly
-cc.error.validation.title = There is a problem
-cc.yes.no.not.selected.error = You must select Yes or No
+###### Common Errors #######
+error.title = Check you have answered the question correctly
+error.validation.title = There is a problem
+error.boolean = You must select Yes or No
 
 ####### Technical Difficulties #######
 technicalDifficulties.title = We''re experiencing technical difficulties
@@ -23,7 +17,7 @@ technicalDifficulties.info = We''re having difficulties with the service, try ag
 technicalDifficulties.link.url = https://www.gov.uk/help-with-childcare-costs/approved-childcare
 technicalDifficulties.link.text = Return to GOV.UK
 
-####### What you need #######
+####### What You Need #######
 what.you.need.title = What you need
 what.you.need.header = What you need
 what.you.need.info = You can give estimates, but the more accurate you are then the more accurate your results will be. You may be asked for things like:
@@ -36,7 +30,7 @@ what.you.need.bullet.benefits = family''s benefits
 what.you.need.bullet.statutory.leave = weeks and pay taken while on leave for a birth or an adoption
 what.you.need.back.url = https://www.gov.uk/childcare-calculator
 
-####### Location Page #######
+####### Location #######
 location.title = Where do you live?
 location.header = Where do you live?
 location.info = Free childcare hours are different between countries in the UK.
@@ -46,8 +40,14 @@ location.radio.wales = Wales
 location.radio.northern.ireland = Northern Ireland
 location.radio.not.selected.error = You must tell the calculator where you live
 
-####### Child Aged two #######
+####### Child Aged Two #######
 child.aged.two.title = Do you have a child aged 2
 child.aged.two.header = Do you have a child aged 2?
 child.aged.two.info = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
 child.aged.two.yes.no.not.selected.error = You must answer yes if you have a child aged 2
+
+####### Child Aged Three Or Four #######
+child.aged.three.or.four.title = Do you have any children aged 3 or 4?
+child.aged.three.or.four.header = Do you have any children aged 3 or 4?
+child.aged.three.or.four.info = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.three.or.four.yes.no.not.selected.error = You must answer yes if you have any children aged 3 or 4
