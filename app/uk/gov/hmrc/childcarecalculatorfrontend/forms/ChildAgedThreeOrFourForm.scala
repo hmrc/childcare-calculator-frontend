@@ -28,12 +28,12 @@ class ChildAgedThreeOrFourForm @Inject()(val messagesApi: MessagesApi) extends I
   type ChildAgedThreeOrFourForm = Option[Boolean]
 
   val form = Form[ChildAgedThreeOrFourForm](
-    mapping(
+    single(
       childAgedThreeOrFourKey -> optional(boolean).verifying(
         Messages("child.aged.three.or.four.yes.no.not.selected.error"),
         _.isDefined
       )
-    )((childAgedThreeOrFour) => childAgedThreeOrFour)((childAgedThreeOrFourForm: ChildAgedThreeOrFourForm) => Some(childAgedThreeOrFourForm))
+    )
   )
 
 }

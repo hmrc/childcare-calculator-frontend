@@ -30,12 +30,13 @@ class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport w
   type LocationFormType = Option[String]
 
   val form = Form[LocationFormType](
-    mapping(
+    single(
       locationKey -> optional(text).verifying(
         Messages("location.radio.not.selected.error"),
-        x => LocationEnum.values.exists(_.toString == x.getOrElse(""))
+        location =>
+          LocationEnum.values.exists(_.toString == location.getOrElse(""))
       )
-    )((location) => location)((location: LocationFormType) => Some(location))
+    )
   )
 
 }
