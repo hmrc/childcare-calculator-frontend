@@ -65,6 +65,41 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
         verifyErrors()
       }
 
+      "true is selected" in {
+        implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true)))
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks(Some(List(s"${childAgedThreeOrFourKey}-true")))
+        verifyErrors()
+      }
+
+      "false is selected" in {
+        implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(false)))
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks(Some(List(s"${childAgedThreeOrFourKey}-false")))
+        verifyErrors()
+      }
+
+      "form is submitted without data" in {
+        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
+          Map(
+            childAgedThreeOrFourKey -> ""
+          )
+        )
+        implicit val doc: Document = getTemplate(form)
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyErrors(
+          errorTitle = Some("There is a problem"),
+          errorHeading = Some("Check you have answered the question correctly"),
+          errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("child.aged.three.or.four.yes.no.not.selected.error"))
+        )
+      }
+
     }
   }
 }
