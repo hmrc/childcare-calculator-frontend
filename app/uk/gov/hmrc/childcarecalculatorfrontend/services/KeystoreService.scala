@@ -22,6 +22,7 @@ import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Try, Success, Failure}
 
 object KeystoreService extends KeystoreService {
   val sessionCache: SessionCache = CCSessionCache
@@ -48,11 +49,19 @@ trait KeystoreService {
       }
       else {
         val updatedData = data.get.data.-(key)
-        sessionCache.remove().map { res =>
+        sessionCache.remove().flatMap { res =>
           val savingResult = for ((updatedDataKey, updatedDataValue) <- updatedData) yield {
             sessionCache.cache(updatedDataKey, updatedDataValue)
           }
-          Future.sequence(savingResult).isCompleted
+          def futureToFutureTry[T](f: Future[T]): Future[Try[T]] = {
+            f.map(Success(_)).recover({case x => Failure(x)})
+          }
+
+          def allAsTrys[T](fItems: Iterable[Future[T]]) = {
+            val listOfFutureTrys = fItems.map(futureToFutureTry)
+            Future.sequence(listOfFutureTrys)
+          }
+          allAsTrys(savingResult).map(!_.exists(_.isFailure))
         }
       }
     }

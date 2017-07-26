@@ -128,34 +128,61 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
         result shouldBe true
       }
 
-//      "the key exists in data returned from keystore" in {
-//        when(
-//          sut.sessionCache.fetch()(any[HeaderCarrier])
-//        ).thenReturn(
-//          Future.successful(
-//            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
-//          )
-//        )
-//
-//        when(
-//          sut.sessionCache.remove()(any[HeaderCarrier])
-//        ).thenReturn(
-//          Future.successful(
-//            HttpResponse(OK)
-//          )
-//        )
-//
-//        when(
-//          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
-//        ).thenReturn(
-//          Future.successful(
-//            CacheMap("id", Map("test_key2" -> JsString("test_value2")))
-//          )
-//        )
-//
-//        val result = await(sut.removeFromSession("test_key1"))
-//        result shouldBe true
-//      }
+      "the key exists in data returned from keystore" in {
+        when(
+          sut.sessionCache.fetch()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
+          )
+        )
+
+        when(
+          sut.sessionCache.remove()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            HttpResponse(OK)
+          )
+        )
+
+        when(
+          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            CacheMap("id", Map("test_key2" -> JsString("test_value2")))
+          )
+        )
+
+        val result = await(sut.removeFromSession("test_key1"))
+        result shouldBe true
+      }
+
+      "the key exists in data returned from keystore but save fails" in {
+        when(
+          sut.sessionCache.fetch()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
+          )
+        )
+
+        when(
+          sut.sessionCache.remove()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            HttpResponse(OK)
+          )
+        )
+
+        when(
+          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+
+        val result = await(sut.removeFromSession("test_key1"))
+        result shouldBe false
+      }
     }
   }
 
