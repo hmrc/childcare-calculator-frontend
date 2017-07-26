@@ -17,8 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.scalatest.mock.MockitoSugar
-import play.api.libs
-import play.api.libs.json
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum

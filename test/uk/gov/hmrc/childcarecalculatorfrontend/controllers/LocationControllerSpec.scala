@@ -21,10 +21,7 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
-import play.api.mvc.Cookie
 import play.api.test.FakeRequest
-import play.mvc.Http.HeaderNames
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication

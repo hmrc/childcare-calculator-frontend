@@ -24,14 +24,10 @@ import play.api.libs.json.{Format, Reads}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{ChildAgedTwoForm, LocationForm}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-
 import scala.concurrent.Future
-
 
 class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with BeforeAndAfterEach {
 

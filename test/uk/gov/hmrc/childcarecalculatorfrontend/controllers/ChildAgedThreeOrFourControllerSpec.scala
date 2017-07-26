@@ -18,15 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import org.scalatest.{PrivateMethodTester, BeforeAndAfterEach}
+import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.test.UnitSpec
-
 import scala.concurrent.Future
 
 class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication with BeforeAndAfterEach {

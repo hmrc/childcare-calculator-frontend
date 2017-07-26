@@ -20,10 +20,10 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes._
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.technicalDifficulties
-import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, CCRoutes, TemplatesValidator}
+import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.test.Helpers._
 
-class TechnicalDifficultiesSpec extends TemplatesValidator with FakeCCApplication with CCRoutes {
+class TechnicalDifficultiesSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "We're experiencing technical difficulties"),

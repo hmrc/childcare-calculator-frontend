@@ -23,10 +23,10 @@ import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
-import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication, TemplatesValidator}
+import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.test.Helpers._
 
-class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication with CCRoutes {
+class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Do you have any children aged 3 or 4?"),
@@ -65,6 +65,7 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors()
       }
 
@@ -73,7 +74,7 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List(s"${childAgedThreeOrFourKey}-true")))
+        verifyChecks(List(s"${childAgedThreeOrFourKey}-true"))
         verifyErrors()
       }
 
@@ -82,7 +83,7 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List(s"${childAgedThreeOrFourKey}-false")))
+        verifyChecks(List(s"${childAgedThreeOrFourKey}-false"))
         verifyErrors()
       }
 
@@ -96,9 +97,8 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors(
-          errorTitle = Some("There is a problem"),
-          errorHeading = Some("Check you have answered the question correctly"),
           errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("child.aged.three.or.four.yes.no.not.selected.error"))
         )
       }

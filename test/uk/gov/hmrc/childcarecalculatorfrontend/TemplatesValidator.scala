@@ -91,31 +91,29 @@ trait TemplatesValidator extends UnitSpec {
     }
   }
 
-  def verifyChecks(checkedElements: Option[List[String]] = None)(implicit doc: Document): Unit = {
-    doc.getElementsByAttributeValue("type", "radio").map { element =>
-      element.hasAttr("checked") shouldBe checkedElements.getOrElse(List()).contains(element.attr("id"))
+  def verifyChecks(checkedElements: List[String] = List.empty)(implicit doc: Document): Unit = {
+    val allCheckedElements = doc.getElementsByAttribute("checked")
+    allCheckedElements.size shouldBe checkedElements.size
+    allCheckedElements.map { element =>
+      checkedElements.contains(element.attr("id")) shouldBe true
     }
   }
 
-  def verifyErrors(errorTitle: Option[String] = None, errorHeading: Option[String] = None, errors: Map[String, String] = Map.empty)(implicit doc: Document): Unit = {
-    if(errors.isEmpty) {
-      doc.getElementById("errorTitle").text() shouldBe "There is a problem"
-      doc.getElementById("error-summary-display").hasClass("error-summary--show") shouldBe false
-      doc.getElementsByClass("js-error-summary-messages").first().children().isEmpty shouldBe true
-      doc.getElementsByClass("error-notification").isEmpty shouldBe true
-    }
-    else {
-      doc.getElementById("errorTitle").text() shouldBe errorTitle.getOrElse("")
-      doc.getElementById("error-summary-heading").text() shouldBe errorHeading.getOrElse("")
-      errors.map {
-        case (focusElement, errorMessage) => {
-          val errorSummary = doc.getElementById(focusElement + "-error-summary")
-          errorSummary.text() shouldBe errorMessage
-          errorSummary.attr("data-focuses") shouldBe focusElement
-          errorSummary.attr("href").replaceAll("""[\.\[\]]""", "") shouldBe "#" + focusElement
-        }
+  def verifyErrors(errors: Map[String, String] = Map.empty)(implicit doc: Document): Unit = {
+    doc.getElementById("errorTitle").text() shouldBe "There is a problem"
+    doc.getElementById("error-summary-heading").text() shouldBe "Check you have answered the question correctly"
+    val totalAmountOfErrors = errors.size
+    doc.getElementsByClass("js-error-summary-messages").first().getElementsByTag("li").size() shouldBe totalAmountOfErrors
+    doc.getElementsByClass("error-notification").size() shouldBe totalAmountOfErrors
+    doc.getElementById("error-summary-display").hasClass("error-summary--show") should not be errors.isEmpty
+    errors.map {
+      case (focusElement, errorMessage) => {
+        val errorSummary = doc.getElementById(focusElement + "-error-summary")
+        errorSummary.text() shouldBe errorMessage
+        errorSummary.attr("data-focuses") shouldBe focusElement
+        errorSummary.attr("href").replaceAll("""[\.\[\]]""", "") shouldBe "#" + focusElement
+        doc.getElementById(focusElement + "-error-message").text() shouldBe errorMessage
       }
-      //      doc.getElementsByClass("js-error-summary-messages").first().getElementsByTag("li").size() shouldBe errors.size
     }
   }
 

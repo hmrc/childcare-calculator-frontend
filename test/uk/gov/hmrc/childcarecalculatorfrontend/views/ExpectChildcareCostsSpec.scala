@@ -23,9 +23,9 @@ import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
-import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication, TemplatesValidator}
+import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
-class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication with CCRoutes {
+class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Do you have or expect to have childcare costs with an approved provider?"),
@@ -62,6 +62,7 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors()
       }
 
@@ -70,7 +71,7 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List(s"${expectChildcareCostsKey}-true")))
+        verifyChecks(List(s"${expectChildcareCostsKey}-true"))
         verifyErrors()
       }
 
@@ -79,7 +80,7 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List(s"${expectChildcareCostsKey}-false")))
+        verifyChecks(List(s"${expectChildcareCostsKey}-false"))
         verifyErrors()
       }
 
@@ -93,9 +94,8 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors(
-          errorTitle = Some("There is a problem"),
-          errorHeading = Some("Check you have answered the question correctly"),
           errors = Map("expectChildcareCosts" -> applicationMessages.messages("expect.childcare.costs.yes.no.not.selected.error"))
         )
       }
