@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
 
 @ccMain(
@@ -38,10 +39,10 @@
             field = form("location"),
             fieldForm = form,
             radioOptions = Seq(
-                ("england", messages("location.radio.england")),
-                ("scotland", messages("location.radio.scotland")),
-                ("wales", messages("location.radio.wales")),
-                ("northern-ireland", messages("location.radio.northern.ireland"))
+                (LocationEnum.ENGLAND.toString, messages("location.radio.england")),
+                (LocationEnum.SCOTLAND.toString, messages("location.radio.scotland")),
+                (LocationEnum.WALES.toString, messages("location.radio.wales")),
+                (LocationEnum.NORTHERNIRELAND.toString, messages("location.radio.northern.ireland"))
             ),
             args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",
