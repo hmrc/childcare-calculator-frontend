@@ -170,6 +170,12 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
                 Future.successful(Some(loc))
               )
 
+              when(
+                sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
+              ).thenReturn(
+                Future.successful(true)
+              )
+
               val result = await(
                 sut.onSubmit(
                   request

@@ -40,14 +40,21 @@ trait KeystoreService {
     sessionCache.fetchAndGetEntry[T](key)
   }
 
-//  def removeFromSession(key: String)(implicit hc: HeaderCarrier): Future[Unit] = {
-//    sessionCache.fetch().map { data =>
-//      println("-------- keystore: " + data)
-//      val d = data.get.data.-(key)
-//      println("-------- updated: " + d)
-////      d.map { (k, v) =>
-////        sessionCache.cache(k, v)
-////      }
-//    }
-//  }
+  // TODO: Find a better way to do that
+  def removeFromSession(key: String)(implicit hc: HeaderCarrier): Future[Boolean] = {
+    sessionCache.fetch().flatMap { data =>
+      if(data.isEmpty || data.get.data.get(key).isEmpty) {
+        Future.successful(true)
+      }
+      else {
+        val updatedData = data.get.data.-(key)
+        sessionCache.remove().map { res =>
+          val savingResult = for ((updatedDataKey, updatedDataValue) <- updatedData) yield {
+            sessionCache.cache(updatedDataKey, updatedDataValue)
+          }
+          Future.sequence(savingResult).isCompleted
+        }
+      }
+    }
+  }
 }
