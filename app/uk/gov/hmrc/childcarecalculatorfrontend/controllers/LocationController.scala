@@ -54,8 +54,9 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
         val selectedLocation = success.get
         keystore.cacheEntryForSession(locationKey, selectedLocation).flatMap { result =>
           if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-            keystore.removeFromSession(childAgedTwoKey).map { res =>
-              Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+            keystore.removeFromSession(childAgedTwoKey).map {
+              case true => Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+              case false => Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
             }
           }
           else {

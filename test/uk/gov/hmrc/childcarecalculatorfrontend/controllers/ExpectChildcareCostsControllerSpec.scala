@@ -23,10 +23,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication}
 import uk.gov.hmrc.play.test.UnitSpec
 import org.mockito.Mockito._
-import org.mockito.Matchers.any
+import org.mockito.Matchers._
 import scala.concurrent.Future
 
-class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication with CCRoutes {
+class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication {
 
   val sut = new ExpectChildcareCostsController(applicationMessagesApi) {
     override val keystore = mock[KeystoreService]
@@ -53,46 +53,84 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
   "ExpectChildcareCostsController" should {
     "load successfully the ExpectChildcareCosts page" when {
       "onPageLoad is called with some session data" in {
-        when(sut.keystore.fetchEntryForSession[Boolean](any())(any(),any())).thenReturn(Future.successful(Some(true)))
+        when(
+          sut.keystore.fetchEntryForSession[Boolean](refEq(expectChildcareCostsKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some(true))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "onPageLoad is called with none session data" in {
-        when(sut.keystore.fetchEntryForSession[Boolean](any())(any(),any())).thenReturn(Future.successful(None))
+        when(
+          sut.keystore.fetchEntryForSession[Boolean](refEq(expectChildcareCostsKey))(any(),any())
+        ).thenReturn(
+          Future.successful(None)
+        )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "onPageLoad is called with an exception from keystore service" in {
-        when(sut.keystore.fetchEntryForSession[Boolean](any())(any(),any())).thenReturn(Future.failed(new RuntimeException))
+        when(
+          sut.keystore.fetchEntryForSession[Boolean](refEq(expectChildcareCostsKey))(any(),any())
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers.get("Location").get.endsWith("/error") shouldBe true
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
 
     "submit successfully from the ExpectChildcareCosts page" when {
       "onSubmit is called with valid form and successful cacheEntry" in {
-        when(sut.keystore.cacheEntryForSession[Boolean](any(), any())(any(),any())).thenReturn(Future.successful(Some(true)))
-        val result = await(sut.onSubmit(request.withFormUrlEncodedBody(expectChildcareCostsKey -> "true").withSession(validSession)))
+        when(
+          sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+        ).thenReturn(
+          Future.successful(Some(true))
+        )
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+              .withSession(validSession)
+          )
+        )
         status(result) shouldBe SEE_OTHER
-        result.header.headers.get("Location").get.endsWith("/what-you-need") shouldBe true
+        result.header.headers("Location") shouldBe whatYouNeedPath
       }
 
       "onSubmit is called with valid form and an exception from cacheEntry" in {
-        when(sut.keystore.cacheEntryForSession[Boolean](any(), any())(any(),any())).thenReturn(Future.failed(new RuntimeException))
-        val result = await(sut.onSubmit(request.withFormUrlEncodedBody(expectChildcareCostsKey -> "true").withSession(validSession)))
+        when(
+          sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+              .withSession(validSession)
+          )
+        )
         status(result) shouldBe SEE_OTHER
-        result.header.headers.get("Location").get.endsWith("/error") shouldBe true
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
       "onSubmit is called with invalid form bind request" in {
-        when(sut.keystore.cacheEntryForSession[Boolean](any(), any())(any(),any())).thenReturn(Future.failed(new RuntimeException))
+        when(
+          sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
         val result = await(sut.onSubmit(request.withSession(validSession)))
         status(result) shouldBe BAD_REQUEST
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
     }
   }

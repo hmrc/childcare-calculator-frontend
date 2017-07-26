@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.play.test.UnitSpec
 
-class EnumerationUtilSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
+class EnumUtilsSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
 
   "EnumerationUtil" should {
 

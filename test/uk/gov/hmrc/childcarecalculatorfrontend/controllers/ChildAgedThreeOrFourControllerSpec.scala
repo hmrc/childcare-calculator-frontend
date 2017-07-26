@@ -154,7 +154,13 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
-        val result = await(sut.onSubmit(request.withFormUrlEncodedBody(childAgedThreeOrFourKey -> "true").withSession(validSession)))
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(childAgedThreeOrFourKey -> "true")
+              .withSession(validSession)
+          )
+        )
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -167,7 +173,13 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
         ).thenReturn(
           Future.successful(Some(true))
         )
-        val result = await(sut.onSubmit(request.withFormUrlEncodedBody(childAgedThreeOrFourKey -> "true").withSession(validSession)))
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(childAgedThreeOrFourKey -> "true")
+              .withSession(validSession)
+          )
+        )
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe expectChildcareCostsPath
       }

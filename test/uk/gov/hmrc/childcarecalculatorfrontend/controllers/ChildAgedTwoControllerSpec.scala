@@ -55,6 +55,13 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         result.isDefined shouldBe true
         status(result.get) should not be NOT_FOUND
       }
+
+      "POST request is made" in {
+        val req = FakeRequest(POST, childAgedTwoPath).withSession(validSession)
+        val result = route(app, req)
+        result.isDefined shouldBe true
+        status(result.get) should not be NOT_FOUND
+      }
     }
   }
 
@@ -64,7 +71,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](anyString)(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
         ).thenReturn(
           Future.successful(None)
         )
@@ -75,7 +82,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](anyString)(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
         ).thenReturn(
           Future.successful(Some(true))
         )
@@ -86,7 +93,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](anyString)(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -114,7 +121,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.cacheEntryForSession[Boolean](anyString, anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
+          sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
         ).thenReturn(
           Future.successful(Some(true))
         )
@@ -134,7 +141,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.cacheEntryForSession[Boolean](anyString, anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
+          sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
