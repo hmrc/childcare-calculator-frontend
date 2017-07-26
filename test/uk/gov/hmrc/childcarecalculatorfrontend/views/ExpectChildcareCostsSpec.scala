@@ -38,7 +38,7 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
 
   override val linksData: List[ElementDetails] = List(
     ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = expectChildcareCostsPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whatYouNeedPath)
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = childAgedThreeOrFourPath)
   )
 
   def getTemplate(form: Form[Option[Boolean]]): Document = {

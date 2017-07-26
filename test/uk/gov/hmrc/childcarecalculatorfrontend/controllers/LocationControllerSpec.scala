@@ -151,8 +151,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
           }
         }
 
-        // TODO: Change childAgedTwoPath with childAge3or4Path for this test
-        s"go to '3 or 4 years old page' ${childAgedTwoPath}" when {
+        s"go to '3 or 4 years old page' ${childAgedThreeOrFourPath}" when {
           val childAgeTwoLocations = List(
             LocationEnum.NORTHERNIRELAND.toString
           )
@@ -179,7 +178,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedTwoPath
+              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
             }
           }
         }

@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import play.api.libs.json.{Reads, Format}
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
-import uk.gov.hmrc.http.cache.client.SessionCache
+import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -36,7 +36,18 @@ trait KeystoreService {
     }
   }
 
-  def fetchEntryForSession[T](key :String)(implicit hc: HeaderCarrier, rds: Reads[T]): Future[Option[T]] = {
+  def fetchEntryForSession[T](key: String)(implicit hc: HeaderCarrier, rds: Reads[T]): Future[Option[T]] = {
     sessionCache.fetchAndGetEntry[T](key)
   }
+
+//  def removeFromSession(key: String)(implicit hc: HeaderCarrier): Future[Unit] = {
+//    sessionCache.fetch().map { data =>
+//      println("-------- keystore: " + data)
+//      val d = data.get.data.-(key)
+//      println("-------- updated: " + d)
+////      d.map { (k, v) =>
+////        sessionCache.cache(k, v)
+////      }
+//    }
+//  }
 }

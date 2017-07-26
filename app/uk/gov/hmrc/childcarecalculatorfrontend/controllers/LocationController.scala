@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import com.google.inject.Singleton
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{Json, Format}
 import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
@@ -53,8 +54,13 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
         val selectedLocation = success.get
         keystore.cacheEntryForSession(locationKey, selectedLocation).map { result =>
           if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-            // TODO: Go to ChildAge3or4 page
-            Redirect(routes.ChildAgedTwoController.onPageLoad())
+            Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+// TODO: Delete from keystore childAged2
+//            keystore.removeFromSession(childAgedTwoKey).map {
+//              Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+//              println("????????")
+//            }
+
           }
           else {
             Redirect(routes.ChildAgedTwoController.onPageLoad())

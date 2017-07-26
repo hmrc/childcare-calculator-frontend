@@ -127,8 +127,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
           )
         )
         status(result) shouldBe SEE_OTHER
-        //TODO: change path to point to child aged 3 page
-        result.header.headers("Location") shouldBe whatYouNeedPath
+        result.header.headers("Location") shouldBe childAgedThreeOrFourPath
       }
     }
 

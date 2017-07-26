@@ -20,6 +20,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.i18n.Messages.Implicits._
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication, TemplatesValidator}
@@ -41,17 +42,19 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = childAgedTwoPath)
   )
 
+  val backUrl: Call = Call("GET", childAgedTwoPath)
+
   def getTemplate(form: Form[Option[Boolean]]): Document = {
-    val template = childAgedThreeOrFour(form)(request, applicationMessages)
+    val template = childAgedThreeOrFour(form, backUrl)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedThreeOrFour template" should {
     "render template" in {
-      val template = childAgedThreeOrFour.render(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, request, applicationMessages)
+      val template = childAgedThreeOrFour.render(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedThreeOrFour.f(new ChildAgedThreeOrFourForm(applicationMessagesApi).form)(request, applicationMessages)
+      val template1 = childAgedThreeOrFour.f(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
