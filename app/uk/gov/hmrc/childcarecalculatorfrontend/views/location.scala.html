@@ -23,7 +23,6 @@
 @import uk.gov.hmrc.play.views.html._
 
 @ccMain(
-    title = messages("location.title"),
     header = messages("location.header"),
     backLink = Some(routes.WhatYouNeedController.onPageLoad())
 ) {
@@ -31,7 +30,7 @@
         action = routes.LocationController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
-        @error.ccErrorSummary(messages("error.title"), form)
+        @error.ccErrorSummary(form)
 
         <p>@messages("location.info")</p>
 
@@ -50,9 +49,6 @@
                 '_legend -> messages("location.header"),
                 '_globalErrorKey -> messages("location.radio.not.selected.error")
             )
-        @buttons.nextButton(
-            title = messages("next.button"),
-            label = Some(messages("next.button"))
-        )
+        @buttons.nextButton()
     }
 }

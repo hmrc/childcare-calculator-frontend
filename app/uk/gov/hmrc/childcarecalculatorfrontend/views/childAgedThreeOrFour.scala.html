@@ -21,7 +21,6 @@
 @import uk.gov.hmrc.play.views.html._
 
 @ccMain(
-    title = messages("child.aged.three.or.four.title"),
     header = messages("child.aged.three.or.four.header"),
     backLink = Some(backUrl)
 ) {
@@ -29,7 +28,7 @@
         action = routes.ChildAgedThreeOrFourController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
-        @error.ccErrorSummary(messages("error.title"), form)
+        @error.ccErrorSummary(form)
 
         <p>@messages("child.aged.three.or.four.info")</p>
 
@@ -46,9 +45,6 @@
                 '_legend -> messages("child.aged.three.or.four.header"),
                 '_globalErrorKey -> messages("child.aged.three.or.four.yes.no.not.selected.error")
         )
-        @buttons.nextButton(
-            title = messages("next.button"),
-            label = Some(messages("next.button"))
-        )
+        @buttons.nextButton()
     }
 }

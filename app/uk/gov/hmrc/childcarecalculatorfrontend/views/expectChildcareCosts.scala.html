@@ -22,33 +22,30 @@
 @import uk.gov.hmrc.play.views.html._
 
 @ccMain(
-title = messages("expect.childcare.costs.title"),
-header = messages("expect.childcare.costs.header"),
-backLink = Some(routes.ChildAgedThreeOrFourController.onPageLoad())
+    header = messages("expect.childcare.costs.header"),
+    backLink = Some(routes.ChildAgedThreeOrFourController.onPageLoad())
 ) {
     @helpers.form(
         action = routes.ExpectChildcareCostsController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
-        @error.ccErrorSummary(messages("error.title"), form)
+
+        @error.ccErrorSummary(form)
 
         <p>@messages("expect.childcare.costs.info")</p>
 
         @radio.ccRadioOptions(
-        field = form("expectChildcareCosts"),
-        fieldForm = form,
-        radioOptions = Seq(
-        ("true", messages("radio.yes")),
-        ("false", messages("radio.no"))
-        ),
-        args = '_groupClass -> "form-group inline",
-        '_radioClass -> "block-label",
-        '_legendClass -> "visuallyhidden",
-        '_legend -> messages("expect.childcare.costs.header"),
-        '_globalErrorKey -> messages("expect.childcare.costs.yes.no.not.selected.error")
+            field = form("expectChildcareCosts"),
+            fieldForm = form,
+            radioOptions = Seq(
+                ("true", messages("radio.yes")),
+                ("false", messages("radio.no"))
+            ),
+            args = '_groupClass -> "form-group inline",
+                '_radioClass -> "block-label",
+                '_legendClass -> "visuallyhidden",
+                '_legend -> messages("expect.childcare.costs.header"),
+                '_globalErrorKey -> messages("expect.childcare.costs.yes.no.not.selected.error")
         )
-        @buttons.nextButton(
-        title = messages("next.button"),
-        label = Some(messages("next.button"))
-        )
+        @buttons.nextButton()
     }
 }
