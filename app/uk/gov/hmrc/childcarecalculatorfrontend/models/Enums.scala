@@ -33,7 +33,11 @@ object TcUcBenefitsEnum extends Enumeration {
 
 object LocationEnum extends Enumeration {
   type LocationEnum = Value
-  val ENGLAND, SCOTLAND, WALES, NORTHERNIRELAND = Value
+  val ENGLAND = Value("england")
+  val SCOTLAND = Value("scotland")
+  val WALES = Value("wales")
+  val NORTHERNIRELAND = Value("northern-ireland")
+
   val enumReads: Reads[LocationEnum] = EnumUtils.enumReads(LocationEnum)
 
   val enumWrites: Writes[LocationEnum] = EnumUtils.enumWrites

@@ -60,7 +60,7 @@ class EnumerationUtilSpec extends UnitSpec with FakeCCApplication with MockitoSu
     "return success when the the input is part of the Enum" in {
       val json = Json.parse(
         """
-          |"ENGLAND"
+          |"england"
         """.stripMargin)
       json.validate[LocationEnum] match {
         case JsSuccess(v, _) =>
@@ -72,7 +72,7 @@ class EnumerationUtilSpec extends UnitSpec with FakeCCApplication with MockitoSu
 
     "return valid json when the object is written" in {
       val res: JsValue = Json.toJson(LocationEnum.ENGLAND)
-      res.toString() shouldBe "\"ENGLAND\""
+      res.toString() shouldBe "\"england\""
     }
 
   }
