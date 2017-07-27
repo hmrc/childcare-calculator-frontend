@@ -14,16 +14,16 @@
  * limitations under the License.
  *@
 
-@(startPageButton: Boolean = false, title: String, label: Option[String] = None, id: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
+@(title: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
 
 @import views.html.helper._
 
 <div>
     <div class="form-field">
         <input type="submit"
-                @if(startPageButton) {class="button button--get-started"} else {class="button"}
-                title="@title"
+                class="button"
+                title="@title.getOrElse(messages("next.button"))"
                 id="next-button"
-                value="@if(label.isDefined){@label.getOrElse("").trim}else{@messages("childcare.button.next").toString.trim}"/>
+                value="@title.getOrElse(messages("next.button"))" />
     </div>
 </div>

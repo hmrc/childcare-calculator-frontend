@@ -45,7 +45,19 @@ class ChildAgedThreeOrFourFormSpec extends UnitSpec with FakeCCApplication {
 
     "return error message for invalid value" when {
 
-      val invalidValues = List("")
+      s"nothing is selected" in {
+        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
+          Map(
+            childAgedThreeOrFourKey -> ""
+          )
+        )
+        form.value shouldBe None
+        form.hasErrors shouldBe true
+        form.errors.length shouldBe 1
+        form.errors.head.message shouldBe applicationMessages.messages("child.aged.three.or.four.yes.no.not.selected.error")
+      }
+
+      val invalidValues = List("abcd", "1234")
       invalidValues.foreach { invalidValue =>
         s"'${invalidValue}' is given" in {
           val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
@@ -56,7 +68,7 @@ class ChildAgedThreeOrFourFormSpec extends UnitSpec with FakeCCApplication {
           form.value shouldBe None
           form.hasErrors shouldBe true
           form.errors.length shouldBe 1
-          form.errors.head.message shouldBe applicationMessages.messages("child.aged.three.or.four.yes.no.not.selected.error")
+          form.errors.head.message shouldBe "error.boolean"
         }
       }
 

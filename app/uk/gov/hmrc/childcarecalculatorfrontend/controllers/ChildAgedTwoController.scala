@@ -34,7 +34,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   with FrontendController
   with CCConstants {
 
-  val keystore: KeystoreService  = KeystoreService
+  val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { res =>
@@ -57,8 +57,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
       success => {
         keystore.cacheEntryForSession(childAgedTwoKey, success.get).map {
           result =>
-            // TODO: Go to 3 or 4 years old page
-            Redirect(routes.WhatYouNeedController.onPageLoad())
+            Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
         } recover {
           case e: Exception =>
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())

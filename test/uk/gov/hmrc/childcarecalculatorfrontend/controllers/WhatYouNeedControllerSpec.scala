@@ -18,11 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.Messages.Implicits._
 import play.api.test.FakeRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication}
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 import play.api.test.Helpers._
 
-class WhatYouNeedControllerSpec extends UnitSpec with FakeCCApplication with CCRoutes {
+class WhatYouNeedControllerSpec extends UnitSpec with FakeCCApplication {
 
   val sut = new WhatYouNeedController(applicationMessagesApi)
 

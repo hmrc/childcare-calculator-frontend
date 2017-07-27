@@ -17,15 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.scalatest.mock.MockitoSugar
-import play.api.libs
-import play.api.libs.json
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.play.test.UnitSpec
 
-class EnumerationUtilSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
+class EnumUtilsSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
 
   "EnumerationUtil" should {
 
@@ -60,7 +58,7 @@ class EnumerationUtilSpec extends UnitSpec with FakeCCApplication with MockitoSu
     "return success when the the input is part of the Enum" in {
       val json = Json.parse(
         """
-          |"ENGLAND"
+          |"england"
         """.stripMargin)
       json.validate[LocationEnum] match {
         case JsSuccess(v, _) =>
@@ -72,7 +70,7 @@ class EnumerationUtilSpec extends UnitSpec with FakeCCApplication with MockitoSu
 
     "return valid json when the object is written" in {
       val res: JsValue = Json.toJson(LocationEnum.ENGLAND)
-      res.toString() shouldBe "\"ENGLAND\""
+      res.toString() shouldBe "\"england\""
     }
 
   }

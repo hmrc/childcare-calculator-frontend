@@ -24,14 +24,16 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class ExpectChildcareCostsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport
-  with CCConstants {
+class ExpectChildcareCostsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
   type ExpectChildcareCostsFormType = Option[Boolean]
 
   val form = Form[ExpectChildcareCostsFormType](
-    mapping(
-      expectChildcareCostsKey -> optional(boolean).verifying(Messages("expect.childcare.costs.yes.no.not.selected.error"), x => x.isDefined)
-    )((expectChildcareCosts) => expectChildcareCosts)((expectChildcareCostsForm : ExpectChildcareCostsFormType) => Some(expectChildcareCostsForm))
+    single(
+      expectChildcareCostsKey -> optional(boolean).verifying(
+        Messages("expect.childcare.costs.yes.no.not.selected.error"),
+        _.isDefined
+      )
+    )
   )
 }
