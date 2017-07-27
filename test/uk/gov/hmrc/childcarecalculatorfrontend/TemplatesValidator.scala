@@ -44,21 +44,37 @@ trait TemplatesValidator extends UnitSpec {
     data.map { element =>
       element match {
         case ElementDetails(value, Some(id), Some(elementClass), _, _, _, _, _) =>
-          doc.getElementById(id).hasClass(elementClass) shouldBe value
+          withClue(s"Element with id '${id}' has class '${elementClass}': ") {
+            doc.getElementById(id).hasClass(elementClass) shouldBe value
+          }
         case ElementDetails(value, Some(id), _, _, _, _, Some(tagName), Some(tagIndex)) =>
-          doc.getElementById(id).getElementsByTag(tagName).get(tagIndex).text() shouldBe value
+          withClue(s"Element with id '${id}', tag '${tagName}' and tagIndex '${tagIndex}': ") {
+            doc.getElementById(id).getElementsByTag(tagName).get(tagIndex).text() shouldBe value
+          }
         case ElementDetails(value, Some(id), _, _, _, None, _, _) =>
-          doc.getElementById(id).text() shouldBe value
+          withClue(s"Element with id '${id}': ") {
+            doc.getElementById(id).text() shouldBe value
+          }
         case ElementDetails(value, Some(id), _, _, _, Some(checkAttribute), _, _) =>
-          doc.getElementById(id).attr(checkAttribute) shouldBe value
+          withClue(s"Element with id '${id}' and attribute '${checkAttribute}': ") {
+            doc.getElementById(id).attr(checkAttribute) shouldBe value
+          }
         case ElementDetails(value, _, _, Some(attribute), Some(attributeValue), None, _, _) =>
-          doc.getElementsByAttributeValue(attribute, attributeValue).text() shouldBe value
+          withClue(s"Element with attribute's '${attribute}' value '${attributeValue}' should have value '${value}': ") {
+            doc.getElementsByAttributeValue(attribute, attributeValue).text() shouldBe value
+          }
         case ElementDetails(value, _, _, Some(attribute), Some(attributeValue), Some(checkAttribute), _, _) =>
-          doc.getElementsByAttributeValue(attribute, attributeValue).attr(checkAttribute) shouldBe value
+          withClue(s"Element with attribute's '${attribute}' value '${attributeValue}' should have attribure '${checkAttribute}' with value '${value}': ") {
+            doc.getElementsByAttributeValue(attribute, attributeValue).attr(checkAttribute) shouldBe value
+          }
         case ElementDetails(value, id, _, _, _, _, Some(tagName), tagIndex) =>
-          doc.getElementById(id.getOrElse("content")).getElementsByTag(tagName).get(tagIndex.getOrElse(0)).text() shouldBe value
+          withClue(s"Element with tag '${tagName}' and tagIndex '${tagIndex.getOrElse(0)}': ") {
+            doc.getElementById(id.getOrElse("content")).getElementsByTag(tagName).get(tagIndex.getOrElse(0)).text() shouldBe value
+          }
         case ElementDetails(value, _, Some(elementClass), _, _, _, _, tagIndex) =>
-          doc.getElementsByClass(elementClass).get(tagIndex.getOrElse(0)).text() shouldBe value
+          withClue(s"Element with class '${elementClass}' and index '${tagIndex.getOrElse(0)}': ") {
+            doc.getElementsByClass(elementClass).get(tagIndex.getOrElse(0)).text() shouldBe value
+          }
         case _ => throw new NotImplementedException
       }
     }
@@ -72,7 +88,9 @@ trait TemplatesValidator extends UnitSpec {
     data.map { element =>
       element match {
         case ElementDetails(value, Some(id), _, _, _, _, _, _) =>
-          doc.getElementById(id) shouldBe null
+          withClue(s"Element with id '${id}' shouldn't be displayed:  ") {
+            doc.getElementById(id) shouldBe null
+          }
         case _ => throw new NotImplementedException
       }
     }
@@ -82,10 +100,14 @@ trait TemplatesValidator extends UnitSpec {
     links.map { element =>
       element match {
         case ElementDetails(value, Some(id), _, _, _, Some(checkAttribute), _, _) => {
-          doc.getElementById(id).attr(checkAttribute).endsWith(value) shouldBe true
+          withClue(s"Attribute '${checkAttribute}' for element with id '${id}' should be '${value}': ") {
+            doc.getElementById(id).attr(checkAttribute).endsWith(value) shouldBe true
+          }
         }
         case ElementDetails(value, _, Some(elementClass), _, _, Some(checkAttribute), _, _) =>
-          doc.getElementsByClass(elementClass).attr(checkAttribute).endsWith(value) shouldBe true
+          withClue(s"Attribute '${checkAttribute}' for element with class '${elementClass}' should be '${value}': ") {
+            doc.getElementsByClass(elementClass).attr(checkAttribute).endsWith(value) shouldBe true
+          }
         case _ => throw new NotImplementedException
       }
     }
@@ -95,7 +117,9 @@ trait TemplatesValidator extends UnitSpec {
     val allCheckedElements = doc.getElementsByAttribute("checked")
     allCheckedElements.size shouldBe checkedElements.size
     allCheckedElements.map { element =>
-      checkedElements.contains(element.attr("id")) shouldBe true
+      withClue(s"Element with '${element.attr("id")}' shouldn't be selected: ") {
+        checkedElements.contains(element.attr("id")) shouldBe true
+      }
     }
   }
 
