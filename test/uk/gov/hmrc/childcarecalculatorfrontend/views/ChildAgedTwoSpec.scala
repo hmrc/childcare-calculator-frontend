@@ -100,6 +100,21 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
         )
       }
 
+      "form is submitted with invalid data" in {
+        val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+          Map(
+            childAgedTwoKey -> "abcd"
+          )
+        )
+        implicit val doc: Document = getTemplate(form)
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks()
+        verifyErrors(
+          errors = Map("childAgedTwo" -> applicationMessages.messages("error.boolean"))
+        )
+      }
     }
 
   }

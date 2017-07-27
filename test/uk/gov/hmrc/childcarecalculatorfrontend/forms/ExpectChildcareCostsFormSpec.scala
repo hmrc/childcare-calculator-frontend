@@ -27,7 +27,7 @@ class ExpectChildcareCostsFormSpec  extends UnitSpec with FakeCCApplication {
     "accept value true" in {
       val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
         Map(
-          "expectChildcareCosts" -> "true"
+          expectChildcareCostsKey -> "true"
         )
       )
       form.value.get.get shouldBe true
@@ -38,7 +38,7 @@ class ExpectChildcareCostsFormSpec  extends UnitSpec with FakeCCApplication {
     "accept value false" in {
       val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
         Map(
-          "expectChildcareCosts" -> "false"
+          expectChildcareCostsKey -> "false"
         )
       )
       form.value.get.get shouldBe false
@@ -49,7 +49,7 @@ class ExpectChildcareCostsFormSpec  extends UnitSpec with FakeCCApplication {
     "throw error if no value supplied" in {
       val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
         Map(
-          "expectChildcareCosts" -> ""
+          expectChildcareCostsKey -> ""
         )
       )
       form.value shouldBe None
@@ -58,9 +58,19 @@ class ExpectChildcareCostsFormSpec  extends UnitSpec with FakeCCApplication {
       form.errors.head.message shouldBe applicationMessages.messages("expect.childcare.costs.yes.no.not.selected.error")
     }
 
-    "prepopulate the form with a value" in {
-      val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
-      form.get shouldBe Some(true)
+    val invalidValues = List("abcd", "1234")
+    invalidValues.foreach { invalidValue =>
+      s"return error if invalid value '${invalidValue}' is supplied" in {
+        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
+          Map(
+            expectChildcareCostsKey -> invalidValue
+          )
+        )
+        form.value shouldBe None
+        form.hasErrors shouldBe true
+        form.errors.length shouldBe 1
+        form.errors.head.message shouldBe "error.boolean"
+      }
     }
   }
 }

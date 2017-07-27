@@ -103,6 +103,22 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
         )
       }
 
+      "form is submitted with invalid data" in {
+        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
+          Map(
+            childAgedThreeOrFourKey -> "abcd"
+          )
+        )
+        implicit val doc: Document = getTemplate(form)
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks()
+        verifyErrors(
+          errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("error.boolean"))
+        )
+      }
+
     }
   }
 }

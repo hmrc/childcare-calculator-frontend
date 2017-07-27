@@ -100,6 +100,22 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
         )
       }
 
+      "form is submitted with invalid data" in {
+        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
+          Map(
+            expectChildcareCostsKey -> "abcd"
+          )
+        )
+        implicit val doc: Document = getTemplate(form)
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks()
+        verifyErrors(
+          errors = Map("expectChildcareCosts" -> applicationMessages.messages("error.boolean"))
+        )
+      }
+
     }
 
   }

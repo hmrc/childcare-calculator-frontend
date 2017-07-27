@@ -196,6 +196,61 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
         }
       }
 
+      s"redirect to ${technicalDifficultiesPath}" when {
+        val childAgeTwoLocations = List(
+          LocationEnum.NORTHERNIRELAND.toString
+        )
+        childAgeTwoLocations.foreach { loc =>
+          s"${loc} is selected but deleting old data from session fails" in {
+            when(
+              sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+            ).thenReturn(
+              Future.successful(Some(loc))
+            )
+
+            when(
+              sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
+            ).thenReturn(
+              Future.successful(false)
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(locationKey -> loc)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+
+          s"${loc} is selected but deleting old data from session throws exception" in {
+            when(
+              sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+            ).thenReturn(
+              Future.successful(Some(loc))
+            )
+
+            when(
+              sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
+            ).thenReturn(
+              Future.failed(new RuntimeException)
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(locationKey -> loc)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+        }
+      }
+
     }
   }
 }
