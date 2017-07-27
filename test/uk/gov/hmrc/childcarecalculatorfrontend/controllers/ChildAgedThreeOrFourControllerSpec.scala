@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
@@ -36,11 +37,6 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(sut.keystore)
-    when(
-      sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
-    ).thenReturn(
-      Future.successful(None)
-    )
   }
 
   s"calling ${childAgedThreeOrFourPath}" should {
@@ -63,32 +59,93 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
 
   "onPageLoad" should {
     "load successfully ChildAgedThreeOrFour template" when {
-      "there is no data in keystore" in {
-        when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
-        ).thenReturn(
-          Future.successful(None)
-        )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      "there is no data in keystore about child aged 3 or 4" should {
+        s"contain back url to ${locationPath} if there is no data about child aged 2" in {
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+          ).thenReturn(
+            Future.successful(None)
+          )
+
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+          ).thenReturn(
+            Future.successful(None)
+          )
+
+          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe locationPath
+        }
+
+        s"contain back url to ${childAgedTwoPath} if there is data about child aged 2" in {
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+          ).thenReturn(
+            Future.successful(None)
+          )
+
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some(true))
+          )
+
+          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe childAgedTwoPath
+        }
       }
 
-      "there is data in keystore" in {
-        when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some(true))
-        )
+      "there is data in keystore about child aged 3 or 4" should {
+        s"contain back url to ${locationPath} if there is no data about child aged 2" in {
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some(true))
+          )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+          ).thenReturn(
+            Future.successful(None)
+          )
+
+          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe locationPath
+        }
+
+        s"contain back url to ${childAgedTwoPath} if there is data about child aged 2" in {
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some(true))
+          )
+
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some(true))
+          )
+
+          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe childAgedTwoPath
+        }
       }
     }
 
-    "redirect to technical difficulties page" when {
+    s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
       "can't connect to keystore" when {
 
         "loading data for childAged3or4" in {
@@ -126,10 +183,34 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
 
   "onSubmit" should {
     "load template with status BAD_REQUEST" when {
-      "invalid data is submitted and constructing back url is successful" in {
-        val result = await(sut.onSubmit(request.withSession(validSession)))
-        status(result) shouldBe BAD_REQUEST
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      "invalid data is submitted" should {
+        s"cantain back url to ${locationPath} if there is no data in keystore about child aged 2" in {
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+          ).thenReturn(
+            Future.successful(None)
+          )
+
+          val result = await(sut.onSubmit(request.withSession(validSession)))
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe locationPath
+        }
+
+        s"cantain back url to ${childAgedTwoPath} if there is data in keystore about child aged 2" in {
+          when(
+            sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some(true))
+          )
+
+          val result = await(sut.onSubmit(request.withSession(validSession)))
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe childAgedTwoPath
+        }
       }
     }
 
@@ -184,46 +265,4 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
     }
   }
 
-  "getBackUrl" should {
-    s"return Location page url (${locationPath})" when {
-      "there is no data for childAded2 in keystore" in {
-        when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
-        ).thenReturn(
-          Future.successful(None)
-        )
-
-        val result = await(sut.getBackUrl())
-        result.url shouldBe locationPath
-      }
-    }
-
-    s"return ChildAged2 page url (${childAgedTwoPath})" when {
-      "there is data for childAded2 in keystore" in {
-        when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some(true))
-        )
-
-        val result = await(sut.getBackUrl())
-        result.url shouldBe childAgedTwoPath
-      }
-    }
-
-    s"throw exception" when {
-      "can't connect to keystore" in {
-        when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
-        ).thenReturn(
-          Future.failed(new RuntimeException("test message"))
-        )
-
-        val result = intercept[Exception] (
-          await(sut.getBackUrl())
-        )
-        result.getMessage shouldBe "test message"
-      }
-    }
-  }
 }

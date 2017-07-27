@@ -37,7 +37,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  def getBackUrl()(implicit hc: HeaderCarrier): Future[Call] = {
+  private def getBackUrl()(implicit hc: HeaderCarrier): Future[Call] = {
     keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { childAgedTwo =>
       if(childAgedTwo.isDefined) {
         routes.ChildAgedTwoController.onPageLoad()
