@@ -21,6 +21,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
     header = messages("location.header"),
@@ -35,7 +36,7 @@
         <p>@messages("location.info")</p>
 
         @radio.ccRadioOptions(
-            field = form("location"),
+            field = form(CCConstants.locationKey),
             fieldForm = form,
             radioOptions = Seq(
                 (LocationEnum.ENGLAND.toString, messages("location.radio.england")),

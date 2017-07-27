@@ -24,3 +24,5 @@ trait CCConstants {
   lazy val expectChildcareCostsKey = "expectChildcareCosts"
 
 }
+
+object CCConstants extends CCConstants

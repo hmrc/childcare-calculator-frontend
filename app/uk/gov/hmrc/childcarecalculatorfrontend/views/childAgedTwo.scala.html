@@ -20,6 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
     header = messages("child.aged.two.header"),
@@ -34,7 +35,7 @@
         <p>@messages("child.aged.two.info")</p>
 
         @radio.ccRadioOptions(
-            field = form("childAgedTwo"),
+            field = form(CCConstants.childAgedTwoKey),
             fieldForm = form,
             radioOptions = Seq(
                 ("true", messages("radio.yes")),
