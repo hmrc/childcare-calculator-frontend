@@ -17,5 +17,9 @@ POST        /child-aged-three-or-four   uk.gov.hmrc.childcarecalculatorfrontend.
 GET         /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad
 POST        /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit
 
+GET         /free-hours                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultsController.onPageLoad
+
+GET         /do-you-have-a-partner      uk.gov.hmrc.childcarecalculatorfrontend.controllers.LivingWithPartnerController.onPageLoad
+
 GET         /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 

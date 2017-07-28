@@ -19,12 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
 import uk.gov.hmrc.play.frontend.controller.FrontendController
+import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
@@ -48,15 +49,30 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
     }
   }
 
+  private def getNextPage(hasExpectedChildcareCost: Boolean)(implicit hc: HeaderCarrier): Future[Call] = {
+    keystore.fetchEntryForSession[Boolean](childAgedTwoKey).flatMap { hasChildAgedTwo =>
+      keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).map { hasChildAgedThreeOrFour =>
+        if(hasExpectedChildcareCost && !hasChildAgedTwo.getOrElse(false) && !hasChildAgedThreeOrFour.getOrElse(false)) {
+          routes.LivingWithPartnerController.onPageLoad
+        }
+        else {
+          routes.FreeHoursResultsController.onPageLoad
+        }
+      }
+    }
+  }
+
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ExpectChildcareCostsForm(messagesApi).form.bindFromRequest().fold(
       errors => {
         Future(BadRequest(expectChildcareCosts(errors)))
       },
       success => {
-        keystore.cacheEntryForSession(expectChildcareCostsKey, success.get).map {
-          result =>
-            Redirect(routes.WhatYouNeedController.onPageLoad())
+        val hasExpectedChildcareCost: Boolean = success.get
+        keystore.cacheEntryForSession(expectChildcareCostsKey, hasExpectedChildcareCost).flatMap { result =>
+          getNextPage(hasExpectedChildcareCost).map { nextPage =>
+            Redirect(nextPage)
+          }
         } recover {
           case e: Exception =>
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
