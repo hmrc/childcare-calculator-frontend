@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
@@ -37,7 +38,8 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
         )
       )
     } recover {
-      case e: Exception =>
+      case ex: Exception =>
+        Logger.warn(s"Exception from ChildAgedTwoController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
@@ -52,7 +54,8 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
           result =>
             Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
         } recover {
-          case e: Exception =>
+          case ex: Exception =>
+            Logger.warn(s"Exception from ChildAgedTwoController.onSubmit: ${ex.getMessage}")
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
         }
       }

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
@@ -37,7 +38,8 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
           expectChildcareCosts(new ExpectChildcareCostsForm(messagesApi).form.fill(res))
         )
     } recover {
-      case e : Exception =>
+      case ex: Exception =>
+        Logger.warn(s"Exception from ExpectChildcareCostsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
@@ -45,7 +47,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   private def getNextPage(hasExpectedChildcareCost: Boolean)(implicit hc: HeaderCarrier): Future[Call] = {
     keystore.fetchEntryForSession[Boolean](childAgedTwoKey).flatMap { hasChildAgedTwo =>
       keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).map { hasChildAgedThreeOrFour =>
-        if(hasExpectedChildcareCost && !(hasChildAgedTwo.getOrElse(false) && hasChildAgedThreeOrFour.getOrElse(false))) {
+        if(hasExpectedChildcareCost && !(hasChildAgedTwo.getOrElse(false) || hasChildAgedThreeOrFour.getOrElse(false))) {
           routes.LivingWithPartnerController.onPageLoad
         }
         else {
@@ -67,7 +69,8 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
             Redirect(nextPage)
           }
         } recover {
-          case e: Exception =>
+          case ex: Exception =>
+            Logger.warn(s"Exception from ExpectChildcareCostsController.onSubmit: ${ex.getMessage}")
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
         }
       }
