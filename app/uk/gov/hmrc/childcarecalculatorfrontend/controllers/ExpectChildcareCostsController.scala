@@ -17,23 +17,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
-import uk.gov.hmrc.play.frontend.controller.FrontendController
 import uk.gov.hmrc.play.http.HeaderCarrier
-
 import scala.concurrent.Future
 
 @Singleton
-class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
-  with SessionProvider
-  with FrontendController
-  with CCConstants  {
+class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
 

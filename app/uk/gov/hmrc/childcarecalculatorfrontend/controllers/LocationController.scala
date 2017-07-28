@@ -16,23 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
-
-import com.google.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{Json, Format}
-import play.api.mvc.{Call, Action, AnyContent}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
-import uk.gov.hmrc.play.frontend.controller.FrontendController
-
 import scala.concurrent.Future
 
 @Singleton
-class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with SessionProvider with FrontendController with CCConstants {
+class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
 
