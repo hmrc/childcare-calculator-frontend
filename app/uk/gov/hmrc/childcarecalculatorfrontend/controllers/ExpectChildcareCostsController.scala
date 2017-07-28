@@ -45,7 +45,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   private def getNextPage(hasExpectedChildcareCost: Boolean)(implicit hc: HeaderCarrier): Future[Call] = {
     keystore.fetchEntryForSession[Boolean](childAgedTwoKey).flatMap { hasChildAgedTwo =>
       keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).map { hasChildAgedThreeOrFour =>
-        if(hasExpectedChildcareCost && !hasChildAgedTwo.getOrElse(false) && !hasChildAgedThreeOrFour.getOrElse(false)) {
+        if(hasExpectedChildcareCost && !(hasChildAgedTwo.getOrElse(false) && hasChildAgedThreeOrFour.getOrElse(false))) {
           routes.LivingWithPartnerController.onPageLoad
         }
         else {
