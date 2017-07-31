@@ -26,7 +26,11 @@ object FrontendAuditConnector extends Auditing with AppName {
   override lazy val auditingConfig = LoadAuditingConfig(s"auditing")
 }
 
-object WSHttp extends WSGet with WSPut with WSPost with WSDelete with AppName with RunMode {
+trait WSHttp extends WSGet with WSPut with WSPost with WSDelete {
+
+}
+
+object WSHttp extends WSHttp {
   override val hooks = NoneRequired
 }
 
