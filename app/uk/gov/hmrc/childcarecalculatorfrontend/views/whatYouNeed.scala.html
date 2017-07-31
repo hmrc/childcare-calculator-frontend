@@ -25,6 +25,12 @@
     header = messages("what.you.need.header"),
     backLink = Some(messages("what.you.need.back.url"))
 ) {
+    <h1 id="page-title" class="heading-xlarge">
+        @header
+    </h1>
+
+
+
     <p>@messages("what.you.need.info")</p>
     <ul class="list list-bullet">
         <li>@messages("what.you.need.bullet.childcare.costs")</li>
