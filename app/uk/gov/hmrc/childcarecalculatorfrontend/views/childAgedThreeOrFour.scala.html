@@ -14,8 +14,7 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]])(implicit request: Request[_], messages: Messages)
-
+@(form: Form[Option[Boolean]], backUrl: Call)(implicit request: Request[_], messages: Messages)
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
@@ -23,19 +22,19 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
-    header = messages("expect.childcare.costs.header"),
-    backLink = Some(routes.ChildAgedThreeOrFourController.onPageLoad())
+    header = messages("child.aged.three.or.four.header"),
+    backLink = Some(backUrl)
 ) {
     @helpers.form(
-        action = routes.ExpectChildcareCostsController.onSubmit,
+        action = routes.ChildAgedThreeOrFourController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
-        <p>@messages("expect.childcare.costs.info")</p>
+        <p>@messages("child.aged.three.or.four.info")</p>
 
         @radio.ccRadioOptions(
-            field = form(CCConstants.expectChildcareCostsKey),
+            field = form(CCConstants.childAgedThreeOrFourKey),
             fieldForm = form,
             radioOptions = Seq(
                 ("true", messages("radio.yes")),
@@ -44,8 +43,8 @@
             args = '_groupClass -> "form-group inline",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages("expect.childcare.costs.header"),
-                '_globalErrorKey -> messages("expect.childcare.costs.yes.no.not.selected.error")
+                '_legend -> messages("child.aged.three.or.four.header"),
+                '_globalErrorKey -> messages("child.aged.three.or.four.yes.no.not.selected.error")
         )
         @buttons.nextButton()
     }

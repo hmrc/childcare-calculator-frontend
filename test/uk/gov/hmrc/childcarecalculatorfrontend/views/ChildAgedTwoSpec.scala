@@ -20,12 +20,12 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes._
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childAgedTwo, whatYouNeed}
-import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication, TemplatesValidator}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
+import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
 
-class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CCRoutes {
+class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Do you have a child aged 2?"),
@@ -62,6 +62,7 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors()
       }
 
@@ -70,7 +71,7 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List(s"${childAgedTwoKey}-true")))
+        verifyChecks(List(s"${childAgedTwoKey}-true"))
         verifyErrors()
       }
 
@@ -79,7 +80,7 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(Some(List(s"${childAgedTwoKey}-false")))
+        verifyChecks(List(s"${childAgedTwoKey}-false"))
         verifyErrors()
       }
 
@@ -93,13 +94,27 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication with CC
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors(
-          errorTitle = Some("There is a problem"),
-          errorHeading = Some("Check you have answered the question correctly"),
           errors = Map("childAgedTwo" -> applicationMessages.messages("child.aged.two.yes.no.not.selected.error"))
         )
       }
 
+      "form is submitted with invalid data" in {
+        val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+          Map(
+            childAgedTwoKey -> "abcd"
+          )
+        )
+        implicit val doc: Document = getTemplate(form)
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks()
+        verifyErrors(
+          errors = Map("childAgedTwo" -> applicationMessages.messages("error.boolean"))
+        )
+      }
     }
 
   }

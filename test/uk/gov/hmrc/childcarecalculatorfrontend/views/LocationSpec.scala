@@ -35,7 +35,7 @@ class LocationSpec extends TemplatesValidator with FakeCCApplication with CCRout
     ElementDetails(attribute = Some("for"), attributeValue = Some("location-england"), value = "England"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("location-scotland"), value = "Scotland"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("location-wales"), value = "Wales"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("location-northernireland"), value = "Northern Ireland"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some("location-northern-ireland"), value = "Northern Ireland"),
     ElementDetails(attribute = Some("type"), attributeValue = Some("submit"), checkAttribute = Some("title"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
@@ -66,6 +66,7 @@ class LocationSpec extends TemplatesValidator with FakeCCApplication with CCRout
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors()
       }
 
@@ -76,7 +77,7 @@ class LocationSpec extends TemplatesValidator with FakeCCApplication with CCRout
 
           verifyPageContent()
           verifyPageLinks()
-          verifyChecks(Some(List(s"${locationKey}-${locationValue}")))
+          verifyChecks(List(s"${locationKey}-${locationValue}"))
           verifyErrors()
         }
       }}
@@ -91,9 +92,8 @@ class LocationSpec extends TemplatesValidator with FakeCCApplication with CCRout
 
         verifyPageContent()
         verifyPageLinks()
+        verifyChecks()
         verifyErrors(
-          errorTitle = Some("There is a problem"),
-          errorHeading = Some("Check you have answered the question correctly"),
           errors = Map(locationKey -> "You must tell the calculator where you live")
         )
       }

@@ -24,8 +24,9 @@ import play.api.libs.json.{JsString, Writes, Reads}
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
 import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
-import uk.gov.hmrc.play.http.HeaderCarrier
+import uk.gov.hmrc.play.http.{HttpResponse, HeaderCarrier}
 import uk.gov.hmrc.play.test.UnitSpec
+import play.api.test.Helpers._
 import scala.concurrent.Future
 
 class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplication with BeforeAndAfterEach {
@@ -99,6 +100,88 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
 
         val result: Option[String] = await(sut.fetchEntryForSession[String]("test_key"))
         result.isDefined shouldBe false
+      }
+    }
+
+    "remove data related to given key" when {
+      "there is no data in keystore" in {
+        when(
+          sut.sessionCache.fetch()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            None
+          )
+        )
+        val result = await(sut.removeFromSession("test_key"))
+        result shouldBe true
+      }
+
+      "the key doesn't exists in data returned from keystore" in {
+        when(
+          sut.sessionCache.fetch()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            Some(CacheMap("id", Map()))
+          )
+        )
+        val result = await(sut.removeFromSession("test_key"))
+        result shouldBe true
+      }
+
+      "the key exists in data returned from keystore" in {
+        when(
+          sut.sessionCache.fetch()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
+          )
+        )
+
+        when(
+          sut.sessionCache.remove()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            HttpResponse(OK)
+          )
+        )
+
+        when(
+          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            CacheMap("id", Map("test_key2" -> JsString("test_value2")))
+          )
+        )
+
+        val result = await(sut.removeFromSession("test_key1"))
+        result shouldBe true
+      }
+
+      "the key exists in data returned from keystore but save fails" in {
+        when(
+          sut.sessionCache.fetch()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
+          )
+        )
+
+        when(
+          sut.sessionCache.remove()(any[HeaderCarrier])
+        ).thenReturn(
+          Future.successful(
+            HttpResponse(OK)
+          )
+        )
+
+        when(
+          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+
+        val result = await(sut.removeFromSession("test_key1"))
+        result shouldBe false
       }
     }
   }

@@ -20,35 +20,33 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
-title = messages("child.aged.two.title"),
-header = messages("child.aged.two.header"),
-backLink = Some(routes.LocationController.onPageLoad())
+    header = messages("child.aged.two.header"),
+    backLink = Some(routes.LocationController.onPageLoad())
 ) {
     @helpers.form(
         action = routes.ChildAgedTwoController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
-        @error.ccErrorSummary(messages("cc.error.title"), form)
+
+        @error.ccErrorSummary(form)
 
         <p>@messages("child.aged.two.info")</p>
 
         @radio.ccRadioOptions(
-        field = form("childAgedTwo"),
-        fieldForm = form,
-        radioOptions = Seq(
-        ("true", messages("cc.radio.yes")),
-        ("false", messages("cc.radio.no"))
-        ),
-        args = '_groupClass -> "form-group inline",
-        '_radioClass -> "block-label",
-        '_legendClass -> "visuallyhidden",
-        '_legend -> messages("child.aged.two.header"),
-        '_globalErrorKey -> messages("child.aged.two.yes.no.not.selected.error")
+            field = form(CCConstants.childAgedTwoKey),
+            fieldForm = form,
+            radioOptions = Seq(
+                ("true", messages("radio.yes")),
+                ("false", messages("radio.no"))
+            ),
+            args = '_groupClass -> "form-group inline",
+                '_radioClass -> "block-label",
+                '_legendClass -> "visuallyhidden",
+                '_legend -> messages("child.aged.two.header"),
+                '_globalErrorKey -> messages("child.aged.two.yes.no.not.selected.error")
         )
-        @buttons.nextButton(
-        title = messages("next.button"),
-        label = Some(messages("next.button"))
-        )
+        @buttons.nextButton()
     }
 }

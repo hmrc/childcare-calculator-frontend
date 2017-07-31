@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(title: String, header: String, backLink: Option[Call] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
+@(header: String, backLink: Option[Call] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
 
 @backButton = {
     @if(backLink.isDefined) {
@@ -33,7 +33,7 @@
 }
 
 @main_template(
-    title = title,
+    title = header,
     contentHeader = Some(contentHeader),
     linkElement = Some(linkElement),
     backButton = backButton

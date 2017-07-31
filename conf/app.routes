@@ -11,6 +11,9 @@ POST        /location                   uk.gov.hmrc.childcarecalculatorfrontend.
 GET         /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad
 POST        /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit
 
+GET         /child-aged-three-or-four   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad
+POST        /child-aged-three-or-four   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit
+
 GET         /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad
 POST        /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit
 

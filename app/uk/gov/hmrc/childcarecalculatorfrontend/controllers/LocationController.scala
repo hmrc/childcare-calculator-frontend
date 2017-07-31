@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import com.google.inject.Singleton
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{Json, Format}
 import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
@@ -51,13 +52,15 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       },
       success => {
         val selectedLocation = success.get
-        keystore.cacheEntryForSession(locationKey, selectedLocation).map { result =>
+        keystore.cacheEntryForSession(locationKey, selectedLocation).flatMap { result =>
           if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-            // TODO: Go to ChildAge3or4 page
-            Redirect(routes.ChildAgedTwoController.onPageLoad())
+            keystore.removeFromSession(childAgedTwoKey).map {
+              case true => Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+              case false => Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+            }
           }
           else {
-            Redirect(routes.ChildAgedTwoController.onPageLoad())
+            Future(Redirect(routes.ChildAgedTwoController.onPageLoad()))
           }
         } recover {
           case e: Exception =>

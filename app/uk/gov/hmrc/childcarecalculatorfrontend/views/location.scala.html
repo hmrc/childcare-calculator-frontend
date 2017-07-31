@@ -19,10 +19,11 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
-    title = messages("location.title"),
     header = messages("location.header"),
     backLink = Some(routes.WhatYouNeedController.onPageLoad())
 ) {
@@ -30,18 +31,18 @@
         action = routes.LocationController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
-        @error.ccErrorSummary(messages("cc.error.title"), form)
+        @error.ccErrorSummary(form)
 
         <p>@messages("location.info")</p>
 
         @radio.ccRadioOptions(
-            field = form("location"),
+            field = form(CCConstants.locationKey),
             fieldForm = form,
             radioOptions = Seq(
-                ("ENGLAND", messages("location.radio.england")),
-                ("SCOTLAND", messages("location.radio.scotland")),
-                ("WALES", messages("location.radio.wales")),
-                ("NORTHERNIRELAND", messages("location.radio.northern.ireland"))
+                (LocationEnum.ENGLAND.toString, messages("location.radio.england")),
+                (LocationEnum.SCOTLAND.toString, messages("location.radio.scotland")),
+                (LocationEnum.WALES.toString, messages("location.radio.wales")),
+                (LocationEnum.NORTHERNIRELAND.toString, messages("location.radio.northern.ireland"))
             ),
             args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",
@@ -49,9 +50,6 @@
                 '_legend -> messages("location.header"),
                 '_globalErrorKey -> messages("location.radio.not.selected.error")
             )
-        @buttons.nextButton(
-            title = messages("next.button"),
-            label = Some(messages("next.button"))
-        )
+        @buttons.nextButton()
     }
 }

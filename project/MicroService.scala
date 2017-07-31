@@ -1,10 +1,8 @@
 import sbt.Keys.{resolvers, _}
 import sbt._
-import play.routes.compiler.StaticRoutesGenerator
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning
-import _root_.play.sbt.routes.RoutesKeys.routesGenerator
 import uk.gov.hmrc._
 import DefaultBuildSettings._
 import uk.gov.hmrc.SbtAutoBuildPlugin

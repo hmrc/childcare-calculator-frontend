@@ -22,7 +22,6 @@ import org.mockito.Mockito._
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
 import play.api.test.FakeRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
@@ -53,6 +52,13 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
         result.isDefined shouldBe true
         status(result.get) should not be NOT_FOUND
       }
+
+      "POST request is made" in {
+        val req = FakeRequest(POST, locationPath).withSession(validSession)
+        val result = route(app, req)
+        result.isDefined shouldBe true
+        status(result.get) should not be NOT_FOUND
+      }
     }
   }
 
@@ -62,7 +68,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](anyString)(any[HeaderCarrier], any[Reads[String]])
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any[HeaderCarrier], any[Reads[String]])
         ).thenReturn(
           Future.successful(None)
         )
@@ -73,7 +79,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](anyString)(any[HeaderCarrier], any[Reads[String]])
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any[HeaderCarrier], any[Reads[String]])
         ).thenReturn(
           Future.successful(Some(LocationEnum.ENGLAND.toString))
         )
@@ -84,7 +90,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](anyString)(any[HeaderCarrier], any[Reads[String]])
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any[HeaderCarrier], any[Reads[String]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -98,16 +104,10 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
 
       "there are errors" should {
         "load same template and return BAD_REQUEST" in {
-          val form = new LocationForm(applicationMessagesApi).form.bind(
-            Map(
-              locationKey -> ""
-            )
-          )
-
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(form.data.toSeq: _*)
+                .withFormUrlEncodedBody(locationKey -> "")
                 .withSession(validSession)
             )
           )
@@ -125,15 +125,8 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
           )
           childAgeTwoLocations.foreach { loc =>
             s"${loc} is selected" in {
-
-              val form = new LocationForm(applicationMessagesApi).form.bind(
-                Map(
-                  locationKey -> loc
-                )
-              )
-
               when(
-                sut.keystore.cacheEntryForSession[String](anyString, anyString)(any[HeaderCarrier], any[Format[String]])
+                sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
               ).thenReturn(
                 Future.successful(Some(loc))
               )
@@ -141,7 +134,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
               val result = await(
                 sut.onSubmit(
                   request
-                    .withFormUrlEncodedBody(form.data.toSeq: _*)
+                    .withFormUrlEncodedBody(locationKey -> loc)
                     .withSession(validSession)
                 )
               )
@@ -151,35 +144,33 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
           }
         }
 
-        // TODO: Change childAgedTwoPath with childAge3or4Path for this test
-        s"go to '3 or 4 years old page' ${childAgedTwoPath}" when {
+        s"go to '3 or 4 years old page' ${childAgedThreeOrFourPath}" when {
           val childAgeTwoLocations = List(
             LocationEnum.NORTHERNIRELAND.toString
           )
           childAgeTwoLocations.foreach { loc =>
             s"${loc} is selected" in {
-
-              val form = new LocationForm(applicationMessagesApi).form.bind(
-                Map(
-                  locationKey -> loc
-                )
+              when(
+                sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+              ).thenReturn(
+                Future.successful(Some(loc))
               )
 
               when(
-                sut.keystore.cacheEntryForSession[String](anyString, anyString)(any[HeaderCarrier], any[Format[String]])
+                sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
               ).thenReturn(
-                Future.successful(Some(loc))
+                Future.successful(true)
               )
 
               val result = await(
                 sut.onSubmit(
                   request
-                    .withFormUrlEncodedBody(form.data.toSeq: _*)
+                    .withFormUrlEncodedBody(locationKey -> loc)
                     .withSession(validSession)
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedTwoPath
+              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
             }
           }
         }
@@ -187,14 +178,8 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
 
       "connecting with keystore fails" should {
         s"redirect to ${technicalDifficultiesPath}" in {
-          val form = new LocationForm(applicationMessagesApi).form.bind(
-            Map(
-              locationKey -> LocationEnum.ENGLAND.toString
-            )
-          )
-
           when(
-            sut.keystore.cacheEntryForSession[String](anyString, anyString)(any[HeaderCarrier], any[Format[String]])
+            sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
@@ -202,12 +187,67 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(form.data.toSeq: _*)
+                .withFormUrlEncodedBody(locationKey -> LocationEnum.ENGLAND.toString)
                 .withSession(validSession)
             )
           )
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+      }
+
+      s"redirect to ${technicalDifficultiesPath}" when {
+        val childAgeTwoLocations = List(
+          LocationEnum.NORTHERNIRELAND.toString
+        )
+        childAgeTwoLocations.foreach { loc =>
+          s"${loc} is selected but deleting old data from session fails" in {
+            when(
+              sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+            ).thenReturn(
+              Future.successful(Some(loc))
+            )
+
+            when(
+              sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
+            ).thenReturn(
+              Future.successful(false)
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(locationKey -> loc)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+
+          s"${loc} is selected but deleting old data from session throws exception" in {
+            when(
+              sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+            ).thenReturn(
+              Future.successful(Some(loc))
+            )
+
+            when(
+              sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
+            ).thenReturn(
+              Future.failed(new RuntimeException)
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(locationKey -> loc)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
         }
       }
 

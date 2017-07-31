@@ -24,12 +24,6 @@ import uk.gov.hmrc.play.test.UnitSpec
 class LocationFormSpec extends UnitSpec with FakeCCApplication {
 
   "LocationForm" should {
-
-    "pre populate the form" in {
-      val form = new LocationForm(applicationMessagesApi).form.fill(Some(LocationEnum.SCOTLAND.toString))
-      form.get shouldBe Some(LocationEnum.SCOTLAND.toString)
-    }
-
     "accept valid value" when {
       LocationEnum.values.foreach { loc => {
         val locationValue = loc.toString

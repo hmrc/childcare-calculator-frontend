@@ -16,33 +16,48 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{Singleton, Inject}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
+import play.api.mvc.{Call, AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.play.frontend.controller.FrontendController
+import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
 @Singleton
-class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
+class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
   with SessionProvider
   with FrontendController
   with CCConstants {
 
   val keystore: KeystoreService = KeystoreService
 
+  private def getBackUrl()(implicit hc: HeaderCarrier): Future[Call] = {
+    keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { childAgedTwo =>
+      if(childAgedTwo.isDefined) {
+        routes.ChildAgedTwoController.onPageLoad()
+      }
+      else {
+        routes.LocationController.onPageLoad()
+      }
+    }
+  }
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { res =>
-      Ok(
-        childAgedTwo(
-          new ChildAgedTwoForm(messagesApi).form.fill(res)
+    keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).flatMap { res =>
+      getBackUrl.map { backUrl =>
+        Ok(
+          childAgedThreeOrFour(
+            new ChildAgedThreeOrFourForm(messagesApi).form.fill(res),
+            backUrl
+          )
         )
-      )
+      }
     } recover {
       case e: Exception =>
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -50,14 +65,24 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
+    new ChildAgedThreeOrFourForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        Future(BadRequest(childAgedTwo(errors)))
+        getBackUrl.map { backUrl =>
+          BadRequest(
+            childAgedThreeOrFour(
+              errors,
+              backUrl
+            )
+          )
+        }.recover {
+          case ex: Exception =>
+            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+        }
       },
       success => {
-        keystore.cacheEntryForSession(childAgedTwoKey, success.get).map {
+        keystore.cacheEntryForSession[Boolean](childAgedThreeOrFourKey, success.get).map {
           result =>
-            Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+            Redirect(routes.ExpectChildcareCostsController.onPageLoad())
         } recover {
           case e: Exception =>
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
