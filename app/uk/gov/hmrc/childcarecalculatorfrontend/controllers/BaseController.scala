@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.utils
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-trait CCConstants {
-  lazy val locationKey = "location"
-  lazy val childAgedTwoKey = "childAgedTwo"
-  lazy val childAgedThreeOrFourKey = "childAgedThreeOrFour"
-  lazy val expectChildcareCostsKey = "expectChildcareCosts"
-}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
-object CCConstants extends CCConstants
+trait BaseController extends FrontendController with SessionProvider with CCConstants

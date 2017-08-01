@@ -50,9 +50,9 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
     }
   }
 
-  "ExpectChildcareCostsController" should {
+  "calling onPageLoad" should {
     "load successfully the ExpectChildcareCosts page" when {
-      "onPageLoad is called with some session data" in {
+      "there is data in session" in {
         when(
           sut.keystore.fetchEntryForSession[Boolean](refEq(expectChildcareCostsKey))(any(),any())
         ).thenReturn(
@@ -64,7 +64,7 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      "onPageLoad is called with none session data" in {
+      "there is no data in session" in {
         when(
           sut.keystore.fetchEntryForSession[Boolean](refEq(expectChildcareCostsKey))(any(),any())
         ).thenReturn(
@@ -74,8 +74,10 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
+    }
 
-      "onPageLoad is called with an exception from keystore service" in {
+    s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
+      "an exception is thrown from keystore service" in {
         when(
           sut.keystore.fetchEntryForSession[Boolean](refEq(expectChildcareCostsKey))(any(),any())
         ).thenReturn(
@@ -86,43 +88,11 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
+  }
 
-    "submit successfully from the ExpectChildcareCosts page" when {
-      "onSubmit is called with valid form and successful cacheEntry" in {
-        when(
-          sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
-        ).thenReturn(
-          Future.successful(Some(true))
-        )
-        val result = await(
-          sut.onSubmit(
-            request
-              .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
-              .withSession(validSession)
-          )
-        )
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe whatYouNeedPath
-      }
-
-      "onSubmit is called with valid form and an exception from cacheEntry" in {
-        when(
-          sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
-        ).thenReturn(
-          Future.failed(new RuntimeException)
-        )
-        val result = await(
-          sut.onSubmit(
-            request
-              .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
-              .withSession(validSession)
-          )
-        )
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
-
-      "onSubmit is called with invalid form bind request" in {
+  "calling onSubmit" should {
+    "load ExpectChildcareCosts and display errors" when {
+      "invalid data is submitted" in {
         when(
           sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
         ).thenReturn(
@@ -133,5 +103,277 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
     }
+
+    "redirect correctly to next page" when {
+      "valid data is submitted and saved successfully in keystore" should {
+
+        s"go to free hours results page (${freeHoursResultsPath})" when {
+          "user doesn't expect to have childcare cost" when {
+            "has a child aged 2, 3 or 4" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "false")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe freeHoursResultsPath
+            }
+            "doesn't have a child aged 2, 3 or 4" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "false")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe freeHoursResultsPath
+            }
+          }
+          "user expects to have childcare cost" when {
+            "has a child aged 2" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe freeHoursResultsPath
+            }
+            "has a child aged 3 or 4" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe freeHoursResultsPath
+            }
+          }
+        }
+
+        s"go to do you live with partner page (${livingWithPartnerPath})" when {
+          "user expects to have childcare cost" when {
+            "has no children aged 2, 3 or 4" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(false))
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe livingWithPartnerPath
+            }
+            "there is no data for children aged 2, 3 or 4 in keystore" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(None)
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.successful(None)
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe livingWithPartnerPath
+            }
+          }
+        }
+
+        s"go to technical difficulties page (${technicalDifficultiesPath})" when {
+          "an exception is thrown while saving data" in {
+            when(
+              sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+            ).thenReturn(
+              Future.failed(new RuntimeException)
+            )
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+
+          "an exception is thrown while looking for data for 2 years old" in {
+            when(
+              sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+            ).thenReturn(
+              Future.successful(Some(true))
+            )
+
+            when(
+              sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+            ).thenReturn(
+              Future.failed(new RuntimeException)
+            )
+
+            when(
+              sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+            ).thenReturn(
+              Future.successful(None)
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+
+          "an exception is thrown while looking for data for 3 or 4 years old" in {
+              when(
+                sut.keystore.cacheEntryForSession[Boolean](refEq(expectChildcareCostsKey), any())(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
+              ).thenReturn(
+                Future.failed(new RuntimeException)
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe technicalDifficultiesPath
+            }
+        }
+      }
+    }
+
+
   }
 }
