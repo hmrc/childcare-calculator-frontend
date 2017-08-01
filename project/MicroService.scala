@@ -1,10 +1,8 @@
 import sbt.Keys.{resolvers, _}
 import sbt._
-import play.routes.compiler.StaticRoutesGenerator
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning
-import _root_.play.sbt.routes.RoutesKeys.routesGenerator
 import uk.gov.hmrc._
 import DefaultBuildSettings._
 import uk.gov.hmrc.SbtAutoBuildPlugin
@@ -20,7 +18,7 @@ trait MicroService {
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
-      ScoverageKeys.coverageExcludedPackages :=  "<empty>;Reverse.*;uk.gov.hmrc.BuildInfo.*;app.Routes.*;prod.*;uk.gov.hmrc.childcarecalculatorfrontend.config.*;uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.*",
+      ScoverageKeys.coverageExcludedPackages :=  "<empty>;Reverse.*;uk.gov.hmrc.BuildInfo.*;app.Routes.*;prod.*;uk.gov.hmrc.childcarecalculatorfrontend.config.*;uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.*;uk.gov.hmrc.childcarecalculatorfrontend.models.*",
       ScoverageKeys.coverageMinimum := 95,
       ScoverageKeys.coverageFailOnMinimum := true,
       ScoverageKeys.coverageHighlighting := true

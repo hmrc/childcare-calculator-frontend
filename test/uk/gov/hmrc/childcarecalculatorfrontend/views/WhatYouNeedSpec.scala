@@ -40,7 +40,7 @@ class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCR
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = rootPath),
+    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = locationPath),
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = "https://www.gov.uk/childcare-calculator")
   )
 

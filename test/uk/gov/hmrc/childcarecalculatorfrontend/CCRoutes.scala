@@ -22,6 +22,13 @@ trait CCRoutes {
 
   private def path(endPoint: String): String = s"${rootPath}${endPoint}"
 
-  val whatYouNeedPath: String = path("/what-you-need")
   val technicalDifficultiesPath: String = path("/error")
+  val whatYouNeedPath: String = path("/what-you-need")
+  val locationPath: String = path("/location")
+  val childAgedTwoPath: String = path("/child-aged-two")
+  val childAgedThreeOrFourPath: String = path("/child-aged-three-or-four")
+  val expectChildcareCostsPath: String = path("/expect-childcare-costs")
+  val freeHoursResultsPath: String = path("/free-hours")
+  val livingWithPartnerPath: String = path("/do-you-have-a-partner")
+
 }

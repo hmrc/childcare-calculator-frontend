@@ -20,14 +20,14 @@ import uk.gov.hmrc.play.test.UnitSpec
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 
-class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
+class ChildAgedTwoFormSpec extends UnitSpec with FakeCCApplication {
 
   "ChildAgedTwoForm" should {
 
     "accept value true" in {
       val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
         Map(
-          "childAgedTwo" -> "true"
+          childAgedTwoKey -> "true"
         )
       )
       form.value.get.get shouldBe true
@@ -38,7 +38,7 @@ class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
     "accept value false" in {
       val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
         Map(
-          "childAgedTwo" -> "false"
+          childAgedTwoKey -> "false"
         )
       )
       form.value.get.get shouldBe false
@@ -46,16 +46,31 @@ class ChildAgedTwoFormSpec  extends UnitSpec with FakeCCApplication {
       form.errors shouldBe empty
     }
 
-    "throw error if no value supplied" in {
+    "return error if no value supplied" in {
       val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
         Map(
-          "childAgedTwo" -> ""
+          childAgedTwoKey -> ""
         )
       )
       form.value shouldBe None
       form.hasErrors shouldBe true
       form.errors.length shouldBe 1
-      form.errors.head.message shouldBe applicationMessages.messages("cc.yes.no.not.selected.error")
+      form.errors.head.message shouldBe applicationMessages.messages("child.aged.two.yes.no.not.selected.error")
+    }
+
+    val invalidValues = List("abcd", "1234")
+    invalidValues.foreach { invalidValue =>
+      s"return error if invalid value '${invalidValue}' is supplied" in {
+        val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+          Map(
+            childAgedTwoKey -> invalidValue
+          )
+        )
+        form.value shouldBe None
+        form.hasErrors shouldBe true
+        form.errors.length shouldBe 1
+        form.errors.head.message shouldBe "error.boolean"
+      }
     }
   }
 }

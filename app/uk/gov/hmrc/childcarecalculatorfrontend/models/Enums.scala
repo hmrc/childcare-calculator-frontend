@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import play.api.libs.json.{Format, Json, Reads, Writes}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum.TcUcBenefitsEnum
+import play.api.libs.json.{Format, Reads, Writes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
 
@@ -35,7 +33,11 @@ object TcUcBenefitsEnum extends Enumeration {
 
 object LocationEnum extends Enumeration {
   type LocationEnum = Value
-  val ENGLAND, SCOTLAND, WALES, NORTHERNIRELAND = Value
+  val ENGLAND = Value("england")
+  val SCOTLAND = Value("scotland")
+  val WALES = Value("wales")
+  val NORTHERNIRELAND = Value("northern-ireland")
+
   val enumReads: Reads[LocationEnum] = EnumUtils.enumReads(LocationEnum)
 
   val enumWrites: Writes[LocationEnum] = EnumUtils.enumWrites

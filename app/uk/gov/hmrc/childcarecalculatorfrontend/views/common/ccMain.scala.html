@@ -14,11 +14,11 @@
  * limitations under the License.
  *@
 
-@(title: String, header: String, backLink: Option[String] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
+@(header: String, backLink: Option[Call] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
 
 @backButton = {
     @if(backLink.isDefined) {
-        <a href=@{backLink.get} id="back-button" class="link-back">@messages("back.button")</a>
+        <a href=@{backLink} id="back-button" class="link-back">@messages("back.button")</a>
     }
 }
 
@@ -33,7 +33,7 @@
 }
 
 @main_template(
-    title = title,
+    title = header,
     contentHeader = Some(contentHeader),
     linkElement = Some(linkElement),
     backButton = backButton
