@@ -19,8 +19,49 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import play.api.libs.json.Json
 
 //TBD
-case class SchemesResult(val name: String, val amount: Int)
+case class FreeEntitlementPageModel (
+                                      twoYearOld: Boolean = false,
+                                      threeYearOld: Boolean = false,
+                                      fourYearOld: Boolean = false,
+                                      region: String = "",
+                                      freeEntitlementRollout: Boolean = false,
+                                      hasFifteenHours: Boolean = false,
+                                      hasThirtyHours: Boolean = false
+                                    )
+
+object FreeEntitlementPageModel {
+  implicit val formats = Json.format[FreeEntitlementPageModel]
+}
+
+case class EscVouchersAvailablePageModel (
+                                           parent : Boolean = false,
+                                           partner : Option[Boolean] = None
+
+                                         )
+
+object EscVouchersAvailablePageModel {
+  implicit val formats = Json.format[EscVouchersAvailablePageModel]
+}
+
+case class SchemesResult (
+                              household: Household,
+                              annualCost: Int,
+                              schemes: Seq[Scheme],
+                              tfcEligibility: Boolean,
+                              wtcEligibility: Boolean,
+                              ctcEligibility: Boolean,
+                              escEligibility: Boolean,
+                              parentEscEligibility: Boolean = false,
+                              partnerEscEligibility: Boolean = false,
+                              freeEntitlement: FreeEntitlementPageModel,
+                              escVouchersAvailable: EscVouchersAvailablePageModel,
+                              displaySupportBulletPoint: Boolean = false,
+                              tfcRollout: Boolean = false
+                            )
 
 object SchemesResult {
-  implicit val formatSchemesResult = Json.format[SchemesResult]
+  implicit val schemeFormat = Json.format[Scheme]
+  implicit val formats = Json.format[SchemesResult]
 }
+
+case class Scheme(val name: String, val amount: Int)

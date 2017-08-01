@@ -41,12 +41,13 @@ class EligiblityConnectorSpec extends UnitSpec with MockitoSugar with FakeCCAppl
 
     "get eligibility result" in {
 
+      val schemesResult = mock[SchemesResult]
       when(
         mockConnector.httpPost.POST[Household, SchemesResult](anyString(), any(),any())(any(),any(), any())
-      ).thenReturn(Future.successful(SchemesResult("", 0)))
+      ).thenReturn(Future.successful(schemesResult))
 
       val res = await(mockConnector.getEligibility(Household(children = Nil, parent = Claimant(), partner = None)))
-      res shouldBe SchemesResult("", 0)
+      res shouldBe schemesResult
     }
   }
 }
