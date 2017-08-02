@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCRoutes {
 
   override val contentData: List[ElementDetails] = List(
-    ElementDetails(id = Some("page-title"), value = "What you need"),
+    ElementDetails(id = Some("page-title"), value = "What you may need"),
     ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "You can use exact figures if you know them or estimates for any you may be unsure of about you and your partner (if you have one) such as:"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "estimated or known childcare costs"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "employment and working hours"),
