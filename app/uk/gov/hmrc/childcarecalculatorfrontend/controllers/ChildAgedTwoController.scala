@@ -25,8 +25,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import uk.gov.hmrc.play.frontend.controller.FrontendController
+import uk.gov.hmrc.play.http.HeaderCarrier
 
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 @Singleton
 class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
@@ -36,11 +38,17 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
 
   val keystore: KeystoreService = KeystoreService
 
+  private def getLocation()(implicit hc: HeaderCarrier): String = {
+    Await.result(keystore.fetchEntryForSession[String](locationKey).map(loc => loc.getOrElse("England")),
+      Duration(2,"seconds"))
+  }
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { res =>
       Ok(
         childAgedTwo(
-          new ChildAgedTwoForm(messagesApi).form.fill(res)
+          new ChildAgedTwoForm(messagesApi).form.fill(res),
+          getLocation
         )
       )
     } recover {
@@ -52,7 +60,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        Future(BadRequest(childAgedTwo(errors)))
+        Future(BadRequest(childAgedTwo(errors, getLocation)))
       },
       success => {
         keystore.cacheEntryForSession(childAgedTwoKey, success.get).map {

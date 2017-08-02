@@ -71,6 +71,13 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         ).thenReturn(
           Future.successful(None)
         )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("England"))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -82,6 +89,13 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         ).thenReturn(
           Future.successful(Some(true))
         )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("England"))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -93,6 +107,13 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("England"))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
@@ -103,6 +124,13 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "there are errors" should {
         "load same template and return BAD_REQUEST" in {
+
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
+          )
+          
           val result = await(
             sut.onSubmit(
               request
@@ -120,6 +148,12 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
           sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
         ).thenReturn(
           Future.successful(Some(true))
+        )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("England"))
         )
 
         val result = await(
@@ -140,6 +174,12 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
           sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
         ).thenReturn(
           Future.failed(new RuntimeException)
+        )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("England"))
         )
 
         val result = await(

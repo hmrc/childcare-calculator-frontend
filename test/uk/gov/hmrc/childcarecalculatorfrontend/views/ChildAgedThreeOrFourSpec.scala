@@ -44,17 +44,19 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
   val backUrl: Call = Call("GET", childAgedTwoPath)
 
+  val location = "England"
+
   def getTemplate(form: Form[Option[Boolean]]): Document = {
-    val template = childAgedThreeOrFour(form, backUrl)(request, applicationMessages)
+    val template = childAgedThreeOrFour(form, backUrl, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedThreeOrFour template" should {
     "render template" in {
-      val template = childAgedThreeOrFour.render(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, request, applicationMessages)
+      val template = childAgedThreeOrFour.render(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, location, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedThreeOrFour.f(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl)(request, applicationMessages)
+      val template1 = childAgedThreeOrFour.f(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, location)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 

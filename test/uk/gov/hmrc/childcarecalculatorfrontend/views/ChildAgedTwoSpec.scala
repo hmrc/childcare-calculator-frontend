@@ -41,18 +41,20 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = locationPath)
   )
 
+  val location = "England"
+
   def getTemplate(form: Form[Option[Boolean]]): Document = {
-    val template = childAgedTwo(form)(request, applicationMessages)
+    val template = childAgedTwo(form, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedTwo template" should {
 
     "render template" in {
-      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, request, applicationMessages)
+      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, location, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form)(request, applicationMessages)
+      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form, location)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 

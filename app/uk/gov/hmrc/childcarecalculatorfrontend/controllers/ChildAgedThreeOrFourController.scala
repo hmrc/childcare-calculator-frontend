@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
 
+import org.joda.time.Seconds
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, AnyContent, Action}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
@@ -27,7 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 import uk.gov.hmrc.play.http.HeaderCarrier
 
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 @Singleton
 class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
@@ -48,13 +50,19 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
     }
   }
 
+  private def getLocation()(implicit hc: HeaderCarrier): String = {
+    Await.result(keystore.fetchEntryForSession[String](locationKey).map(loc => loc.getOrElse("England")),
+      Duration(2,"seconds"))
+  }
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).flatMap { res =>
       getBackUrl.map { backUrl =>
         Ok(
           childAgedThreeOrFour(
             new ChildAgedThreeOrFourForm(messagesApi).form.fill(res),
-            backUrl
+            backUrl,
+            getLocation
           )
         )
       }
@@ -71,7 +79,8 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
           BadRequest(
             childAgedThreeOrFour(
               errors,
-              backUrl
+              backUrl,
+              getLocation
             )
           )
         }.recover {

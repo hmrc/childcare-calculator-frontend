@@ -74,6 +74,12 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
             Future.successful(None)
           )
 
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
+          )
+
           val result = await(sut.onPageLoad(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -92,6 +98,12 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
             sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
           ).thenReturn(
             Future.successful(Some(true))
+          )
+
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
           )
 
           val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -116,6 +128,12 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
             Future.successful(None)
           )
 
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
+          )
+
           val result = await(sut.onPageLoad(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -134,6 +152,12 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
             sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
           ).thenReturn(
             Future.successful(Some(true))
+          )
+
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
           )
 
           val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -191,6 +215,12 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
             Future.successful(None)
           )
 
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
+          )
+
           val result = await(sut.onSubmit(request.withSession(validSession)))
           status(result) shouldBe BAD_REQUEST
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -203,6 +233,12 @@ class ChildAgedThreeOrFourControllerSpec extends UnitSpec with FakeCCApplication
             sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(),any())
           ).thenReturn(
             Future.successful(Some(true))
+          )
+
+          when(
+            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          ).thenReturn(
+            Future.successful(Some("England"))
           )
 
           val result = await(sut.onSubmit(request.withSession(validSession)))
