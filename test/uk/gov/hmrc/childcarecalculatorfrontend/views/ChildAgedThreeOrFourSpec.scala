@@ -33,7 +33,7 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
     ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year)."),
     ElementDetails(attribute = Some("for"), attributeValue = Some("childAgedThreeOrFour-true"), value = "Yes"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("childAgedThreeOrFour-false"), value = "No"),
-    ElementDetails(attribute = Some("type"), attributeValue = Some("submit"), checkAttribute = Some("title"), value = "Continue"),
+    ElementDetails(attribute = Some("type"), attributeValue = Some("submit"), checkAttribute = Some("title"), value = ""),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 
