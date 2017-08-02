@@ -25,7 +25,9 @@
 
 @import uk.gov.hmrc.play.views.html.layouts
 
-@serviceInfoContent = {}
+@serviceInfoContent = {
+
+}
 
 @content = {
     @layouts.article(
@@ -34,8 +36,6 @@
     )
 }
 
-
-
 @sidebar = {
     @if(sidebarLinks.isDefined) {
         @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
@@ -43,18 +43,14 @@
 }
 
 @govuk_wrapper(appConfig = uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig,
-               linkElement = linkElement,
-               title = title,
-               mainClass = mainClass,
-               bodyClasses = bodyClasses,
-               sidebar = sidebar,
-               contentHeader = contentHeader,
-               mainContent = content,
-               serviceInfoContent = serviceInfoContent,
-               scriptElem = scriptElem,
-               backButton = backButton
+   linkElement = linkElement,
+   title = title,
+   mainClass = mainClass,
+   bodyClasses = bodyClasses,
+   sidebar = sidebar,
+   contentHeader = contentHeader,
+   mainContent = content,
+   serviceInfoContent = serviceInfoContent,
+   scriptElem = scriptElem,
+   backButton = backButton
 )
-
-
-
-
