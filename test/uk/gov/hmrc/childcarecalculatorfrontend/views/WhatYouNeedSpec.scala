@@ -27,13 +27,13 @@ class WhatYouNeedSpec extends TemplatesValidator with FakeCCApplication with CCR
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "What you need"),
-    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "You can give estimates, but the more accurate you are then the more accurate your results will be. You may be asked for things like:"),
+    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "You can use exact figures if you know them or estimates for any you may be unsure of about you and your partner (if you have one) such as:"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "estimated or known childcare costs"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "employment and working hours"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "income this year and last"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(3), value = "personal tax code"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(4), value = "pension contributions"),
-    ElementDetails(tagName = Some("li"), tagIndex = Some(5), value = "family's benefits"),
+    ElementDetails(tagName = Some("li"), tagIndex = Some(5), value = "family’s benefits"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(6), value = "weeks and pay taken while on leave for a birth or an adoption"),
     ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
