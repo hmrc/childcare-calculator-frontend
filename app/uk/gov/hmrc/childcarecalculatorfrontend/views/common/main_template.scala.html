@@ -28,31 +28,27 @@
 @serviceInfoContent = {}
 
 @content = {
-    <div class="grid-layout grid-layout--stacked">
-        @layouts.article(
-            content = mainContent,
-            articleClasses = Some("grid-layout__column grid-layout__column--2-3")
-        )
+    @layouts.article(
+        content = mainContent,
+        includeGridWrapper = false
+    )
 }
 
 @sidebar = {
-        <div class="grid-layout__column grid-layout__column--1-3">
-            @if(sidebarLinks.isDefined) {
-            @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
-            }
-        </div>
-    </div>
+    @if(sidebarLinks.isDefined) {
+        @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
+    }
 }
 
 @govuk_wrapper(appConfig = uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig,
-               linkElement = linkElement,
-               title = title,
-               mainClass = mainClass,
-               bodyClasses = bodyClasses,
-               sidebar = sidebar,
-               contentHeader = contentHeader,
-               mainContent = content,
-               serviceInfoContent = serviceInfoContent,
-               scriptElem = scriptElem,
-               backButton = backButton
+   linkElement = linkElement,
+   title = title,
+   mainClass = mainClass,
+   bodyClasses = bodyClasses,
+   sidebar = sidebar,
+   contentHeader = contentHeader,
+   mainContent = content,
+   serviceInfoContent = serviceInfoContent,
+   scriptElem = scriptElem,
+   backButton = backButton
 )
