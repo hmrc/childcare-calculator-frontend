@@ -1,4 +1,38 @@
 
+
+/* vvv added the below until we update assets-frontend vvv */
+/********************************************************************/
+
+
+/* Overrides the stupid Assets Frontend - what were they thinking! */
+
+button,
+.button{
+  line-height: 1.25em;
+  padding: 0.5em 0.6em 0.3em 0.6em;
+  font-size: 1em;
+}
+
+/* stops the massive overhang on focus in firefox */
+.button .visuallyhidden {
+  left: 0;
+}
+
+.button--get-started {
+  line-height: 1.25em;
+  padding: 0.36842em 2.15789em 0.21053em 0.84211em;
+  padding-right: 40px;
+  font-size: 24px;
+}
+
+/* add back some margins */
+
+.list {
+  margin-bottom: 1.05263em;
+  margin-top: 5px;
+}
+
+
 /* Backlink styling */
 .link-back {
   display: -moz-inline-stack;

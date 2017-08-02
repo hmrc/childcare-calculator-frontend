@@ -25,7 +25,7 @@
     backLink = Some(Call("GET", messages("what.you.need.back.url", "")))
 ) {
 
-    <p>@messages("what.you.need.info")</p>
+    <p>@Messages("what.you.need.info")</p>
     <ul class="list list-bullet">
         <li>@messages("what.you.need.bullet.childcare.costs")</li>
         <li>@messages("what.you.need.bullet.employment")</li>
@@ -35,8 +35,10 @@
         <li>@messages("what.you.need.bullet.benefits")</li>
         <li>@messages("what.you.need.bullet.statutory.leave")</li>
     </ul>
+
     @anchor(
         href = routes.LocationController.onPageLoad(),
-        label = messages("next.button")
+        linkText = Messages("next.button")
     )
+
 }
