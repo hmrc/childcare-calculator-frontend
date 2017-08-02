@@ -42,5 +42,5 @@ object FrontendAppConfig extends AppConfig with ServicesConfig {
   override lazy val betaFeedbackUrl: String = s"$contactHost/contact/beta-feedback"
   override lazy val betaFeedbackUnauthenticatedUrl: String = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
 
-  lazy val eligibilityUrl = baseUrl("cc-eligibility") + getString("microservice.services.cc-eligibility.eligibility.url")
+  lazy val eligibilityUrl = baseUrl("cc-eligibility") + getString("microservice.services.cc-eligibility.url")
 }
