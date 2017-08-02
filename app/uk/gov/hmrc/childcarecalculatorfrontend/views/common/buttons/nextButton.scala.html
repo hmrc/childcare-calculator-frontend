@@ -18,12 +18,6 @@
 
 @import views.html.helper._
 
-<div>
-    <div class="form-field">
-        <input type="submit"
-                class="button"
-                title="@title.getOrElse(messages("next.button"))"
-                id="next-button"
-                value="@title.getOrElse(messages("next.button"))" />
-    </div>
-</div>
+    <button type="submit" name="submit" class="button" id="next-button" />
+        @title.getOrElse(messages("next.button"))
+    </button>

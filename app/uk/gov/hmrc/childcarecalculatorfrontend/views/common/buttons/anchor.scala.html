@@ -14,8 +14,13 @@
  * limitations under the License.
  *@
 
-@(href: Call, label: String)(implicit request: Request[_], messages: Messages)
+@(
+    href: Call,
+    linkText: String)(implicit request: Request[_],
+    messages: Messages
+)
 
-<a role="button" id="next-button" class="button"  href="@href" title="@label">
-    @label
-</a>
+<a href="@href" role="button" id="next-button" class="button">@linkText</a>
+
+
+

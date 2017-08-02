@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.utils
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-trait CCConstants {
-  lazy val locationKey = "location"
-  lazy val childAgedTwoKey = "childAgedTwo"
-  lazy val childAgedThreeOrFourKey = "childAgedThreeOrFour"
-  lazy val expectChildcareCostsKey = "expectChildcareCosts"
+import javax.inject.{Singleton, Inject}
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{AnyContent, Action}
+import scala.concurrent.Future
+
+@Singleton
+class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    // TODO: Implement properly
+    Future(Ok("This is 15 hours results page"))
+  }
+
 }
-
-object CCConstants extends CCConstants
