@@ -1,4 +1,6 @@
 ####### Common #######
+title.gov = GOV.UK
+title.cc = Childcare calculator
 nav.title = Childcare calculator
 next.button = Continue
 back.button = Back
