@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
+
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, AnyContent, Action}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.play.http.HeaderCarrier
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+
+import scala.concurrent.Future
 
 @Singleton
 class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
@@ -43,19 +44,23 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
     }
   }
 
-  private def getLocation()(implicit hc: HeaderCarrier): String = {
-    Await.result(keystore.fetchEntryForSession[String](locationKey).map(loc => loc.getOrElse("England")),
-      Duration(2,"seconds"))
+  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
+    keystore.fetchEntryForSession[String](locationKey)
   }
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).flatMap { res =>
-      getBackUrl.map { backUrl =>
+    {
+      for {
+        res <- keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey)
+        backUrl <- getBackUrl
+        location <- getLocation
+      } yield {
+
         Ok(
           childAgedThreeOrFour(
             new ChildAgedThreeOrFourForm(messagesApi).form.fill(res),
             backUrl,
-            getLocation
+            location.getOrElse("England")
           )
         )
       }
@@ -69,15 +74,18 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ChildAgedThreeOrFourForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        getBackUrl.map { backUrl =>
+        (for {
+          backUrl <- getBackUrl
+          location <- getLocation
+        } yield {
           BadRequest(
             childAgedThreeOrFour(
               errors,
               backUrl,
-              getLocation
+              location.getOrElse("England")
             )
           )
-        }.recover {
+        }).recover {
           case ex: Exception =>
             Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit.getBackUrl: ${ex.getMessage}")
             Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
