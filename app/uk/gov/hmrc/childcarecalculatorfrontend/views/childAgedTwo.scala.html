@@ -32,7 +32,7 @@
 
         @error.ccErrorSummary(form)
 
-        <p>@messages("child.aged.two.info", location)</p>
+        <p id="aged-two-info">@messages(s"child.aged.two.info.${location}")</p>
 
         @radio.ccRadioOptions(
             field = form(CCConstants.childAgedTwoKey),

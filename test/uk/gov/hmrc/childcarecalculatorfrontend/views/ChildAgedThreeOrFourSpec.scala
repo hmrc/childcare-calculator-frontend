@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.i18n.Messages
 import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
@@ -44,9 +45,9 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
   val backUrl: Call = Call("GET", childAgedTwoPath)
 
-  val location = "England"
+  val location = "england"
 
-  def getTemplate(form: Form[Option[Boolean]]): Document = {
+  def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
     val template = childAgedThreeOrFour(form, backUrl, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
@@ -121,6 +122,32 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
         )
       }
 
+    }
+
+    "display different content based on location" when {
+      "location is scotland" in {
+        val location = "scotland"
+        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.scotland")
+      }
+
+      "location is wales" in {
+        val location = "wales"
+        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.wales")
+      }
+
+      "location is northen-ireland" in {
+        val location = "northen-ireland"
+        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.northen-ireland")
+      }
     }
   }
 }

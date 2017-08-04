@@ -41,12 +41,17 @@ location.radio.not.selected.error = You must tell the calculator where you live
 
 ####### Child Aged Two #######
 child.aged.two.header = Do you have a child aged 2?
-child.aged.two.info = Some 2 year olds in {0} could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.two.info.england = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.two.info.scotland = Some 2 year olds in Scotland could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+child.aged.two.info.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time.
 child.aged.two.yes.no.not.selected.error = You must answer yes if you have a child aged 2
 
 ####### Child Aged Three Or Four #######
 child.aged.three.or.four.header = Do you have any children aged 3 or 4?
-child.aged.three.or.four.info = All 3 and 4 year olds in {0} are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.three.or.four.info.england = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+child.aged.three.or.four.info.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+child.aged.three.or.four.info.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
+child.aged.three.or.four.info.northen-ireland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
 child.aged.three.or.four.yes.no.not.selected.error = You must answer yes if you have any children aged 3 or 4
 
 ####### Expect Childcare Costs #######
