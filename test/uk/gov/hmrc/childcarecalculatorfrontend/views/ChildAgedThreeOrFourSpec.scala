@@ -142,11 +142,11 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
       }
 
       "location is northen-ireland" in {
-        val location = "northen-ireland"
+        val location = "northern-ireland"
         val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
         val template = getTemplate(form, location)
 
-        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.northen-ireland")
+        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.northern-ireland")
       }
     }
   }
