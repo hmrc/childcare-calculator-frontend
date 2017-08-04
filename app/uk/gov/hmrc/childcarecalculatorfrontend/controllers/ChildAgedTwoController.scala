@@ -17,12 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
+import uk.gov.hmrc.play.http.HeaderCarrier
+
 import scala.concurrent.Future
 
 @Singleton
@@ -30,13 +33,23 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
 
   val keystore: KeystoreService = KeystoreService
 
+  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
+    keystore.fetchEntryForSession[String](locationKey)
+  }
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { res =>
-      Ok(
-        childAgedTwo(
-          new ChildAgedTwoForm(messagesApi).form.fill(res)
+    {
+      for {
+        res <- keystore.fetchEntryForSession[Boolean](childAgedTwoKey)
+        location <- getLocation
+      } yield {
+        Ok(
+          childAgedTwo(
+            new ChildAgedTwoForm(messagesApi).form.fill(res),
+            location.getOrElse("England")
+          )
         )
-      )
+      }
     } recover {
       case ex: Exception =>
         Logger.warn(s"Exception from ChildAgedTwoController.onPageLoad: ${ex.getMessage}")
@@ -47,7 +60,9 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        Future(BadRequest(childAgedTwo(errors)))
+        for (location <- getLocation) yield {
+          BadRequest(childAgedTwo(errors, location.getOrElse("England")))
+        }
       },
       success => {
         keystore.cacheEntryForSession(childAgedTwoKey, success.get).map {

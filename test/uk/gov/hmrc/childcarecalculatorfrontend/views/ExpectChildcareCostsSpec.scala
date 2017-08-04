@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes._
 import play.api.data.Form
+import play.api.i18n.Messages
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
@@ -41,18 +42,20 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = childAgedThreeOrFourPath)
   )
 
-  def getTemplate(form: Form[Option[Boolean]]): Document = {
-    val template = expectChildcareCosts(form)(request, applicationMessages)
+  def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
+    val template = expectChildcareCosts(form, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ExpectChildcareCosts template" should {
 
     "render template" in {
-      val template = expectChildcareCosts.render(new ExpectChildcareCostsForm(applicationMessagesApi).form, request, applicationMessages)
+
+      val location = "england"
+      val template = expectChildcareCosts.render(new ExpectChildcareCostsForm(applicationMessagesApi).form, location, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = expectChildcareCosts.f(new ExpectChildcareCostsForm(applicationMessagesApi).form)(request, applicationMessages)
+      val template1 = expectChildcareCosts.f(new ExpectChildcareCostsForm(applicationMessagesApi).form, location)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
@@ -116,6 +119,32 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
         )
       }
 
+    }
+
+    "display different content based on location" when {
+      "location is scotland" in {
+        val location = "scotland"
+        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("expect-childcare-costs-info").text() shouldBe Messages(s"expect.childcare.costs.info.scotland")
+      }
+
+      "location is wales" in {
+        val location = "wales"
+        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("expect-childcare-costs-info").text() shouldBe Messages(s"expect.childcare.costs.info.wales")
+      }
+
+      "location is northen-ireland" in {
+        val location = "northern-ireland"
+        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("expect-childcare-costs-info").text() shouldBe Messages(s"expect.childcare.costs.info.northern-ireland")
+      }
     }
 
   }

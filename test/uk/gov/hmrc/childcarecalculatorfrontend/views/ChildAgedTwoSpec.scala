@@ -23,6 +23,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.data.Form
+import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
 
 class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
@@ -41,18 +42,20 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = locationPath)
   )
 
-  def getTemplate(form: Form[Option[Boolean]]): Document = {
-    val template = childAgedTwo(form)(request, applicationMessages)
+  val location = "england"
+
+  def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
+    val template = childAgedTwo(form, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedTwo template" should {
 
     "render template" in {
-      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, request, applicationMessages)
+      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, location, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form)(request, applicationMessages)
+      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form, location)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
@@ -115,6 +118,25 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
           errors = Map("childAgedTwo" -> applicationMessages.messages("error.boolean"))
         )
       }
+    }
+
+    "display different content based on location" when {
+      "location is scotland" in {
+        val location = "scotland"
+        val form = new ChildAgedTwoForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("aged-two-info").text() shouldBe Messages(s"child.aged.two.info.scotland")
+      }
+
+      "location is wales" in {
+        val location = "wales"
+        val form = new ChildAgedTwoForm(applicationMessagesApi).form.fill(Some(true))
+        val template = getTemplate(form, location)
+
+        template.getElementById("aged-two-info").text() shouldBe Messages(s"child.aged.two.info.wales")
+      }
+
     }
 
   }

@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]])(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[Boolean]], location: String)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
@@ -32,7 +32,7 @@
 
         @error.ccErrorSummary(form)
 
-        <p>@messages("expect.childcare.costs.info")</p>
+        <p id="expect-childcare-costs-info">@messages(s"expect.childcare.costs.info.${location}")</p>
 
         @radio.ccRadioOptions(
             field = form(CCConstants.expectChildcareCostsKey),

@@ -31,13 +31,20 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[Boolean](expectChildcareCostsKey).map {
-      res =>
-        Ok(
-          expectChildcareCosts(new ExpectChildcareCostsForm(messagesApi).form.fill(res))
-        )
-    } recover {
+  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
+    keystore.fetchEntryForSession[String](locationKey)
+  }
+
+  def onPageLoad: Action[AnyContent] = withSession { implicit request => {
+    for {
+      res <- keystore.fetchEntryForSession[Boolean](expectChildcareCostsKey)
+      location <- getLocation
+    } yield {
+      Ok(
+        expectChildcareCosts(new ExpectChildcareCostsForm(messagesApi).form.fill(res), location.getOrElse("england"))
+      )
+    }
+  }recover {
       case ex: Exception =>
         Logger.warn(s"Exception from ExpectChildcareCostsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -60,7 +67,11 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ExpectChildcareCostsForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        Future(BadRequest(expectChildcareCosts(errors)))
+        for {
+          location <- getLocation
+        } yield {
+          BadRequest(expectChildcareCosts(errors, location.getOrElse("england")))
+        }
       },
       success => {
         val hasExpectedChildcareCost: Boolean = success.get

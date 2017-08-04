@@ -59,6 +59,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
           Future.successful(Some(true))
         )
 
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("england"))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -70,6 +76,13 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         ).thenReturn(
           Future.successful(None)
         )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("england"))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -83,6 +96,13 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("england"))
+        )
+
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
@@ -98,6 +118,13 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
+
+        when(
+          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+        ).thenReturn(
+          Future.successful(Some("england"))
+        )
+
         val result = await(sut.onSubmit(request.withSession(validSession)))
         status(result) shouldBe BAD_REQUEST
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -128,6 +155,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
                 Future.successful(Some(true))
               )
 
+              when(
+                sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some("england"))
+              )
+
               val result = await(
                 sut.onSubmit(
                   request
@@ -155,6 +188,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
                 sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
               ).thenReturn(
                 Future.successful(Some(false))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some("england"))
               )
 
               val result = await(
@@ -188,6 +227,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
                 Future.successful(Some(false))
               )
 
+              when(
+                sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some("england"))
+              )
+
               val result = await(
                 sut.onSubmit(
                   request
@@ -215,6 +260,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
                 sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
               ).thenReturn(
                 Future.successful(Some(true))
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some("england"))
               )
 
               val result = await(
@@ -251,6 +302,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
                 Future.successful(Some(false))
               )
 
+              when(
+                sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some("england"))
+              )
+
               val result = await(
                 sut.onSubmit(
                   request
@@ -278,6 +335,12 @@ class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication
                 sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedThreeOrFourKey))(any(),any())
               ).thenReturn(
                 Future.successful(None)
+              )
+
+              when(
+                sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+              ).thenReturn(
+                Future.successful(Some("england"))
               )
 
               val result = await(
