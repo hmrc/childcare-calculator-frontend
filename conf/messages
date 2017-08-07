@@ -61,3 +61,6 @@ expect.childcare.costs.info.scotland = Support is only available for childcare w
 expect.childcare.costs.info.wales = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or a Care and Social Services Inspectorate Wales-registered childminding agency.
 expect.childcare.costs.info.northern-ireland = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.
 expect.childcare.costs.yes.no.not.selected.error = You must answer yes if you expect to have childcare costs with an approved provider
+
+####### Free 15 Hours Results #######
+your.eligibility.15.free.hours.header = Your eligibility for childcare support
