@@ -17,25 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.Messages.Implicits._
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 
-class LivingWithPartnerControllerSpec extends UnitSpec with FakeCCApplication {
+class LivingWithPartnerControllerSpec extends ControllersValidator {
 
   val sut = new LivingWithPartnerController(applicationMessagesApi)
 
-  s"${livingWithPartnerPath} url" should {
-    "be available" when {
-      "GET request is made" in {
-        val req = FakeRequest(GET, livingWithPartnerPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-    }
-  }
+  validateUrl(livingWithPartnerPath, List(GET))
 
   "onPageLoad" should {
     "load successfully ChildAgedThreeOrFour template" in {

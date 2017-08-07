@@ -21,16 +21,14 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
-import play.api.test.FakeRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 import play.api.test.Helpers._
 import scala.concurrent.Future
 
-class LocationControllerSpec extends UnitSpec with FakeCCApplication with BeforeAndAfterEach {
+class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
   val sut = new LocationController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -41,26 +39,7 @@ class LocationControllerSpec extends UnitSpec with FakeCCApplication with Before
     reset(sut.keystore)
   }
 
-  s"${locationPath} url" should {
-
-    "be available" when {
-
-      "GET request is made" in {
-        val req = FakeRequest(GET, locationPath).withSession(validSession)
-        val result = route(app, req)
-
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-
-      "POST request is made" in {
-        val req = FakeRequest(POST, locationPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-    }
-  }
+  validateUrl(locationPath)
 
   "LocationController" when {
 

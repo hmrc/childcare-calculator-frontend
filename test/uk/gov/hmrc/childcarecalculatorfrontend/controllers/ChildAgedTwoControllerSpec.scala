@@ -21,15 +21,13 @@ import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.Future
 
-class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with BeforeAndAfterEach {
+class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
   val sut = new ChildAgedTwoController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -40,26 +38,7 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
     reset(sut.keystore)
   }
 
-  s"${childAgedTwoPath} url" should {
-
-    "be available" when {
-
-      "GET request is made" in {
-        val req = FakeRequest(GET, childAgedTwoPath).withSession(validSession)
-        val result = route(app, req)
-
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-
-      "POST request is made" in {
-        val req = FakeRequest(POST, childAgedTwoPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-    }
-  }
+  validateUrl(childAgedTwoPath)
 
   "ChildAgedTwoController" when {
 
