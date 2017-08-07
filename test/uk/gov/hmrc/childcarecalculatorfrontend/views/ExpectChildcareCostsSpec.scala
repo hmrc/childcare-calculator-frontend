@@ -33,7 +33,7 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
     ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or an Ofsted-registered childminding agency."),
     ElementDetails(attribute = Some("for"), attributeValue = Some("expectChildcareCosts-true"), value = "Yes"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("expectChildcareCosts-false"), value = "No"),
-    ElementDetails(attribute = Some("type"), attributeValue = Some("submit"), checkAttribute = Some("title"), value = ""),
+    ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 

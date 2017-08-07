@@ -31,11 +31,13 @@ class FreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "By giving more information, the calculator can check to see if you’re eligible to get help from:"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "Childcare vouchers"),
     ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "Tax-Free Childcare"),
-    ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "Tax credits")
+    ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "Tax credits"),
+    ElementDetails(id = Some("next-button"), value = "Continue"),
+    ElementDetails(id = Some("back-button"), value = "Back")
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = livingWithPartnerPath),
+    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = freeHoursInfoPath),
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = expectChildcareCostsPath)
   )
 

@@ -17,22 +17,25 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.ccMain
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons.anchor
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
+@import uk.gov.hmrc.play.views.html._
 
 @ccMain(
     header = messages("free.hours.info.header"),
     backLink = Some(routes.ExpectChildcareCostsController.onPageLoad())
 ) {
-    <h2>@messages("free.hours.info.sub.heading")</h2>
-    <p>@messages("free.hours.info.info")</p>
-    <ul class="list list-bullet">
-        <li>@messages("free.hours.info.esc")</li>
-        <li>@messages("free.hours.info.tfc")</li>
-        <li>@messages("free.hours.info.tc")</li>
-    </ul>
-    @anchor(
-        href = routes.LivingWithPartnerController.onPageLoad(),
-        linkText = Messages("next.button")
-    )
+    @helpers.form(
+        action = routes.FreeHoursInfoController.onSubmit,
+        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+
+        <h2>@messages("free.hours.info.sub.heading")</h2>
+        <p>@messages("free.hours.info.info")</p>
+        <ul class="list list-bullet">
+            <li>@messages("free.hours.info.esc")</li>
+            <li>@messages("free.hours.info.tfc")</li>
+            <li>@messages("free.hours.info.tc")</li>
+        </ul>
+
+        @buttons.nextButton()
+    }
 }
