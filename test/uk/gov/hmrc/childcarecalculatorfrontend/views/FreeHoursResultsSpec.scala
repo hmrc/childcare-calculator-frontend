@@ -20,30 +20,29 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResults
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
 class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Your eligibility for childcare support"),
-    ElementDetails(tagName = Some("h2"), tagIndex = Some(0), value = "Still to check"),
-    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "By giving more information, the calculator can check to see if you’re eligible to get help from:"),
-    ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "Childcare vouchers"),
-    ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "Tax-Free Childcare"),
-    ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "Tax credits"),
-    ElementDetails(id = Some("next-button"), value = "Continue"),
+//    ElementDetails(tagName = Some("h2"), tagIndex = Some(0), value = "Still to check"),
+//    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "By giving more information, the calculator can check to see if you’re eligible to get help from:"),
+//    ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "Childcare vouchers"),
+//    ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "Tax-Free Childcare"),
+//    ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "Tax credits"),
+//    ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = freeHoursInfoPath),
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = expectChildcareCostsPath)
   )
 
-  "display correct content" in {
+  "display correct content for 15 hours eligibility" in {
     implicit val doc: Document = {
-      val template = freeHoursInfo()(request, applicationMessages)
+      val template = freeHoursResults(true, "england")(request, applicationMessages)
       Jsoup.parse(contentAsString(template))
     }
 

@@ -46,7 +46,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(), any())
         ).thenReturn(
           Future.successful(None)
         )
@@ -54,17 +54,17 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         when(
           sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(Some("england"))
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(), any())
         ).thenReturn(
           Future.successful(Some(true))
         )
@@ -75,14 +75,14 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           Future.successful(Some("England"))
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any(), any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -90,10 +90,10 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         when(
           sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(Some("england"))
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -107,7 +107,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           when(
             sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
           ).thenReturn(
-            Future.successful(Some("England"))
+            Future.successful(Some("england"))
           )
           
           val result = await(
@@ -132,7 +132,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         when(
           sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(Some("england"))
         )
 
         val result = await(
@@ -158,7 +158,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         when(
           sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(Some("england"))
         )
 
         val result = await(

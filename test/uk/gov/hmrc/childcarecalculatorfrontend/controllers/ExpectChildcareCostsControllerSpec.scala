@@ -47,7 +47,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           Future.successful(Some("england"))
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
@@ -65,7 +65,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           Future.successful(Some("england"))
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
@@ -85,7 +85,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           Future.successful(Some("england"))
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }

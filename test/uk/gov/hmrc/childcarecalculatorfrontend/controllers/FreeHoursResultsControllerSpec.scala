@@ -27,10 +27,10 @@ class FreeHoursResultsControllerSpec extends ControllersValidator {
   validateUrl(freeHoursResultsPath, List(GET))
 
   "onPageLoad" should {
-    "load successfully ChildAgedThreeOrFour template" in {
+    "load successfully FreeHoursResults template" in {
       val result = await(sut.onPageLoad(request.withSession(validSession)))
       status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/plain; charset=utf-8"
+      result.body.contentType.get shouldBe "text/html; charset=utf-8"
     }
   }
 }
