@@ -62,5 +62,17 @@ expect.childcare.costs.info.wales = You can get support for childcare costs with
 expect.childcare.costs.info.northern-ireland = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.
 expect.childcare.costs.yes.no.not.selected.error = You must answer yes if you expect to have childcare costs with an approved provider
 
-####### Free 15 Hours Results #######
-your.eligibility.15.free.hours.header = Your eligibility for childcare support
+####### Free Hours Info #######
+free.hours.info.header = It looks like you’re eligible for free hours
+free.hours.info.sub.heading = Still to check
+free.hours.info.info = By giving more information, the calculator can check to see if you’re eligible to get help from:
+free.hours.info.esc = Childcare vouchers
+free.hours.info.tfc = Tax-Free Childcare
+free.hours.info.tc = Tax credits
+
+####### Free Hours Results #######
+free.hours.results.header = Your eligibility for childcare support
+free.hours.results.entitled.sub.heading = What you're entitled to
+free.hours.results.eligible.sub.heading = To be eligible for other schemes
+free.hours.results.told.sub.heading = What you told the calculator
+

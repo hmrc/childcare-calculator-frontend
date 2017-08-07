@@ -17,38 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.Messages.Implicits._
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import scala.concurrent.Future
 
-class ExpectChildcareCostsControllerSpec extends UnitSpec with FakeCCApplication {
+class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
   val sut = new ExpectChildcareCostsController(applicationMessagesApi) {
     override val keystore = mock[KeystoreService]
   }
 
-  s"${expectChildcareCostsPath} url" should {
-    "be available" when {
-      "GET request is made" in {
-        val req = FakeRequest(GET, expectChildcareCostsPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-
-      "POST request is made" in {
-        val req = FakeRequest(POST, expectChildcareCostsPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-    }
-  }
+  validateUrl(expectChildcareCostsPath)
 
   "calling onPageLoad" should {
     "load successfully the ExpectChildcareCosts page" when {
