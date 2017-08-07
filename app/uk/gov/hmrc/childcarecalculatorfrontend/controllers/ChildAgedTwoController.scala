@@ -37,7 +37,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
     keystore.fetchEntryForSession[String](locationKey)
   }
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+  def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
     {
       for {
         res <- keystore.fetchEntryForSession[Boolean](childAgedTwoKey)

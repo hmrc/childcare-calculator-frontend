@@ -35,7 +35,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
     keystore.fetchEntryForSession[String](locationKey)
   }
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request => {
+  def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request => {
     for {
       res <- keystore.fetchEntryForSession[Boolean](expectChildcareCostsKey)
       location <- getLocation

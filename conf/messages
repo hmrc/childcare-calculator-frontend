@@ -72,7 +72,20 @@ free.hours.info.tc = Tax credits
 
 ####### Free Hours Results #######
 free.hours.results.header = Your eligibility for childcare support
-free.hours.results.entitled.sub.heading = What you're entitled to
+free.hours.results.entitled.sub.heading = What you’re entitled to
+free.hours.results.entitled.info = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+free.hours.results.entitled.info.no.costs = As you don’t currently have or expect to have any approved childcare costs, you would not be eligible for any further support other than free hours.
+free.hours.results.not.entitled.info = You’re currently not eligible for any free hours because you don’t have a child aged between 2 and 4. You don’t currently have or expect to have any approved childcare costs so you would not be eligible for any further support.
 free.hours.results.eligible.sub.heading = To be eligible for other schemes
-free.hours.results.told.sub.heading = What you told the calculator
+free.hours.results.eligible.info.start = You need to have childcare costs to get support through the other schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator
+free.hours.results.eligible.info.link.text = that you expect to have costs.
+free.hours.results.eligible.info.end = You can estimate how much you might pay at a later point.
+free.hours.results.summary.sub.heading = What you told the calculator
+free.hours.results.summary.info = You can go back and change your answers and see what you could get.
+free.hours.results.summary.age.2 = Child aged 2
+free.hours.results.summary.age.2.link = /childcare-calc/child-aged-two?summary=yes
+free.hours.results.summary.age.3.or.4 = Child aged 3 or 4
+free.hours.results.summary.age.3.or.4.link = /childcare-calc/child-aged-three-or-four?summary=yes
+free.hours.results.summary.expect.costs = Childcare costs with approved provider
+free.hours.results.summary.expect.costs.link = /childcare-calc/expect-childcare-costs?summary=yes
 
