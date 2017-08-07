@@ -27,29 +27,62 @@
 
     @if(child3Or4) {
         <h2 class="heading-medium">@messages("free.hours.results.entitled.sub.heading")</h2>
-            <p id="free-hours-results-entitled-info">@messages(s"free.hours.results.entitled.info")</p>
+        @if(location == "england") {
+            <p id="free-hours-results-entitled-info-england">@messages(s"free.hours.results.entitled.info.england")</p>
+        }
+        @if(location == "scotland") {
+            <p id="free-hours-results-entitled-info-scotland">@messages(s"free.hours.results.entitled.info.scotland")</p>
+        }
+        @if(location == "wales") {
+            <p id="free-hours-results-entitled-info-wales">@messages(s"free.hours.results.entitled.info.wales")</p>
+        }
+        @if(location == "northern-ireland") {
+            <p id="free-hours-results-entitled-info-ni">@messages(s"free.hours.results.entitled.info.ni")</p>
+        }
         <div class="panel panel-border-wide">
             <p id="free-hours-results-entitled-info-no-costs">@messages("free.hours.results.entitled.info.no.costs")</p>
         </div>
     } else {
-        <p id="free-hours-results-not-entitled-info">@messages("free.hours.results.not.entitled.info")</p>
+        <ul class="list list-bullet">
+        @if(location == "northern-ireland") {
+            <li>@messages("free.hours.results.entitled.ni")</li>
+        }
+        @if(location == "england") {
+            <li>@messages("free.hours.results.entitled.england")</li>
+        }
+        @if(location == "scotland") {
+            <li>@messages("free.hours.results.entitled.scotland")</li>
+        }
+        @if(location == "wales") {
+            <li>@messages("free.hours.results.entitled.wales")</li>
+        }
+            <li>@messages("free.hours.info.esc")</li>
+            <li>@messages("free.hours.info.tfc")</li>
+            <li>@messages("free.hours.info.tc")</li>
+        </ul>
+        @if(location == "northern-ireland") {
+            <p id="free-hours-results-not-entitled-info-ni">@messages("free.hours.results.not.entitled.info.ni")</p>
+        } else {
+            <p id="free-hours-results-not-entitled-info-others">@messages("free.hours.results.not.entitled.info")</p>
+        }
     }
 
     <h2 class="heading-medium">@messages("free.hours.results.eligible.sub.heading")</h2>
-        <p id="free-hours-results-eligible-info">
-            @messages(s"free.hours.results.eligible.info.start")
-            <a href=@messages("free.hours.results.summary.expect.costs.link")>@messages(s"free.hours.results.eligible.info.link.text")</a>
-            @messages(s"free.hours.results.eligible.info.end")
-        </p>
+    <p id="free-hours-results-eligible-info">
+        @messages(s"free.hours.results.eligible.info.start")
+        <a href=@messages("free.hours.results.summary.expect.costs.link")>@messages(s"free.hours.results.eligible.info.link.text")</a>
+        @messages(s"free.hours.results.eligible.info.end")
+    </p>
 
     <h2 class="heading-medium">@messages("free.hours.results.summary.sub.heading")</h2>
-        <p id="free-hours-results-summary-info">@messages(s"free.hours.results.summary.info")</p>
+    <p id="free-hours-results-summary-info">@messages(s"free.hours.results.summary.info")</p>
 
     <table>
         <thead>
             <tr><th colspan="3">General</th></tr>
         </thead>
         <tbody>
+        @if(location != "northern-ireland") {
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.age.2")</td>
                 <td>No</td>
@@ -57,6 +90,7 @@
                     <a href=@messages("free.hours.results.summary.age.2.link")>change</a>
                 </td>
             </tr>
+        }
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.age.3.or.4")</td>
                 <td>No</td>

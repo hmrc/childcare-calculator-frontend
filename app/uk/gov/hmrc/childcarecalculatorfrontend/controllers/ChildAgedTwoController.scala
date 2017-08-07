@@ -46,7 +46,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
         Ok(
           childAgedTwo(
             new ChildAgedTwoForm(messagesApi).form.fill(res),
-            location.getOrElse("England")
+            location.getOrElse("england")
           )
         )
       }
@@ -61,7 +61,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
     new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
       errors => {
         for (location <- getLocation) yield {
-          BadRequest(childAgedTwo(errors, location.getOrElse("England")))
+          BadRequest(childAgedTwo(errors, location.getOrElse("england")))
         }
       },
       success => {

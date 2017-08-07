@@ -60,7 +60,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
           childAgedThreeOrFour(
             new ChildAgedThreeOrFourForm(messagesApi).form.fill(res),
             backUrl,
-            location.getOrElse("England")
+            location.getOrElse("england")
           )
         )
       }
@@ -82,7 +82,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
             childAgedThreeOrFour(
               errors,
               backUrl,
-              location.getOrElse("England")
+              location.getOrElse("england")
             )
           )
         }).recover {

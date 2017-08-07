@@ -17,24 +17,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-
-import scala.concurrent.Future
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResults
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 @Singleton
 class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
-
-  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
-    keystore.fetchEntryForSession[String](locationKey)
-  }
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     {
@@ -42,12 +34,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
         child3Or4 <- keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey)
         location <- keystore.fetchEntryForSession[String](locationKey)
       } yield {
-        Ok(
-          freeHoursResults(
-            child3Or4.getOrElse(false),
-            location.getOrElse("England")
-          )
-        )
+        Ok(freeHoursResults(child3Or4.getOrElse(false), location.getOrElse("england")))
       }
     } recover {
       case ex: Exception =>
