@@ -44,5 +44,13 @@ class LivingWithPartnerControllerSpec extends UnitSpec with FakeCCApplication {
       result.body.contentType.get shouldBe "text/plain; charset=utf-8"
     }
   }
-  
+
+  "onSubmit" should {
+    "load successfully ChildAgedThreeOrFour template" in {
+      val result = await(sut.onSubmit(request.withSession(validSession)))
+      status(result) shouldBe OK
+      result.body.contentType.get shouldBe "text/plain; charset=utf-8"
+    }
+  }
+
 }
