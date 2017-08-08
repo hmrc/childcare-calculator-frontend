@@ -124,7 +124,8 @@ case class Household(
                       partner: Option[Claimant] = None,
                       childAgedTwo: Option[Boolean] = None,
                       childAgedThreeOrFour: Option[Boolean] = None,
-                      expectChildcareCosts: Option[Boolean] = None
+                      expectChildcareCosts: Option[Boolean] = None,
+                      livingWithPartner: Option[Boolean] = None
                     )
 object Household {
   implicit val formatHousehold = Json.format[Household]

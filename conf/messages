@@ -69,3 +69,7 @@ free.hours.info.info = By giving more information, the calculator can check to s
 free.hours.info.esc = Childcare vouchers
 free.hours.info.tfc = Tax-Free Childcare
 free.hours.info.tc = Tax credits
+
+####### Living With Partner #######
+living.with.partner.header = Do you have a partner that you live with?
+living.with.partner.yes.no.not.selected.error = You must tell the calculator if you have a partner you live with
