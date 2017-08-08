@@ -34,7 +34,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
   val keystore: KeystoreService = KeystoreService
 
   private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
-    if (hasChildAgedThreeOrFour.isDefined) {
+    if (hasChildAgedThreeOrFour.getOrElse(false)) {
       routes.FreeHoursInfoController.onPageLoad()
     }
     else {
