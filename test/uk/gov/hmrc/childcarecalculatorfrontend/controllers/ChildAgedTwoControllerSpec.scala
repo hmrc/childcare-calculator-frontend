@@ -23,6 +23,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
@@ -40,21 +41,21 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
   validateUrl(childAgedTwoPath)
 
+  def buildHousehold(childAgedTwo: Option[Boolean] = None): Household = Household(
+    location = LocationEnum.ENGLAND,
+    childAgedTwo = childAgedTwo
+  )
   "ChildAgedTwoController" when {
 
     "onPageLoad is called" should {
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(None)
-        )
-
-        when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = None))
+          )
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -64,15 +65,11 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(Some(true))
-        )
-
-        when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = Some(true)))
+          )
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -82,15 +79,9 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
           Future.failed(new RuntimeException)
-        )
-
-        when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some("England"))
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -105,9 +96,11 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         "load same template and return BAD_REQUEST" in {
 
           when(
-            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+            sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
           ).thenReturn(
-            Future.successful(Some("England"))
+            Future.successful(
+              Some(buildHousehold(childAgedTwo = None))
+            )
           )
           
           val result = await(
@@ -124,15 +117,19 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(Some(true))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = None))
+          )
         )
 
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = Some(true)))
+          )
         )
 
         val result = await(
@@ -150,15 +147,17 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.failed(new RuntimeException)
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = None))
+          )
         )
 
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.failed(new RuntimeException)
         )
 
         val result = await(

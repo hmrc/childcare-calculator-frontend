@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import play.api.libs.json.{Reads, Format}
+import play.api.libs.json.{Json, Reads, Format}
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
@@ -28,7 +29,7 @@ object KeystoreService extends KeystoreService {
   val sessionCache: SessionCache = CCSessionCache
 }
 
-trait KeystoreService {
+trait KeystoreService extends CCConstants {
   val sessionCache: SessionCache
 
   def cacheEntryForSession[T](key: String, data: T)(implicit hc: HeaderCarrier, formats: Format[T]): Future[Option[T]] = {
@@ -39,6 +40,16 @@ trait KeystoreService {
 
   def fetchEntryForSession[T](key: String)(implicit hc: HeaderCarrier, rds: Reads[T]): Future[Option[T]] = {
     sessionCache.fetchAndGetEntry[T](key)
+  }
+
+  def fetch[Household]()(implicit hc: HeaderCarrier, rds: Reads[Household]): Future[Option[Household]] = {
+    sessionCache.fetchAndGetEntry[Household](householdKey)
+  }
+
+  def cache[Household](data: Household)(implicit hc: HeaderCarrier, formats: Format[Household]): Future[Option[Household]] = {
+    sessionCache.cache[Household](householdKey, data) map {
+      _.getEntry[Household](householdKey)
+    }
   }
 
   // TODO: Find a better way to do that

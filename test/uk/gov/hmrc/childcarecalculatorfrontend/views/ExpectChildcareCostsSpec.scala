@@ -18,11 +18,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes._
+import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.prop.Tables.Table
 import play.api.data.Form
 import play.api.i18n.Messages
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
@@ -30,7 +35,6 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Do you have or expect to have childcare costs with an approved provider?"),
-    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or an Ofsted-registered childminding agency."),
     ElementDetails(attribute = Some("for"), attributeValue = Some("expectChildcareCosts-true"), value = "Yes"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("expectChildcareCosts-false"), value = "No"),
     ElementDetails(id = Some("next-button"), value = "Continue"),
@@ -42,7 +46,15 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = childAgedThreeOrFourPath)
   )
 
-  def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
+  val infoContent = Table(
+    ("Location", "Info text"),
+    (LocationEnum.ENGLAND, "Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or an Ofsted-registered childminding agency."),
+    (LocationEnum.SCOTLAND, "Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or a Scottish Care Inspectorate-registered childminding agency."),
+    (LocationEnum.WALES, "You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or a Care and Social Services Inspectorate Wales-registered childminding agency."),
+    (LocationEnum.NORTHERNIRELAND, "You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.")
+  )
+
+  def getTemplate(form: Form[Option[Boolean]], location: LocationEnum): Document = {
     val template = expectChildcareCosts(form, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
@@ -50,101 +62,80 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
   "calling ExpectChildcareCosts template" should {
 
     "render template" in {
-
-      val location = "england"
-      val template = expectChildcareCosts.render(new ExpectChildcareCostsForm(applicationMessagesApi).form, location, request, applicationMessages)
+      val template = expectChildcareCosts.render(new ExpectChildcareCostsForm(applicationMessagesApi).form, LocationEnum.ENGLAND, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = expectChildcareCosts.f(new ExpectChildcareCostsForm(applicationMessagesApi).form, location)(request, applicationMessages)
+      val template1 = expectChildcareCosts.f(new ExpectChildcareCostsForm(applicationMessagesApi).form, LocationEnum.ENGLAND)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
-    "display correct content" when {
-      "nothing is selected initially" in {
-        implicit val doc: Document = getTemplate(new ExpectChildcareCostsForm(applicationMessagesApi).form)
+    forAll(infoContent) { case (location, infoText) => {
+      val dynamicContent = List(
+        ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = infoText)
+      )
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks()
-        verifyErrors()
-      }
+      s"display correct content for location ${location.toString}" when {
 
-      "true is selected" in {
-        implicit val doc: Document = getTemplate(new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true)))
+        "nothing is selected initially" in {
+          implicit val doc: Document = getTemplate(new ExpectChildcareCostsForm(applicationMessagesApi).form, location)
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks(List(s"${expectChildcareCostsKey}-true"))
-        verifyErrors()
-      }
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks()
+          verifyErrors()
+        }
 
-      "false is selected" in {
-        implicit val doc: Document = getTemplate(new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(false)))
+        "true is selected" in {
+          implicit val doc: Document = getTemplate(new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true)), location)
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks(List(s"${expectChildcareCostsKey}-false"))
-        verifyErrors()
-      }
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks(List(s"${expectChildcareCostsKey}-true"))
+          verifyErrors()
+        }
 
-      "form is submitted without data" in {
-        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
-          Map(
-            expectChildcareCostsKey -> ""
+        "false is selected" in {
+          implicit val doc: Document = getTemplate(new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(false)), location)
+
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks(List(s"${expectChildcareCostsKey}-false"))
+          verifyErrors()
+        }
+
+        "form is submitted without data" in {
+          val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
+            Map(
+              expectChildcareCostsKey -> ""
+            )
           )
-        )
-        implicit val doc: Document = getTemplate(form)
+          implicit val doc: Document = getTemplate(form, location)
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks()
-        verifyErrors(
-          errors = Map("expectChildcareCosts" -> applicationMessages.messages("expect.childcare.costs.yes.no.not.selected.error"))
-        )
-      }
-
-      "form is submitted with invalid data" in {
-        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
-          Map(
-            expectChildcareCostsKey -> "abcd"
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks()
+          verifyErrors(
+            errors = Map("expectChildcareCosts" -> applicationMessages.messages("expect.childcare.costs.yes.no.not.selected.error"))
           )
-        )
-        implicit val doc: Document = getTemplate(form)
+        }
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks()
-        verifyErrors(
-          errors = Map("expectChildcareCosts" -> applicationMessages.messages("error.boolean"))
-        )
-      }
+        "form is submitted with invalid data" in {
+          val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.bind(
+            Map(
+              expectChildcareCostsKey -> "abcd"
+            )
+          )
+          implicit val doc: Document = getTemplate(form, location)
 
-    }
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks()
+          verifyErrors(
+            errors = Map("expectChildcareCosts" -> applicationMessages.messages("error.boolean"))
+          )
+        }
+      }}
 
-    "display different content based on location" when {
-      "location is scotland" in {
-        val location = "scotland"
-        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
-        val template = getTemplate(form, location)
-
-        template.getElementById("expect-childcare-costs-info").text() shouldBe Messages(s"expect.childcare.costs.info.scotland")
-      }
-
-      "location is wales" in {
-        val location = "wales"
-        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
-        val template = getTemplate(form, location)
-
-        template.getElementById("expect-childcare-costs-info").text() shouldBe Messages(s"expect.childcare.costs.info.wales")
-      }
-
-      "location is northen-ireland" in {
-        val location = "northern-ireland"
-        val form = new ExpectChildcareCostsForm(applicationMessagesApi).form.fill(Some(true))
-        val template = getTemplate(form, location)
-
-        template.getElementById("expect-childcare-costs-info").text() shouldBe Messages(s"expect.childcare.costs.info.northern-ireland")
-      }
     }
 
   }
