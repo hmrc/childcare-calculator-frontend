@@ -17,9 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Household
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResults
 
@@ -29,18 +31,17 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    {
-      for {
-        child3Or4 <- keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey)
-        location <- keystore.fetchEntryForSession[String](locationKey)
-      } yield {
-        Ok(freeHoursResults(child3Or4.getOrElse(false), location.getOrElse("england")))
-      }
+    keystore.fetch[Household]().map {
+      case Some(household) =>
+        Ok(freeHoursResults(household.childAgedThreeOrFour.getOrElse(false), household.location))
+      case _ =>
+        Logger.warn("Household object is missing in ExpectChildcareCostsController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+
     } recover {
       case ex: Exception =>
         Logger.warn(s"Exception from FreeHoursResultsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
-
 }

@@ -16,18 +16,38 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+
+import scala.concurrent.Future
 
 class FreeHoursResultsControllerSpec extends ControllersValidator {
 
-  val sut = new FreeHoursResultsController(applicationMessagesApi)
+  val sut = new FreeHoursResultsController(applicationMessagesApi){
+    override val keystore: KeystoreService = mock[KeystoreService]
+  }
 
   validateUrl(freeHoursResultsPath, List(GET))
 
   "onPageLoad" should {
     "load successfully FreeHoursResults template" in {
+      when(
+        sut.keystore.fetch[Household]()(any(),any())
+      ).thenReturn(
+        Future.successful(
+          Some(
+            Household(
+              location = LocationEnum.ENGLAND,
+              childAgedThreeOrFour = Some(true)
+            )
+          )
+        )
+      )
       val result = await(sut.onPageLoad(request.withSession(validSession)))
       status(result) shouldBe OK
       result.body.contentType.get shouldBe "text/html; charset=utf-8"

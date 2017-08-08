@@ -22,6 +22,8 @@ import org.mockito.Mockito._
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -41,15 +43,21 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
   validateUrl(locationPath)
 
+  def buildHousehold(location: LocationEnum = LocationEnum.ENGLAND): Household = Household(
+    location = location
+  )
+
   "LocationController" when {
 
     "onPageLoad is called" should {
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any[HeaderCarrier], any[Reads[String]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
-          Future.successful(None)
+          Future.successful(
+            None
+          )
         )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
@@ -58,9 +66,11 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any[HeaderCarrier], any[Reads[String]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
-          Future.successful(Some(LocationEnum.ENGLAND.toString))
+          Future.successful(
+            Some(buildHousehold(location = LocationEnum.ENGLAND))
+          )
         )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
@@ -69,7 +79,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any[HeaderCarrier], any[Reads[String]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -98,22 +108,60 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
       "saving in keystore is successful" should {
         s"go to ${childAgedTwoPath}" when {
           val childAgeTwoLocations = List(
-            LocationEnum.ENGLAND.toString,
-            LocationEnum.SCOTLAND.toString,
-            LocationEnum.WALES.toString
+            LocationEnum.ENGLAND,
+            LocationEnum.SCOTLAND,
+            LocationEnum.WALES
           )
           childAgeTwoLocations.foreach { loc =>
-            s"${loc} is selected" in {
+            s"${loc.toString} is selected if there is no data in keystore for Household object" in {
               when(
-                sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+                sut.keystore.fetch[Household]()(any(), any())
               ).thenReturn(
-                Future.successful(Some(loc))
+                Future.successful(
+                  None
+                )
+              )
+
+              when(
+                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = loc))
+                )
               )
 
               val result = await(
                 sut.onSubmit(
                   request
-                    .withFormUrlEncodedBody(locationKey -> loc)
+                    .withFormUrlEncodedBody(locationKey -> loc.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe childAgedTwoPath
+            }
+
+            s"${loc.toString} is selected if there is data in keystore for Household object" in {
+              when(
+                sut.keystore.fetch[Household]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = LocationEnum.ENGLAND))
+                )
+              )
+
+              when(
+                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = loc))
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(locationKey -> loc.toString)
                     .withSession(validSession)
                 )
               )
@@ -125,26 +173,58 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
         s"go to '3 or 4 years old page' ${childAgedThreeOrFourPath}" when {
           val childAgeTwoLocations = List(
-            LocationEnum.NORTHERNIRELAND.toString
+            LocationEnum.NORTHERNIRELAND
           )
           childAgeTwoLocations.foreach { loc =>
-            s"${loc} is selected" in {
+            s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
               when(
-                sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+                sut.keystore.fetch[Household]()(any(), any())
               ).thenReturn(
-                Future.successful(Some(loc))
+                Future.successful(
+                  None
+                )
               )
 
               when(
-                sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
+                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
               ).thenReturn(
-                Future.successful(true)
+                Future.successful(
+                  Some(buildHousehold(location = loc))
+                )
               )
 
               val result = await(
                 sut.onSubmit(
                   request
-                    .withFormUrlEncodedBody(locationKey -> loc)
+                    .withFormUrlEncodedBody(locationKey -> loc.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
+            }
+
+            s"${loc.toString} is selected if there is data in keystore for Household object" in {
+              when(
+                sut.keystore.fetch[Household]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = LocationEnum.ENGLAND))
+                )
+              )
+
+              when(
+                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = loc))
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(locationKey -> loc.toString)
                     .withSession(validSession)
                 )
               )
@@ -158,7 +238,15 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
       "connecting with keystore fails" should {
         s"redirect to ${technicalDifficultiesPath}" in {
           when(
-            sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
+            sut.keystore.fetch[Household]()(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(buildHousehold(location = LocationEnum.ENGLAND))
+            )
+          )
+
+          when(
+            sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
@@ -172,61 +260,6 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           )
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
-
-      s"redirect to ${technicalDifficultiesPath}" when {
-        val childAgeTwoLocations = List(
-          LocationEnum.NORTHERNIRELAND.toString
-        )
-        childAgeTwoLocations.foreach { loc =>
-          s"${loc} is selected but deleting old data from session fails" in {
-            when(
-              sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
-            ).thenReturn(
-              Future.successful(Some(loc))
-            )
-
-            when(
-              sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
-            ).thenReturn(
-              Future.successful(false)
-            )
-
-            val result = await(
-              sut.onSubmit(
-                request
-                  .withFormUrlEncodedBody(locationKey -> loc)
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
-          }
-
-          s"${loc} is selected but deleting old data from session throws exception" in {
-            when(
-              sut.keystore.cacheEntryForSession[String](refEq(locationKey), anyString)(any[HeaderCarrier], any[Format[String]])
-            ).thenReturn(
-              Future.successful(Some(loc))
-            )
-
-            when(
-              sut.keystore.removeFromSession(anyString)(any[HeaderCarrier])
-            ).thenReturn(
-              Future.failed(new RuntimeException)
-            )
-
-            val result = await(
-              sut.onSubmit(
-                request
-                  .withFormUrlEncodedBody(locationKey -> loc)
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
-          }
         }
       }
 

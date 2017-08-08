@@ -21,7 +21,7 @@ import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.config.WSHttp
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, Household, SchemesResult}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Claimant, Household, SchemesResult}
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
@@ -46,7 +46,7 @@ class EligiblityConnectorSpec extends UnitSpec with MockitoSugar with FakeCCAppl
         mockConnector.httpPost.POST[Household, SchemesResult](anyString(), any(),any())(any(),any(), any())
       ).thenReturn(Future.successful(schemesResult))
 
-      val res = await(mockConnector.getEligibility(Household(children = Nil, parent = Claimant(), partner = None)))
+      val res = await(mockConnector.getEligibility(Household(location = LocationEnum.ENGLAND, children = List.empty, parent = Claimant(), partner = None)))
       res shouldBe schemesResult
     }
   }

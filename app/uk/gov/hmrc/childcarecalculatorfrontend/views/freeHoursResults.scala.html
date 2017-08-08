@@ -14,7 +14,8 @@
  * limitations under the License.
  *@
 
-@(child3Or4: Boolean, location: String)(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+@(child3Or4: Boolean, location: LocationEnum)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.ccMain
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons.anchor
@@ -46,7 +47,7 @@
     }
 
     <h2 class="heading-medium">@messages("free.hours.results.eligible.sub.heading")</h2>
-    <p>@messages(s"free.hours.results.eligible.info.start")
+    <p id="free-hours-results-eligible-cc">@messages(s"free.hours.results.eligible.info.start")
         <a href="@routes.ExpectChildcareCostsController.onPageLoad(true)">@messages(s"free.hours.results.eligible.info.link.text")</a>
         @messages(s"free.hours.results.eligible.info.end")
     </p>
@@ -64,7 +65,7 @@
                 <td width="60%">@messages("free.hours.results.summary.age.2")</td>
                 <td>No</td>
                 <td class="numeric">
-                    <a href="@routes.ChildAgedTwoController.onPageLoad(true)">change</a>
+                    <a id="free-hours-results-general-aged2" href="@routes.ChildAgedTwoController.onPageLoad(true)">change</a>
                 </td>
             </tr>
         }
@@ -72,14 +73,14 @@
                 <td width="60%">@messages("free.hours.results.summary.age.3.or.4")</td>
                 <td>No</td>
                 <td class="numeric">
-                    <a href="@routes.ChildAgedThreeOrFourController.onPageLoad(true)">change</a>
+                    <a id="free-hours-results-general-aged3-or-4" href="@routes.ChildAgedThreeOrFourController.onPageLoad(true)">change</a>
                 </td>
             </tr>
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.expect.costs")</td>
                 <td>No</td>
                 <td class="numeric">
-                    <a href="@routes.ExpectChildcareCostsController.onPageLoad(true)">change</a>
+                    <a id="free-hours-results-general-cc" href="@routes.ExpectChildcareCostsController.onPageLoad(true)">change</a>
                 </td>
             </tr>
         </tbody>

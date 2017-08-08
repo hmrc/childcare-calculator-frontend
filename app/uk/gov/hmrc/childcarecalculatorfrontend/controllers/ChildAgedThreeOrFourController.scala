@@ -22,6 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Household
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -33,36 +34,31 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(summary: Boolean)(implicit hc: HeaderCarrier): Future[Call] = {
+  private def getBackUrl(summary: Boolean, hasChildAgedTwo: Option[Boolean])(implicit hc: HeaderCarrier): Call = {
     if(summary) {
-      Future(routes.FreeHoursResultsController.onPageLoad())
+      routes.FreeHoursResultsController.onPageLoad()
     } else {
-      keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { childAgedTwo =>
-        if (childAgedTwo.isDefined) {
-          routes.ChildAgedTwoController.onPageLoad(false)
-        } else {
-          routes.LocationController.onPageLoad()
-        }
+      if(hasChildAgedTwo.isDefined) {
+        routes.ChildAgedTwoController.onPageLoad(false)
+      } else {
+        routes.LocationController.onPageLoad()
       }
     }
   }
 
   def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
-    {
-      for {
-        res <- keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey)
-        backUrl <- getBackUrl(summary)
-        location <- keystore.fetchEntryForSession[String](locationKey)
-      } yield {
-
+    keystore.fetch[Household]().map {
+      case Some(household) =>
         Ok(
           childAgedThreeOrFour(
-            new ChildAgedThreeOrFourForm(messagesApi).form.fill(res),
-            backUrl,
-            location.getOrElse("england")
+            new ChildAgedThreeOrFourForm(messagesApi).form.fill(household.childAgedThreeOrFour),
+            getBackUrl(summary, household.childAgedTwo),
+            household.location
           )
         )
-      }
+      case _ =>
+        Logger.warn("Household object is missing in ChildAgedThreeOrFourController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     } recover {
       case ex: Exception =>
         Logger.warn(s"Exception from ChildAgedThreeOrFourController.onPageLoad: ${ex.getMessage}")
@@ -71,35 +67,39 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    new ChildAgedThreeOrFourForm(messagesApi).form.bindFromRequest().fold(
-      errors => {
-        (for {
-          backUrl <- getBackUrl(false)
-          location <- keystore.fetchEntryForSession[String](locationKey)
-        } yield {
-          BadRequest(
-            childAgedThreeOrFour(
-              errors,
-              backUrl,
-              location.getOrElse("england")
+    keystore.fetch[Household]().flatMap {
+      case Some(household) =>
+        new ChildAgedThreeOrFourForm(messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                childAgedThreeOrFour(
+                  errors,
+                  getBackUrl(false, household.childAgedTwo),
+                  household.location
+                )
+              )
+            ),
+          success => {
+            val modifiedHousehold = household.copy(
+              childAgedThreeOrFour = success
             )
-          )
-        }).recover {
-          case ex: Exception =>
-            Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit.getBackUrl: ${ex.getMessage}")
-            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-        }
-      },
-      success => {
-        keystore.cacheEntryForSession[Boolean](childAgedThreeOrFourKey, success.get).map {
-          result =>
-            Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
-        } recover {
-          case ex: Exception =>
-            Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")
-            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-        }
-      }
-    )
+            keystore.cache(modifiedHousehold).map { result =>
+              Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
+            } recover {
+              case ex: Exception =>
+                Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")
+                Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("Household object is missing in ChildAgedThreeOrFourController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
   }
 }
