@@ -30,7 +30,7 @@ class LivingWithPartnerForm @Inject()(val messagesApi: MessagesApi) extends I18n
 
   val form = Form[LivingWithPartnerForm](
     single(
-      livingWithPartnerFormKey -> optional(boolean).verifying(
+      livingWithPartnerKey -> optional(boolean).verifying(
         Messages("living.with.partner.yes.no.not.selected.error"),
         _.isDefined
       )
