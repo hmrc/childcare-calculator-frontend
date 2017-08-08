@@ -49,6 +49,7 @@ class LocationFormSpec extends UnitSpec with FakeCCApplication {
           result.hasErrors shouldBe true
           result.errors.length shouldBe 1
           result.errors.head.message shouldBe applicationMessages.messages("location.radio.not.selected.error")
+          result.errors.head.message should not be "location.radio.not.selected.error"
           result.value shouldBe None
         }
       }

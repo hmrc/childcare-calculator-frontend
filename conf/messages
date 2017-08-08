@@ -69,3 +69,7 @@ free.hours.info.info = By giving more information, the calculator can check to s
 free.hours.info.esc = Childcare vouchers
 free.hours.info.tfc = Tax-Free Childcare
 free.hours.info.tc = Tax credits
+
+####### In Paid Employment or Self-Employed #######
+in.employment.not.selected.error.single = You must tell the calculator if you are in paid employment or self-employed
+in.employment.not.selected.error.couple = You must tell the calculator if you or your partner are in paid employment or self-employed
