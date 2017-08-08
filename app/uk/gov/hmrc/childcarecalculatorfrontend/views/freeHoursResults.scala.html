@@ -21,46 +21,75 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons.anchor
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
+@theLocation = @{location.toString}
 @ccMain(
     header = messages("free.hours.results.header"),
     backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
 ) {
-
     @if(child3Or4) {
-        <h2 class="heading-medium" id="test">@messages("free.hours.results.entitled.sub.heading")</h2>
+        <div class="grid-row">
+            <div class="column-half">
+                <div class="panel panel-border-wide green">
+                    <h2 class="visuallyhidden">Eligible</h2>
+                    <ul class="list list-bullet">
+                        <li>@messages(s"free.hours.results.entitled.${location}")</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="column-half">
+                <div class="panel panel-border-wide red">
+                    <h2 class="visuallyhidden">Ineligible</h2>
+                    <ul class="list list-bullet">
+                        <li>@messages("free.hours.info.esc")</li>
+                        <li>@messages("free.hours.info.tfc")</li>
+                        <li>@messages("free.hours.info.tc")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <p>@messages(s"free.hours.results.entitled.info.${location}")</p>
         <div class="panel panel-border-wide">
             <p>@messages("free.hours.results.entitled.info.no.costs")</p>
         </div>
     } else {
-        <ul class="list list-bullet">
-            <li>@messages(s"free.hours.results.entitled.${location}")</li>
-            <li>@messages("free.hours.info.esc")</li>
-            <li>@messages("free.hours.info.tfc")</li>
-            <li>@messages("free.hours.info.tc")</li>
-        </ul>
-        @if(location == "northern-ireland") {
-            <p>@messages("free.hours.results.not.entitled.info.ni")</p>
-        } else {
-            <p>@messages("free.hours.results.not.entitled.info")</p>
-        }
+        <div class="grid-row">
+            <div class="column-half">
+                <div class="panel panel-border-wide red">
+                    <h2 class="visuallyhidden">Ineligible</h2>
+                    <ul class="list list-bullet">
+                        <li>@messages(s"free.hours.results.entitled.${location}")</li>
+                        <li>@messages("free.hours.info.esc")</li>
+                        <li>@messages("free.hours.info.tfc")</li>
+                        <li>@messages("free.hours.info.tc")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="free-hours-results-not-entitled">
+            @if(theLocation == "northern-ireland") {
+                <p>@messages("free.hours.results.not.entitled.info.ni")</p>
+            } else {
+                <p>@messages("free.hours.results.not.entitled.info")</p>
+            }
+        </div>
     }
 
-    <h2 class="heading-medium">@messages("free.hours.results.eligible.sub.heading")</h2>
-    <p>@messages(s"free.hours.results.eligible.info.start")
-        <a id="free-hours-results-eligible-cc" href="@routes.ExpectChildcareCostsController.onPageLoad(true)">@messages(s"free.hours.results.eligible.info.link.text")</a>
-        @messages(s"free.hours.results.eligible.info.end")
-    </p>
-
-    <h2 class="heading-medium">@messages("free.hours.results.summary.sub.heading")</h2>
-    <p>@messages(s"free.hours.results.summary.info")</p>
+    <div id="free-hours-results-eligible">
+        <h2 class="heading-medium">@messages("free.hours.results.eligible.sub.heading")</h2>
+        <p>@messages(s"free.hours.results.eligible.info.start")
+            <a id="free-hours-results-eligible-cc" href="@routes.ExpectChildcareCostsController.onPageLoad(true)">@messages(s"free.hours.results.eligible.info.link.text")</a>
+            @messages(s"free.hours.results.eligible.info.end")
+        </p>
+        <h2 class="heading-medium">@messages("free.hours.results.summary.sub.heading")</h2>
+        <p>@messages(s"free.hours.results.summary.info")</p>
+    </div>
 
     <table>
         <thead>
             <tr><th colspan="3">General</th></tr>
         </thead>
         <tbody>
-        @if(location != "northern-ireland") {
+        @if(theLocation != "northern-ireland") {
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.age.2")</td>
                 <td>No</td>
