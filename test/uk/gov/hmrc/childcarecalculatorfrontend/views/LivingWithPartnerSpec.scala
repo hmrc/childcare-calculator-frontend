@@ -22,6 +22,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.data.Form
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
 
@@ -37,23 +38,27 @@ class LivingWithPartnerSpec extends TemplatesValidator with FakeCCApplication {
 
   override val linksData: List[ElementDetails] = List(
     ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = livingWithPartnerPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = freeHoursResultsPath)
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = freeHoursInfoPath)
   )
 
-  val location = "england"
+  val backUrl: Call = Call("GET", freeHoursInfoPath)
 
   def getTemplate(form: Form[Option[Boolean]]): Document = {
-    val template = livingWithPartner(form)(request, applicationMessages)
+    val template = livingWithPartner(form, backUrl)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling LivingWithPartner template" should {
 
     "render template" in {
-      val template = livingWithPartner.render(new LivingWithPartnerForm(applicationMessagesApi).form, request, applicationMessages)
+      val template = livingWithPartner.render(new LivingWithPartnerForm(applicationMessagesApi).form,
+        backUrl, request, applicationMessages)
+
       template.contentType shouldBe "text/html"
 
-      val template1 = livingWithPartner.f(new LivingWithPartnerForm(applicationMessagesApi).form)(request, applicationMessages)
+      val template1 = livingWithPartner.f(new LivingWithPartnerForm(applicationMessagesApi).form,
+        backUrl)(request, applicationMessages)
+
       template1.contentType shouldBe "text/html"
     }
 

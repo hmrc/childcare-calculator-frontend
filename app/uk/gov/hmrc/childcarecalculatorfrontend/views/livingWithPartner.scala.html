@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]])(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[Boolean]], backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
@@ -24,7 +24,7 @@
 
 @ccMain(
     header = messages("living.with.partner.header"),
-    backLink = Some(routes.FreeHoursResultsController.onPageLoad())
+    backLink = Some(backUrl)
 ) {
     @helpers.form(
         action = routes.LivingWithPartnerController.onSubmit,
