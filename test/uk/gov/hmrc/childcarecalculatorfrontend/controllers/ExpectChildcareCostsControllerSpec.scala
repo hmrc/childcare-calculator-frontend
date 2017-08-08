@@ -89,6 +89,18 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     }
 
     s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
+      "there is no data in keystore for Household object" in {
+        when(
+          sut.keystore.fetch[Household]()(any(),any())
+        ).thenReturn(
+          Future.successful(None)
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
       "an exception is thrown from keystore service" in {
         when(
           sut.keystore.fetch[Household]()(any(),any())
@@ -274,6 +286,23 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
+          "there is no data in keystore for Household object" in {
+            when(
+              sut.keystore.fetch[Household]()(any(),any())
+            ).thenReturn(
+              Future.successful(None)
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
         }
       }
     }

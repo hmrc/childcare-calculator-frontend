@@ -77,6 +77,18 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
+      "redirect to error page if there is no data keystore for household object" in {
+        when(
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+        ).thenReturn(
+          Future.successful(None)
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
       "redirect to error page if can't connect with keystore" in {
         when(
           sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
@@ -158,6 +170,28 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
         ).thenReturn(
           Future.failed(new RuntimeException)
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(childAgedTwoKey -> "false")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+    }
+
+    "there is no data in keystore for Household object" should {
+      s"redirect to ${technicalDifficultiesPath}" in {
+        when(
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+        ).thenReturn(
+          Future.successful(
+            None
+          )
         )
 
         val result = await(

@@ -41,6 +41,14 @@ class FreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = expectChildcareCostsPath)
   )
 
+  "render template" in {
+    val template = freeHoursInfo.render(request, applicationMessages)
+    template.contentType shouldBe "text/html"
+
+    val template1 = freeHoursInfo.f()(request, applicationMessages)
+    template1.contentType shouldBe "text/html"
+  }
+
   "display correct content" in {
     implicit val doc: Document = {
       val template = freeHoursInfo()(request, applicationMessages)

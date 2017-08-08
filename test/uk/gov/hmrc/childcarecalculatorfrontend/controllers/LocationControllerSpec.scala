@@ -113,7 +113,35 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
             LocationEnum.WALES
           )
           childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected" in {
+            s"${loc.toString} is selected if there is no data in keystore for Household object" in {
+              when(
+                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+              ).thenReturn(
+                Future.successful(
+                  None
+                )
+              )
+
+              when(
+                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = loc))
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(locationKey -> loc.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe childAgedTwoPath
+            }
+
+            s"${loc.toString} is selected if there is data in keystore for Household object" in {
               when(
                 sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
               ).thenReturn(
@@ -148,7 +176,35 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
             LocationEnum.NORTHERNIRELAND
           )
           childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected" in {
+            s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
+              when(
+                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+              ).thenReturn(
+                Future.successful(
+                  None
+                )
+              )
+
+              when(
+                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+              ).thenReturn(
+                Future.successful(
+                  Some(buildHousehold(location = loc))
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(locationKey -> loc.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
+            }
+
+            s"${loc.toString} is selected if there is data in keystore for Household object" in {
               when(
                 sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
               ).thenReturn(
@@ -206,6 +262,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
       }
+
     }
   }
 }

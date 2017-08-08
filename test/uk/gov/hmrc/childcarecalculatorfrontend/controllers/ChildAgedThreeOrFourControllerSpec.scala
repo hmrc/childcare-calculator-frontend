@@ -190,7 +190,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
           content.getElementById("back-button").attr("href") shouldBe locationPath
         }
 
-        s"cantain back url to ${childAgedTwoPath} if there is data in keystore about child aged 2" in {
+        s"contain back url to ${childAgedTwoPath} if there is data in keystore about child aged 2" in {
           when(
             sut.keystore.fetch[Household]()(any(),any())
           ).thenReturn(
@@ -214,6 +214,18 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
     }
 
     s"redirect to error page (${technicalDifficultiesPath})" when {
+      "there is no data in keystore for Household object" in {
+        when(
+          sut.keystore.fetch[Household]()(any(),any())
+        ).thenReturn(
+          Future.successful(None)
+        )
+
+        val result = await(sut.onSubmit(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
       "can't connect to keystore loading Household object" in {
         when(
           sut.keystore.fetch[Household]()(any(),any())
