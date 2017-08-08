@@ -61,3 +61,6 @@ expect.childcare.costs.info.scotland = Support is only available for childcare w
 expect.childcare.costs.info.wales = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or a Care and Social Services Inspectorate Wales-registered childminding agency.
 expect.childcare.costs.info.northern-ireland = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.
 expect.childcare.costs.yes.no.not.selected.error = You must answer yes if you expect to have childcare costs with an approved provider
+
+####### Living With Partner #######
+living.with.partner.yes.no.not.selected.error = You must tell the calculator if you have a partner you live with
