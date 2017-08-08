@@ -21,6 +21,7 @@ import org.jsoup.nodes._
 import play.api.data.Form
 import play.api.i18n.Messages
 import play.api.i18n.Messages.Implicits._
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
@@ -42,8 +43,10 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = childAgedThreeOrFourPath)
   )
 
+  val backUrl: Call = Call("GET", childAgedThreeOrFourPath)
+
   def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
-    val template = expectChildcareCosts(form, location)(request, applicationMessages)
+    val template = expectChildcareCosts(form, backUrl, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
@@ -52,10 +55,10 @@ class ExpectChildcareCostsSpec extends TemplatesValidator with FakeCCApplication
     "render template" in {
 
       val location = "england"
-      val template = expectChildcareCosts.render(new ExpectChildcareCostsForm(applicationMessagesApi).form, location, request, applicationMessages)
+      val template = expectChildcareCosts.render(new ExpectChildcareCostsForm(applicationMessagesApi).form, backUrl, location, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = expectChildcareCosts.f(new ExpectChildcareCostsForm(applicationMessagesApi).form, location)(request, applicationMessages)
+      val template1 = expectChildcareCosts.f(new ExpectChildcareCostsForm(applicationMessagesApi).form, backUrl, location)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 

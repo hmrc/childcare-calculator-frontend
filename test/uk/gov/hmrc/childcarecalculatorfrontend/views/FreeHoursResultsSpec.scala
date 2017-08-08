@@ -32,7 +32,7 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
 //    ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "Childcare vouchers"),
 //    ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "Tax-Free Childcare"),
 //    ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "Tax credits"),
-//    ElementDetails(id = Some("next-button"), value = "Continue"),
+    ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 
@@ -46,7 +46,13 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
       Jsoup.parse(contentAsString(template))
     }
 
-    verifyPageContent()
+    verifyPageContent(List(
+          ElementDetails(tagName = Some("h2"), tagIndex = Some(0), value = "Still to check"),
+      //    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "By giving more information, the calculator can check to see if you’re eligible to get help from:"),
+      //    ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "Childcare vouchers"),
+      //    ElementDetails(tagName = Some("li"), tagIndex = Some(1), value = "Tax-Free Childcare"),
+      //    ElementDetails(tagName = Some("li"), tagIndex = Some(2), value = "Tax credits")
+    ))
     verifyPageLinks()
 
   }

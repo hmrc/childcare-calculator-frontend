@@ -91,7 +91,7 @@ free.hours.results.eligible.info.end = You can estimate how much you might pay a
 free.hours.results.summary.sub.heading = What you told the calculator
 free.hours.results.summary.info = You can go back and change your answers and see what you could get.
 free.hours.results.summary.age.2 = Child aged 2
-free.hours.results.summary.age.2.link = /childcare-calc/child-aged-two?summary=true
+free.hours.results.summary.age.2.link = /childcare-calc/child-aged-two
 free.hours.results.summary.age.3.or.4 = Child aged 3 or 4
 free.hours.results.summary.age.3.or.4.link = /childcare-calc/child-aged-three-or-four
 free.hours.results.summary.expect.costs = Childcare costs with approved provider

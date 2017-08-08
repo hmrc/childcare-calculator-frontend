@@ -33,27 +33,26 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl()(implicit hc: HeaderCarrier): Future[Call] = {
-    keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { childAgedTwo =>
-      if(childAgedTwo.isDefined) {
-        routes.ChildAgedTwoController.onPageLoad()
-      }
-      else {
-        routes.LocationController.onPageLoad()
+  private def getBackUrl(summary: Boolean)(implicit hc: HeaderCarrier): Future[Call] = {
+    if(summary) {
+      Future(routes.FreeHoursResultsController.onPageLoad())
+    } else {
+      keystore.fetchEntryForSession[Boolean](childAgedTwoKey).map { childAgedTwo =>
+        if (childAgedTwo.isDefined) {
+          routes.ChildAgedTwoController.onPageLoad(false)
+        } else {
+          routes.LocationController.onPageLoad()
+        }
       }
     }
-  }
-
-  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
-    keystore.fetchEntryForSession[String](locationKey)
   }
 
   def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
     {
       for {
         res <- keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey)
-        backUrl <- getBackUrl
-        location <- getLocation
+        backUrl <- getBackUrl(summary)
+        location <- keystore.fetchEntryForSession[String](locationKey)
       } yield {
 
         Ok(
@@ -75,8 +74,8 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
     new ChildAgedThreeOrFourForm(messagesApi).form.bindFromRequest().fold(
       errors => {
         (for {
-          backUrl <- getBackUrl
-          location <- getLocation
+          backUrl <- getBackUrl(false)
+          location <- keystore.fetchEntryForSession[String](locationKey)
         } yield {
           BadRequest(
             childAgedThreeOrFour(
@@ -94,7 +93,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
       success => {
         keystore.cacheEntryForSession[Boolean](childAgedThreeOrFourKey, success.get).map {
           result =>
-            Redirect(routes.ExpectChildcareCostsController.onPageLoad())
+            Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
         } recover {
           case ex: Exception =>
             Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")

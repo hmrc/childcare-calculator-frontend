@@ -1,28 +1,31 @@
 # microservice specific routes9381
 
-GET    /                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
-GET    /error                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onTechnicalDifficulties
+GET    /                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
+GET    /error                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onTechnicalDifficulties
 
-GET    /what-you-need              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
+GET    /what-you-need                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
 
-GET    /location                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad
-POST   /location                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit
+GET    /location                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad
+POST   /location                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit
 
-GET    /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(summary: Boolean ?= false)
-POST   /child-aged-two             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit
+GET    /child-aged-two                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(summary: Boolean = false)
+GET    /child-aged-two-edit             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(summary: Boolean = true)
+POST   /child-aged-two                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit
 
-GET    /child-aged-three-or-four   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(summary: Boolean ?= false)
-POST   /child-aged-three-or-four   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit
+GET    /child-aged-three-or-four        uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(summary: Boolean = false)
+GET    /child-aged-three-or-four-edit   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(summary: Boolean = true)
+POST   /child-aged-three-or-four        uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit
 
-GET    /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(summary: Boolean ?= false)
-POST   /expect-childcare-costs     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit
+GET    /expect-childcare-costs          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(summary: Boolean = false)
+GET    /expect-childcare-costs-edit     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(summary: Boolean = true)
+POST   /expect-childcare-costs          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit
 
-GET    /free-hours-info            uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
-POST   /free-hours-info            uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onSubmit
+GET    /free-hours-info                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
+POST   /free-hours-info                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onSubmit
 
-GET    /free-hours-results         uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultsController.onPageLoad
+GET    /free-hours-results              uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultsController.onPageLoad
 
-GET    /do-you-have-a-partner      uk.gov.hmrc.childcarecalculatorfrontend.controllers.LivingWithPartnerController.onPageLoad
+GET    /do-you-have-a-partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.LivingWithPartnerController.onPageLoad
 
-GET    /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 

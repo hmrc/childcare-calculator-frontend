@@ -22,11 +22,11 @@
 
 @ccMain(
     header = messages("free.hours.results.header"),
-    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad())
+    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
 ) {
 
     @if(child3Or4) {
-        <h2 class="heading-medium">@messages("free.hours.results.entitled.sub.heading")</h2>
+        <h2 class="heading-medium" id="test">@messages("free.hours.results.entitled.sub.heading")</h2>
         <p>@messages(s"free.hours.results.entitled.info.${location}")</p>
         <div class="panel panel-border-wide">
             <p>@messages("free.hours.results.entitled.info.no.costs")</p>
@@ -47,7 +47,7 @@
 
     <h2 class="heading-medium">@messages("free.hours.results.eligible.sub.heading")</h2>
     <p>@messages(s"free.hours.results.eligible.info.start")
-        <a href=@messages("free.hours.results.summary.expect.costs.link")>@messages(s"free.hours.results.eligible.info.link.text")</a>
+        <a href="@routes.ExpectChildcareCostsController.onPageLoad(true)">@messages(s"free.hours.results.eligible.info.link.text")</a>
         @messages(s"free.hours.results.eligible.info.end")
     </p>
 
@@ -64,7 +64,7 @@
                 <td width="60%">@messages("free.hours.results.summary.age.2")</td>
                 <td>No</td>
                 <td class="numeric">
-                    <a href=@messages("free.hours.results.summary.age.2.link")>change</a>
+                    <a href="@routes.ChildAgedTwoController.onPageLoad(true)">change</a>
                 </td>
             </tr>
         }
@@ -72,14 +72,14 @@
                 <td width="60%">@messages("free.hours.results.summary.age.3.or.4")</td>
                 <td>No</td>
                 <td class="numeric">
-                    <a href=@messages("free.hours.results.summary.age.3.or.4.link")>change</a>
+                    <a href="@routes.ChildAgedThreeOrFourController.onPageLoad(true)">change</a>
                 </td>
             </tr>
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.expect.costs")</td>
                 <td>No</td>
                 <td class="numeric">
-                    <a href=@messages("free.hours.results.summary.expect.costs.link")>change</a>
+                    <a href="@routes.ExpectChildcareCostsController.onPageLoad(true)">change</a>
                 </td>
             </tr>
         </tbody>

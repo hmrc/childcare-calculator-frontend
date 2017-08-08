@@ -22,7 +22,7 @@
 
 @ccMain(
     header = messages("free.hours.info.header"),
-    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad())
+    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
 ) {
     @helpers.form(
         action = routes.FreeHoursInfoController.onSubmit,

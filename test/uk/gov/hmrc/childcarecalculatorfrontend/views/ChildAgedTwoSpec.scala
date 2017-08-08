@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.data.Form
 import play.api.i18n.Messages
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
 
 class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
@@ -43,19 +44,20 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   val location = "england"
+  val backUrl: Call = Call("GET", locationPath)
 
   def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
-    val template = childAgedTwo(form, location)(request, applicationMessages)
+    val template = childAgedTwo(form, backUrl, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedTwo template" should {
 
     "render template" in {
-      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, location, request, applicationMessages)
+      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, backUrl, location, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form, location)(request, applicationMessages)
+      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form, backUrl, location)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 

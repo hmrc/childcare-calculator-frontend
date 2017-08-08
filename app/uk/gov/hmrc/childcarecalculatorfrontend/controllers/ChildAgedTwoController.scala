@@ -20,32 +20,35 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import uk.gov.hmrc.play.http.HeaderCarrier
-
-import scala.concurrent.Future
 
 @Singleton
 class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
-    keystore.fetchEntryForSession[String](locationKey)
+  private def getBackUrl(summary: Boolean)(implicit hc: HeaderCarrier): Call = {
+    if(summary) {
+      routes.FreeHoursResultsController.onPageLoad()
+    } else {
+      routes.LocationController.onPageLoad()
+    }
   }
 
   def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
     {
       for {
         res <- keystore.fetchEntryForSession[Boolean](childAgedTwoKey)
-        location <- getLocation
+        location <- keystore.fetchEntryForSession[String](locationKey)
       } yield {
         Ok(
           childAgedTwo(
             new ChildAgedTwoForm(messagesApi).form.fill(res),
+            getBackUrl(summary),
             location.getOrElse("england")
           )
         )
@@ -60,14 +63,14 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
       errors => {
-        for (location <- getLocation) yield {
-          BadRequest(childAgedTwo(errors, location.getOrElse("england")))
+        for (location <- keystore.fetchEntryForSession[String](locationKey)) yield {
+          BadRequest(childAgedTwo(errors, getBackUrl(false),location.getOrElse("england")))
         }
       },
       success => {
         keystore.cacheEntryForSession(childAgedTwoKey, success.get).map {
           result =>
-            Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+            Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
         } recover {
           case ex: Exception =>
             Logger.warn(s"Exception from ChildAgedTwoController.onSubmit: ${ex.getMessage}")

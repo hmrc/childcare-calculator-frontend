@@ -31,20 +31,24 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getLocation()(implicit hc: HeaderCarrier): Future[Option[String]] = {
-    keystore.fetchEntryForSession[String](locationKey)
+  private def getBackUrl(summary: Boolean)(implicit hc: HeaderCarrier): Call = {
+    if(summary) {
+      routes.FreeHoursResultsController.onPageLoad()
+    } else {
+      routes.ChildAgedThreeOrFourController.onPageLoad(false)
+    }
   }
 
   def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request => {
     for {
       res <- keystore.fetchEntryForSession[Boolean](expectChildcareCostsKey)
-      location <- getLocation
+      location <- keystore.fetchEntryForSession[String](locationKey)
     } yield {
       Ok(
-        expectChildcareCosts(new ExpectChildcareCostsForm(messagesApi).form.fill(res), location.getOrElse("england"))
+        expectChildcareCosts(new ExpectChildcareCostsForm(messagesApi).form.fill(res), getBackUrl(summary), location.getOrElse("england"))
       )
     }
-  }recover {
+  } recover {
       case ex: Exception =>
         Logger.warn(s"Exception from ExpectChildcareCostsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -56,8 +60,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
       keystore.fetchEntryForSession[Boolean](childAgedThreeOrFourKey).map { hasChildAgedThreeOrFour =>
         if(hasExpectedChildcareCost && !(hasChildAgedTwo.getOrElse(false) || hasChildAgedThreeOrFour.getOrElse(false))) {
           routes.LivingWithPartnerController.onPageLoad
-        }
-        else {
+        } else {
           routes.FreeHoursResultsController.onPageLoad
         }
       }
@@ -68,9 +71,9 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
     new ExpectChildcareCostsForm(messagesApi).form.bindFromRequest().fold(
       errors => {
         for {
-          location <- getLocation
+          location <- keystore.fetchEntryForSession[String](locationKey)
         } yield {
-          BadRequest(expectChildcareCosts(errors, location.getOrElse("england")))
+          BadRequest(expectChildcareCosts(errors, getBackUrl(false), location.getOrElse("england")))
         }
       },
       success => {
