@@ -20,25 +20,28 @@ import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 
-class LivingWithPartnerControllerSpec extends ControllersValidator {
+class FreeHoursInfoControllerSpec extends ControllersValidator {
 
-  val sut = new LivingWithPartnerController(applicationMessagesApi)
-
-  validateUrl(livingWithPartnerPath, List(GET))
-
-  "onPageLoad" should {
-    "load successfully ChildAgedThreeOrFour template" in {
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/plain; charset=utf-8"
-    }
+  val sut = new FreeHoursInfoController(applicationMessagesApi) {
   }
 
-  "onSubmit" should {
-    "load successfully ChildAgedThreeOrFour template" in {
-      val result = await(sut.onSubmit(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/plain; charset=utf-8"
+  validateUrl(freeHoursInfoPath)
+
+  "FreeHoursInfoController" should {
+    "load successfully FreeHoursInfo template" when {
+      "onPageLoad is called" in {
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+    }
+
+    s"redirect successfully to next page (${livingWithPartnerPath})" when {
+      "onSubmit is called" in {
+        val result = await(sut.onSubmit(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe livingWithPartnerPath
+      }
     }
   }
 

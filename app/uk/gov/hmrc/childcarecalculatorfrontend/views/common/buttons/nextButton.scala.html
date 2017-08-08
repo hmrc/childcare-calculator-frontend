@@ -16,8 +16,6 @@
 
 @(title: Option[String] = None)(implicit lang: play.api.i18n.Lang, messages: Messages)
 
-@import views.html.helper._
-
-    <button type="submit" name="submit" class="button" id="next-button">
-        @title.getOrElse(messages("next.button"))
-    </button>
+<button type="submit" name="submit" class="button" id="next-button">
+    @title.getOrElse(messages("next.button"))
+</button>

@@ -17,25 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.Messages.Implicits._
-import play.api.test.FakeRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import play.api.test.Helpers._
 
-class WhatYouNeedControllerSpec extends UnitSpec with FakeCCApplication {
+class WhatYouNeedControllerSpec extends ControllersValidator {
 
   val sut = new WhatYouNeedController(applicationMessagesApi)
 
-  s"${whatYouNeedPath} url" should {
-    "be available" when {
-      "GET request is made" in {
-        val req = FakeRequest(GET, whatYouNeedPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-    }
-  }
+  validateUrl(whatYouNeedPath, List(GET))
 
   "WhatYouNeedController" should {
 

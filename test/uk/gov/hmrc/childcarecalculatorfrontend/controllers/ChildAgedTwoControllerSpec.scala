@@ -21,15 +21,14 @@ import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.Future
 
-class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with BeforeAndAfterEach {
+class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
   val sut = new ChildAgedTwoController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -40,42 +39,23 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
     reset(sut.keystore)
   }
 
-  s"${childAgedTwoPath} url" should {
+  validateUrl(childAgedTwoPath)
 
-    "be available" when {
-
-      "GET request is made" in {
-        val req = FakeRequest(GET, childAgedTwoPath).withSession(validSession)
-        val result = route(app, req)
-
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-
-      "POST request is made" in {
-        val req = FakeRequest(POST, childAgedTwoPath).withSession(validSession)
-        val result = route(app, req)
-        result.isDefined shouldBe true
-        status(result.get) should not be NOT_FOUND
-      }
-    }
-  }
-
+  def buildHousehold(childAgedTwo: Option[Boolean] = None): Household = Household(
+    location = LocationEnum.ENGLAND,
+    childAgedTwo = childAgedTwo
+  )
   "ChildAgedTwoController" when {
 
     "onPageLoad is called" should {
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(None)
-        )
-
-        when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = None))
+          )
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -85,15 +65,11 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(Some(true))
-        )
-
-        when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
-        ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = Some(true)))
+          )
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -101,17 +77,23 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      "redirect to error page if can't connect with keystore" in {
+      "redirect to error page if there is no data keystore for household object" in {
         when(
-          sut.keystore.fetchEntryForSession[Boolean](refEq(childAgedTwoKey))(any[HeaderCarrier], any[Reads[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.failed(new RuntimeException)
+          Future.successful(None)
         )
 
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.failed(new RuntimeException)
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -126,9 +108,11 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
         "load same template and return BAD_REQUEST" in {
 
           when(
-            sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+            sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
           ).thenReturn(
-            Future.successful(Some("England"))
+            Future.successful(
+              Some(buildHousehold(childAgedTwo = None))
+            )
           )
           
           val result = await(
@@ -145,15 +129,19 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(Some(true))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = None))
+          )
         )
 
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = Some(true)))
+          )
         )
 
         val result = await(
@@ -171,15 +159,39 @@ class ChildAgedTwoControllerSpec extends UnitSpec with FakeCCApplication with Be
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.cacheEntryForSession[Boolean](refEq(childAgedTwoKey), anyBoolean)(any[HeaderCarrier], any[Format[Boolean]])
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildHousehold(childAgedTwo = None))
+          )
+        )
+
+        when(
+          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
 
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(childAgedTwoKey -> "false")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+    }
+
+    "there is no data in keystore for Household object" should {
+      s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetchEntryForSession[String](refEq(locationKey))(any(),any())
+          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
-          Future.successful(Some("England"))
+          Future.successful(
+            None
+          )
         )
 
         val result = await(
