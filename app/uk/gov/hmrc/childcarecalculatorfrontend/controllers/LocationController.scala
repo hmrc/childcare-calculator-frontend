@@ -19,11 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Result, Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
+import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
 
 @Singleton
@@ -32,12 +33,45 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetchEntryForSession[String](locationKey).map { loc =>
-      Ok(location(new LocationForm(messagesApi).form.fill(loc)))
+    keystore.fetch[Household]().map { household =>
+      Ok(location(new LocationForm(messagesApi).form.fill(household.map(_.location.toString))))
     }.recover {
       case ex: Exception =>
         Logger.warn(s"Exception from LocationController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def getModifiedHousehold(household: Option[Household], selectedLocation: String): Household = {
+    household match {
+      case Some(hh) =>
+        val modifiedChildAgedTwo = if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
+          None
+        }
+        else {
+          hh.childAgedTwo
+        }
+
+        hh.copy(
+          location = LocationEnum.withName(selectedLocation),
+          childAgedTwo = modifiedChildAgedTwo
+        )
+      case _ =>
+        Household(
+          location = LocationEnum.withName(selectedLocation)
+        )
+    }
+  }
+
+  private def saveAndGoToNextPage(household: Option[Household], selectedLocation: String)(implicit hc: HeaderCarrier): Future[Result] = {
+    val modifiedHousehold: Household = getModifiedHousehold(household, selectedLocation)
+    keystore.cache(modifiedHousehold).map { res =>
+      if (selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
+        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+      }
+      else {
+        Redirect(routes.ChildAgedTwoController.onPageLoad())
+      }
     }
   }
 
@@ -48,16 +82,8 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       },
       success => {
         val selectedLocation = success.get
-        keystore.cacheEntryForSession(locationKey, selectedLocation).flatMap { result =>
-          if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-            keystore.removeFromSession(childAgedTwoKey).map {
-              case true => Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
-              case false => Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-            }
-          }
-          else {
-            Future(Redirect(routes.ChildAgedTwoController.onPageLoad()))
-          }
+        keystore.fetch[Household]().flatMap { household =>
+          saveAndGoToNextPage(household, selectedLocation)
         } recover {
           case ex: Exception =>
             Logger.warn(s"Exception from LocationController.onSubmit: ${ex.getMessage}")

@@ -14,7 +14,10 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]], backUrl: Call, location: String)(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+
+@(form: Form[Option[Boolean]], backUrl: Call, location: LocationEnum)(implicit request: Request[_], messages: Messages)
+
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
@@ -31,7 +34,7 @@
 
         @error.ccErrorSummary(form)
 
-        <p id="aged-three-four-info">@messages(s"child.aged.three.or.four.info.${location}")</p>
+        <p>@messages(s"child.aged.three.or.four.info.${location.toString}")</p>
 
         @radio.ccRadioOptions(
             field = form(CCConstants.childAgedThreeOrFourKey),
