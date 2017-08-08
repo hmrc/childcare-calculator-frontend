@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
 import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.config.{FrontendAppConfig, WSHttp}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, SchemesResult}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, SchemeResults}
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -33,8 +33,8 @@ trait EligibilityConnector {
 
   def postUrl(key: String): String = s"""${key}"""
 
-  def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemesResult] = {
-    httpPost.POST[Household, SchemesResult](postUrl(FrontendAppConfig.eligibilityUrl), eligibilityInput)
+  def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemeResults] = {
+    httpPost.POST[Household, SchemeResults](postUrl(FrontendAppConfig.eligibilityUrl), eligibilityInput)
   }
 
 }
