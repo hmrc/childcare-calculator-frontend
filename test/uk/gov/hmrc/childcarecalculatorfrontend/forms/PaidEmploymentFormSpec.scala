@@ -22,7 +22,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 
-class InEmploymentFormSpec extends UnitSpec with FakeCCApplication {
+class PaidEmploymentFormSpec extends UnitSpec with FakeCCApplication {
 
   val testCases = Table(
     ("Has partner", "Error message key"),
@@ -36,9 +36,9 @@ class InEmploymentFormSpec extends UnitSpec with FakeCCApplication {
       s"user has partner = ${hasPartner}" should {
 
         "accept value true" in {
-          val form = new InEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
+          val form = new PaidEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
             Map(
-              inEmploymentKey -> "true"
+              paidEmploymentKey -> "true"
             )
           )
           form.value.get.get shouldBe true
@@ -47,9 +47,9 @@ class InEmploymentFormSpec extends UnitSpec with FakeCCApplication {
         }
 
         "accept value false" in {
-          val form = new InEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
+          val form = new PaidEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
             Map(
-              inEmploymentKey -> "false"
+              paidEmploymentKey -> "false"
             )
           )
           form.value.get.get shouldBe false
@@ -58,9 +58,9 @@ class InEmploymentFormSpec extends UnitSpec with FakeCCApplication {
         }
 
         s"display '${applicationMessages.messages(errorMessageKey)}' if no value supplied" in {
-          val form = new InEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
+          val form = new PaidEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
             Map(
-              inEmploymentKey -> ""
+              paidEmploymentKey -> ""
             )
           )
           form.value shouldBe None
@@ -73,9 +73,9 @@ class InEmploymentFormSpec extends UnitSpec with FakeCCApplication {
         val invalidValues = List("abcd", "1234")
         invalidValues.foreach { invalidValue =>
           s"return error if invalid value '${invalidValue}' is supplied" in {
-            val form = new InEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
+            val form = new PaidEmploymentForm(hasPartner, applicationMessagesApi).form.bind(
               Map(
-                inEmploymentKey -> invalidValue
+                paidEmploymentKey -> invalidValue
               )
             )
             form.value shouldBe None

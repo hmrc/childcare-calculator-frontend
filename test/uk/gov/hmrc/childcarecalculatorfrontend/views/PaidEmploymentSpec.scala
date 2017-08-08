@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.utils
+package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-trait CCConstants {
-  lazy val householdKey = "household"
-  lazy val locationKey = "location"
-  lazy val childAgedTwoKey = "childAgedTwo"
-  lazy val childAgedThreeOrFourKey = "childAgedThreeOrFour"
-  lazy val expectChildcareCostsKey = "expectChildcareCosts"
-  lazy val hasPartnerKey = "hasPartner"
-  lazy val childrenKey = "children"
-  lazy val parentKey = "parent"
-  lazy val paidEmploymentKey = "paidEmployment"
-}
+import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
-object CCConstants extends CCConstants
+//class PaidEmploymentSpec extends TemplatesValidator with FakeCCApplication {
+//
+//}
