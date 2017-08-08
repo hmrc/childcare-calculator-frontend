@@ -17,7 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{reset, when}
+import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
@@ -26,31 +27,77 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 
 import scala.concurrent.Future
 
-class FreeHoursResultsControllerSpec extends ControllersValidator {
+class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
   val sut = new FreeHoursResultsController(applicationMessagesApi){
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    reset(sut.keystore)
+  }
+
   validateUrl(freeHoursResultsPath, List(GET))
 
-  "onPageLoad" should {
-    "load successfully FreeHoursResults template" in {
-      when(
-        sut.keystore.fetch[Household]()(any(),any())
-      ).thenReturn(
-        Future.successful(
-          Some(
-            Household(
-              location = LocationEnum.ENGLAND,
-              childAgedThreeOrFour = Some(true)
-            )
+  "load successfully template when data in keystore" in {
+    when(
+      sut.keystore.fetch[Household]()(any(),any())
+    ).thenReturn(
+      Future.successful(
+        Some(
+          Household(
+            location = LocationEnum.ENGLAND,
+            childAgedThreeOrFour = Some(true)
           )
         )
       )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/html; charset=utf-8"
-    }
+    )
+    val result = await(sut.onPageLoad(request.withSession(validSession)))
+    status(result) shouldBe OK
+    result.body.contentType.get shouldBe "text/html; charset=utf-8"
   }
+
+  "load successfully template when no data in keystore" in {
+    when(
+      sut.keystore.fetch[Household]()(any(),any())
+    ).thenReturn(
+      Future.successful(
+        Some(
+          Household(
+            location = LocationEnum.ENGLAND,
+            childAgedThreeOrFour = None
+          )
+        )
+      )
+    )
+    val result = await(sut.onPageLoad(request.withSession(validSession)))
+    status(result) shouldBe OK
+    result.body.contentType.get shouldBe "text/html; charset=utf-8"
+  }
+
+  "redirect to error page if there is no data keystore for household object" in {
+    when(
+      sut.keystore.fetch[Household]()(any(), any())
+    ).thenReturn(
+      Future.successful(None)
+    )
+
+    val result = await(sut.onPageLoad(request.withSession(validSession)))
+    status(result) shouldBe SEE_OTHER
+    result.header.headers("Location") shouldBe technicalDifficultiesPath
+  }
+
+  "redirect to error page if can't connect with keystore" in {
+    when(
+      sut.keystore.fetch[Household]()(any(), any())
+    ).thenReturn(
+      Future.failed(new RuntimeException)
+    )
+
+    val result = await(sut.onPageLoad(request.withSession(validSession)))
+    status(result) shouldBe SEE_OTHER
+    result.header.headers("Location") shouldBe technicalDifficultiesPath
+  }
+
 }
