@@ -36,7 +36,7 @@ class LocationSpec extends TemplatesValidator with FakeCCApplication with CCRout
     ElementDetails(attribute = Some("for"), attributeValue = Some("location-scotland"), value = "Scotland"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("location-wales"), value = "Wales"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("location-northern-ireland"), value = "Northern Ireland"),
-    ElementDetails(attribute = Some("type"), attributeValue = Some("submit"), checkAttribute = Some("title"), value = ""),
+    ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 

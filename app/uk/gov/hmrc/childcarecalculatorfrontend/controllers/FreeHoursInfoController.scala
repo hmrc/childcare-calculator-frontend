@@ -26,8 +26,11 @@ import scala.concurrent.Future
 class FreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    // TODO: Implement properly
     Future(Ok(freeHoursInfo()))
+  }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    Future(Redirect(routes.LivingWithPartnerController.onPageLoad()))
   }
 
 }
