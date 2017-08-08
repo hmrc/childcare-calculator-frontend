@@ -16,9 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
+
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Action, AnyContent}
+
 import scala.concurrent.Future
 
 @Singleton
@@ -29,4 +31,8 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
     Future(Ok("This is do you live with partner page"))
   }
 
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    // TODO: Implement properly
+    Future(Ok("This is do you live with partner page"))
+    }
 }

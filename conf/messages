@@ -63,4 +63,5 @@ expect.childcare.costs.info.northern-ireland = You can get support for childcare
 expect.childcare.costs.yes.no.not.selected.error = You must answer yes if you expect to have childcare costs with an approved provider
 
 ####### Living With Partner #######
+living.with.partner.header = Do you have a partner that you live with?
 living.with.partner.yes.no.not.selected.error = You must tell the calculator if you have a partner you live with
