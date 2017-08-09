@@ -102,7 +102,7 @@
         }
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.age.3.or.4")</td>
-                <td>No</td>
+                <td>@{if(child3Or4) "Yes" else "No"}</td>
                 <td class="numeric">
                     <a id="free-hours-results-general-aged3-or-4" href="@routes.ChildAgedThreeOrFourController.onPageLoad(true)">change</a>
                 </td>
