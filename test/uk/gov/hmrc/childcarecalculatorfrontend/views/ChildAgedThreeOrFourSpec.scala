@@ -23,18 +23,21 @@ import play.api.i18n.Messages
 import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.test.Helpers._
+import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.prop.Tables.Table
 
 class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Do you have any children aged 3 or 4?"),
-    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year)."),
     ElementDetails(attribute = Some("for"), attributeValue = Some("childAgedThreeOrFour-true"), value = "Yes"),
     ElementDetails(attribute = Some("for"), attributeValue = Some("childAgedThreeOrFour-false"), value = "No"),
-    ElementDetails(attribute = Some("type"), attributeValue = Some("submit"), checkAttribute = Some("title"), value = ""),
+    ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 
@@ -45,109 +48,95 @@ class ChildAgedThreeOrFourSpec extends TemplatesValidator with FakeCCApplication
 
   val backUrl: Call = Call("GET", childAgedTwoPath)
 
-  val location = "england"
+  val infoContent = Table(
+    ("Location", "Info text"),
+    (LocationEnum.ENGLAND, "All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year)."),
+    (LocationEnum.SCOTLAND, "All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year)."),
+    (LocationEnum.WALES, "All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year)."),
+    (LocationEnum.NORTHERNIRELAND, "All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.")
+  )
 
-  def getTemplate(form: Form[Option[Boolean]], location: String = "england"): Document = {
+  def getTemplate(form: Form[Option[Boolean]], location: LocationEnum): Document = {
     val template = childAgedThreeOrFour(form, backUrl, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedThreeOrFour template" should {
     "render template" in {
-      val template = childAgedThreeOrFour.render(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, location, request, applicationMessages)
+      val template = childAgedThreeOrFour.render(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, LocationEnum.ENGLAND, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedThreeOrFour.f(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, location)(request, applicationMessages)
+      val template1 = childAgedThreeOrFour.f(new ChildAgedThreeOrFourForm(applicationMessagesApi).form, backUrl, LocationEnum.ENGLAND)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
-    "display correct content" when {
+    forAll(infoContent) { case (location, infoText) => {
+      val dynamicContent = List(
+        ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = infoText)
+      )
 
-      "nothing is selected" in {
-        implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(None))
+      s"display correct content for location ${location.toString}" when {
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks()
-        verifyErrors()
-      }
+        "nothing is selected" in {
+          implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(None), location)
 
-      "true is selected" in {
-        implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true)))
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks()
+          verifyErrors()
+        }
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks(List(s"${childAgedThreeOrFourKey}-true"))
-        verifyErrors()
-      }
+        "true is selected" in {
+          implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true)), location)
 
-      "false is selected" in {
-        implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(false)))
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks(List(s"${childAgedThreeOrFourKey}-true"))
+          verifyErrors()
+        }
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks(List(s"${childAgedThreeOrFourKey}-false"))
-        verifyErrors()
-      }
+        "false is selected" in {
+          implicit val doc: Document = getTemplate(new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(false)), location)
 
-      "form is submitted without data" in {
-        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
-          Map(
-            childAgedThreeOrFourKey -> ""
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks(List(s"${childAgedThreeOrFourKey}-false"))
+          verifyErrors()
+        }
+
+        "form is submitted without data" in {
+          val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
+            Map(
+              childAgedThreeOrFourKey -> ""
+            )
           )
-        )
-        implicit val doc: Document = getTemplate(form)
+          implicit val doc: Document = getTemplate(form, location)
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks()
-        verifyErrors(
-          errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("child.aged.three.or.four.yes.no.not.selected.error"))
-        )
-      }
-
-      "form is submitted with invalid data" in {
-        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
-          Map(
-            childAgedThreeOrFourKey -> "abcd"
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks()
+          verifyErrors(
+            errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("child.aged.three.or.four.yes.no.not.selected.error"))
           )
-        )
-        implicit val doc: Document = getTemplate(form)
+        }
 
-        verifyPageContent()
-        verifyPageLinks()
-        verifyChecks()
-        verifyErrors(
-          errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("error.boolean"))
-        )
+        "form is submitted with invalid data" in {
+          val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.bind(
+            Map(
+              childAgedThreeOrFourKey -> "abcd"
+            )
+          )
+          implicit val doc: Document = getTemplate(form, location)
+
+          verifyPageContent(dynamicContent)
+          verifyPageLinks()
+          verifyChecks()
+          verifyErrors(
+            errors = Map("childAgedThreeOrFour" -> applicationMessages.messages("error.boolean"))
+          )
+        }
       }
+    }}
 
-    }
-
-    "display different content based on location" when {
-      "location is scotland" in {
-        val location = "scotland"
-        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
-        val template = getTemplate(form, location)
-
-        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.scotland")
-      }
-
-      "location is wales" in {
-        val location = "wales"
-        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
-        val template = getTemplate(form, location)
-
-        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.wales")
-      }
-
-      "location is northen-ireland" in {
-        val location = "northern-ireland"
-        val form = new ChildAgedThreeOrFourForm(applicationMessagesApi).form.fill(Some(true))
-        val template = getTemplate(form, location)
-
-        template.getElementById("aged-three-four-info").text() shouldBe Messages(s"child.aged.three.or.four.info.northern-ireland")
-      }
-    }
   }
 }
