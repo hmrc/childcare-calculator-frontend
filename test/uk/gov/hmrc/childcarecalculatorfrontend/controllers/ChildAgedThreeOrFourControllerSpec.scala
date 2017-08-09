@@ -23,8 +23,10 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childAgedThreeOrFour, childAgedTwo, location}
+
 import scala.concurrent.Future
 
 class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with BeforeAndAfterEach {
@@ -40,9 +42,9 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
   validateUrl(childAgedThreeOrFourPath)
 
-  def buildHousehold(childAgedTwo: Option[Boolean] = None,
-                     childAgedThreeOrFour: Option[Boolean] = None): Household = Household(
-    location = LocationEnum.ENGLAND,
+  def buildPageObjects(childAgedTwo: Option[Boolean] = None,
+                       childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
+    location = LocationEnum.ENGLAND),
     childAgedTwo = childAgedTwo,
     childAgedThreeOrFour = childAgedThreeOrFour
   )
@@ -53,11 +55,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
       "there is no data in keystore about child aged 3 or 4" should {
         s"contain back url to ${locationPath} if there is no data about child aged 2" in {
           when(
-            sut.keystore.fetch[Household]()(any(),any())
+            sut.keystore.fetch[PageObjects]()(any(),any())
           ).thenReturn(
             Future.successful(
               Some(
-                buildHousehold(
+                buildPageObjects(
                   childAgedTwo = None,
                   childAgedThreeOrFour = None
                 )
@@ -74,11 +76,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
         s"contain back url to ${childAgedTwoPath} if there is data about child aged 2" in {
           when(
-            sut.keystore.fetch[Household]()(any(),any())
+            sut.keystore.fetch[PageObjects]()(any(),any())
           ).thenReturn(
             Future.successful(
               Some(
-                buildHousehold(
+                buildPageObjects(
                   childAgedTwo = Some(true),
                   childAgedThreeOrFour = None
                 )
@@ -97,11 +99,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
       "there is data in keystore about child aged 3 or 4" should {
         s"contain back url to ${locationPath} if there is no data about child aged 2" in {
           when(
-            sut.keystore.fetch[Household]()(any(),any())
+            sut.keystore.fetch[PageObjects]()(any(),any())
           ).thenReturn(
             Future.successful(
               Some(
-                buildHousehold(
+                buildPageObjects(
                   childAgedTwo = None,
                   childAgedThreeOrFour = Some(true)
                 )
@@ -118,11 +120,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
         s"contain back url to ${childAgedTwoPath} if there is data about child aged 2" in {
           when(
-            sut.keystore.fetch[Household]()(any(),any())
+            sut.keystore.fetch[PageObjects]()(any(),any())
           ).thenReturn(
             Future.successful(
               Some(
-                buildHousehold(
+                buildPageObjects(
                   childAgedTwo = Some(true),
                   childAgedThreeOrFour = Some(true)
                 )
@@ -142,7 +144,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
     s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
       "there is no data for household in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(None)
         )
@@ -154,7 +156,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
       "can't connect to keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -171,11 +173,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
       "invalid data is submitted" should {
         s"cantain back url to ${locationPath} if there is no data in keystore about child aged 2" in {
           when(
-            sut.keystore.fetch[Household]()(any(),any())
+            sut.keystore.fetch[PageObjects]()(any(),any())
           ).thenReturn(
             Future.successful(
               Some(
-                buildHousehold(
+                buildPageObjects(
                   childAgedTwo = None,
                   childAgedThreeOrFour = None
                 )
@@ -192,11 +194,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
         s"contain back url to ${childAgedTwoPath} if there is data in keystore about child aged 2" in {
           when(
-            sut.keystore.fetch[Household]()(any(),any())
+            sut.keystore.fetch[PageObjects]()(any(),any())
           ).thenReturn(
             Future.successful(
               Some(
-                buildHousehold(
+                buildPageObjects(
                   childAgedTwo = Some(true),
                   childAgedThreeOrFour = None
                 )
@@ -216,7 +218,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
     s"redirect to error page (${technicalDifficultiesPath})" when {
       "there is no data in keystore for Household object" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(None)
         )
@@ -228,7 +230,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
       "can't connect to keystore loading Household object" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -240,11 +242,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
       "valid data is submitted and saving in keystore fails" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 childAgedTwo = None,
                 childAgedThreeOrFour = None
               )
@@ -253,7 +255,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
         )
 
         when(
-          sut.keystore.cache(any[Household]())(any(),any())
+          sut.keystore.cache(any[PageObjects]())(any(),any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -272,11 +274,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
     s"redirect to next page (${expectChildcareCostsPath})" when {
       "valid data is submitted and saving in keystore is successful" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 childAgedTwo = None,
                 childAgedThreeOrFour = None
               )
@@ -285,11 +287,11 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
         )
 
         when(
-          sut.keystore.cache(any[Household]())(any(),any())
+          sut.keystore.cache(any[PageObjects]())(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 childAgedTwo = None,
                 childAgedThreeOrFour = Some(true)
               )

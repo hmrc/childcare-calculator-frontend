@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -35,16 +35,16 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().map {
-      case Some(household) =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) =>
         Ok(
           childAgedTwo(
-            new ChildAgedTwoForm(messagesApi).form.fill(household.childAgedTwo),
-            household.location
+            new ChildAgedTwoForm(messagesApi).form.fill(pageObjects.childAgedTwo),
+            pageObjects.household.location
           )
         )
       case _ =>
-        Logger.warn("Household object is missing in ChildAgedTwoController.onPageLoad")
+        Logger.warn("PageObjects object is missing in ChildAgedTwoController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     } recover {
       case ex: Exception =>
@@ -54,27 +54,28 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().flatMap {
-      case Some(household) =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
         new ChildAgedTwoForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                childAgedTwo(errors, household.location)
+                childAgedTwo(errors, pageObjects.household.location)
               )
             ),
           success => {
-            val modifiedHousehold = household.copy(
+            val modifiedPageObjects = pageObjects.copy(
               childAgedTwo = success
             )
-            keystore.cache(modifiedHousehold).map {
+
+            keystore.cache(modifiedPageObjects).map {
               result =>
                 Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
             }
           }
         )
       case _ =>
-        Logger.warn("Household object is missing in ChildAgedTwoController.onSubmit")
+        Logger.warn("PageObjects object is missing in ChildAgedTwoController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>

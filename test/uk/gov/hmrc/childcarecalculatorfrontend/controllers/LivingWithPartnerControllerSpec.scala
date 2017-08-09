@@ -24,7 +24,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -43,9 +43,9 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
   validateUrl(livingWithPartnerPath, List(GET))
 
-  def buildHousehold(livingWithPartner: Option[Boolean],
-                     childAgedThreeOrFour: Option[Boolean] = None): Household = Household(
-    location = LocationEnum.ENGLAND,
+  def buildPageObjects(livingWithPartner: Option[Boolean],
+                     childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
+    location = LocationEnum.ENGLAND),
     childAgedThreeOrFour = childAgedThreeOrFour,
     livingWithPartner = livingWithPartner
   )
@@ -56,10 +56,10 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(None))
+            Some(buildPageObjects(None))
           )
         )
 
@@ -70,10 +70,10 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(Some(true)))
+            Some(buildPageObjects(Some(true)))
           )
         )
 
@@ -84,7 +84,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "redirect to error page if there is no data keystore for household object" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(None)
         )
@@ -96,7 +96,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -108,11 +108,11 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       s"contain back url to ${expectChildcareCostsPath} if there is no data about child aged 3 or 4" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 livingWithPartner = None,
                 childAgedThreeOrFour = None
               )
@@ -129,11 +129,11 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       s"contain back url to ${freeHoursInfoPath} if there is data about child aged 3 or 4" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 livingWithPartner = None,
                 childAgedThreeOrFour = Some(true)
               )
@@ -155,10 +155,10 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         "load same template and return BAD_REQUEST" in {
 
           when(
-            sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildHousehold(None))
+              Some(buildPageObjects(None))
             )
           )
 
@@ -176,18 +176,18 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(Some(true), None))
+            Some(buildPageObjects(Some(true), None))
           )
         )
 
         when(
-          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(Some(true), None))
+            Some(buildPageObjects(Some(true), None))
           )
         )
 
@@ -206,15 +206,15 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(Some(true), None))
+            Some(buildPageObjects(Some(true), None))
           )
         )
 
         when(
-          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -234,7 +234,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
     "there is no data in keystore for Household object" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
             None

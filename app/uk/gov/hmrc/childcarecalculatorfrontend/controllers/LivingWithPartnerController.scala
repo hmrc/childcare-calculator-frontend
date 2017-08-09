@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Household
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
 
@@ -43,15 +43,15 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
   }
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().map {
-      case Some(household) =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) =>
         Ok(
-          livingWithPartner(new LivingWithPartnerForm(messagesApi).form.fill(household.livingWithPartner),
-            getBackUrl(household.childAgedThreeOrFour)
+          livingWithPartner(new LivingWithPartnerForm(messagesApi).form.fill(pageObjects.livingWithPartner),
+            getBackUrl(pageObjects.childAgedThreeOrFour)
           )
         )
       case _ =>
-        Logger.warn("Household object is missing in LivingWithPartnerController.onPageLoad")
+        Logger.warn("PageObjects object is missing in LivingWithPartnerController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     } recover {
       case ex: Exception =>
@@ -61,29 +61,29 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().flatMap {
-      case Some(household) =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
         new LivingWithPartnerForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
                 livingWithPartner(
                   errors,
-                  getBackUrl(household.childAgedThreeOrFour)
+                  getBackUrl(pageObjects.childAgedThreeOrFour)
                 )
               )
             ),
           success => {
-            val modifiedHousehold = household.copy(
+            val modifiedPageObjects = pageObjects.copy(
               livingWithPartner = success
             )
-            keystore.cache(modifiedHousehold).map { result =>
+            keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.WhatYouNeedController.onPageLoad())
             }
           }
         )
       case _ =>
-        Logger.warn("Household object is missing in LivingWithPartnerController.onSubmit")
+        Logger.warn("PageObjects object is missing in LivingWithPartnerController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>

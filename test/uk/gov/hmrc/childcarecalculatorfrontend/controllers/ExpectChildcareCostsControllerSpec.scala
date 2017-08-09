@@ -18,13 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import org.mockito.Mockito._
 import org.mockito.Matchers._
+
 import scala.concurrent.Future
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
@@ -37,11 +37,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
   validateUrl(expectChildcareCostsPath)
 
-  def buildHousehold(location: LocationEnum =  LocationEnum.ENGLAND,
-                     childAgedTwo: Option[Boolean] = None,
-                     childAgedThreeOrFour: Option[Boolean] = None,
-                     expectChildcareCosts: Option[Boolean] =  None): Household = Household(
-    location = location,
+  def buildPageObjects(location: LocationEnum =  LocationEnum.ENGLAND,
+                       childAgedTwo: Option[Boolean] = None,
+                       childAgedThreeOrFour: Option[Boolean] = None,
+                       expectChildcareCosts: Option[Boolean] =  None): PageObjects = PageObjects(household = Household(
+    location = location),
     childAgedTwo = childAgedTwo,
     childAgedThreeOrFour = childAgedThreeOrFour,
     expectChildcareCosts =  expectChildcareCosts
@@ -51,11 +51,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     "load successfully the ExpectChildcareCosts page" when {
       "there is data in session" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 location = LocationEnum.ENGLAND,
                 expectChildcareCosts = Some(true)
               )
@@ -70,11 +70,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
       "there is no data in session" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 location = LocationEnum.ENGLAND,
                 expectChildcareCosts = None
               )
@@ -91,7 +91,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
       "there is no data in keystore for Household object" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(None)
         )
@@ -119,11 +119,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     "load ExpectChildcareCosts and display errors" when {
       "invalid data is submitted" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 location = LocationEnum.ENGLAND,
                 expectChildcareCosts = Some(true)
               )
@@ -189,11 +189,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             s"user lives in ${location.toString}, has child aged 2 = ${hasChildAged2}, has child aged 3 or 4 = ${hasChildAges3Or4} and has cost = ${hasCost}" in {
 
               when(
-                sut.keystore.fetch[Household]()(any(),any())
+                sut.keystore.fetch[PageObjects]()(any(),any())
               ).thenReturn(
                 Future.successful(
                   Some(
-                    buildHousehold(
+                    buildPageObjects(
                       location = location,
                       childAgedTwo = Some(hasChildAged2),
                       childAgedThreeOrFour = Some(hasChildAges3Or4),
@@ -204,11 +204,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
               )
 
               when(
-                sut.keystore.cache[Household](any[Household]())(any(), any())
+                sut.keystore.cache[PageObjects](any[PageObjects]())(any(), any())
               ).thenReturn(
                 Future.successful(
                   Some(
-                    buildHousehold(
+                    buildPageObjects(
                       location = location,
                       childAgedTwo = Some(hasChildAged2),
                       childAgedThreeOrFour = Some(hasChildAges3Or4),
@@ -237,11 +237,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           "an exception is thrown while saving data" in {
 
             when(
-              sut.keystore.fetch[Household]()(any(),any())
+              sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
               Future.successful(
                 Some(
-                  buildHousehold(
+                  buildPageObjects(
                     location = LocationEnum.ENGLAND,
                     childAgedTwo = Some(true),
                     childAgedThreeOrFour = Some(true),
@@ -252,7 +252,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             )
 
             when(
-              sut.keystore.cache[Household](any[Household]())(any(), any())
+              sut.keystore.cache[PageObjects](any[PageObjects]())(any(), any())
             ).thenReturn(
               Future.failed(new RuntimeException)
             )
@@ -270,7 +270,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
           "an exception is thrown while looking for data" in {
             when(
-              sut.keystore.fetch[Household]()(any(),any())
+              sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
               Future.failed(new RuntimeException)
             )
@@ -288,7 +288,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
           "there is no data in keystore for Household object" in {
             when(
-              sut.keystore.fetch[Household]()(any(),any())
+              sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
               Future.successful(None)
             )

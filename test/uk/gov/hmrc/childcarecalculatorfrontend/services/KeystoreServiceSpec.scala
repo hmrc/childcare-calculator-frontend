@@ -53,7 +53,7 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
         ).thenReturn(
           Future.successful(
             CacheMap("id", Map(
-              householdKey -> Json.obj(
+              pageObjectsKey -> Json.obj(
                 locationKey -> JsString(LocationEnum.ENGLAND.toString),
                 hasPartnerKey -> JsBoolean(false),
                 childrenKey -> JsArray(),
