@@ -65,7 +65,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -86,7 +86,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -109,7 +109,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -130,7 +130,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -147,7 +147,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
           Future.successful(None)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -159,7 +159,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
           Future.failed(new RuntimeException)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }

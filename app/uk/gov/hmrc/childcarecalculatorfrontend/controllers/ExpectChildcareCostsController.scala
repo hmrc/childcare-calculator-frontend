@@ -32,12 +32,21 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+  private def getBackUrl(summary: Boolean): Call = {
+    if(summary) {
+      routes.FreeHoursResultsController.onPageLoad()
+    } else {
+      routes.ChildAgedThreeOrFourController.onPageLoad(false)
+    }
+  }
+
+  def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[Household]().map {
       case Some(household) =>
         Ok(
           expectChildcareCosts(
             new ExpectChildcareCostsForm(messagesApi).form.fill(household.expectChildcareCosts),
+            getBackUrl(summary),
             household.location
           )
         )
@@ -61,11 +70,9 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
         (hasExpectedChildcareCost || location.equals(LocationEnum.ENGLAND) || hasChildAgedTwo)
       ) {
         routes.FreeHoursInfoController.onPageLoad()
-      }
-      else if(hasChildAgedTwo || hasExpectedChildcareCost) {
+      } else if(hasChildAgedTwo || hasExpectedChildcareCost) {
         routes.LivingWithPartnerController.onPageLoad()
-      }
-      else {
+      } else {
         routes.FreeHoursResultsController.onPageLoad()
       }
   }
@@ -77,7 +84,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
           errors =>
             Future(
               BadRequest(
-                expectChildcareCosts(errors, household.location)
+                expectChildcareCosts(errors, getBackUrl(false), household.location)
               )
             ),
           success => {

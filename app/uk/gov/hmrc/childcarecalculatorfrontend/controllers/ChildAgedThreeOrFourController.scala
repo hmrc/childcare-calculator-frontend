@@ -34,22 +34,25 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(hasChildAgedTwo: Option[Boolean]): Call = {
-    if(hasChildAgedTwo.isDefined) {
-      routes.ChildAgedTwoController.onPageLoad()
-    }
-    else {
-      routes.LocationController.onPageLoad()
+  private def getBackUrl(summary: Boolean, hasChildAgedTwo: Option[Boolean])(implicit hc: HeaderCarrier): Call = {
+    if(summary) {
+      routes.FreeHoursResultsController.onPageLoad()
+    } else {
+      if(hasChildAgedTwo.isDefined) {
+        routes.ChildAgedTwoController.onPageLoad(false)
+      } else {
+        routes.LocationController.onPageLoad()
+      }
     }
   }
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+  def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[Household]().map {
       case Some(household) =>
         Ok(
           childAgedThreeOrFour(
             new ChildAgedThreeOrFourForm(messagesApi).form.fill(household.childAgedThreeOrFour),
-            getBackUrl(household.childAgedTwo),
+            getBackUrl(summary, household.childAgedTwo),
             household.location
           )
         )
@@ -72,7 +75,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
               BadRequest(
                 childAgedThreeOrFour(
                   errors,
-                  getBackUrl(household.childAgedTwo),
+                  getBackUrl(false, household.childAgedTwo),
                   household.location
                 )
               )
@@ -82,7 +85,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
               childAgedThreeOrFour = success
             )
             keystore.cache(modifiedHousehold).map { result =>
-              Redirect(routes.ExpectChildcareCostsController.onPageLoad())
+              Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
             } recover {
               case ex: Exception =>
                 Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")

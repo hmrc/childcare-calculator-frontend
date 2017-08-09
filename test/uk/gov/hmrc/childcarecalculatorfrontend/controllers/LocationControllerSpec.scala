@@ -53,7 +53,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             None
@@ -66,7 +66,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildHousehold(location = LocationEnum.ENGLAND))
@@ -79,7 +79,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -115,7 +115,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           childAgeTwoLocations.foreach { loc =>
             s"${loc.toString} is selected if there is no data in keystore for Household object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[Household]()(any(), any())
               ).thenReturn(
                 Future.successful(
                   None
@@ -143,7 +143,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
             s"${loc.toString} is selected if there is data in keystore for Household object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[Household]()(any(), any())
               ).thenReturn(
                 Future.successful(
                   Some(buildHousehold(location = LocationEnum.ENGLAND))
@@ -178,7 +178,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           childAgeTwoLocations.foreach { loc =>
             s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[Household]()(any(), any())
               ).thenReturn(
                 Future.successful(
                   None
@@ -206,7 +206,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
             s"${loc.toString} is selected if there is data in keystore for Household object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[Household]()(any(), any())
               ).thenReturn(
                 Future.successful(
                   Some(buildHousehold(location = LocationEnum.ENGLAND))
@@ -238,7 +238,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
       "connecting with keystore fails" should {
         s"redirect to ${technicalDifficultiesPath}" in {
           when(
-            sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+            sut.keystore.fetch[Household]()(any(), any())
           ).thenReturn(
             Future.successful(
               Some(buildHousehold(location = LocationEnum.ENGLAND))

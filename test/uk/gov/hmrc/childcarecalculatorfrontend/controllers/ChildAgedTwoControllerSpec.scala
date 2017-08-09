@@ -51,52 +51,52 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildHousehold(childAgedTwo = None))
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildHousehold(childAgedTwo = Some(true)))
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "redirect to error page if there is no data keystore for household object" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(None)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -108,7 +108,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         "load same template and return BAD_REQUEST" in {
 
           when(
-            sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+            sut.keystore.fetch[Household]()(any(), any())
           ).thenReturn(
             Future.successful(
               Some(buildHousehold(childAgedTwo = None))
@@ -129,7 +129,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildHousehold(childAgedTwo = None))
@@ -159,7 +159,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildHousehold(childAgedTwo = None))
@@ -187,7 +187,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
     "there is no data in keystore for Household object" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[Household]()(any(), any())
         ).thenReturn(
           Future.successful(
             None

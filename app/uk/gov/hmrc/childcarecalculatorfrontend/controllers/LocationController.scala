@@ -19,11 +19,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Result, Call, Action, AnyContent}
+import play.api.mvc.{Result, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
 
@@ -47,8 +47,7 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       case Some(hh) =>
         val modifiedChildAgedTwo = if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
           None
-        }
-        else {
+        } else {
           hh.childAgedTwo
         }
 
@@ -67,10 +66,9 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
     val modifiedHousehold: Household = getModifiedHousehold(household, selectedLocation)
     keystore.cache(modifiedHousehold).map { res =>
       if (selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
-      }
-      else {
-        Redirect(routes.ChildAgedTwoController.onPageLoad())
+        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
+      } else {
+        Redirect(routes.ChildAgedTwoController.onPageLoad(false))
       }
     }
   }
