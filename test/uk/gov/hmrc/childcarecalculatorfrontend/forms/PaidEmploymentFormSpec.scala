@@ -26,8 +26,8 @@ class PaidEmploymentFormSpec extends UnitSpec with FakeCCApplication {
 
   val testCases = Table(
     ("Has partner", "Error message key"),
-    (false, "in.employment.not.selected.error.single"),
-    (true, "in.employment.not.selected.error.couple")
+    (false, "paid.employment.not.selected.error.single"),
+    (true, "paid.employment.not.selected.error.couple")
   )
 
 

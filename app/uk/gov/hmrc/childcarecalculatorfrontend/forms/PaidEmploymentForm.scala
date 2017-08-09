@@ -26,14 +26,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 @Singleton
 class PaidEmploymentForm @Inject()(hasPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  val familyStatus: String = if(hasPartner) "couple" else "single"
+  val familyStatus: String = getFamilyStatus(hasPartner)
 
   type InEmploymentFormType = Option[Boolean]
 
   val form = Form[InEmploymentFormType](
     single(
       paidEmploymentKey -> optional(boolean).verifying(
-        Messages(s"in.employment.not.selected.error.${familyStatus}"),
+        Messages(s"paid.employment.not.selected.error.${familyStatus}"),
         _.isDefined
       )
     )

@@ -71,5 +71,7 @@ free.hours.info.tfc = Tax-Free Childcare
 free.hours.info.tc = Tax credits
 
 ####### In Paid Employment or Self-Employed #######
-in.employment.not.selected.error.single = You must tell the calculator if you are in paid employment or self-employed
-in.employment.not.selected.error.couple = You must tell the calculator if you or your partner are in paid employment or self-employed
+paid.employment.header.single = Are you in paid employment or self-employed?
+paid.employment.header.couple = Are you or your partner in paid employment or self-employed?
+paid.employment.not.selected.error.single = You must tell the calculator if you are in paid employment or self-employed
+paid.employment.not.selected.error.couple = You must tell the calculator if you or your partner are in paid employment or self-employed

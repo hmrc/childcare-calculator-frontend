@@ -26,6 +26,15 @@ trait CCConstants {
   lazy val childrenKey = "children"
   lazy val parentKey = "parent"
   lazy val paidEmploymentKey = "paidEmployment"
+
+  def getFamilyStatus(hasPartner: Boolean): String = {
+    if(hasPartner) {
+      "couple"
+    }
+    else {
+      "single"
+    }
+  }
 }
 
 object CCConstants extends CCConstants
