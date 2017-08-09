@@ -24,5 +24,7 @@ GET         /free-hours                 uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET         /do-you-have-a-partner      uk.gov.hmrc.childcarecalculatorfrontend.controllers.LivingWithPartnerController.onPageLoad
 
+POST        /paid-employment            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit
+
 GET         /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 

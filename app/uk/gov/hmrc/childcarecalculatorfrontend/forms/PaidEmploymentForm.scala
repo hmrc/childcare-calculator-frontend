@@ -24,16 +24,16 @@ import play.api.i18n.{Messages, I18nSupport, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class InEmploymentForm @Inject()(hasPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class PaidEmploymentForm @Inject()(hasPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  val familyStatus: String = if(hasPartner) "couple" else "single"
+  val familyStatus: String = getFamilyStatus(hasPartner)
 
   type InEmploymentFormType = Option[Boolean]
 
   val form = Form[InEmploymentFormType](
     single(
-      inEmploymentKey -> optional(boolean).verifying(
-        Messages(s"in.employment.not.selected.error.${familyStatus}"),
+      paidEmploymentKey -> optional(boolean).verifying(
+        Messages(s"paid.employment.not.selected.error.${familyStatus}"),
         _.isDefined
       )
     )
