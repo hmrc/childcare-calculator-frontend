@@ -14,9 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-
-@(form: Form[Option[Boolean]], backUrl: Call, location: LocationEnum)(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[Boolean]], backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
@@ -25,19 +23,17 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
-    header = messages("child.aged.three.or.four.header"),
+    header = messages("living.with.partner.header"),
     backLink = Some(backUrl)
 ) {
     @helpers.form(
-        action = routes.ChildAgedThreeOrFourController.onSubmit,
+        action = routes.LivingWithPartnerController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
-        <p>@messages(s"child.aged.three.or.four.info.${location.toString}")</p>
-
         @radio.ccRadioOptions(
-            field = form(CCConstants.childAgedThreeOrFourKey),
+            field = form(CCConstants.livingWithPartnerKey),
             fieldForm = form,
             radioOptions = Seq(
                 ("true", messages("radio.yes")),
@@ -46,8 +42,8 @@
             args = '_groupClass -> "form-group inline",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages("child.aged.three.or.four.header"),
-                '_globalErrorKey -> messages("child.aged.three.or.four.yes.no.not.selected.error")
+                '_legend -> messages("living.with.partner.header"),
+                '_globalErrorKey -> messages("living.with.partner.yes.no.not.selected.error")
         )
         @buttons.nextButton()
     }

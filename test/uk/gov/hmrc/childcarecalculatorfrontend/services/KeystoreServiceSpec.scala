@@ -20,9 +20,10 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import play.api.libs.json.{JsString, Writes, Reads}
+import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
 import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
 import uk.gov.hmrc.play.http.{HttpResponse, HeaderCarrier}
 import uk.gov.hmrc.play.test.UnitSpec
@@ -48,28 +49,35 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
     "succeed saving data in cache" when {
       "returns data given for saving" in {
         when(
-          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
+          sut.sessionCache.cache[Household](anyString, any[Household])(any[Writes[Household]], any[HeaderCarrier])
         ).thenReturn(
           Future.successful(
-            CacheMap("id", Map("test_key" -> JsString("test_value")))
+            CacheMap("id", Map(
+              householdKey -> Json.obj(
+                locationKey -> JsString(LocationEnum.ENGLAND.toString),
+                hasPartnerKey -> JsBoolean(false),
+                childrenKey -> JsArray(),
+                parentKey -> Json.obj()
+              )
+            ))
           )
         )
-        val result: Option[String] = await(sut.cacheEntryForSession[String]("test_key", "test_value"))
+        val result: Option[Household] = await(sut.cache[Household](Household(location = LocationEnum.ENGLAND)))
         result.isDefined shouldBe true
-        result.get shouldBe "test_value"
+        result.get shouldBe Household(location = LocationEnum.ENGLAND)
       }
     }
 
     "fail saving data in cache" when {
       "returns None" in {
         when(
-          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
+          sut.sessionCache.cache[Household](anyString, any[Household])(any[Writes[Household]], any[HeaderCarrier])
         ).thenReturn(
           Future.successful(
             CacheMap("id", Map())
           )
         )
-        val result: Option[String] = await(sut.cacheEntryForSession[String]("test_key", "test_value"))
+        val result: Option[Household] = await(sut.cache[Household](Household(location = LocationEnum.ENGLAND)))
         result.isDefined shouldBe false
       }
     }
@@ -77,111 +85,29 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
     "return value from cache" when {
       "there is some data for given key" in {
         when(
-          sut.sessionCache.fetchAndGetEntry[String](anyString)(any[HeaderCarrier], any[Reads[String]])
+          sut.sessionCache.fetchAndGetEntry[Household](anyString)(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
           Future.successful(
-            Some("test_value")
+            Some(Household(location = LocationEnum.ENGLAND))
           )
         )
 
-        val result: Option[String] = await(sut.fetchEntryForSession[String]("test_key"))
+        val result: Option[Household] = await(sut.fetch[Household]())
         result.isDefined shouldBe true
-        result.get shouldBe "test_value"
+        result.get shouldBe Household(location = LocationEnum.ENGLAND)
       }
 
       "there is no data for given key" in {
         when(
-          sut.sessionCache.fetchAndGetEntry[String](anyString)(any[HeaderCarrier], any[Reads[String]])
+          sut.sessionCache.fetchAndGetEntry[Household](anyString)(any[HeaderCarrier], any[Reads[Household]])
         ).thenReturn(
           Future.successful(
             None
           )
         )
 
-        val result: Option[String] = await(sut.fetchEntryForSession[String]("test_key"))
+        val result: Option[Household] = await(sut.fetch[Household]())
         result.isDefined shouldBe false
-      }
-    }
-
-    "remove data related to given key" when {
-      "there is no data in keystore" in {
-        when(
-          sut.sessionCache.fetch()(any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.removeFromSession("test_key"))
-        result shouldBe true
-      }
-
-      "the key doesn't exists in data returned from keystore" in {
-        when(
-          sut.sessionCache.fetch()(any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            Some(CacheMap("id", Map()))
-          )
-        )
-        val result = await(sut.removeFromSession("test_key"))
-        result shouldBe true
-      }
-
-      "the key exists in data returned from keystore" in {
-        when(
-          sut.sessionCache.fetch()(any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
-          )
-        )
-
-        when(
-          sut.sessionCache.remove()(any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            HttpResponse(OK)
-          )
-        )
-
-        when(
-          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            CacheMap("id", Map("test_key2" -> JsString("test_value2")))
-          )
-        )
-
-        val result = await(sut.removeFromSession("test_key1"))
-        result shouldBe true
-      }
-
-      "the key exists in data returned from keystore but save fails" in {
-        when(
-          sut.sessionCache.fetch()(any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            Some(CacheMap("id", Map("test_key1" -> JsString("test_value1"), "test_key2" -> JsString("test_value2"))))
-          )
-        )
-
-        when(
-          sut.sessionCache.remove()(any[HeaderCarrier])
-        ).thenReturn(
-          Future.successful(
-            HttpResponse(OK)
-          )
-        )
-
-        when(
-          sut.sessionCache.cache[String](anyString, anyString)(any[Writes[String]], any[HeaderCarrier])
-        ).thenReturn(
-          Future.failed(new RuntimeException)
-        )
-
-        val result = await(sut.removeFromSession("test_key1"))
-        result shouldBe false
       }
     }
   }

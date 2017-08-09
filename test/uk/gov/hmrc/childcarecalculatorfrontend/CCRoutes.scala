@@ -28,6 +28,7 @@ trait CCRoutes {
   val childAgedTwoPath: String = path("/child-aged-two")
   val childAgedThreeOrFourPath: String = path("/child-aged-three-or-four")
   val expectChildcareCostsPath: String = path("/expect-childcare-costs")
+  val freeHoursInfoPath: String = path("/free-hours-info")
   val freeHoursResultsPath: String = path("/free-hours")
   val livingWithPartnerPath: String = path("/do-you-have-a-partner")
 

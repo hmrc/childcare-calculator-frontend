@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.i18n.Messages.Implicits._
-import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import javax.inject.{Singleton, Inject}
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
+import scala.concurrent.Future
 
-class FreeHoursResultsControllerSpec extends ControllersValidator {
+@Singleton
+class FreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-  val sut = new FreeHoursResultsController(applicationMessagesApi)
-
-  validateUrl(freeHoursResultsPath, List(GET))
-
-  "onPageLoad" should {
-    "load successfully ChildAgedThreeOrFour template" in {
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/plain; charset=utf-8"
-    }
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    Future(Ok(freeHoursInfo()))
   }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    Future(Redirect(routes.LivingWithPartnerController.onPageLoad()))
+  }
+
 }
