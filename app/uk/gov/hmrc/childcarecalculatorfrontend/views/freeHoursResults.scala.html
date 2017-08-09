@@ -15,13 +15,13 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 @(child3Or4: Boolean, location: LocationEnum)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.ccMain
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons.anchor
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
-@theLocation = @{location.toString}
 @ccMain(
     header = messages("free.hours.results.header"),
     backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
@@ -47,9 +47,11 @@
                 </div>
             </div>
         </div>
-        <p>@messages(s"free.hours.results.entitled.info.${location}")</p>
-        <div class="panel panel-border-wide">
-            <p>@messages("free.hours.results.entitled.info.no.costs")</p>
+        <div id="free-hours-results-entitled">
+            <p>@messages(s"free.hours.results.entitled.info.${location}")</p>
+            <div class="panel panel-border-wide">
+                <p>@messages("free.hours.results.entitled.info.no.costs")</p>
+            </div>
         </div>
     } else {
         <div class="grid-row">
@@ -66,7 +68,7 @@
             </div>
         </div>
         <div id="free-hours-results-not-entitled">
-            @if(theLocation == "northern-ireland") {
+            @if(location == LocationEnum.NORTHERNIRELAND) {
                 <p>@messages("free.hours.results.not.entitled.info.ni")</p>
             } else {
                 <p>@messages("free.hours.results.not.entitled.info")</p>
@@ -89,7 +91,7 @@
             <tr><th colspan="3">General</th></tr>
         </thead>
         <tbody>
-        @if(theLocation != "northern-ireland") {
+        @if(location != LocationEnum.NORTHERNIRELAND) {
             <tr>
                 <td width="60%">@messages("free.hours.results.summary.age.2")</td>
                 <td>No</td>

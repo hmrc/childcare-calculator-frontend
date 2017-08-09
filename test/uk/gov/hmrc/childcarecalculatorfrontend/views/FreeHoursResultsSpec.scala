@@ -46,14 +46,12 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
 
   override val linksData: List[ElementDetails] = List(
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = expectChildcareCostsPath),
-    ElementDetails(id = Some("free-hours-results-general-aged2"), checkAttribute = Some("href"), value = childAgedTwoEditPath),
     ElementDetails(id = Some("free-hours-results-general-aged3-or-4"), checkAttribute = Some("href"), value = childAgedThreeOrFourEditPath),
     ElementDetails(id = Some("free-hours-results-eligible-cc"), checkAttribute = Some("href"), value = expectChildcareCostsEditPath)
   )
 
   def getTemplate(isChild3or4: Boolean, location: LocationEnum): Document = {
     val template = freeHoursResults(isChild3or4, location)(request, applicationMessages)
-    println(s"$template")
     Jsoup.parse(contentAsString(template))
   }
 
@@ -65,35 +63,59 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
     template1.contentType shouldBe "text/html"
   }
 
-//  "display correct content if having a child of 3 or 4 years" when {
-//    LocationEnum.values.foreach { loc =>
-//      s"${loc} is selected" in {
-//        implicit val doc: Document = getTemplate(false, loc)
-//        if (loc != "northern-ireland") {
-//          println("no NI")
-//          verifyPageContent(
-//            List(
-//            ElementDetails(id = Some("free-hours-results-not-entitled"), tagName = Some("p"), tagIndex = Some(0),
-//              value = "You’re currently not eligible for any free hours because you don’t have a child aged between " +
-//                "2 and 4. You don’t currently have or expect to have any approved childcare costs so you would not be " +
-//                "eligible for any further support.")
-//            )
-//          )
-//        } else {
-//          println("NI")
-//          verifyPageContent(
-//            List(
-//            ElementDetails(id = Some("free-hours-results-not-entitled"), tagName = Some("p"), tagIndex = Some(0),
-//              value = "You’re currently not eligible for support because you don’t have a child aged between 3 and 4. You " +
-//                "don’t currently have or expect to have any approved childcare costs so you would not be eligible for " +
-//                "any further support.")
-//            )
-//          )
-//        }
-//        verifyPageLinks()
-//      }
-//    }
-//  }
+  "display correct content" when {
+    LocationEnum.values.foreach { loc =>
+      s"${loc} is selected and no child of age 3 or 4" in {
+        implicit val doc: Document = getTemplate(false, loc)
+        if (loc != LocationEnum.NORTHERNIRELAND) {
+          verifyPageContent(
+            List(
+              ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.results.entitled.${loc}")),
+              ElementDetails(id = Some("free-hours-results-not-entitled"),
+              value = "You’re currently not eligible for any free hours because you don’t have a child aged between " +
+                "2 and 4. You don’t currently have or expect to have any approved childcare costs so you would not be " +
+                "eligible for any further support.")
+            )
+          )
+          verifyPageLinks(List(ElementDetails(id = Some("free-hours-results-general-aged2"), checkAttribute =
+            Some("href"), value = childAgedTwoEditPath)))
+        } else {
+          verifyPageContent(
+            List(
+              ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.results.entitled.${loc}")),
+              ElementDetails(id = Some("free-hours-results-not-entitled"),
+              value = "You’re currently not eligible for support because you don’t have a child aged between 3 and 4. You " +
+                "don’t currently have or expect to have any approved childcare costs so you would not be eligible for " +
+                "any further support.")
+            )
+          )
+          verifyPageLinks()
+        }
+
+      }
+
+      s"${loc} is selected and has child of age 3 or 4" in {
+        implicit val doc: Document = getTemplate(true, loc)
+        verifyPageContent(
+          List(
+            ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.results.entitled.${loc}")),
+            ElementDetails(id = Some("free-hours-results-entitled"), tagName=Some("p"), tagIndex=Some(0),
+              value = applicationMessages.messages(s"free.hours.results.entitled.info.${loc}")),
+            ElementDetails(id = Some("free-hours-results-entitled"), tagName=Some("p"), tagIndex=Some(1),
+              value = applicationMessages.messages(s"free.hours.results.entitled.info.no.costs"))
+          )
+        )
+        if(loc != LocationEnum.ENGLAND) {
+          //verifying actual message values not variable messages
+          applicationMessages.messages(s"free.hours.results.entitled.${loc}") should not be s"free.hours.results.entitled.${loc}"
+          applicationMessages.messages(s"free.hours.results.entitled.info.${loc}") should not be s"free.hours.results.entitled.info.${loc}"
+          applicationMessages.messages(s"free.hours.results.entitled.info.no.costs") should not be "free.hours.results.entitled.info.no.costs"
+        }
+        verifyPageLinks()
+      }
+
+    }
+  }
 
 
 }
