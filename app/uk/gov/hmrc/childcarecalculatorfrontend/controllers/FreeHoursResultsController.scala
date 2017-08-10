@@ -21,7 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResults
 
@@ -35,7 +35,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
       case Some(pageObjects) =>
         Ok(freeHoursResults(pageObjects.childAgedThreeOrFour.getOrElse(false), pageObjects.household.location))
       case _ =>
-        Logger.warn("Household object is missing in ExpectChildcareCostsController.onPageLoad")
+        Logger.warn("PageObjects object is missing in FreeHoursResultsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
 
     } recover {

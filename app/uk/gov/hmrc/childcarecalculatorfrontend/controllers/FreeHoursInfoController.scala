@@ -16,17 +16,35 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
+
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
+
 import scala.concurrent.Future
 
 @Singleton
 class FreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
+  val keystore: KeystoreService = KeystoreService
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    Future(Ok(freeHoursInfo()))
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) =>
+        Ok(freeHoursInfo(pageObjects.childAgedTwo.getOrElse(false), pageObjects.household.location))
+      case _ =>
+        Logger.warn("PageObjects object is missing in FreeHoursInfoController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from FreeHoursInfoController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>

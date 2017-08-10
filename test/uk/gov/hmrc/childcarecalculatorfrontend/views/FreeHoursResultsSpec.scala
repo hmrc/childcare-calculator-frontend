@@ -100,7 +100,7 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
           List(
             ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.results.entitled.${loc}")),
             ElementDetails(id = Some("free-hours-results-entitled"), tagName=Some("p"), tagIndex=Some(0),
-              value = applicationMessages.messages(s"free.hours.results.entitled.info.${loc}")),
+              value = applicationMessages.messages(s"free.hours.entitled.info.${loc}")),
             ElementDetails(id = Some("free-hours-results-entitled"), tagName=Some("p"), tagIndex=Some(1),
               value = applicationMessages.messages(s"free.hours.results.entitled.info.no.costs"))
           )
@@ -108,7 +108,7 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
         if(loc != LocationEnum.ENGLAND) {
           //verifying actual message values not variable messages
           applicationMessages.messages(s"free.hours.results.entitled.${loc}") should not be s"free.hours.results.entitled.${loc}"
-          applicationMessages.messages(s"free.hours.results.entitled.info.${loc}") should not be s"free.hours.results.entitled.info.${loc}"
+          applicationMessages.messages(s"free.hours.entitled.info.${loc}") should not be s"free.hours.entitled.info.${loc}"
           applicationMessages.messages(s"free.hours.results.entitled.info.no.costs") should not be "free.hours.results.entitled.info.no.costs"
         }
         verifyPageLinks()
