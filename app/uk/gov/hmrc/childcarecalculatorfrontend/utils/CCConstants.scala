@@ -23,7 +23,6 @@ trait CCConstants {
   lazy val childAgedTwoKey = "childAgedTwo"
   lazy val childAgedThreeOrFourKey = "childAgedThreeOrFour"
   lazy val expectChildcareCostsKey = "expectChildcareCosts"
-  lazy val hasPartnerKey = "hasPartner"
   lazy val childrenKey = "children"
   lazy val parentKey = "parent"
   lazy val livingWithPartnerKey = "livingWithPartner"

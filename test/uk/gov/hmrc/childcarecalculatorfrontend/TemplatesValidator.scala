@@ -49,7 +49,6 @@ trait TemplatesValidator extends UnitSpec {
           }
         case ElementDetails(value, Some(id), _, _, _, _, Some(tagName), Some(tagIndex)) =>
           withClue(s"Element with id '${id}', tag '${tagName}' and tagIndex '${tagIndex}': ") {
-            println(s"$id>>$tagName>>>$tagIndex>>>>$value")
             doc.getElementById(id).getElementsByTag(tagName).get(tagIndex).text() shouldBe value
           }
         case ElementDetails(value, Some(id), _, _, _, None, _, _) =>

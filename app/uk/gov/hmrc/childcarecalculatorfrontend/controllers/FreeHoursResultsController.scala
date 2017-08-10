@@ -35,7 +35,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
       case Some(pageObjects) =>
         Ok(freeHoursResults(pageObjects.childAgedThreeOrFour.getOrElse(false), pageObjects.household.location))
       case _ =>
-        Logger.warn("Household object is missing in ExpectChildcareCostsController.onPageLoad")
+        Logger.warn("PageObjects object is missing in ExpectChildcareCostsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
 
     } recover {
