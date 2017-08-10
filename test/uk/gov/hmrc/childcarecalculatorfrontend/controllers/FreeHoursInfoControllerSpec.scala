@@ -49,6 +49,7 @@ class FreeHoursInfoControllerSpec extends ControllersValidator with BeforeAndAft
           Some(
             PageObjects(
               household = Household(location = LocationEnum.ENGLAND),
+              expectChildcareCosts = Some(true),
               childAgedTwo = Some(true)
             )
           )
@@ -67,6 +68,7 @@ class FreeHoursInfoControllerSpec extends ControllersValidator with BeforeAndAft
           Some(
             PageObjects(
               household = Household(location = LocationEnum.ENGLAND),
+              expectChildcareCosts = None,
               childAgedTwo = None
             )
           )

@@ -43,23 +43,23 @@ class FreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = expectChildcareCostsPath)
   )
 
-  def getTemplate(isChild2: Boolean, location: LocationEnum): Document = {
-    val template = freeHoursInfo(isChild2, location)(request, applicationMessages)
+  def getTemplate(haveCost: Boolean, isChild2: Boolean, location: LocationEnum): Document = {
+    val template = freeHoursInfo(haveCost, isChild2, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "render template" in {
-    val template = freeHoursInfo.render(true, LocationEnum.ENGLAND, request, applicationMessages)
+    val template = freeHoursInfo.render(false, true, LocationEnum.ENGLAND, request, applicationMessages)
     template.contentType shouldBe "text/html"
 
-    val template1 = freeHoursInfo.f(false, LocationEnum.ENGLAND)(request, applicationMessages)
+    val template1 = freeHoursInfo.f(true, false, LocationEnum.ENGLAND)(request, applicationMessages)
     template1.contentType shouldBe "text/html"
   }
 
   "display correct content" when {
     LocationEnum.values.foreach { loc =>
       s"${loc} is selected and no child of age 2" in {
-        implicit val doc: Document = getTemplate(false, loc)
+        implicit val doc: Document = getTemplate(true, false, loc)
           verifyPageContent(
             List(
               ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.entitled.info.${loc}"))
@@ -69,11 +69,12 @@ class FreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication {
       }
 
       s"${loc} is selected and has a child of age 2" in {
-        implicit val doc: Document = getTemplate(true, loc)
+        implicit val doc: Document = getTemplate(false, true, loc)
         verifyPageContent(
           List(
             ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.entitled.info.${loc}")),
-            ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(1), value = applicationMessages.messages(s"free.hours.entitled.2.info.${loc}"))
+            ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(1), value = applicationMessages.messages(s"free.hours.entitled.2.info.${loc}")),
+            ElementDetails(id = Some("free-hours-entitled-info"), tagName=Some("p"), tagIndex=Some(2), value = applicationMessages.messages(s"free.hours.results.entitled.info.no.costs"))
           )
         )
         verifyPageLinks()

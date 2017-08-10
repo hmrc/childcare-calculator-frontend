@@ -35,7 +35,7 @@ class FreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I1
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
-        Ok(freeHoursInfo(pageObjects.childAgedTwo.getOrElse(false), pageObjects.household.location))
+        Ok(freeHoursInfo(pageObjects.expectChildcareCosts.getOrElse(false), pageObjects.childAgedTwo.getOrElse(false), pageObjects.household.location))
       case _ =>
         Logger.warn("PageObjects object is missing in FreeHoursInfoController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
