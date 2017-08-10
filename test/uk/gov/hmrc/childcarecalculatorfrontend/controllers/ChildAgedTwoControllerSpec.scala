@@ -25,7 +25,6 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -47,6 +46,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
     location = LocationEnum.ENGLAND),
     childAgedTwo = childAgedTwo
   )
+
   "ChildAgedTwoController" when {
 
     "onPageLoad is called" should {
@@ -60,7 +60,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
@@ -74,7 +74,21 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "load template successfully if there is data in keystore and summary is true" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(childAgedTwo = Some(true)))
+          )
+        )
+
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
@@ -86,7 +100,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           Future.successful(None)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -98,10 +112,11 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
           Future.failed(new RuntimeException)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
+
     }
 
     "onSubmit is called" when {
@@ -186,7 +201,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
       }
     }
 
-    "there is no data in keystore for Household object" should {
+    "there is no data in keystore for PageObjects object" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])

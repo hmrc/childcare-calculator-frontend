@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -34,22 +34,26 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(hasChildAgedTwo: Option[Boolean]): Call = {
-    if(hasChildAgedTwo.isDefined) {
-      routes.ChildAgedTwoController.onPageLoad()
-    }
-    else {
-      routes.LocationController.onPageLoad()
+  private def getBackUrl(summary: Boolean, hasChildAgedTwo: Option[Boolean])(implicit hc: HeaderCarrier): Call = {
+    if(summary) {
+      routes.FreeHoursResultsController.onPageLoad()
+    } else {
+      if(hasChildAgedTwo.isDefined) {
+        routes.ChildAgedTwoController.onPageLoad(false)
+      } else {
+        routes.LocationController.onPageLoad()
+      }
     }
   }
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+
+  def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
         Ok(
           childAgedThreeOrFour(
             new ChildAgedThreeOrFourForm(messagesApi).form.fill(pageObjects.childAgedThreeOrFour),
-            getBackUrl(pageObjects.childAgedTwo),
+            getBackUrl(summary, pageObjects.childAgedTwo),
             pageObjects.household.location
           )
         )
@@ -72,8 +76,9 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
               BadRequest(
                 childAgedThreeOrFour(
                   errors,
-                  getBackUrl(pageObjects.childAgedTwo),
+                  getBackUrl(false, pageObjects.childAgedTwo),
                   pageObjects.household.location
+
                 )
               )
             ),
@@ -82,7 +87,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
               childAgedThreeOrFour = success
             )
             keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(routes.ExpectChildcareCostsController.onPageLoad())
+              Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
             } recover {
               case ex: Exception =>
                 Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")

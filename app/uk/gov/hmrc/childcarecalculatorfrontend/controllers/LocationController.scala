@@ -20,11 +20,14 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import play.api.mvc.{Action, AnyContent, Call, Result}
+
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -44,7 +47,7 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
     }
   }
 
-  private def getModifiedHousehold(pageObjects: Option[PageObjects], selectedLocation: String): PageObjects = {
+  private def getModifiedPageObjects(pageObjects: Option[PageObjects], selectedLocation: String): PageObjects = {
     pageObjects match {
       case Some(po) =>
         val modifiedChildAgedTwo = if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
@@ -54,12 +57,10 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
           po.childAgedTwo
         }
 
-        po.copy(
-          household = po.household.copy(
-            location = LocationEnum.withName(selectedLocation)
-          ),
-          childAgedTwo = modifiedChildAgedTwo
-        )
+        val modifiedHousehold = po.household.copy(location = LocationEnum.withName(selectedLocation))
+
+        po.copy(household = modifiedHousehold, childAgedTwo = modifiedChildAgedTwo)
+
       case _ =>
         PageObjects(
           household = Household(
@@ -70,14 +71,13 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
   }
 
   private def saveAndGoToNextPage(pageObjects: Option[PageObjects], selectedLocation: String)(implicit hc: HeaderCarrier): Future[Result] = {
-    val modifiedPageObjects: PageObjects = getModifiedHousehold(pageObjects, selectedLocation)
+    val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedLocation)
 
     keystore.cache(modifiedPageObjects).map { res =>
       if (selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
-      }
-      else {
-        Redirect(routes.ChildAgedTwoController.onPageLoad())
+        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
+      } else {
+        Redirect(routes.ChildAgedTwoController.onPageLoad(false))
       }
     }
   }

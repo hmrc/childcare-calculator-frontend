@@ -113,7 +113,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
             LocationEnum.WALES
           )
           childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected if there is no data in keystore for Household object" in {
+            s"${loc.toString} is selected if there is no data in keystore for PageObjects object" in {
               when(
                 sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
@@ -141,7 +141,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
               result.header.headers("Location") shouldBe childAgedTwoPath
             }
 
-            s"${loc.toString} is selected if there is data in keystore for Household object" in {
+            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
               when(
                 sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
@@ -178,7 +178,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           childAgeTwoLocations.foreach { loc =>
             s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[PageObjects]()(any(), any())
               ).thenReturn(
                 Future.successful(
                   None
@@ -204,7 +204,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
               result.header.headers("Location") shouldBe childAgedThreeOrFourPath
             }
 
-            s"${loc.toString} is selected if there is data in keystore for Household object" in {
+            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
               when(
                 sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(

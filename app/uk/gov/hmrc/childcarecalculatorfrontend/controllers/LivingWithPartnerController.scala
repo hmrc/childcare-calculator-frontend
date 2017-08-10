@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
 
@@ -38,7 +38,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
       routes.FreeHoursInfoController.onPageLoad()
     }
     else {
-      routes.ExpectChildcareCostsController.onPageLoad()
+      routes.ExpectChildcareCostsController.onPageLoad(false)
     }
   }
 

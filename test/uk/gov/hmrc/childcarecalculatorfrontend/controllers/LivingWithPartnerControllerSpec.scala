@@ -231,7 +231,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
       }
     }
 
-    "there is no data in keystore for Household object" should {
+    "there is no data in keystore for PageObjects object" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])

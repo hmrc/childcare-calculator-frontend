@@ -25,7 +25,6 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childAgedThreeOrFour, childAgedTwo, location}
 
 import scala.concurrent.Future
 
@@ -67,7 +66,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -88,7 +87,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -111,11 +110,32 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
           content.getElementById("back-button").attr("href") shouldBe locationPath
+        }
+
+        s"contain back url to free-hours-results if there is no data about child aged 2 and summary is true" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any(),any())
+          ).thenReturn(
+            Future.successful(
+              Some(
+                buildPageObjects(
+                  childAgedTwo = None,
+                  childAgedThreeOrFour = Some(true)
+                )
+              )
+            )
+          )
+
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe "/childcare-calc/free-hours-results"
         }
 
         s"contain back url to ${childAgedTwoPath} if there is data about child aged 2" in {
@@ -132,7 +152,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
             )
           )
 
-          val result = await(sut.onPageLoad(request.withSession(validSession)))
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -149,7 +169,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
           Future.successful(None)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -161,7 +181,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
           Future.failed(new RuntimeException)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -216,7 +236,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
     }
 
     s"redirect to error page (${technicalDifficultiesPath})" when {
-      "there is no data in keystore for Household object" in {
+      "there is no data in keystore for PageObjects object" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
@@ -228,7 +248,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "can't connect to keystore loading Household object" in {
+      "can't connect to keystore loading PageObjects object" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(

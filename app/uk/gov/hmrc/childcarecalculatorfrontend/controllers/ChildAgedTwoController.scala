@@ -20,8 +20,9 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
+
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
@@ -34,12 +35,21 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
 
   val keystore: KeystoreService = KeystoreService
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+  private def getBackUrl(summary: Boolean)(implicit hc: HeaderCarrier): Call = {
+    if(summary) {
+      routes.FreeHoursResultsController.onPageLoad()
+    } else {
+      routes.LocationController.onPageLoad()
+    }
+  }
+
+  def onPageLoad(summary: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
         Ok(
           childAgedTwo(
             new ChildAgedTwoForm(messagesApi).form.fill(pageObjects.childAgedTwo),
+            getBackUrl(summary),
             pageObjects.household.location
           )
         )
@@ -60,7 +70,8 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
           errors =>
             Future(
               BadRequest(
-                childAgedTwo(errors, pageObjects.household.location)
+                childAgedTwo(errors, getBackUrl(false), pageObjects.household.location)
+
               )
             ),
           success => {
@@ -70,7 +81,7 @@ class ChildAgedTwoController @Inject()(val messagesApi: MessagesApi) extends I18
 
             keystore.cache(modifiedPageObjects).map {
               result =>
-                Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
+                Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
             }
           }
         )

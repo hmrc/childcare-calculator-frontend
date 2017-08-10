@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
@@ -51,7 +52,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     "load successfully the ExpectChildcareCosts page" when {
       "there is data in session" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(
@@ -63,14 +64,14 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "there is no data in session" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(
@@ -82,33 +83,56 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
     }
 
+    "contain back url to free-hours-results" when {
+      s"summary is true" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(
+            Some(
+              buildPageObjects(
+                location = LocationEnum.ENGLAND,
+                expectChildcareCosts = Some(true)
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe "/childcare-calc/free-hours-results"
+      }
+    }
+
     s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
-      "there is no data in keystore for Household object" in {
+      "there is no data in keystore for PageObjects object" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(None)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
       "an exception is thrown from keystore service" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -286,7 +310,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          "there is no data in keystore for Household object" in {
+          "there is no data in keystore for PageObjects object" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
