@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
+import akka.actor.FSM.->
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
@@ -23,11 +24,12 @@ import org.mockito.Matchers._
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
-import uk.gov.hmrc.play.http.{HttpResponse, HeaderCarrier}
+import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-import play.api.test.Helpers._
+
 import scala.concurrent.Future
 
 class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplication with BeforeAndAfterEach {
@@ -49,35 +51,36 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
     "succeed saving data in cache" when {
       "returns data given for saving" in {
         when(
-          sut.sessionCache.cache[Household](anyString, any[Household])(any[Writes[Household]], any[HeaderCarrier])
+          sut.sessionCache.cache[PageObjects](anyString, any[PageObjects])(any[Writes[PageObjects]], any[HeaderCarrier])
         ).thenReturn(
           Future.successful(
             CacheMap("id", Map(
-              householdKey -> Json.obj(
-                locationKey -> JsString(LocationEnum.ENGLAND.toString),
+              pageObjectsKey -> Json.obj(
+                householdKey -> Json.obj(locationKey -> JsString(LocationEnum.ENGLAND.toString),
                 hasPartnerKey -> JsBoolean(false),
                 childrenKey -> JsArray(),
-                parentKey -> Json.obj()
+                parentKey -> Json.obj())
               )
             ))
           )
         )
-        val result: Option[Household] = await(sut.cache[Household](Household(location = LocationEnum.ENGLAND)))
+        val result: Option[PageObjects] = await(sut.cache[PageObjects](PageObjects(Household(location = LocationEnum.ENGLAND))))
+        println(result.get)
         result.isDefined shouldBe true
-        result.get shouldBe Household(location = LocationEnum.ENGLAND)
+        result.get shouldBe PageObjects(Household(location = LocationEnum.ENGLAND))
       }
     }
 
     "fail saving data in cache" when {
       "returns None" in {
         when(
-          sut.sessionCache.cache[Household](anyString, any[Household])(any[Writes[Household]], any[HeaderCarrier])
+          sut.sessionCache.cache[PageObjects](anyString, any[PageObjects])(any[Writes[PageObjects]], any[HeaderCarrier])
         ).thenReturn(
           Future.successful(
             CacheMap("id", Map())
           )
         )
-        val result: Option[Household] = await(sut.cache[Household](Household(location = LocationEnum.ENGLAND)))
+        val result: Option[PageObjects] = await(sut.cache[PageObjects](PageObjects(Household(location = LocationEnum.ENGLAND))))
         result.isDefined shouldBe false
       }
     }
@@ -85,28 +88,28 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
     "return value from cache" when {
       "there is some data for given key" in {
         when(
-          sut.sessionCache.fetchAndGetEntry[Household](anyString)(any[HeaderCarrier], any[Reads[Household]])
+          sut.sessionCache.fetchAndGetEntry[PageObjects](anyString)(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(Household(location = LocationEnum.ENGLAND))
+            Some(PageObjects(Household(location = LocationEnum.ENGLAND)))
           )
         )
 
-        val result: Option[Household] = await(sut.fetch[Household]())
+        val result: Option[PageObjects] = await(sut.fetch[PageObjects]())
         result.isDefined shouldBe true
-        result.get shouldBe Household(location = LocationEnum.ENGLAND)
+        result.get shouldBe PageObjects(Household(location = LocationEnum.ENGLAND))
       }
 
       "there is no data for given key" in {
         when(
-          sut.sessionCache.fetchAndGetEntry[Household](anyString)(any[HeaderCarrier], any[Reads[Household]])
+          sut.sessionCache.fetchAndGetEntry[PageObjects](anyString)(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
             None
           )
         )
 
-        val result: Option[Household] = await(sut.fetch[Household]())
+        val result: Option[PageObjects] = await(sut.fetch[PageObjects]())
         result.isDefined shouldBe false
       }
     }

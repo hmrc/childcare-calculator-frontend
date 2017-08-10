@@ -16,15 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import org.mockito.Mockito._
 import org.mockito.Matchers._
+
 import scala.concurrent.Future
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
@@ -37,11 +38,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
   validateUrl(expectChildcareCostsPath)
 
-  def buildHousehold(location: LocationEnum =  LocationEnum.ENGLAND,
-                     childAgedTwo: Option[Boolean] = None,
-                     childAgedThreeOrFour: Option[Boolean] = None,
-                     expectChildcareCosts: Option[Boolean] =  None): Household = Household(
-    location = location,
+  def buildPageObjects(location: LocationEnum =  LocationEnum.ENGLAND,
+                       childAgedTwo: Option[Boolean] = None,
+                       childAgedThreeOrFour: Option[Boolean] = None,
+                       expectChildcareCosts: Option[Boolean] =  None): PageObjects = PageObjects(household = Household(
+    location = location),
     childAgedTwo = childAgedTwo,
     childAgedThreeOrFour = childAgedThreeOrFour,
     expectChildcareCosts =  expectChildcareCosts
@@ -51,11 +52,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     "load successfully the ExpectChildcareCosts page" when {
       "there is data in session" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 location = LocationEnum.ENGLAND,
                 expectChildcareCosts = Some(true)
               )
@@ -63,18 +64,18 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "there is no data in session" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 location = LocationEnum.ENGLAND,
                 expectChildcareCosts = None
               )
@@ -82,33 +83,56 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           )
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
     }
 
-    s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
-      "there is no data in keystore for Household object" in {
+    "contain back url to free-hours-results" when {
+      s"summary is true" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(
+            Some(
+              buildPageObjects(
+                location = LocationEnum.ENGLAND,
+                expectChildcareCosts = Some(true)
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe "/childcare-calc/free-hours-results"
+      }
+    }
+
+    s"redirect to technical difficulties page (${technicalDifficultiesPath})" when {
+      "there is no data in keystore for PageObjects object" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(None)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
       "an exception is thrown from keystore service" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
 
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
@@ -119,11 +143,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
     "load ExpectChildcareCosts and display errors" when {
       "invalid data is submitted" in {
         when(
-          sut.keystore.fetch[Household]()(any(),any())
+          sut.keystore.fetch[PageObjects]()(any(),any())
         ).thenReturn(
           Future.successful(
             Some(
-              buildHousehold(
+              buildPageObjects(
                 location = LocationEnum.ENGLAND,
                 expectChildcareCosts = Some(true)
               )
@@ -189,11 +213,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             s"user lives in ${location.toString}, has child aged 2 = ${hasChildAged2}, has child aged 3 or 4 = ${hasChildAges3Or4} and has cost = ${hasCost}" in {
 
               when(
-                sut.keystore.fetch[Household]()(any(),any())
+                sut.keystore.fetch[PageObjects]()(any(),any())
               ).thenReturn(
                 Future.successful(
                   Some(
-                    buildHousehold(
+                    buildPageObjects(
                       location = location,
                       childAgedTwo = Some(hasChildAged2),
                       childAgedThreeOrFour = Some(hasChildAges3Or4),
@@ -204,11 +228,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
               )
 
               when(
-                sut.keystore.cache[Household](any[Household]())(any(), any())
+                sut.keystore.cache[PageObjects](any[PageObjects]())(any(), any())
               ).thenReturn(
                 Future.successful(
                   Some(
-                    buildHousehold(
+                    buildPageObjects(
                       location = location,
                       childAgedTwo = Some(hasChildAged2),
                       childAgedThreeOrFour = Some(hasChildAges3Or4),
@@ -237,11 +261,11 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
           "an exception is thrown while saving data" in {
 
             when(
-              sut.keystore.fetch[Household]()(any(),any())
+              sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
               Future.successful(
                 Some(
-                  buildHousehold(
+                  buildPageObjects(
                     location = LocationEnum.ENGLAND,
                     childAgedTwo = Some(true),
                     childAgedThreeOrFour = Some(true),
@@ -252,7 +276,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             )
 
             when(
-              sut.keystore.cache[Household](any[Household]())(any(), any())
+              sut.keystore.cache[PageObjects](any[PageObjects]())(any(), any())
             ).thenReturn(
               Future.failed(new RuntimeException)
             )
@@ -270,7 +294,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
           "an exception is thrown while looking for data" in {
             when(
-              sut.keystore.fetch[Household]()(any(),any())
+              sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
               Future.failed(new RuntimeException)
             )
@@ -286,9 +310,9 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          "there is no data in keystore for Household object" in {
+          "there is no data in keystore for PageObjects object" in {
             when(
-              sut.keystore.fetch[Household]()(any(),any())
+              sut.keystore.fetch[PageObjects]()(any(),any())
             ).thenReturn(
               Future.successful(None)
             )

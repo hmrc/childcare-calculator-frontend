@@ -21,13 +21,13 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.play.http.HeaderCarrier
 import play.api.test.Helpers._
+
 import scala.concurrent.Future
 
 class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEach {
@@ -43,8 +43,8 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
   validateUrl(locationPath)
 
-  def buildHousehold(location: LocationEnum = LocationEnum.ENGLAND): Household = Household(
-    location = location
+  def buildPageObjects(location: LocationEnum = LocationEnum.ENGLAND): PageObjects = PageObjects(household = Household(
+    location = location)
   )
 
   "LocationController" when {
@@ -53,7 +53,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
             None
@@ -66,10 +66,10 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(location = LocationEnum.ENGLAND))
+            Some(buildPageObjects(location = LocationEnum.ENGLAND))
           )
         )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -79,7 +79,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -113,9 +113,9 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
             LocationEnum.WALES
           )
           childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected if there is no data in keystore for Household object" in {
+            s"${loc.toString} is selected if there is no data in keystore for PageObjects object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
                 Future.successful(
                   None
@@ -123,10 +123,10 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
               )
 
               when(
-                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildHousehold(location = loc))
+                  Some(buildPageObjects(location = loc))
                 )
               )
 
@@ -141,20 +141,20 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
               result.header.headers("Location") shouldBe childAgedTwoPath
             }
 
-            s"${loc.toString} is selected if there is data in keystore for Household object" in {
+            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildHousehold(location = LocationEnum.ENGLAND))
+                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
                 )
               )
 
               when(
-                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildHousehold(location = loc))
+                  Some(buildPageObjects(location = loc))
                 )
               )
 
@@ -178,7 +178,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           childAgeTwoLocations.foreach { loc =>
             s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[PageObjects]()(any(), any())
               ).thenReturn(
                 Future.successful(
                   None
@@ -186,10 +186,10 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
               )
 
               when(
-                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildHousehold(location = loc))
+                  Some(buildPageObjects(location = loc))
                 )
               )
 
@@ -204,20 +204,20 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
               result.header.headers("Location") shouldBe childAgedThreeOrFourPath
             }
 
-            s"${loc.toString} is selected if there is data in keystore for Household object" in {
+            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
               when(
-                sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildHousehold(location = LocationEnum.ENGLAND))
+                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
                 )
               )
 
               when(
-                sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildHousehold(location = loc))
+                  Some(buildPageObjects(location = loc))
                 )
               )
 
@@ -238,15 +238,15 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
       "connecting with keystore fails" should {
         s"redirect to ${technicalDifficultiesPath}" in {
           when(
-            sut.keystore.fetch[Household]()(any[HeaderCarrier], any[Reads[Household]])
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildHousehold(location = LocationEnum.ENGLAND))
+              Some(buildPageObjects(location = LocationEnum.ENGLAND))
             )
           )
 
           when(
-            sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
