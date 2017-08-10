@@ -25,7 +25,6 @@ import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.http.cache.client.{CacheMap, SessionCache}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
@@ -57,7 +56,6 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
             CacheMap("id", Map(
               pageObjectsKey -> Json.obj(
                 householdKey -> Json.obj(locationKey -> JsString(LocationEnum.ENGLAND.toString),
-                hasPartnerKey -> JsBoolean(false),
                 childrenKey -> JsArray(),
                 parentKey -> Json.obj())
               )
