@@ -14,7 +14,9 @@
  * limitations under the License.
  *@
 
-@()(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+@(haveCost: Boolean, isChild2: Boolean, location: LocationEnum)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
@@ -22,14 +24,26 @@
 
 @ccMain(
     header = messages("free.hours.info.header"),
-    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad())
+    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
 ) {
     @helpers.form(
         action = routes.FreeHoursInfoController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
+        <div id="free-hours-entitled-info">
+            <p>@messages(s"free.hours.entitled.info.${location}")</p>
+            @if(isChild2) {
+                <p>@messages(s"free.hours.entitled.2.info.${location}")</p>
+            }
+            @if(!haveCost) {
+                <div class="panel panel-border-wide">
+                    <p>@messages("free.hours.results.entitled.info.no.costs")</p>
+                </div>
+            }
+        </div>
+
         <h2>@messages("free.hours.info.sub.heading")</h2>
-        <p>@messages("free.hours.info.info")</p>
+        <p id="free-hours-info-info">@messages("free.hours.info.info")</p>
         <ul class="list list-bullet">
             <li>@messages("free.hours.info.esc")</li>
             <li>@messages("free.hours.info.tfc")</li>

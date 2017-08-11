@@ -17,14 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Result, Call, Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
+import play.api.mvc.{Action, AnyContent, Call, Result}
+
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.http.HeaderCarrier
+
 import scala.concurrent.Future
 
 @Singleton
@@ -33,8 +38,8 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().map { household =>
-      Ok(location(new LocationForm(messagesApi).form.fill(household.map(_.location.toString))))
+    keystore.fetch[PageObjects]().map { pageObjects =>
+      Ok(location(new LocationForm(messagesApi).form.fill(pageObjects.map(_.household.location.toString))))
     }.recover {
       case ex: Exception =>
         Logger.warn(s"Exception from LocationController.onPageLoad: ${ex.getMessage}")
@@ -42,35 +47,37 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
     }
   }
 
-  private def getModifiedHousehold(household: Option[Household], selectedLocation: String): Household = {
-    household match {
-      case Some(hh) =>
+  private def getModifiedPageObjects(pageObjects: Option[PageObjects], selectedLocation: String): PageObjects = {
+    pageObjects match {
+      case Some(po) =>
         val modifiedChildAgedTwo = if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
           None
         }
         else {
-          hh.childAgedTwo
+          po.childAgedTwo
         }
 
-        hh.copy(
-          location = LocationEnum.withName(selectedLocation),
-          childAgedTwo = modifiedChildAgedTwo
-        )
+        val modifiedHousehold = po.household.copy(location = LocationEnum.withName(selectedLocation))
+
+        po.copy(household = modifiedHousehold, childAgedTwo = modifiedChildAgedTwo)
+
       case _ =>
-        Household(
-          location = LocationEnum.withName(selectedLocation)
+        PageObjects(
+          household = Household(
+            location = LocationEnum.withName(selectedLocation)
+          )
         )
     }
   }
 
-  private def saveAndGoToNextPage(household: Option[Household], selectedLocation: String)(implicit hc: HeaderCarrier): Future[Result] = {
-    val modifiedHousehold: Household = getModifiedHousehold(household, selectedLocation)
-    keystore.cache(modifiedHousehold).map { res =>
+  private def saveAndGoToNextPage(pageObjects: Option[PageObjects], selectedLocation: String)(implicit hc: HeaderCarrier): Future[Result] = {
+    val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedLocation)
+
+    keystore.cache(modifiedPageObjects).map { res =>
       if (selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad())
-      }
-      else {
-        Redirect(routes.ChildAgedTwoController.onPageLoad())
+        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
+      } else {
+        Redirect(routes.ChildAgedTwoController.onPageLoad(false))
       }
     }
   }
@@ -82,8 +89,8 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       },
       success => {
         val selectedLocation = success.get
-        keystore.fetch[Household]().flatMap { household =>
-          saveAndGoToNextPage(household, selectedLocation)
+        keystore.fetch[PageObjects]().flatMap { pageObjects =>
+          saveAndGoToNextPage(pageObjects, selectedLocation)
         } recover {
           case ex: Exception =>
             Logger.warn(s"Exception from LocationController.onSubmit: ${ex.getMessage}")
