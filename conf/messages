@@ -104,5 +104,5 @@ living.with.partner.yes.no.not.selected.error = You must tell the calculator if 
 ####### In Paid Employment or Self-Employed #######
 paid.employment.header.single = Are you in paid employment or self-employed?
 paid.employment.header.couple = Are you or your partner in paid employment or self-employed?
-paid.employment.not.selected.error.single = You must tell the calculator if you are in paid employment or self-employed
-paid.employment.not.selected.error.couple = You must tell the calculator if you or your partner are in paid employment or self-employed
+paid.employment.not.selected.error.single = You must answer yes if you are in paid employment or self-employed
+paid.employment.not.selected.error.couple = You must answer yes if you or your partner are in paid employment or self-employed

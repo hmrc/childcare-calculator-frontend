@@ -36,8 +36,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
   private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
     if (hasChildAgedThreeOrFour.getOrElse(false)) {
       routes.FreeHoursInfoController.onPageLoad()
-    }
-    else {
+    } else {
       routes.ExpectChildcareCostsController.onPageLoad(false)
     }
   }
@@ -78,7 +77,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               livingWithPartner = success
             )
             keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(routes.WhatYouNeedController.onPageLoad())
+              Redirect(routes.PaidEmploymentController.onPageLoad())
             }
           }
         )

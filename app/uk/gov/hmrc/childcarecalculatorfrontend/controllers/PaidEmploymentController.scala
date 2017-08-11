@@ -16,14 +16,78 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
+
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.PaidEmploymentForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
+
+import scala.concurrent.Future
 
 @Singleton
 class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-  // TODO: Implement logic
-  def onSubmit: Action[AnyContent] = ???
+  val keystore: KeystoreService = KeystoreService
 
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects].flatMap {
+      case Some(pageObjects) =>
+        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
+        new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                paidEmployment(
+                  errors, hasPartner
+                )
+              )
+            ),
+          success => {
+            val modifiedPageObjects = pageObjects.copy(
+              paidOrSelfEmployed = success
+            )
+            keystore.cache(modifiedPageObjects).map { result =>
+              if(success.get) {
+                if(hasPartner) { //TODO - should redirect to which of you in paid employment controller
+                  Redirect(routes.HoursController.onPageLoad())
+                } else {
+                  Redirect(routes.HoursController.onPageLoad())
+                }
+              } else
+                Redirect(routes.FreeHoursResultsController.onPageLoad())
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("PageObjects object is missing in PaidEmploymentController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from PaidEmploymentController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) =>
+        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
+        Ok(
+          paidEmployment(new PaidEmploymentForm(hasPartner, messagesApi).form.fill(pageObjects.paidOrSelfEmployed),
+            hasPartner
+          )
+        )
+      case _ =>
+        Logger.warn("PageObjects object is missing in PaidEmploymentController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from PaidEmploymentController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
 }
