@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import play.api.libs.json.{Reads, Format}
+import play.api.libs.json.{Format, Reads}
 import uk.gov.hmrc.childcarecalculatorfrontend.config.CCSessionCache
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.http.cache.client.SessionCache
 import uk.gov.hmrc.play.http.HeaderCarrier
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -31,13 +32,13 @@ object KeystoreService extends KeystoreService {
 trait KeystoreService extends CCConstants {
   val sessionCache: SessionCache
 
-  def fetch[Household]()(implicit hc: HeaderCarrier, rds: Reads[Household]): Future[Option[Household]] = {
-    sessionCache.fetchAndGetEntry[Household](householdKey)
+  def fetch[PageObjects]()(implicit hc: HeaderCarrier, rds: Reads[PageObjects]): Future[Option[PageObjects]] = {
+    sessionCache.fetchAndGetEntry[PageObjects](pageObjectsKey)
   }
 
-  def cache[Household](data: Household)(implicit hc: HeaderCarrier, formats: Format[Household]): Future[Option[Household]] = {
-    sessionCache.cache[Household](householdKey, data) map {
-      _.getEntry[Household](householdKey)
+  def cache[PageObjects](data: PageObjects)(implicit hc: HeaderCarrier, formats: Format[PageObjects]): Future[Option[PageObjects]] = {
+    sessionCache.cache[PageObjects](pageObjectsKey, data) map {
+      _.getEntry[PageObjects](pageObjectsKey)
     }
   }
 

@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum.TcUcBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureBothEnum.YesNoUnsureBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo_Scope0.childAgedTwo_Scope1.childAgedTwo
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
@@ -118,15 +119,21 @@ object Claimant {
 case class Household(
                       tcUcBenefits: Option[TcUcBenefitsEnum] = None,
                       location: LocationEnum,
-                      hasPartner: Boolean = false,
                       children: List[Child] = List.empty,
                       parent: Claimant = Claimant(),
-                      partner: Option[Claimant] = None,
-                      childAgedTwo: Option[Boolean] = None,
-                      childAgedThreeOrFour: Option[Boolean] = None,
-                      expectChildcareCosts: Option[Boolean] = None
+                      partner: Option[Claimant] = None
                     )
 object Household {
   implicit val formatHousehold = Json.format[Household]
 }
 
+case class PageObjects(
+                        household: Household,
+                        childAgedTwo: Option[Boolean] = None,
+                        childAgedThreeOrFour: Option[Boolean] = None,
+                        expectChildcareCosts: Option[Boolean] = None,
+                        livingWithPartner: Option[Boolean] = None
+                      )
+object PageObjects {
+  implicit val formatPageObjects = Json.format[PageObjects]
+}

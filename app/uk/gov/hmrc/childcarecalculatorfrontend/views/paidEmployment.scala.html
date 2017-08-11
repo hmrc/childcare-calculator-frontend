@@ -14,30 +14,30 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+@(form: Form[Option[Boolean]], hasPartner: Boolean)(implicit request: Request[_], messages: Messages)
 
-@(form: Form[Option[Boolean]], backUrl: Call, location: LocationEnum)(implicit request: Request[_], messages: Messages)
-
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+
+@familyStatus = @{ CCConstants.getFamilyStatus(hasPartner) }
 
 @ccMain(
-    header = messages("child.aged.two.header"),
-    backLink = Some(backUrl)
-) {
+    header = messages(s"paid.employment.header.${familyStatus}"),
+    backLink = Some(routes.LivingWithPartnerController.onPageLoad())
+    ) {
+
     @helpers.form(
-        action = routes.ChildAgedTwoController.onSubmit,
+        action = routes.PaidEmploymentController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
-        <p>@messages(s"child.aged.two.info.${location.toString}")</p>
-
         @radio.ccRadioOptions(
-            field = form(CCConstants.childAgedTwoKey),
+            field = form(CCConstants.paidEmploymentKey),
             fieldForm = form,
             radioOptions = Seq(
                 ("true", messages("radio.yes")),
@@ -46,9 +46,9 @@
             args = '_groupClass -> "form-group inline",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages("child.aged.two.header"),
-                '_globalErrorKey -> messages("child.aged.two.yes.no.not.selected.error")
-        )
+                '_legend -> messages(s"paid.employment.header.${familyStatus}"),
+                '_globalErrorKey -> messages(s"paid.employment.not.selected.error.${familyStatus}")
+            )
         @buttons.nextButton()
     }
 }

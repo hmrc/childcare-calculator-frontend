@@ -29,6 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 import play.api.data.Form
 import play.api.i18n.Messages
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedTwoForm
 
 class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
@@ -46,6 +47,8 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = locationPath)
   )
 
+  val backUrl: Call = Call("GET", locationPath)
+
   val infoContent = Table(
     ("Location", "Info text"),
     (LocationEnum.ENGLAND, "Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year)."),
@@ -54,17 +57,17 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   def getTemplate(form: Form[Option[Boolean]], location: LocationEnum): Document = {
-    val template = childAgedTwo(form, location)(request, applicationMessages)
+    val template = childAgedTwo(form, backUrl, location)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling ChildAgedTwo template" should {
 
     "render template" in {
-      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, LocationEnum.ENGLAND, request, applicationMessages)
+      val template = childAgedTwo.render(new ChildAgedTwoForm(applicationMessagesApi).form, backUrl, LocationEnum.ENGLAND, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form, LocationEnum.ENGLAND)(request, applicationMessages)
+      val template1 = childAgedTwo.f(new ChildAgedTwoForm(applicationMessagesApi).form, backUrl, LocationEnum.ENGLAND)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
@@ -113,8 +116,9 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
           verifyPageLinks()
           verifyChecks()
           verifyErrors(
-            errors = Map("childAgedTwo" -> applicationMessages.messages("child.aged.two.yes.no.not.selected.error"))
+            errors = Map(childAgedTwoKey -> applicationMessages.messages("child.aged.two.yes.no.not.selected.error"))
           )
+          applicationMessages.messages("child.aged.two.yes.no.not.selected.error") should not be "child.aged.two.yes.no.not.selected.error"
         }
 
         "form is submitted with invalid data" in {
@@ -129,8 +133,9 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
           verifyPageLinks()
           verifyChecks()
           verifyErrors(
-            errors = Map("childAgedTwo" -> applicationMessages.messages("error.boolean"))
+            errors = Map(childAgedTwoKey -> applicationMessages.messages("error.boolean"))
           )
+          applicationMessages.messages("error.boolean") should not be "error.boolean"
         }
       }}
     }
