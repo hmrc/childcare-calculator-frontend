@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 
-@(form: Form[Option[Boolean]], location: LocationEnum)(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[Boolean]])(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
@@ -25,29 +25,29 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
-    header = messages("child.aged.two.header"),
-    backLink = Some(routes.LocationController.onPageLoad())
+    header = messages("which.of.you.paid.employment.header"),
+    backLink = Some(routes.WhichOfYouInPaidEmploymentController.onPageLoad())
 ) {
     @helpers.form(
-        action = routes.ChildAgedTwoController.onSubmit,
+        action = routes.WhichOfYouInPaidEmploymentController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
-        <p>@messages(s"child.aged.two.info.${location.toString}")</p>
+        <p>@messages("which.of.you.paid.employment.header")</p>
 
         @radio.ccRadioOptions(
-            field = form(CCConstants.childAgedTwoKey),
+            field = form(CCConstants.whichOfYouInPaidEmploymentKey),
             fieldForm = form,
             radioOptions = Seq(
-                ("true", messages("radio.yes")),
-                ("false", messages("radio.no"))
+                ("true", messages("radio.you")),
+                ("false", messages("radio.partner"))
             ),
             args = '_groupClass -> "form-group inline",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages("child.aged.two.header"),
-                '_globalErrorKey -> messages("child.aged.two.yes.no.not.selected.error")
+                '_legend -> messages("which.of.you.paid.employment.header"),
+                '_globalErrorKey -> messages("which.of.you.paid.employment.not.selected.error")
         )
         @buttons.nextButton()
     }
