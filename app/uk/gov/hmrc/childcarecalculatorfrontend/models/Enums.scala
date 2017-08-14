@@ -101,10 +101,5 @@ object SchemeEnum extends Enumeration {
 object YouPartnerBothEnum extends Enumeration {
   type YouPartnerBothEnum = Value
   val YOU, PARTNER, BOTH = Value
-  val enumReads: Reads[YouPartnerBothEnum] = EnumUtils.enumReads(YouPartnerBothEnum)
-
-  val enumWrites: Writes[YouPartnerBothEnum] = EnumUtils.enumWrites
-
-  implicit def enumFormats: Format[YouPartnerBothEnum] = EnumUtils.enumFormat(YouPartnerBothEnum)
 }
 

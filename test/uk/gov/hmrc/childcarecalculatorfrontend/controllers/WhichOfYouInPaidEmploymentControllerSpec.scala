@@ -23,7 +23,7 @@ import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -40,7 +40,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
     reset(sut.keystore)
   }
 
-  validateUrl(whoPaidEmploymentPath)
+  validateUrl(whoIsInPaidEmploymentPath)
 
   def buildPageObjects(youOrPartner: Option[String] = None): PageObjects = PageObjects(
     whichOfYouInPaidEmployment = youOrPartner,
@@ -52,7 +52,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
 
     "onPageLoad is called" should {
 
-      "load template successfully if there is no data in keystore" in {
+      "load template successfully if there is no data in keystore for current page object" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -88,6 +88,19 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
+
+      "redirect to error page if there is np pageObject in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            None
+          )
+        )
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
     }
 
     "onSubmit is called" when {
@@ -116,13 +129,10 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
       }
 
       "saving in keystore is successful" should {
-        s"go to ${whoPaidEmploymentPath}" when {
-          val whoPaidEmployment = List(
-            "YOU",
-            "PARTNER",
-            "BOTH"
-          )
-          whoPaidEmployment.foreach { who =>
+        s"go to ${whoIsInPaidEmploymentPath}" when {
+
+          YouPartnerBothEnum.values.foreach { each =>
+            val who = each.toString
             s"${who} is selected if there is no data in keystore for whichOfYouInPaidEmployment object" in {
               when(
                 sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])

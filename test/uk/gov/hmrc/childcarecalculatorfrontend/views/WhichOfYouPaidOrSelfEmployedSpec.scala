@@ -38,8 +38,8 @@ class WhichOfYouPaidOrSelfEmployedSpec extends TemplatesValidator with FakeCCApp
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = whoPaidEmploymentPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whatYouNeedPath)
+    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = whoIsInPaidEmploymentPath),
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = paidEmploymentPath)
   )
 
   def getTemplate(form: Form[Option[String]]): Document = {

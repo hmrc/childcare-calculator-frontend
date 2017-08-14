@@ -27,7 +27,7 @@
 
 @ccMain(
     header = messages("which.of.you.paid.employment.header"),
-    backLink = Some(routes.WhatYouNeedController.onPageLoad())
+    backLink = Some(routes.PaidEmploymentController.onPageLoad())
 ) {
     @helpers.form(
         action = routes.WhichOfYouInPaidEmploymentController.onSubmit,

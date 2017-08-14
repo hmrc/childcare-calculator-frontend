@@ -36,7 +36,11 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
-      Ok(whichOfYouPaidOrSelfEmployed(new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment)))
+        Ok(
+          whichOfYouPaidOrSelfEmployed(
+            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment)
+          )
+        )
       case _ =>
         Logger.warn("PageObjects object is missing in WhichOfYouInPaidEmploymentController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
