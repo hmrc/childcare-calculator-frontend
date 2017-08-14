@@ -133,6 +133,7 @@ case class PageObjects(
                         childAgedThreeOrFour: Option[Boolean] = None,
                         expectChildcareCosts: Option[Boolean] = None,
                         livingWithPartner: Option[Boolean] = None,
+                        paidOrSelfEmployed: Option[Boolean] = None,
                         whichOfYouInPaidEmployment: Option[String] = None
                       )
 object PageObjects {

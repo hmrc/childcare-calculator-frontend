@@ -52,8 +52,7 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
       case Some(po) =>
         val modifiedChildAgedTwo = if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
           None
-        }
-        else {
+        } else {
           po.childAgedTwo
         }
 

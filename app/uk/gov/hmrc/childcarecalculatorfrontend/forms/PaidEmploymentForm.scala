@@ -33,8 +33,7 @@ class PaidEmploymentForm @Inject()(hasPartner: Boolean = false, val messagesApi:
   val form = Form[InEmploymentFormType](
     single(
       paidEmploymentKey -> optional(boolean).verifying(
-        Messages(s"paid.employment.not.selected.error.${familyStatus}"),
-        _.isDefined
+        Messages(s"paid.employment.not.selected.error.${familyStatus}"), _.isDefined
       )
     )
   )
