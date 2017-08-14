@@ -101,3 +101,8 @@ free.hours.results.summary.expect.costs = Childcare costs with approved provider
 living.with.partner.header = Do you have a partner that you live with?
 living.with.partner.yes.no.not.selected.error = You must tell the calculator if you have a partner you live with
 
+####### In Paid Employment or Self-Employed #######
+paid.employment.header.single = Are you in paid employment or self-employed?
+paid.employment.header.couple = Are you or your partner in paid employment or self-employed?
+paid.employment.not.selected.error.single = You must answer yes if you are in paid employment or self-employed
+paid.employment.not.selected.error.couple = You must answer yes if you or your partner are in paid employment or self-employed

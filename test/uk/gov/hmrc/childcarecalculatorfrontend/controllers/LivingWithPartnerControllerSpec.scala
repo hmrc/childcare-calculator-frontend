@@ -56,7 +56,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildPageObjects(None))
@@ -70,7 +70,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildPageObjects(Some(true)))
@@ -84,7 +84,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "redirect to error page if there is no data keystore for household object" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(None)
         )
@@ -96,7 +96,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -155,7 +155,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         "load same template and return BAD_REQUEST" in {
 
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
             Future.successful(
               Some(buildPageObjects(None))
@@ -176,7 +176,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildPageObjects(Some(true), None))
@@ -199,14 +199,14 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe whatYouNeedPath
+        result.header.headers("Location") shouldBe paidEmploymentPath
       }
     }
 
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             Some(buildPageObjects(Some(true), None))
@@ -234,7 +234,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
     "there is no data in keystore for PageObjects object" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
             None

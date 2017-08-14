@@ -56,6 +56,7 @@ class ChildAgedTwoFormSpec extends UnitSpec with FakeCCApplication {
       form.hasErrors shouldBe true
       form.errors.length shouldBe 1
       form.errors.head.message shouldBe applicationMessages.messages("child.aged.two.yes.no.not.selected.error")
+      form.errors.head.message should not be "child.aged.two.yes.no.not.selected.error"
     }
 
     val invalidValues = List("abcd", "1234")
