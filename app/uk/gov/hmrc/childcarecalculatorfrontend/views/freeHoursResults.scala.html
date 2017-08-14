@@ -27,17 +27,17 @@
     backLink = Some(Call("GET", request.headers.get("Referer").getOrElse(routes.ChildCareBaseController.onPageLoad.url)))
 ) {
     @if(child3Or4) {
-        <div class="grid-row">
-            <div class="column-half">
-                <div class="panel panel-border-wide green">
+        <div class="grid-layout grid-layout--stacked">
+            <div class="grid-layout__column grid-layout__column--1-2">
+                <div class="panel-indent panel-border-wide green">
                     <h2 class="visuallyhidden">Eligible</h2>
                     <ul class="list list-bullet">
                         <li>@messages(s"free.hours.results.entitled.${location}")</li>
                     </ul>
                 </div>
             </div>
-            <div class="column-half">
-                <div class="panel panel-border-wide red">
+            <div class="grid-layout__column grid-layout__column--1-2">
+                <div class="panel-indent panel-border-wide red">
                     <h2 class="visuallyhidden">Ineligible</h2>
                     <ul class="list list-bullet">
                         <li>@messages("free.hours.info.esc")</li>
@@ -49,14 +49,12 @@
         </div>
         <div id="free-hours-results-entitled">
             <p>@messages(s"free.hours.entitled.info.${location}")</p>
-            <div class="panel panel-border-wide">
+            <div class="panel-indent panel-border-wide">
                 <p>@messages("free.hours.results.entitled.info.no.costs")</p>
             </div>
         </div>
     } else {
-        <div class="grid-row">
-            <div class="column-half">
-                <div class="panel panel-border-wide red">
+                <div class="panel-indent panel-border-wide red">
                     <h2 class="visuallyhidden">Ineligible</h2>
                     <ul class="list list-bullet">
                         <li>@messages(s"free.hours.results.entitled.${location}")</li>
@@ -65,8 +63,6 @@
                         <li>@messages("free.hours.info.tc")</li>
                     </ul>
                 </div>
-            </div>
-        </div>
         <div id="free-hours-results-not-entitled">
             @if(location == LocationEnum.NORTHERNIRELAND) {
                 <p>@messages("free.hours.results.not.entitled.info.ni")</p>
