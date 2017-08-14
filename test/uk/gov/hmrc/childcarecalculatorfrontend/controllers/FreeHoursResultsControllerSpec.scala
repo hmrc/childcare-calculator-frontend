@@ -76,7 +76,7 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
     result.body.contentType.get shouldBe "text/html; charset=utf-8"
   }
 
-  "redirect to error page if there is no data keystore for household object" in {
+  "redirect to error page if there is no data keystore for pageObjects object" in {
     when(
       sut.keystore.fetch[PageObjects]()(any(), any())
     ).thenReturn(
