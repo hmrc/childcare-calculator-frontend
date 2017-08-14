@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import java.lang
+
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
@@ -42,97 +44,277 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
 
   validateUrl(paidEmploymentPath)
 
-  "PaidEmploymentController" should {
-    "load successfully template when data in keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(),any())
-      ).thenReturn(
-        Future.successful(
-          Some(
-            PageObjects(
-              household = Household(location = LocationEnum.ENGLAND),
-              livingWithPartner = Some(false)
+  "PaidEmploymentController" when {
+
+    "onPageLoad is called" should {
+
+      "load successfully template when data in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(),any())
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                household = Household(location = LocationEnum.ENGLAND),
+                livingWithPartner = Some(false)
+              )
             )
           )
         )
-      )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/html; charset=utf-8"
-    }
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
 
-    "load successfully template when no data in keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(),any())
-      ).thenReturn(
-        Future.successful(
-          Some(
-            PageObjects(
-              household = Household(location = LocationEnum.ENGLAND),
-              livingWithPartner = None
+      "load successfully template when no data in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(),any())
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                household = Household(location = LocationEnum.ENGLAND),
+                livingWithPartner = None
+              )
             )
           )
         )
-      )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "redirect to error page if there is no data keystore for pageObjects object" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(None)
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "redirect to error page if can't connect with keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
     }
 
-    "redirect to error page if there is no data keystore for pageObjects object" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.successful(None)
-      )
+    "onSubmit is called" should {
 
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe technicalDifficultiesPath
-    }
-
-    "redirect to error page if can't connect with keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.failed(new RuntimeException)
-      )
-
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe technicalDifficultiesPath
-    }
-
-    s"redirect successfully to next page (${hoursPath})" when {
-      "onSubmit is called" should {
-
-        /*"saving in keystore is successful when with partner and in paid employment" in {
+      "load same page with status BAD_REQUEST" when {
+        "invalid data is submitted" in {
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
-            Future.successful(
-              Some(PageObjects(Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true)))
-            )
-          )
-
-          when(
-            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(PageObjects(Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true)))
-            )
+            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
           )
 
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentPath -> "true")
+                .withFormUrlEncodedBody(paidEmploymentKey -> "")
+                .withSession(validSession)
+            )
+          )
+
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        }
+      }
+
+      "redirect to correct next page" when {
+
+        "single user selects 'no'" should {
+          s"go to results page ${freeHoursResultsPath}" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), paidOrSelfEmployed = Some(false)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(paidEmploymentKey -> "false")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe freeHoursResultsPath
+          }
+        }
+
+        "user with partner selects 'no'" should {
+          s"go to results page ${freeHoursResultsPath}" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true), paidOrSelfEmployed = Some(false)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(paidEmploymentKey -> "false")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe freeHoursResultsPath
+          }
+        }
+
+        "single user selects 'yes'" should {
+          s"go to hours page ${hoursPath}" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), paidOrSelfEmployed = Some(true)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPath
+          }
+        }
+
+        "user with partner selects 'yes'" should {
+          // TODO: go to correct page
+          s"go to 'Which of you is in paid employment' page ${hoursPath}" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true), paidOrSelfEmployed = Some(true)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPath
+          }
+        }
+      }
+
+      s"redirect technichal difficulties page (${technicalDifficultiesPath})" when {
+
+
+        "can't connect to keystore while fetching data" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.failed(new RuntimeException)
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
                 .withSession(validSession)
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe hoursPath
-        }*/
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+
+        "there is no data in keystore" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(None)
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+
+        "can't save data in keystore" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.failed(new RuntimeException)
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withSession(validSession)
+            )
+          )
+
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
 
 
       }
