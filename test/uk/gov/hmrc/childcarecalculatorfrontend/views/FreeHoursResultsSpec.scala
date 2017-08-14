@@ -27,6 +27,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesVali
 
 class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
 
+  val backUrl = expectChildcareCostsPath
+
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Your eligibility for childcare support"),
     ElementDetails(id = Some("free-hours-results-eligible"), tagName=Some("h2"), tagIndex=Some(0), value = "To be eligible for other schemes"),
@@ -45,13 +47,13 @@ class FreeHoursResultsSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = expectChildcareCostsPath),
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = backUrl),
     ElementDetails(id = Some("free-hours-results-general-aged3-or-4"), checkAttribute = Some("href"), value = childAgedThreeOrFourEditPath),
     ElementDetails(id = Some("free-hours-results-eligible-cc"), checkAttribute = Some("href"), value = expectChildcareCostsEditPath)
   )
 
   def getTemplate(isChild3or4: Boolean, location: LocationEnum): Document = {
-    val template = freeHoursResults(isChild3or4, location)(request, applicationMessages)
+    val template = freeHoursResults(isChild3or4, location)(request.withHeaders(("Referer", backUrl)), applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
