@@ -16,17 +16,18 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 
-@(form: Form[Option[Boolean]])(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[String]])(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureBothEnum._
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
     header = messages("which.of.you.paid.employment.header"),
-    backLink = Some(routes.WhichOfYouInPaidEmploymentController.onPageLoad())
+    backLink = Some(routes.WhatYouNeedController.onPageLoad())
 ) {
     @helpers.form(
         action = routes.WhichOfYouInPaidEmploymentController.onSubmit,
@@ -34,16 +35,15 @@
 
         @error.ccErrorSummary(form)
 
-        <p>@messages("which.of.you.paid.employment.header")</p>
-
         @radio.ccRadioOptions(
             field = form(CCConstants.whichOfYouInPaidEmploymentKey),
             fieldForm = form,
             radioOptions = Seq(
-                ("true", messages("radio.you")),
-                ("false", messages("radio.partner"))
+                ("you", messages("radio.you")),
+                ("partner", messages("radio.partner")),
+                ("both", messages("radio.both"))
             ),
-            args = '_groupClass -> "form-group inline",
+            args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
                 '_legend -> messages("which.of.you.paid.employment.header"),
