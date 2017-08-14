@@ -52,8 +52,8 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
             )
             keystore.cache(modifiedPageObjects).map { result =>
               if(success.get) {
-                if(hasPartner) { //TODO - should redirect to which of you in paid employment controller
-                  Redirect(routes.HoursController.onPageLoad())
+                if(hasPartner) {
+                  Redirect(routes.WhoIsInPaidEmploymentController.onPageLoad())
                 } else {
                   Redirect(routes.HoursController.onPageLoad())
                 }

@@ -35,6 +35,7 @@ trait CCRoutes {
   val freeHoursResultsPath: String = path("/free-hours-results")
   val livingWithPartnerPath: String = path("/do-you-have-a-partner")
   val paidEmploymentPath: String = path("/paid-employment")
+  val whoIsInPaidEmploymentPath: String = path("/who-is-in-paid-employment")
   val hoursPath: String = path("/hours")
 
 }

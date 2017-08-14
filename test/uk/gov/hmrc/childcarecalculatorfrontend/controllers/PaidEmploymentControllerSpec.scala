@@ -222,8 +222,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
         }
 
         "user with partner selects 'yes'" should {
-          // TODO: go to correct page
-          s"go to 'Which of you is in paid employment' page ${hoursPath}" in {
+          s"go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -247,7 +246,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursPath
+            result.header.headers("Location") shouldBe whoIsInPaidEmploymentPath
           }
         }
       }
