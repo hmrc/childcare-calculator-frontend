@@ -89,7 +89,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "redirect to error page if there is np pageObject in keystore" in {
+      "redirect to error page if there is no pageObject in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -125,6 +125,25 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           )
           status(result) shouldBe BAD_REQUEST
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        }
+        
+        "redirect to error page if there is no pageObject in keystore" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              None
+            )
+          )
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "YOU")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
       }
 
