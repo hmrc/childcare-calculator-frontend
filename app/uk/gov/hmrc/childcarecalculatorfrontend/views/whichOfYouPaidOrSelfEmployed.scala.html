@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureBothEnum._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
@@ -39,9 +39,9 @@
             field = form(CCConstants.whichOfYouInPaidEmploymentKey),
             fieldForm = form,
             radioOptions = Seq(
-                ("you", messages("radio.you")),
-                ("partner", messages("radio.partner")),
-                ("both", messages("radio.both"))
+                (YouPartnerBothEnum.YOU.toString, messages("radio.you")),
+                (YouPartnerBothEnum.PARTNER.toString, messages("radio.partner")),
+                (YouPartnerBothEnum.BOTH.toString, messages("radio.both"))
             ),
             args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",

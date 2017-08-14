@@ -118,9 +118,9 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
       "saving in keystore is successful" should {
         s"go to ${whoPaidEmploymentPath}" when {
           val whoPaidEmployment = List(
-            "you",
-            "partner",
-            "both"
+            "YOU",
+            "PARTNER",
+            "BOTH"
           )
           whoPaidEmployment.foreach { who =>
             s"${who} is selected if there is no data in keystore for whichOfYouInPaidEmployment object" in {
@@ -189,7 +189,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(youOrPartner = Some("you")))
+              Some(buildPageObjects(youOrPartner = Some("YOU")))
             )
           )
 
@@ -202,7 +202,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "you")
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "YOU")
                 .withSession(validSession)
             )
           )

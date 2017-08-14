@@ -55,7 +55,6 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
             Future(
               BadRequest(
                 whichOfYouPaidOrSelfEmployed(errors)
-
               )
             ),
           success => {

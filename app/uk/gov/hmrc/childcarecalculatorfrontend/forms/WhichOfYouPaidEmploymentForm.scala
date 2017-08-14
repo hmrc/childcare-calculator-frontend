@@ -21,6 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
@@ -32,7 +33,8 @@ class WhichOfYouPaidEmploymentForm @Inject()(val messagesApi: MessagesApi) exten
     single(
       whichOfYouInPaidEmploymentKey -> optional(text).verifying(
         Messages("which.of.you.paid.employment.not.selected.error"),
-        _.isDefined
+        youOrPartner =>
+          YouPartnerBothEnum.values.exists(_.toString == youOrPartner.getOrElse(""))
       )
     )
   )
