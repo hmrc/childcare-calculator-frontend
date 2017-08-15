@@ -17,20 +17,23 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
+
 import scala.concurrent.Future
 
 @Singleton
 class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
+
 
   private def getBackUrl(summary: Boolean): Call = {
     if(summary) {
@@ -41,13 +44,13 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   }
 
   def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().map {
-      case Some(household) =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) =>
         Ok(
           expectChildcareCosts(
-            new ExpectChildcareCostsForm(messagesApi).form.fill(household.expectChildcareCosts),
+            new ExpectChildcareCostsForm(messagesApi).form.fill(pageObjects.expectChildcareCosts),
             getBackUrl(summary),
-            household.location
+            pageObjects.household.location
           )
         )
       case _ =>
@@ -60,11 +63,11 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
     }
   }
 
-  private def getNextPage(modifiedHousehold: Household): Call = {
-      val location: LocationEnum = modifiedHousehold.location
-      val hasChildAgedTwo: Boolean = modifiedHousehold.childAgedTwo.getOrElse(false)
-      val hasChildAgedThreeOrFour: Boolean = modifiedHousehold.childAgedThreeOrFour.getOrElse(false)
-      val hasExpectedChildcareCost: Boolean = modifiedHousehold.expectChildcareCosts.getOrElse(false)
+  private def getNextPage(modifiedPageObjects: PageObjects): Call = {
+      val location: LocationEnum = modifiedPageObjects.household.location
+      val hasChildAgedTwo: Boolean = modifiedPageObjects.childAgedTwo.getOrElse(false)
+      val hasChildAgedThreeOrFour: Boolean = modifiedPageObjects.childAgedThreeOrFour.getOrElse(false)
+      val hasExpectedChildcareCost: Boolean = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
       if(
         hasChildAgedThreeOrFour &&
         (hasExpectedChildcareCost || location.equals(LocationEnum.ENGLAND) || hasChildAgedTwo)
@@ -78,21 +81,21 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[Household]().flatMap {
-      case Some(household) =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
         new ExpectChildcareCostsForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                expectChildcareCosts(errors, getBackUrl(false), household.location)
+                expectChildcareCosts(errors, getBackUrl(false), pageObjects.household.location)
               )
             ),
           success => {
-            val modifiedHousehold = household.copy(
+            val modifiedPageObjects = pageObjects.copy(
               expectChildcareCosts = success
             )
-            keystore.cache(modifiedHousehold).map { result =>
-              Redirect(getNextPage(modifiedHousehold))
+            keystore.cache(modifiedPageObjects).map { result =>
+              Redirect(getNextPage(modifiedPageObjects))
             } recover {
               case ex: Exception =>
                 Logger.warn(s"Exception from ExpectChildcareCostsController.onSubmit: ${ex.getMessage}")
@@ -101,7 +104,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
           }
         )
       case _ =>
-        Logger.warn("Household object is missing in ExpectChildcareCostsController.onSubmit")
+        Logger.warn("PageObjects object is missing in ExpectChildcareCostsController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>

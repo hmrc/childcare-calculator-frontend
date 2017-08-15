@@ -20,41 +20,33 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichOfYouPaidEmploymentForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichOfYouPaidOrSelfEmployed
 
 import scala.concurrent.Future
 
 @Singleton
-class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
-
-  private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
-    if (hasChildAgedThreeOrFour.getOrElse(false)) {
-      routes.FreeHoursInfoController.onPageLoad()
-    } else {
-      routes.ExpectChildcareCostsController.onPageLoad(false)
-    }
-  }
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
         Ok(
-          livingWithPartner(new LivingWithPartnerForm(messagesApi).form.fill(pageObjects.livingWithPartner),
-            getBackUrl(pageObjects.childAgedThreeOrFour)
+          whichOfYouPaidOrSelfEmployed(
+            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment)
           )
         )
       case _ =>
-        Logger.warn("PageObjects object is missing in LivingWithPartnerController.onPageLoad")
+        Logger.warn("PageObjects object is missing in WhichOfYouInPaidEmploymentController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    } recover {
+    }.recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from LivingWithPartnerController.onPageLoad: ${ex.getMessage}")
+        Logger.warn(s"Exception from WhichOfYouInPaidEmploymentController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
@@ -62,32 +54,32 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
-        new LivingWithPartnerForm(messagesApi).form.bindFromRequest().fold(
+        new WhichOfYouPaidEmploymentForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                livingWithPartner(
-                  errors,
-                  getBackUrl(pageObjects.childAgedThreeOrFour)
-                )
+                whichOfYouPaidOrSelfEmployed(errors)
               )
             ),
           success => {
             val modifiedPageObjects = pageObjects.copy(
-              livingWithPartner = success
+              whichOfYouInPaidEmployment = success
             )
-            keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(routes.PaidEmploymentController.onPageLoad())
+
+            keystore.cache(modifiedPageObjects).map {
+              result =>
+                Redirect(routes.WhatYouNeedController.onPageLoad())
             }
           }
         )
       case _ =>
-        Logger.warn("PageObjects object is missing in LivingWithPartnerController.onSubmit")
+        Logger.warn("PageObjects object is missing in WhichOfYouInPaidEmploymentController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from LivingWithPartnerController.onSubmit: ${ex.getMessage}")
+        Logger.warn(s"Exception from WhichOfYouInPaidEmploymentController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
+
 }

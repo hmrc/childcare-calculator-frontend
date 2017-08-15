@@ -116,8 +116,9 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
           verifyPageLinks()
           verifyChecks()
           verifyErrors(
-            errors = Map("childAgedTwo" -> applicationMessages.messages("child.aged.two.yes.no.not.selected.error"))
+            errors = Map(childAgedTwoKey -> applicationMessages.messages("child.aged.two.yes.no.not.selected.error"))
           )
+          applicationMessages.messages("child.aged.two.yes.no.not.selected.error") should not be "child.aged.two.yes.no.not.selected.error"
         }
 
         "form is submitted with invalid data" in {
@@ -132,8 +133,9 @@ class ChildAgedTwoSpec extends TemplatesValidator with FakeCCApplication {
           verifyPageLinks()
           verifyChecks()
           verifyErrors(
-            errors = Map("childAgedTwo" -> applicationMessages.messages("error.boolean"))
+            errors = Map(childAgedTwoKey -> applicationMessages.messages("error.boolean"))
           )
+          applicationMessages.messages("error.boolean") should not be "error.boolean"
         }
       }}
     }

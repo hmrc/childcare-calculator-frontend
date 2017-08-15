@@ -22,7 +22,7 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 
 import scala.concurrent.Future
@@ -42,12 +42,12 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
 
   "load successfully template when data in keystore" in {
     when(
-      sut.keystore.fetch[Household]()(any(),any())
+      sut.keystore.fetch[PageObjects]()(any(),any())
     ).thenReturn(
       Future.successful(
         Some(
-          Household(
-            location = LocationEnum.ENGLAND,
+          PageObjects(
+            household = Household(location = LocationEnum.ENGLAND),
             childAgedThreeOrFour = Some(true)
           )
         )
@@ -60,12 +60,12 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
 
   "load successfully template when no data in keystore" in {
     when(
-      sut.keystore.fetch[Household]()(any(),any())
+      sut.keystore.fetch[PageObjects]()(any(),any())
     ).thenReturn(
       Future.successful(
         Some(
-          Household(
-            location = LocationEnum.ENGLAND,
+          PageObjects(
+            household = Household(location = LocationEnum.ENGLAND),
             childAgedThreeOrFour = None
           )
         )
@@ -76,9 +76,9 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
     result.body.contentType.get shouldBe "text/html; charset=utf-8"
   }
 
-  "redirect to error page if there is no data keystore for household object" in {
+  "redirect to error page if there is no data keystore for pageObjects object" in {
     when(
-      sut.keystore.fetch[Household]()(any(), any())
+      sut.keystore.fetch[PageObjects]()(any(), any())
     ).thenReturn(
       Future.successful(None)
     )
@@ -90,7 +90,7 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
 
   "redirect to error page if can't connect with keystore" in {
     when(
-      sut.keystore.fetch[Household]()(any(), any())
+      sut.keystore.fetch[PageObjects]()(any(), any())
     ).thenReturn(
       Future.failed(new RuntimeException)
     )

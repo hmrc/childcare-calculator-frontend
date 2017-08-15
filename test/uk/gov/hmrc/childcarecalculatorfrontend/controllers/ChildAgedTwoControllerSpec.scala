@@ -23,9 +23,10 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
+
 import scala.concurrent.Future
 
 class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfterEach {
@@ -41,20 +42,21 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
   validateUrl(childAgedTwoPath)
 
-  def buildHousehold(childAgedTwo: Option[Boolean] = None): Household = Household(
-    location = LocationEnum.ENGLAND,
+  def buildPageObjects(childAgedTwo: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
+    location = LocationEnum.ENGLAND),
     childAgedTwo = childAgedTwo
   )
+
   "ChildAgedTwoController" when {
 
     "onPageLoad is called" should {
 
       "load template successfully if there is no data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(childAgedTwo = None))
+            Some(buildPageObjects(childAgedTwo = None))
           )
         )
 
@@ -65,10 +67,10 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "load template successfully if there is data in keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(childAgedTwo = Some(true)))
+            Some(buildPageObjects(childAgedTwo = Some(true)))
           )
         )
 
@@ -77,9 +79,23 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
+      "load template successfully if there is data in keystore and summary is true" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(childAgedTwo = Some(true)))
+          )
+        )
+
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
       "redirect to error page if there is no data keystore for household object" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(None)
         )
@@ -91,7 +107,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "redirect to error page if can't connect with keystore" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -100,6 +116,7 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
+
     }
 
     "onSubmit is called" when {
@@ -108,13 +125,13 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
         "load same template and return BAD_REQUEST" in {
 
           when(
-            sut.keystore.fetch[Household]()(any(), any())
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildHousehold(childAgedTwo = None))
+              Some(buildPageObjects(childAgedTwo = None))
             )
           )
-          
+
           val result = await(
             sut.onSubmit(
               request
@@ -129,18 +146,18 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "saving in keystore is successful" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(childAgedTwo = None))
+            Some(buildPageObjects(childAgedTwo = None))
           )
         )
 
         when(
-          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(childAgedTwo = Some(true)))
+            Some(buildPageObjects(childAgedTwo = Some(true)))
           )
         )
 
@@ -159,15 +176,15 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
     "connecting with keystore fails" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildHousehold(childAgedTwo = None))
+            Some(buildPageObjects(childAgedTwo = None))
           )
         )
 
         when(
-          sut.keystore.cache[Household](any[Household])(any[HeaderCarrier], any[Format[Household]])
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
@@ -184,10 +201,10 @@ class ChildAgedTwoControllerSpec extends ControllersValidator with BeforeAndAfte
       }
     }
 
-    "there is no data in keystore for Household object" should {
+    "there is no data in keystore for PageObjects object" should {
       s"redirect to ${technicalDifficultiesPath}" in {
         when(
-          sut.keystore.fetch[Household]()(any(), any())
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
             None

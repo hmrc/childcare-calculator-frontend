@@ -16,18 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import uk.gov.hmrc.play.test.UnitSpec
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.play.test.UnitSpec
 
-class ChildAgedTwoFormSpec extends UnitSpec with FakeCCApplication {
+class LivingWithPartnerFormSpec extends UnitSpec with FakeCCApplication {
 
-  "ChildAgedTwoForm" should {
+  "LivingWithPartnerForm" should {
 
     "accept value true" in {
-      val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+      val form = new LivingWithPartnerForm(applicationMessagesApi).form.bind(
         Map(
-          childAgedTwoKey -> "true"
+          livingWithPartnerKey -> "true"
         )
       )
       form.value.get.get shouldBe true
@@ -36,9 +36,9 @@ class ChildAgedTwoFormSpec extends UnitSpec with FakeCCApplication {
     }
 
     "accept value false" in {
-      val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+      val form = new LivingWithPartnerForm(applicationMessagesApi).form.bind(
         Map(
-          childAgedTwoKey -> "false"
+          livingWithPartnerKey -> "false"
         )
       )
       form.value.get.get shouldBe false
@@ -47,24 +47,24 @@ class ChildAgedTwoFormSpec extends UnitSpec with FakeCCApplication {
     }
 
     "return error if no value supplied" in {
-      val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+      val form = new LivingWithPartnerForm(applicationMessagesApi).form.bind(
         Map(
-          childAgedTwoKey -> ""
+          livingWithPartnerKey -> ""
         )
       )
       form.value shouldBe None
       form.hasErrors shouldBe true
       form.errors.length shouldBe 1
-      form.errors.head.message shouldBe applicationMessages.messages("child.aged.two.yes.no.not.selected.error")
-      form.errors.head.message should not be "child.aged.two.yes.no.not.selected.error"
+      form.errors.head.message shouldBe applicationMessages.messages("living.with.partner.yes.no.not.selected.error")
+      form.errors.head.message should not be "living.with.partner.yes.no.not.selected.error"
     }
 
     val invalidValues = List("abcd", "1234")
     invalidValues.foreach { invalidValue =>
       s"return error if invalid value '${invalidValue}' is supplied" in {
-        val form = new ChildAgedTwoForm(applicationMessagesApi).form.bind(
+        val form = new LivingWithPartnerForm(applicationMessagesApi).form.bind(
           Map(
-            childAgedTwoKey -> invalidValue
+            livingWithPartnerKey -> invalidValue
           )
         )
         form.value shouldBe None

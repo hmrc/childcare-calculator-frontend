@@ -18,21 +18,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.play.test.UnitSpec
 
-class LocationFormSpec extends UnitSpec with FakeCCApplication {
+class WhichOfYouPaidEmploymentFormSpec extends UnitSpec with FakeCCApplication {
 
-  "LocationForm" should {
+  "WhichOfYouPaidEmploymentForm" should {
     "accept valid value" when {
-      LocationEnum.values.foreach { loc => {
-        val locationValue = loc.toString
-        s"${locationValue} is selected" in {
-          val result = new LocationForm(applicationMessagesApi).form.bind(Map(
-            locationKey -> locationValue
+      val whichOfYouPaidEmployment = List("YOU", "PARTNER", "BOTH")
+      whichOfYouPaidEmployment.foreach { who => {
+
+        s"${who} is selected" in {
+          val result = new WhichOfYouPaidEmploymentForm(applicationMessagesApi).form.bind(Map(
+            whichOfYouInPaidEmploymentKey -> who
           ))
           result.hasErrors shouldBe false
-          result.value.get.get shouldBe locationValue
+          result.value.get.get shouldBe who
         }
       }
       }
@@ -43,13 +43,13 @@ class LocationFormSpec extends UnitSpec with FakeCCApplication {
 
       invalidValues.foreach { invalidValue =>
         s"'${invalidValue}' is selected" in {
-          val result = new LocationForm(applicationMessagesApi).form.bind(Map(
-            locationKey -> invalidValue
+          val result = new WhichOfYouPaidEmploymentForm(applicationMessagesApi).form.bind(Map(
+            whichOfYouInPaidEmploymentKey -> invalidValue
           ))
           result.hasErrors shouldBe true
           result.errors.length shouldBe 1
-          result.errors.head.message shouldBe applicationMessages.messages("location.radio.not.selected.error")
-          result.errors.head.message should not be "location.radio.not.selected.error"
+          result.errors.head.message shouldBe applicationMessages.messages("which.of.you.paid.employment.not.selected.error")
+          result.errors.head.message should not be "which.of.you.paid.employment.not.selected.error"
           result.value shouldBe None
         }
       }

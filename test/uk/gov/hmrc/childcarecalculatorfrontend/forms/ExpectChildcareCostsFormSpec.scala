@@ -20,7 +20,7 @@ import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 
-class ExpectChildcareCostsFormSpec  extends UnitSpec with FakeCCApplication {
+class ExpectChildcareCostsFormSpec extends UnitSpec with FakeCCApplication {
 
   "ExpectChildcareCostsForm" should {
 
@@ -56,6 +56,7 @@ class ExpectChildcareCostsFormSpec  extends UnitSpec with FakeCCApplication {
       form.hasErrors shouldBe true
       form.errors.length shouldBe 1
       form.errors.head.message shouldBe applicationMessages.messages("expect.childcare.costs.yes.no.not.selected.error")
+      form.errors.head.message should not be "expect.childcare.costs.yes.no.not.selected.error"
     }
 
     val invalidValues = List("abcd", "1234")

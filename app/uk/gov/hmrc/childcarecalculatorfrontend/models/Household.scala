@@ -118,15 +118,23 @@ object Claimant {
 case class Household(
                       tcUcBenefits: Option[TcUcBenefitsEnum] = None,
                       location: LocationEnum,
-                      hasPartner: Boolean = false,
                       children: List[Child] = List.empty,
                       parent: Claimant = Claimant(),
-                      partner: Option[Claimant] = None,
-                      childAgedTwo: Option[Boolean] = None,
-                      childAgedThreeOrFour: Option[Boolean] = None,
-                      expectChildcareCosts: Option[Boolean] = None
+                      partner: Option[Claimant] = None
                     )
 object Household {
   implicit val formatHousehold = Json.format[Household]
 }
 
+case class PageObjects(
+                        household: Household,
+                        childAgedTwo: Option[Boolean] = None,
+                        childAgedThreeOrFour: Option[Boolean] = None,
+                        expectChildcareCosts: Option[Boolean] = None,
+                        livingWithPartner: Option[Boolean] = None,
+                        paidOrSelfEmployed: Option[Boolean] = None,
+                        whichOfYouInPaidEmployment: Option[String] = None
+                      )
+object PageObjects {
+  implicit val formatPageObjects = Json.format[PageObjects]
+}

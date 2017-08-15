@@ -16,23 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.scalatest.BeforeAndAfterEach
 import org.mockito.Matchers._
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.play.http.HeaderCarrier
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new LocationController(applicationMessagesApi) {
+  val sut = new WhichOfYouInPaidEmploymentController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
@@ -41,22 +40,24 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
     reset(sut.keystore)
   }
 
-  validateUrl(locationPath)
+  validateUrl(whoIsInPaidEmploymentPath)
 
-  def buildPageObjects(location: LocationEnum = LocationEnum.ENGLAND): PageObjects = PageObjects(household = Household(
-    location = location)
+  def buildPageObjects(youOrPartner: Option[String] = None): PageObjects = PageObjects(
+    whichOfYouInPaidEmployment = youOrPartner,
+    household = Household(
+      location = LocationEnum.ENGLAND)
   )
 
-  "LocationController" when {
+  "WhichOfYouInPaidEmploymentController" when {
 
     "onPageLoad is called" should {
 
-      "load template successfully if there is no data in keystore" in {
+      "load template successfully if there is no data in keystore for current page object" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            None
+            Some(buildPageObjects(youOrPartner = None))
           )
         )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -69,7 +70,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(location = LocationEnum.ENGLAND))
+            Some(buildPageObjects(youOrPartner = Some("you")))
           )
         )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -87,38 +88,76 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
+
+      "redirect to error page if there is no pageObject in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            None
+          )
+        )
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
     }
 
     "onSubmit is called" when {
 
       "there are errors" should {
         "load same template and return BAD_REQUEST" in {
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(youOrPartner = None))
+            )
+          )
+
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(locationKey -> "")
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "")
                 .withSession(validSession)
             )
           )
           status(result) shouldBe BAD_REQUEST
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
         }
+        
+        "redirect to error page if there is no pageObject in keystore" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              None
+            )
+          )
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "YOU")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
       }
 
       "saving in keystore is successful" should {
-        s"go to ${childAgedTwoPath}" when {
-          val childAgeTwoLocations = List(
-            LocationEnum.ENGLAND,
-            LocationEnum.SCOTLAND,
-            LocationEnum.WALES
-          )
-          childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected if there is no data in keystore for PageObjects object" in {
+        s"go to ${whoIsInPaidEmploymentPath}" when {
+
+          YouPartnerBothEnum.values.foreach { each =>
+            val who = each.toString
+            s"${who} is selected if there is no data in keystore for whichOfYouInPaidEmployment object" in {
               when(
                 sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  None
+                  Some(buildPageObjects())
                 )
               )
 
@@ -126,27 +165,27 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
                 sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildPageObjects(location = loc))
+                  Some(buildPageObjects(youOrPartner = Some(who)))
                 )
               )
 
               val result = await(
                 sut.onSubmit(
                   request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
+                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> who)
                     .withSession(validSession)
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedTwoPath
+              result.header.headers("Location") shouldBe whatYouNeedPath
             }
 
-            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
+            s"${who} is selected if there is data in keystore for PageObjects object" in {
               when(
                 sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
+                  Some(buildPageObjects(youOrPartner = Some(who)))
                 )
               )
 
@@ -154,85 +193,23 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
                 sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(buildPageObjects(location = loc))
+                  Some(buildPageObjects(youOrPartner = Some(who)))
                 )
               )
 
               val result = await(
                 sut.onSubmit(
                   request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
+                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> who)
                     .withSession(validSession)
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedTwoPath
+              result.header.headers("Location") shouldBe whatYouNeedPath
             }
           }
         }
 
-        s"go to '3 or 4 years old page' ${childAgedThreeOrFourPath}" when {
-          val childAgeTwoLocations = List(
-            LocationEnum.NORTHERNIRELAND
-          )
-          childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any(), any())
-              ).thenReturn(
-                Future.successful(
-                  None
-                )
-              )
-
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = loc))
-                )
-              )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
-            }
-
-            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
-                )
-              )
-
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = loc))
-                )
-              )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
-            }
-          }
-        }
       }
 
       "connecting with keystore fails" should {
@@ -241,7 +218,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(location = LocationEnum.ENGLAND))
+              Some(buildPageObjects(youOrPartner = Some("YOU")))
             )
           )
 
@@ -254,7 +231,7 @@ class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEac
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(locationKey -> LocationEnum.ENGLAND.toString)
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "YOU")
                 .withSession(validSession)
             )
           )

@@ -6,6 +6,9 @@ next.button = Continue
 back.button = Back
 radio.yes = Yes
 radio.no = No
+radio.you = You
+radio.partner = Partner
+radio.both = Both
 
 ###### Common Errors #######
 error.title = Check you have answered the question correctly
@@ -69,6 +72,11 @@ free.hours.info.info = By giving more information, the calculator can check to s
 free.hours.info.esc = Childcare vouchers
 free.hours.info.tfc = Tax-Free Childcare
 free.hours.info.tc = Tax credits
+free.hours.entitled.info.england = Based on the information you’ve given so far, you can get a minimum of 15 hours free early education and childcare a week in term time (570 hours a year) for your 3 or 4 year old.
+free.hours.entitled.2.info.england = You could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year) for your 2 year old.
+free.hours.entitled.2.info.scotland = You could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 2 year old.
+free.hours.entitled.2.info.wales = You could be entitled to 10 hours of free childcare a week in term time (390 hours a year) for your 2 year old.
+free.hours.entitled.2.info.northern-ireland = You could be entitled to 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 2 year old.
 
 ####### Free Hours Results #######
 free.hours.results.header = Your eligibility for childcare support
@@ -76,9 +84,9 @@ free.hours.results.entitled.england = 15 free hours
 free.hours.results.entitled.scotland = 16 free hours
 free.hours.results.entitled.wales = 10 free hours
 free.hours.results.entitled.northern-ireland = 12 and a half free hours
-free.hours.results.entitled.info.scotland = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
-free.hours.results.entitled.info.wales = Based on the information you’ve given so far, you can get 10 hours of free childcare a week in term time (390 hours a year) for your 3 or 4 year old.
-free.hours.results.entitled.info.northern-ireland = Based on the information you’ve given so far, you can get 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 3 or 4 year old.
+free.hours.entitled.info.scotland = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+free.hours.entitled.info.wales = Based on the information you’ve given so far, you can get 10 hours of free childcare a week in term time (390 hours a year) for your 3 or 4 year old.
+free.hours.entitled.info.northern-ireland = Based on the information you’ve given so far, you can get 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 3 or 4 year old.
 free.hours.results.entitled.info.no.costs = As you don’t currently have or expect to have any approved childcare costs, you would not be eligible for any further support other than free hours.
 free.hours.results.not.entitled.info = You’re currently not eligible for any free hours because you don’t have a child aged between 2 and 4. You don’t currently have or expect to have any approved childcare costs so you would not be eligible for any further support.
 free.hours.results.not.entitled.info.ni = You’re currently not eligible for support because you don’t have a child aged between 3 and 4. You don’t currently have or expect to have any approved childcare costs so you would not be eligible for any further support.
@@ -91,4 +99,19 @@ free.hours.results.summary.info = You can go back and change your answers and se
 free.hours.results.summary.age.2 = Child aged 2
 free.hours.results.summary.age.3.or.4 = Child aged 3 or 4
 free.hours.results.summary.expect.costs = Childcare costs with approved provider
+
+####### Living With Partner #######
+living.with.partner.header = Do you have a partner that you live with?
+living.with.partner.yes.no.not.selected.error = You must tell the calculator if you have a partner you live with
+
+####### In Paid Employment or Self-Employed #######
+paid.employment.header.single = Are you in paid employment or self-employed?
+paid.employment.header.couple = Are you or your partner in paid employment or self-employed?
+paid.employment.not.selected.error.single = You must answer yes if you are in paid employment or self-employed
+paid.employment.not.selected.error.couple = You must answer yes if you or your partner are in paid employment or self-employed
+
+####### Which of you is in Paid Employment or Self-Employed #######
+which.of.you.paid.employment.header = Which of you is in paid employment or self-employed?
+which.of.you.paid.employment.not.selected.error = You must tell the calculator if you or your partner are in paid employment or self employed
+
 

@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication, TemplatesValidator}
 
-class LocationSpec extends TemplatesValidator with FakeCCApplication with CCRoutes with CCConstants {
+class LocationSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("page-title"), value = "Where do you live?"),
