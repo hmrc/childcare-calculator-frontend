@@ -177,7 +177,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe whatYouNeedPath
+              result.header.headers("Location") shouldBe hoursPath
             }
 
             s"${who} is selected if there is data in keystore for PageObjects object" in {
@@ -205,7 +205,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe whatYouNeedPath
+              result.header.headers("Location") shouldBe hoursPath
             }
           }
         }

@@ -57,8 +57,10 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
                 } else {
                   Redirect(routes.HoursController.onPageLoad())
                 }
-              } else
-                Redirect(routes.FreeHoursResultsController.onPageLoad())
+              } else {
+                //TODO - redirect to result page when prototype is ready
+                Redirect(routes.HoursController.onPageLoad())
+              }
             }
           }
         )
