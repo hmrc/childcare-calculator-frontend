@@ -53,7 +53,7 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
             keystore.cache(modifiedPageObjects).map { result =>
               if(success.get) {
                 if(hasPartner) {
-                  Redirect(routes.WhoIsInPaidEmploymentController.onPageLoad())
+                  Redirect(routes.WhichOfYouInPaidEmploymentController.onPageLoad())
                 } else {
                   Redirect(routes.HoursController.onPageLoad())
                 }

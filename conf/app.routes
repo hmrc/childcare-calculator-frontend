@@ -31,7 +31,8 @@ POST   /do-you-have-a-partner           uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /paid-employment                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad
 POST   /paid-employment                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit
 
-GET    /who-is-in-paid-employment       uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad
+GET    /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onPageLoad
+POST   /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onSubmit
 
 GET    /hours                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad
 

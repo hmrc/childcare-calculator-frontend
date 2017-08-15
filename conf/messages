@@ -6,6 +6,9 @@ next.button = Continue
 back.button = Back
 radio.yes = Yes
 radio.no = No
+radio.you = You
+radio.partner = Partner
+radio.both = Both
 
 ###### Common Errors #######
 error.title = Check you have answered the question correctly
@@ -106,3 +109,9 @@ paid.employment.header.single = Are you in paid employment or self-employed?
 paid.employment.header.couple = Are you or your partner in paid employment or self-employed?
 paid.employment.not.selected.error.single = You must answer yes if you are in paid employment or self-employed
 paid.employment.not.selected.error.couple = You must answer yes if you or your partner are in paid employment or self-employed
+
+####### Which of you is in Paid Employment or Self-Employed #######
+which.of.you.paid.employment.header = Which of you is in paid employment or self-employed?
+which.of.you.paid.employment.not.selected.error = You must tell the calculator if you or your partner are in paid employment or self employed
+
+
