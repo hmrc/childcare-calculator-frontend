@@ -27,7 +27,7 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
   //TODO - update with correct methods
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     Future.successful(
-      Ok("This is the Hours page")
+      Ok("This page is under development")
     )
   }
 

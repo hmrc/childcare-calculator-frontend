@@ -135,7 +135,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          s"go to results page ${freeHoursResultsPath}" in {
+          s"go to results page ${hoursPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -159,12 +159,12 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe freeHoursResultsPath
+            result.header.headers("Location") shouldBe hoursPath
           }
         }
 
         "user with partner selects 'no'" should {
-          s"go to results page ${freeHoursResultsPath}" in {
+          s"go to results page ${hoursPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -188,7 +188,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe freeHoursResultsPath
+            result.header.headers("Location") shouldBe hoursPath
           }
         }
 
