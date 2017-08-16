@@ -133,7 +133,8 @@ case class PageObjects(
                         expectChildcareCosts: Option[Boolean] = None,
                         livingWithPartner: Option[Boolean] = None,
                         paidOrSelfEmployed: Option[Boolean] = None,
-                        whichOfYouInPaidEmployment: Option[String] = None
+                        whichOfYouInPaidEmployment: Option[String] = None,
+                        hours: Option[BigDecimal] = None
                       )
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]
