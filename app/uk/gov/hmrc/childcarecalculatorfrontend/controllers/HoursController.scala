@@ -50,9 +50,43 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    Future.successful(
-      Ok("This page is under development")
-    )
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
+        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
+        new HoursForm(hasPartner, messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                hours(errors, hasPartner) //getBackUrl(false), pageObjects.household.location)
+              )
+            ),
+          success => {
+            val modifiedPageObjects = pageObjects.copy(
+              hours = success
+            )
+            keystore.cache(modifiedPageObjects).map { result =>
+              if (hasPartner) {
+                Redirect(routes.HoursController.onPageLoad())
+              } else {
+                //TODO - redirect to vouchers page
+                Redirect(routes.HoursController.onPageLoad())
+              }
+
+            } recover {
+              case ex: Exception =>
+                Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
+                Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("PageObjects object is missing in HoursController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
   }
 
 }
