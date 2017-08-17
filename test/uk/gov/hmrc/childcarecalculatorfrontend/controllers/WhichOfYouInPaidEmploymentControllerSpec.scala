@@ -148,68 +148,92 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
       }
 
       "saving in keystore is successful" should {
-        s"go to ${whoIsInPaidEmploymentPath}" when {
-
-          YouPartnerBothEnum.values.foreach { each =>
-            val who = each.toString
-            s"${who} is selected if there is no data in keystore for whichOfYouInPaidEmployment object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects())
-                )
+        s"go to ${hoursParentPath}" when {
+          "user selects 'YOU'" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
               )
+            )
 
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(youOrPartner = Some(who)))
-                )
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
               )
+            )
 
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> who)
-                    .withSession(validSession)
-                )
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.YOU.toString)
+                  .withSession(validSession)
               )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe hoursPath
-            }
-
-            s"${who} is selected if there is data in keystore for PageObjects object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(youOrPartner = Some(who)))
-                )
-              )
-
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(youOrPartner = Some(who)))
-                )
-              )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> who)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe hoursPath
-            }
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursParentPath
           }
         }
+        s"go to ${hoursPartnerPath}" when {
+          "user selects 'PARTNER'" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
+              )
+            )
 
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.PARTNER.toString)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.PARTNER.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPartnerPath
+          }
+
+          "user selects 'BOTH'" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH.toString)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.BOTH.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPartnerPath
+          }
+        }
       }
 
       "connecting with keystore fails" should {

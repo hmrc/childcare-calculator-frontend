@@ -107,7 +107,7 @@ case class Claimant(
                      benefits: Option[Benefits] = None,
                      lastYearlyIncome: Option[Income]  =   None,
                      currentYearlyIncome: Option[Income]  = None,
-                     hours: Option[BigDecimal] =   None,
+                     hours: Option[BigDecimal] = None,
                      minimumEarnings: Option[MinimumEarnings]= None,
                      escVouchers: Option[YesNoUnsureBothEnum] =   None
                    )
@@ -133,9 +133,8 @@ case class PageObjects(
                         expectChildcareCosts: Option[Boolean] = None,
                         livingWithPartner: Option[Boolean] = None,
                         paidOrSelfEmployed: Option[Boolean] = None,
-                        whichOfYouInPaidEmployment: Option[String] = None,
-                        hours: Option[BigDecimal] = None
-                      )
+                        whichOfYouInPaidEmployment: Option[String] = None
+                        )
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]
 }

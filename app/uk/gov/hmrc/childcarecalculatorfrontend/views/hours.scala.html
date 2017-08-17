@@ -30,7 +30,7 @@
     @error.ccErrorSummary(form)
 
     @helpers.form(
-        action = routes.HoursController.onSubmit,
+        action = routes.HoursController.onSubmit(isPartner),
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @ccInput(

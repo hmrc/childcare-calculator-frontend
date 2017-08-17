@@ -38,7 +38,6 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = hoursPath),
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whoIsInPaidEmploymentPath)
   )
 
@@ -49,15 +48,19 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
   }
 
   val testCases = Table(
-    ("Is partner", "Page title", "Hint text"),
-    (false, "How many hours a week do you usually work?", "This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work."),
-    (true, "How many hours a week does your partner usually work?", "This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.")
+    ("Is partner", "Submission path", "Page title", "Hint text"),
+    (false, hoursParentPath, "How many hours a week do you usually work?", "This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work."),
+    (true, hoursPartnerPath, "How many hours a week does your partner usually work?", "This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.")
   )
 
-  forAll(testCases) { case (isPartner, pageTitle, hintText) =>
+  forAll(testCases) { case (isPartner, submissionPath, pageTitle, hintText) =>
     val dynamicContent = List(
       ElementDetails(id = Some("page-title"), value = pageTitle),
       ElementDetails(elementClass = Some("form-hint"), tagIndex = Some(0), value = hintText)
+    )
+
+    val dynamicLinks = List(
+      ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = submissionPath)
     )
 
     s"if user is partner = ${isPartner}" should {
@@ -75,15 +78,15 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
           implicit val doc: Document = getTemplate(new HoursForm(applicationMessagesApi).form, isPartner)
 
           verifyPageContent(dynamicContent)
-          verifyPageLinks()
+          verifyPageLinks(dynamicLinks)
           verifyErrors()
         }
 
         "valid value is given" in {
           implicit val doc: Document = getTemplate(new HoursForm(applicationMessagesApi).form.fill(Some(37.5)), isPartner)
 
-          verifyPageContent()
-          verifyPageLinks()
+          verifyPageContent(dynamicContent)
+          verifyPageLinks(dynamicLinks)
           verifyErrors()
         }
       }
@@ -98,7 +101,7 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
           implicit val doc: Document = getTemplate(form, isPartner)
 
           verifyPageContent(dynamicContent)
-          verifyPageLinks()
+          verifyPageLinks(dynamicLinks)
           verifyErrors(
             errors = Map(hoursKey -> applicationMessages.messages("hours.a.week.not.selected.error"))
           )
@@ -118,7 +121,7 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
               implicit val doc: Document = getTemplate(form, isPartner)
 
               verifyPageContent(dynamicContent)
-              verifyPageLinks()
+              verifyPageLinks(dynamicLinks)
               verifyErrors(
                 errors = Map(hoursKey -> applicationMessages.messages("hours.a.week.invalid.error"))
               )
@@ -140,7 +143,7 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
               implicit val doc: Document = getTemplate(form, isPartner)
 
               verifyPageContent(dynamicContent)
-              verifyPageLinks()
+              verifyPageLinks(dynamicLinks)
               verifyErrors(
                 errors = Map(hoursKey -> applicationMessages.messages("error.real"))
               )

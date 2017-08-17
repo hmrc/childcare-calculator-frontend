@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichOfYouPaidEmploymentForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichOfYouPaidOrSelfEmployed
 
@@ -68,7 +68,11 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
             keystore.cache(modifiedPageObjects).map {
               result =>
-                Redirect(routes.HoursController.onPageLoad())
+                Redirect(
+                  routes.HoursController.onPageLoad(
+                    isPartner = (YouPartnerBothEnum.withName(success.get) != YouPartnerBothEnum.YOU)
+                  )
+                )
             }
           }
         )

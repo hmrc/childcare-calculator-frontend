@@ -20,8 +20,9 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HoursForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hours
 import scala.concurrent.Future
@@ -31,64 +32,115 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
 
   val keystore: KeystoreService = KeystoreService
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    Future(Ok(""))
-//    keystore.fetch[PageObjects]().map {
-//      case Some(pageObjects) =>
-//        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
-//        Ok(
-//          hours(new HoursForm(messagesApi).form.fill(pageObjects.hours), hasPartner
-//          )
-//        )
-//      case _ =>
-//        Logger.warn("PageObjects object is missing in HoursController.onPageLoad")
-//        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-//    } recover {
-//      case ex: Exception =>
-//        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
-//        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-//    }
+  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
+    pageObjects.livingWithPartner.isDefined && (
+      !pageObjects.livingWithPartner.get || (
+        pageObjects.livingWithPartner.get && pageObjects.whichOfYouInPaidEmployment.isDefined
+      )
+    ) && (
+      !isPartner ||
+        (isPartner && pageObjects.household.partner.isDefined)
+    )
   }
 
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    Future(Ok(""))
-//    keystore.fetch[PageObjects]().flatMap {
-//      case Some(pageObjects) =>
-//        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
-//        new HoursForm(messagesApi).form.bindFromRequest().fold(
-//          errors =>
-//            Future(
-//              BadRequest(
-//                hours(errors, hasPartner) //getBackUrl(false), pageObjects.household.location)
-//              )
-//            ),
-//          success => {
-//            val modifiedPageObjects = pageObjects.copy(
-//              hours = success
-//            )
-//            keystore.cache(modifiedPageObjects).map { result =>
-//              if (hasPartner) {
-//                Redirect(routes.HoursController.onPageLoad())
-//              } else {
-//                //TODO - redirect to vouchers page
-//                Redirect(routes.HoursController.onPageLoad())
-//              }
-//
-//            } recover {
-//              case ex: Exception =>
-//                Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
-//                Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-//            }
-//          }
-//        )
-//      case _ =>
-//        Logger.warn("PageObjects object is missing in HoursController.onSubmit")
-//        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-//    } recover {
-//      case ex: Exception =>
-//        Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
-//        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-//    }
+  private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    if(pageObjects.livingWithPartner.get) {
+      if(!isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH.toString) {
+        routes.HoursController.onPageLoad(isPartner = !isPartner)
+      }
+      else {
+        routes.WhichOfYouInPaidEmploymentController.onPageLoad()
+      }
+    }
+    else {
+      routes.PaidEmploymentController.onPageLoad()
+    }
+  }
+
+  def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+        val poHours: Option[BigDecimal] = if(!isPartner) {
+          pageObjects.household.parent.hours
+        }
+        else {
+          pageObjects.household.partner.get.hours
+        }
+        Ok(
+          hours(
+            new HoursForm(messagesApi).form.fill(poHours),
+            isPartner,
+            getBackUrl(pageObjects, isPartner)
+          )
+        )
+      case _ =>
+        Logger.warn("Invalid PageObjects in HoursController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def modifyPageObjects(pageObjects: PageObjects, isPartner: Boolean, newHours: Option[BigDecimal]): PageObjects = {
+    if (!isPartner) {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(
+            hours = newHours
+          )
+        )
+      )
+    }
+    else {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          partner = Some(
+            pageObjects.household.partner.get.copy(
+              hours = newHours
+            )
+          )
+        )
+      )
+    }
+  }
+
+  // TODO: Select correct vouchers page
+  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    routes.ChildCareBaseController.underConstruction()
+  }
+
+  def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+        new HoursForm(messagesApi).form.bindFromRequest().fold(
+          errors => {
+            Future(
+              BadRequest(
+                hours(
+                  errors,
+                  isPartner,
+                  getBackUrl(pageObjects, isPartner)
+                )
+              )
+            )
+          },
+          success => {
+            val modifiedPageObject = modifyPageObjects(pageObjects, isPartner, success)
+            keystore.cache(modifiedPageObject).map { res =>
+              Redirect(getNextPage(pageObjects, isPartner))
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("Invalid PageObjects in HoursController.onPageLoad")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
   }
 
 }

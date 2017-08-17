@@ -22,6 +22,9 @@ trait CCRoutes {
 
   private def path(endPoint: String): String = s"${rootPath}${endPoint}"
 
+  // TODO: Delete when all pages are ready
+  val underConstrctionPath: String = path("/under-construction")
+
   val technicalDifficultiesPath: String = path("/error")
   val whatYouNeedPath: String = path("/what-you-need")
   val locationPath: String = path("/location")
@@ -36,6 +39,7 @@ trait CCRoutes {
   val livingWithPartnerPath: String = path("/do-you-have-a-partner")
   val paidEmploymentPath: String = path("/paid-employment")
   val whoIsInPaidEmploymentPath: String = path("/parent/who-paid-employment")
-  val hoursPath: String = path("/hours")
+  val hoursParentPath: String = path("/hours-worked/parent")
+  val hoursPartnerPath: String = path("/hours-worked/partner")
 
 }

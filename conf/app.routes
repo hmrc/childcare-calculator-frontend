@@ -3,6 +3,9 @@
 GET    /                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
 GET    /error                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onTechnicalDifficulties
 
+# TODO: Delete when all pages are ready
+GET    /under-construction              uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.underConstruction
+
 GET    /what-you-need                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
 
 GET    /location                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad
@@ -34,8 +37,11 @@ POST   /paid-employment                 uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onPageLoad
 POST   /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onSubmit
 
-GET    /hours                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad
-POST   /hours                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onSubmit
+GET    /hours-worked/parent             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad(isPartner: Boolean = false)
+POST   /hours-worked/parent             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onSubmit(isPartner: Boolean = false)
+
+GET    /hours-worked/partner            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad(isPartner: Boolean = true)
+POST   /hours-worked/partner            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onSubmit(isPartner: Boolean = true)
 
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 

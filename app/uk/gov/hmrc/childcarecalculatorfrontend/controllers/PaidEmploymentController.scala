@@ -55,11 +55,11 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
                 if(hasPartner) {
                   Redirect(routes.WhichOfYouInPaidEmploymentController.onPageLoad())
                 } else {
-                  Redirect(routes.HoursController.onPageLoad())
+                  Redirect(routes.HoursController.onPageLoad(isPartner = false))
                 }
               } else {
                 //TODO - redirect to result page when prototype is ready
-                Redirect(routes.HoursController.onPageLoad())
+                Redirect(routes.HoursController.onPageLoad(isPartner = false))
               }
             }
           }
