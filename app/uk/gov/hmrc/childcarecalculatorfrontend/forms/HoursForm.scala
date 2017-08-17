@@ -17,23 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class HoursForm @Inject()(hasPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
-
-  val familyStatus: String = getFamilyStatus(hasPartner)
+class HoursForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants with CCValidationRules {
 
   type HoursType = Option[BigDecimal]
 
   val form = Form[HoursType](
     single(
       hoursKey -> optional(bigDecimal).verifying(
-        Messages(s"hours.a.week.empty"), _.isDefined
+        Messages("hours.a.week.not.selected.error"),
+        _.isDefined
+      ).verifying(
+        Messages("hours.a.week.invalid.error"),
+        hours =>
+          hours.isEmpty || (
+            hours.isDefined &&
+            validateTwoDigitsAndOneDecimal(hours.get) &&
+            validateInRange(hours.get, FrontendAppConfig.minWorkingHours, FrontendAppConfig.maxWorkingHours)
+          )
       )
     )
   )

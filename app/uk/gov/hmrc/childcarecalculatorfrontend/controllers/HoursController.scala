@@ -36,7 +36,7 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
       case Some(pageObjects) =>
         val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
         Ok(
-          hours(new HoursForm(hasPartner, messagesApi).form.fill(pageObjects.hours), hasPartner
+          hours(new HoursForm(messagesApi).form.fill(pageObjects.hours), hasPartner
           )
         )
       case _ =>
@@ -53,7 +53,7 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
         val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
-        new HoursForm(hasPartner, messagesApi).form.bindFromRequest().fold(
+        new HoursForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(

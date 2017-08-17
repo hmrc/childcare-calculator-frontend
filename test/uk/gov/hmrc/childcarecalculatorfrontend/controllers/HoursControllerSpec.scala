@@ -29,37 +29,37 @@ import scala.concurrent.Future
 
 class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new HoursController(applicationMessagesApi){
-    override val keystore: KeystoreService = mock[KeystoreService]
-  }
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(sut.keystore)
-  }
-
-  validateUrl(hoursPath)
-
-  "HoursController" should {
-
-    "load successfully template" when {
-      "onPageLoad is called" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any(),any())
-        ).thenReturn(
-          Future.successful(
-            Some(
-              PageObjects(
-                household = Household(location = LocationEnum.ENGLAND),
-                livingWithPartner = Some(true)
-              )
-            )
-          )
-        )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"      }
-    }
-
-  }
+//  val sut = new HoursController(applicationMessagesApi){
+//    override val keystore: KeystoreService = mock[KeystoreService]
+//  }
+//
+//  override def beforeEach(): Unit = {
+//    super.beforeEach()
+//    reset(sut.keystore)
+//  }
+//
+//  validateUrl(hoursPath)
+//
+//  "HoursController" should {
+//
+//    "load successfully template" when {
+//      "onPageLoad is called" in {
+//        when(
+//          sut.keystore.fetch[PageObjects]()(any(),any())
+//        ).thenReturn(
+//          Future.successful(
+//            Some(
+//              PageObjects(
+//                household = Household(location = LocationEnum.ENGLAND),
+//                livingWithPartner = Some(true)
+//              )
+//            )
+//          )
+//        )
+//        val result = await(sut.onPageLoad(request.withSession(validSession)))
+//        status(result) shouldBe OK
+//        result.body.contentType.get shouldBe "text/html; charset=utf-8"      }
+//    }
+//
+//  }
 }
