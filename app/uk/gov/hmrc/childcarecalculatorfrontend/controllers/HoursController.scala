@@ -32,61 +32,63 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) =>
-        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
-        Ok(
-          hours(new HoursForm(messagesApi).form.fill(pageObjects.hours), hasPartner
-          )
-        )
-      case _ =>
-        Logger.warn("PageObjects object is missing in HoursController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
+    Future(Ok(""))
+//    keystore.fetch[PageObjects]().map {
+//      case Some(pageObjects) =>
+//        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
+//        Ok(
+//          hours(new HoursForm(messagesApi).form.fill(pageObjects.hours), hasPartner
+//          )
+//        )
+//      case _ =>
+//        Logger.warn("PageObjects object is missing in HoursController.onPageLoad")
+//        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+//    } recover {
+//      case ex: Exception =>
+//        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
+//        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+//    }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) =>
-        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
-        new HoursForm(messagesApi).form.bindFromRequest().fold(
-          errors =>
-            Future(
-              BadRequest(
-                hours(errors, hasPartner) //getBackUrl(false), pageObjects.household.location)
-              )
-            ),
-          success => {
-            val modifiedPageObjects = pageObjects.copy(
-              hours = success
-            )
-            keystore.cache(modifiedPageObjects).map { result =>
-              if (hasPartner) {
-                Redirect(routes.HoursController.onPageLoad())
-              } else {
-                //TODO - redirect to vouchers page
-                Redirect(routes.HoursController.onPageLoad())
-              }
-
-            } recover {
-              case ex: Exception =>
-                Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
-                Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-            }
-          }
-        )
-      case _ =>
-        Logger.warn("PageObjects object is missing in HoursController.onSubmit")
-        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
+    Future(Ok(""))
+//    keystore.fetch[PageObjects]().flatMap {
+//      case Some(pageObjects) =>
+//        val hasPartner = pageObjects.livingWithPartner.getOrElse(false)
+//        new HoursForm(messagesApi).form.bindFromRequest().fold(
+//          errors =>
+//            Future(
+//              BadRequest(
+//                hours(errors, hasPartner) //getBackUrl(false), pageObjects.household.location)
+//              )
+//            ),
+//          success => {
+//            val modifiedPageObjects = pageObjects.copy(
+//              hours = success
+//            )
+//            keystore.cache(modifiedPageObjects).map { result =>
+//              if (hasPartner) {
+//                Redirect(routes.HoursController.onPageLoad())
+//              } else {
+//                //TODO - redirect to vouchers page
+//                Redirect(routes.HoursController.onPageLoad())
+//              }
+//
+//            } recover {
+//              case ex: Exception =>
+//                Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
+//                Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+//            }
+//          }
+//        )
+//      case _ =>
+//        Logger.warn("PageObjects object is missing in HoursController.onSubmit")
+//        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+//    } recover {
+//      case ex: Exception =>
+//        Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
+//        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+//    }
   }
 
 }

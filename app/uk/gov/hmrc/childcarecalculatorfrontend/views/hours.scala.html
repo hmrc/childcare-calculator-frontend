@@ -14,18 +14,18 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[BigDecimal]], hasPartner: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[BigDecimal]], isPartner: Boolean, backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
-@familyStatus = @{ CCConstants.getFamilyStatus(hasPartner) }
+@userType = @{ CCConstants.getUserType(isPartner) }
 
 @ccMain(
-    header = messages(s"hours.a.week.header.${familyStatus}"),
-    backLink = Some(routes.PaidEmploymentController.onPageLoad)
+    header = messages(s"hours.a.week.header.${userType}"),
+    backLink = Some(backUrl)
 ) {
     @error.ccErrorSummary(form)
 
@@ -34,15 +34,15 @@
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @ccInput(
-            field = form("hours"),
+            field = form(CCConstants.hoursKey),
             fieldForm = form,
             args = '_inputClass -> "form-field--inline-spaced-right input--xsmall input--no-spinner",
-                '_inputHint -> messages(s"hours.a.week.hint.text.${familyStatus}").toString.replaceAll("""&#x27;""", "'"),
-                '_label -> messages(s"hours.a.week.header.${familyStatus}").toString,
+                '_inputHint -> messages(s"hours.a.week.hint.text.${userType}"),
+                '_label -> messages(s"hours.a.week.header.${userType}"),
                 '_labelTextClass -> "visuallyhidden",
                 '_labelDataAttributes -> "aria-hidden=false",
-                '_errorDataAttributes -> "data-input-name=hours",
-                '_error_id -> "hours-error-summary",
+                '_errorDataAttributes -> s"data-input-name=${CCConstants.hoursKey}",
+                '_error_id -> s"${CCConstants.hoursKey}-error-summary",
                 '_autoComplete -> "off",
                 '_type -> "number",
                 '_form -> form

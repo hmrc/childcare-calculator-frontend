@@ -118,8 +118,8 @@ which.of.you.paid.employment.not.selected.error = You must tell the calculator i
 ####### Hours a week #######
 hours.a.week.header.parent = How many hours a week do you usually work?
 hours.a.week.header.partner = How many hours a week does your partner usually work?
-hours.a.week.hint.text.parent = This is the hours worked in all your paid jobs, 'zero hours' contracts and self-employment. If you're on maternity, paternity, adoption or sick leave, it's your usual hours before you went off work.
-hours.a.week.hint.text.partner = This is the hours worked in all their paid jobs, 'zero hours' contracts and self-employment. If they're on maternity, paternity, adoption or sick leave, it's their usual hours before they went off work.
+hours.a.week.hint.text.parent = This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work.
+hours.a.week.hint.text.partner = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
 hours.a.week.not.selected.error = You must enter a number between 0 and 99.5
 hours.a.week.invalid.error = You must enter a number with no more than 2 digits and 1 decimal place
 
