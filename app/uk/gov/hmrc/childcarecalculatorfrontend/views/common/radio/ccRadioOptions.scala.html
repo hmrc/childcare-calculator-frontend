@@ -65,19 +65,9 @@
         <p class="form-block">@Messages("cc.or")</p>
     }
                 @defining(s"${elements.field.name.replaceAll("""[\.\[\]]""", "-")}-${value.toLowerCase.replace(" ","_")}") {inputId =>
-                <label for="@inputId"
-                    @elements.args.get('_radioClass).map{radioClass => class="@radioClass @field.value.filter( _ == value).map{_ => selected}"}>
-                    @if(!labelAfter) {
-                        @if(elements.args.get('_stackedLabel)) {
-                            @if(label.split(" ").length < 2) {
-                                <br>@label.trim
-                            } else {
-                            @for( (l, index) <- label.split(" ").zipWithIndex) {
-                                @if(index != 0) {<br>}@l.trim
-                            }
-                        }
-                    } else { @label.trim }
-                }
+
+    <div class="multiple-choice">
+
 
             <input type="radio"
                    id="@inputId"
@@ -100,7 +90,21 @@
                 data-dynamic-fields-hide="@if(toggle.toString==value.toString) {true} else {false}"
             }
         />
-
+        <label for="@inputId"
+               @elements.args.get('_radioClass).map{radioClass => class="@radioClass @field.value.filter( _ == value).map{_ => selected}"}>
+        @if(!labelAfter) {
+        @if(elements.args.get('_stackedLabel)) {
+        @if(label.split(" ").length < 2) {
+        <br>@label.trim
+        } else {
+        @for( (l, index) <- label.split(" ").zipWithIndex) {
+        @if(index != 0) {<br>}@l.trim
+        }
+        }
+        } else {
+        @label.trim
+        }
+        }
         @if(labelAfter) {
             @if(elements.args.get('_stackedLabel)) {
                 @if(label.split(" ").length < 2) {
@@ -113,6 +117,7 @@
             } else { @label.trim }
         }
         </label>
+    </div>
         }
         }
 
