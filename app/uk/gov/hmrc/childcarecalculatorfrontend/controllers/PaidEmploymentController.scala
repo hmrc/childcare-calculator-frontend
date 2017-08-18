@@ -48,7 +48,12 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
       else {
         oldPageObjects.household.copy(
           parent = Claimant(),
-          partner = None
+          partner = if(oldPageObjects.household.partner.isDefined) {
+            Some(Claimant())
+          }
+          else {
+            None
+          }
         )
       }
     )

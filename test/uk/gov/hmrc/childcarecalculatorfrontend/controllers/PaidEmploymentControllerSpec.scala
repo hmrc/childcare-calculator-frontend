@@ -188,7 +188,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
               household = Household(
                 location = LocationEnum.ENGLAND,
                 parent = Claimant(),
-                partner = None
+                partner = Some(Claimant())
               ),
               livingWithPartner = Some(true),
               paidOrSelfEmployed = Some(false),
