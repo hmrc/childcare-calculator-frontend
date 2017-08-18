@@ -24,7 +24,7 @@
 
 @ccMain(
     header = messages("free.hours.results.header"),
-    backLink = Some(Call("GET", request.headers.get("Referer").getOrElse(routes.ChildCareBaseController.onPageLoad.url)))
+    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
 ) {
     @if(child3Or4) {
         <div class="grid-layout grid-layout--stacked">

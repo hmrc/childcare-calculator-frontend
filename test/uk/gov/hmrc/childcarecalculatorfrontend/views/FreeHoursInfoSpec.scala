@@ -73,8 +73,8 @@ class FreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication {
         verifyPageContent(
           List(
             ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(0), value = applicationMessages.messages(s"free.hours.entitled.info.${loc}")),
-            ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(1), value = applicationMessages.messages(s"free.hours.entitled.2.info.${loc}")),
-            ElementDetails(id = Some("free-hours-entitled-info"), tagName=Some("p"), tagIndex=Some(2), value = applicationMessages.messages(s"free.hours.results.entitled.info.no.costs"))
+            ElementDetails(id=Some("free-hours-entitled-info"), tagName = Some("p"), tagIndex = Some(1), value = applicationMessages.messages(s"free.hours.entitled.2.info.${loc}"))
+//            ElementDetails(id=Some("free-hours-entitled-info"), tagName=Some("p"), tagIndex=Some(2), value = applicationMessages.messages(s"free.hours.results.entitled.info.no.costs"))
           )
         )
         verifyPageLinks()

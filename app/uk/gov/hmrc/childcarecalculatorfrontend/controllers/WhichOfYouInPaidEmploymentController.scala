@@ -68,7 +68,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
             keystore.cache(modifiedPageObjects).map {
               result =>
-                Redirect(routes.WhatYouNeedController.onPageLoad())
+                Redirect(routes.HoursController.onPageLoad())
             }
           }
         )
