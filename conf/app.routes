@@ -34,6 +34,12 @@ POST   /paid-employment                 uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onPageLoad
 POST   /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onSubmit
 
+GET    /whats-your-age/parent           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = false)
+POST   /whats-your-age/parent           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = false)
+
+GET    /whats-your-age/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = true)
+POST   /whats-your-age/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = true)
+
 GET    /hours                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad
 
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
