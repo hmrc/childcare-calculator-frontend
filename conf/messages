@@ -115,14 +115,14 @@ which.of.you.paid.employment.header = Which of you is in paid employment or self
 which.of.you.paid.employment.not.selected.error = You must tell the calculator if you or your partner are in paid employment or self employed
 
 ####### Whats Your age #######
-whats.your.age.header.parent = What's your age?
-whats.your.age.header.partner = What's your partner's age?
+whats.your.age.header.parent = What''s your age?
+whats.your.age.header.partner = What''s your partner''s age?
 whats.your.age.radio.under18 = Under 18
 whats.your.age.radio.eighteentotwenty = 18 to 20
 whats.your.age.radio.twentyonetotwentyfour = 21 to 24
 whats.your.age.radio.over25 = 25 or over
 whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
-whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner's age is
+whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner''s age is
 
 
 

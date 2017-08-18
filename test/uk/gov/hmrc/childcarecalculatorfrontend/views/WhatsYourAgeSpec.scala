@@ -20,80 +20,138 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.i18n.Messages.Implicits._
+import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatsYourAgeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatsYourAge
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
 class WhatsYourAgeSpec extends TemplatesValidator with FakeCCApplication {
-//TODO
+
   override val contentData: List[ElementDetails] = List(
-    ElementDetails(id = Some("page-title"), value = "Where do you live?"),
-    ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "Free childcare hours are different between countries in the UK."),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("location-england"), value = "England"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("location-scotland"), value = "Scotland"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("location-wales"), value = "Wales"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("location-northern-ireland"), value = "Northern Ireland"),
+
+    ElementDetails(attribute = Some("for"), attributeValue = Some("whatsYourAge-UNDER18"), value = "Under 18"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some("whatsYourAge-EIGHTEENTOTWENTY"), value = "18 to 20"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some("whatsYourAge-TWENTYONETOTWENTYFOUR"), value = "21 to 24"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some("whatsYourAge-OVERTWENTYFOUR"), value = "25 or over"),
     ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = locationPath),
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whatYouNeedPath)
   )
 
-  def getTemplate(form: Form[Option[String]]): Document = {
-    val template = location(form)(request, applicationMessages)
+  val backUrl: Call = Call("GET", whatYouNeedPath)
+
+  def getTemplate(form: Form[Option[String]], isPartner: Boolean): Document = {
+    val template = whatsYourAge(form, backUrl, isPartner)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
-  "calling location template" should {
+  "calling whatsYourAge template" should {
 
     "render template" in {
-      val template = location.render(new LocationForm(applicationMessagesApi).form, request, applicationMessages)
-      template.contentType shouldBe "text/html"
+      val parentTemplate = whatsYourAge.render(new WhatsYourAgeForm(false, applicationMessagesApi).form, backUrl, false, request, applicationMessages)
+      parentTemplate.contentType shouldBe "text/html"
 
-      val template1 = location.f(new LocationForm(applicationMessagesApi).form)(request, applicationMessages)
-      template1.contentType shouldBe "text/html"
+      val partnerTemplate = whatsYourAge.f(new WhatsYourAgeForm(true, applicationMessagesApi).form, backUrl, true)(request, applicationMessages)
+      partnerTemplate.contentType shouldBe "text/html"
     }
 
-    "display correct content" when {
-      "nothing is selected initially" in {
-        implicit val doc: Document = getTemplate(new LocationForm(applicationMessagesApi).form.fill(None))
+    "display correct content for parent" when {
+      val dynamicContent: List[ElementDetails] = List(
+        ElementDetails(id = Some("page-title"), value = "What's your age?")
+      )
 
-        verifyPageContent()
-        verifyPageLinks()
+      //TODO Change links to correct values
+      val dynamicLinks:  List[ElementDetails] = List(
+        ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = whatsYourAgePath + "/parent")
+      )
+
+      "nothing is selected initially for parent" in {
+        implicit val doc: Document = getTemplate(new WhatsYourAgeForm(false, applicationMessagesApi).form.fill(None), false)
+
+        verifyPageContent(dynamicContent)
+        verifyPageLinks(dynamicLinks)
         verifyChecks()
         verifyErrors()
       }
 
-      LocationEnum.values.foreach { loc => {
-        val locationValue = loc.toString
-        s"${locationValue} is selected" in {
-          implicit val doc: Document = getTemplate(new LocationForm(applicationMessagesApi).form.fill(Some(locationValue)))
+      AgeRangeEnum.values.foreach { range => {
+        val ageRangeValue = range.toString
+        s"${ageRangeValue} is selected for parent" in {
+          implicit val doc: Document = getTemplate(new WhatsYourAgeForm(false, applicationMessagesApi).form.fill(Some(ageRangeValue)), false)
 
-          verifyPageContent()
-          verifyPageLinks()
-          verifyChecks(List(s"${locationKey}-${locationValue}"))
+          verifyPageContent(dynamicContent)
+          verifyPageLinks(dynamicLinks)
+          verifyChecks(List(s"${whatsYourAgeKey}-${ageRangeValue}"))
           verifyErrors()
         }
       }}
 
-      "form is submitted without data" in {
-        val form = new LocationForm(applicationMessagesApi).form.bind(
+      "form is submitted without data for parent" in {
+        val form = new WhatsYourAgeForm(false, applicationMessagesApi).form.bind(
           Map(
-            locationKey -> ""
+            whatsYourAgeKey -> ""
           )
         )
-        implicit val doc: Document = getTemplate(form)
+        implicit val doc: Document = getTemplate(form, false)
 
         verifyPageContent()
         verifyPageLinks()
         verifyChecks()
         verifyErrors(
-          errors = Map(locationKey -> "You must tell the calculator where you live")
+          errors = Map(whatsYourAgeKey -> "You must tell the calculator what your age is")
+        )
+      }
+    }
+
+    "display correct content for partner" when {
+      val dynamicContent: List[ElementDetails] = List(
+        ElementDetails(id = Some("page-title"), value = "What's your partner's age?")
+      )
+
+      //TODO Change links to correct values
+      val dynamicLinks:  List[ElementDetails] = List(
+        ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = whatsYourAgePath + "/partner")
+      )
+
+      "nothing is selected initially for partner" in {
+        implicit val doc: Document = getTemplate(new WhatsYourAgeForm(true, applicationMessagesApi).form.fill(None), true)
+
+        verifyPageContent(dynamicContent)
+        verifyPageLinks(dynamicLinks)
+        verifyChecks()
+        verifyErrors()
+      }
+
+      AgeRangeEnum.values.foreach { range => {
+        val ageRangeValue = range.toString
+        s"${ageRangeValue} is selected for partner" in {
+          implicit val doc: Document = getTemplate(new WhatsYourAgeForm(true, applicationMessagesApi).form.fill(Some(ageRangeValue)), true)
+
+          verifyPageContent(dynamicContent)
+          verifyPageLinks(dynamicLinks)
+          verifyChecks(List(s"${whatsYourAgeKey}-${ageRangeValue}"))
+          verifyErrors()
+        }
+      }}
+
+      "form is submitted without data for partner" in {
+        val form = new WhatsYourAgeForm(true, applicationMessagesApi).form.bind(
+          Map(
+            whatsYourAgeKey -> ""
+          )
+        )
+        implicit val doc: Document = getTemplate(form, true)
+
+        verifyPageContent()
+        verifyPageLinks()
+        verifyChecks()
+        verifyErrors(
+          errors = Map(whatsYourAgeKey -> "You must tell the calculator what your partner's age is")
         )
       }
     }
