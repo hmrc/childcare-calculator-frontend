@@ -24,11 +24,24 @@ import uk.gov.hmrc.play.test.UnitSpec
 class WhatsYourAgeFormSpec extends UnitSpec with FakeCCApplication {
 
   "WhatsYourAgeForm" should {
-    "accept valid value" when {
+    "accept valid value when a parent" when {
       AgeRangeEnum.values.foreach { ageRange => {
         val ageRangeValue = ageRange.toString
         s"${ageRangeValue} is selected" in {
-          val result = new WhatsYourAgeForm(applicationMessagesApi).form.bind(Map(
+          val result = new WhatsYourAgeForm(false, applicationMessagesApi).form.bind(Map(
+            whatsYourAgeKey -> ageRangeValue
+          ))
+          result.hasErrors shouldBe false
+          result.value.get.get shouldBe ageRangeValue
+        }
+      }
+      }
+    }
+    "accept valid value when a partner" when {
+      AgeRangeEnum.values.foreach { ageRange => {
+        val ageRangeValue = ageRange.toString
+        s"${ageRangeValue} is selected" in {
+          val result = new WhatsYourAgeForm(true, applicationMessagesApi).form.bind(Map(
             whatsYourAgeKey -> ageRangeValue
           ))
           result.hasErrors shouldBe false
@@ -38,18 +51,35 @@ class WhatsYourAgeFormSpec extends UnitSpec with FakeCCApplication {
       }
     }
 
-    "throw error" when {
+    "throw error for invalid values when a parent" when {
       val invalidValues = List("", "abcd", "123")
-//TODO sort for partner
+
       invalidValues.foreach { invalidValue =>
         s"'${invalidValue}' is selected" in {
-          val result = new WhatsYourAgeForm(applicationMessagesApi).form.bind(Map(
+          val result = new WhatsYourAgeForm(false, applicationMessagesApi).form.bind(Map(
             whatsYourAgeKey -> invalidValue
           ))
           result.hasErrors shouldBe true
           result.errors.length shouldBe 1
           result.errors.head.message shouldBe applicationMessages.messages("whats.your.age.radio.not.selected.error.parent")
           result.errors.head.message should not be "whats.your.age.radio.not.selected.error.parent"
+          result.value shouldBe None
+        }
+      }
+    }
+
+    "throw error for invalid values when a partner" when {
+      val invalidValues = List("", "abcd", "123")
+
+      invalidValues.foreach { invalidValue =>
+        s"'${invalidValue}' is selected" in {
+          val result = new WhatsYourAgeForm(true, applicationMessagesApi).form.bind(Map(
+            whatsYourAgeKey -> invalidValue
+          ))
+          result.hasErrors shouldBe true
+          result.errors.length shouldBe 1
+          result.errors.head.message shouldBe applicationMessages.messages("whats.your.age.radio.not.selected.error.partner")
+          result.errors.head.message should not be "whats.your.age.radio.not.selected.error.partner"
           result.value shouldBe None
         }
       }

@@ -20,12 +20,13 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
-import play.api.libs.json.{Reads}
+import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeRangeEnum, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -41,14 +42,15 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
     reset(sut.keystore)
   }
 
-  validateUrl(whatsYourAgePath)
+  validateUrl(whatsYourAgePath + "/parent")
+  validateUrl(whatsYourAgePath + "/partner")
 
   def buildPageObjects(isPartner: Boolean, ageRange: Option[AgeRangeEnum]): PageObjects = {
     val claimant = Claimant(ageRange = ageRange)
-    if(isPartner) {
-      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant))
-    } else {
+    if (isPartner) {
       PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant, partner = Some(claimant)))
+    } else {
+      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant))
     }
   }
 
@@ -56,7 +58,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
 
     "onPageLoad is called" should {
 
-      "load template successfully if there is no data in keystore" in {
+      "redirect successfully if there is no data in keystore if parent" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -64,12 +66,12 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             None
           )
         )
-        val result = await(sut.onPageLoad(any())(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "load template successfully if there is data in keystore" in {
+      "load template successfully if there is data in keystore if parent" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -77,199 +79,252 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             Some(buildPageObjects(isPartner = false, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)))
           )
         )
-        val result = await(sut.onPageLoad(any())(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      "redirect to error page if can't connect with keystore" in {
+      "redirect to error page if can't connect with keystore if parent" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.failed(new RuntimeException)
         )
-        val result = await(sut.onPageLoad(any())(request.withSession(validSession)))
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "redirect successfully if there is no data in keystore if partner" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            None
+          )
+        )
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "load template successfully if there is data in keystore if partner" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(isPartner = true, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)))
+          )
+        )
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "redirect to error page if can't connect with keystore if partner" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
   }
-}
 
-//    "onSubmit is called" when {
-//
-//      "there are errors" should {
-//        "load same template and return BAD_REQUEST" in {
-//          val result = await(
-//            sut.onSubmit(
-//              request
-//                .withFormUrlEncodedBody(locationKey -> "")
-//                .withSession(validSession)
-//            )
-//          )
-//          status(result) shouldBe BAD_REQUEST
-//          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-//        }
-//      }
-//
-//      "saving in keystore is successful" should {
-//        s"go to ${childAgedTwoPath}" when {
-//          val childAgeTwoLocations = List(
-//            LocationEnum.ENGLAND,
-//            LocationEnum.SCOTLAND,
-//            LocationEnum.WALES
-//          )
-//          childAgeTwoLocations.foreach { loc =>
-//            s"${loc.toString} is selected if there is no data in keystore for PageObjects object" in {
-//              when(
-//                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  None
-//                )
-//              )
-//
-//              when(
-//                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  Some(buildPageObjects(location = loc))
-//                )
-//              )
-//
-//              val result = await(
-//                sut.onSubmit(
-//                  request
-//                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-//                    .withSession(validSession)
-//                )
-//              )
-//              status(result) shouldBe SEE_OTHER
-//              result.header.headers("Location") shouldBe childAgedTwoPath
-//            }
-//
-//            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
-//              when(
-//                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
-//                )
-//              )
-//
-//              when(
-//                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  Some(buildPageObjects(location = loc))
-//                )
-//              )
-//
-//              val result = await(
-//                sut.onSubmit(
-//                  request
-//                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-//                    .withSession(validSession)
-//                )
-//              )
-//              status(result) shouldBe SEE_OTHER
-//              result.header.headers("Location") shouldBe childAgedTwoPath
-//            }
-//          }
-//        }
-//
-//        s"go to '3 or 4 years old page' ${childAgedThreeOrFourPath}" when {
-//          val childAgeTwoLocations = List(
-//            LocationEnum.NORTHERNIRELAND
-//          )
-//          childAgeTwoLocations.foreach { loc =>
-//            s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
-//              when(
-//                sut.keystore.fetch[PageObjects]()(any(), any())
-//              ).thenReturn(
-//                Future.successful(
-//                  None
-//                )
-//              )
-//
-//              when(
-//                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  Some(buildPageObjects(location = loc))
-//                )
-//              )
-//
-//              val result = await(
-//                sut.onSubmit(
-//                  request
-//                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-//                    .withSession(validSession)
-//                )
-//              )
-//              status(result) shouldBe SEE_OTHER
-//              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
-//            }
-//
-//            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
-//              when(
-//                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
-//                )
-//              )
-//
-//              when(
-//                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-//              ).thenReturn(
-//                Future.successful(
-//                  Some(buildPageObjects(location = loc))
-//                )
-//              )
-//
-//              val result = await(
-//                sut.onSubmit(
-//                  request
-//                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-//                    .withSession(validSession)
-//                )
-//              )
-//              status(result) shouldBe SEE_OTHER
-//              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
-//            }
-//          }
-//        }
-//      }
-//
-//      "connecting with keystore fails" should {
-//        s"redirect to ${technicalDifficultiesPath}" in {
-//          when(
-//            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-//          ).thenReturn(
-//            Future.successful(
-//              Some(buildPageObjects(location = LocationEnum.ENGLAND))
-//            )
-//          )
-//
-//          when(
-//            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-//          ).thenReturn(
-//            Future.failed(new RuntimeException)
-//          )
-//
-//          val result = await(
-//            sut.onSubmit(
-//              request
-//                .withFormUrlEncodedBody(locationKey -> LocationEnum.ENGLAND.toString)
-//                .withSession(validSession)
-//            )
-//          )
-//          status(result) shouldBe SEE_OTHER
-//          result.header.headers("Location") shouldBe technicalDifficultiesPath
-//        }
-//      }
-//
-//    }
-//  }
-//}
+  "connecting with keystore fails" should {
+    s"redirect to ${technicalDifficultiesPath}" in {
+      when(
+        sut.keystore.fetch[PageObjects]()(any(), any())
+      ).thenReturn(
+        Future.successful(
+          Some(buildPageObjects(true, None))
+        )
+      )
+
+      when(
+        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.failed(new RuntimeException)
+      )
+
+      val result = await(
+        sut.onSubmit(true)(
+          request
+            .withFormUrlEncodedBody(whatsYourAgeKey -> AgeRangeEnum.OVERTWENTYFOUR.toString)
+            .withSession(validSession)
+        )
+      )
+      status(result) shouldBe SEE_OTHER
+      result.header.headers("Location") shouldBe technicalDifficultiesPath
+    }
+  }
+
+  "onSubmit is called" when {
+
+    "there are errors" should {
+      "load same template and return BAD_REQUEST as a partner" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(true, ageRange = None))
+          )
+        )
+        val result = await(
+          sut.onSubmit(true)(
+            request
+              .withFormUrlEncodedBody(whatsYourAgeKey -> "")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe BAD_REQUEST
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "load same template and return BAD_REQUEST with a parent" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(false, ageRange = None))
+          )
+        )
+        val result = await(
+          sut.onSubmit(false)(
+            request
+              .withFormUrlEncodedBody(whatsYourAgeKey -> "")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe BAD_REQUEST
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+    }
+
+    "saving in keystore is successful as a partner" should {
+      s"go to ${whatsYourAgePath}/partner" when {
+        val ageRanges = List(
+          AgeRangeEnum.UNDER18,
+          AgeRangeEnum.EIGHTEENTOTWENTY,
+          AgeRangeEnum.TWENTYONETOTWENTYFOUR,
+          AgeRangeEnum.OVERTWENTYFOUR
+        )
+        ageRanges.foreach { range =>
+          s"${range.toString} is selected if there is no data in keystore for PageObjects object for partner" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                None
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            println(result.header.headers)
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+
+          s"${range.toString} is selected if there is data in keystore for PageObjects object for partner" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(true, Some(range)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(true, Some(range)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            println(result.header.headers)
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe whatYouNeedPath
+          }
+        }
+      }
+    }
+
+    "saving in keystore is successful as a parent" should {
+      s"go to ${whatsYourAgePath}/parent" when {
+        val ageRanges = List(
+          AgeRangeEnum.UNDER18,
+          AgeRangeEnum.EIGHTEENTOTWENTY,
+          AgeRangeEnum.TWENTYONETOTWENTYFOUR,
+          AgeRangeEnum.OVERTWENTYFOUR
+        )
+        ageRanges.foreach { range =>
+          s"${range.toString} is selected if there is no data in keystore for PageObjects object for parent" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                None
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(false)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe technicalDifficultiesPath
+          }
+
+          s"${range.toString} is selected if there is data in keystore for PageObjects object for parent" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(false, Some(range)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(false, Some(range)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(false)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            println(result.header.headers)
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe whatYouNeedPath
+          }
+        }
+      }
+    }
+  }
+}

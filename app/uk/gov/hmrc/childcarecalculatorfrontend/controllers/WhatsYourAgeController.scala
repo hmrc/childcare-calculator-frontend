@@ -36,9 +36,11 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
 
   private def getBackUrl(isPartner: Boolean): Call = {
     if (isPartner) {
-      routes.FreeHoursInfoController.onPageLoad()
+      //TODO redirect to correct page and change tests
+      routes.WhatYouNeedController.onPageLoad()
     } else {
-      routes.ExpectChildcareCostsController.onPageLoad(false)
+      //TODO redirect to correct page and change tests
+      routes.WhatYouNeedController.onPageLoad()
     }
   }
 
@@ -84,7 +86,8 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
           success => {
             val enumValue: AgeRangeEnum.Value = AgeRangeEnum.withName(success.get)
             keystore.cache(getModifiedPageObjects(enumValue, pageObjects, isPartner)).map { result =>
-              Redirect(routes.PaidEmploymentController.onPageLoad())
+              //TODO redirect to correct page and change tests
+              Redirect(routes.WhatYouNeedController.onPageLoad())
             }
           }
         )
