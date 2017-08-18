@@ -135,7 +135,8 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          s"go to results page ${hoursParentPath}" in {
+          // TODO: Redirect to Benefits page when it's done
+          s"go to results page ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -159,12 +160,13 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursParentPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
 
         "user with partner selects 'no'" should {
-          s"go to results page ${hoursParentPath}" in {
+          // TODO: Redirect to Benefits page when it's done
+          s"go to results page ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -188,7 +190,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursParentPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
 

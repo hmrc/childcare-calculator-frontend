@@ -24,6 +24,8 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -43,7 +45,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
   def buildPageObject(
                        livingWithPartner: Option[Boolean] = None,
-                       whichOfYouInPaidEmployment: Option[String] = None,
+                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
                        partner: Option[Claimant] = None
                        ): PageObjects = PageObjects(
     household = Household(
@@ -91,7 +93,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU.toString)
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)
                 )
               )
             )
@@ -112,7 +114,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString)
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
                 )
               )
             )
@@ -344,7 +346,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER.toString),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
                   partner = Some(Claimant())
                 )
               )
@@ -366,7 +368,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                   partner = Some(Claimant())
                 )
               )
@@ -452,7 +454,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString)
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
                 )
               )
             )
@@ -476,7 +478,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                   partner = Some(Claimant())
                 )
               )
@@ -496,8 +498,8 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
       }
 
       // TODO: redirect to correct vouchers page
-      s"redirect successfully to next page ($underConstrctionPath)" when {
-        "valid data is submitted" in {
+      "redirect successfully to next page " when {
+        s"valid data is submitted and both are in paid employment ($hoursParentPath)" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -505,7 +507,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                   partner = Some(Claimant())
                 )
               )
@@ -519,7 +521,47 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
               Some(
                 buildPageObject(
                   livingWithPartner = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                  partner = Some(Claimant())
+                )
+              )
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(hoursKey -> "37.5")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe hoursParentPath
+        }
+
+        s"valid data is submitted and only partner is in paid employment ($underConstrctionPath)" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                buildPageObject(
+                  livingWithPartner = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
+                  partner = Some(Claimant())
+                )
+              )
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                buildPageObject(
+                  livingWithPartner = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                   partner = Some(Claimant())
                 )
               )
@@ -585,7 +627,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
                 Some(
                   buildPageObject(
                     livingWithPartner = Some(true),
-                    whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH.toString),
+                    whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                     partner = Some(Claimant())
                   )
                 )

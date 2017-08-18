@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
@@ -25,7 +24,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichOfYouPaidEmploymentFor
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichOfYouPaidOrSelfEmployed
-
 import scala.concurrent.Future
 
 @Singleton
@@ -38,7 +36,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
       case Some(pageObjects) =>
         Ok(
           whichOfYouPaidOrSelfEmployed(
-            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment)
+            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment.map(_.toString))
           )
         )
       case _ =>
@@ -63,7 +61,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
             ),
           success => {
             val modifiedPageObjects = pageObjects.copy(
-              whichOfYouInPaidEmployment = success
+              whichOfYouInPaidEmployment = if(success.isDefined) Some(YouPartnerBothEnum.withName(success.get)) else None
             )
 
             keystore.cache(modifiedPageObjects).map {

@@ -45,7 +45,7 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
 
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
     if(pageObjects.livingWithPartner.get) {
-      if(!isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH.toString) {
+      if(!isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
         routes.HoursController.onPageLoad(isPartner = !isPartner)
       }
       else {
@@ -106,9 +106,15 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
     }
   }
 
-  // TODO: Select correct vouchers page
+
   private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    routes.ChildCareBaseController.underConstruction()
+    if(isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
+      routes.HoursController.onPageLoad(isPartner = !isPartner)
+    }
+    else {
+      // TODO: Select correct vouchers page
+      routes.ChildCareBaseController.underConstruction()
+    }
   }
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>

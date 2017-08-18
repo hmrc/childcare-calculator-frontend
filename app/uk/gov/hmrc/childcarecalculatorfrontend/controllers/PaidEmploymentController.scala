@@ -59,7 +59,7 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
                 }
               } else {
                 //TODO - redirect to result page when prototype is ready
-                Redirect(routes.HoursController.onPageLoad(isPartner = false))
+                Redirect(routes.ChildCareBaseController.underConstruction())
               }
             }
           }

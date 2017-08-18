@@ -23,6 +23,8 @@ import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -42,7 +44,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
 
   validateUrl(whoIsInPaidEmploymentPath)
 
-  def buildPageObjects(youOrPartner: Option[String] = None): PageObjects = PageObjects(
+  def buildPageObjects(youOrPartner: Option[YouPartnerBothEnum] = None): PageObjects = PageObjects(
     whichOfYouInPaidEmployment = youOrPartner,
     household = Household(
       location = LocationEnum.ENGLAND)
@@ -70,7 +72,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(youOrPartner = Some("you")))
+            Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
           )
         )
         val result = await(sut.onPageLoad(request.withSession(validSession)))
@@ -138,7 +140,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "YOU")
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.YOU.toString)
                 .withSession(validSession)
             )
           )
@@ -154,7 +156,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
               )
             )
 
@@ -162,7 +164,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
               )
             )
 
@@ -183,7 +185,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
               )
             )
 
@@ -191,7 +193,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.PARTNER.toString)))
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.PARTNER)))
               )
             )
 
@@ -211,7 +213,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU.toString)))
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
               )
             )
 
@@ -219,7 +221,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH.toString)))
+                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH)))
               )
             )
 
@@ -242,7 +244,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(youOrPartner = Some("YOU")))
+              Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
             )
           )
 
@@ -255,7 +257,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> "YOU")
+                .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.YOU.toString)
                 .withSession(validSession)
             )
           )

@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
 
@@ -74,7 +74,18 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
             ),
           success => {
             val modifiedPageObjects = pageObjects.copy(
-              livingWithPartner = success
+              livingWithPartner = success,
+              household = pageObjects.household.copy(
+                partner = if(pageObjects.household.partner.isEmpty && success.get) {
+                  Some(Claimant())
+                }
+                else if(pageObjects.household.partner.isDefined && !success.get) {
+                  None
+                }
+                else {
+                  pageObjects.household.partner
+                }
+              )
             )
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
