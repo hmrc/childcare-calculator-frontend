@@ -89,11 +89,8 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
             ),
           success => {
             val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
-            println("------------------ pageObjects:         " + pageObjects)
-            println("------------------ modifiedPageObjects: " + modifiedPageObjects)
             keystore.cache(modifiedPageObjects).map {
               result =>
-                println("------------------ result: " + result)
                 Redirect(
                   routes.HoursController.onPageLoad(
                     isPartner = (YouPartnerBothEnum.withName(success.get) != YouPartnerBothEnum.YOU)

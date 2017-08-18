@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PaidEmploymentForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
 
@@ -32,6 +32,27 @@ import scala.concurrent.Future
 class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
+
+  private def modifyPageObjects(oldPageObjects: PageObjects, newPaidOrSelfEmployed: Boolean): PageObjects = {
+    oldPageObjects.copy(
+      paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+      whichOfYouInPaidEmployment = if(newPaidOrSelfEmployed) {
+        oldPageObjects.whichOfYouInPaidEmployment
+      }
+      else {
+        None
+      },
+      household = if(newPaidOrSelfEmployed) {
+        oldPageObjects.household
+      }
+      else {
+        oldPageObjects.household.copy(
+          parent = Claimant(),
+          partner = None
+        )
+      }
+    )
+  }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
@@ -47,9 +68,7 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
               )
             ),
           success => {
-            val modifiedPageObjects = pageObjects.copy(
-              paidOrSelfEmployed = success
-            )
+            val modifiedPageObjects = modifyPageObjects(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map { result =>
               if(success.get) {
                 if(hasPartner) {

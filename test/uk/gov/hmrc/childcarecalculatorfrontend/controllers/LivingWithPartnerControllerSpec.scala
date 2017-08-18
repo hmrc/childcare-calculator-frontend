@@ -177,13 +177,14 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
       "saving in keystore is successful" should {
         "create partner object" when {
           "user selects YES" when {
-            "parnter object doesn't exists previously (partner object should be created)" in {
+            "parnter object doesn't exists previously (partner object should be created), paidOrSelfEmployed is deleted if exists" in {
               val initialObject: PageObjects = buildPageObjects(Some(true), None)
               val keystoreObject: PageObjects = initialObject.copy(
                 household = initialObject.household.copy(
                   partner = None
                 ),
-                whichOfYouInPaidEmployment = None
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = Some(false)
               )
 
               when(
@@ -198,7 +199,8 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
                 household = keystoreObject.household.copy(
                   partner = Some(Claimant())
                 ),
-                whichOfYouInPaidEmployment = None
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = None
               )
 
               when(

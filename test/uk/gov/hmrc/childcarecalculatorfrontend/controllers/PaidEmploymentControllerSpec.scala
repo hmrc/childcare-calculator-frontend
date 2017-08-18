@@ -25,7 +25,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.Format
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -166,18 +166,40 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
 
         "user with partner selects 'no'" should {
           // TODO: Redirect to Benefits page when it's done
-          s"go to results page ${underConstrctionPath}" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+          s"go to results page ${underConstrctionPath} and clear related data" in {
+            val keystoreObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(hours = Some(15)),
+                partner = Some(Claimant(hours = Some(37.5)))
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(true),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
             )
 
             when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(keystoreObject))
+            )
+
+            val modifiedObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(),
+                partner = None
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(false),
+              whichOfYouInPaidEmployment = None
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true), paidOrSelfEmployed = Some(false)))
+                Some(modifiedObject)
               )
             )
 
@@ -224,18 +246,33 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
         }
 
         "user with partner selects 'yes'" should {
-          s"go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath}" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+          s"go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath} and shouldn't modify related data in keystore" in {
+            val keystoreObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(hours = Some(15)),
+                partner = Some(Claimant(hours = Some(37.5)))
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = None,
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
             )
 
             when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(keystoreObject))
+            )
+
+            val modifiedObject = keystoreObject.copy(
+              paidOrSelfEmployed = Some(true)
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true), paidOrSelfEmployed = Some(true)))
+                Some(modifiedObject)
               )
             )
 

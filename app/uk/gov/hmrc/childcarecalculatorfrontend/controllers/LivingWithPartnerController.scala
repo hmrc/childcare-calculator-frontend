@@ -78,6 +78,12 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
       }
       else {
         oldPageObjects.whichOfYouInPaidEmployment
+      },
+      paidOrSelfEmployed = if(oldPageObjects.paidOrSelfEmployed.isDefined) {
+        None
+      }
+      else {
+        oldPageObjects.paidOrSelfEmployed
       }
     )
   }
