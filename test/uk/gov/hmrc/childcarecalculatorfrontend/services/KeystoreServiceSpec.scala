@@ -63,7 +63,6 @@ class KeystoreServiceSpec extends UnitSpec with MockitoSugar with FakeCCApplicat
           )
         )
         val result: Option[PageObjects] = await(sut.cache[PageObjects](PageObjects(Household(location = LocationEnum.ENGLAND))))
-        println(result.get)
         result.isDefined shouldBe true
         result.get shouldBe PageObjects(Household(location = LocationEnum.ENGLAND))
       }
