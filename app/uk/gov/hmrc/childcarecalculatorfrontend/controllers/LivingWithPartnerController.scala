@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, Claimant}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
 
@@ -59,6 +59,29 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
     }
   }
 
+  private def modifyPageObject(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
+    oldPageObjects.copy(
+      livingWithPartner = Some(newLivingWithPartner),
+      household = oldPageObjects.household.copy(
+        partner = if(oldPageObjects.household.partner.isEmpty && newLivingWithPartner) {
+          Some(Claimant())
+        }
+        else if(oldPageObjects.household.partner.isDefined && !newLivingWithPartner) {
+          None
+        }
+        else {
+          oldPageObjects.household.partner
+        }
+      ),
+      whichOfYouInPaidEmployment = if(oldPageObjects.whichOfYouInPaidEmployment.isDefined && !newLivingWithPartner) {
+        None
+      }
+      else {
+        oldPageObjects.whichOfYouInPaidEmployment
+      }
+    )
+  }
+
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
@@ -73,20 +96,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               )
             ),
           success => {
-            val modifiedPageObjects = pageObjects.copy(
-              livingWithPartner = success,
-              household = pageObjects.household.copy(
-                partner = if(pageObjects.household.partner.isEmpty && success.get) {
-                  Some(Claimant())
-                }
-                else if(pageObjects.household.partner.isDefined && !success.get) {
-                  None
-                }
-                else {
-                  pageObjects.household.partner
-                }
-              )
-            )
+            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
             }

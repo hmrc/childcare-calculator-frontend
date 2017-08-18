@@ -21,14 +21,18 @@ import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.{CCRoutes, FakeCCApplication}
+import uk.gov.hmrc.childcarecalculatorfrontend.{ControllersValidator, CCRoutes, FakeCCApplication}
 import uk.gov.hmrc.play.test.UnitSpec
 
-class ChildCareBaseControllerSpec extends UnitSpec with FakeCCApplication with CCRoutes {
+class ChildCareBaseControllerSpec extends ControllersValidator {
 
   val sut = new ChildCareBaseController(applicationMessagesApi)
 
   "ChildCareBaseController" should {
+
+    validateUrl(whatYouNeedPath, List(GET))
+    validateUrl(technicalDifficultiesPath, List(GET))
+    validateUrl(underConstrctionPath, List(GET))
 
     "load home page" when {
       "request with session Id is received" in {
@@ -41,6 +45,15 @@ class ChildCareBaseControllerSpec extends UnitSpec with FakeCCApplication with C
     "load technical difficulties page" when {
       s"receive GET request on ${technicalDifficultiesPath}" in {
         val req = FakeRequest(GET, technicalDifficultiesPath)
+        val result = route(app, req)
+        result.isDefined shouldBe true
+        status(result.get) shouldBe OK
+      }
+    }
+
+    "load under construction page" when {
+      s"receive GET request on ${underConstrctionPath}" in {
+        val req = FakeRequest(GET, underConstrctionPath)
         val result = route(app, req)
         result.isDefined shouldBe true
         status(result.get) shouldBe OK

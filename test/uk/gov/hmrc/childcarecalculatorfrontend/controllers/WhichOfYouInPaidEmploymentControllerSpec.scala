@@ -24,8 +24,8 @@ import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -47,7 +47,10 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
   def buildPageObjects(youOrPartner: Option[YouPartnerBothEnum] = None): PageObjects = PageObjects(
     whichOfYouInPaidEmployment = youOrPartner,
     household = Household(
-      location = LocationEnum.ENGLAND)
+      location = LocationEnum.ENGLAND,
+      parent = Claimant(),
+      partner = Some(Claimant())
+    )
   )
 
   "WhichOfYouInPaidEmploymentController" when {
@@ -128,7 +131,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           status(result) shouldBe BAD_REQUEST
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
         }
-        
+
         "redirect to error page if there is no pageObject in keystore" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -151,89 +154,156 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
 
       "saving in keystore is successful" should {
         s"go to ${hoursParentPath}" when {
-          "user selects 'YOU'" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
+          "user selects 'YOU'" should {
+            "keep hours for parent but delete partner's" in {
+              val initialObject: PageObjects = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH))
+              val keystoreObject: PageObjects = initialObject.copy(
+                household = initialObject.household.copy(
+                  parent = initialObject.household.parent.copy(
+                    hours = Some(15)
+                  ),
+                  partner = Some(
+                    initialObject.household.partner.get.copy(
+                      hours = Some(37.5)
+                    )
+                  )
+                )
               )
-            )
 
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
+              when(
+                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
               )
-            )
 
-            val result = await(
-              sut.onSubmit(
-                request
-                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.YOU.toString)
-                  .withSession(validSession)
+              val modifiedObject = keystoreObject.copy(
+                household = keystoreObject.household.copy(
+                  partner = Some(
+                    keystoreObject.household.partner.get.copy(
+                      hours = None
+                    )
+                  )
+                ),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)
               )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursParentPath
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(modifiedObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.YOU.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe hoursParentPath
+            }
           }
         }
         s"go to ${hoursPartnerPath}" when {
-          "user selects 'PARTNER'" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
+          "user selects 'PARTNER'" should {
+            "keep hours for partner but delete parents's" in {
+              val initialObject: PageObjects = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH))
+              val keystoreObject: PageObjects = initialObject.copy(
+                household = initialObject.household.copy(
+                  parent = initialObject.household.parent.copy(
+                    hours = Some(15)
+                  ),
+                  partner = Some(
+                    initialObject.household.partner.get.copy(
+                      hours = Some(37.5)
+                    )
+                  )
+                )
               )
-            )
 
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.PARTNER)))
+              when(
+                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
               )
-            )
 
-            val result = await(
-              sut.onSubmit(
-                request
-                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.PARTNER.toString)
-                  .withSession(validSession)
+              val modifiedObject = keystoreObject.copy(
+                household = keystoreObject.household.copy(
+                  parent = keystoreObject.household.parent.copy(
+                    hours = None
+                  )
+                ),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
               )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursPartnerPath
+
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(modifiedObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.PARTNER.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe hoursPartnerPath
+            }
           }
 
-          "user selects 'BOTH'" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
+          "user selects 'BOTH'" should {
+            "not modify hours" in {
+              val initialObject: PageObjects = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH))
+              val keystoreObject: PageObjects = initialObject.copy(
+                household = initialObject.household.copy(
+                  parent = initialObject.household.parent.copy(
+                    hours = Some(15)
+                  ),
+                  partner = Some(
+                    initialObject.household.partner.get.copy(
+                      hours = Some(37.5)
+                    )
+                  )
+                )
               )
-            )
 
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH)))
+              when(
+                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
               )
-            )
 
-            val result = await(
-              sut.onSubmit(
-                request
-                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.BOTH.toString)
-                  .withSession(validSession)
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
               )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursPartnerPath
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.BOTH.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe hoursPartnerPath
+            }
           }
         }
       }
