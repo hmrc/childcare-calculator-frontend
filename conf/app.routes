@@ -12,15 +12,15 @@ GET    /location                        uk.gov.hmrc.childcarecalculatorfrontend.
 POST   /location                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit
 
 GET    /child-aged-two                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(summary: Boolean = false)
-GET    /child-aged-two-edit             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(summary: Boolean = true)
+GET    /child-aged-two/edit             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(summary: Boolean = true)
 POST   /child-aged-two                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit
 
 GET    /child-aged-three-or-four        uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(summary: Boolean = false)
-GET    /child-aged-three-or-four-edit   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(summary: Boolean = true)
+GET    /child-aged-three-or-four/edit   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(summary: Boolean = true)
 POST   /child-aged-three-or-four        uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit
 
 GET    /expect-childcare-costs          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(summary: Boolean = false)
-GET    /expect-childcare-costs-edit     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(summary: Boolean = true)
+GET    /expect-childcare-costs/edit     uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(summary: Boolean = true)
 POST   /expect-childcare-costs          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit
 
 GET    /free-hours-info                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
@@ -34,8 +34,8 @@ POST   /do-you-have-a-partner           uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /paid-employment                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad
 POST   /paid-employment                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit
 
-GET    /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onPageLoad
-POST   /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onSubmit
+GET    /who-paid-employment             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onPageLoad
+POST   /who-paid-employment             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichOfYouInPaidEmploymentController.onSubmit
 
 GET    /hours-worked/parent             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad(isPartner: Boolean = false)
 POST   /hours-worked/parent             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onSubmit(isPartner: Boolean = false)
