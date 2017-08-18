@@ -28,7 +28,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureBothEnum.YesNoU
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
                             statutoryWeeks: Double = 0.00,
-                            statutoryAmount: BigDecimal =   0.00
+                            // TODO: This field (statutoryAmount) is mandatory for the eligibility service
+                            // TODO: Before sending it make sure that if value is not set by the user
+                            // TODO: it should get it from the configuration (at the moment - it's £100)
+                            statutoryAmount: Option[BigDecimal] = None
                           )
 object StatutoryIncome {
   implicit val formatStatutoryIncome = Json.format[StatutoryIncome]
