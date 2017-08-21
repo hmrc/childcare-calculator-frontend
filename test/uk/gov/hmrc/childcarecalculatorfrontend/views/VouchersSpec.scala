@@ -30,7 +30,6 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 
 class VouchersSpec extends TemplatesValidator with FakeCCApplication {
-  val backUrl: Call = Call("GET", hoursParentPath)
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(attribute = Some("for"), attributeValue = Some("vouchers-yes"), value = "Yes"),
@@ -46,7 +45,7 @@ class VouchersSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   def getTemplate(form: Form[Option[String]], hasPartner: Boolean): Document = {
-    val template = vouchers(form, hasPartner, backUrl)(request, applicationMessages)
+    val template = vouchers(form, hasPartner)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
@@ -65,10 +64,10 @@ class VouchersSpec extends TemplatesValidator with FakeCCApplication {
     s"calling vouchers template if user has partner = ${hasPartner}" should {
 
       "render template successfully" in {
-        val template = vouchers.render(new VouchersForm(hasPartner, applicationMessagesApi).form, hasPartner, backUrl, request, applicationMessages)
+        val template = vouchers.render(new VouchersForm(hasPartner, applicationMessagesApi).form, hasPartner, request, applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = vouchers.f(new VouchersForm(hasPartner, applicationMessagesApi).form, hasPartner, backUrl)(request, applicationMessages)
+        val template1 = vouchers.f(new VouchersForm(hasPartner, applicationMessagesApi).form, hasPartner)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 
