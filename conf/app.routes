@@ -36,5 +36,8 @@ POST   /parent/who-paid-employment      uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET    /hours                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad
 
+GET    /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad
+POST   /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit
+
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 
