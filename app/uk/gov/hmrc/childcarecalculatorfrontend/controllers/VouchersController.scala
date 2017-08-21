@@ -17,14 +17,37 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.VouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.vouchers
 
 @Singleton
 class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-  // TODO: Implement logic
-  def onPageLoad: Action[AnyContent] = ???
+  val keystore: KeystoreService = KeystoreService
+
+  def onPageLoad: Action[AnyContent] =  withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) if pageObjects.livingWithPartner.isDefined =>
+        Ok(
+          vouchers(
+            new VouchersForm(pageObjects.livingWithPartner.get, messagesApi).form.fill(pageObjects.getVouchers.map(_.toString)),
+            pageObjects.livingWithPartner.get
+          )
+        )
+      case _ =>
+        Logger.warn("PageObjects is invalid in VouchersController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }.recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from VouchersController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
 
   // TODO: Implement logic
   def onSubmit: Action[AnyContent] = ???
