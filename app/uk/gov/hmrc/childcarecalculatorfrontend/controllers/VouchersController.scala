@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Call, AnyContent, Action}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.VouchersForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.vouchers
@@ -32,18 +32,21 @@ class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSup
 
   val keystore: KeystoreService = KeystoreService
 
+  def getBackUrl(inPaidEmployment: YouPartnerBothEnum): Call = {
+    routes.HoursController.onPageLoad(isPartner = (inPaidEmployment == YouPartnerBothEnum.PARTNER))
+  }
+
   def onPageLoad: Action[AnyContent] =  withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if pageObjects.paidOrSelfEmployed.getOrElse(false) =>
         val inPaidEmployment: YouPartnerBothEnum = pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
-//        Ok(
-//          vouchers(
-//            new VouchersForm(pageObjects.livingWithPartner.get, messagesApi).form.fill(pageObjects.getVouchers.map(_.toString)),
-//            inPaidEmployment
-//          )
-//        )
-
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+        Ok(
+          vouchers(
+            new VouchersForm(inPaidEmployment, messagesApi).form.fill(pageObjects.getVouchers.map(_.toString)),
+            inPaidEmployment,
+            getBackUrl(inPaidEmployment)
+          )
+        )
       case _ =>
         Logger.warn("PageObjects is invalid in VouchersController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())

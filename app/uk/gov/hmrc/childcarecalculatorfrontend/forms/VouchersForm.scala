@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class VouchersForm @Inject()(val inPaidEmployment: YouPartnerBothEnum, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class VouchersForm @Inject()(inPaidEmployment: YouPartnerBothEnum, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
   type VouchersFormType = Option[String]
 
   val form = Form[VouchersFormType](
