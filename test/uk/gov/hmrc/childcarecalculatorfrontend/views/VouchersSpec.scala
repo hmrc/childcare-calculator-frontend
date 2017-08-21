@@ -30,7 +30,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 
 class VouchersSpec extends TemplatesValidator with FakeCCApplication {
-  val backUrl: Call = Call("GET", hoursPath)
+  val backUrl: Call = Call("GET", hoursParentPath)
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(attribute = Some("for"), attributeValue = Some("vouchers-yes"), value = "Yes"),
@@ -42,7 +42,7 @@ class VouchersSpec extends TemplatesValidator with FakeCCApplication {
 
   override val linksData: List[ElementDetails] = List(
     ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = vouchersPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = hoursPath)
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = hoursParentPath)
   )
 
   def getTemplate(form: Form[Option[String]], hasPartner: Boolean): Document = {
