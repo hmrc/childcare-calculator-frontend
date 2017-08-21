@@ -20,26 +20,28 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.play.test.UnitSpec
 
 class VouchersFormSpec extends UnitSpec with FakeCCApplication {
 
   val testCases = Table(
-    ("Has partner", "Error message key"),
-    (false, "vouchers.not.selected.error.single"),
-    (true, "vouchers.not.selected.error.couple")
+    ("In paid employment", "Error message key"),
+    (YouPartnerBothEnum.YOU, "vouchers.not.selected.error.you"),
+    (YouPartnerBothEnum.PARTNER, "vouchers.not.selected.error.partner"),
+    (YouPartnerBothEnum.BOTH, "vouchers.not.selected.error.both")
   )
 
   "VouchersForm" when {
-    forAll(testCases) { case (hasPartner, errorMessageKey) =>
-      s"user has partner = ${hasPartner}" should {
+    forAll(testCases) { case (inPaidEmployment, errorMessageKey) =>
+      s"for in employment is selected '${inPaidEmployment}'" should {
 
         "accept valid value" when {
           YesNoUnsureEnum.values.foreach { yesNoUnsure => {
             val yesNoUnsureValue = yesNoUnsure.toString
             s"${yesNoUnsureValue} is selected" in {
-              val result = new VouchersForm(hasPartner, applicationMessagesApi).form.bind(Map(
+              val result = new VouchersForm(inPaidEmployment, applicationMessagesApi).form.bind(Map(
                 vouchersKey -> yesNoUnsureValue
               ))
               result.hasErrors shouldBe false
@@ -48,22 +50,23 @@ class VouchersFormSpec extends UnitSpec with FakeCCApplication {
           }}
         }
 
-        val invalidValues = List("", "abcd", "1234", "[*]")
-        invalidValues.foreach { invalidValue =>
-          s"return error (${applicationMessages.messages(errorMessageKey)}) if invalid value '${invalidValue}' is supplied" in {
-            val form = new VouchersForm(hasPartner, applicationMessagesApi).form.bind(
-              Map(
-                vouchersKey -> invalidValue
+        s"return error (${applicationMessages.messages(errorMessageKey)})" when {
+          val invalidValues = List("", "abcd", "1234", "[*]")
+          invalidValues.foreach { invalidValue =>
+            s"invalid value '${invalidValue}' is supplied" in {
+              val form = new VouchersForm(inPaidEmployment, applicationMessagesApi).form.bind(
+                Map(
+                  vouchersKey -> invalidValue
+                )
               )
-            )
-            form.value shouldBe None
-            form.hasErrors shouldBe true
-            form.errors.length shouldBe 1
-            form.errors.head.message shouldBe applicationMessages.messages(errorMessageKey)
-            form.errors.head.message should not be errorMessageKey
+              form.value shouldBe None
+              form.hasErrors shouldBe true
+              form.errors.length shouldBe 1
+              form.errors.head.message shouldBe applicationMessages.messages(errorMessageKey)
+              form.errors.head.message should not be errorMessageKey
+            }
           }
         }
-
       }
     }
   }

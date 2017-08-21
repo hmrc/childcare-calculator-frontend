@@ -21,18 +21,17 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{Messages, I18nSupport, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class VouchersForm @Inject()(val hasPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class VouchersForm @Inject()(val inPaidEmployment: YouPartnerBothEnum, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
   type VouchersFormType = Option[String]
-
-  val familyStatus = getFamilyStatus(hasPartner)
 
   val form = Form[VouchersFormType](
     single(
       vouchersKey -> optional(text).verifying(
-        Messages(s"vouchers.not.selected.error.${familyStatus}"),
+        Messages(s"vouchers.not.selected.error.${inPaidEmployment.toString.toLowerCase}"),
         vouchers =>
           YesNoUnsureEnum.values.exists(_.toString == vouchers.getOrElse(""))
       )

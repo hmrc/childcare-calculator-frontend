@@ -14,7 +14,8 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[String]], hasPartner: Boolean)(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+@(form: Form[Option[String]], inPaidEmployment: YouPartnerBothEnum, backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
@@ -23,11 +24,11 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
 
-@familyStatus = @{ CCConstants.getFamilyStatus(hasPartner) }
+@whoIsInPaidEmployment = @{ inPaidEmployment.toString.toLowerCase }
 
 @ccMain(
-    header = messages(s"vouchers.header.${familyStatus}"),
-    backLink = Some(routes.HoursController.onPageLoad(false))
+    header = messages(s"vouchers.header.${whoIsInPaidEmployment}"),
+    backLink = Some(backUrl)
 ) {
 
 @helpers.form(
@@ -47,8 +48,8 @@
             args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages(s"vouchers.header.${familyStatus}"),
-                '_globalErrorKey -> messages(s"vouchers.not.selected.error.${familyStatus}")
+                '_legend -> messages(s"vouchers.header.${whoIsInPaidEmployment}"),
+                '_globalErrorKey -> messages(s"vouchers.not.selected.error.${whoIsInPaidEmployment}")
         )
         @buttons.nextButton()
     }
