@@ -22,8 +22,10 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{SchemeResults, Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
@@ -31,11 +33,26 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
 
   val sut = new FreeHoursResultsController(applicationMessagesApi){
     override val keystore: KeystoreService = mock[KeystoreService]
+    // TODO: Delete it once we get real results page
+    override val connector: EligibilityConnector = mock[EligibilityConnector]
   }
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(sut.keystore)
+    // TODO: Delete it once we get real results page
+    reset(sut.connector)
+    when(
+      sut.connector.getEligibility(any[Household])(any[HeaderCarrier])
+    ).thenReturn(
+      Future.successful(
+        SchemeResults(
+          schemes = List.empty,
+          tfcRollout = false,
+          thirtyHrsRollout = false
+        )
+      )
+    )
   }
 
   validateUrl(freeHoursResultsPath, List(GET))

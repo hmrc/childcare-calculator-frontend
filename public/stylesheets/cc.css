@@ -102,3 +102,23 @@ button,
 td.numeric {
   text-align: right;
 }
+
+/*
+IE8: Remove square border from around new style radio buttons
+*/
+.lte-ie8 input[type="checkbox"],
+.lte-ie8 input[type="radio"] {
+    border: none!important;
+}
+/*
+IE8: Fix wrapping of crown on Gov.UK in header
+*/
+.lte-ie8 #logo img {
+    max-width: none;
+}
+/*
+IE8: Add missing arrow to Back Button
+*/
+#back-button {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKCAYAAACXDi8zAAAAAXNSR0IArs4c6QAAAFRJREFUCB1jYMACSsvK/qMIf/r06X9YePh/Ll5ehMTly5f/m5ubgwXhElu2bPkvISEBFwRLTJ06FUUAJAjCTCiWoHOwGgVThNVymCRW58IkQTTIgwDiajmA797qnwAAAABJRU5ErkJggg==) 0 2px no-repeat
+}
