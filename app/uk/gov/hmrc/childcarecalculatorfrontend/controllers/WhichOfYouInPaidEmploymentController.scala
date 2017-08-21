@@ -52,29 +52,53 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
   private def modifyPageObject(oldPageObject: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
     val paidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
-    oldPageObject.copy(
-      household = oldPageObject.household.copy(
-        parent = if(paidEmployment == YouPartnerBothEnum.PARTNER) {
-          oldPageObject.household.parent.copy(
-            hours = None
-          )
-        }
-        else {
-          oldPageObject.household.parent
-        },
-        partner = if(oldPageObject.household.partner.isDefined && paidEmployment == YouPartnerBothEnum.YOU) {
-          Some(
+    paidEmployment match {
+      case YouPartnerBothEnum.YOU if oldPageObject.household.partner.isDefined => oldPageObject.copy(
+        household = oldPageObject.household.copy(
+          parent = oldPageObject.household.parent.copy(
+            escVouchers = None
+          ),
+          partner = Some(
             oldPageObject.household.partner.get.copy(
-              hours = None
+              hours = None,
+              escVouchers = None
             )
           )
-        }
-        else {
-          oldPageObject.household.partner
-        }
-      ),
-      whichOfYouInPaidEmployment = Some(paidEmployment)
-    )
+        ),
+        whichOfYouInPaidEmployment = Some(paidEmployment),
+        getVouchers = None
+      )
+      case YouPartnerBothEnum.PARTNER => oldPageObject.copy(
+        household = oldPageObject.household.copy(
+          parent = oldPageObject.household.parent.copy(
+            hours = None,
+            escVouchers = None
+          ),
+          partner = Some(
+            oldPageObject.household.partner.get.copy(
+              escVouchers = None
+            )
+          )
+        ),
+        whichOfYouInPaidEmployment = Some(paidEmployment),
+        getVouchers = None
+      )
+      case _ if oldPageObject.household.partner.isDefined => oldPageObject.copy(
+        household = oldPageObject.household.copy(
+          partner = Some(
+            oldPageObject.household.partner.get.copy(
+              escVouchers = None
+            )
+          )
+        ),
+        whichOfYouInPaidEmployment = Some(paidEmployment),
+        getVouchers = None
+      )
+      case _ => oldPageObject.copy(
+        whichOfYouInPaidEmployment = Some(paidEmployment),
+        getVouchers = None
+      )
+    }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>

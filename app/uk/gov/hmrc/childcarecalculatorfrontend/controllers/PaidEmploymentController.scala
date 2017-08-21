@@ -34,29 +34,30 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
   val keystore: KeystoreService = KeystoreService
 
   private def modifyPageObjects(oldPageObjects: PageObjects, newPaidOrSelfEmployed: Boolean): PageObjects = {
-    oldPageObjects.copy(
-      paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-      whichOfYouInPaidEmployment = if(newPaidOrSelfEmployed) {
-        oldPageObjects.whichOfYouInPaidEmployment
-      }
-      else {
-        None
-      },
-      household = if(newPaidOrSelfEmployed) {
-        oldPageObjects.household
-      }
-      else {
-        oldPageObjects.household.copy(
+    newPaidOrSelfEmployed match {
+      case true => oldPageObjects.copy(
+        paidOrSelfEmployed = Some(newPaidOrSelfEmployed)
+      )
+      case false if oldPageObjects.household.partner.isDefined => oldPageObjects.copy(
+        paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+        whichOfYouInPaidEmployment = None,
+        getVouchers = None,
+        household = oldPageObjects.household.copy(
           parent = Claimant(),
-          partner = if(oldPageObjects.household.partner.isDefined) {
-            Some(Claimant())
-          }
-          else {
-            None
-          }
+          partner = Some(Claimant())
         )
-      }
-    )
+      )
+      case false => oldPageObjects.copy(
+        paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+        whichOfYouInPaidEmployment = None,
+        getVouchers = None,
+        household = oldPageObjects.household.copy(
+          parent = Claimant(),
+          partner = None
+        )
+      )
+    }
+
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>

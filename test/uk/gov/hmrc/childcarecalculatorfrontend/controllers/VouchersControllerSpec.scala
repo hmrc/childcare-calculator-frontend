@@ -21,7 +21,7 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
-import play.api.libs.json.Reads
+import play.api.libs.json.{Format, Reads}
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
@@ -47,15 +47,18 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
   def buildPageObject(
                        getVouchers: Option[YesNoUnsureEnum] = None,
                        paidOrSelfEmployed: Option[Boolean] = None,
-                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
+                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
+                       partner: Option[Claimant] = None
                        ): PageObjects = PageObjects(
     household = Household(
-      location = LocationEnum.ENGLAND
+      location = LocationEnum.ENGLAND,
+      partner = partner
     ),
     paidOrSelfEmployed = paidOrSelfEmployed,
     whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
     getVouchers = getVouchers
   )
+
   validateUrl(vouchersPath)
 
   "calling onPageLoad" should {
@@ -79,7 +82,8 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
                 buildPageObject(
                   getVouchers = None,
                   paidOrSelfEmployed = Some(true),
-                  whichOfYouInPaidEmployment = whoIsInPaidEmployment
+                  whichOfYouInPaidEmployment = whoIsInPaidEmployment,
+                  partner = Some(Claimant())
                 )
               )
             )
@@ -100,7 +104,8 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
               Some(
                 buildPageObject(
                   getVouchers = Some(YesNoUnsureEnum.YES),
-                  paidOrSelfEmployed = Some(true)
+                  paidOrSelfEmployed = Some(true),
+                  partner = Some(Claimant())
                 )
               )
             )
@@ -114,6 +119,48 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
     }
 
     s"reditect to error page (${technicalDifficultiesPath})" when {
+      "there is no information about partner if whichOfYouInPaidEmployment is 'PARTNER' in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(
+              buildPageObject(
+                getVouchers = None,
+                paidOrSelfEmployed = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
+                partner = None
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "there is no information about partner if whichOfYouInPaidEmployment is 'BOTH' in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(
+              buildPageObject(
+                getVouchers = None,
+                paidOrSelfEmployed = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                partner = None
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
       "there is no information about paidOrSelfEmployed in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -122,7 +169,9 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
             Some(
               buildPageObject(
                 getVouchers = None,
-                paidOrSelfEmployed = None
+                paidOrSelfEmployed = None,
+                whichOfYouInPaidEmployment = None,
+                partner = None
               )
             )
           )
@@ -141,7 +190,9 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
             Some(
               buildPageObject(
                 getVouchers = None,
-                paidOrSelfEmployed = Some(false)
+                paidOrSelfEmployed = Some(false),
+                whichOfYouInPaidEmployment = None,
+                partner = None
               )
             )
           )
@@ -178,6 +229,171 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
+  }
+
+  "calling onSubmit" should {
+
+    "load template and return BAD_REQUEST" when {
+
+      "invalid data is submitted" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObject(paidOrSelfEmployed = Some(true), whichOfYouInPaidEmployment = None))
+          )
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(vouchersKey -> "")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe BAD_REQUEST
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+    }
+
+    "redirect to correct next page" when {
+      // TODO: Update all urls to go to 'Benefits' page
+      val nextPageTest = Table(
+        ("User in paid employment", "Partner", "Selected vouchers", "Next page"),
+        (None, None, YesNoUnsureEnum.YES, underConstrctionPath),
+        (None, None, YesNoUnsureEnum.NO, underConstrctionPath),
+        (None, None, YesNoUnsureEnum.NOTSURE, underConstrctionPath),
+        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath),
+        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.NO, underConstrctionPath),
+        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.NOTSURE, underConstrctionPath),
+        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath),
+        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NO, underConstrctionPath),
+        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NOTSURE, underConstrctionPath),
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath), // TODO: Only this ine should go to 'Which of you is offered vouchers'
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NO, underConstrctionPath),
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NOTSURE, underConstrctionPath)
+      )
+
+      forAll(nextPageTest) { case (inPaidEmployment, partner, selectedVouchers, nextPage) =>
+        s"in paid employment is ${inPaidEmployment} and user select ${selectedVouchers}" should {
+          s"go to ${nextPage}" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObject(
+                  paidOrSelfEmployed = Some(true),
+                  whichOfYouInPaidEmployment = inPaidEmployment,
+                  partner = partner
+                ))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(mock[PageObjects])
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(vouchersKey -> selectedVouchers.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe nextPage
+          }
+        }
+      }
+    }
+
+    s"redrect to error page (${technicalDifficultiesPath})" when {
+
+      "noone is in paid employment" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObject(paidOrSelfEmployed = Some(false)))
+          )
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(vouchersKey -> "yes")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "there is no information about paid employment" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObject(paidOrSelfEmployed = None))
+          )
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(vouchersKey -> "yes")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "pageObjects doesn't exists in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            None
+          )
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(vouchersKey -> "yes")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "can't connect to keystore while loading data" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(vouchersKey -> "yes")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+    }
+
   }
 
 }

@@ -21,25 +21,37 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Call, AnyContent, Action}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.VouchersForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.vouchers
+
+import scala.concurrent.Future
 
 @Singleton
 class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
 
-  def getBackUrl(inPaidEmployment: YouPartnerBothEnum): Call = {
+  private def getBackUrl(inPaidEmployment: YouPartnerBothEnum): Call = {
     routes.HoursController.onPageLoad(isPartner = (inPaidEmployment == YouPartnerBothEnum.PARTNER))
+  }
+
+  private def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
+    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
+  }
+
+  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
+    pageObjects.paidOrSelfEmployed.getOrElse(false) && (
+      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU || pageObjects.household.partner.isDefined
+    )
   }
 
   def onPageLoad: Action[AnyContent] =  withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if pageObjects.paidOrSelfEmployed.getOrElse(false) =>
-        val inPaidEmployment: YouPartnerBothEnum = pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
+      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+        val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
         Ok(
           vouchers(
             new VouchersForm(inPaidEmployment, messagesApi).form.fill(pageObjects.getVouchers.map(_.toString)),
@@ -57,6 +69,91 @@ class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSup
     }
   }
 
-  // TODO: Implement logic
-  def onSubmit: Action[AnyContent] = ???
+  private def getNextPage(inPaidEmployment: YouPartnerBothEnum, selectedVouchers: YesNoUnsureEnum): Call = {
+    if(inPaidEmployment == YouPartnerBothEnum.BOTH && selectedVouchers == YesNoUnsureEnum.YES) {
+      // redirect to 'Which of you is offered vouchers'
+      routes.ChildCareBaseController.underConstruction()
+    }
+    else {
+      // redirect to benefits page
+      routes.ChildCareBaseController.underConstruction()
+    }
+  }
+
+  private def modifyPageObject(pageObjects: PageObjects, selectedVouchers: YesNoUnsureEnum): PageObjects = {
+    val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
+    inPaidEmployment match {
+      case YouPartnerBothEnum.YOU => pageObjects.copy(
+        getVouchers = Some(selectedVouchers),
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(
+            escVouchers = Some(selectedVouchers)
+          )
+        )
+      )
+      case YouPartnerBothEnum.PARTNER => pageObjects.copy(
+        getVouchers = Some(selectedVouchers),
+        household = pageObjects.household.copy(
+          partner = Some(
+            pageObjects.household.partner.get.copy(
+              escVouchers = Some(selectedVouchers)
+            )
+          )
+        )
+      )
+      case YouPartnerBothEnum.BOTH if(selectedVouchers == YesNoUnsureEnum.YES) => pageObjects.copy(
+        getVouchers = Some(selectedVouchers)
+      )
+      case YouPartnerBothEnum.BOTH => pageObjects.copy(
+        getVouchers = Some(selectedVouchers),
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(
+            escVouchers = Some(selectedVouchers)
+          ),
+          partner = Some(
+            pageObjects.household.partner.get.copy(
+              escVouchers = Some(selectedVouchers)
+            )
+          )
+        )
+      )
+    }
+  }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+        val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
+        new VouchersForm(inPaidEmployment, messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                vouchers(
+                  errors,
+                  inPaidEmployment,
+                  getBackUrl(inPaidEmployment)
+                )
+              )
+            ),
+          success => {
+            val selectedVouchers: YesNoUnsureEnum = YesNoUnsureEnum.withName(success.get)
+            val modifiedPageObjects = modifyPageObject(pageObjects, selectedVouchers)
+            keystore.cache(modifiedPageObjects).map {
+              result =>
+                Redirect(
+                  getNextPage(inPaidEmployment, selectedVouchers)
+                )
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("PageObjects is invalid in VouchersController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from VouchersController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
 }
