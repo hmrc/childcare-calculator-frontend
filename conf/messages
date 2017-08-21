@@ -114,4 +114,6 @@ paid.employment.not.selected.error.couple = You must answer yes if you or your p
 which.of.you.paid.employment.header = Which of you is in paid employment or self-employed?
 which.of.you.paid.employment.not.selected.error = You must tell the calculator if you or your partner are in paid employment or self employed
 
-
+####### Vouchers #######
+vouchers.not.selected.error.single = You must tell the calculator if your employer offers childcare vouchers
+vouchers.not.selected.error.couple = You must tell the calculator if either of your employers offer childcare vouchers
