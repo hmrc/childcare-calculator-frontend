@@ -25,17 +25,17 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @ccMain(
-    header = messages("which.of.you.paid.employment.header"),
-    backLink = Some(routes.PaidEmploymentController.onPageLoad())
+        header = messages("who.gets.benefits.header"),
+        backLink = Some(routes.ChildCareBaseController.underConstruction())
 ) {
     @helpers.form(
-        action = routes.WhichOfYouInPaidEmploymentController.onSubmit,
+        action = routes.WhoGetsBenefitsController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
         @radio.ccRadioOptions(
-            field = form(CCConstants.whichOfYouInPaidEmploymentKey),
+            field = form(CCConstants.whoGetsBeneftsKey),
             fieldForm = form,
             radioOptions = Seq(
                 (YouPartnerBothEnum.YOU.toString, messages("radio.you")),
@@ -45,8 +45,8 @@
             args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages("which.of.you.paid.employment.header"),
-                '_globalErrorKey -> messages("which.of.you.paid.employment.not.selected.error")
+                '_legend -> messages("who.gets.benefits.header"),
+                '_globalErrorKey -> messages("who.gets.benefits.not.selected.error")
         )
         @buttons.nextButton()
     }

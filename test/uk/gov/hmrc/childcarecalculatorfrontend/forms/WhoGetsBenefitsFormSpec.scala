@@ -21,14 +21,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.play.test.UnitSpec
 
-class WhoGetsBeneftsFormSpec extends UnitSpec with FakeCCApplication {
+class WhoGetsBenefitsFormSpec extends UnitSpec with FakeCCApplication {
 
   "WhoGetsBeneftsForm" should {
 
     "accept valid values" when {
       YouPartnerBothEnum.values.foreach { youOrPartner =>
         s"'${youOrPartner}' is given" in {
-          val result = new WhoGetsBeneftsForm(applicationMessagesApi).form.bind(
+          val result = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
             Map(
               whoGetsBeneftsKey -> youOrPartner.toString
             )
@@ -43,7 +43,7 @@ class WhoGetsBeneftsFormSpec extends UnitSpec with FakeCCApplication {
       val invalidValues: List[String] = List("", "abcd", "123", "[*]")
       invalidValues.foreach { invalidValue =>
         s"invalid value '${invalidValue}' is given" in {
-          val result = new WhoGetsBeneftsForm(applicationMessagesApi).form.bind(
+          val result = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
             Map(
               whoGetsBeneftsKey -> invalidValue
             )

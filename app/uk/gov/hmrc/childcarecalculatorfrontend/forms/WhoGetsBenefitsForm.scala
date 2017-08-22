@@ -24,10 +24,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class WhoGetsBeneftsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
-  type WhoGetsBeneftsForm = Option[String]
+class WhoGetsBenefitsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+  type WhoGetsBenefitsForm = Option[String]
 
-  val form = Form[WhoGetsBeneftsForm](
+  val form = Form[WhoGetsBenefitsForm](
     single(
       whoGetsBeneftsKey -> optional(text).verifying(
         Messages("who.gets.benefits.not.selected.error"),
