@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import java.lang
-
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
@@ -31,9 +29,9 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new PaidEmploymentController(applicationMessagesApi) {
+  val sut = new GetBenefitsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
@@ -42,9 +40,9 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
     reset(sut.keystore)
   }
 
-  validateUrl(paidEmploymentPath)
+  validateUrl(getBenefitsPath)
 
-  "PaidEmploymentController" when {
+  "GetBenefitsController" when {
 
     "onPageLoad is called" should {
 
@@ -144,7 +142,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "")
+                .withFormUrlEncodedBody(getBenefitsKey -> "")
                 .withSession(validSession)
             )
           )
@@ -157,7 +155,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          // TODO: Redirect to Benefits page when it's done
+          // TODO: Redirect to which Benefits page when it's done
           s"go to results page ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -176,7 +174,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "false")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -187,7 +185,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
         }
 
         "user with partner selects 'no'" should {
-          // TODO: Redirect to Benefits page when it's done
+          // TODO: Redirect to which Benefits page when it's done
           s"go to results page ${underConstrctionPath} and clear related data" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
@@ -228,7 +226,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "false")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -257,7 +255,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -297,7 +295,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -346,7 +344,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -369,7 +367,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withFormUrlEncodedBody(getBenefitsKey -> "true")
                 .withSession(validSession)
             )
           )
@@ -387,7 +385,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withFormUrlEncodedBody(getBenefitsKey -> "true")
                 .withSession(validSession)
             )
           )
@@ -411,7 +409,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withFormUrlEncodedBody(getBenefitsKey -> "true")
                 .withSession(validSession)
             )
           )
