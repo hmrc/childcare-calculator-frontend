@@ -175,60 +175,84 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
       }
 
       "saving in keystore is successful" should {
-        "create partner object" when {
+        s"redirect to next page ${paidEmploymentPath}" when {
+          "user selects 'YES'" in {
+            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe paidEmploymentPath
+          }
+
+          "user selects 'NO'" in {
+            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(livingWithPartnerKey -> "false")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe paidEmploymentPath
+          }
+
+        }
+
+        "modify correctly data in keystore" when {
           "user selects YES" when {
-            "parnter object doesn't exists previously (partner object should be created), paidOrSelfEmployed is deleted if exists" in {
-              val initialObject: PageObjects = buildPageObjects(Some(true), None)
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  partner = None
-                ),
+            "previous selection was same (don't modify data in keystore)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(true),
                 whichOfYouInPaidEmployment = None,
-                paidOrSelfEmployed = Some(false)
-              )
-
-              when(
-                sut.keystore.fetch[PageObjects]()(any(), any())
-              ).thenReturn(
-                Future.successful(
-                  Some(keystoreObject)
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.YES)
+                  )
                 )
-              )
-
-              val modifiedObject: PageObjects = keystoreObject.copy(
-                household = keystoreObject.household.copy(
-                  partner = Some(Claimant())
-                ),
-                whichOfYouInPaidEmployment = None,
-                paidOrSelfEmployed = None
-              )
-
-              when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(modifiedObject)
-                )
-              )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe paidEmploymentPath
-            }
-
-            "parnter object exists previously (partner object shouldn't be modified)" in {
-              val initialObject: PageObjects = buildPageObjects(Some(true), None)
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  partner = Some(Claimant(hours = Some(37.5)))
-                ),
-                whichOfYouInPaidEmployment = None
               )
 
               when(
@@ -255,18 +279,81 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe paidEmploymentPath
+              result.header.headers("Location") should not be technicalDifficultiesPath
+            }
+
+            "previous selection was 'No' (create parent, delete information for following pages)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(false),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.YES)
+                  )
+                )
+              )
+
+              when(
+                sut.keystore.fetch[PageObjects]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              val modifiedObject: PageObjects = PageObjects(
+                livingWithPartner = Some(true),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = None,
+                getVouchers = None,
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = None
+                  ),
+                  partner = Some(Claimant())
+                )
+              )
+
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(modifiedObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") should not be technicalDifficultiesPath
             }
           }
 
           "user selects NO" when {
-            "parnter object doesn't exists previously (partner shouldn't be created, whichOfYouInPaidEmployment should be deleted)" in {
-              val initialObject: PageObjects = buildPageObjects(Some(false), None)
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  partner = None
-                ),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)
+            "previous selection was same (don't modify data in keystore)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(false),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.YES)
+                  )
+                )
               )
 
               when(
@@ -277,14 +364,11 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
                 )
               )
 
-              val modifiedObject = keystoreObject.copy(
-                whichOfYouInPaidEmployment = None
-              )
               when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
-                  Some(modifiedObject)
+                  Some(keystoreObject)
                 )
               )
 
@@ -296,16 +380,28 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe paidEmploymentPath
+              result.header.headers("Location") should not be technicalDifficultiesPath
             }
 
-            "parnter object exists previously (partner object should be deleted, whichOfYouInPaidEmployment should be deleted)" in {
-              val initialObject: PageObjects = buildPageObjects(Some(false), None)
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  partner = Some(Claimant())
-                ),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)
+            "previous selection was 'Yes' (create parent, delete information for following pages)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.NOTSURE),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.NOTSURE)
+                  ),
+                  partner = Some(
+                    Claimant(
+                      hours = Some(37.5),
+                      escVouchers = Some(YesNoUnsureEnum.NOTSURE)
+                    )
+                  )
+                )
               )
 
               when(
@@ -316,11 +412,19 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
                 )
               )
 
-              val modifiedObject: PageObjects = keystoreObject.copy(
-                household = keystoreObject.household.copy(
+              val modifiedObject: PageObjects = PageObjects(
+                livingWithPartner = Some(false),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = None,
+                getVouchers = None,
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = None
+                  ),
                   partner = None
-                ),
-                whichOfYouInPaidEmployment = None
+                )
               )
 
               when(
@@ -339,7 +443,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe paidEmploymentPath
+              result.header.headers("Location") should not be technicalDifficultiesPath
             }
           }
         }

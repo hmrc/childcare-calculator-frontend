@@ -60,32 +60,36 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
   }
 
   private def modifyPageObject(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
-    oldPageObjects.copy(
-      livingWithPartner = Some(newLivingWithPartner),
-      household = oldPageObjects.household.copy(
-        partner = if(oldPageObjects.household.partner.isEmpty && newLivingWithPartner) {
-          Some(Claimant())
-        }
-        else if(oldPageObjects.household.partner.isDefined && !newLivingWithPartner) {
-          None
-        }
-        else {
-          oldPageObjects.household.partner
-        }
-      ),
-      whichOfYouInPaidEmployment = if(oldPageObjects.whichOfYouInPaidEmployment.isDefined && !newLivingWithPartner) {
-        None
+    if(oldPageObjects.livingWithPartner == Some(newLivingWithPartner)) {
+      oldPageObjects
+    }
+    else {
+      val modified = oldPageObjects.copy(
+        livingWithPartner = Some(newLivingWithPartner),
+        whichOfYouInPaidEmployment = None,
+        paidOrSelfEmployed = None,
+        getVouchers = None,
+        household = oldPageObjects.household.copy(
+          parent = oldPageObjects.household.parent.copy(
+            escVouchers = None
+          )
+        )
+      )
+      if(newLivingWithPartner) {
+        modified.copy(
+          household = modified.household.copy(
+            partner = Some(Claimant())
+          )
+        )
       }
       else {
-        oldPageObjects.whichOfYouInPaidEmployment
-      },
-      paidOrSelfEmployed = if(oldPageObjects.paidOrSelfEmployed.isDefined) {
-        None
+        modified.copy(
+          household = modified.household.copy(
+            partner = None
+          )
+        )
       }
-      else {
-        oldPageObjects.paidOrSelfEmployed
-      }
-    )
+    }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>

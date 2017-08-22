@@ -23,7 +23,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
 
@@ -81,21 +81,28 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   }
 
   private def modifyPageObject(oldPageObject: PageObjects, newExpectedCosts: Boolean): PageObjects = {
-    if(newExpectedCosts) {
-      oldPageObject.copy(
-        expectChildcareCosts = Some(newExpectedCosts)
-      )
+    if(oldPageObject.expectChildcareCosts == Some(newExpectedCosts)) {
+      oldPageObject
     }
     else {
-      oldPageObject.copy(
-        expectChildcareCosts = Some(newExpectedCosts),
-        livingWithPartner = None,
-        paidOrSelfEmployed = None,
-        whichOfYouInPaidEmployment = None,
-        household = oldPageObject.household.copy(
-          partner = None
-        )
+      val modified = oldPageObject.copy(
+        expectChildcareCosts = Some(newExpectedCosts)
       )
+      if(newExpectedCosts) {
+        modified
+      }
+      else {
+        modified.copy(
+          livingWithPartner = None,
+          paidOrSelfEmployed = None,
+          whichOfYouInPaidEmployment = None,
+          getVouchers = None,
+          household = oldPageObject.household.copy(
+            parent = Claimant(),
+            partner = None
+          )
+        )
+      }
     }
   }
 
