@@ -17,15 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichOfYouPaidEmploymentForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichOfYouPaidOrSelfEmployed
-
 import scala.concurrent.Future
 
 @Singleton
@@ -38,7 +37,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
       case Some(pageObjects) =>
         Ok(
           whichOfYouPaidOrSelfEmployed(
-            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment)
+            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment.map(_.toString))
           )
         )
       case _ =>
@@ -49,6 +48,33 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
         Logger.warn(s"Exception from WhichOfYouInPaidEmploymentController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
+  }
+
+  private def modifyPageObject(oldPageObject: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
+    val paidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
+    oldPageObject.copy(
+      household = oldPageObject.household.copy(
+        parent = if(paidEmployment == YouPartnerBothEnum.PARTNER) {
+          oldPageObject.household.parent.copy(
+            hours = None
+          )
+        }
+        else {
+          oldPageObject.household.parent
+        },
+        partner = if(oldPageObject.household.partner.isDefined && paidEmployment == YouPartnerBothEnum.YOU) {
+          Some(
+            oldPageObject.household.partner.get.copy(
+              hours = None
+            )
+          )
+        }
+        else {
+          oldPageObject.household.partner
+        }
+      ),
+      whichOfYouInPaidEmployment = Some(paidEmployment)
+    )
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
@@ -62,13 +88,14 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
               )
             ),
           success => {
-            val modifiedPageObjects = pageObjects.copy(
-              whichOfYouInPaidEmployment = success
-            )
-
+            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map {
               result =>
-                Redirect(routes.HoursController.onPageLoad())
+                Redirect(
+                  routes.HoursController.onPageLoad(
+                    isPartner = (YouPartnerBothEnum.withName(success.get) != YouPartnerBothEnum.YOU)
+                  )
+                )
             }
           }
         )

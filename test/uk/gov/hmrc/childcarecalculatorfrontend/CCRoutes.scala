@@ -22,20 +22,24 @@ trait CCRoutes {
 
   private def path(endPoint: String): String = s"${rootPath}${endPoint}"
 
+  // TODO: Delete when all pages are ready
+  val underConstrctionPath: String = path("/under-construction")
+
   val technicalDifficultiesPath: String = path("/error")
   val whatYouNeedPath: String = path("/what-you-need")
   val locationPath: String = path("/location")
   val childAgedTwoPath: String = path("/child-aged-two")
-  val childAgedTwoEditPath: String = path("/child-aged-two-edit")
+  val childAgedTwoEditPath: String = path("/child-aged-two/edit")
   val childAgedThreeOrFourPath: String = path("/child-aged-three-or-four")
-  val childAgedThreeOrFourEditPath: String = path("/child-aged-three-or-four-edit")
+  val childAgedThreeOrFourEditPath: String = path("/child-aged-three-or-four/edit")
   val expectChildcareCostsPath: String = path("/expect-childcare-costs")
-  val expectChildcareCostsEditPath: String = path("/expect-childcare-costs-edit")
+  val expectChildcareCostsEditPath: String = path("/expect-childcare-costs/edit")
   val freeHoursInfoPath: String = path("/free-hours-info")
   val freeHoursResultsPath: String = path("/free-hours-results")
   val livingWithPartnerPath: String = path("/do-you-have-a-partner")
   val paidEmploymentPath: String = path("/paid-employment")
-  val whoIsInPaidEmploymentPath: String = path("/parent/who-paid-employment")
-  val hoursPath: String = path("/hours")
+  val whoIsInPaidEmploymentPath: String = path("/who-paid-employment")
+  val hoursParentPath: String = path("/hours-worked/parent")
+  val hoursPartnerPath: String = path("/hours-worked/partner")
 
 }

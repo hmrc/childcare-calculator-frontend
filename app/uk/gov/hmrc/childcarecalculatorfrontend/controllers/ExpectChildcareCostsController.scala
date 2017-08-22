@@ -80,6 +80,25 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
       }
   }
 
+  private def modifyPageObject(oldPageObject: PageObjects, newExpectedCosts: Boolean): PageObjects = {
+    if(newExpectedCosts) {
+      oldPageObject.copy(
+        expectChildcareCosts = Some(newExpectedCosts)
+      )
+    }
+    else {
+      oldPageObject.copy(
+        expectChildcareCosts = Some(newExpectedCosts),
+        livingWithPartner = None,
+        paidOrSelfEmployed = None,
+        whichOfYouInPaidEmployment = None,
+        household = oldPageObject.household.copy(
+          partner = None
+        )
+      )
+    }
+  }
+
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
@@ -91,9 +110,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
               )
             ),
           success => {
-            val modifiedPageObjects = pageObjects.copy(
-              expectChildcareCosts = success
-            )
+            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(getNextPage(modifiedPageObjects))
             } recover {
