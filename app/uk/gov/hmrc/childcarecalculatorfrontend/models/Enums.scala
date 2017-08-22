@@ -65,14 +65,14 @@ object EmploymentStatusEnum extends Enumeration {
   implicit def enumFormats: Format[EmploymentStatusEnum] = EnumUtils.enumFormat(EmploymentStatusEnum)
 }
 
-object YesNoUnsureBothEnum extends Enumeration {
-  type YesNoUnsureBothEnum = Value
-  val YES, NO, NOTSURE, BOTH = Value
-  val enumReads: Reads[YesNoUnsureBothEnum] = EnumUtils.enumReads(YesNoUnsureBothEnum)
+object YesNoUnsureEnum extends Enumeration {
+  type YesNoUnsureEnum = Value
+  val YES, NO, NOTSURE = Value
+  val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
 
-  val enumWrites: Writes[YesNoUnsureBothEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites
 
-  implicit def enumFormats: Format[YesNoUnsureBothEnum] = EnumUtils.enumFormat(YesNoUnsureBothEnum)
+  implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
   }
 
 object PeriodEnum extends Enumeration {

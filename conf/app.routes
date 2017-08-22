@@ -43,5 +43,8 @@ POST   /hours-worked/parent             uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /hours-worked/partner            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onPageLoad(isPartner: Boolean = true)
 POST   /hours-worked/partner            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HoursController.onSubmit(isPartner: Boolean = true)
 
+GET    /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad
+POST   /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit
+
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 

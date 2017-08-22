@@ -163,6 +163,7 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
 
     "modify correctly data in keystore" when {
       "user selects 'NO'" should {
+
         "change dependent values and expectChildcareCosts" in {
           val initialObject: PageObjects = buildPageObjects(
             location = LocationEnum.ENGLAND,
@@ -218,6 +219,49 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
       }
 
       "user selects 'YES'" should {
+        "not modify keystore object if expectedChildcare cost is not changed" in {
+          val initialObject: PageObjects = buildPageObjects(
+            location = LocationEnum.ENGLAND,
+            expectChildcareCosts = Some(true)
+          )
+          val keystoreObject: PageObjects = initialObject.copy(
+            household = initialObject.household.copy(
+              partner = Some(Claimant())
+            ),
+            livingWithPartner = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            paidOrSelfEmployed = Some(true)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(),any())
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe livingWithPartnerPath
+        }
+
         "change only value for expectChildcareCosts" in {
           val initialObject: PageObjects = buildPageObjects(
             location = LocationEnum.ENGLAND,

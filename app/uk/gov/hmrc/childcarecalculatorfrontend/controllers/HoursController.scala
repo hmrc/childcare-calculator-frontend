@@ -112,8 +112,7 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
       routes.HoursController.onPageLoad(isPartner = !isPartner)
     }
     else {
-      // TODO: Select correct vouchers page
-      routes.ChildCareBaseController.underConstruction()
+      routes.VouchersController.onPageLoad()
     }
   }
 

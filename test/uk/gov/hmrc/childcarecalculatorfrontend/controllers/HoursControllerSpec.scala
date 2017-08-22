@@ -220,8 +220,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
         }
       }
 
-      // TODO: redirect to correct vouchers page
-      s"redirect successfully to next page ($underConstrctionPath)" when {
+      s"redirect successfully to next page ($vouchersPath)" when {
         "valid data is submitted" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -255,7 +254,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe vouchersPath
         }
       }
 
@@ -539,7 +538,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
           result.header.headers("Location") shouldBe hoursParentPath
         }
 
-        s"valid data is submitted and only partner is in paid employment ($underConstrctionPath)" in {
+        s"valid data is submitted and only partner is in paid employment ($vouchersPath)" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -576,7 +575,7 @@ class HoursControllerSpec extends ControllersValidator with BeforeAndAfterEach {
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe vouchersPath
         }
       }
 
