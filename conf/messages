@@ -133,3 +133,11 @@ vouchers.notsure = Not sure
 vouchers.not.selected.error.you = You must tell the calculator if your employer offers childcare vouchers
 vouchers.not.selected.error.partner = You must tell the calculator if your partner’s employer offers childcare vouchers
 vouchers.not.selected.error.both = You must tell the calculator if either of your employers offer childcare vouchers
+
+####### Get Benefits #######
+get.benefits.header.single = Do you get any benefits?
+get.benefits.header.couple = Do you or your partner get any benefits?
+get.benefits.not.selected.error.single = You must answer yes if you get any benefits
+get.benefits.not.selected.error.couple = You must answer yes if you and your partner get any benefits
+
+

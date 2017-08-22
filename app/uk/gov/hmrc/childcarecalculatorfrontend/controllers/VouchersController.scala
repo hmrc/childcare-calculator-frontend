@@ -76,7 +76,7 @@ class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSup
     }
     else {
       // redirect to benefits page
-      routes.ChildCareBaseController.underConstruction()
+      routes.GetBenefitsController.onPageLoad()
     }
   }
 

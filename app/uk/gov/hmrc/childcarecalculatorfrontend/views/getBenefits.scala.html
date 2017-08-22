@@ -26,18 +26,30 @@
 @familyStatus = @{ CCConstants.getFamilyStatus(hasPartner) }
 
 @ccMain(
-    header = messages(s"paid.employment.header.${familyStatus}"),
-    backLink = Some(routes.LivingWithPartnerController.onPageLoad())
+    header = messages(s"get.benefits.header.${familyStatus}"),
+    backLink = Some(routes.VouchersController.onPageLoad())
     ) {
 
     @helpers.form(
-        action = routes.PaidEmploymentController.onSubmit,
+        action = routes.GetBenefitsController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
+        <p>Benefits include:</p>
+        <ul class="list list-bullet">
+            <li>Income support</li>
+            <li>Income-based Jobseeker’s Allowance</li>
+            <li>Income-related Employment and Support Allowance</li>
+            <li>Pension Credit</li>
+            <li>Disability Living Allowance</li>
+            <li>Attendance allowance</li>
+            <li>Personal Independence Payment</li>
+            <li>Carer’s Allowance</li>
+        </ul>
+
         @radio.ccRadioOptions(
-            field = form(CCConstants.paidEmploymentKey),
+            field = form(CCConstants.getBenefitsKey),
             fieldForm = form,
             radioOptions = Seq(
                 ("true", messages("radio.yes")),
@@ -46,8 +58,8 @@
             args = '_groupClass -> "form-group inline",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages(s"paid.employment.header.${familyStatus}"),
-                '_globalErrorKey -> messages(s"paid.employment.not.selected.error.${familyStatus}")
+                '_legend -> messages(s"get.benefits.header.${familyStatus}"),
+                '_globalErrorKey -> messages(s"get.benefits.not.selected.error.${familyStatus}")
             )
         @buttons.nextButton()
     }
