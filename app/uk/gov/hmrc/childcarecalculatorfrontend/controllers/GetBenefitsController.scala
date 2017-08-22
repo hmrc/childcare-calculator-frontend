@@ -43,7 +43,7 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
         val hasPartner = pageObjects.livingWithPartner.get
         Ok(
           getBenefits(
-            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.paidOrSelfEmployed),
+            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits),
             hasPartner
           )
         )

@@ -29,23 +29,17 @@
     header = messages(s"get.benefits.header.${familyStatus}"),
     backLink = Some(routes.VouchersController.onPageLoad())
     ) {
+    @error.ccErrorSummary(form)
 
     @helpers.form(
         action = routes.GetBenefitsController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
-        @error.ccErrorSummary(form)
-
-        <p>Benefits include:</p>
+        <p>@messages("get.benefits.para")</p>
         <ul class="list list-bullet">
-            <li>Income support</li>
-            <li>Income-based Jobseeker’s Allowance</li>
-            <li>Income-related Employment and Support Allowance</li>
-            <li>Pension Credit</li>
-            <li>Disability Living Allowance</li>
-            <li>Attendance allowance</li>
-            <li>Personal Independence Payment</li>
-            <li>Carer’s Allowance</li>
+            @for(lists <- 1 to 8) {
+                <li>@messages(s"get.benefits.para.list${lists}")</li>
+            }
         </ul>
 
         @radio.ccRadioOptions(
