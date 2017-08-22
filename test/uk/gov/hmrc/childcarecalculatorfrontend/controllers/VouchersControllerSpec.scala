@@ -312,6 +312,253 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
       }
     }
 
+    "modify data in keystore corectly" when {
+      "value for getVouchers is unchanged, keystore object shouldn't change" in {
+        val keystoreObject = buildPageObject(
+          getVouchers = Some(YesNoUnsureEnum.NO),
+          paidOrSelfEmployed = Some(true),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+          partner = Some(Claimant(hours = Some(37.5), escVouchers = Some(YesNoUnsureEnum.NO)))
+        )
+
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(keystoreObject)
+          )
+        )
+
+        when(
+          sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(keystoreObject)
+          )
+        )
+
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(vouchersKey -> YesNoUnsureEnum.NO.toString)
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") should not be technicalDifficultiesPath
+      }
+
+      "value for getVouchers is changed" should {
+        "set value for parent vouchrs when only parent is in paid employment" in {
+          val keystoreObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.YES)),
+              partner = Some(Claimant())
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU),
+            getVouchers = Some(YesNoUnsureEnum.YES)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.NO)),
+              partner = Some(Claimant())
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU),
+            getVouchers = Some(YesNoUnsureEnum.NO)
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(modifiedObject)
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(vouchersKey -> YesNoUnsureEnum.NO.toString)
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+
+        "set value for partner vouchrs when only partner is in paid employment" in {
+          val keystoreObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(),
+              partner = Some(Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.YES)))
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
+            getVouchers = Some(YesNoUnsureEnum.YES)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(),
+              partner = Some(Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.NO)))
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
+            getVouchers = Some(YesNoUnsureEnum.NO)
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(modifiedObject)
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(vouchersKey -> YesNoUnsureEnum.NO.toString)
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+
+        "set value for parent and partner vouchers when both are in paid employment" in {
+          val keystoreObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.YES)),
+              partner = Some(Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.YES)))
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            getVouchers = Some(YesNoUnsureEnum.YES)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.NO)),
+              partner = Some(Claimant(hours = Some(15), escVouchers = Some(YesNoUnsureEnum.NO)))
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            getVouchers = Some(YesNoUnsureEnum.NO)
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(modifiedObject)
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(vouchersKey -> YesNoUnsureEnum.NO.toString)
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+
+        "not set value for parent and partner vouchers when both are in paid employment if user selects 'YES'" in {
+          val keystoreObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(hours = Some(15), escVouchers = None),
+              partner = Some(Claimant(hours = Some(15), escVouchers = None))
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            getVouchers = None
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent = Claimant(hours = Some(15), escVouchers = None),
+              partner = Some(Claimant(hours = Some(15), escVouchers = None))
+            ),
+            livingWithPartner = Some(true),
+            paidOrSelfEmployed = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            getVouchers = Some(YesNoUnsureEnum.YES)
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(modifiedObject)
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(vouchersKey -> YesNoUnsureEnum.YES.toString)
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+      }
+    }
+
     s"redrect to error page (${technicalDifficultiesPath})" when {
 
       "noone is in paid employment" in {

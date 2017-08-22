@@ -32,16 +32,20 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
   val keystore: KeystoreService = KeystoreService
 
+  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
+    pageObjects.household.partner.isDefined
+  }
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) =>
+      case Some(pageObjects) if validatePageObjects(pageObjects) =>
         Ok(
           whichOfYouPaidOrSelfEmployed(
             new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment.map(_.toString))
           )
         )
       case _ =>
-        Logger.warn("PageObjects object is missing in WhichOfYouInPaidEmploymentController.onPageLoad")
+        Logger.warn("Invalid PageObjects in WhichOfYouInPaidEmploymentController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }.recover {
       case ex: Exception =>
@@ -52,58 +56,49 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
   private def modifyPageObject(oldPageObject: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
     val paidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
-    paidEmployment match {
-      case YouPartnerBothEnum.YOU if oldPageObject.household.partner.isDefined => oldPageObject.copy(
+    if(oldPageObject.whichOfYouInPaidEmployment == Some(paidEmployment)) {
+      oldPageObject
+    }
+    else {
+      val modified = oldPageObject.copy(
+        whichOfYouInPaidEmployment = Some(paidEmployment),
+        getVouchers = None,
         household = oldPageObject.household.copy(
           parent = oldPageObject.household.parent.copy(
             escVouchers = None
           ),
           partner = Some(
             oldPageObject.household.partner.get.copy(
-              hours = None,
               escVouchers = None
             )
           )
-        ),
-        whichOfYouInPaidEmployment = Some(paidEmployment),
-        getVouchers = None
+        )
       )
-      case YouPartnerBothEnum.PARTNER => oldPageObject.copy(
-        household = oldPageObject.household.copy(
-          parent = oldPageObject.household.parent.copy(
-            hours = None,
-            escVouchers = None
-          ),
-          partner = Some(
-            oldPageObject.household.partner.get.copy(
-              escVouchers = None
+      paidEmployment match {
+        case YouPartnerBothEnum.YOU => modified.copy(
+          household = modified.household.copy(
+            partner = Some(
+              modified.household.partner.get.copy(
+                hours = None
+              )
             )
           )
-        ),
-        whichOfYouInPaidEmployment = Some(paidEmployment),
-        getVouchers = None
-      )
-      case _ if oldPageObject.household.partner.isDefined => oldPageObject.copy(
-        household = oldPageObject.household.copy(
-          partner = Some(
-            oldPageObject.household.partner.get.copy(
-              escVouchers = None
+        )
+        case YouPartnerBothEnum.PARTNER => modified.copy(
+          household = modified.household.copy(
+            parent = modified.household.parent.copy(
+              hours = None
             )
           )
-        ),
-        whichOfYouInPaidEmployment = Some(paidEmployment),
-        getVouchers = None
-      )
-      case _ => oldPageObject.copy(
-        whichOfYouInPaidEmployment = Some(paidEmployment),
-        getVouchers = None
-      )
+        )
+        case YouPartnerBothEnum.BOTH => modified
+      }
     }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) =>
+      case Some(pageObjects) if validatePageObjects(pageObjects) =>
         new WhichOfYouPaidEmploymentForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
@@ -124,7 +119,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
           }
         )
       case _ =>
-        Logger.warn("PageObjects object is missing in WhichOfYouInPaidEmploymentController.onSubmit")
+        Logger.warn("Invalid PageObjects in WhichOfYouInPaidEmploymentController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>

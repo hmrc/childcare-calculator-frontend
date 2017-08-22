@@ -81,42 +81,46 @@ class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSup
   }
 
   private def modifyPageObject(pageObjects: PageObjects, selectedVouchers: YesNoUnsureEnum): PageObjects = {
-    val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
-    inPaidEmployment match {
-      case YouPartnerBothEnum.YOU => pageObjects.copy(
-        getVouchers = Some(selectedVouchers),
-        household = pageObjects.household.copy(
-          parent = pageObjects.household.parent.copy(
-            escVouchers = Some(selectedVouchers)
-          )
-        )
-      )
-      case YouPartnerBothEnum.PARTNER => pageObjects.copy(
-        getVouchers = Some(selectedVouchers),
-        household = pageObjects.household.copy(
-          partner = Some(
-            pageObjects.household.partner.get.copy(
-              escVouchers = Some(selectedVouchers)
-            )
-          )
-        )
-      )
-      case YouPartnerBothEnum.BOTH if(selectedVouchers == YesNoUnsureEnum.YES) => pageObjects.copy(
+    if(pageObjects.getVouchers == Some(selectedVouchers)) {
+      pageObjects
+    }
+    else {
+      val modified: PageObjects = pageObjects.copy(
         getVouchers = Some(selectedVouchers)
       )
-      case YouPartnerBothEnum.BOTH => pageObjects.copy(
-        getVouchers = Some(selectedVouchers),
-        household = pageObjects.household.copy(
-          parent = pageObjects.household.parent.copy(
-            escVouchers = Some(selectedVouchers)
-          ),
-          partner = Some(
-            pageObjects.household.partner.get.copy(
+      defineInPaidEmployment(pageObjects) match {
+        case YouPartnerBothEnum.YOU => modified.copy(
+          household = modified.household.copy(
+            parent = modified.household.parent.copy(
               escVouchers = Some(selectedVouchers)
             )
           )
         )
-      )
+        case YouPartnerBothEnum.PARTNER => modified.copy(
+          household = modified.household.copy(
+            partner = Some(
+              modified.household.partner.get.copy(
+                escVouchers = Some(selectedVouchers)
+              )
+            )
+          )
+        )
+        case YouPartnerBothEnum.BOTH if (selectedVouchers == YesNoUnsureEnum.YES) =>
+          // Next page will define exactly who gets vouchers
+          modified
+        case YouPartnerBothEnum.BOTH => modified.copy(
+          household = modified.household.copy(
+            parent = modified.household.parent.copy(
+              escVouchers = Some(selectedVouchers)
+            ),
+            partner = Some(
+              modified.household.partner.get.copy(
+                escVouchers = Some(selectedVouchers)
+              )
+            )
+          )
+        )
+      }
     }
   }
 
