@@ -131,5 +131,5 @@ vouchers.yes = Yes
 vouchers.no = No
 vouchers.notsure = Not sure
 vouchers.not.selected.error.you = You must tell the calculator if your employer offers childcare vouchers
-vouchers.not.selected.error.partner = You must tell the calculator if their employer offers childcare vouchers
+vouchers.not.selected.error.partner = You must tell the calculator if your partner’s employer offers childcare vouchers
 vouchers.not.selected.error.both = You must tell the calculator if either of your employers offer childcare vouchers
