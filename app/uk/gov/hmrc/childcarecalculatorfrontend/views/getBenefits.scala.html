@@ -34,13 +34,14 @@
     @helpers.form(
         action = routes.GetBenefitsController.onSubmit,
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
-
-        <p>@messages("get.benefits.para")</p>
-        <ul class="list list-bullet">
-            @for(lists <- 1 to 8) {
-                <li>@messages(s"get.benefits.para.list${lists}")</li>
-            }
-        </ul>
+        <div id="get-benefits-para">
+            <p>@messages("get.benefits.para")</p>
+            <ul class="list list-bullet">
+                @for(lists <- 1 to 8) {
+                    <li>@messages(s"get.benefits.para.list${lists}")</li>
+                }
+            </ul>
+        </div>
 
         @radio.ccRadioOptions(
             field = form(CCConstants.getBenefitsKey),
