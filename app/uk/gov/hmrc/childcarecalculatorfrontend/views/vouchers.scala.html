@@ -15,39 +15,41 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+@(form: Form[Option[String]], inPaidEmployment: YouPartnerBothEnum, backUrl: Call)(implicit request: Request[_], messages: Messages)
 
-@(form: Form[Option[String]])(implicit request: Request[_], messages: Messages)
-
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+
+@whoIsInPaidEmployment = @{ inPaidEmployment.toString.toLowerCase }
 
 @ccMain(
-    header = messages("which.of.you.paid.employment.header"),
-    backLink = Some(routes.PaidEmploymentController.onPageLoad())
+    header = messages(s"vouchers.header.${whoIsInPaidEmployment}"),
+    backLink = Some(backUrl)
 ) {
-    @helpers.form(
-        action = routes.WhichOfYouInPaidEmploymentController.onSubmit,
-        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+
+@helpers.form(
+    action = routes.VouchersController.onSubmit,
+    args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
         @radio.ccRadioOptions(
-            field = form(CCConstants.whichOfYouInPaidEmploymentKey),
+            field = form(CCConstants.vouchersKey),
             fieldForm = form,
             radioOptions = Seq(
-                (YouPartnerBothEnum.YOU.toString, messages("radio.you")),
-                (YouPartnerBothEnum.PARTNER.toString, messages("radio.partner")),
-                (YouPartnerBothEnum.BOTH.toString, messages("radio.both"))
+                (YesNoUnsureEnum.YES.toString, messages("vouchers.yes")),
+                (YesNoUnsureEnum.NO.toString, messages("vouchers.no")),
+                (YesNoUnsureEnum.NOTSURE.toString, messages("vouchers.notsure"))
             ),
             args = '_groupClass -> "form-group",
                 '_radioClass -> "block-label",
                 '_legendClass -> "visuallyhidden",
-                '_legend -> messages("which.of.you.paid.employment.header"),
-                '_globalErrorKey -> messages("which.of.you.paid.employment.not.selected.error")
+                '_legend -> messages(s"vouchers.header.${whoIsInPaidEmployment}"),
+                '_globalErrorKey -> messages(s"vouchers.not.selected.error.${whoIsInPaidEmployment}")
         )
         @buttons.nextButton()
     }

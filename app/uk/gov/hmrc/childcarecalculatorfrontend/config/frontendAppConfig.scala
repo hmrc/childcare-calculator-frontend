@@ -43,4 +43,6 @@ object FrontendAppConfig extends AppConfig with ServicesConfig {
   override lazy val betaFeedbackUnauthenticatedUrl: String = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
 
   lazy val eligibilityUrl = baseUrl("cc-eligibility") + getString("microservice.services.cc-eligibility.url")
+  lazy val minWorkingHours: Double = getString("variables.working.hours.min").toDouble
+  lazy val maxWorkingHours: Double = getString("variables.working.hours.max").toDouble
 }

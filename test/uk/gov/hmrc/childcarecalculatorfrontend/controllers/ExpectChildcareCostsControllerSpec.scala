@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.jsoup.Jsoup
 import play.api.i18n.Messages.Implicits._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
@@ -158,6 +158,156 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
         val result = await(sut.onSubmit(request.withSession(validSession)))
         status(result) shouldBe BAD_REQUEST
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+    }
+
+    "modify correctly data in keystore" when {
+      "user selects 'NO'" should {
+
+        "change dependent values and expectChildcareCosts" in {
+          val initialObject: PageObjects = buildPageObjects(
+            location = LocationEnum.ENGLAND,
+            expectChildcareCosts = Some(true)
+          )
+          val keystoreObject: PageObjects = initialObject.copy(
+            household = initialObject.household.copy(
+              partner = Some(Claimant())
+            ),
+            livingWithPartner = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            paidOrSelfEmployed = Some(true)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(),any())
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          val modifiedObject: PageObjects = keystoreObject.copy(
+            expectChildcareCosts = Some(false),
+            household = initialObject.household.copy(
+              partner = None
+            ),
+            livingWithPartner = None,
+            whichOfYouInPaidEmployment = None,
+            paidOrSelfEmployed = None
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(expectChildcareCostsKey -> "false")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe freeHoursResultsPath
+        }
+      }
+
+      "user selects 'YES'" should {
+        "not modify keystore object if expectedChildcare cost is not changed" in {
+          val initialObject: PageObjects = buildPageObjects(
+            location = LocationEnum.ENGLAND,
+            expectChildcareCosts = Some(true)
+          )
+          val keystoreObject: PageObjects = initialObject.copy(
+            household = initialObject.household.copy(
+              partner = Some(Claimant())
+            ),
+            livingWithPartner = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            paidOrSelfEmployed = Some(true)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(),any())
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe livingWithPartnerPath
+        }
+
+        "change only value for expectChildcareCosts" in {
+          val initialObject: PageObjects = buildPageObjects(
+            location = LocationEnum.ENGLAND,
+            expectChildcareCosts = Some(false)
+          )
+          val keystoreObject: PageObjects = initialObject.copy(
+            household = initialObject.household.copy(
+              partner = Some(Claimant())
+            ),
+            livingWithPartner = Some(true),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            paidOrSelfEmployed = Some(true)
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(),any())
+          ).thenReturn(
+            Future.successful(
+              Some(keystoreObject)
+            )
+          )
+
+          val modifiedObject: PageObjects = keystoreObject.copy(
+            expectChildcareCosts = Some(true)
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(expectChildcareCostsKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe livingWithPartnerPath
+        }
       }
     }
 

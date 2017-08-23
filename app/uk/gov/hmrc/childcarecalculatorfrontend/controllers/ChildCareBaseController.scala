@@ -41,6 +41,15 @@ class ChildCareBaseController @Inject()(val messagesApi: MessagesApi) extends I1
     }
   }
 
+  // TODO: Delete when all pages are ready
+  def underConstruction: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful {
+      Ok(
+        "This page is under construction"
+      )
+    }
+  }
+
 }
 
 

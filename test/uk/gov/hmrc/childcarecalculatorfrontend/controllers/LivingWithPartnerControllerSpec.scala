@@ -24,7 +24,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -174,32 +174,279 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         }
       }
 
-      "saving in keystore is successful" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any(), any())
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(Some(true), None))
-          )
-        )
+      "saving in keystore is successful" should {
+        s"redirect to next page ${paidEmploymentPath}" when {
+          "user selects 'YES'" in {
+            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
 
-        when(
-          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(Some(true), None))
-          )
-        )
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
 
-        val result = await(
-          sut.onSubmit(
-            request
-              .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
-              .withSession(validSession)
-          )
-        )
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe paidEmploymentPath
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe paidEmploymentPath
+          }
+
+          "user selects 'NO'" in {
+            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(keystoreObject)
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(livingWithPartnerKey -> "false")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe paidEmploymentPath
+          }
+
+        }
+
+        "modify correctly data in keystore" when {
+          "user selects YES" when {
+            "previous selection was same (don't modify data in keystore)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(true),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.YES)
+                  )
+                )
+              )
+
+              when(
+                sut.keystore.fetch[PageObjects]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") should not be technicalDifficultiesPath
+            }
+
+            "previous selection was 'No' (create parent, delete information for following pages)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(false),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.YES)
+                  )
+                )
+              )
+
+              when(
+                sut.keystore.fetch[PageObjects]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              val modifiedObject: PageObjects = PageObjects(
+                livingWithPartner = Some(true),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = None,
+                getVouchers = None,
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = None
+                  ),
+                  partner = Some(Claimant())
+                )
+              )
+
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(modifiedObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(livingWithPartnerKey -> "true")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") should not be technicalDifficultiesPath
+            }
+          }
+
+          "user selects NO" when {
+            "previous selection was same (don't modify data in keystore)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(false),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.YES)
+                  )
+                )
+              )
+
+              when(
+                sut.keystore.fetch[PageObjects]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(livingWithPartnerKey -> "false")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") should not be technicalDifficultiesPath
+            }
+
+            "previous selection was 'Yes' (create parent, delete information for following pages)" in {
+              val keystoreObject: PageObjects = PageObjects(
+                livingWithPartner = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                paidOrSelfEmployed = Some(true),
+                getVouchers = Some(YesNoUnsureEnum.NOTSURE),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = Some(YesNoUnsureEnum.NOTSURE)
+                  ),
+                  partner = Some(
+                    Claimant(
+                      hours = Some(37.5),
+                      escVouchers = Some(YesNoUnsureEnum.NOTSURE)
+                    )
+                  )
+                )
+              )
+
+              when(
+                sut.keystore.fetch[PageObjects]()(any(), any())
+              ).thenReturn(
+                Future.successful(
+                  Some(keystoreObject)
+                )
+              )
+
+              val modifiedObject: PageObjects = PageObjects(
+                livingWithPartner = Some(false),
+                whichOfYouInPaidEmployment = None,
+                paidOrSelfEmployed = None,
+                getVouchers = None,
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(
+                    hours = Some(37.5),
+                    escVouchers = None
+                  ),
+                  partner = None
+                )
+              )
+
+              when(
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              ).thenReturn(
+                Future.successful(
+                  Some(modifiedObject)
+                )
+              )
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(livingWithPartnerKey -> "false")
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") should not be technicalDifficultiesPath
+            }
+          }
+        }
       }
     }
 
@@ -252,6 +499,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
+
   }
 
 }

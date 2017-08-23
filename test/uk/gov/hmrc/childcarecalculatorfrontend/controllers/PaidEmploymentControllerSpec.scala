@@ -25,7 +25,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.Format
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -42,7 +42,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
     reset(sut.keystore)
   }
 
-  validateUrl(paidEmploymentPath)
+//  validateUrl(paidEmploymentPath)
 
   "PaidEmploymentController" when {
 
@@ -56,7 +56,8 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             Some(
               PageObjects(
                 household = Household(location = LocationEnum.ENGLAND),
-                livingWithPartner = Some(false)
+                livingWithPartner = Some(false),
+                paidOrSelfEmployed = Some(true)
               )
             )
           )
@@ -74,7 +75,8 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             Some(
               PageObjects(
                 household = Household(location = LocationEnum.ENGLAND),
-                livingWithPartner = None
+                livingWithPartner = Some(false),
+                paidOrSelfEmployed = None
               )
             )
           )
@@ -82,6 +84,26 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
         val result = await(sut.onPageLoad(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "redirect to error page if there is no data keystore for livingWithPartner object" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                household = Household(location = LocationEnum.ENGLAND),
+                livingWithPartner = None,
+                paidOrSelfEmployed = None
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
       "redirect to error page if there is no data keystore for pageObjects object" in {
@@ -135,7 +157,8 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          s"go to results page ${hoursPath}" in {
+          // TODO: Redirect to Benefits page when it's done
+          s"go to results page ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -159,23 +182,46 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
 
         "user with partner selects 'no'" should {
-          s"go to results page ${hoursPath}" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+          // TODO: Redirect to Benefits page when it's done
+          s"go to results page ${underConstrctionPath} and clear related data" in {
+            val keystoreObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(hours = Some(15)),
+                partner = Some(Claimant(hours = Some(37.5)))
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(true),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
             )
 
             when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(keystoreObject))
+            )
+
+            val modifiedObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(),
+                partner = Some(Claimant())
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(false),
+              whichOfYouInPaidEmployment = None
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true), paidOrSelfEmployed = Some(false)))
+                Some(modifiedObject)
               )
             )
 
@@ -188,12 +234,12 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
 
         "single user selects 'yes'" should {
-          s"go to hours page ${hoursPath}" in {
+          s"go to hours page ${hoursParentPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -217,23 +263,83 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursPath
+            result.header.headers("Location") shouldBe hoursParentPath
           }
         }
 
-        "user with partner selects 'yes'" should {
-          s"go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath}" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+        s"user with partner selects 'yes' - go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath}" should {
+          "shouldn't modify related data in keystore if vaalue for paid employment is not changed" in {
+            val keystoreObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(hours = Some(15)),
+                partner = Some(Claimant(hours = Some(37.5)))
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(true),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
             )
 
             when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(keystoreObject))
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true), paidOrSelfEmployed = Some(true)))
+                Some(keystoreObject)
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe whoIsInPaidEmploymentPath
+          }
+
+          "modify related data in keystore if selects new value for paidEmployment" in {
+            val keystoreObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(hours = Some(15)),
+                partner = Some(Claimant(hours = Some(37.5)))
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = None,
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+            )
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(keystoreObject))
+            )
+
+            val modifiedObject = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(),
+                partner = Some(Claimant())
+              ),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(true),
+              whichOfYouInPaidEmployment = None
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(modifiedObject)
               )
             )
 
@@ -252,7 +358,6 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
       }
 
       s"redirect technichal difficulties page (${technicalDifficultiesPath})" when {
-
 
         "can't connect to keystore while fetching data" in {
           when(
