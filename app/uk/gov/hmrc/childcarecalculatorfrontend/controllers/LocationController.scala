@@ -25,11 +25,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 import play.api.mvc.{Action, AnyContent, Call, Result}
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -41,7 +39,7 @@ class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSup
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map { pageObjects =>
-      Ok(benefits(new WhichBenefitsDoYouGetForm(messagesApi).form.fill(pageObjects.map(_.benefits.toString)), false))
+      Ok(location(new LocationForm(messagesApi).form.fill(pageObjects.map(_.household.location.toString))))
     }.recover {
       case ex: Exception =>
         Logger.warn(s"Exception from LocationController.onPageLoad: ${ex.getMessage}")

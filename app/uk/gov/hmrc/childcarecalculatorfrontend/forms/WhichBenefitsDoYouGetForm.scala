@@ -21,21 +21,21 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsEnum, LocationEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Benefits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class WhichBenefitsDoYouGetForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class WhichBenefitsDoYouGetForm @Inject()(isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  type BenefitsFormType = Option[String]
+  val userType = getUserType(isPartner)
 
-  val form = Form[BenefitsFormType](
-    single(
-      WhichBenefitsDoYouGetKey -> optional(text).verifying(
-        Messages("which.benefits.do.you.get.not.selected.parent.error"),
-        benefits =>
-          BenefitsEnum.values.exists(_.toString == benefits.getOrElse(""))
-      )
-    )
+  val form = Form[Benefits](
+    mapping(
+      "WhichBenefitsDoYouGetIncome" -> boolean,
+      "WhichBenefitsDoYouGetDisabilityBenefits" -> boolean,
+      "WhichBenefitsDoYouGetHigherRateDisability" -> boolean,
+      "WhichBenefitsDoYouGetCarersAllowance" -> boolean
+    )(Benefits.apply)(Benefits.unapply)
+      .verifying(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error"), x => x.carersAllowance || x.incomeBenefits || x.disabilityBenefits || x.highRateDisabilityBenefits)
   )
 }
