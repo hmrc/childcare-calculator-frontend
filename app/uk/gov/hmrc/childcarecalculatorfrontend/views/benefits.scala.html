@@ -14,14 +14,14 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[String]], isPartner: Boolean)(implicit request: Request[_], messages: Messages)
-
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+
+@(form: Form[Benefits], isPartner: Boolean)(implicit request: Request[_], messages: Messages)
 
 @userType = @{ CCConstants.getUserType(isPartner) }
 
@@ -30,7 +30,7 @@
     backLink = Some(routes.WhatYouNeedController.onPageLoad())
 ) {
     @helpers.form(
-        action = routes.LocationController.onSubmit,
+        action = routes.WhichBenefitsDoYouGetController.onSubmit(isPartner),
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
@@ -38,7 +38,7 @@
         <p>@messages("select.all.that.apply")</p>
 
 
-        <fieldset class="form-group" id="">
+        <fieldset class="form-group" id="benefits">
 
         <legend class="visuallyhidden">@messages(s"which.benefits.do.you.get.${userType}.header")</legend>
 
