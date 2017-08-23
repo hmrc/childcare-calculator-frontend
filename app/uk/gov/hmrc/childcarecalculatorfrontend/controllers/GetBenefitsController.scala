@@ -21,8 +21,8 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{GetBenefitsForm, PaidEmploymentForm}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.GetBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.getBenefits
 
@@ -33,18 +33,13 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
 
   val keystore: KeystoreService = KeystoreService
 
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.livingWithPartner.isDefined
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+      case Some(pageObjects) if (pageObjects.livingWithPartner.isDefined) =>
         val hasPartner = pageObjects.livingWithPartner.get
         Ok(
           getBenefits(
-            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits),
-            hasPartner
+            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits), hasPartner
           )
         )
       case _ =>
@@ -57,47 +52,52 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
     }
   }
 
-  private def modifyPageObjects(oldPageObjects: PageObjects, newPaidOrSelfEmployed: Boolean): PageObjects = {
-    if(oldPageObjects.paidOrSelfEmployed == Some(newPaidOrSelfEmployed)) {
+  private def modifyPageObjects(oldPageObjects: PageObjects, newGetBenefits: Boolean): PageObjects = {
+    println(s"oldPageObjects>>>$oldPageObjects")
+    println(s"newGetBenefits>>>$newGetBenefits")
+    if(oldPageObjects.getBenefits == Some(newGetBenefits)) {
       oldPageObjects
-    }
-    else {
-      oldPageObjects.copy(
-        paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-        whichOfYouInPaidEmployment = None,
-        getVouchers = None,
-        household = oldPageObjects.household.copy(
-          parent = Claimant(),
-          partner = oldPageObjects.household.partner.map{x => Claimant()}
+    } else {
+      val modifiedObject = oldPageObjects.copy(
+        getBenefits = Some(newGetBenefits)
+      )
+      modifiedObject.copy(
+        household = modifiedObject.household.copy(
+          parent = modifiedObject.household.parent.copy(benefits = None),
+          partner = modifiedObject.household.partner.map { x => x.copy(benefits = None) }
         )
       )
     }
   }
 
-  private def getNextPage(hasPartner: Boolean, newPaidEmployment: Boolean): Call = {
-    if(newPaidEmployment) {
+  private def getNextPage(hasPartner: Boolean, newGetBenefits: Boolean): Call = {
+    println(s"hasPartner>>>$hasPartner")
+    println(s"newGetBenefits>>>$newGetBenefits")
+    if(newGetBenefits) {
       if(hasPartner) {
-        routes.WhichOfYouInPaidEmploymentController.onPageLoad()
+        //TODO - redirect to which of you get benefits page
+        println(s"redirect to which of you get benefits page")
+        routes.ChildCareBaseController.underConstruction()
       } else {
-        routes.HoursController.onPageLoad(isPartner = false)
+        //TODO - redirect to what benefits do you get page
+        println(s"redirect to what benefits do you get page")
+        routes.ChildCareBaseController.underConstruction()
       }
     } else {
-      //TODO - redirect to result page when prototype is ready
+      //TODO - redirect to your age page when prototype is ready
       routes.ChildCareBaseController.underConstruction()
     }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+      case Some(pageObjects) if (pageObjects.livingWithPartner.isDefined) =>
         val hasPartner = pageObjects.livingWithPartner.get
-        new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
+        new GetBenefitsForm(hasPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                getBenefits(
-                  errors, hasPartner
-                )
+                getBenefits(errors, hasPartner)
               )
             ),
           success => {
