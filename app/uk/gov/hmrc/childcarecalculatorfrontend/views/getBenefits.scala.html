@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]], hasPartner: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[Boolean]], hasPartner: Boolean, backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
@@ -27,8 +27,8 @@
 
 @ccMain(
     header = messages(s"get.benefits.header.${familyStatus}"),
-    backLink = Some(routes.VouchersController.onPageLoad())
-    ) {
+    backLink = Some(backUrl)
+) {
     @error.ccErrorSummary(form)
 
     @helpers.form(

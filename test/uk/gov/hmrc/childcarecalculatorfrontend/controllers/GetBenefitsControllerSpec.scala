@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
-import play.api.libs.json.Format
+import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -45,6 +46,58 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
   "GetBenefitsController" when {
 
     "onPageLoad is called" should {
+
+      "load template which of you get vouchers page when both are in paid employment" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                livingWithPartner = Some(true),
+                paidOrSelfEmployed = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(hours = Some(24), escVouchers = Some(YesNoUnsureEnum.NOTSURE)),
+                  partner = Some(Claimant(hours = Some(21), escVouchers = Some(YesNoUnsureEnum.NOTSURE)))
+                )
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
+      }
+
+      "load template do you get vouchers page when no or not sure selected on vouchers page" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                getVouchers = Some(YesNoUnsureEnum.NOTSURE),
+                livingWithPartner = Some(true),
+                paidOrSelfEmployed = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                household = Household(location = LocationEnum.ENGLAND)
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe vouchersPath
+      }
 
       "load successfully template when data in keystore" in {
         when(
