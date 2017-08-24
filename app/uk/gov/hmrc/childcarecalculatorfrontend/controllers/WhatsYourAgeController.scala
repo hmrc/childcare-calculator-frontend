@@ -20,12 +20,11 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, Result}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{LivingWithPartnerForm, LocationForm, WhatsYourAgeForm, WhichOfYouPaidEmploymentForm}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeRangeEnum, PageObjects, _}
+import play.api.mvc.{Action, AnyContent, Call}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatsYourAgeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeRangeEnum, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
@@ -34,35 +33,37 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(isPartner: Boolean): Call = {
-    if (isPartner) {
+  private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    if (isPartner && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+      routes.WhatsYourAgeController.onPageLoad(false)
+    } else if(isPartner && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
       //TODO redirect to correct page and change tests
       routes.WhatYouNeedController.onPageLoad()
     } else {
-      //TODO redirect to correct page and change tests
       routes.WhatYouNeedController.onPageLoad()
     }
   }
 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map { pageObjects =>
-      if(isPartner) {
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) if (!isPartner || (pageObjects.household.partner.isDefined && isPartner)) =>
+        val agePageObject = if(isPartner) {
+          pageObjects.household.partner.get.ageRange.map(_.toString)
+        } else {
+          pageObjects.household.parent.ageRange.map(_.toString)
+        }
         Ok(
           whatsYourAge(
-            new WhatsYourAgeForm(isPartner, messagesApi).form.fill(pageObjects.get.household.partner.get.ageRange.map(_.toString)),
-            getBackUrl(isPartner),
+            new WhatsYourAgeForm(isPartner, messagesApi).form.fill(agePageObject),
+            getBackUrl(pageObjects, isPartner),
             isPartner
           )
         )
-      } else {
-        Ok(
-          whatsYourAge(
-            new WhatsYourAgeForm(isPartner, messagesApi).form.fill(pageObjects.get.household.parent.ageRange.map(_.toString)),
-            getBackUrl(isPartner),
-            isPartner
-          )
-        )
-      }
+      case _ =>
+        Logger.warn("Invalid PageObjects in GetBenefitsController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+
+
     }.recover {
       case ex: Exception =>
         Logger.warn(s"Exception from WhatsYourAgeController.onPageLoad: ${ex.getMessage}")
@@ -78,7 +79,7 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
             Future(
               BadRequest(
                 whatsYourAge(
-                  errors, getBackUrl(isPartner), isPartner
+                  errors, getBackUrl(pageObjects, isPartner), isPartner
                 )
               )
             ),
@@ -105,31 +106,20 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
     }
   }
 
-  private def getModifiedPageObjects(enumValue: AgeRangeEnum.Value, pageObjects: PageObjects, isPartner: Boolean): PageObjects ={
+  private def getModifiedPageObjects(enumValue: AgeRangeEnum.Value, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
     if(isPartner) {
-      val modifiedPartner: Claimant = pageObjects.household.partner.get.copy(
-        ageRange = Some(enumValue)
-      )
-
-      val modifiedHousehold: Household = pageObjects.household.copy(
-        partner = Some(modifiedPartner)
-      )
-
       pageObjects.copy(
-        household = modifiedHousehold
+        household = pageObjects.household.copy(
+          partner = pageObjects.household.partner.map { x => x.copy(ageRange = Some(enumValue)) }
+        )
       )
     } else {
-      val modifiedParent: Claimant = pageObjects.household.parent.copy(
-        ageRange = Some(enumValue)
-      )
-
-      val modifiedHousehold: Household = pageObjects.household.copy(
-        parent = modifiedParent
-      )
-
       pageObjects.copy(
-        household = modifiedHousehold
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(ageRange = Some(enumValue))
+        )
       )
     }
+
   }
 }
