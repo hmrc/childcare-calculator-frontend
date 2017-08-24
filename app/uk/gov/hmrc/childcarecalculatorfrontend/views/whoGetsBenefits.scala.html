@@ -26,7 +26,7 @@
 
 @ccMain(
         header = messages("who.gets.benefits.header"),
-        backLink = Some(routes.ChildCareBaseController.underConstruction())
+        backLink = Some(routes.GetBenefitsController.onPageLoad())
 ) {
     @helpers.form(
         action = routes.WhoGetsBenefitsController.onSubmit,

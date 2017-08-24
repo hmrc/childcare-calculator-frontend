@@ -53,8 +53,6 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
   }
 
   private def modifyPageObjects(oldPageObjects: PageObjects, newGetBenefits: Boolean): PageObjects = {
-    println(s"oldPageObjects>>>$oldPageObjects")
-    println(s"newGetBenefits>>>$newGetBenefits")
     if(oldPageObjects.getBenefits == Some(newGetBenefits)) {
       oldPageObjects
     } else {
@@ -71,16 +69,11 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
   }
 
   private def getNextPage(hasPartner: Boolean, newGetBenefits: Boolean): Call = {
-    println(s"hasPartner>>>$hasPartner")
-    println(s"newGetBenefits>>>$newGetBenefits")
     if(newGetBenefits) {
       if(hasPartner) {
-        //TODO - redirect to which of you get benefits page
-        println(s"redirect to which of you get benefits page")
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhoGetsBenefitsController.onPageLoad()
       } else {
         //TODO - redirect to what benefits do you get page
-        println(s"redirect to what benefits do you get page")
         routes.ChildCareBaseController.underConstruction()
       }
     } else {
