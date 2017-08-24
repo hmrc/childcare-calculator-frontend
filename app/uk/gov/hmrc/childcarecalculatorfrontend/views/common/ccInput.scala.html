@@ -27,37 +27,38 @@
 @labelHighlight = @{ elements.args.get('_labelHighlight).getOrElse(false).asInstanceOf[Boolean] }
 @hasErrors = @{fieldForm.hasErrors}
 
-<div class="@if(elements.args.contains('_containerClass)){@elements.args.get('_containerClass)} else {form-group} @if(elements.hasErrors || (parentElements.isDefined && parentElements.get.hasErrors)){form-field--error} @globalErrors.ccGlobalErrorHelper(fieldForm, "form-field--error", None, elements) ">
-        <label for="@{elements.field.name.replaceAll("""[\.\[\]]""", "-")}"
+<div class="@if(elements.args.contains('_containerClass)){@elements.args.get('_containerClass)} else {form-group} @if(elements.hasErrors || (parentElements.isDefined && parentElements.get.hasErrors)){form-field--error} @globalErrors.ccGlobalErrorHelper(fieldForm, "form-field--error", None, elements)">
+    <label for="@{elements.field.name.replaceAll("""[\.\[\]]""", "-")}"
     class="form-label @elements.args.get('_divClass)
     @if(elements.args.get('_labelClass)){ @elements.args.get('_labelClass) }"
     @if(elements.args.contains('_labelDataAttributes)){@elements.args.get('_labelDataAttributes)}>
 
-            @if(!labelAfter && elements.args.contains('_label)) {
-                @if(labelHighlight){<strong>}
-                    <span id="@{elements.field.name.replaceAll("""[\.\[\]]""", "-")}Span"@if(elements.args.contains('_labelTextClass)) { class="@elements.args.get('_labelTextClass)"}>
-                        @elements.label
+        @if(!labelAfter && elements.args.contains('_label)) {
+            @if(labelHighlight){<strong>}
+                <span id="@{elements.field.name.replaceAll("""[\.\[\]]""", "-")}Span"@if(elements.args.contains('_labelTextClass)) { class="@elements.args.get('_labelTextClass)"}>
+                    @elements.label
+                </span>
+                @if(elements.args.contains('_inputHint) ){
+                    <span class="form-hint"
+                      @if(elements.args.contains('_hintId)) {
+                        id="@elements.args.get('_hintId)"
+                      }
+                    >
+                    @elements.args.get('_inputHint)
                     </span>
-                    @if(elements.args.contains('_inputHint) ){
-                        <span class="form-hint"
-                              @if(elements.args.contains('_hintId)) {
-                                id="@elements.args.get('_hintId)"}
-                            >
-                            @elements.args.get('_inputHint)
-                        </span>
-                    }
-                @if(labelHighlight){</strong>}
-            }
+                }
+            @if(labelHighlight){</strong>}
+        }
 
-            @elements.errors.map { error =>
+        @elements.errors.map { error =>
+            @helpers.errorInline({elements.field.name.replaceAll("""[\.\[\]]""", "-")}, messages(error))
+        }
+
+        @if(parentElements.isDefined) {
+            @parentElements.get.errors.map { error =>
                 @helpers.errorInline({elements.field.name.replaceAll("""[\.\[\]]""", "-")}, messages(error))
             }
-
-            @if(parentElements.isDefined) {
-                @parentElements.get.errors.map { error =>
-                    @helpers.errorInline({elements.field.name.replaceAll("""[\.\[\]]""", "-")}, messages(error))
-                }
-            }
+        }
 
         @if(elements.args.contains('_symbolBefore)) {
             <span class="form-field--inline input-sibling-text-left" @if(elements.args.contains('_symbolBeforeId)) {
@@ -85,9 +86,7 @@
         @if(labelAfter && elements.args.contains('_label)) {
             @if(labelHighlight){<strong>}
                 <span @if(elements.args.contains('_labelTextClass)) { class="@elements.args.get('_labelTextClass)"} @if(elements.args.contains('_labelId)) {
-                    id="@elements.args.get('_labelId)"}>
-                    @elements.label
-
+                    id="@elements.args.get('_labelId)"}> @elements.label
                 </span>
                 @if(elements.args.contains('_inputHint) ){
                 <span class="form-hint">@elements.args.get('_inputHint)</span>
@@ -99,6 +98,5 @@
             @elements.args.get('_nested)
         }
 
-        </label>
-
+    </label>
 </div>

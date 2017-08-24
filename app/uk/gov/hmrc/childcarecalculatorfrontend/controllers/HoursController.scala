@@ -139,11 +139,11 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
           }
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in HoursController.onPageLoad")
+        Logger.warn("Invalid PageObjects in HoursController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
+        Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }

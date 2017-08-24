@@ -133,3 +133,20 @@ vouchers.notsure = Not sure
 vouchers.not.selected.error.you = You must tell the calculator if your employer offers childcare vouchers
 vouchers.not.selected.error.partner = You must tell the calculator if your partner’s employer offers childcare vouchers
 vouchers.not.selected.error.both = You must tell the calculator if either of your employers offer childcare vouchers
+
+####### Get Benefits #######
+get.benefits.header.single = Do you get any benefits?
+get.benefits.header.couple = Do you or your partner get any benefits?
+get.benefits.not.selected.error.single = You must answer yes if you get any benefits
+get.benefits.not.selected.error.couple = You must answer yes if you or your partner get any benefits
+get.benefits.para = Benefits include:
+get.benefits.para.list1 = Income support
+get.benefits.para.list2 = Income-based Jobseeker’s Allowance
+get.benefits.para.list3 = Income-related Employment and Support Allowance
+get.benefits.para.list4 = Pension Credit
+get.benefits.para.list5 = Disability Living Allowance
+get.benefits.para.list6 = Attendance allowance
+get.benefits.para.list7 = Personal Independence Payment
+get.benefits.para.list8 = Carer’s Allowance
+
+
