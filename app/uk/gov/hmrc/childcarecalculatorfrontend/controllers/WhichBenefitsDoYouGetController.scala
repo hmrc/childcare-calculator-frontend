@@ -38,7 +38,19 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
   val keystore: KeystoreService = KeystoreService
 
   private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
-    !isPartner || (isPartner && pageObjects.household.partner.isDefined)
+    (!isPartner || (isPartner && pageObjects.household.partner.isDefined)) && pageObjects.livingWithPartner.isDefined
+  }
+
+  private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
+    if(pageObjects.livingWithPartner.get) {
+      if(isPartner) {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
+      } else {
+        routes.WhoGetsBenefitsController.onPageLoad()
+      }
+    } else {
+      routes.GetBenefitsController.onPageLoad()
+    }
   }
 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
@@ -53,7 +65,8 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
         Ok(
           benefits(
             new WhichBenefitsDoYouGetForm(isPartner, messagesApi).form.fill(claimantBenefits.getOrElse(Benefits())),
-            isPartner
+            isPartner,
+            backURL(isPartner, pageObjects)
           )
         )
       case _ =>
@@ -89,52 +102,53 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
     }
   }
 
-  private def nextPage(isPartner: Boolean): Call = {
-    if (isPartner) {
-      // TODO: Age page not yet created
-      routes.ChildCareBaseController.underConstruction()
+  private def nextPage(isPartner: Boolean, pageObjects: PageObjects): Call = {
+    if (!isPartner && pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
+      routes.WhichBenefitsDoYouGetController.onPageLoad(true)
     }
     else {
-      routes.WhichBenefitsDoYouGetController.onPageLoad(true)
+      // TODO: Age page not yet created
+      routes.ChildCareBaseController.underConstruction()
     }
   }
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
-    new WhichBenefitsDoYouGetForm(isPartner, messagesApi).form.bindFromRequest().fold(
-      errors => {
-        val userType = getUserType(isPartner)
-        val modifiedErrors = overrideFormErrorKey[Benefits](
-            form = errors,
-            newMessageKeys = Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
-        )
-        Future(
-          BadRequest(
-            benefits(
-              modifiedErrors,
-              isPartner
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObject) if isDataValid(pageObject, isPartner) => {
+        new WhichBenefitsDoYouGetForm(isPartner, messagesApi).form.bindFromRequest().fold(
+          errors => {
+            val userType = getUserType(isPartner)
+            val modifiedErrors = overrideFormErrorKey[Benefits](
+                form = errors,
+                newMessageKeys = Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
             )
-          )
-        )
-      },
-      success => {
-        keystore.fetch[PageObjects]().flatMap {
-          case Some(pageObject) if isDataValid(pageObject, isPartner) => {
+            Future(
+              BadRequest(
+                benefits(
+                  modifiedErrors,
+                  isPartner,
+                  backURL(isPartner, pageObject)
+                )
+              )
+            )
+          },
+          success => {
             val modifiedPageObject = modifyPageObject(pageObject, success, isPartner)
 
             keystore.cache(modifiedPageObject).map { result =>
-              Redirect(nextPage(isPartner))
+              Redirect(nextPage(isPartner, pageObject))
             }
           }
-          case _ =>
-            Logger.warn("Invalid PageObjects in WhichBenefitsDoYouGetController.onPageLoad")
-            Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-        }.recover {
-          case ex: Exception =>
-            Logger.warn(s"Exception from WhichBenefitsDoYouGetController.onPageLoad: ${ex.getMessage}")
-            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-        }
+        )
       }
-    )
+      case _ =>
+        Logger.warn("Invalid PageObjects in WhichBenefitsDoYouGetController.onPageLoad")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    }.recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from WhichBenefitsDoYouGetController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
   }
 
 }

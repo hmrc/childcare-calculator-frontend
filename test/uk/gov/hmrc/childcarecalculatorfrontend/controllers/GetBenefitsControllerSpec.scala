@@ -315,7 +315,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
           }
         }
 
-        s"user with partner selects 'yes' - go to 'which of you get benefits page' page ${whoGetsBeneftsPath}" should {
+        s"user with partner selects 'yes' - go to 'which of you get benefits page' page ${whoGetsBenefitsPath}" should {
           "shouldn't modify related data in keystore if value for paid employment is not changed" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
@@ -350,7 +350,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whoGetsBeneftsPath
+            result.header.headers("Location") shouldBe whoGetsBenefitsPath
           }
 
           "modify related data in keystore if selects new value for get benefits with disability and with partner" in {
@@ -397,7 +397,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whoGetsBeneftsPath
+            result.header.headers("Location") shouldBe whoGetsBenefitsPath
           }
         }
       }
