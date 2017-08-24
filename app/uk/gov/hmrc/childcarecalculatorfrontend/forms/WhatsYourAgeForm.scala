@@ -24,7 +24,6 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeRangeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
-
 @Singleton
 class WhatsYourAgeForm @Inject()(isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 

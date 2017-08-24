@@ -43,7 +43,7 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
 
   private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
     if(pageObjects.livingWithPartner.get) {
-      if(isPartner) {
+      if(isPartner && pageObjects.household.parent.benefits.isDefined) {
         routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       } else {
         routes.WhoGetsBenefitsController.onPageLoad()
@@ -107,8 +107,11 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
       routes.WhichBenefitsDoYouGetController.onPageLoad(true)
     }
     else {
-      // TODO: Age page not yet created
-      routes.ChildCareBaseController.underConstruction()
+      if(isPartner) {
+        routes.WhatsYourAgeController.onPageLoad(true)
+      } else {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      }
     }
   }
 

@@ -35,35 +35,33 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
 
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
     if(isPartner) {
-      if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
-        routes.WhatsYourAgeController.onPageLoad(false)
-      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER) &&
-        pageObjects.household.partner.get.benefits.isDefined) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
-      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) &&
-        pageObjects.household.parent.benefits.isDefined) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      } else {
+      if(pageObjects.getBenefits == Some(false)) {
         routes.GetBenefitsController.onPageLoad()
+      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
+      } else {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       }
     } else {
       if(pageObjects.getBenefits == Some(false)) {
         routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.household.partner.get.benefits.isDefined &&
+      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined &&
           (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) ||
            pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)
           )
         ) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      } else {
         routes.WhichBenefitsDoYouGetController.onPageLoad(true)
+      } else {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       }
     }
   }
 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if (!isPartner || (pageObjects.household.partner.isDefined && isPartner)) =>
+      case Some(pageObjects)  =>
         val agePageObject = if(isPartner) {
           pageObjects.household.partner.get.ageRange.map(_.toString)
         } else {
@@ -77,7 +75,7 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
           )
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in GetBenefitsController.onPageLoad")
+        Logger.warn("Invalid PageObjects in WhatsYourAgeController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
 
 
