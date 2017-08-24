@@ -30,6 +30,7 @@ trait CCConstants {
   lazy val whichOfYouInPaidEmploymentKey = "whichOfYouInPaidEmployment"
   lazy val hoursKey = "hours"
   lazy val vouchersKey = "vouchers"
+  lazy val getBenefitsKey = "getBenefits"
   lazy val whoGetsBeneftsKey = "whoGetsBenefits"
 
   def getFamilyStatus(hasPartner: Boolean): String = {

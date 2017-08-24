@@ -46,6 +46,9 @@ POST   /hours-worked/partner            uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad
 POST   /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit
 
+GET    /get-benefits                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad
+POST   /get-benefits                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit
+
 GET    /who-gets-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad
 POST   /who-gets-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit
 
