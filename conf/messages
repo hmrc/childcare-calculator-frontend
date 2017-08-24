@@ -151,4 +151,4 @@ get.benefits.para.list8 = Carer’s Allowance
 
 ####### Which of you gets benefits #######
 who.gets.benefits.header = Which of you gets benefits?
-who.gets.benefits.not.selected.error = You must tell the calculator who gets any benefits
+who.gets.benefits.not.selected.error = You must tell the calculator who gets benefits
