@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.GetBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.getBenefits
 
@@ -33,13 +33,22 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
 
   val keystore: KeystoreService = KeystoreService
 
+  private def getBackUrl(pageObjects: PageObjects): Call = {
+    if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) && pageObjects.getVouchers == Some(YesNoUnsureEnum.YES)) {
+      // TODO - redirect to 'Which of you is offered vouchers'
+      routes.ChildCareBaseController.underConstruction()
+    } else {
+      routes.VouchersController.onPageLoad()
+    }
+  }
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if (pageObjects.livingWithPartner.isDefined) =>
         val hasPartner = pageObjects.livingWithPartner.get
         Ok(
           getBenefits(
-            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits), hasPartner
+            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits), hasPartner, getBackUrl(pageObjects)
           )
         )
       case _ =>
@@ -90,7 +99,7 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
           errors =>
             Future(
               BadRequest(
-                getBenefits(errors, hasPartner)
+                getBenefits(errors, hasPartner, getBackUrl(pageObjects))
               )
             ),
           success => {

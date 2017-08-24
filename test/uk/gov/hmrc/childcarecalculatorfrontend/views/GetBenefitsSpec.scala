@@ -22,12 +22,15 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import play.api.data.Form
 import play.api.i18n.Messages.Implicits._
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.GetBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.getBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
 class GetBenefitsSpec extends TemplatesValidator with FakeCCApplication {
+
+  val backUrl = Call("GET", vouchersPath)
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some("get-benefits-para"), tagName = Some("p"), tagIndex = Some(0), value = applicationMessages.messages(s"get.benefits.para")),
@@ -51,7 +54,7 @@ class GetBenefitsSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   def getTemplate(form: Form[Option[Boolean]], hasPartner: Boolean): Document = {
-    val template = getBenefits(form, hasPartner)(request, applicationMessages)
+    val template = getBenefits(form, hasPartner, backUrl)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
@@ -68,10 +71,10 @@ class GetBenefitsSpec extends TemplatesValidator with FakeCCApplication {
     s"if user has partner = ${hasPartner}" should {
 
       "render template" in {
-        val template = getBenefits.render(new GetBenefitsForm(hasPartner, applicationMessagesApi).form, hasPartner, request, applicationMessages)
+        val template = getBenefits.render(new GetBenefitsForm(hasPartner, applicationMessagesApi).form, hasPartner, backUrl, request, applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = getBenefits.f(new GetBenefitsForm(hasPartner, applicationMessagesApi).form, hasPartner)(request, applicationMessages)
+        val template1 = getBenefits.f(new GetBenefitsForm(hasPartner, applicationMessagesApi).form, hasPartner, backUrl)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 
