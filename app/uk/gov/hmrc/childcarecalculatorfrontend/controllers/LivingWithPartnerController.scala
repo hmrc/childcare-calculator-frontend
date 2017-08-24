@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LivingWithPartnerForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, Claimant}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.livingWithPartner
 
@@ -59,6 +59,39 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
     }
   }
 
+  private def modifyPageObject(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
+    if(oldPageObjects.livingWithPartner == Some(newLivingWithPartner)) {
+      oldPageObjects
+    }
+    else {
+      val modified = oldPageObjects.copy(
+        livingWithPartner = Some(newLivingWithPartner),
+        whichOfYouInPaidEmployment = None,
+        paidOrSelfEmployed = None,
+        getVouchers = None,
+        household = oldPageObjects.household.copy(
+          parent = oldPageObjects.household.parent.copy(
+            escVouchers = None
+          )
+        )
+      )
+      if(newLivingWithPartner) {
+        modified.copy(
+          household = modified.household.copy(
+            partner = Some(Claimant())
+          )
+        )
+      }
+      else {
+        modified.copy(
+          household = modified.household.copy(
+            partner = None
+          )
+        )
+      }
+    }
+  }
+
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
@@ -73,9 +106,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               )
             ),
           success => {
-            val modifiedPageObjects = pageObjects.copy(
-              livingWithPartner = success
-            )
+            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
             }

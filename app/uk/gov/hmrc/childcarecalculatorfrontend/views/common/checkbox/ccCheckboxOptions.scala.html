@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(field: Field, fieldForm: Form[_], radioOptions: Seq[(String, String)], args: (Symbol, Any)*)(implicit messages: Messages)
+@(field: Field, fieldForm: Form[_], checkboxOptions: Seq[(String, String)], args: (Symbol, Any)*)(implicit messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.play.views.html._
@@ -59,9 +59,9 @@
             @helpers.errorInline({elements.field.name.replaceAll("""[\.\[\]]""", "-")}, messages(error))
         }
 
-        @radioOptions.zipWithIndex.map { case ((value, label), index) =>
+        @checkboxOptions.zipWithIndex.map { case ((value, label), index) =>
 
-    @if((index == radioOptions.length-1) && elements.args.get('_or)) {
+    @if((index == checkboxOptions.length-1) && elements.args.get('_or)) {
         <p class="form-block">@Messages("cc.or")</p>
     }
                 @defining(s"${elements.field.name.replaceAll("""[\.\[\]]""", "-")}-${value.toLowerCase.replace(" ","_")}") {inputId =>
@@ -69,7 +69,7 @@
     <div class="multiple-choice">
 
 
-            <input type="radio"
+            <input type="checkbox"
                    id="@inputId"
                    name="@elements.field.name"
                    value="@value"
@@ -91,7 +91,7 @@
             }
         />
         <label for="@inputId"
-               @elements.args.get('_radioClass).map{radioClass => class="@radioClass @field.value.filter( _ == value).map{_ => selected}"}>
+               @elements.args.get('_checkboxClass).map{checkboxClass => class="@checkboxClass @field.value.filter( _ == value).map{_ => selected}"}>
         @if(!labelAfter) {
         @if(elements.args.get('_stackedLabel)) {
         @if(label.split(" ").length < 2) {

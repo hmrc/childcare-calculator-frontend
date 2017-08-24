@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureBothEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResults
@@ -110,7 +110,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
                 selfEmployedIn12Months = None
               )
             ),
-            escVouchers = Some(YesNoUnsureBothEnum.YES)
+            escVouchers = Some(YesNoUnsureEnum.YES)
           ),
           partner = None
         )
