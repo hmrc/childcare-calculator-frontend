@@ -19,11 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{Messages, I18nSupport, MessagesApi}
 import play.api.mvc.{Call, AnyContent, Action}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits
 
 import scala.concurrent.Future
@@ -32,7 +33,7 @@ import scala.concurrent.Future
  * Created by user on 23/08/17.
  */
 @Singleton
-class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController with FormManager {
 
   val keystore: KeystoreService = KeystoreService
 
@@ -64,7 +65,8 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
-private def modifyPageObject(pageObjects: PageObjects, selectedBenefits : Benefits, isPartner: Boolean) : PageObjects = {
+
+  private def modifyPageObject(pageObjects: PageObjects, selectedBenefits : Benefits, isPartner: Boolean) : PageObjects = {
     if (isPartner) {
       pageObjects.copy(
         household = pageObjects.household.copy(
@@ -85,7 +87,7 @@ private def modifyPageObject(pageObjects: PageObjects, selectedBenefits : Benefi
         )
       )
     }
-}
+  }
 
   private def nextPage(isPartner: Boolean): Call = {
     if (isPartner) {
@@ -100,10 +102,15 @@ private def modifyPageObject(pageObjects: PageObjects, selectedBenefits : Benefi
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     new WhichBenefitsDoYouGetForm(isPartner, messagesApi).form.bindFromRequest().fold(
       errors => {
+        val userType = getUserType(isPartner)
+        val modifiedErrors = overrideFormErrorKey[Benefits](
+            form = errors,
+            newMessageKeys = Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
+        )
         Future(
           BadRequest(
             benefits(
-              errors,
+              modifiedErrors,
               isPartner
             )
           )

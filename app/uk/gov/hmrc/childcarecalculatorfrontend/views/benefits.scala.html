@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.error._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -38,30 +39,31 @@
         <p>@messages("select.all.that.apply")</p>
 
 
-        <fieldset class="form-group" id="benefits">
+        <fieldset class="form-group @if(form.hasErrors) {form-field--error}" id="benefits">
 
-        <legend class="visuallyhidden">@messages(s"which.benefits.do.you.get.${userType}.header")</legend>
+            <legend class="visuallyhidden">@messages(s"which.benefits.do.you.get.${userType}.header")</legend>
 
+            @checkboxInLineErrorMessage(form, "benefits")
 
-        @checkbox.ccCheckboxOptions(
-            form("WhichBenefitsDoYouGetIncome"),
-            '_label -> messages("which.benefits.do.you.get.income.benefits")
-        )
+            @checkbox.ccCheckboxOptions(
+                form("WhichBenefitsDoYouGetIncome"),
+                '_label -> messages("which.benefits.do.you.get.income.benefits")
+            )
 
-        @checkbox.ccCheckboxOptions(
-            form("WhichBenefitsDoYouGetDisabilityBenefits"),
-            '_label -> messages("which.benefits.do.you.get.disability.benefits")
-        )
+            @checkbox.ccCheckboxOptions(
+                form("WhichBenefitsDoYouGetDisabilityBenefits"),
+                '_label -> messages("which.benefits.do.you.get.disability.benefits")
+            )
 
-        @checkbox.ccCheckboxOptions(
-            form("WhichBenefitsDoYouGetHigherRateDisability"),
-            '_label -> messages("which.benefits.do.you.get.higher.rate.disability.benefits")
-        )
+            @checkbox.ccCheckboxOptions(
+                form("WhichBenefitsDoYouGetHigherRateDisability"),
+                '_label -> messages("which.benefits.do.you.get.higher.rate.disability.benefits")
+            )
 
-        @checkbox.ccCheckboxOptions(
-            form("WhichBenefitsDoYouGetCarersAllowance"),
-            '_label -> messages("which.benefits.do.you.get.carers.allowance")
-        )
+            @checkbox.ccCheckboxOptions(
+                form("WhichBenefitsDoYouGetCarersAllowance"),
+                '_label -> messages("which.benefits.do.you.get.carers.allowance")
+            )
 
         </fieldset>
 

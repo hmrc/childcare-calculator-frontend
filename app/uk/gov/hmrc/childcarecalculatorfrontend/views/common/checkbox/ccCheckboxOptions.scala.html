@@ -30,10 +30,6 @@
     @if((value.toString=="true") || (carersAllowance)){checked="checked"}" aria-labelledby="label@elements.id" />
 
     <label for="@elements.id" id="label@elements.id" class="block-label">
-        @elements.errors.map { error =>
-        @helpers.errorInline({elements.field.name.replaceAll("""[\.\[\]]""", "-")}, messages(error))
-        }
-
         <span class="@if(elements.args.contains('_nested)){bold-small}" @if(elements.args.contains('_labelId)) {
         id="@elements.args.get('_labelId)"}>@elements.label</span>
 
