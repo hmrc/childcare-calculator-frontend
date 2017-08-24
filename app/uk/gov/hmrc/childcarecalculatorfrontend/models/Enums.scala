@@ -45,6 +45,20 @@ object LocationEnum extends Enumeration {
   implicit def enumFormats: Format[LocationEnum] = EnumUtils.enumFormat(LocationEnum)
 }
 
+object BenefitsEnum extends Enumeration {
+  type BenefitsEnum = Value
+  val INCOME = Value("income")
+  val DISABILITY = Value("disability")
+  val HIGHERRATEDISABILITY = Value("higherRateDisability")
+  val CARERSALLOWANCE = Value("carersAllowance")
+
+  val enumReads: Reads[BenefitsEnum] = EnumUtils.enumReads(BenefitsEnum)
+
+  val enumWrites: Writes[BenefitsEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[BenefitsEnum] = EnumUtils.enumFormat(BenefitsEnum)
+}
+
 object AgeRangeEnum extends Enumeration {
   type AgeRangeEnum = Value
   val UNDER18, EIGHTEENTOTWENTY, TWENTYONETOTWENTYFOUR, OVERTWENTYFOUR = Value

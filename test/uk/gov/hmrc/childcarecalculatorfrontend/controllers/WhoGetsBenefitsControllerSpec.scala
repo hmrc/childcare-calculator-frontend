@@ -41,7 +41,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
     reset(sut.keystore)
   }
 
-  validateUrl(whoGetsBeneftsPath)
+  validateUrl(whoGetsBenefitsPath)
 
   "calling onPageLoad" should {
 
@@ -145,12 +145,11 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
     }
 
     "redirect to correct next page" when {
-      // TODO: these urls should be parent/partner benefits
       val testCases = Table(
         ("Selected", "Next page"),
-        (YouPartnerBothEnum.YOU.toString, underConstrctionPath), // parent benefits
-        (YouPartnerBothEnum.PARTNER.toString, underConstrctionPath), // partner benefits
-        (YouPartnerBothEnum.BOTH.toString, underConstrctionPath) // parent benefits
+        (YouPartnerBothEnum.YOU.toString, parentBenefitsPath),
+        (YouPartnerBothEnum.PARTNER.toString, partnerBenefitsPath),
+        (YouPartnerBothEnum.BOTH.toString, parentBenefitsPath)
       )
 
       forAll(testCases) { case (selection, nextPage) =>

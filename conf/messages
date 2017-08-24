@@ -9,6 +9,7 @@ radio.no = No
 radio.you = You
 radio.partner = Partner
 radio.both = Both
+select.all.that.apply = Select all that apply.
 
 ###### Common Errors #######
 error.title = Check you have answered the question correctly
@@ -151,7 +152,32 @@ get.benefits.para.list8 = Carer’s Allowance
 
 ####### Which of you gets benefits #######
 who.gets.benefits.header = Which of you gets benefits?
-who.gets.benefits.not.selected.error = You must tell the calculator who gets benefits
+who.gets.benefits.not.selected.error = You must tell the calculator who gets any benefits
+
+####### Which benefits do you get #######
+which.benefits.do.you.get.parent.header = Which benefits do you get?
+which.benefits.do.you.get.partner.header = Which benefits does your partner get?
+which.benefits.do.you.get.not.selected.parent.error = You must tell the calculator which benefits you get
+which.benefits.do.you.get.not.selected.partner.error = You must tell the calculator which benefits your partner gets
+which.benefits.do.you.get.income.benefits = Income benefits
+which.benefits.do.you.get.disability.benefits = Disability benefits
+which.benefits.do.you.get.higher.rate.disability.benefits = Higher rate disability benefits
+which.benefits.do.you.get.carers.allowance = Carer’s Allowance
+which.benefits.do.you.get.help.with.benefits = Help with benefits
+which.benefits.do.you.get.types.of.income.benefits =  Types of income benefits
+which.benefits.do.you.get.income.support = Income Support
+which.benefits.do.you.get.job.seekers.allowance = Income-based Jobseeker’s Allowance
+which.benefits.do.you.get.employment.support.allowance = Income-related Employment and Support Allowance
+which.benefits.do.you.get.pension.credit = Pension Credit
+which.benefits.do.you.get.types.of.disability.benefits = Types of disability benefits
+which.benefits.do.you.get.disability.living.allowance = Disability Living Allowance
+which.benefits.do.you.get.attendance.allowance = Attendance Allowance
+which.benefits.do.you.get.personal.independence.payment = Personal Independence Payment
+which.benefits.do.you.get.types.of.higher.rate.disability.benefits = Types of higher rate disability benefits
+which.benefits.do.you.get.higher.disability.living.allowance = Disability Living Allowance (highest rate care component)
+which.benefits.do.you.get.higher.attendance.allowance = Attendance Allowance (higher rate)
+which.benefits.do.you.get.higher.personal.independence.payment = Personal Independence Payment (enhanced daily living component)
+which.benefits.do.you.get.armed.forces.independence.payment = Armed Forces Independence Payment
 
 ####### Whats Your age #######
 whats.your.age.header.parent = What''s your age?

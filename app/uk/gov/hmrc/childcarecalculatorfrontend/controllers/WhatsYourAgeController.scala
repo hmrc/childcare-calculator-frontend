@@ -39,12 +39,10 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
         routes.WhatsYourAgeController.onPageLoad(false)
       } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER) &&
         pageObjects.household.partner.get.benefits.isDefined) {
-        //TODO redirect to partner's which benefits page and change tests
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
       } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) &&
         pageObjects.household.parent.benefits.isDefined) {
-        //TODO redirect to parent's which benefits page and change tests
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       } else {
         routes.GetBenefitsController.onPageLoad()
       }
@@ -56,11 +54,9 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
            pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)
           )
         ) {
-        //TODO redirect to parent's which benefits page and change tests
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       } else {
-        //TODO redirect to partner's which benefits page and change tests
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
       }
     }
   }

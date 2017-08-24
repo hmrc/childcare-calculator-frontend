@@ -28,6 +28,7 @@ trait CCConstants {
   lazy val livingWithPartnerKey = "livingWithPartner"
   lazy val paidEmploymentKey = "paidEmployment"
   lazy val whichOfYouInPaidEmploymentKey = "whichOfYouInPaidEmployment"
+  lazy val WhichBenefitsDoYouGetKey = "whichBenefitsDoYouGet"
   lazy val hoursKey = "hours"
   lazy val vouchersKey = "vouchers"
   lazy val getBenefitsKey = "getBenefits"

@@ -123,12 +123,14 @@ trait TemplatesValidator extends UnitSpec {
     }
   }
 
-  def verifyErrors(errors: Map[String, String] = Map.empty)(implicit doc: Document): Unit = {
+  def verifyErrors(errors: Map[String, String] = Map.empty, validDateInlineErrors: Boolean = true)(implicit doc: Document): Unit = {
     doc.getElementById("errorTitle").text() shouldBe "There is a problem"
     doc.getElementById("error-summary-heading").text() shouldBe "Check you have answered the question correctly"
     val totalAmountOfErrors = errors.size
     doc.getElementsByClass("js-error-summary-messages").first().getElementsByTag("li").size() shouldBe totalAmountOfErrors
-    doc.getElementsByClass("error-notification").size() shouldBe totalAmountOfErrors
+    if(validDateInlineErrors) {
+      doc.getElementsByClass("error-notification").size() shouldBe totalAmountOfErrors
+    }
     doc.getElementById("error-summary-display").hasClass("error-summary--show") should not be errors.isEmpty
     errors.map {
       case (focusElement, errorMessage) => {
@@ -136,7 +138,9 @@ trait TemplatesValidator extends UnitSpec {
         errorSummary.text() shouldBe errorMessage
         errorSummary.attr("data-focuses") shouldBe focusElement
         errorSummary.attr("href").replaceAll("""[\.\[\]]""", "") shouldBe "#" + focusElement
-        doc.getElementById(focusElement + "-error-message").text() shouldBe errorMessage
+        if(validDateInlineErrors) {
+          doc.getElementById(focusElement + "-error-message").text() shouldBe errorMessage
+        }
       }
     }
   }
