@@ -17,14 +17,136 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Singleton, Inject}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Call, AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsBenefits
+
+import scala.concurrent.Future
 
 @Singleton
 class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-  def onPageLoad: Action[AnyContent] = ???
+  val keystore: KeystoreService = KeystoreService
 
-  def onSubmit: Action[AnyContent] = ???
+  private def validatePageObjects(pageObject: PageObjects): Boolean = {
+    pageObject.household.partner.isDefined
+  }
+
+  private def getSelection(parentBenefits: Option[Benefits], partnerBenefits: Option[Benefits]): Option[YouPartnerBothEnum] = {
+    (parentBenefits, partnerBenefits) match {
+      case (None, None) => None
+      case (Some(_), None) => Some(YouPartnerBothEnum.YOU)
+      case (None, Some(_)) => Some(YouPartnerBothEnum.PARTNER)
+      case (Some(_), Some(_)) => Some(YouPartnerBothEnum.BOTH)
+    }
+  }
+
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObject) if validatePageObjects(pageObject) =>
+        val selection: Option[YouPartnerBothEnum] = getSelection(pageObject.household.parent.benefits, pageObject.household.partner.get.benefits)
+        Ok(
+          whoGetsBenefits(new WhoGetsBenefitsForm(messagesApi).form.fill(selection.map(_.toString)))
+        )
+      case _ =>
+        Logger.warn("Invalid PageObjects in WhoGetsBenefitsController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }.recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from WhoGetsBenefitsController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def modifyPageObject(pageObject: PageObjects, selectedWhoGetsBenefits: YouPartnerBothEnum): PageObjects = {
+    if(getSelection(pageObject.household.parent.benefits, pageObject.household.partner.get.benefits) == Some(selectedWhoGetsBenefits)) {
+      pageObject
+    }
+    else {
+      selectedWhoGetsBenefits match {
+        case YouPartnerBothEnum.YOU => pageObject.copy(
+          household = pageObject.household.copy(
+            parent = pageObject.household.parent.copy(
+              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
+            ),
+            partner = Some(
+              pageObject.household.partner.get.copy(
+                benefits = None
+              )
+            )
+          )
+        )
+        case YouPartnerBothEnum.PARTNER => pageObject.copy(
+          household = pageObject.household.copy(
+            parent = pageObject.household.parent.copy(
+              benefits = None
+            ),
+            partner = Some(
+              pageObject.household.partner.get.copy(
+                benefits = Some(pageObject.household.partner.get.benefits.getOrElse(Benefits()))
+              )
+            )
+          )
+        )
+        case YouPartnerBothEnum.BOTH => pageObject.copy(
+          household = pageObject.household.copy(
+            parent = pageObject.household.parent.copy(
+              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
+            ),
+            partner = Some(
+              pageObject.household.partner.get.copy(
+                benefits = Some(pageObject.household.partner.get.benefits.getOrElse(Benefits()))
+              )
+            )
+          )
+        )
+      }
+    }
+  }
+
+  private def getNextPage(selectedWhoGetsBenefits: YouPartnerBothEnum): Call = {
+    if(selectedWhoGetsBenefits == YouPartnerBothEnum.PARTNER) {
+      // go to partner benefits
+      routes.ChildCareBaseController.underConstruction()
+    }
+    else {
+      // go to parent benefits
+      routes.ChildCareBaseController.underConstruction()
+    }
+  }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    new WhoGetsBenefitsForm(messagesApi).form.bindFromRequest().fold(
+      errors => {
+        Future(
+          BadRequest(
+            whoGetsBenefits(errors)
+          )
+        )
+      },
+      success => {
+        keystore.fetch[PageObjects]().flatMap {
+          case Some(pageObject) if validatePageObjects(pageObject) =>
+            val selectedWhoGetsBenefits: YouPartnerBothEnum = YouPartnerBothEnum.withName(success.get)
+            val modifiedPageObject: PageObjects = modifyPageObject(pageObject, selectedWhoGetsBenefits)
+            keystore.cache(modifiedPageObject).map { result =>
+              Redirect(getNextPage(selectedWhoGetsBenefits))
+            }
+          case _ =>
+            Logger.warn("Invalid PageObjects in WhoGetsBenefitsController.onSubmit")
+            Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+        }.recover {
+          case ex: Exception =>
+            Logger.warn(s"Exception from WhoGetsBenefitsController.onSubmit: ${ex.getMessage}")
+            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+        }
+      }
+    )
+  }
 
 }
