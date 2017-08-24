@@ -16,13 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import java.lang
-
+import org.jsoup.Jsoup
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
-import play.api.libs.json.Format
+import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -31,9 +30,9 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new PaidEmploymentController(applicationMessagesApi) {
+  val sut = new GetBenefitsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
@@ -42,11 +41,63 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
     reset(sut.keystore)
   }
 
-  validateUrl(paidEmploymentPath)
+  validateUrl(getBenefitsPath)
 
-  "PaidEmploymentController" when {
+  "GetBenefitsController" when {
 
     "onPageLoad is called" should {
+
+      "load template which of you get vouchers page when both are in paid employment" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                getVouchers = Some(YesNoUnsureEnum.YES),
+                livingWithPartner = Some(true),
+                paidOrSelfEmployed = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(hours = Some(24), escVouchers = Some(YesNoUnsureEnum.NOTSURE)),
+                  partner = Some(Claimant(hours = Some(21), escVouchers = Some(YesNoUnsureEnum.NOTSURE)))
+                )
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
+      }
+
+      "load template do you get vouchers page when no or not sure selected on vouchers page" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(
+              PageObjects(
+                getVouchers = Some(YesNoUnsureEnum.NOTSURE),
+                livingWithPartner = Some(true),
+                paidOrSelfEmployed = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                household = Household(location = LocationEnum.ENGLAND)
+              )
+            )
+          )
+        )
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe vouchersPath
+      }
 
       "load successfully template when data in keystore" in {
         when(
@@ -57,7 +108,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
               PageObjects(
                 household = Household(location = LocationEnum.ENGLAND),
                 livingWithPartner = Some(false),
-                paidOrSelfEmployed = Some(true)
+                getBenefits = Some(true)
               )
             )
           )
@@ -76,7 +127,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
               PageObjects(
                 household = Household(location = LocationEnum.ENGLAND),
                 livingWithPartner = Some(false),
-                paidOrSelfEmployed = None
+                getBenefits = None
               )
             )
           )
@@ -144,7 +195,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "")
+                .withFormUrlEncodedBody(getBenefitsKey -> "")
                 .withSession(validSession)
             )
           )
@@ -157,8 +208,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          // TODO: Redirect to Benefits page when it's done
-          s"go to results page ${underConstrctionPath}" in {
+          s"go to which benefits page ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -169,14 +219,14 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), paidOrSelfEmployed = Some(false)))
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), getBenefits = Some(false)))
               )
             )
 
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "false")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -187,17 +237,15 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
         }
 
         "user with partner selects 'no'" should {
-          // TODO: Redirect to Benefits page when it's done
-          s"go to results page ${underConstrctionPath} and clear related data" in {
+          // TODO: Redirect to which Benefits page when it's done
+          s"go to which benefits page ${underConstrctionPath} and clear related data" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
-                parent = Claimant(hours = Some(15)),
-                partner = Some(Claimant(hours = Some(37.5)))
+                parent = Claimant(benefits = Some(Benefits(disabilityBenefits = false))),
+                partner = Some(Claimant(benefits = None))
               ),
-              livingWithPartner = Some(true),
-              paidOrSelfEmployed = Some(true),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+              livingWithPartner = Some(true)
             )
 
             when(
@@ -209,12 +257,11 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val modifiedObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
-                parent = Claimant(),
-                partner = Some(Claimant())
+                parent = Claimant(benefits = None),
+                partner = Some(Claimant(benefits = None))
               ),
               livingWithPartner = Some(true),
-              paidOrSelfEmployed = Some(false),
-              whichOfYouInPaidEmployment = None
+              getBenefits = Some(false)
             )
 
             when(
@@ -228,7 +275,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "false")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -239,7 +286,8 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
         }
 
         "single user selects 'yes'" should {
-          s"go to hours page ${hoursParentPath}" in {
+          //TODO - redirect to what benefits with no partner
+          s"go to what benefits do you get ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -250,25 +298,25 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), paidOrSelfEmployed = Some(true)))
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), getBenefits = Some(true)))
               )
             )
 
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
                   .withSession(validSession)
               )
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe hoursParentPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
 
-        s"user with partner selects 'yes' - go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath}" should {
-          "shouldn't modify related data in keystore if vaalue for paid employment is not changed" in {
+        s"user with partner selects 'yes' - go to 'which of you get benefits page' page ${whoGetsBeneftsPath}" should {
+          "shouldn't modify related data in keystore if value for paid employment is not changed" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
@@ -276,8 +324,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
                 partner = Some(Claimant(hours = Some(37.5)))
               ),
               livingWithPartner = Some(true),
-              paidOrSelfEmployed = Some(true),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+              getBenefits = Some(true)
             )
 
             when(
@@ -297,25 +344,24 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
                   .withSession(validSession)
               )
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whoIsInPaidEmploymentPath
+            result.header.headers("Location") shouldBe whoGetsBeneftsPath
           }
 
-          "modify related data in keystore if selects new value for paidEmployment" in {
+          "modify related data in keystore if selects new value for get benefits with disability and with partner" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
-                parent = Claimant(hours = Some(15)),
+                parent = Claimant(hours = Some(15), benefits = Some(Benefits(highRateDisabilityBenefits = true))),
                 partner = Some(Claimant(hours = Some(37.5)))
               ),
               livingWithPartner = Some(true),
-              paidOrSelfEmployed = None,
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+              getBenefits = None
             )
 
             when(
@@ -327,12 +373,11 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val modifiedObject = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
-                parent = Claimant(),
-                partner = Some(Claimant())
+                parent = Claimant(hours = Some(15), benefits = None),
+                partner = Some(Claimant(hours = Some(37.5), benefits = None))
               ),
               livingWithPartner = Some(true),
-              paidOrSelfEmployed = Some(true),
-              whichOfYouInPaidEmployment = None
+              getBenefits = Some(true)
             )
 
             when(
@@ -346,13 +391,13 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             val result = await(
               sut.onSubmit(
                 request
-                  .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
                   .withSession(validSession)
               )
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whoIsInPaidEmploymentPath
+            result.header.headers("Location") shouldBe whoGetsBeneftsPath
           }
         }
       }
@@ -369,7 +414,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withFormUrlEncodedBody(getBenefitsKey -> "true")
                 .withSession(validSession)
             )
           )
@@ -387,7 +432,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withFormUrlEncodedBody(getBenefitsKey -> "true")
                 .withSession(validSession)
             )
           )
@@ -411,7 +456,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(paidEmploymentKey -> "true")
+                .withFormUrlEncodedBody(getBenefitsKey -> "true")
                 .withSession(validSession)
             )
           )
@@ -420,10 +465,9 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-
       }
-    }
 
+    }
 
   }
 

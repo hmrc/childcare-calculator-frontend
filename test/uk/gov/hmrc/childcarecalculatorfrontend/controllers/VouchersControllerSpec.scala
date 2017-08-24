@@ -261,18 +261,18 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
       // TODO: Update all urls to go to 'Benefits' page
       val nextPageTest = Table(
         ("User in paid employment", "Partner", "Selected vouchers", "Next page"),
-        (None, None, YesNoUnsureEnum.YES, underConstrctionPath),
-        (None, None, YesNoUnsureEnum.NO, underConstrctionPath),
-        (None, None, YesNoUnsureEnum.NOTSURE, underConstrctionPath),
-        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath),
-        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.NO, underConstrctionPath),
-        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.NOTSURE, underConstrctionPath),
-        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath),
-        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NO, underConstrctionPath),
-        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NOTSURE, underConstrctionPath),
-        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath), // TODO: Only this ine should go to 'Which of you is offered vouchers'
-        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NO, underConstrctionPath),
-        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NOTSURE, underConstrctionPath)
+        (None, None, YesNoUnsureEnum.YES, getBenefitsPath),
+        (None, None, YesNoUnsureEnum.NO, getBenefitsPath),
+        (None, None, YesNoUnsureEnum.NOTSURE, getBenefitsPath),
+        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.YES, getBenefitsPath),
+        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.NO, getBenefitsPath),
+        (Some(YouPartnerBothEnum.YOU), Some(Claimant()), YesNoUnsureEnum.NOTSURE, getBenefitsPath),
+        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.YES, getBenefitsPath),
+        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NO, getBenefitsPath),
+        (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NOTSURE, getBenefitsPath),
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath), // TODO: Only this line should go to 'Which of you is offered vouchers'
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NO, getBenefitsPath),
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NOTSURE, getBenefitsPath)
       )
 
       forAll(nextPageTest) { case (inPaidEmployment, partner, selectedVouchers, nextPage) =>
