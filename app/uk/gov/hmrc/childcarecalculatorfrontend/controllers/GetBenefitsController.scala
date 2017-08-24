@@ -80,8 +80,7 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
   private def getNextPage(hasPartner: Boolean, newGetBenefits: Boolean): Call = {
     if(newGetBenefits) {
       if(hasPartner) {
-        //TODO - redirect to which of you get benefits page
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhoGetsBenefitsController.onPageLoad()
       } else {
         //TODO - redirect to what benefits do you get page
         routes.ChildCareBaseController.underConstruction()

@@ -208,7 +208,6 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          // TODO: Redirect to which Benefits page when it's done
           s"go to which benefits page ${underConstrctionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -316,7 +315,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
           }
         }
 
-        s"user with partner selects 'yes' - go to 'which of you get benefits page' page ${underConstrctionPath}" should {
+        s"user with partner selects 'yes' - go to 'which of you get benefits page' page ${whoGetsBeneftsPath}" should {
           "shouldn't modify related data in keystore if value for paid employment is not changed" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
@@ -351,7 +350,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe whoGetsBeneftsPath
           }
 
           "modify related data in keystore if selects new value for get benefits with disability and with partner" in {
@@ -398,7 +397,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe whoGetsBeneftsPath
           }
         }
       }

@@ -49,5 +49,8 @@ POST   /vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /get-benefits                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad
 POST   /get-benefits                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit
 
+GET    /who-gets-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad
+POST   /who-gets-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit
+
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 

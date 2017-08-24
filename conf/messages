@@ -149,4 +149,6 @@ get.benefits.para.list6 = Attendance allowance
 get.benefits.para.list7 = Personal Independence Payment
 get.benefits.para.list8 = Carer’s Allowance
 
-
+####### Which of you gets benefits #######
+who.gets.benefits.header = Which of you gets benefits?
+who.gets.benefits.not.selected.error = You must tell the calculator who gets benefits
