@@ -34,13 +34,34 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
   val keystore: KeystoreService = KeystoreService
 
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    if (isPartner && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
-      routes.WhatsYourAgeController.onPageLoad(false)
-    } else if(isPartner && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
-      //TODO redirect to correct page and change tests
-      routes.WhatYouNeedController.onPageLoad()
+    if(isPartner) {
+      if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER) &&
+        pageObjects.household.partner.get.benefits.isDefined) {
+        //TODO redirect to partner's which benefits page and change tests
+        routes.ChildCareBaseController.underConstruction()
+      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) &&
+        pageObjects.household.parent.benefits.isDefined) {
+        //TODO redirect to parent's which benefits page and change tests
+        routes.ChildCareBaseController.underConstruction()
+      } else {
+        routes.GetBenefitsController.onPageLoad()
+      }
     } else {
-      routes.WhatYouNeedController.onPageLoad()
+      if(pageObjects.getBenefits == Some(false)) {
+        routes.GetBenefitsController.onPageLoad()
+      } else if (pageObjects.household.partner.get.benefits.isDefined &&
+          (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) ||
+           pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)
+          )
+        ) {
+        //TODO redirect to parent's which benefits page and change tests
+        routes.ChildCareBaseController.underConstruction()
+      } else {
+        //TODO redirect to partner's which benefits page and change tests
+        routes.ChildCareBaseController.underConstruction()
+      }
     }
   }
 
@@ -90,8 +111,12 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
                 //TODO redirect to min earnings partner page and change tests
                 Redirect(routes.ChildCareBaseController.underConstruction())
               } else {
-                //TODO redirect to min earnings parent page and change tests
-                Redirect(routes.ChildCareBaseController.underConstruction())
+                if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+                  Redirect(routes.WhatsYourAgeController.onPageLoad(true))
+                } else {
+                  //TODO redirect to min earnings parent page and change tests
+                  Redirect(routes.ChildCareBaseController.underConstruction())
+                }
               }
             }
           }

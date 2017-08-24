@@ -151,7 +151,7 @@ get.benefits.para.list8 = Carer’s Allowance
 
 ####### Which of you gets benefits #######
 who.gets.benefits.header = Which of you gets benefits?
-who.gets.benefits.not.selected.error = You must tell the calculator who gets any benefits
+who.gets.benefits.not.selected.error = You must tell the calculator who gets benefits
 
 ####### Whats Your age #######
 whats.your.age.header.parent = What''s your age?
@@ -161,5 +161,5 @@ whats.your.age.radio.eighteentotwenty = 18 to 20
 whats.your.age.radio.twentyonetotwentyfour = 21 to 24
 whats.your.age.radio.over25 = 25 or over
 whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
-whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner''s age is
+whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
