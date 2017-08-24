@@ -78,25 +78,29 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
             Future(
               BadRequest(
                 whatsYourAge(
-                  errors,
-                  getBackUrl(isPartner), isPartner
+                  errors, getBackUrl(isPartner), isPartner
                 )
               )
             ),
           success => {
             val enumValue: AgeRangeEnum.Value = AgeRangeEnum.withName(success.get)
             keystore.cache(getModifiedPageObjects(enumValue, pageObjects, isPartner)).map { result =>
-              //TODO redirect to correct page and change tests
-              Redirect(routes.WhatYouNeedController.onPageLoad())
+              if(isPartner) {
+                //TODO redirect to min earnings partner page and change tests
+                Redirect(routes.ChildCareBaseController.underConstruction())
+              } else {
+                //TODO redirect to min earnings parent page and change tests
+                Redirect(routes.ChildCareBaseController.underConstruction())
+              }
             }
           }
         )
       case _ =>
-        Logger.warn("PageObjects object is missing in LivingWithPartnerController.onSubmit")
+        Logger.warn("PageObjects object is missing in WhatsYourAgeController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from LivingWithPartnerController.onSubmit: ${ex.getMessage}")
+        Logger.warn(s"Exception from WhatsYourAgeController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }

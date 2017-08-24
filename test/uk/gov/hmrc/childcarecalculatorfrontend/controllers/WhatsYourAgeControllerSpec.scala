@@ -26,7 +26,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeRangeEnum, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -260,7 +259,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             )
             println(result.header.headers)
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whatYouNeedPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
       }
@@ -321,7 +320,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             )
             println(result.header.headers)
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whatYouNeedPath
+            result.header.headers("Location") shouldBe underConstrctionPath
           }
         }
       }
