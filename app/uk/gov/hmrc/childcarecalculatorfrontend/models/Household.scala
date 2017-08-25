@@ -139,7 +139,8 @@ case class PageObjects(
                         paidOrSelfEmployed: Option[Boolean] = None,
                         whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
                         getVouchers: Option[YesNoUnsureEnum] = None,
-                        getBenefits: Option[Boolean] = None
+                        getBenefits: Option[Boolean] = None,
+                        minimumEarnings: Option[Boolean] = None
                        )
 
 object PageObjects {

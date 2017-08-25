@@ -179,3 +179,6 @@ which.benefits.do.you.get.higher.attendance.allowance = Attendance Allowance (hi
 which.benefits.do.you.get.higher.personal.independence.payment = Personal Independence Payment (enhanced daily living component)
 which.benefits.do.you.get.armed.forces.independence.payment = Armed Forces Independence Payment
 
+####### On average how much will you earn  #########
+on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week
