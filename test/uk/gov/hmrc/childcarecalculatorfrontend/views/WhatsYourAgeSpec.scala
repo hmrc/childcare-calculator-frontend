@@ -62,7 +62,7 @@ class WhatsYourAgeSpec extends TemplatesValidator with FakeCCApplication {
 
     "display correct content for parent" when {
       val dynamicContent: List[ElementDetails] = List(
-        ElementDetails(id = Some("page-title"), value = "What's your age?")
+        ElementDetails(id = Some("page-title"), value = "What’s your age?")
       )
 
       //TODO Change links to correct values
@@ -110,7 +110,7 @@ class WhatsYourAgeSpec extends TemplatesValidator with FakeCCApplication {
 
     "display correct content for partner" when {
       val dynamicContent: List[ElementDetails] = List(
-        ElementDetails(id = Some("page-title"), value = "What's your partner's age?")
+        ElementDetails(id = Some("page-title"), value = "What’s your partner’s age?")
       )
 
       //TODO Change links to correct values
@@ -151,7 +151,7 @@ class WhatsYourAgeSpec extends TemplatesValidator with FakeCCApplication {
         verifyPageLinks()
         verifyChecks()
         verifyErrors(
-          errors = Map(whatsYourAgeKey -> "You must tell the calculator what your partner's age is")
+          errors = Map(whatsYourAgeKey -> "You must tell the calculator what your partner’s age is")
         )
       }
     }

@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
@@ -70,17 +71,85 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "load template successfully if there is data in keystore if parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = false, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)))
+      "load template successfully if there is data in keystore for parent and define correctly backURL" when {
+        "parent gets benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(benefits = Some(Benefits()))
+                )
+              ))
+            )
           )
-        )
-        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe parentBenefitsPath
+        }
+
+        "partner gets benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  partner = Some(Claimant(benefits = Some(Benefits())))
+                ),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
+              ))
+            )
+          )
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe partnerBenefitsPath
+        }
+
+        "both get benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  partner = Some(Claimant(benefits = Some(Benefits())))
+                ),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+              ))
+            )
+          )
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe partnerBenefitsPath
+        }
+
+        "noone get benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                getBenefits = Some(false)
+              ))
+            )
+          )
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe getBenefitsPath
+        }
       }
 
       "redirect to error page if can't connect with keystore if parent" in {
@@ -107,17 +176,92 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "load template successfully if there is data in keystore if partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = true, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)))
+      "load template successfully if there is data in keystore for partner and display correct backurl" when {
+        "parent gets benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(benefits = Some(Benefits())),
+                  partner = Some(Claimant())
+                )
+              ))
+            )
           )
-        )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe parentBenefitsPath
+        }
+
+        "both gets benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true, ageRange = None).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(benefits = Some(Benefits())),
+                  partner = Some(Claimant(ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), benefits = Some(Benefits())))
+                )
+              ))
+            )
+          )
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe partnerBenefitsPath
+        }
+
+        "both are in paid employment" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(benefits = Some(Benefits())),
+                  partner = Some(Claimant(benefits = Some(Benefits())))
+                ),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+              ))
+            )
+          )
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe s"${whatsYourAgePath}/parent"
+        }
+
+        "noone gets benefits" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true, ageRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR)).copy(
+                household = Household(
+                  location = LocationEnum.ENGLAND,
+                  parent = Claimant(),
+                  partner = Some(Claimant())
+                ),
+                getBenefits = Some(false)
+              ))
+            )
+          )
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe getBenefitsPath
+        }
       }
 
       "redirect to error page if can't connect with keystore if partner" in {
@@ -321,6 +465,35 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             println(result.header.headers)
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe underConstrctionPath
+          }
+
+          s"${range.toString} is selected if there is data in keystore for PageObjects and both are in paid employment object for parent" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(false, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(false, Some(range)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(false)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            println(result.header.headers)
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe whatsYourAgePath + "/partner"
           }
         }
       }

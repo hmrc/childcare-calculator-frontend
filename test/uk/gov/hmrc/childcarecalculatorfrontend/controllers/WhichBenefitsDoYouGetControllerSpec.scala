@@ -25,8 +25,6 @@ import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsEnum.BenefitsEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsEnum.BenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -315,8 +313,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           result.header.headers("Location") shouldBe partnerBenefitsPath
         }
 
-        // TODO: Age page not yet created
-        s"parent has partner without benefits - go to ${underConstrctionPath}" in {
+        s"parent has partner without benefits - go to ${whatsYourAgePath}/parent" in {
           val benefits = Benefits(true, true, true, true)
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
@@ -348,11 +345,10 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
           val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe s"${whatsYourAgePath}/parent"
         }
 
-        // TODO: Age page not yet created
-        s"single parent - go to ${underConstrctionPath}" in {
+        s"single parent - go to ${whatsYourAgePath}/parent" in {
           val benefits = Benefits(true, true, true, true)
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
@@ -384,7 +380,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
           val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe s"${whatsYourAgePath}/parent"
         }
       }
 
@@ -612,8 +608,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
       }
 
       "redirect to correct next page" should {
-        // TODO: Age page not yet created
-        s"go to ${underConstrctionPath}" in {
+        s"go to ${whatsYourAgePath}/partner" in {
           val benefits = Benefits(true, true, true, true)
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
@@ -645,7 +640,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           val form = new WhichBenefitsDoYouGetForm(true, applicationMessagesApi).form.fill(benefits)
           val result = await(sut.onSubmit(true)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe s"${whatsYourAgePath}/partner"
         }
       }
 

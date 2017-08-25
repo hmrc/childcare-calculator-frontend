@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, BenefitsEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Benefits
 import uk.gov.hmrc.play.test.UnitSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
