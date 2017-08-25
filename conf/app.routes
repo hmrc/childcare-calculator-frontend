@@ -63,7 +63,13 @@ POST   /benefits/partner                uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /whats-your-age/parent           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = false)
 POST   /whats-your-age/parent           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = false)
 
-GET    /whats-your-age/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = true)
-POST   /whats-your-age/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = true)
+GET    /whats-your-age/partner          uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = true)
+POST   /whats-your-age/partner          uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = true)
+
+GET    /minimum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.MinimumEarningsController.onPageLoad(isPartner: Boolean = false)
+POST   /minimum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.MinimumEarningsController.onSubmit(isPartner: Boolean = false)
+
+GET    /minimum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MinimumEarningsController.onPageLoad(isPartner: Boolean = true)
+POST   /minimum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MinimumEarningsController.onSubmit(isPartner: Boolean = true)
 
 
