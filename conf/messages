@@ -179,6 +179,16 @@ which.benefits.do.you.get.higher.attendance.allowance = Attendance Allowance (hi
 which.benefits.do.you.get.higher.personal.independence.payment = Personal Independence Payment (enhanced daily living component)
 which.benefits.do.you.get.armed.forces.independence.payment = Armed Forces Independence Payment
 
+####### Whats Your age #######
+whats.your.age.header.parent = What’s your age?
+whats.your.age.header.partner = What’s your partner’s age?
+whats.your.age.radio.under18 = Under 18
+whats.your.age.radio.eighteentotwenty = 18 to 20
+whats.your.age.radio.twentyonetotwentyfour = 21 to 24
+whats.your.age.radio.over25 = 25 or over
+whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
+whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
+
 ####### On average how much will you earn  #########
 on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
 on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week

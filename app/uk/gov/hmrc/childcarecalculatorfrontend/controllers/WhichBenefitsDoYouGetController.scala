@@ -107,8 +107,11 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
       routes.WhichBenefitsDoYouGetController.onPageLoad(true)
     }
     else {
-      // TODO: Age page not yet created
-      routes.ChildCareBaseController.underConstruction()
+      if(isPartner) {
+        routes.WhatsYourAgeController.onPageLoad(true)
+      } else {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      }
     }
   }
 

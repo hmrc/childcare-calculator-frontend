@@ -3,6 +3,8 @@
 GET    /                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onPageLoad
 GET    /error                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.onTechnicalDifficulties
 
+GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
+
 # TODO: Delete when all pages are ready
 GET    /under-construction              uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.underConstruction
 
@@ -58,5 +60,10 @@ POST   /benefits/parent                 uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /benefits/partner                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(isPartner: Boolean = true)
 POST   /benefits/partner                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(isPartner: Boolean = true)
 
-GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
+GET    /whats-your-age/parent           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = false)
+POST   /whats-your-age/parent           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = false)
+
+GET    /whats-your-age/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(isPartner: Boolean = true)
+POST   /whats-your-age/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(isPartner: Boolean = true)
+
 

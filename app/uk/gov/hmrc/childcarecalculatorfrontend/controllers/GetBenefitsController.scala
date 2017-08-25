@@ -77,17 +77,19 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
     }
   }
 
-  private def getNextPage(hasPartner: Boolean, newGetBenefits: Boolean): Call = {
-    if(newGetBenefits) {
+  private def getNextPage(pageObjects: PageObjects, hasPartner: Boolean, getBenefits: Boolean): Call = {
+    if(getBenefits) {
       if(hasPartner) {
         routes.WhoGetsBenefitsController.onPageLoad()
       } else {
-        //TODO - redirect to what benefits do you get page
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       }
     } else {
-      //TODO - redirect to your age page when prototype is ready
-      routes.ChildCareBaseController.underConstruction()
+      if(hasPartner && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
+        routes.WhatsYourAgeController.onPageLoad(true)
+      } else {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      }
     }
   }
 
@@ -105,7 +107,7 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
           success => {
             val modifiedPageObjects = modifyPageObjects(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(getNextPage(hasPartner, success.get))
+              Redirect(getNextPage(pageObjects, hasPartner, success.get))
             }
           }
         )
