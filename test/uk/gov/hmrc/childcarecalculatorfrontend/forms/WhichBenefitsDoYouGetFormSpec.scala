@@ -57,10 +57,10 @@ class WhichBenefitsDoYouGetFormSpec extends UnitSpec with FakeCCApplication {
         forAll(validTestCase) { case(income, disabilityBenefits, higherRateBenefits, carersAllowance) =>
           s"income = ${income}, disability = ${disabilityBenefits}, higherRateBenefits = ${higherRateBenefits} and carersAllowance = ${carersAllowance} benefitValue is selected" in {
             val result = new WhichBenefitsDoYouGetForm(isPartner, applicationMessagesApi).form.bind(Map(
-              "WhichBenefitsDoYouGetIncome" -> income.toString,
-              "WhichBenefitsDoYouGetDisabilityBenefits" -> disabilityBenefits.toString,
-              "WhichBenefitsDoYouGetHigherRateDisability" -> higherRateBenefits.toString,
-              "WhichBenefitsDoYouGetCarersAllowance" -> carersAllowance.toString
+              s"${WhichBenefitsDoYouGetKey}-income" -> income.toString,
+              s"${WhichBenefitsDoYouGetKey}-disability" -> disabilityBenefits.toString,
+              s"${WhichBenefitsDoYouGetKey}-higherRateDisability" -> higherRateBenefits.toString,
+              s"${WhichBenefitsDoYouGetKey}-carersAllowance" -> carersAllowance.toString
             ))
             result.hasErrors shouldBe false
             result.value.get shouldBe Benefits(
@@ -76,10 +76,10 @@ class WhichBenefitsDoYouGetFormSpec extends UnitSpec with FakeCCApplication {
       s"display error ${applicationMessages.messages(errorMessage)}" when {
         "nothing is selected" in {
           val result = new WhichBenefitsDoYouGetForm(isPartner, applicationMessagesApi).form.bind(Map(
-            "WhichBenefitsDoYouGetIncome" -> "false",
-            "WhichBenefitsDoYouGetDisabilityBenefits" -> "false",
-            "WhichBenefitsDoYouGetHigherRateDisability" -> "false",
-            "WhichBenefitsDoYouGetCarersAllowance" -> "false"
+            s"${WhichBenefitsDoYouGetKey}-disability" -> "false",
+            s"${WhichBenefitsDoYouGetKey}-higherRateDisability" -> "false",
+            s"${WhichBenefitsDoYouGetKey}-income" -> "false",
+            s"${WhichBenefitsDoYouGetKey}-carersAllowance" -> "false"
           ))
           result.hasErrors shouldBe true
           result.errors.length shouldBe 1

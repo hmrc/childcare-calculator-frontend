@@ -31,10 +31,10 @@ class WhichBenefitsDoYouGetForm @Inject()(isPartner: Boolean, val messagesApi: M
 
   val form = Form[Benefits](
     mapping(
-      "WhichBenefitsDoYouGetDisabilityBenefits" -> boolean,
-      "WhichBenefitsDoYouGetHigherRateDisability" -> boolean,
-      "WhichBenefitsDoYouGetIncome" -> boolean,
-      "WhichBenefitsDoYouGetCarersAllowance" -> boolean
+      s"${WhichBenefitsDoYouGetKey}-disability" -> boolean,
+      s"${WhichBenefitsDoYouGetKey}-higherRateDisability" -> boolean,
+      s"${WhichBenefitsDoYouGetKey}-income" -> boolean,
+      s"${WhichBenefitsDoYouGetKey}-carersAllowance" -> boolean
     )(Benefits.apply)(Benefits.unapply)
       .verifying(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error"), x => x.carersAllowance || x.incomeBenefits || x.disabilityBenefits || x.highRateDisabilityBenefits)
   )

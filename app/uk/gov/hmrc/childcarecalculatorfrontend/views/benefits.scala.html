@@ -46,22 +46,22 @@
             @checkboxInLineErrorMessage(form, "benefits")
 
             @checkbox.ccCheckboxOptions(
-                form("WhichBenefitsDoYouGetIncome"),
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-income"),
                 '_label -> messages("which.benefits.do.you.get.income.benefits")
             )
 
             @checkbox.ccCheckboxOptions(
-                form("WhichBenefitsDoYouGetDisabilityBenefits"),
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-disability"),
                 '_label -> messages("which.benefits.do.you.get.disability.benefits")
             )
 
             @checkbox.ccCheckboxOptions(
-                form("WhichBenefitsDoYouGetHigherRateDisability"),
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-higherRateDisability"),
                 '_label -> messages("which.benefits.do.you.get.higher.rate.disability.benefits")
             )
 
             @checkbox.ccCheckboxOptions(
-                form("WhichBenefitsDoYouGetCarersAllowance"),
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-carersAllowance"),
                 '_label -> messages("which.benefits.do.you.get.carers.allowance")
             )
 

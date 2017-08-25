@@ -38,10 +38,10 @@ class BenefitsSpec extends TemplatesValidator with FakeCCApplication {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "Select all that apply."),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("WhichBenefitsDoYouGetIncome"), value = "Income benefits"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("WhichBenefitsDoYouGetDisabilityBenefits"), value = "Disability benefits"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("WhichBenefitsDoYouGetHigherRateDisability"), value = "Higher rate disability benefits"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("WhichBenefitsDoYouGetCarersAllowance"), value = "Carer’s Allowance"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some(s"${WhichBenefitsDoYouGetKey}-income"), value = "Income benefits"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some(s"${WhichBenefitsDoYouGetKey}-disability"), value = "Disability benefits"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some(s"${WhichBenefitsDoYouGetKey}-higherRateDisability"), value = "Higher rate disability benefits"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some(s"${WhichBenefitsDoYouGetKey}-carersAllowance"), value = "Carer’s Allowance"),
     ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
@@ -94,7 +94,14 @@ class BenefitsSpec extends TemplatesValidator with FakeCCApplication {
 
           verifyPageContent(dynamicContent)
           verifyPageLinks(dynamicLinks)
-          verifyChecks(List("WhichBenefitsDoYouGetIncome", "WhichBenefitsDoYouGetDisabilityBenefits", "WhichBenefitsDoYouGetHigherRateDisability", "WhichBenefitsDoYouGetCarersAllowance"))
+          verifyChecks(
+            List(
+              s"${WhichBenefitsDoYouGetKey}-income",
+              s"${WhichBenefitsDoYouGetKey}-disability",
+              s"${WhichBenefitsDoYouGetKey}-higherRateDisability",
+              s"${WhichBenefitsDoYouGetKey}-carersAllowance"
+            )
+          )
           verifyErrors()
         }
 
@@ -102,10 +109,10 @@ class BenefitsSpec extends TemplatesValidator with FakeCCApplication {
         s"display ${applicationMessages.messages(errorMessage)} form is submitted without data" in {
           val form = new WhichBenefitsDoYouGetForm(isPartner, applicationMessagesApi).form.bind(
             Map(
-              "WhichBenefitsDoYouGetIncome" -> "false",
-              "WhichBenefitsDoYouGetDisabilityBenefits" -> "false",
-              "WhichBenefitsDoYouGetHigherRateDisability" -> "false",
-              "WhichBenefitsDoYouGetCarersAllowance" -> "false"
+              s"${WhichBenefitsDoYouGetKey}-income" -> "false",
+              s"${WhichBenefitsDoYouGetKey}-disability" -> "false",
+              s"${WhichBenefitsDoYouGetKey}-higherRateDisability" -> "false",
+              s"${WhichBenefitsDoYouGetKey}-carersAllowance" -> "false"
             )
           )
           implicit val doc: Document = getTemplate(form, isPartner)

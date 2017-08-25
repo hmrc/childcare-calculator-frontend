@@ -24,6 +24,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsEnum.BenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsEnum.BenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -59,10 +60,10 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
             Future.successful(
               Some(
                 PageObjects(
-                  livingWithPartner = Some(true),
+                  livingWithPartner = Some(false),
                   household = Household(
                     location = LocationEnum.ENGLAND,
-                    partner = Some(Claimant())
+                    partner = None
                   )
                 )
               )
@@ -71,6 +72,8 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
         val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe getBenefitsPath
       }
 
       "load template successfully if there is data in keystore" in {
@@ -93,9 +96,11 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
         val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe whoGetsBenefitsPath
       }
 
-      "load template successfully if there is no data in keystore" in {
+      "redirect to error page if there is no data in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -118,7 +123,6 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
       }
     }
 
-
     "onPageLoad is called for partner" should {
       "load template successfully if there is some data in keystore" in {
         when(
@@ -139,6 +143,8 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
         val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe whoGetsBenefitsPath
       }
 
       "load template successfully if there is data in keystore" in {
@@ -161,6 +167,8 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
         val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe parentBenefitsPath
       }
 
       "load template successfully if there is no data in keystore" in {
@@ -212,8 +220,8 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-
         "unable to save data in keystore" in {
+          val benefits = Benefits(true, true, true, true)
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
           ).thenReturn(
@@ -223,8 +231,8 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
                     livingWithPartner = Some(true),
                     household = Household(
                       location = LocationEnum.ENGLAND,
-                      parent =  Claimant(benefits = Some(Benefits(true, true, true, true))),
-                      partner = Some(Claimant(benefits = Some(Benefits(true, true, true, true))))
+                      parent =  Claimant(benefits = Some(benefits)),
+                      partner = Some(Claimant(benefits = Some(benefits)))
                     )
                   )
                 )
@@ -234,18 +242,503 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           when(
             sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
           ).thenReturn(
-              Future.failed(new RuntimeException)
-            )
+            Future.failed(new RuntimeException)
+          )
 
-          val result = await(sut.onSubmit(false)(request.withSession(validSession)))
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
       }
 
-      "there are errors" when {
-//        "load the same template with status bad request" in {
-//        }
+      "load the same template with status bad request" when {
+        "there are errors" in {
+          val benefits = Benefits(false, false, false, false)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = Some(Claimant(benefits = Some(benefits)))
+                  )
+                )
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        }
+      }
+
+      "redirect to correct next page" when {
+        s"parent has partner - go to ${partnerBenefitsPath}" in {
+          val benefits = Benefits(true, true, true, true)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = Some(Claimant(benefits = Some(benefits)))
+                  )
+                )
+              )
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                mock[PageObjects]
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe partnerBenefitsPath
+        }
+
+        // TODO: Age page not yet created
+        s"parent has partner without benefits - go to ${underConstrctionPath}" in {
+          val benefits = Benefits(true, true, true, true)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = Some(Claimant(benefits = None))
+                  )
+                )
+              )
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                mock[PageObjects]
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+
+        // TODO: Age page not yet created
+        s"single parent - go to ${underConstrctionPath}" in {
+          val benefits = Benefits(true, true, true, true)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = None
+                  )
+                )
+              )
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                mock[PageObjects]
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+      }
+
+      "modify data correctly" when {
+        "user has partner - shouldn't modify partner's benefits" in {
+          val keystoreObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, true, true, true))),
+              partner = Some(Claimant(benefits = Some(Benefits(true, true, true, true))))
+            )
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, false, false, false))),
+              partner = Some(Claimant(benefits = Some(Benefits(true, true, true, true))))
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(Benefits(true, false, false, false))
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+
+        "user has partner without benefits - shouldn't modify partner's benefits" in {
+          val keystoreObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, true, true, true))),
+              partner = Some(Claimant(benefits = None))
+            )
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, false, false, false))),
+              partner = Some(Claimant(benefits = None))
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(Benefits(true, false, false, false))
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+
+        "user without partner - shouldn't modify only parent benefits" in {
+          val keystoreObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, true, true, true))),
+              partner = None
+            )
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, false, false, false))),
+              partner = None
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(Benefits(true, false, false, false))
+          val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+      }
+    }
+
+    "onSubmit is called for partner" should {
+
+      "go to technical difficulties page" when {
+
+        "unable to connect to keystore" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.failed(new RuntimeException)
+          )
+          val result = await(sut.onSubmit(true)(request.withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+
+        "unable to find data from the keystore" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(None)
+          )
+          val result = await(sut.onSubmit(true)(request.withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+
+        "unable to save data in keystore" in {
+          val benefits = Benefits(true, true, true, true)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = Some(Claimant(benefits = Some(benefits)))
+                  )
+                )
+              )
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.failed(new RuntimeException)
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(true, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(true)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+      }
+
+      "load the same template with status bad request" when {
+        "there are errors" in {
+          val benefits = Benefits(false, false, false, false)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = Some(Claimant(benefits = Some(benefits)))
+                  )
+                )
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(true, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(true)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        }
+      }
+
+      "redirect to correct next page" should {
+        // TODO: Age page not yet created
+        s"go to ${underConstrctionPath}" in {
+          val benefits = Benefits(true, true, true, true)
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                PageObjects(
+                  livingWithPartner = Some(true),
+                  household = Household(
+                    location = LocationEnum.ENGLAND,
+                    parent =  Claimant(benefits = Some(benefits)),
+                    partner = Some(Claimant(benefits = Some(benefits)))
+                  )
+                )
+              )
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                mock[PageObjects]
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(true, applicationMessagesApi).form.fill(benefits)
+          val result = await(sut.onSubmit(true)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+      }
+
+      "modify data correctly" when {
+        "couple - shouldn't modify parent's benefits" in {
+          val keystoreObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, true, true, true))),
+              partner = Some(Claimant(benefits = Some(Benefits(true, true, true, true))))
+            )
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = Some(Benefits(true, true, true, true))),
+              partner = Some(Claimant(benefits = Some(Benefits(true, false, false, false))))
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(true, applicationMessagesApi).form.fill(Benefits(true, false, false, false))
+          val result = await(sut.onSubmit(true)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
+
+        "user has parent without benefits - shouldn't modify parent's benefits" in {
+          val keystoreObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = None),
+              partner = Some(Claimant(benefits = Some(Benefits(true, true, true, true))))
+            )
+          )
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                keystoreObject
+              )
+            )
+          )
+
+          val modifiedObject = PageObjects(
+            livingWithPartner = Some(true),
+            household = Household(
+              location = LocationEnum.ENGLAND,
+              parent =  Claimant(benefits = None),
+              partner = Some(Claimant(benefits = Some(Benefits(true, false, false, false))))
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(
+                modifiedObject
+              )
+            )
+          )
+
+          val form = new WhichBenefitsDoYouGetForm(true, applicationMessagesApi).form.fill(Benefits(true, false, false, false))
+          val result = await(sut.onSubmit(true)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") should not be technicalDifficultiesPath
+        }
       }
     }
   }
