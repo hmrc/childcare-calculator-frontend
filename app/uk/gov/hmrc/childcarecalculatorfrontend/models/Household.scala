@@ -63,7 +63,8 @@ object Benefits {
 case class MinimumEarnings(
                            amount: BigDecimal =   0.00,
                            employmentStatus: Option[EmploymentStatusEnum] =   None,
-                           selfEmployedIn12Months: Option[Boolean] =   None
+                           selfEmployedIn12Months: Option[Boolean] =   None,
+                           earnMoreThanNMW: Option[Boolean] = None
                           )
 object MinimumEarnings {
   implicit val formatMinimumEarnings = Json.format[MinimumEarnings]
@@ -113,7 +114,8 @@ case class Claimant(
                      currentYearlyIncome: Option[Income]  = None,
                      hours: Option[BigDecimal] = None,
                      minimumEarnings: Option[MinimumEarnings]= None,
-                     escVouchers: Option[YesNoUnsureEnum] =   None
+                     escVouchers: Option[YesNoUnsureEnum] =   None,
+
                    )
 object Claimant {
   implicit val formatClaimant = Json.format[Claimant]

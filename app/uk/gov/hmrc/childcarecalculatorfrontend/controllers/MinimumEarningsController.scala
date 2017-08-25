@@ -18,13 +18,63 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
 
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Call, AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{MinimumEarnings, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
 
 @Singleton
 class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-  def onPageLoad(isPartner: Boolean): Action[AnyContent] = ???
+  val keystore: KeystoreService = KeystoreService
+
+  val amount: BigDecimal = ???
+
+  private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
+    if(pageObjects.livingWithPartner.get) {
+      if(isPartner && pageObjects.household.parent.benefits.isDefined) {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
+      } else {
+        routes.WhoGetsBenefitsController.onPageLoad()
+      }
+    } else {
+      routes.GetBenefitsController.onPageLoad()
+    }
+  }
+
+  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
+    (!isPartner || (isPartner && pageObjects.household.partner.isDefined)) && pageObjects.livingWithPartner.isDefined
+  }
+
+  def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+        val minimumEarning: Option[MinimumEarnings] = if(!isPartner) {
+          pageObjects.household.parent.minimumEarnings
+        }
+        else {
+          pageObjects.household.partner.get.minimumEarnings
+        }
+        Ok(
+          minimumEarning(
+            new MinimumEarningsForm(isPartner, amount, messagesApi).form.fill(minimumEarning.getOrElse(MinimumEarnings())),
+            isPartner,
+            amount,
+            backURL(isPartner, pageObjects)
+          )
+        )
+      case _ =>
+        Logger.warn("Invalid PageObjects in WhichBenefitsDoYouGetController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from WhichBenefitsDoYouGetController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = ???
 
