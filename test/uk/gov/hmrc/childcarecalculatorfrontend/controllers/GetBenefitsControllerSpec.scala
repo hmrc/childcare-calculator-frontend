@@ -286,8 +286,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
         }
 
         "single user selects 'yes'" should {
-          //TODO - redirect to what benefits with no partner
-          s"go to what benefits do you get ${underConstrctionPath}" in {
+          s"go to what benefits do you get ${parentBenefitsPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -311,7 +310,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe parentBenefitsPath
           }
         }
 

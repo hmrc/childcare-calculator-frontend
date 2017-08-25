@@ -82,8 +82,7 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
       if(hasPartner) {
         routes.WhoGetsBenefitsController.onPageLoad()
       } else {
-        //TODO - redirect to what benefits do you get page
-        routes.ChildCareBaseController.underConstruction()
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       }
     } else {
       //TODO - redirect to your age page when prototype is ready
