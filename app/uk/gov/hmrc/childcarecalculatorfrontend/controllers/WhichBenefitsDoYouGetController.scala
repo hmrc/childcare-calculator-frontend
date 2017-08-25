@@ -137,7 +137,6 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
           },
           success => {
             val modifiedPageObject = modifyPageObject(pageObject, success, isPartner)
-
             keystore.cache(modifiedPageObject).map { result =>
               Redirect(nextPage(isPartner, pageObject))
             }
