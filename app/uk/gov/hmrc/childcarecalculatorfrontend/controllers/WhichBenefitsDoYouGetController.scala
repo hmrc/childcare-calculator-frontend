@@ -117,7 +117,7 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
             val userType = getUserType(isPartner)
             val modifiedErrors = overrideFormErrorKey[Benefits](
                 form = errors,
-                newMessageKeys = Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
+                newMessageKeys=Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
             )
             Future(
               BadRequest(
