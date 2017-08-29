@@ -35,9 +35,9 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
 
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
     if(isPartner) {
-      if(pageObjects.getBenefits == Some(false)) {
+      if(pageObjects.getBenefits == Some(false) && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
         routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+      } else if (pageObjects.getBenefits == Some(false) && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
         routes.WhatsYourAgeController.onPageLoad(false)
       } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
         routes.WhichBenefitsDoYouGetController.onPageLoad(true)
@@ -47,11 +47,7 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
     } else {
       if(pageObjects.getBenefits == Some(false)) {
         routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined &&
-          (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) ||
-           pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)
-          )
-        ) {
+      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
         routes.WhichBenefitsDoYouGetController.onPageLoad(true)
       } else {
         routes.WhichBenefitsDoYouGetController.onPageLoad(false)
