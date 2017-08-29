@@ -114,8 +114,7 @@ case class Claimant(
                      currentYearlyIncome: Option[Income]  = None,
                      hours: Option[BigDecimal] = None,
                      minimumEarnings: Option[MinimumEarnings]= None,
-                     escVouchers: Option[YesNoUnsureEnum] =   None,
-
+                     escVouchers: Option[YesNoUnsureEnum] =   None
                    )
 object Claimant {
   implicit val formatClaimant = Json.format[Claimant]

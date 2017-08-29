@@ -23,11 +23,9 @@ import play.api.data.Forms._
 import play.api.i18n.{Messages, I18nSupport, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
-/**
- * Created by user on 25/08/17.
- */
 @Singleton
-class MinimumEarningsForm @Inject()(isPartner: Boolean, amount: BigDecimal, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class MinimumEarningsForm @Inject()(isPartner: Boolean, amount: BigDecimal, val messagesApi: MessagesApi) extends
+  I18nSupport with CCConstants {
 
   val userType = getUserType(isPartner)
 

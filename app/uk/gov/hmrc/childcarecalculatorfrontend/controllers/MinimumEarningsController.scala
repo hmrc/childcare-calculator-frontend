@@ -52,26 +52,25 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
-        val minimumEarning: Option[MinimumEarnings] = if(!isPartner) {
+        val minimumEarnings: Option[MinimumEarnings] = if(!isPartner) {
           pageObjects.household.parent.minimumEarnings
-        }
-        else {
+        } else {
           pageObjects.household.partner.get.minimumEarnings
         }
         Ok(
           minimumEarning(
-            new MinimumEarningsForm(isPartner, amount, messagesApi).form.fill(minimumEarning.getOrElse(MinimumEarnings())),
+            new MinimumEarningsForm(isPartner, amount, messagesApi).form.fill(minimumEarnings.getOrElse(MinimumEarnings())),
             isPartner,
             amount,
             backURL(isPartner, pageObjects)
           )
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in WhichBenefitsDoYouGetController.onPageLoad")
+        Logger.warn("Invalid PageObjects in MinimumEarningsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from WhichBenefitsDoYouGetController.onPageLoad: ${ex.getMessage}")
+        Logger.warn(s"Exception from MinimumEarningsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
