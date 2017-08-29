@@ -39,13 +39,13 @@
                     @elements.label
                 </span>
                 @if(elements.args.contains('_inputHint) ){
-                    <span class="form-hint"
+                    <p
                       @if(elements.args.contains('_hintId)) {
                         id="@elements.args.get('_hintId)"
                       }
                     >
                     @elements.args.get('_inputHint)
-                    </span>
+                    </p>
                 }
             @if(labelHighlight){</strong>}
         }

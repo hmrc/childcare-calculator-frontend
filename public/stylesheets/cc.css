@@ -103,6 +103,10 @@ td.numeric {
   text-align: right;
 }
 
+input.form-control {
+    border: 2px solid #0b0c0c;
+}
+
 /*
 IE8: Remove square border from around new style radio buttons
 */
