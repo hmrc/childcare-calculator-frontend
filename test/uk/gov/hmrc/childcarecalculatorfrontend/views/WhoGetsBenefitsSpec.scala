@@ -38,7 +38,7 @@ class WhoGetsBenefitsSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = whoGetsBeneftsPath),
+    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = whoGetsBenefitsPath),
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = getBenefitsPath)
   )
 

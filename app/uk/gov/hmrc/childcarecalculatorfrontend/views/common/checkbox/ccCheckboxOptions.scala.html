@@ -14,117 +14,25 @@
  * limitations under the License.
  *@
 
-@(field: Field, fieldForm: Form[_], checkboxOptions: Seq[(String, String)], args: (Symbol, Any)*)(implicit messages: Messages)
+@(field: play.api.data.Field, args: (Symbol,Any)*)(implicit messages: Messages)
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
-@import uk.gov.hmrc.play.views.html._
 @import views.html.helper._
+@import uk.gov.hmrc.play.views.html._
 
-@*Helpers*@
-@elements = @{new FieldElements(field.id, field, null, args.toMap, messages) }
-@fieldsetClass = {@elements.args.get('_groupClass)@if(elements.hasErrors){ form-field--error}}
-@labelAfter = @{ elements.args.get('_labelAfter).getOrElse(false).asInstanceOf[Boolean] }
-@toggleBoolean = @{ elements.args.get('_jsToggleOn) }
-
-@* Markup *@
-@if(elements.args.get('_fieldsetWrapperDiv).isDefined) {
-<div class="form-group"> }
-    <fieldset class="@fieldsetClass @globalErrors.ccGlobalErrorHelper(fieldForm, " form-field--error", None, elements)" id="@if(elements.args.get('_id).isDefined){@elements.args.get('_id)}else{@elements.field.id.replaceAll("""[\.\[\]]""", "-")}"
-        @if(elements.args.get('_fieldsetAttributes).isDefined) {@elements.args.get('_fieldsetAttributes)}>
-
-                <legend @if(elements.args.get('_legendClass).isDefined) {class="@elements.args.get('_legendClass)"}>
-                    <span @if(elements.args.get('_legendSpanClass).isDefined) {class="@elements.args.get('_legendSpanClass)"}
-                        @if(elements.args.get('_legendSpanAttributes).isDefined) {@elements.args.get('_legendSpanAttributes)}>
-
-                        @if(elements.args.get('_legend).isDefined) {
-                            @elements.args.get('_legend)
-                        }
-                    </span>
-                </legend>
-
-        <span class="clearfix"></span>
-        @if(elements.args.get('_legendAdditionalContent).isDefined) {
-            @elements.args.get('_legendAdditionalContent)
-        }
-        @if(elements.args.get('_formHint).isDefined && elements.args.get('_formHint).get != "") {
-            <span class="form-hint"
-                  @if(elements.args.contains('_hintId)) {
-                  id="@elements.args.get('_hintId)"}
-                  >
-                  @elements.args.get('_formHint)
-            </span>
-        }
-
-        @elements.errors.map { error =>
-            @helpers.errorInline({elements.field.name.replaceAll("""[\.\[\]]""", "-")}, messages(error))
-        }
-
-        @checkboxOptions.zipWithIndex.map { case ((value, label), index) =>
-
-    @if((index == checkboxOptions.length-1) && elements.args.get('_or)) {
-        <p class="form-block">@Messages("cc.or")</p>
-    }
-                @defining(s"${elements.field.name.replaceAll("""[\.\[\]]""", "-")}-${value.toLowerCase.replace(" ","_")}") {inputId =>
-
-    <div class="multiple-choice">
+@elements = @{ new FieldElements(field.id, field, null, args.toMap, messages) }
+@value = @{ field.value match { case Some(x) => x case None => "false" case x => x }}
+@carersAllowance = @{elements.args.get('_customCheckboxCheck)}
 
 
-            <input type="checkbox"
-                   id="@inputId"
-                   name="@elements.field.name"
-                   value="@value"
-                   @elements.args.get('_inputClass).map{inputClass => class="form-control
-                    @inputClass
-                    @globalErrors.ccGlobalErrorHelper(fieldForm, "error-field", None, elements) "
-            }
+<div class="multiple-choice">
 
-            @if(elements.args.contains('_dataAttributes) ){@elements.args.get('_dataAttributes)}
+    <input type="checkbox" id="@elements.id" name="@elements.field.name" value="true" class="multiple-choice"
+    @if((value.toString=="true") || (carersAllowance)){checked="checked"}" aria-labelledby="label@elements.id" />
 
-            @field.value.filter( _ == value).map{_ => checked}
+    <label for="@elements.id" id="label@elements.id" class="block-label">
+        <span class="@if(elements.args.contains('_nested)){bold-small}" @if(elements.args.contains('_labelId)) {
+        id="@elements.args.get('_labelId)"}>@elements.label</span>
 
-            data-dynamic-fields="@elements.args.get('_jsNestedTarget)"
 
-            @if(elements.args.contains('_jsNestesChildrenTarget) ){data-children-nested = "@elements.args.get('_jsNestesChildrenTarget)"}
-
-            @elements.args.get('_jsHideNestedOnRadioOption).map { toggle =>
-                data-dynamic-fields-hide="@if(toggle.toString==value.toString) {true} else {false}"
-            }
-        />
-        <label for="@inputId"
-               @elements.args.get('_checkboxClass).map{checkboxClass => class="@checkboxClass @field.value.filter( _ == value).map{_ => selected}"}>
-        @if(!labelAfter) {
-        @if(elements.args.get('_stackedLabel)) {
-        @if(label.split(" ").length < 2) {
-        <br>@label.trim
-        } else {
-        @for( (l, index) <- label.split(" ").zipWithIndex) {
-        @if(index != 0) {<br>}@l.trim
-        }
-        }
-        } else {
-        @label.trim
-        }
-        }
-        @if(labelAfter) {
-            @if(elements.args.get('_stackedLabel)) {
-                @if(label.split(" ").length < 2) {
-                    <br>@label.trim
-                } else {
-                @for( (l, index) <- label.split(" ").zipWithIndex) {
-                    @if(index != 0) {<br>}@l.trim
-                }
-            }
-            } else { @label.trim }
-        }
-        </label>
-    </div>
-        }
-        }
-
-        @*Nested content, js panel indent *@
-        @if(elements.args.get('_nestedContent)) {
-            @elements.args.get('_nestedContent)
-        }
-    </fieldset>
-
-    @if(elements.args.get('_fieldsetWrapperDiv).isDefined) {</div> }
+    </label>
+</div>

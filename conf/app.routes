@@ -52,5 +52,11 @@ POST   /get-benefits                    uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /who-gets-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad
 POST   /who-gets-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit
 
+GET    /benefits/parent                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(isPartner: Boolean = false)
+POST   /benefits/parent                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(isPartner: Boolean = false)
+
+GET    /benefits/partner                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(isPartner: Boolean = true)
+POST   /benefits/partner                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(isPartner: Boolean = true)
+
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 

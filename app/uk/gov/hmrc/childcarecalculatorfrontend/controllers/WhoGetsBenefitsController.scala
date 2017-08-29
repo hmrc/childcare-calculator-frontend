@@ -110,14 +110,7 @@ class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getNextPage(selectedWhoGetsBenefits: YouPartnerBothEnum): Call = {
-    if(selectedWhoGetsBenefits == YouPartnerBothEnum.PARTNER) {
-      // go to partner benefits
-      routes.ChildCareBaseController.underConstruction()
-    }
-    else {
-      // go to parent benefits
-      routes.ChildCareBaseController.underConstruction()
-    }
+    routes.WhichBenefitsDoYouGetController.onPageLoad(selectedWhoGetsBenefits == YouPartnerBothEnum.PARTNER)
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>

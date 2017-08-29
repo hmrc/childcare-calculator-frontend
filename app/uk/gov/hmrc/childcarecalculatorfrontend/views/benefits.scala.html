@@ -1,0 +1,72 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.error._
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
+@import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+
+@(form: Form[Benefits], isPartner: Boolean, backURL: Call)(implicit request: Request[_], messages: Messages)
+
+@userType = @{ CCConstants.getUserType(isPartner) }
+
+@ccMain(
+    header = messages(s"which.benefits.do.you.get.${userType}.header"),
+    backLink = Some(backURL)
+) {
+    @helpers.form(
+        action = routes.WhichBenefitsDoYouGetController.onSubmit(isPartner),
+        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+
+        @error.ccErrorSummary(form)
+
+        <p>@messages("select.all.that.apply")</p>
+
+
+        <fieldset class="form-group @if(form.hasErrors) {form-field--error}" id="benefits">
+
+            <legend class="visuallyhidden">@messages(s"which.benefits.do.you.get.${userType}.header")</legend>
+
+            @checkboxInLineErrorMessage(form, "benefits")
+
+            @checkbox.ccCheckboxOptions(
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-income"),
+                '_label -> messages("which.benefits.do.you.get.income.benefits")
+            )
+
+            @checkbox.ccCheckboxOptions(
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-disability"),
+                '_label -> messages("which.benefits.do.you.get.disability.benefits")
+            )
+
+            @checkbox.ccCheckboxOptions(
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-higherRateDisability"),
+                '_label -> messages("which.benefits.do.you.get.higher.rate.disability.benefits")
+            )
+
+            @checkbox.ccCheckboxOptions(
+                form(s"${CCConstants.WhichBenefitsDoYouGetKey}-carersAllowance"),
+                '_label -> messages("which.benefits.do.you.get.carers.allowance")
+            )
+
+        </fieldset>
+
+        @buttons.nextButton()
+    }
+}
