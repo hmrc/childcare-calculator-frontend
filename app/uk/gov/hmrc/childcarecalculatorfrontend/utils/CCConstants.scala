@@ -33,7 +33,7 @@ trait CCConstants {
   lazy val vouchersKey = "vouchers"
   lazy val getBenefitsKey = "getBenefits"
   lazy val whoGetsBeneftsKey = "whoGetsBenefits"
-
+  lazy val whatsYourAgeKey = "whatsYourAge"
 
   def getFamilyStatus(hasPartner: Boolean): String = {
     if(hasPartner) "couple" else "single"
@@ -42,6 +42,7 @@ trait CCConstants {
   def getUserType(isPartner: Boolean): String = {
     if(isPartner) "partner" else "parent"
   }
+
 }
 
 object CCConstants extends CCConstants

@@ -79,7 +79,8 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
           household = modified.household.copy(
             partner = Some(
               modified.household.partner.get.copy(
-                hours = None
+                hours = None,
+                ageRange = None
               )
             )
           )
@@ -87,7 +88,8 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
         case YouPartnerBothEnum.PARTNER => modified.copy(
           household = modified.household.copy(
             parent = modified.household.parent.copy(
-              hours = None
+              hours = None,
+              ageRange = None
             )
           )
         )

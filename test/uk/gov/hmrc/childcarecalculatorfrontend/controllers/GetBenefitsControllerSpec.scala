@@ -208,7 +208,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          s"go to which benefits page ${underConstrctionPath}" in {
+          s"go to which benefits page ${whatsYourAgePath}/parent" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -232,13 +232,12 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe s"${whatsYourAgePath}/parent"
           }
         }
 
         "user with partner selects 'no'" should {
-          // TODO: Redirect to which Benefits page when it's done
-          s"go to which benefits page ${underConstrctionPath} and clear related data" in {
+          s"go to age page ${whatsYourAgePath}/parent and clear related data" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
@@ -281,8 +280,57 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe s"${whatsYourAgePath}/parent"
           }
+
+          s"go to age page ${whatsYourAgePath}/partner and clear related data if only partner is in paid employment" in {
+            val keystoreObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(benefits = Some(Benefits(disabilityBenefits = false))),
+                partner = Some(Claimant(benefits = None))
+              ),
+              livingWithPartner = Some(true),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
+            )
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(keystoreObject))
+            )
+
+            val modifiedObject: PageObjects = PageObjects(
+              household = Household(
+                location = LocationEnum.ENGLAND,
+                parent = Claimant(benefits = None),
+                partner = Some(Claimant(benefits = None))
+              ),
+              livingWithPartner = Some(true),
+              getBenefits = Some(false),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(modifiedObject)
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(getBenefitsKey -> "false")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe s"${whatsYourAgePath}/partner"
+          }
+
         }
 
         "single user selects 'yes'" should {

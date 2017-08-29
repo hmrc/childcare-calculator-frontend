@@ -21,23 +21,23 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Benefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeRangeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class WhichBenefitsDoYouGetForm @Inject()(isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport
-  with CCConstants {
+class WhatsYourAgeForm @Inject()(isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  val userType = getUserType(isPartner)
+  type WhatsYourAgeFormType = Option[String]
 
-  val form = Form[Benefits](
-    mapping(
-      s"${WhichBenefitsDoYouGetKey}-disability" -> boolean,
-      s"${WhichBenefitsDoYouGetKey}-higherRateDisability" -> boolean,
-      s"${WhichBenefitsDoYouGetKey}-income" -> boolean,
-      s"${WhichBenefitsDoYouGetKey}-carersAllowance" -> boolean
-    )(Benefits.apply)(Benefits.unapply)
-      .verifying(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error"), x => x.carersAllowance ||
-        x.incomeBenefits || x.disabilityBenefits || x.highRateDisabilityBenefits)
+  val user = getUserType(isPartner)
+
+  val form = Form[WhatsYourAgeFormType](
+    single(
+      whatsYourAgeKey -> optional(text).verifying(
+        Messages("whats.your.age.radio.not.selected.error." + user),
+        whatsYourAge =>
+          AgeRangeEnum.values.exists(_.toString == whatsYourAge.getOrElse(""))
+      )
+    )
   )
 }

@@ -46,5 +46,6 @@ trait CCRoutes {
   val whoGetsBenefitsPath: String = path("/who-gets-benefits")
   val parentBenefitsPath: String = path("/benefits/parent")
   val partnerBenefitsPath: String = path("/benefits/partner")
+  val whatsYourAgePath: String = path("/whats-your-age")
 
 }

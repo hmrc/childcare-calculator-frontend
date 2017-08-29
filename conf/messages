@@ -135,7 +135,7 @@ vouchers.not.selected.error.you = You must tell the calculator if your employer 
 vouchers.not.selected.error.partner = You must tell the calculator if your partner’s employer offers childcare vouchers
 vouchers.not.selected.error.both = You must tell the calculator if either of your employers offer childcare vouchers
 
-####### Get Benefits #######
+####### Get benefits #######
 get.benefits.header.single = Do you get any benefits?
 get.benefits.header.couple = Do you or your partner get any benefits?
 get.benefits.not.selected.error.single = You must answer yes if you get any benefits
@@ -178,4 +178,14 @@ which.benefits.do.you.get.higher.disability.living.allowance = Disability Living
 which.benefits.do.you.get.higher.attendance.allowance = Attendance Allowance (higher rate)
 which.benefits.do.you.get.higher.personal.independence.payment = Personal Independence Payment (enhanced daily living component)
 which.benefits.do.you.get.armed.forces.independence.payment = Armed Forces Independence Payment
+
+####### Whats Your age #######
+whats.your.age.header.parent = What’s your age?
+whats.your.age.header.partner = What’s your partner’s age?
+whats.your.age.radio.under18 = Under 18
+whats.your.age.radio.eighteentotwenty = 18 to 20
+whats.your.age.radio.twentyonetotwentyfour = 21 to 24
+whats.your.age.radio.over25 = 25 or over
+whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
+whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
