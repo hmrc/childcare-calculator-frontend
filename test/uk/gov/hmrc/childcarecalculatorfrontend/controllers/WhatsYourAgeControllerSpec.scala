@@ -230,7 +230,8 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
                   parent = Claimant(benefits = Some(Benefits())),
                   partner = Some(Claimant(benefits = Some(Benefits())))
                 ),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                getBenefits = Some(false)
               ))
             )
           )
@@ -241,7 +242,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           content.getElementById("back-button").attr("href") shouldBe s"${whatsYourAgePath}/parent"
         }
 
-        "noone gets benefits" in {
+        "partner paid employed and gets no benefits" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -252,6 +253,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
                   parent = Claimant(),
                   partner = Some(Claimant())
                 ),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
                 getBenefits = Some(false)
               ))
             )

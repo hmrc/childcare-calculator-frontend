@@ -19,19 +19,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
-import play.api.i18n.{Messages, I18nSupport, MessagesApi}
-import play.api.mvc.{Call, AnyContent, Action}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits
 
 import scala.concurrent.Future
 
-/**
- * Created by user on 23/08/17.
- */
 @Singleton
 class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController with FormManager {
 
@@ -58,8 +55,7 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
       case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
         val claimantBenefits: Option[Benefits] = if(!isPartner) {
           pageObjects.household.parent.benefits
-        }
-        else {
+        } else {
           pageObjects.household.partner.get.benefits
         }
         Ok(
@@ -90,8 +86,7 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
           )
         )
       )
-    }
-    else {
+    } else {
       pageObjects.copy(
         household = pageObjects.household.copy(
           parent = pageObjects.household.parent.copy(
@@ -105,9 +100,8 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
   private def nextPage(isPartner: Boolean, pageObjects: PageObjects): Call = {
     if (!isPartner && pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
       routes.WhichBenefitsDoYouGetController.onPageLoad(true)
-    }
-    else {
-      if(isPartner) {
+    } else {
+      if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
         routes.WhatsYourAgeController.onPageLoad(true)
       } else {
         routes.WhatsYourAgeController.onPageLoad(false)
@@ -123,7 +117,7 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
             val userType = getUserType(isPartner)
             val modifiedErrors = overrideFormErrorKey[Benefits](
                 form = errors,
-                newMessageKeys = Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
+                newMessageKeys=Map(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error") -> "benefits")
             )
             Future(
               BadRequest(

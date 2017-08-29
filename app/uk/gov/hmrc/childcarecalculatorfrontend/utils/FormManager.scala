@@ -18,10 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.data.{FormError, Form}
 
-/**
- * Created by user on 24/08/17.
- */
 trait FormManager {
+
   def overrideFormErrorKey[A](form: Form[A], newMessageKeys: Map[String, String], forceOverride: Boolean = false): Form[A] = {
     val modified = form.errors.foldLeft(Seq[FormError]())((acc, error) => {
       val theKey = newMessageKeys.get(error.message)
@@ -33,4 +31,5 @@ trait FormManager {
     })
     form.copy[A](form.mapping, form.data, modified, form.value)
   }
+
 }

@@ -25,7 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.Benefits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class WhichBenefitsDoYouGetForm @Inject()(isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class WhichBenefitsDoYouGetForm @Inject()(isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport
+  with CCConstants {
 
   val userType = getUserType(isPartner)
 
@@ -36,6 +37,7 @@ class WhichBenefitsDoYouGetForm @Inject()(isPartner: Boolean, val messagesApi: M
       s"${WhichBenefitsDoYouGetKey}-income" -> boolean,
       s"${WhichBenefitsDoYouGetKey}-carersAllowance" -> boolean
     )(Benefits.apply)(Benefits.unapply)
-      .verifying(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error"), x => x.carersAllowance || x.incomeBenefits || x.disabilityBenefits || x.highRateDisabilityBenefits)
+      .verifying(Messages(s"which.benefits.do.you.get.not.selected.${userType}.error"), x => x.carersAllowance ||
+        x.incomeBenefits || x.disabilityBenefits || x.highRateDisabilityBenefits)
   )
 }

@@ -35,9 +35,11 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
 
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
     if(isPartner) {
-      if(pageObjects.getBenefits == Some(false)) {
+      if(pageObjects.getBenefits.contains(false) &&
+        pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
         routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+      } else if (pageObjects.getBenefits.contains(false) &&
+        pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
         routes.WhatsYourAgeController.onPageLoad(false)
       } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
         routes.WhichBenefitsDoYouGetController.onPageLoad(true)
@@ -45,13 +47,9 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
         routes.WhichBenefitsDoYouGetController.onPageLoad(false)
       }
     } else {
-      if(pageObjects.getBenefits == Some(false)) {
+      if(pageObjects.getBenefits.contains(false)) { //replaced pageObjects.getBenefits == Some(false)
         routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined &&
-          (pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) ||
-           pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)
-          )
-        ) {
+      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
         routes.WhichBenefitsDoYouGetController.onPageLoad(true)
       } else {
         routes.WhichBenefitsDoYouGetController.onPageLoad(false)
@@ -100,12 +98,12 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
             ),
           success => {
             val enumValue: AgeRangeEnum.Value = AgeRangeEnum.withName(success.get)
-            keystore.cache(getModifiedPageObjects(enumValue, pageObjects, isPartner)).map { result =>
+            keystore.cache(getModifiedPageObjects(enumValue, pageObjects, isPartner)).map { _ =>
               if(isPartner) {
                 //TODO redirect to min earnings partner page and change tests
                 Redirect(routes.ChildCareBaseController.underConstruction())
               } else {
-                if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH)) {
+                if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
                   Redirect(routes.WhatsYourAgeController.onPageLoad(true))
                 } else {
                   //TODO redirect to min earnings parent page and change tests

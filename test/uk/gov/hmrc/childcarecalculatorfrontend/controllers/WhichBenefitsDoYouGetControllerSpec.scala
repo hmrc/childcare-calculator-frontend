@@ -31,9 +31,6 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-/**
- * Created by user on 24/08/17.
- */
 class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with BeforeAndAfterEach {
 
   val sut = new WhichBenefitsDoYouGetController(applicationMessagesApi) {
@@ -322,6 +319,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
               Some(
                 PageObjects(
                   livingWithPartner = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU),
                   household = Household(
                     location = LocationEnum.ENGLAND,
                     parent =  Claimant(benefits = Some(benefits)),
@@ -617,6 +615,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
               Some(
                 PageObjects(
                   livingWithPartner = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
                   household = Household(
                     location = LocationEnum.ENGLAND,
                     parent =  Claimant(benefits = Some(benefits)),
