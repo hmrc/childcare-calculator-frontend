@@ -20,9 +20,9 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, AnyContent, Action}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{MinimumEarnings, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
 
@@ -52,14 +52,14 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
-        val minimumEarnings: Option[MinimumEarnings] = if(!isPartner) {
-          pageObjects.household.parent.minimumEarnings
+        val minimumEarnings: Boolean = if(isPartner) {
+          pageObjects.household.partner.get.minimumEarnings.isDefined
         } else {
-          pageObjects.household.partner.get.minimumEarnings
+          pageObjects.household.parent.minimumEarnings.isDefined
         }
         Ok(
           minimumEarning(
-            new MinimumEarningsForm(isPartner, amount, messagesApi).form.fill(minimumEarnings.getOrElse(MinimumEarnings())),
+            new MinimumEarningsForm(isPartner, amount, messagesApi).form.fill(Some(minimumEarnings)),
             isPartner,
             amount,
             backURL(isPartner, pageObjects)

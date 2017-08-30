@@ -26,14 +26,12 @@ import play.api.{Configuration, Logger, Play}
 
 import scala.annotation.tailrec
 
-/**
- * Created by user on 25/08/17.
- */
 class HelperManager {
   def isUserEarningLessThanMinimumWage(PageObjects: PageObjects): Boolean = {
     val nmwConfig = getNMWConfig(LocalDate.now)
-    val nmwPerAge = nmwConfig.getInt(PageObjects.household.parent.ageRange.getOrElse("non-existing-age"))
-    nmwPerAge.isDefined && PageObjects.minimumEarnings.isDefined && (nmwPerAge.get > PageObjects.minimumEarnings.get)
+//    val nmwPerAge = nmwConfig.getInt(PageObjects.household.parent.ageRange.getOrElse("non-existing-age"))
+//    nmwPerAge.isDefined && PageObjects.minimumEarnings.isDefined && (nmwPerAge.get > PageObjects.minimumEarnings.get)
+    true
   }
 
   def getLatestConfig(configType: String, currentDate: LocalDate): Configuration = {
