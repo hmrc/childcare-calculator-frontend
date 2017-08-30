@@ -56,7 +56,7 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
   forAll(testCases) { case (isPartner, submissionPath, pageTitle, hintText) =>
     val dynamicContent = List(
       ElementDetails(id = Some("page-title"), value = pageTitle),
-      ElementDetails(elementClass = Some("form-hint"), tagIndex = Some(0), value = hintText)
+      ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = hintText)
     )
 
     val dynamicLinks = List(
