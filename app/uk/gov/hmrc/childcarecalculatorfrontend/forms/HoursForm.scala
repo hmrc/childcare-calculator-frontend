@@ -32,15 +32,11 @@ class HoursForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with
     single(
       hoursKey -> optional(bigDecimal).verifying(
         Messages("hours.a.week.not.selected.error"),
-        _.isDefined
+        hours => hours.isDefined && validateInRange(hours.get, FrontendAppConfig.minWorkingHours, FrontendAppConfig.maxWorkingHours)
       ).verifying(
         Messages("hours.a.week.invalid.error"),
         hours =>
-          hours.isEmpty || (
-            hours.isDefined &&
-            validateTwoDigitsAndOneDecimal(hours.get) &&
-            validateInRange(hours.get, FrontendAppConfig.minWorkingHours, FrontendAppConfig.maxWorkingHours)
-          )
+          hours.isEmpty || (hours.isDefined && validateTwoDigitsAndOneDecimal(hours.get))
       )
     )
   )

@@ -55,8 +55,26 @@ class HoursFormSpec extends UnitSpec with FakeCCApplication {
       }
     }
 
+    s"display not in range error '${applicationMessages.messages("hours.a.week.not.selected.error")}'" when {
+      val invalidValues: List[BigDecimal] = List(0, 0.9, 99.6)
+      invalidValues.foreach { hours =>
+        s"invalid value '${hours}' is given" in {
+          val form = new HoursForm(applicationMessagesApi).form.bind(
+            Map(
+              hoursKey -> hours.toString
+            )
+          )
+          form.value shouldBe None
+          form.hasErrors shouldBe true
+          form.errors.length shouldBe 1
+          form.errors.head.message shouldBe applicationMessages.messages("hours.a.week.not.selected.error")
+          form.errors.head.message should not be "hours.a.week.not.selected.error"
+        }
+      }
+    }
+
     s"display '${applicationMessages.messages("hours.a.week.invalid.error")}'" when {
-      val invalidValues: List[BigDecimal] = List(-1, 0, 0.9, 1.01, 15.55, 99.51, 99.6)
+      val invalidValues: List[BigDecimal] = List(1.01, 15.55)
       invalidValues.foreach { hours =>
         s"invalid value '${hours}' is given" in {
           val form = new HoursForm(applicationMessagesApi).form.bind(
@@ -69,6 +87,26 @@ class HoursFormSpec extends UnitSpec with FakeCCApplication {
           form.errors.length shouldBe 1
           form.errors.head.message shouldBe applicationMessages.messages("hours.a.week.invalid.error")
           form.errors.head.message should not be "hours.a.week.invalid.error"
+        }
+      }
+    }
+
+    s"display '${applicationMessages.messages("hours.a.week.invalid.error")}' & '${applicationMessages.messages("hours.a.week.not.selected.error")}'" when {
+      val invalidValues: List[BigDecimal] = List(-1, 99.55)
+      invalidValues.foreach { hours =>
+        s"invalid value '${hours}' is given" in {
+          val form = new HoursForm(applicationMessagesApi).form.bind(
+            Map(
+              hoursKey -> hours.toString
+            )
+          )
+          form.value shouldBe None
+          form.hasErrors shouldBe true
+          form.errors.length shouldBe 2
+          form.errors.head.message shouldBe applicationMessages.messages("hours.a.week.not.selected.error")
+          form.errors.last.message shouldBe applicationMessages.messages("hours.a.week.invalid.error")
+          form.errors.head.message should not be "hours.a.week.not.selected.error"
+          form.errors.last.message should not be "hours.a.week.invalid.error"
         }
       }
     }
