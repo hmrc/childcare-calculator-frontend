@@ -38,8 +38,7 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
       if(pageObjects.getBenefits.contains(false) &&
         pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
         routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.getBenefits.contains(false) &&
-        pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
+      } else if (pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
         routes.WhatsYourAgeController.onPageLoad(false)
       } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
         routes.WhichBenefitsDoYouGetController.onPageLoad(true)
