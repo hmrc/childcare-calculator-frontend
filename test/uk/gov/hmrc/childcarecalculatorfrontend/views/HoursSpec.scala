@@ -108,9 +108,9 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
           applicationMessages.messages("hours.a.week.not.selected.error") should not be "hours.a.week.not.selected.error"
         }
 
-        s"form is submitted with data form invalid range ('${applicationMessages.messages("hours.a.week.invalid.error")}')" when {
+        s"form is submitted with data form invalid range ('${applicationMessages.messages("hours.a.week.not.selected.error")}')" when {
 
-          val invalidValues: List[String] = List("0.9", "37.55", "99.6")
+          val invalidValues: List[String] = List("0.9", "99.6")
           invalidValues.foreach { hours =>
             s"${hours} is given" in {
               val form = new HoursForm(applicationMessagesApi).form.bind(
@@ -123,9 +123,9 @@ class HoursSpec extends TemplatesValidator with FakeCCApplication {
               verifyPageContent(dynamicContent)
               verifyPageLinks(dynamicLinks)
               verifyErrors(
-                errors = Map(hoursKey -> applicationMessages.messages("hours.a.week.invalid.error"))
+                errors = Map(hoursKey -> applicationMessages.messages("hours.a.week.not.selected.error"))
               )
-              applicationMessages.messages("hours.a.week.invalid.error") should not be "hours.a.week.invalid.error"
+              applicationMessages.messages("hours.a.week.not.selected.error") should not be "hours.a.week.not.selected.error"
             }
           }
         }
