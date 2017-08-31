@@ -136,6 +136,7 @@ vouchers.not.selected.error.partner = You must tell the calculator if your partn
 vouchers.not.selected.error.both = You must tell the calculator if either of your employers offer childcare vouchers
 
 ####### Who gets vouchers #######
+who.gets.vouchers.header = Which of you is offered childcare vouchers?
 who.gets.vouchers.not.selected.error = You must tell the calculator which of you is offered childcare vouchers
 
 ####### Get benefits #######

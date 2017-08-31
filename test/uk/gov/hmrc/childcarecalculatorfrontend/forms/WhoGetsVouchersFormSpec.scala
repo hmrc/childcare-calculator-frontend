@@ -25,60 +25,37 @@ import uk.gov.hmrc.play.test.UnitSpec
  * Created by user on 31/08/17.
  */
 class WhoGetsVouchersFormSpec extends UnitSpec with FakeCCApplication {
-
-  "Who Gets vouchers form" when {
-      "user has partner" should {
-
-        "accept value true" in {
-          val form = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(
-            Map(
-              whoGetsVouchersKey -> "true"
-            )
-          )
-          form.value.get.get shouldBe true
-          form.hasErrors shouldBe false
-          form.errors shouldBe empty
-        }
-
-        "accept value false" in {
-          val form = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(
-            Map(
-              whoGetsVouchersKey -> "false"
-            )
-          )
-          form.value.get.get shouldBe false
-          form.hasErrors shouldBe false
-          form.errors shouldBe empty
-        }
-
-        s"display '${applicationMessages.messages("who.gets.vouchers.not.selected.error")}' if no value supplied" in {
-          val form = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(
-            Map(
-              whoGetsVouchersKey -> ""
-            )
-          )
-          form.value shouldBe None
-          form.hasErrors shouldBe true
-          form.errors.length shouldBe 1
-          form.errors.head.message shouldBe applicationMessages.messages("who.gets.vouchers.not.selected.error")
-          form.errors.head.message should not be "who.gets.vouchers.not.selected.error"
-        }
-
-        val invalidValues = List("abcd", "1234")
-        invalidValues.foreach { invalidValue =>
-          s"return error if invalid value '${invalidValue}' is supplied" in {
-            val form = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(
-              Map(
-                whoGetsVouchersKey -> invalidValue
-              )
-            )
-            form.value shouldBe None
-            form.hasErrors shouldBe true
-            form.errors.length shouldBe 1
-            form.errors.head.message shouldBe "error.boolean"
-          }
+  "who gets vouchers form" should {
+    "accept valid value" when {
+      val whoGetsVouchers = List("YOU", "PARTNER", "BOTH")
+      whoGetsVouchers.foreach { who => {
+        s"${who} is selected" in {
+          val result = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(Map(
+            whoGetsVouchersKey -> who
+          ))
+          result.hasErrors shouldBe false
+          result.value.get.get shouldBe who
         }
       }
-  }
+      }
+    }
 
+    "throw error" when {
+      val invalidValues = List("", "abcd", "123")
+
+      invalidValues.foreach { invalidValue =>
+        s"'${invalidValue}' is selected" in {
+          val result = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(Map(
+            whoGetsVouchersKey -> invalidValue
+          ))
+          result.hasErrors shouldBe true
+          result.errors.length shouldBe 1
+          result.errors.head.message shouldBe applicationMessages.messages("who.gets.vouchers.not.selected.error")
+          result.errors.head.message should not be "who.gets.vouchers.not.selected.error"
+          result.value shouldBe None
+        }
+      }
+    }
+
+  }
 }

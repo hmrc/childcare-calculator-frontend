@@ -21,6 +21,7 @@ import javax.inject.Inject
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{Messages, I18nSupport, MessagesApi}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 /**
@@ -29,12 +30,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 //@Singleton
 class WhoGetsVouchersForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  type WhoGetsVouchersFormType = Option[Boolean]
+  type WhoGetsVouchersFormType = Option[String]
 
   val form = Form[WhoGetsVouchersFormType](
     single(
-      whoGetsVouchersKey -> optional(boolean).verifying(
-        Messages("who.gets.vouchers.not.selected.error"), _.isDefined
+      whoGetsVouchersKey -> optional(text).verifying(
+        Messages("who.gets.vouchers.not.selected.error"),
+        youOrPartner =>
+          YouPartnerBothEnum.values.exists(_.toString == youOrPartner.getOrElse(""))
       )
     )
   )
