@@ -16,27 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
-import java.text.{NumberFormat, SimpleDateFormat}
-import java.util.{Calendar, Date, Locale, TimeZone}
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.{DateTimeZone, LocalDate}
+
+import java.text.SimpleDateFormat
+import org.joda.time.LocalDate
 import play.api.Play.current
-import play.api.{Configuration, Logger, Play}
+import play.api.{Configuration, Play}
 
-import scala.annotation.tailrec
+trait HelperManager {
 
-class HelperManager {
-  def isUserEarningLessThanMinimumWage(PageObjects: PageObjects): Boolean = {
-    val nmwConfig = getNMWConfig(LocalDate.now)
-//    val nmwPerAge = nmwConfig.getInt(PageObjects.household.parent.ageRange.getOrElse("non-existing-age"))
-//    nmwPerAge.isDefined && PageObjects.minimumEarnings.isDefined && (nmwPerAge.get > PageObjects.minimumEarnings.get)
-    true
+  def getMinimumEarningsAmountForAgeRange(ageRange: Option[String]): Int = {
+    val nmwConfig: Configuration = getNMWConfig(LocalDate.now)
+
+    nmwConfig.getInt(ageRange.getOrElse("non-existing-age")).get
   }
 
   def getLatestConfig(configType: String, currentDate: LocalDate): Configuration = {
     val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
     val configs: Seq[Configuration] = Play.application.configuration.getConfigSeq(configType).get
+
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.getString("rule-date").equals(Some("default"))
     ).sortWith(

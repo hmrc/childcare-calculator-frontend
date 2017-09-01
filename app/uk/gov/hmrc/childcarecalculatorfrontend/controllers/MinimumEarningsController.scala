@@ -22,36 +22,36 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
 
+import scala.concurrent.Future
+
 @Singleton
-class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
+  with BaseController
+  with HelperManager {
 
   val keystore: KeystoreService = KeystoreService
 
-  val amount: BigDecimal = ???
+  private def backURL(pageObjects: PageObjects, isPartner: Boolean): Call = {
+        routes.WhatsYourAgeController.onPageLoad(isPartner)
+  }
 
-  private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
-    if(pageObjects.livingWithPartner.get) {
-      if(isPartner && pageObjects.household.parent.benefits.isDefined) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      } else {
-        routes.WhoGetsBenefitsController.onPageLoad()
-      }
+  def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
+    if (isPartner) {
+      getMinimumEarningsAmountForAgeRange(pageObjects.household.partner.get.ageRange.map(_.toString))
     } else {
-      routes.GetBenefitsController.onPageLoad()
+      getMinimumEarningsAmountForAgeRange(pageObjects.household.parent.ageRange.map(_.toString))
     }
   }
 
-  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
-    (!isPartner || (isPartner && pageObjects.household.partner.isDefined)) && pageObjects.livingWithPartner.isDefined
-  }
-
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+      case Some(pageObjects)  =>
         val minimumEarnings: Boolean = if(isPartner) {
           pageObjects.household.partner.get.minimumEarnings.isDefined
         } else {
@@ -59,10 +59,10 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
         Ok(
           minimumEarning(
-            new MinimumEarningsForm(isPartner, amount, messagesApi).form.fill(Some(minimumEarnings)),
+            new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(Some(minimumEarnings)),
             isPartner,
-            amount,
-            backURL(isPartner, pageObjects)
+            getMinWageForScreen(pageObjects, isPartner),
+            backURL(pageObjects, isPartner)
           )
         )
       case _ =>
@@ -75,6 +75,58 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  def onSubmit(isPartner: Boolean): Action[AnyContent] = ???
+  def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
+        new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                minimumEarning(
+                  errors, isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(pageObjects, isPartner)
+                )
+              )
+            ),
+          success => {
+            val minEarningsBoolean: Boolean = success.get
+            keystore.cache(getModifiedPageObjects(minEarningsBoolean, pageObjects, isPartner)).map { _ =>
+              if (minEarningsBoolean) {
+                //TODO redirect to if either of you Over 1000000 and fix tests
+                Redirect(routes.ChildCareBaseController.underConstruction())
+              } else {
+                //TODO redirect to either of you self employed and fix tests
+                Redirect(routes.ChildCareBaseController.underConstruction())
+                }
+              }
+            }
+        )
+      case _ =>
+        Logger.warn("PageObjects object is missing in MinimumEarningsController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from MinimumEarningsController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
+    if(isPartner) {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          partner = pageObjects.household.partner.map { x => x.copy(
+            minimumEarnings = pageObjects.household.partner.get.minimumEarnings.map { y => y.copy(earnMoreThanNMW = Some(minEarningsBoolean))}) }
+        )
+      )
+    } else {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(
+            minimumEarnings = pageObjects.household.parent.minimumEarnings.map { x => x.copy(earnMoreThanNMW = Some(minEarningsBoolean))}
+          )
+        )
+      )
+    }
+  }
 
 }
