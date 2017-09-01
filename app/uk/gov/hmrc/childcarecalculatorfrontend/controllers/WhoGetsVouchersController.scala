@@ -18,10 +18,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{AnyContent, Action}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsVouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsVouchers
+
+import scala.concurrent.Future
 
 /**
  * Created by user on 31/08/17.
@@ -35,9 +41,94 @@ class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends 
     pageObjects.livingWithPartner.isDefined
   }
 
-  def onPageLoad: Action[AnyContent] = ???
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+        Ok(whoGetsVouchers(
+          new WhoGetsVouchersForm(messagesApi).form.fill(pageObjects.whoGetsVouchers.map(_.toString))
+        )
+      )
+      case _ =>
+        Logger.warn("Invalid PageObjects in WhoGetsVouchersController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }.recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from WhoGetsVouchersController.onPageLoad: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
 
-
-  def onSubmit: Action[AnyContent] = ???
+  private def modifyPageObject(oldPageObject: PageObjects, newWhoGetsVouchers: String): PageObjects = {
+    val gettingVouchers: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhoGetsVouchers)
+    if(oldPageObject.whoGetsVouchers == Some(gettingVouchers)) {
+      oldPageObject
+    }
+    else {
+      val modified = oldPageObject.copy(
+        whoGetsVouchers = Some(gettingVouchers),
+        getVouchers = Some(YesNoUnsureEnum.YES),
+        household = oldPageObject.household.copy(
+          parent = oldPageObject.household.parent.copy(
+            escVouchers = Some(YesNoUnsureEnum.YES)
+          ),
+          partner = Some(
+            oldPageObject.household.partner.get.copy(
+              escVouchers = Some(YesNoUnsureEnum.YES)
+            )
+          )
+        )
+      )
+      gettingVouchers match {
+        case YouPartnerBothEnum.YOU => modified.copy(
+          household = modified.household.copy(
+            partner = Some(
+              modified.household.partner.get.copy(
+                whoGetsVouchers = Some(YouPartnerBothEnum.YOU),
+                escVouchers = Some(YesNoUnsureEnum.YES)
+              )
+            )
+          )
+        )
+        case YouPartnerBothEnum.PARTNER => modified.copy(
+          household = modified.household.copy(
+            parent = modified.household.parent.copy(
+              whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER),
+              escVouchers = Some(YesNoUnsureEnum.YES)
+            )
+          )
+        )
+        case YouPartnerBothEnum.BOTH => modified
+      }
+    }
+  }
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+        new WhoGetsVouchersForm(messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                whoGetsVouchers(errors)
+              )
+            ),
+          success => {
+            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
+            keystore.cache(modifiedPageObjects).map {
+              result =>
+                Redirect(
+                  routes.GetBenefitsController.onPageLoad()
+                )
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("Invalid PageObjects in WhoGetsVouchersController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from WhoGetsVouchersController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
 
 }
