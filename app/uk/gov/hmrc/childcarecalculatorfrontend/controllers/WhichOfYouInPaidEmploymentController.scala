@@ -63,6 +63,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
       val modified = oldPageObject.copy(
         whichOfYouInPaidEmployment = Some(paidEmployment),
         getVouchers = None,
+        whoGetsVouchers = None,
         household = oldPageObject.household.copy(
           parent = oldPageObject.household.parent.copy(
             escVouchers = None
@@ -80,7 +81,8 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
             partner = Some(
               modified.household.partner.get.copy(
                 hours = None,
-                ageRange = None
+                ageRange = None,
+                escVouchers = None
               )
             )
           )
@@ -89,7 +91,8 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
           household = modified.household.copy(
             parent = modified.household.parent.copy(
               hours = None,
-              ageRange = None
+              ageRange = None,
+              escVouchers = None
             )
           )
         )
