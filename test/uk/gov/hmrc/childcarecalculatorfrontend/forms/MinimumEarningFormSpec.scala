@@ -22,9 +22,6 @@ import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 
-/**
- * Created by user on 25/08/17.
- */
 class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
 
   "MinimumEarningForm" when {

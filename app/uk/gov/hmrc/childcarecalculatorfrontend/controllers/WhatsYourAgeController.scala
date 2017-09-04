@@ -99,14 +99,12 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
             val enumValue: AgeRangeEnum.Value = AgeRangeEnum.withName(success.get)
             keystore.cache(getModifiedPageObjects(enumValue, pageObjects, isPartner)).map { _ =>
               if(isPartner) {
-                //TODO redirect to min earnings partner page and change tests
-                Redirect(routes.ChildCareBaseController.underConstruction())
+                Redirect(routes.MinimumEarningsController.onPageLoad(isPartner))
               } else {
                 if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
-                  Redirect(routes.WhatsYourAgeController.onPageLoad(true))
+                  Redirect(routes.WhatsYourAgeController.onPageLoad(isPartner))
                 } else {
-                  //TODO redirect to min earnings parent page and change tests
-                  Redirect(routes.ChildCareBaseController.underConstruction())
+                  Redirect(routes.MinimumEarningsController.onPageLoad(isPartner))
                 }
               }
             }

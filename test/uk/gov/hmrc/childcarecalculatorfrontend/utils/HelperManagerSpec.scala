@@ -20,10 +20,11 @@ import org.joda.time.LocalDate
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
+import play.api.Application
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 
-class HelperManagerSpec extends UnitSpec with FakeCCApplication with MockitoSugar with HelperManager {
+class HelperManagerSpec extends UnitSpec with FakeCCApplication with HelperManager {
 
   "HelperManager" should {
 

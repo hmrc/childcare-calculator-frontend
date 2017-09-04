@@ -405,7 +405,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             )
             println(result.header.headers)
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
           }
         }
       }
@@ -466,7 +466,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             )
             println(result.header.headers)
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe parentMinimumEarningsPath
           }
 
           s"${range.toString} is selected if there is data in keystore for PageObjects and both are in paid employment object for parent" in {
@@ -495,7 +495,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             )
             println(result.header.headers)
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whatsYourAgePath + "/partner"
+            result.header.headers("Location") shouldBe whatsYourAgePath + "/parent"
           }
         }
       }
