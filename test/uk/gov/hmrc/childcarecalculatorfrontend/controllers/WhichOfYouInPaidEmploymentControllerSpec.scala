@@ -179,10 +179,14 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               )
 
               val modifiedObject = keystoreObject.copy(
+                getVouchers = None,
+                whoGetsVouchers = None,
                 household = keystoreObject.household.copy(
                   partner = Some(
                     keystoreObject.household.partner.get.copy(
-                      hours = None
+                      hours = None,
+                      ageRange = None,
+                      escVouchers = None
                     )
                   )
                 ),
@@ -234,9 +238,13 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               )
 
               val modifiedObject = keystoreObject.copy(
+                getVouchers = None,
+                whoGetsVouchers = None,
                 household = keystoreObject.household.copy(
                   parent = keystoreObject.household.parent.copy(
-                    hours = None
+                    hours = None,
+                    ageRange = None,
+                    escVouchers = None
                   )
                 ),
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
