@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
-
+import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{AnyContent, Action}
@@ -32,7 +31,7 @@ import scala.concurrent.Future
 /**
  * Created by user on 31/08/17.
  */
-//@Singleton
+@Singleton
 class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
@@ -66,7 +65,6 @@ class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends 
     else {
       val modified = oldPageObject.copy(
         whoGetsVouchers = Some(gettingVouchers),
-        getVouchers = Some(YesNoUnsureEnum.YES),
         household = oldPageObject.household.copy(
           parent = oldPageObject.household.parent.copy(
             escVouchers = Some(YesNoUnsureEnum.YES)
@@ -79,21 +77,27 @@ class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends 
         )
       )
       gettingVouchers match {
-        case YouPartnerBothEnum.YOU => modified.copy(
+        case YouPartnerBothEnum.PARTNER => modified.copy(
           household = modified.household.copy(
             partner = Some(
               modified.household.partner.get.copy(
-                whoGetsVouchers = Some(YouPartnerBothEnum.YOU),
                 escVouchers = Some(YesNoUnsureEnum.YES)
               )
+            ),
+            parent = oldPageObject.household.parent.copy(
+              escVouchers = None
             )
           )
         )
-        case YouPartnerBothEnum.PARTNER => modified.copy(
+        case YouPartnerBothEnum.YOU => modified.copy(
           household = modified.household.copy(
             parent = modified.household.parent.copy(
-              whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER),
               escVouchers = Some(YesNoUnsureEnum.YES)
+            ),
+            partner = Some(
+              modified.household.partner.get.copy(
+                escVouchers = None
+              )
             )
           )
         )

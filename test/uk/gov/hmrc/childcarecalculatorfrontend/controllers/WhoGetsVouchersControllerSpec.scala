@@ -47,6 +47,11 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
 
   def buildPageObjects(youOrPartner: Option[YouPartnerBothEnum] = None): PageObjects = PageObjects(
     whoGetsVouchers = youOrPartner,
+    getVouchers = Some(YesNoUnsureEnum.YES),
+    expectChildcareCosts = Some(true),
+    livingWithPartner = Some(true),
+    paidOrSelfEmployed = Some(true),
+    whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
     household = Household(
       location = LocationEnum.ENGLAND,
       parent = Claimant(),
@@ -161,11 +166,11 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
               val keystoreObject: PageObjects = initialObject.copy(
                 household = initialObject.household.copy(
                   parent = initialObject.household.parent.copy(
-                    whoGetsVouchers = Some(YouPartnerBothEnum.YOU)
+                    escVouchers = Some(YesNoUnsureEnum.YES)
                   ),
                   partner = Some(
                     initialObject.household.partner.get.copy(
-                      whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER)
+                      escVouchers = None
                     )
                   )
                 )
@@ -183,12 +188,13 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
                 household = keystoreObject.household.copy(
                   partner = Some(
                     keystoreObject.household.partner.get.copy(
-                      whoGetsVouchers = None
+                      escVouchers = None
                     )
                   )
                 ),
                 whoGetsVouchers = Some(YouPartnerBothEnum.YOU)
               )
+
               when(
                 sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
@@ -205,7 +211,7 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe whoGetsBenefitsPath
+              result.header.headers("Location") shouldBe getBenefitsPath
             }
           }
         }
@@ -216,11 +222,11 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
               val keystoreObject: PageObjects = initialObject.copy(
                 household = initialObject.household.copy(
                   parent = initialObject.household.parent.copy(
-                    whoGetsVouchers = Some(YouPartnerBothEnum.YOU)
+                    escVouchers = None
                   ),
                   partner = Some(
                     initialObject.household.partner.get.copy(
-                      whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER)
+                      escVouchers = Some(YesNoUnsureEnum.YES)
                     )
                   )
                 )
@@ -237,7 +243,7 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
               val modifiedObject = keystoreObject.copy(
                 household = keystoreObject.household.copy(
                   parent = keystoreObject.household.parent.copy(
-                    whoGetsVouchers = None
+                    escVouchers = None
                   )
                 ),
                 whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER)
@@ -259,7 +265,7 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe whoGetsBenefitsPath
+              result.header.headers("Location") shouldBe getBenefitsPath
             }
           }
 
@@ -269,11 +275,11 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
               val keystoreObject: PageObjects = initialObject.copy(
                 household = initialObject.household.copy(
                   parent = initialObject.household.parent.copy(
-                    whoGetsVouchers = Some(YouPartnerBothEnum.YOU)
+                    escVouchers = Some(YesNoUnsureEnum.YES)
                   ),
                   partner = Some(
                     initialObject.household.partner.get.copy(
-                      whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER)
+                      escVouchers = Some(YesNoUnsureEnum.YES)
                     )
                   )
                 )
@@ -303,7 +309,7 @@ class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndA
                 )
               )
               status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe whoGetsBenefitsPath
+              result.header.headers("Location") shouldBe getBenefitsPath
             }
           }
         }
