@@ -31,7 +31,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
   val keystore: KeystoreService = KeystoreService
 
-  val amount: BigDecimal = ???
+  val amount: BigDecimal = 123
 
   private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
     if(pageObjects.livingWithPartner.get) {

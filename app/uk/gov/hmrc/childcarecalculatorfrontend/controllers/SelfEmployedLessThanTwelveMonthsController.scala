@@ -22,9 +22,10 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedLessThanTwelveMonthsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{benefits, selfEmployedLessThanTwelveMonths}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{selfEmployedLessThanTwelveMonths}
 
 import scala.concurrent.Future
 
@@ -34,9 +35,13 @@ class SelfEmployedLessThanTwelveMonthsController @Inject()(val messagesApi: Mess
   val keystore: KeystoreService = KeystoreService
 
   private def getBackUrl(isPartner: Boolean, pageObjects: PageObjects): Call = {
-      // TODO - redirect to 'selfemployed or apprentice'
+    if(!isPartner) {
+      // TODO - redirect to 'selfemployed or apprentice' with ispartner flag set to false - It's a partner
       routes.ChildCareBaseController.underConstruction()
-      //routes.SelfemployedOrApprenticeController.onPageLoad(pageObjects.livingWithPartner)
+    } else {
+      // TODO - redirect to 'selfemployed or apprentice' with ispartner flag set to false - It's a parent
+      routes.ChildCareBaseController.underConstruction()
+    }
   }
 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
@@ -75,6 +80,7 @@ class SelfEmployedLessThanTwelveMonthsController @Inject()(val messagesApi: Mess
   }
 
   private def modifyPageObjects(isPartner: Boolean, oldPageObjects: PageObjects, newSelfEmployedLessThanTwelveMonths: Boolean): PageObjects = {
+    println(oldPageObjects)
     if(isPartner) {
       //it's the partner info
       oldPageObjects.household.partner.flatMap[PageObjects](partner => {
@@ -111,19 +117,50 @@ class SelfEmployedLessThanTwelveMonthsController @Inject()(val messagesApi: Mess
       }).getOrElse(oldPageObjects)
     }
   }
-
-  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean, selfEmployedLessThanTwelveMonths: Boolean): Call = {
-    if(selfEmployedLessThanTwelveMonths) {
-      if(isPartner) {
-        //TODO set correct link
+/*
+A single user who checks "Yes" or 'No' and continue, will be taken to the ''Do you get tax credits or universal credit?" screen
+If a user with a partner checks 'Yes' and that partner does not satisfy the minimum earnings rule they will be taken to the ''Is your partner self employed or an apprentice?'' screen
+If a user responding about a partner checks 'Yes' and that partner satisfies the minimum earnings rule they will be taken to the ''Will your partner earn more than £100,000 a year?' screen
+If a user responding about a partner and that partner doesn't satisfy the minimum income rule, checks 'No' they will be taken to "Do you get tax credits or universal credit' screen
+ */
+  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    val familyEmploymentStatus: Option[YouPartnerBothEnum] = pageObjects.whichOfYouInPaidEmployment
+//This far in journey minimumEarnings will exist
+    val parentMinimumWage: Option[Boolean] = pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW
+    if(familyEmploymentStatus == YouPartnerBothEnum.YOU){
+      if(parentMinimumWage == Some(true)) {
+        //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to false
         routes.ChildCareBaseController.underConstruction()
       } else {
-        //TODO set correct link
+        //TODO set correct link to 'Do you get tax credits or universal credit' page
+        routes.ChildCareBaseController.underConstruction()
+      }
+    } else if (familyEmploymentStatus == YouPartnerBothEnum.PARTNER) {
+      val partnerMinimumWage: Option[Boolean] = pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
+      if(partnerMinimumWage == Some(true)) {
+        //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to true
+        routes.ChildCareBaseController.underConstruction()
+      } else {
+        //TODO set correct link to 'Do you get tax credits or universal credit' page
         routes.ChildCareBaseController.underConstruction()
       }
     } else {
-      //TODO set correct link
-      routes.ChildCareBaseController.underConstruction()
+      if(isPartner) {
+        val partnerMinimumWage: Option[Boolean] = pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
+        if(partnerMinimumWage == Some(true)) {
+          //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to true
+          routes.ChildCareBaseController.underConstruction()
+        } else if(parentMinimumWage == Some(true)) {
+          //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to false
+          routes.ChildCareBaseController.underConstruction()
+        } else {
+          //TODO set correct link to 'Do you get tax credits or universal credit' page
+          routes.ChildCareBaseController.underConstruction()
+        }
+      } else {
+        // TODO - redirect to 'selfemployed or apprentice' with ispartner flag set to false
+        routes.ChildCareBaseController.underConstruction()
+      }
     }
   }
 
@@ -141,7 +178,7 @@ class SelfEmployedLessThanTwelveMonthsController @Inject()(val messagesApi: Mess
           success => {
             val modifiedPageObjects = modifyPageObjects(isPartner, pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(getNextPage(pageObjects, isPartner, success.get))
+              Redirect(getNextPage(modifiedPageObjects, isPartner))
             }
           }
         )
