@@ -23,7 +23,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{MinimumEarnings, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
@@ -58,9 +58,10 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       case Some(pageObjects)  =>
         val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
         val minimumEarnings: Boolean = if(isPartner) {
-          pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined
+          pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
+            pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.isDefined
         } else {
-          pageObjects.household.parent.minimumEarnings.isDefined
+          pageObjects.household.parent.minimumEarnings.isDefined && pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.isDefined
         }
         Ok(
           minimumEarning(
@@ -109,18 +110,14 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getNextPage(inPaidEmployment: YouPartnerBothEnum, minEarnings: Boolean, isPartner: Boolean): Call = {
-    println(s"**inPaidEmployment>>>$inPaidEmployment")
     if(minEarnings) { //if Yes is selected
-      println(s"**Yes is selected")
       if (!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        println(s"**redirect to ")
         routes.MinimumEarningsController.onPageLoad(true)
       } else {
         //TODO redirect to max earnings or TC/UC page
         routes.ChildCareBaseController.underConstruction()
       }
     } else {//if No is selected
-      println(s"**No is selected")
       if(!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
         routes.MinimumEarningsController.onPageLoad(true)
       } else if(inPaidEmployment == YouPartnerBothEnum.PARTNER) {
@@ -138,6 +135,11 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
+    val minEarns = if(minEarningsBoolean) {
+      Some(MinimumEarnings())
+    } else {
+      None
+    }
     if(isPartner) {
       pageObjects.copy(
         household = pageObjects.household.copy(
