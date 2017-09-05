@@ -22,6 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
@@ -34,13 +35,17 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
   val keystore: KeystoreService = KeystoreService
 
-  private def backURL(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    routes.WhatsYourAgeController.onPageLoad(isPartner)
+  private def backURL(inPaidEmployment: YouPartnerBothEnum, isPartner: Boolean): Call = {
+    if(isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+      routes.MinimumEarningsController.onPageLoad(false)
+    } else if(!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+      routes.WhatsYourAgeController.onPageLoad(true)
+    } else {
+      routes.WhatsYourAgeController.onPageLoad(isPartner)
+    }
   }
 
   def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
-    println(s"****pageObjects>>>$pageObjects")
-    println(s"****isPartner>>>$isPartner")
     if (isPartner) {
       getMinimumEarningsAmountForAgeRange(pageObjects.household.partner.get.ageRange.map(_.toString))
     } else {
@@ -51,16 +56,16 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
+        val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
         val minimumEarnings: Boolean = if(isPartner) {
           pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined
         } else {
           pageObjects.household.parent.minimumEarnings.isDefined
         }
-        println(s"****minimumEarnings>>>$minimumEarnings")
         Ok(
           minimumEarning(
             new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(Some(minimumEarnings)),
-            isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(pageObjects, isPartner)
+            isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(inPaidEmployment, isPartner)
           )
         )
       case _ =>
@@ -76,32 +81,20 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
+        val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
         new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
                 minimumEarning(
-                  errors, isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(pageObjects, isPartner)
+                  errors, isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(inPaidEmployment, isPartner)
                 )
               )
             ),
           success => {
             val minEarnings: Boolean = success.get
             keystore.cache(getModifiedPageObjects(minEarnings, pageObjects, isPartner)).map { _ =>
-              if(isPartner) {
-                if (minEarnings && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
-                  Redirect(routes.MinimumEarningsController.onPageLoad(true))
-                } else if (minEarnings && (pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.YOU ||
-                  pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.PARTNER)) {
-                  //TODO redirect to max earnings page
-                  Redirect(routes.ChildCareBaseController.underConstruction())
-                } else {
-                  //TODO redirect to either of you self employed and fix tests
-                  Redirect(routes.ChildCareBaseController.underConstruction())
-                }
-              } else {
-                Redirect(routes.ChildCareBaseController.underConstruction())
-              }
+              Redirect(getNextPage(inPaidEmployment, minEarnings, isPartner))
             }
           }
         )
@@ -113,6 +106,35 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         Logger.warn(s"Exception from MinimumEarningsController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
+  }
+
+  private def getNextPage(inPaidEmployment: YouPartnerBothEnum, minEarnings: Boolean, isPartner: Boolean): Call = {
+    println(s"**inPaidEmployment>>>$inPaidEmployment")
+    if(minEarnings) { //if Yes is selected
+      println(s"**Yes is selected")
+      if (!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        println(s"**redirect to ")
+        routes.MinimumEarningsController.onPageLoad(true)
+      } else {
+        //TODO redirect to max earnings or TC/UC page
+        routes.ChildCareBaseController.underConstruction()
+      }
+    } else {//if No is selected
+      println(s"**No is selected")
+      if(!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        routes.MinimumEarningsController.onPageLoad(true)
+      } else if(inPaidEmployment == YouPartnerBothEnum.PARTNER) {
+        //TODO redirect to Are your partner self emp or apprentice
+        routes.ChildCareBaseController.underConstruction()
+      } else {
+        //TODO redirect to Are you self emp or apprentice
+        routes.ChildCareBaseController.underConstruction()
+      }
+    }
+  }
+
+  private def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
+    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 
   private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {

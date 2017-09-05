@@ -96,8 +96,8 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
               )
             ),
           success => {
-            val enumValue: AgeRangeEnum.Value = AgeRangeEnum.withName(success.get)
-            keystore.cache(getModifiedPageObjects(enumValue, pageObjects, isPartner)).map { _ =>
+            val ageRangeValue: AgeRangeEnum.Value = AgeRangeEnum.withName(success.get)
+            keystore.cache(getModifiedPageObjects(ageRangeValue, pageObjects, isPartner)).map { _ =>
               if(isPartner) {
                 if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
                   Redirect(routes.MinimumEarningsController.onPageLoad(true))
@@ -107,10 +107,10 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
               } else {
                 if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
                   Redirect(routes.WhatsYourAgeController.onPageLoad(true))
-                } else if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.YOU)) {
-                  Redirect(routes.MinimumEarningsController.onPageLoad(false))
-                } else {
+                } else if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
                   Redirect(routes.MinimumEarningsController.onPageLoad(true))
+                } else {
+                  Redirect(routes.MinimumEarningsController.onPageLoad(false))
                 }
               }
             }
@@ -126,17 +126,17 @@ class WhatsYourAgeController @Inject()(val messagesApi: MessagesApi) extends I18
     }
   }
 
-  private def getModifiedPageObjects(enumValue: AgeRangeEnum.Value, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
+  private def getModifiedPageObjects(ageRange: AgeRangeEnum.Value, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
     if(isPartner) {
       pageObjects.copy(
         household = pageObjects.household.copy(
-          partner = pageObjects.household.partner.map { x => x.copy(ageRange = Some(enumValue)) }
+          partner = pageObjects.household.partner.map { x => x.copy(ageRange = Some(ageRange)) }
         )
       )
     } else {
       pageObjects.copy(
         household = pageObjects.household.copy(
-          parent = pageObjects.household.parent.copy(ageRange = Some(enumValue))
+          parent = pageObjects.household.parent.copy(ageRange = Some(ageRange))
         )
       )
     }

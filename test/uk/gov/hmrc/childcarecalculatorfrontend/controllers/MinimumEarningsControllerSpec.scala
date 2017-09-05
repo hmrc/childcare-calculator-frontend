@@ -251,7 +251,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            println(result.header.headers)
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
@@ -288,7 +287,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 //                  .withSession(validSession)
 //              )
 //            )
-//            println(result.header.headers)
 //            status(result) shouldBe SEE_OTHER
 //            result.header.headers("Location") shouldBe underConstrctionPath
 //          }
@@ -317,7 +315,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            println(result.header.headers)
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
@@ -325,7 +322,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val po = buildPageObjects(isPartner = false,
               parentAgeRange = Some(range),
               parentEarnBelowNMW = Some(true))
-            println(po)
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -351,7 +347,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                   .withSession(validSession)
               )
             )
-            println(result.header.headers)
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe underConstrctionPath
           }
@@ -380,7 +375,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            println(result.header.headers)
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
@@ -388,7 +382,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val po = buildPageObjects(isPartner = false,
               parentAgeRange = Some(range),
               parentEarnBelowNMW = Some(false))
-            println(po)
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -414,7 +407,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                   .withSession(validSession)
               )
             )
-            println(result.header.headers)
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe underConstrctionPath
           }
@@ -476,7 +468,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 //                  .withSession(validSession)
 //              )
 //            )
-//            println(result.header.headers)
 //            status(result) shouldBe SEE_OTHER
 //            result.header.headers("Location") shouldBe underConstrctionPath
 //          }
@@ -505,7 +496,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 //                  .withSession(validSession)
 //              )
 //            )
-//            println(result.header.headers)
 //            status(result) shouldBe SEE_OTHER
 //            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
 //          }
