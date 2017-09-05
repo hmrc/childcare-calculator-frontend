@@ -39,6 +39,8 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
+    println(s"****pageObjects>>>$pageObjects")
+    println(s"****isPartner>>>$isPartner")
     if (isPartner) {
       getMinimumEarningsAmountForAgeRange(pageObjects.household.partner.get.ageRange.map(_.toString))
     } else {
@@ -50,10 +52,11 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
         val minimumEarnings: Boolean = if(isPartner) {
-          pageObjects.household.partner.get.minimumEarnings.isDefined
+          pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined
         } else {
           pageObjects.household.parent.minimumEarnings.isDefined
         }
+        println(s"****minimumEarnings>>>$minimumEarnings")
         Ok(
           minimumEarning(
             new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(Some(minimumEarnings)),
