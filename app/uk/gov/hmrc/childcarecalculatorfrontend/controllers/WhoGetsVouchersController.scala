@@ -19,80 +19,85 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichOfYouPaidEmploymentForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import play.api.mvc.{AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsVouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichOfYouPaidOrSelfEmployed
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsVouchers
+
 import scala.concurrent.Future
 
+/**
+ * Created by user on 31/08/17.
+ */
 @Singleton
-class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
 
   private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.household.partner.isDefined
+    pageObjects.livingWithPartner.isDefined
   }
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        Ok(
-          whichOfYouPaidOrSelfEmployed(
-            new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment.map(_.toString))
-          )
+        Ok(whoGetsVouchers(
+          new WhoGetsVouchersForm(messagesApi).form.fill(pageObjects.whoGetsVouchers.map(_.toString))
         )
+      )
       case _ =>
-        Logger.warn("Invalid PageObjects in WhichOfYouInPaidEmploymentController.onPageLoad")
+        Logger.warn("Invalid PageObjects in WhoGetsVouchersController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }.recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from WhichOfYouInPaidEmploymentController.onPageLoad: ${ex.getMessage}")
+        Logger.warn(s"Exception from WhoGetsVouchersController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
 
-  private def modifyPageObject(oldPageObject: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
-    val paidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
-    if(oldPageObject.whichOfYouInPaidEmployment == Some(paidEmployment)) {
+  private def modifyPageObject(oldPageObject: PageObjects, newWhoGetsVouchers: String): PageObjects = {
+    val gettingVouchers: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhoGetsVouchers)
+    if(oldPageObject.whoGetsVouchers == Some(gettingVouchers)) {
       oldPageObject
     }
     else {
       val modified = oldPageObject.copy(
-        whichOfYouInPaidEmployment = Some(paidEmployment),
-        getVouchers = None,
-        whoGetsVouchers = None,
+        whoGetsVouchers = Some(gettingVouchers),
         household = oldPageObject.household.copy(
           parent = oldPageObject.household.parent.copy(
-            escVouchers = None
+            escVouchers = Some(YesNoUnsureEnum.YES)
           ),
           partner = Some(
             oldPageObject.household.partner.get.copy(
-              escVouchers = None
+              escVouchers = Some(YesNoUnsureEnum.YES)
             )
           )
         )
       )
-      paidEmployment match {
-        case YouPartnerBothEnum.YOU => modified.copy(
+      gettingVouchers match {
+        case YouPartnerBothEnum.PARTNER => modified.copy(
           household = modified.household.copy(
             partner = Some(
               modified.household.partner.get.copy(
-                hours = None,
-                ageRange = None,
-                escVouchers = None
+                escVouchers = Some(YesNoUnsureEnum.YES)
               )
+            ),
+            parent = modified.household.parent.copy(
+              escVouchers = None
             )
           )
         )
-        case YouPartnerBothEnum.PARTNER => modified.copy(
+        case YouPartnerBothEnum.YOU => modified.copy(
           household = modified.household.copy(
             parent = modified.household.parent.copy(
-              hours = None,
-              ageRange = None,
-              escVouchers = None
+              escVouchers = Some(YesNoUnsureEnum.YES)
+            ),
+            partner = Some(
+              modified.household.partner.get.copy(
+                escVouchers = None
+              )
             )
           )
         )
@@ -100,15 +105,14 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
       }
     }
   }
-
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        new WhichOfYouPaidEmploymentForm(messagesApi).form.bindFromRequest().fold(
+        new WhoGetsVouchersForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                whichOfYouPaidOrSelfEmployed(errors)
+                whoGetsVouchers(errors)
               )
             ),
           success => {
@@ -116,19 +120,17 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
             keystore.cache(modifiedPageObjects).map {
               result =>
                 Redirect(
-                  routes.HoursController.onPageLoad(
-                    isPartner = (YouPartnerBothEnum.withName(success.get) != YouPartnerBothEnum.YOU)
-                  )
+                  routes.GetBenefitsController.onPageLoad()
                 )
             }
           }
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in WhichOfYouInPaidEmploymentController.onSubmit")
+        Logger.warn("Invalid PageObjects in WhoGetsVouchersController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from WhichOfYouInPaidEmploymentController.onSubmit: ${ex.getMessage}")
+        Logger.warn(s"Exception from WhoGetsVouchersController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }

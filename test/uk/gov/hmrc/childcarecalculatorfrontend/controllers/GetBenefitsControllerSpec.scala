@@ -72,7 +72,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
         val content = Jsoup.parse(bodyOf(result))
-        content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
+        content.getElementById("back-button").attr("href") shouldBe whoGetsVouchersPath
       }
 
       "load template do you get vouchers page when no or not sure selected on vouchers page" in {

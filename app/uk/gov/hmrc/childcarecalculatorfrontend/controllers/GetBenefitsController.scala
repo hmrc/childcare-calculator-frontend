@@ -35,8 +35,7 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
 
   private def getBackUrl(pageObjects: PageObjects): Call = {
     if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) && pageObjects.getVouchers == Some(YesNoUnsureEnum.YES)) {
-      // TODO - redirect to 'Which of you is offered vouchers'
-      routes.ChildCareBaseController.underConstruction()
+      routes.WhoGetsVouchersController.onPageLoad()
     } else {
       routes.VouchersController.onPageLoad()
     }
