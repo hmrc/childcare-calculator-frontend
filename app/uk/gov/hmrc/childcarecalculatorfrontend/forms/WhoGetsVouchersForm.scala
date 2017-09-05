@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
 import play.api.data.Form
 import play.api.data.Forms._
@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 /**
  * Created by user on 31/08/17.
  */
-//@Singleton
+@Singleton
 class WhoGetsVouchersForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
   type WhoGetsVouchersFormType = Option[String]
