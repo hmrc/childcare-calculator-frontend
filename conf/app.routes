@@ -72,4 +72,8 @@ POST   /minimum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /minimum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MinimumEarningsController.onPageLoad(isPartner: Boolean = true)
 POST   /minimum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MinimumEarningsController.onSubmit(isPartner: Boolean = true)
 
+GET    /self-employed-less-than-twelve-months/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedLessThanTwelveMonthsController.onPageLoad(isPartner: Boolean = false)
+POST   /self-employed-less-than-twelve-months/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedLessThanTwelveMonthsController.onSubmit(isPartner: Boolean = false)
 
+GET    /self-employed-less-than-twelve-months/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedLessThanTwelveMonthsController.onPageLoad(isPartner: Boolean = true)
+POST   /self-employed-less-than-twelve-months/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedLessThanTwelveMonthsController.onSubmit(isPartner: Boolean = true)
