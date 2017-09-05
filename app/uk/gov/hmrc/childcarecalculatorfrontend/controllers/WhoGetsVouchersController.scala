@@ -84,7 +84,7 @@ class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends 
                 escVouchers = Some(YesNoUnsureEnum.YES)
               )
             ),
-            parent = oldPageObject.household.parent.copy(
+            parent = modified.household.parent.copy(
               escVouchers = None
             )
           )
