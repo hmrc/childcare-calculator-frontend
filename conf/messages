@@ -193,3 +193,11 @@ whats.your.age.radio.over25 = 25 or over
 whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
 whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
+
+####### Maximum Earning #######
+maximum.earning.header.parent = Will you earn more than £100,000 a year?
+maximum.earning.header.partner = Will your partner earn more than £100,000 a year?
+maximum.earning.header.both = Will either of you earn more than £100,000 a year?
+maximum.earning.error.parent = You must answer yes if you will earn more than £100,000 a year?
+maximum.earning.error.partner = You must answer yes if your partner will earn more than £100,000 a year?
+maximum.earning.error.both = You must answer yes if either of you will earn more than £100,000 a year?
