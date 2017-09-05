@@ -85,14 +85,18 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
           success => {
             val minEarnings: Boolean = success.get
             keystore.cache(getModifiedPageObjects(minEarnings, pageObjects, isPartner)).map { _ =>
-              if (minEarnings && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
-                Redirect(routes.MinimumEarningsController.onPageLoad(true))
-              } else if (minEarnings && (pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.YOU ||
+              if(isPartner) {
+                if (minEarnings && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
+                  Redirect(routes.MinimumEarningsController.onPageLoad(true))
+                } else if (minEarnings && (pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.YOU ||
                   pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.PARTNER)) {
-                //TODO redirect to max earnings page
-                Redirect(routes.ChildCareBaseController.underConstruction())
+                  //TODO redirect to max earnings page
+                  Redirect(routes.ChildCareBaseController.underConstruction())
+                } else {
+                  //TODO redirect to either of you self employed and fix tests
+                  Redirect(routes.ChildCareBaseController.underConstruction())
+                }
               } else {
-                //TODO redirect to either of you self employed and fix tests
                 Redirect(routes.ChildCareBaseController.underConstruction())
               }
             }

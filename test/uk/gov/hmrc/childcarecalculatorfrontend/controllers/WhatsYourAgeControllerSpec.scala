@@ -375,7 +375,6 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               )
             )
             status(result) shouldBe SEE_OTHER
-            println(result.header.headers)
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
@@ -384,7 +383,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(true, Some(range)))
+                Some(buildPageObjects(true, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)))
               )
             )
 
@@ -392,7 +391,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(true, Some(range)))
+                Some(buildPageObjects(true, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)))
               )
             )
 
@@ -403,7 +402,6 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
                   .withSession(validSession)
               )
             )
-            println(result.header.headers)
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe partnerMinimumEarningsPath
           }
@@ -445,7 +443,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
               Future.successful(
-                Some(buildPageObjects(false, Some(range)))
+                Some(buildPageObjects(false, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)))
               )
             )
 
@@ -464,7 +462,6 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
                   .withSession(validSession)
               )
             )
-            println(result.header.headers)
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe parentMinimumEarningsPath
           }
@@ -493,9 +490,8 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
                   .withSession(validSession)
               )
             )
-            println(result.header.headers)
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe whatsYourAgePath + "/parent"
+            result.header.headers("Location") shouldBe whatsYourAgePath + "/partner"
           }
         }
       }
