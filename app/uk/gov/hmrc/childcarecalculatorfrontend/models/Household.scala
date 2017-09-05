@@ -57,7 +57,6 @@ case class Benefits(
                    )
 object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
-
 }
 
 case class MinimumEarnings(
@@ -143,7 +142,6 @@ case class PageObjects(
                         getBenefits: Option[Boolean] = None,
                         minimumEarnings: Option[Boolean] = None
                        )
-
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]
 }

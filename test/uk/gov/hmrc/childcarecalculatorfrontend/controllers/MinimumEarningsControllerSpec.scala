@@ -255,43 +255,43 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for PageObjects.partner.minimumEarnings.earnMoreThanNMW object for partner" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnBelowNMW = Some(true),
-                  partnerEarnBelowNMW = Some(true)))
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnBelowNMW = Some(true),
-                  partnerEarnBelowNMW = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(true)(
-                request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            println(result.header.headers)
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
-          }
+//          s"${range.toString} has been previously selected and there is data in keystore for PageObjects.partner.minimumEarnings.earnMoreThanNMW object for partner" in {
+//            when(
+//              sut.keystore.fetch[PageObjects]()(any(), any())
+//            ).thenReturn(
+//              Future.successful(
+//
+//                Some(buildPageObjects(isPartner = true,
+//                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+//                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+//                  parentEarnBelowNMW = Some(true),
+//                  partnerEarnBelowNMW = Some(true)))
+//              )
+//            )
+//
+//            when(
+//              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+//            ).thenReturn(
+//              Future.successful(
+//                Some(buildPageObjects(isPartner = true,
+//                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+//                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+//                  parentEarnBelowNMW = Some(true),
+//                  partnerEarnBelowNMW = Some(true)))
+//              )
+//            )
+//
+//            val result = await(
+//              sut.onSubmit(true)(
+//                request
+//                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+//                  .withSession(validSession)
+//              )
+//            )
+//            println(result.header.headers)
+//            status(result) shouldBe SEE_OTHER
+//            result.header.headers("Location") shouldBe underConstrctionPath
+//          }
         }
       }
     }

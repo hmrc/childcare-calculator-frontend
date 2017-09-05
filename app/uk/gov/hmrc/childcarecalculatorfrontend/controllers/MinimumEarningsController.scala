@@ -30,14 +30,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
 import scala.concurrent.Future
 
 @Singleton
-class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport
-  with BaseController
-  with HelperManager {
+class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController with HelperManager {
 
   val keystore: KeystoreService = KeystoreService
 
   private def backURL(pageObjects: PageObjects, isPartner: Boolean): Call = {
-        routes.WhatsYourAgeController.onPageLoad(isPartner)
+    routes.WhatsYourAgeController.onPageLoad(isPartner)
   }
 
   def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
@@ -49,7 +47,6 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
-
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
         val minimumEarnings: Boolean = if(isPartner) {
@@ -60,9 +57,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         Ok(
           minimumEarning(
             new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(Some(minimumEarnings)),
-            isPartner,
-            getMinWageForScreen(pageObjects, isPartner),
-            backURL(pageObjects, isPartner)
+            isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(pageObjects, isPartner)
           )
         )
       case _ =>
@@ -88,17 +83,20 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
               )
             ),
           success => {
-            val minEarningsBoolean: Boolean = success.get
-            keystore.cache(getModifiedPageObjects(minEarningsBoolean, pageObjects, isPartner)).map { _ =>
-              if (minEarningsBoolean) {
-                //TODO redirect to if either of you Over 1000000 and fix tests
+            val minEarnings: Boolean = success.get
+            keystore.cache(getModifiedPageObjects(minEarnings, pageObjects, isPartner)).map { _ =>
+              if (minEarnings && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
+                Redirect(routes.MinimumEarningsController.onPageLoad(true))
+              } else if (minEarnings && (pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.YOU ||
+                  pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.PARTNER)) {
+                //TODO redirect to max earnings page
                 Redirect(routes.ChildCareBaseController.underConstruction())
               } else {
                 //TODO redirect to either of you self employed and fix tests
                 Redirect(routes.ChildCareBaseController.underConstruction())
-                }
               }
             }
+          }
         )
       case _ =>
         Logger.warn("PageObjects object is missing in MinimumEarningsController.onSubmit")

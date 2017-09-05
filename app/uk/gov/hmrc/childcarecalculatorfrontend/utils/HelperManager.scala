@@ -27,12 +27,14 @@ trait HelperManager {
   def getMinimumEarningsAmountForAgeRange(ageRange: Option[String]): Int = {
     val nmwConfig: Configuration = getNMWConfig(LocalDate.now)
 
+//    val nmwPerAge = nmwConfig.getInt(claimant.age.getOrElse("non-existing-age"))
+//    nmwPerAge.isDefined && claimant.minimumEarnings.isDefined && (nmwPerAge.get > claimant.minimumEarnings.get)
     nmwConfig.getInt(ageRange.getOrElse("non-existing-age")).get
   }
 
   def getLatestConfig(configType: String, currentDate: LocalDate): Configuration = {
     val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
-    val configs: Seq[Configuration] = Play.application.configuration.getConfigSeq(configType).get
+    val configs: Seq[Configuration] = Play.application.configuration.getConfigSeq(configType).getOrElse(Seq())
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.getString("rule-date").equals(Some("default"))
@@ -57,3 +59,5 @@ trait HelperManager {
     getLatestConfig("nmw", currentDate)
   }
 }
+
+object HelperManager extends HelperManager
