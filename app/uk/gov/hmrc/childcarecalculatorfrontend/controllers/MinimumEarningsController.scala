@@ -57,15 +57,24 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
         val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
-        val minimumEarnings: Boolean = if(isPartner) {
-          pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
-            pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.isDefined
+        println(s"pageObjects>>>$pageObjects")
+        val minimumEarnings: Option[Boolean] = if(isPartner) {
+          if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
+            pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.isDefined) {
+            pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
+          } else {
+            None
+          }
         } else {
-          pageObjects.household.parent.minimumEarnings.isDefined && pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.isDefined
+          if(pageObjects.household.parent.minimumEarnings.isDefined && pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.isDefined) {
+            pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW
+          } else {
+            None
+          }
         }
         Ok(
           minimumEarning(
-            new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(Some(minimumEarnings)),
+            new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(minimumEarnings),
             isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(inPaidEmployment, isPartner)
           )
         )
@@ -136,26 +145,29 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
   private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
     val minEarns = if(minEarningsBoolean) {
-      Some(MinimumEarnings())
+      Some(MinimumEarnings(earnMoreThanNMW=Some(true)))
     } else {
-      None
+      Some(MinimumEarnings(earnMoreThanNMW=Some(false)))
     }
-    if(isPartner) {
-      pageObjects.copy(
-        household = pageObjects.household.copy(
-          partner = pageObjects.household.partner.map { x => x.copy(
-            minimumEarnings = pageObjects.household.partner.get.minimumEarnings.map { y => y.copy(earnMoreThanNMW = Some(minEarningsBoolean))}) }
-        )
-      )
+
+    if(!isPartner && defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH) {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(minimumEarnings = minEarns)
+      ))
+    } else if(isPartner && defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH) {
+      pageObjects.copy(household = pageObjects.household.copy(
+        partner = pageObjects.household.partner.map(x => x.copy(minimumEarnings = minEarns))
+      ))
+    } else if(defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU) {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(minimumEarnings = minEarns)
+      ))
     } else {
-      pageObjects.copy(
-        household = pageObjects.household.copy(
-          parent = pageObjects.household.parent.copy(
-            minimumEarnings = pageObjects.household.parent.minimumEarnings.map { x => x.copy(earnMoreThanNMW = Some(minEarningsBoolean))}
-          )
-        )
-      )
+      pageObjects.copy(household = pageObjects.household.copy(
+        partner = pageObjects.household.partner.map(x => x.copy(minimumEarnings = minEarns))
+      ))
     }
+
   }
 
 }
