@@ -32,13 +32,13 @@
 
 
     @helpers.form(
-        action = routes.SelfEmployedLessThanTwelveMonthsController.onSubmit(isPartner),
+        action = routes.SelfEmployedController.onSubmit(isPartner),
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @error.ccErrorSummary(form)
 
         @radio.ccRadioOptions(
-            field = form(CCConstants.selfEmployedLessThanTwelveMonthsKey),
+            field = form(CCConstants.selfEmployedKey),
             fieldForm = form,
             radioOptions = Seq(
                 ("true", messages("radio.yes")),

@@ -22,9 +22,9 @@ import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 
-class SelfEmployedLessThanTwelveMonthsFormSpec extends UnitSpec with FakeCCApplication {
+class SelfEmployedFormSpec extends UnitSpec with FakeCCApplication {
 
-  "SelfEmployedLessThanTwelveMonthsForm" when {
+  "SelfEmployedForm" when {
     val isPartnerTestCase = Table(
       ("isPartner", "errorMessage"),
       (false, "self.employed.less.than.12.months.parent.error"),
@@ -35,9 +35,9 @@ class SelfEmployedLessThanTwelveMonthsFormSpec extends UnitSpec with FakeCCAppli
 
       s"is partner = ${isPartner}" should {
         "accept value true" in {
-          val form = new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.bind(
+          val form = new SelfEmployedForm(isPartner, applicationMessagesApi).form.bind(
             Map(
-              selfEmployedLessThanTwelveMonthsKey -> "true"
+              selfEmployedKey -> "true"
             )
           )
           form.value.get.get shouldBe true
@@ -46,9 +46,9 @@ class SelfEmployedLessThanTwelveMonthsFormSpec extends UnitSpec with FakeCCAppli
         }
 
         "accept value false" in {
-          val form = new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.bind(
+          val form = new SelfEmployedForm(isPartner, applicationMessagesApi).form.bind(
             Map(
-              selfEmployedLessThanTwelveMonthsKey -> "false"
+              selfEmployedKey -> "false"
             )
           )
           form.value.get.get shouldBe false
@@ -57,9 +57,9 @@ class SelfEmployedLessThanTwelveMonthsFormSpec extends UnitSpec with FakeCCAppli
         }
 
         "return error if no value supplied" in {
-          val form = new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.bind(
+          val form = new SelfEmployedForm(isPartner, applicationMessagesApi).form.bind(
             Map(
-              selfEmployedLessThanTwelveMonthsKey -> ""
+              selfEmployedKey -> ""
             )
           )
           form.value shouldBe None
@@ -72,9 +72,9 @@ class SelfEmployedLessThanTwelveMonthsFormSpec extends UnitSpec with FakeCCAppli
         val invalidValues = List("abcd", "1234")
         invalidValues.foreach { invalidValue =>
           s"return error if invalid value '${invalidValue}' is supplied" in {
-            val form = new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.bind(
+            val form = new SelfEmployedForm(isPartner, applicationMessagesApi).form.bind(
               Map(
-                selfEmployedLessThanTwelveMonthsKey -> invalidValue
+                selfEmployedKey -> invalidValue
               )
             )
             form.value shouldBe None

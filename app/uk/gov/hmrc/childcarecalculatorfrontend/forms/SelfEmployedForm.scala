@@ -24,15 +24,15 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class SelfEmployedLessThanTwelveMonthsForm @Inject()(isPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class SelfEmployedForm @Inject()(isPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
   val userType: String = getUserType(isPartner)
 
-  type SelfEmployedLessThanTwelveMonthsFormType = Option[Boolean]
+  type SelfEmployedFormType = Option[Boolean]
 
-  val form = Form[SelfEmployedLessThanTwelveMonthsFormType](
+  val form = Form[SelfEmployedFormType](
     single(
-      selfEmployedLessThanTwelveMonthsKey -> optional(boolean).verifying(
+      selfEmployedKey -> optional(boolean).verifying(
         Messages(s"self.employed.less.than.12.months.${userType}.error"), _.isDefined
       )
     )

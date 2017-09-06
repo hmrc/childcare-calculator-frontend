@@ -25,11 +25,11 @@ import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedLessThanTwelveMonthsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployedLessThanTwelveMonths
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedForm
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployed
 
 
-class SelfEmployedLessThanTwelveMonthsSpec extends TemplatesValidator with FakeCCApplication {
+class SelfEmployedSpec extends TemplatesValidator with FakeCCApplication {
 
   val backURL = Call("GET", underConstrctionPath)//TODO Should be 'selfemployed or apprentice' path
 
@@ -45,23 +45,23 @@ class SelfEmployedLessThanTwelveMonthsSpec extends TemplatesValidator with FakeC
   )
 
   def getTemplate(form: Form[Option[Boolean]], isPartner: Boolean): Document = {
-    val template = selfEmployedLessThanTwelveMonths(form, isPartner, backURL)(request, applicationMessages)
+    val template = selfEmployed(form, isPartner, backURL)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   val isPartnerTestCase = Table(
     ("isPartner", "errorMessage", "pageTitle", "submitURL"),
-    (false, "self.employed.less.than.12.months.parent.error", "Have you been self-employed less than 12 months?", parentSelfEmployedLessThanTwelveMonthsPath),
-    (true, "self.employed.less.than.12.months.partner.error", "Has your partner been self-employed for less than 12 months?", partnerSelfEmployedLessThanTwelveMonthsPath)
+    (false, "self.employed.less.than.12.months.parent.error", "Have you been self-employed less than 12 months?", parentSelfEmployedPath),
+    (true, "self.employed.less.than.12.months.partner.error", "Has your partner been self-employed for less than 12 months?", partnerSelfEmployedPath)
   )
 
   forAll(isPartnerTestCase) { case (isPartner, errorMessage, pageTitle, submitURL) =>
     s"calling SelfEmployedLessThanTwelveMonths template when isPartner = ${isPartner}" should {
       "render template" in {
-        val template = selfEmployedLessThanTwelveMonths.render(new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form, isPartner, backURL, request, applicationMessages)
+        val template = selfEmployed.render(new SelfEmployedForm(isPartner, applicationMessagesApi).form, isPartner, backURL, request, applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = selfEmployedLessThanTwelveMonths.f(new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form, isPartner, backURL)(request, applicationMessages)
+        val template1 = selfEmployed.f(new SelfEmployedForm(isPartner, applicationMessagesApi).form, isPartner, backURL)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 
@@ -71,7 +71,7 @@ class SelfEmployedLessThanTwelveMonthsSpec extends TemplatesValidator with FakeC
 
       "display correct content" when {
         "nothing is selected initially" in {
-          implicit val doc: Document = getTemplate(new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.fill(None), isPartner)
+          implicit val doc: Document = getTemplate(new SelfEmployedForm(isPartner, applicationMessagesApi).form.fill(None), isPartner)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks()
@@ -80,31 +80,31 @@ class SelfEmployedLessThanTwelveMonthsSpec extends TemplatesValidator with FakeC
         }
 
         "true is selected" in {
-          implicit val doc: Document = getTemplate(new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.fill(Some(true)), isPartner)
+          implicit val doc: Document = getTemplate(new SelfEmployedForm(isPartner, applicationMessagesApi).form.fill(Some(true)), isPartner)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks()
           verifyChecks(
-            List(selfEmployedLessThanTwelveMonthsKey +"-true")
+            List(selfEmployedKey +"-true")
           )
           verifyErrors()
         }
 
         "false is selected" in {
-          implicit val doc: Document = getTemplate(new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.fill(Some(false)), isPartner)
+          implicit val doc: Document = getTemplate(new SelfEmployedForm(isPartner, applicationMessagesApi).form.fill(Some(false)), isPartner)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks()
           verifyChecks(
-            List(selfEmployedLessThanTwelveMonthsKey +"-false")
+            List(selfEmployedKey +"-false")
           )
           verifyErrors()
         }
 
         s"display ${applicationMessages.messages(errorMessage)} form is submitted without data" in {
-          val form = new SelfEmployedLessThanTwelveMonthsForm(isPartner, applicationMessagesApi).form.bind(
+          val form = new SelfEmployedForm(isPartner, applicationMessagesApi).form.bind(
             Map(
-              selfEmployedLessThanTwelveMonthsKey -> ""
+              selfEmployedKey -> ""
             )
           )
           implicit val doc: Document = getTemplate(form, isPartner)
@@ -113,7 +113,7 @@ class SelfEmployedLessThanTwelveMonthsSpec extends TemplatesValidator with FakeC
           verifyPageLinks()
           verifyChecks()
           verifyErrors(
-            errors = Map(selfEmployedLessThanTwelveMonthsKey -> applicationMessages.messages(errorMessage)),
+            errors = Map(selfEmployedKey -> applicationMessages.messages(errorMessage)),
             validDateInlineErrors = false
           )
           applicationMessages.messages(errorMessage) should not be errorMessage

@@ -21,16 +21,16 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedLessThanTwelveMonthsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{selfEmployedLessThanTwelveMonths}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployed
 
 import scala.concurrent.Future
 
 @Singleton
-class SelfEmployedLessThanTwelveMonthsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
 
@@ -57,24 +57,24 @@ class SelfEmployedLessThanTwelveMonthsController @Inject()(val messagesApi: Mess
         if(isPartner){
           val partnerSelfEmployedIn12Months: Boolean = pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.get
           Ok(
-            selfEmployedLessThanTwelveMonths(
-              new SelfEmployedLessThanTwelveMonthsForm(isPartner, messagesApi).form.fill(Some(partnerSelfEmployedIn12Months)), isPartner, getBackUrl(isPartner, pageObjects)
+            selfEmployed(
+              new SelfEmployedForm(isPartner, messagesApi).form.fill(Some(partnerSelfEmployedIn12Months)), isPartner, getBackUrl(isPartner, pageObjects)
             )
           )
         } else {
           val parentSelfEmployedIn12Months = pageObjects.household.parent.minimumEarnings.get.selfEmployedIn12Months.get
           Ok(
-            selfEmployedLessThanTwelveMonths(
-              new SelfEmployedLessThanTwelveMonthsForm(isPartner, messagesApi).form.fill(Some(parentSelfEmployedIn12Months)), isPartner, getBackUrl(isPartner, pageObjects)
+            selfEmployed(
+              new SelfEmployedForm(isPartner, messagesApi).form.fill(Some(parentSelfEmployedIn12Months)), isPartner, getBackUrl(isPartner, pageObjects)
             )
           )
         }
       case _ =>
-        Logger.warn("Invalid PageObjects in SelfEmployedLessThanTwelveMonthsController.onPageLoad")
+        Logger.warn("Invalid PageObjects in SelfEmployedController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from SelfEmployedLessThanTwelveMonthsController.onPageLoad: ${ex.getMessage}")
+        Logger.warn(s"Exception from SelfEmployedController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
@@ -168,11 +168,11 @@ If a user responding about a partner and that partner doesn't satisfy the minimu
     keystore.fetch[PageObjects].flatMap {
       case Some(pageObjects) =>
 
-        new SelfEmployedLessThanTwelveMonthsForm(isPartner, messagesApi).form.bindFromRequest().fold(
+        new SelfEmployedForm(isPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                selfEmployedLessThanTwelveMonths(errors, isPartner, getBackUrl(isPartner, pageObjects))
+                selfEmployed(errors, isPartner, getBackUrl(isPartner, pageObjects))
               )
             ),
           success => {
@@ -183,11 +183,11 @@ If a user responding about a partner and that partner doesn't satisfy the minimu
           }
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in SelfEmployedLessThanTwelveMonthsController.onSubmit")
+        Logger.warn("Invalid PageObjects in SelfEmployedController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from SelfEmployedLessThanTwelveMonthsController.onSubmit: ${ex.getMessage}")
+        Logger.warn(s"Exception from SelfEmployedController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
