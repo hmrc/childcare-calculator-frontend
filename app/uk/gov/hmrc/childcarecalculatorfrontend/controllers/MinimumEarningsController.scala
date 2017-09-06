@@ -57,7 +57,6 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
         val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
-        println(s"pageObjects>>>$pageObjects")
         val minimumEarnings: Option[Boolean] = if(isPartner) {
           if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
             pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.isDefined) {
@@ -150,15 +149,8 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       Some(MinimumEarnings(earnMoreThanNMW=Some(false)))
     }
 
-    if(!isPartner && defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH) {
-      pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(minimumEarnings = minEarns)
-      ))
-    } else if(isPartner && defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH) {
-      pageObjects.copy(household = pageObjects.household.copy(
-        partner = pageObjects.household.partner.map(x => x.copy(minimumEarnings = minEarns))
-      ))
-    } else if(defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU) {
+    if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
+      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
       pageObjects.copy(household = pageObjects.household.copy(
         parent = pageObjects.household.parent.copy(minimumEarnings = minEarns)
       ))
