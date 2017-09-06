@@ -79,7 +79,7 @@ class MinimumEarningSpec extends TemplatesValidator with  FakeCCApplication with
 //    ageRanges.foreach(range => {
 
 //      val amount = getMinimumEarningsAmountForAgeRange(Some(range.toString))
-      val amount = 120.30
+      var amount = 120.30
 
       def getTemplate(form: Form[Option[Boolean]], isPartner: Boolean): Document = {
         val template = minimumEarning(form, isPartner, amount, backURL)(request, applicationMessages)

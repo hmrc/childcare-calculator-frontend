@@ -405,6 +405,35 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe partnerMinimumEarningsPath
           }
+
+          s"${range.toString} is selected if there is data in keystore when both are in paid employment object for partner" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(true, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(true, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe parentMinimumEarningsPath
+          }
+
         }
       }
     }
@@ -464,6 +493,34 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
             )
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe parentMinimumEarningsPath
+          }
+
+          s"${range.toString} is selected if there is data in keystore when partner is in paid employment for parent" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(false, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(false, Some(range)).copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(false)(
+                request
+                  .withFormUrlEncodedBody(whatsYourAgeKey -> range.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
           }
 
           s"${range.toString} is selected if there is data in keystore for PageObjects and both are in paid employment object for parent" in {
