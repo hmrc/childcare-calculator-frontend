@@ -138,9 +138,6 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  private def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
-    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
-  }
 
   private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
     val minEarns = if(minEarningsBoolean) {

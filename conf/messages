@@ -194,8 +194,8 @@ whats.your.age.radio.not.selected.error.parent = You must tell the calculator wh
 whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
 ####### Self-employed or apprentice ######
-self.employed.or.apprentcie.header.parent = Are you self-employed or an apprentice?
-self.employed.or.apprentcie.header.partner = Is your partner an apprentice or self-employed?
+self.employed.or.apprentice.header.parent = Are you self-employed or an apprentice?
+self.employed.or.apprentice.header.partner = Is your partner an apprentice or self-employed?
 self.employed.or.apprentice.selfemployed = Self-employed
 self.employed.or.apprentice.apprentice = Apprentice
 self.employed.or.apprentice.neither = Neither self-employed or an apprentice

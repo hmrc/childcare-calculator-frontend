@@ -24,10 +24,9 @@ import play.api.data.Form
 import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.TemplatesValidator.ElementDetails
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{HoursForm, SelfEmployedOrApprenticeForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedOrApprenticeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{hours, selfEmployedOrApprentice}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployedOrApprentice
 import uk.gov.hmrc.childcarecalculatorfrontend.{TestDataForViews, FakeCCApplication, TemplatesValidator}
 
 class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplication with TestDataForViews{
@@ -38,33 +37,36 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
   lazy val pageTitleContentParent = "Are you self-employed or an apprentice?"
   lazy val pageTitleContentPartner = "Is your partner an apprentice or self-employed?"
 
+  //To be deleted
+  lazy val  selfEmployedTimescaleParentPathTemp = Call("GET", "TO_BE_IMPLEMENTED") //to be replaced by selfEmployedTimescaleParentPath
+  lazy val  selfEmployedTimescalePartnerPathTemp = Call("GET", "TO_BE_IMPLEMENTED") //to be replaced by selfEmployedTimescalePartnerPath
+
   override val contentData: List[ElementDetails] = List(
     ElementDetails(id = Some(nextButtonId), value = nextButtonLabel),
     ElementDetails(id = Some(backButtonId), value = backButtonLabel)
   )
 
-  override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = locationPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whatYouNeedPath)
-  )
+  override val linksData: List[ElementDetails] = List()
 
   def getTemplate(form: Form[Option[String]], isPartner: Boolean = false, backUrl: Call): Document = {
     val template = selfEmployedOrApprentice(form, isPartner, backUrl)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
-  private def getNewForm(isPartner: Boolean = false) = {
+  def getNewForm(isPartner: Boolean = false): SelfEmployedOrApprenticeForm = {
     new SelfEmployedOrApprenticeForm(isPartner, applicationMessagesApi)
   }
 
   val testCases = Table(
-    ("Is partner", "Submission path", "Page title"),
-    (false, selfEmployedTimescaleParentPath, pageTitleContentParent),
-    (true, selfEmployedTimescalePartnerPath, pageTitleContentPartner)
+    ("Is partner", "Submission path", "Page title", "Back Url"),
+    (false, selfEmployedTimescaleParentPathTemp.toString, pageTitleContentParent, backUrlForParent),
+    (true, selfEmployedTimescalePartnerPathTemp.toString, pageTitleContentPartner, backUrlForPartner)
   )
 
   forAll(testCases) {
-   case (isPartner, submissionPath, pageTitle) =>
+   case (isPartner, submissionPath, pageTitle, backUrl) =>
+
+    val userType = getUserType(isPartner)
 
     val dynamicContent = List(
       ElementDetails(id = Some(pageTitleId), value = pageTitle)
@@ -72,22 +74,22 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
 
     val dynamicLinks = List(
       ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = submissionPath),
-      ElementDetails(id = Some(backButtonId), checkAttribute = Some(attributeHref), value = whatYouNeedPath)
+      ElementDetails(id = Some(backButtonId), checkAttribute = Some(attributeHref), value = backUrl.toString)
     )
 
-    s"if user is partner = $isPartner" should {
+    s"if user is $userType" should {
 
       "render template successfully" in {
-        val template = hours.render(new HoursForm(applicationMessagesApi).form, isPartner, backUrl, request, applicationMessages)
+        val template = selfEmployedOrApprentice.render(getNewForm(isPartner).form, isPartner, backUrl, request, applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = hours.f(new HoursForm(applicationMessagesApi).form, isPartner, backUrl)(request, applicationMessages)
+        val template1 = selfEmployedOrApprentice.f(getNewForm(isPartner).form, isPartner, backUrl)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 
       "load template successfully" when {
         "nothing is selected initially" in {
-          implicit val doc: Document = getTemplate(new HoursForm(applicationMessagesApi).form, isPartner)
+          implicit val doc: Document = getTemplate(getNewForm(isPartner).form, isPartner, backUrl)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks(dynamicLinks)
@@ -95,7 +97,7 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
         }
 
         "valid value is given" in {
-          implicit val doc: Document = getTemplate(new HoursForm(applicationMessagesApi).form.fill(Some(37.5)), isPartner)
+          implicit val doc: Document = getTemplate(getNewForm(isPartner).form.fill(Some(EmploymentStatusEnum.SELFEMPLOYED.toString)), isPartner, backUrl)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks(dynamicLinks)
@@ -104,66 +106,21 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
       }
 
       "display correct error message" when {
-        s"form is submitted without data ('${applicationMessages.messages("hours.a.week.not.selected.error")}')" in {
-          val form = new HoursForm(applicationMessagesApi).form.bind(
+        s"form is submitted without data ('${applicationMessages.messages(s"self.employed.or.apprentice.not.selected.$userType")}')" in {
+          val form = getNewForm(isPartner).form.bind(
             Map(
-              hoursKey -> ""
+              selfEmployedOrApprenticeKey -> ""
             )
           )
-          implicit val doc: Document = getTemplate(form, isPartner)
+          implicit val doc: Document = getTemplate(form, isPartner, backUrl)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks(dynamicLinks)
           verifyErrors(
-            errors = Map(hoursKey -> applicationMessages.messages("hours.a.week.not.selected.error"))
+            errors = Map(selfEmployedOrApprenticeKey -> applicationMessages.messages(s"self.employed.or.apprentice.not.selected.$userType"))
           )
-          applicationMessages.messages("hours.a.week.not.selected.error") should not be "hours.a.week.not.selected.error"
+          applicationMessages.messages(s"self.employed.or.apprentice.not.selected.$userType") should not be s"self.employed.or.apprentice.not.selected.$userType"
         }
-
-        s"form is submitted with data form invalid range ('${applicationMessages.messages("hours.a.week.not.selected.error")}')" when {
-
-          val invalidValues: List[String] = List("0.9", "99.6")
-          invalidValues.foreach { hours =>
-            s"$hours is given" in {
-              val form = new HoursForm(applicationMessagesApi).form.bind(
-                Map(
-                  hoursKey -> hours
-                )
-              )
-              implicit val doc: Document = getTemplate(form, isPartner)
-
-              verifyPageContent(dynamicContent)
-              verifyPageLinks(dynamicLinks)
-              verifyErrors(
-                errors = Map(hoursKey -> applicationMessages.messages("hours.a.week.not.selected.error"))
-              )
-              applicationMessages.messages("hours.a.week.not.selected.error") should not be "hours.a.week.not.selected.error"
-            }
-          }
-        }
-
-        s"form is submitted with data form invalid type ('${applicationMessages.messages("error.real")}')" when {
-
-          val invalidValues: List[String] = List("abcs", "37,55", "[*]")
-          invalidValues.foreach { hours =>
-            s"${hours} is given" in {
-              val form = new HoursForm(applicationMessagesApi).form.bind(
-                Map(
-                  hoursKey -> hours
-                )
-              )
-              implicit val doc: Document = getTemplate(form, isPartner)
-
-              verifyPageContent(dynamicContent)
-              verifyPageLinks(dynamicLinks)
-              verifyErrors(
-                errors = Map(hoursKey -> applicationMessages.messages("error.real"))
-              )
-              applicationMessages.messages("error.real") should not be "error.real"
-            }
-          }
-        }
-
       }
 
     }
