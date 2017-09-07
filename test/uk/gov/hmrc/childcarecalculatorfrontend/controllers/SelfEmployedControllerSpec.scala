@@ -88,21 +88,20 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
       }
 
       "load template successfully if there is data in keystore for parent and define correctly backURL" when {
-        "parent" in {
+        "display self employed page for parent" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = false, parentSelfEmployedIn12Months = Some(true)))
+              Some(buildPageObjects(isPartner = false,
+                parentSelfEmployedIn12Months = Some(true)))
             )
           )
-
           val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
-
           status(result) shouldBe OK
-//          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-//          val content = Jsoup.parse(bodyOf(result))
-//          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath //TODO Should be 'selfemployed or apprentice' path for parent
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath //TODO Should be 'selfemployed or apprentice' path for partner
         }
 
         "redirect to error page if can't connect with keystore if parent" in {
@@ -118,7 +117,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
       }
 
       "load template successfully if there is data in keystore for partner and display correct backurl" when {
-        "partner" in {
+        "display self employed page for partner" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(

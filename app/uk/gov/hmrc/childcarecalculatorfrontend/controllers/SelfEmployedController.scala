@@ -25,50 +25,53 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployed
 
 import scala.concurrent.Future
 
 @Singleton
-class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController with HelperManager {
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(isPartner: Boolean, pageObjects: PageObjects): Call = {
-    if(!isPartner) {
-      // TODO - redirect to 'selfemployed or apprentice' with ispartner flag set to false - It's a partner
+  private def getBackUrl(isPartner: Boolean, isEarningMoreThanNWM: Option[Boolean]): Call = {
+    if(isPartner && (!isEarningMoreThanNWM.get)) { //if No selected in "Is your partner self employed or apprentice" page
+      //TODO redirect to partner's "Is your partner self employed or apprentice" page
       routes.ChildCareBaseController.underConstruction()
+    } else {//if No selected in "Are you self employed or apprentice" page
+      //TODO redirect to parent's "Are you self employed or apprentice" page
+      routes.ChildCareBaseController.underConstruction()
+    }
+  }
+
+  private def defineSelfEmployed(isPartner: Boolean, pageObjects: PageObjects): Option[Boolean] = {
+    if(isPartner) {
+      if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
+        pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.isDefined ) {
+        pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months
+      } else {
+        None
+      }
     } else {
-      // TODO - redirect to 'selfemployed or apprentice' with ispartner flag set to false - It's a parent
-      routes.ChildCareBaseController.underConstruction()
+      if(pageObjects.household.parent.minimumEarnings.isDefined &&
+        pageObjects.household.parent.minimumEarnings.get.selfEmployedIn12Months.isDefined) {
+        pageObjects.household.parent.minimumEarnings.get.selfEmployedIn12Months
+      } else {
+        None
+      }
     }
   }
 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if ( (isPartner && pageObjects.household.partner.isDefined
-                                  && pageObjects.household.partner.get.minimumEarnings.isDefined
-                                  && pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.isDefined )
-                                  ||
-                                  (isPartner && pageObjects.household.partner.isDefined
-                                  && pageObjects.household.partner.get.minimumEarnings.isDefined
-                                  && pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.isDefined) ) =>
-
-        if(isPartner){
-          val partnerSelfEmployedIn12Months: Boolean = pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.get
-          Ok(
-            selfEmployed(
-              new SelfEmployedForm(isPartner, messagesApi).form.fill(Some(partnerSelfEmployedIn12Months)), isPartner, getBackUrl(isPartner, pageObjects)
-            )
+      case Some(pageObjects) =>
+        Ok(
+          selfEmployed(
+            new SelfEmployedForm(isPartner, messagesApi).form.fill(defineSelfEmployed(isPartner, pageObjects)), isPartner,
+              getBackUrl(isPartner, defineMinimumEarnings(isPartner, pageObjects))
           )
-        } else {
-          val parentSelfEmployedIn12Months = pageObjects.household.parent.minimumEarnings.get.selfEmployedIn12Months.get
-          Ok(
-            selfEmployed(
-              new SelfEmployedForm(isPartner, messagesApi).form.fill(Some(parentSelfEmployedIn12Months)), isPartner, getBackUrl(isPartner, pageObjects)
-            )
-          )
-        }
+        )
       case _ =>
         Logger.warn("Invalid PageObjects in SelfEmployedController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -167,12 +170,11 @@ If a user responding about a partner and that partner doesn't satisfy the minimu
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
       case Some(pageObjects) =>
-
         new SelfEmployedForm(isPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
               BadRequest(
-                selfEmployed(errors, isPartner, getBackUrl(isPartner, pageObjects))
+                selfEmployed(errors, isPartner, getBackUrl(isPartner, defineMinimumEarnings(isPartner, pageObjects)))
               )
             ),
           success => {
