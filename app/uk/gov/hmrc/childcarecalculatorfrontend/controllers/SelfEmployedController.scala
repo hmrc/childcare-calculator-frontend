@@ -82,29 +82,6 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
     }
   }
 
-  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
-    val earnMoreThanNMW = defineMinimumEarnings(isPartner, pageObjects)
-    if(!isPartner) {
-      if(!earnMoreThanNMW.get && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        //TODO partner's self or apprentice page
-        routes.ChildCareBaseController.underConstruction()
-      } else {
-        //TODO redirect to TC/UC page
-        routes.ChildCareBaseController.underConstruction()
-      }
-    } else {
-      if(inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        //TODO redirect to parent's max earnings page
-        routes.ChildCareBaseController.underConstruction()
-      } else {
-        //TODO redirect to TC/UC page
-        routes.ChildCareBaseController.underConstruction()
-      }
-    }
-
-  }
-
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
       case Some(pageObjects) =>
@@ -130,6 +107,29 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
         Logger.warn(s"Exception from SelfEmployedController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
+  }
+
+  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
+    val earnMoreThanNMW = defineMinimumEarnings(isPartner, pageObjects)
+    if(!isPartner) {
+      if(!earnMoreThanNMW.get && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        //TODO partner's self or apprentice page
+        routes.ChildCareBaseController.underConstruction()
+      } else {
+        //TODO redirect to TC/UC page
+        routes.ChildCareBaseController.underConstruction()
+      }
+    } else {
+      if(inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        //TODO redirect to parent's max earnings page
+        routes.ChildCareBaseController.underConstruction()
+      } else {
+        //TODO redirect to TC/UC page
+        routes.ChildCareBaseController.underConstruction()
+      }
+    }
+
   }
 
   private def getModifiedPageObjects(selfEmployed: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {

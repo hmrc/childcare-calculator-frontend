@@ -51,8 +51,6 @@ trait HelperManager {
   def getMinimumEarningsAmountForAgeRange(ageRange: Option[String]): Int = {
     val nmwConfig: Configuration = getNMWConfig(LocalDate.now)
 
-//    val nmwPerAge = nmwConfig.getInt(claimant.age.getOrElse("non-existing-age"))
-//    nmwPerAge.isDefined && claimant.minimumEarnings.isDefined && (nmwPerAge.get > claimant.minimumEarnings.get)
     nmwConfig.getInt(ageRange.getOrElse("non-existing-age")).get
   }
 

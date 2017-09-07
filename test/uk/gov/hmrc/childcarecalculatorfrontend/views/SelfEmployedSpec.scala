@@ -34,8 +34,8 @@ class SelfEmployedSpec extends TemplatesValidator with FakeCCApplication {
   val backURL = Call("GET", underConstrctionPath)//TODO Should be 'selfemployed or apprentice' path
 
   override val contentData: List[ElementDetails] = List(
-    ElementDetails(attribute = Some("for"), attributeValue = Some("selfEmployedLessThanTwelveMonths-true"), value = "Yes"),
-    ElementDetails(attribute = Some("for"), attributeValue = Some("selfEmployedLessThanTwelveMonths-false"), value = "No"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some("selfEmployed-true"), value = "Yes"),
+    ElementDetails(attribute = Some("for"), attributeValue = Some("selfEmployed-false"), value = "No"),
     ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
@@ -56,7 +56,7 @@ class SelfEmployedSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   forAll(isPartnerTestCase) { case (isPartner, errorMessage, pageTitle, submitURL) =>
-    s"calling SelfEmployedLessThanTwelveMonths template when isPartner = ${isPartner}" should {
+    s"calling SelfEmployed template when isPartner = ${isPartner}" should {
       "render template" in {
         val template = selfEmployed.render(new SelfEmployedForm(isPartner, applicationMessagesApi).form, isPartner, backURL, request, applicationMessages)
         template.contentType shouldBe "text/html"

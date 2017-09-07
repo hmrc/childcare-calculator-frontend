@@ -24,6 +24,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -45,15 +46,19 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
   validateUrl(partnerSelfEmployedPath)
 
   def buildPageObjects(isPartner: Boolean,
+                       parentEarnMoreThanNMW: Option[Boolean] = None,
+                       partnerEarnMoreThanNMW: Option[Boolean] = None,
                        parentSelfEmployedIn12Months: Option[Boolean] = None,
-                       partnerSelfEmployedIn12Months: Option[Boolean] = None
+                       partnerSelfEmployedIn12Months: Option[Boolean] = None,
+                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
                       ): PageObjects = {
-    val parent = Claimant(minimumEarnings = Some(MinimumEarnings(selfEmployedIn12Months = parentSelfEmployedIn12Months)))
-    val partner = Claimant(minimumEarnings = Some(MinimumEarnings(selfEmployedIn12Months = partnerSelfEmployedIn12Months)))
+    val parent = Claimant(minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW, selfEmployedIn12Months = parentSelfEmployedIn12Months)))
+    val partner = Claimant(minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW, selfEmployedIn12Months = partnerSelfEmployedIn12Months)))
     if (isPartner) {
-      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = parent, partner = Some(partner)))
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
+        partner = Some(partner)))
     } else {
-      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = parent))
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
     }
   }
 
@@ -124,6 +129,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             Future.successful(
               Some(buildPageObjects(isPartner = true,
                 parentSelfEmployedIn12Months = Some(true),
+                partnerEarnMoreThanNMW = Some(false),
                 partnerSelfEmployedIn12Months = Some(true)))
             )
           )
@@ -174,187 +180,193 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         }
       }
     }
-  }
 
-  "onSubmit is called" when {
+    "onSubmit is called" when {
 
-    "there are errors" should {
-      "load same template and return BAD_REQUEST as a partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(true))
+      "there are errors" should {
+        "load same template and return BAD_REQUEST as a partner" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(true,
+                partnerEarnMoreThanNMW = Some(false)
+              ))
+            )
           )
-        )
-        val result = await(
-          sut.onSubmit(true)(
-            request
-              .withFormUrlEncodedBody(selfEmployedKey -> "")
-              .withSession(validSession)
+          val result = await(
+            sut.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "")
+                .withSession(validSession)
+            )
           )
-        )
-        status(result) shouldBe BAD_REQUEST
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        }
+
+        "load same template and return BAD_REQUEST with a parent" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(false))
+            )
+          )
+          val result = await(
+            sut.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe BAD_REQUEST
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        }
       }
 
-      "load same template and return BAD_REQUEST with a parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(false))
+      "saving in keystore is successful as a partner" should {
+
+        s"has been previously selected and there is no data in keystore for PageObjects object for partner" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              None
+            )
           )
-        )
-        val result = await(
-          sut.onSubmit(false)(
-            request
-              .withFormUrlEncodedBody(selfEmployedKey -> "")
-              .withSession(validSession)
+
+          val result = await(
+            sut.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "123")
+                .withSession(validSession)
+            )
           )
-        )
-        status(result) shouldBe BAD_REQUEST
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+      }
+
+
+      "saving in keystore is successful as a parent and SelfEmployed = true" should {
+
+        s"has been previously selected and there is no data in keystore for PageObjects object for parent" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              None
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+
+        s"has been previously selected and there is data in keystore for selfEmployed object for parent" in {
+          val po = buildPageObjects(isPartner = false,
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            parentEarnMoreThanNMW = Some(false),
+            parentSelfEmployedIn12Months = Some(true))
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(po)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false,
+                parentEarnMoreThanNMW = Some(false),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                parentSelfEmployedIn12Months = Some(true)
+              ))
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "false")
+                .withSession(validSession)
+            )
+          )
+          println(result.header.headers)
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+      }
+
+
+      "saving in keystore is successful as a parent and SelfEmployed = false" should {
+
+        s"has been previously selected and there is no data in keystore for PageObjects object for parent" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              None
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        }
+
+        s"has been previously selected and there is data in keystore for SelfEmployed object for parent" in {
+          val po = buildPageObjects(isPartner = false,
+            parentEarnMoreThanNMW = Some(false),
+            parentSelfEmployedIn12Months = Some(false))
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(po)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false,
+                parentEarnMoreThanNMW = Some(false),
+                parentSelfEmployedIn12Months = Some(false)))
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "false")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
       }
     }
 
-    "saving in keystore is successful as a partner" should {
-      s"partner" when {
-
-          s"has been previously selected and there is no data in keystore for PageObjects object for partner" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(true)(
-                request
-                  .withFormUrlEncodedBody(selfEmployedKey -> "123")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
-          }
-      }
-    }
-
-    "saving in keystore is successful as a parent and SelfEmployed = true" should {
-      s"parent" when {
-
-          s"has been previously selected and there is no data in keystore for PageObjects object for parent" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(selfEmployedKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
-          }
-
-          s"has been previously selected and there is data in keystore for PageObjects.parent.minimumEarnings.selfEmployed object for parent" in {
-            val po = buildPageObjects(isPartner = false,
-              parentSelfEmployedIn12Months = Some(true))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = false,
-                  parentSelfEmployedIn12Months = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(selfEmployedKey -> "false")
-                  .withSession(validSession)
-              )
-            )
-            println(result.header.headers)
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
-          }
-      }
-    }
-
-    "saving in keystore is successful as a parent and SelfEmployed = false" should {
-      s"parent" when {
-
-          s"has been previously selected and there is no data in keystore for PageObjects object for parent" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(selfEmployedKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
-          }
-
-          s"has been previously selected and there is data in keystore for PageObjects.parent.minimumEarnings.SelfEmployed object for parent" in {
-            val po = buildPageObjects(isPartner = false,
-              parentSelfEmployedIn12Months = Some(false))
-
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = false,
-                  parentSelfEmployedIn12Months = Some(false)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(selfEmployedKey -> "false")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
-          }
-      }
-    }
   }
 }
