@@ -71,8 +71,7 @@ class VouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSup
 
   private def getNextPage(inPaidEmployment: YouPartnerBothEnum, selectedVouchers: YesNoUnsureEnum): Call = {
     if(inPaidEmployment == YouPartnerBothEnum.BOTH && selectedVouchers == YesNoUnsureEnum.YES) {
-      // TODO - redirect to 'Which of you is offered vouchers'
-      routes.ChildCareBaseController.underConstruction()
+      routes.WhoGetsVouchersController.onPageLoad()
     } else {
       routes.GetBenefitsController.onPageLoad()
     }

@@ -101,7 +101,7 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
     if (!isPartner && pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
       routes.WhichBenefitsDoYouGetController.onPageLoad(true)
     } else {
-      if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
+      if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
         routes.WhatsYourAgeController.onPageLoad(true)
       } else {
         routes.WhatsYourAgeController.onPageLoad(false)

@@ -40,8 +40,8 @@ To run the test coverage suite `scoverage`
 
 #### Acceptance Tests
 
-**NOTE:** Cucumber/acceptance tests are available in a separate project at:
-`http://github.tools.tax.service.gov.uk/ddcn/cc-acceptance-tests`
+**NOTE:** Cucumber/acceptance tests are available in a private GitHub project at:
+`http://github.com/HMRC/childcare-calculator-acceptance-tests`
 
 ## Messages
 

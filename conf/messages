@@ -135,6 +135,10 @@ vouchers.not.selected.error.you = You must tell the calculator if your employer 
 vouchers.not.selected.error.partner = You must tell the calculator if your partner’s employer offers childcare vouchers
 vouchers.not.selected.error.both = You must tell the calculator if either of your employers offer childcare vouchers
 
+####### Who gets vouchers #######
+who.gets.vouchers.header = Which of you is offered childcare vouchers?
+who.gets.vouchers.not.selected.error = You must tell the calculator which of you is offered childcare vouchers
+
 ####### Get benefits #######
 get.benefits.header.single = Do you get any benefits?
 get.benefits.header.couple = Do you or your partner get any benefits?
@@ -198,3 +202,10 @@ self.employed.or.apprentice.neither = Neither self-employed or an apprentice
 self.employed.or.apprentice.not.selected.parent = You must tell the calculator if you are self-employed or an apprentice
 self.employed.or.apprentice.not.selected.partner = You must tell the calculator if your partner is self-employed or an apprentice
 
+####### On average how much will you earn  #########
+on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.parent.header = On average, will you earn £{0} or more a week?
+on.average.how.much.will.you.earn.partner.header = On average, will your partner earn £{0} or more a week?
+on.average.how.much.will.you.earn.hint.parent = This is the National Minimum Wage or National Living Wage a week for someone your age.
+on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
