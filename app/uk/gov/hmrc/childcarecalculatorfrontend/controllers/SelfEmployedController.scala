@@ -82,89 +82,27 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
     }
   }
 
-  private def modifyPageObjects(isPartner: Boolean, oldPageObjects: PageObjects, newSelfEmployedLessThanTwelveMonths: Boolean): PageObjects = {
-    println(oldPageObjects)
-    if(isPartner) {
-      //it's the partner info
-      oldPageObjects.household.partner.flatMap[PageObjects](partner => {
-        partner.minimumEarnings.flatMap[PageObjects](minEarnings => {
-          minEarnings.selfEmployedIn12Months.flatMap[PageObjects](existingPartnerSelfEmployedIn12Months => {
-            if (newSelfEmployedLessThanTwelveMonths == existingPartnerSelfEmployedIn12Months) {
-              //same so just return the existing info
-              Some(oldPageObjects)
-            } else {
-              //need to substitute new value
-              val newMinimumEarningsObject: MinimumEarnings = oldPageObjects.household.partner.get.minimumEarnings.get.copy(selfEmployedIn12Months = Some(newSelfEmployedLessThanTwelveMonths))
-              val newPartnerObject: Claimant = oldPageObjects.household.partner.get.copy(minimumEarnings = Some(newMinimumEarningsObject))
-              val newHouseholdObject: Household = oldPageObjects.household.copy(partner = Some(newPartnerObject))
-              Some(oldPageObjects.copy(household = newHouseholdObject))
-            }
-          })
-        })
-      }).getOrElse(oldPageObjects)
-    } else {
-      //its parent info
-      oldPageObjects.household.parent.minimumEarnings.flatMap[PageObjects](minEarnings => {
-        minEarnings.selfEmployedIn12Months.flatMap[PageObjects](existingParentSelfEmployedIn12Months => {
-          if(newSelfEmployedLessThanTwelveMonths == existingParentSelfEmployedIn12Months) {
-            //same so just return the existing info
-            Some(oldPageObjects)
-          } else {
-            //need to substitute new value
-            val newMinimumEarningsObject: MinimumEarnings = oldPageObjects.household.parent.minimumEarnings.get.copy(selfEmployedIn12Months = Some(newSelfEmployedLessThanTwelveMonths))
-            val newParentObject: Claimant = oldPageObjects.household.parent.copy(minimumEarnings = Some(newMinimumEarningsObject))
-            val newHouseholdObject: Household = oldPageObjects.household.copy(parent = newParentObject)
-            Some(oldPageObjects.copy(household = newHouseholdObject))
-          }
-        })
-      }).getOrElse(oldPageObjects)
-    }
-  }
-/*
-A single user who checks "Yes" or 'No' and continue, will be taken to the ''Do you get tax credits or universal credit?" screen
-If a user with a partner checks 'Yes' and that partner does not satisfy the minimum earnings rule they will be taken to the ''Is your partner self employed or an apprentice?'' screen
-If a user responding about a partner checks 'Yes' and that partner satisfies the minimum earnings rule they will be taken to the ''Will your partner earn more than £100,000 a year?' screen
-If a user responding about a partner and that partner doesn't satisfy the minimum income rule, checks 'No' they will be taken to "Do you get tax credits or universal credit' screen
- */
   private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    val familyEmploymentStatus: Option[YouPartnerBothEnum] = pageObjects.whichOfYouInPaidEmployment
-//This far in journey minimumEarnings will exist
-    val parentMinimumWage: Option[Boolean] = pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW
-    if(familyEmploymentStatus == YouPartnerBothEnum.YOU){
-      if(parentMinimumWage == Some(true)) {
-        //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to false
+    val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
+    val earnMoreThanNMW = defineMinimumEarnings(isPartner, pageObjects)
+    if(!isPartner) {
+      if(!earnMoreThanNMW.get && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        //TODO partner's self or apprentice page
         routes.ChildCareBaseController.underConstruction()
       } else {
-        //TODO set correct link to 'Do you get tax credits or universal credit' page
-        routes.ChildCareBaseController.underConstruction()
-      }
-    } else if (familyEmploymentStatus == YouPartnerBothEnum.PARTNER) {
-      val partnerMinimumWage: Option[Boolean] = pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
-      if(partnerMinimumWage == Some(true)) {
-        //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to true
-        routes.ChildCareBaseController.underConstruction()
-      } else {
-        //TODO set correct link to 'Do you get tax credits or universal credit' page
+        //TODO redirect to TC/UC page
         routes.ChildCareBaseController.underConstruction()
       }
     } else {
-      if(isPartner) {
-        val partnerMinimumWage: Option[Boolean] = pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
-        if(partnerMinimumWage == Some(true)) {
-          //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to true
-          routes.ChildCareBaseController.underConstruction()
-        } else if(parentMinimumWage == Some(true)) {
-          //TODO set correct link to 'Earn more than 100000' page with ispartner flag set to false
-          routes.ChildCareBaseController.underConstruction()
-        } else {
-          //TODO set correct link to 'Do you get tax credits or universal credit' page
-          routes.ChildCareBaseController.underConstruction()
-        }
+      if(inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        //TODO redirect to parent's max earnings page
+        routes.ChildCareBaseController.underConstruction()
       } else {
-        // TODO - redirect to 'selfemployed or apprentice' with ispartner flag set to false
+        //TODO redirect to TC/UC page
         routes.ChildCareBaseController.underConstruction()
       }
     }
+
   }
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
@@ -178,7 +116,7 @@ If a user responding about a partner and that partner doesn't satisfy the minimu
               )
             ),
           success => {
-            val modifiedPageObjects = modifyPageObjects(isPartner, pageObjects, success.get)
+            val modifiedPageObjects = getModifiedPageObjects(success.get, pageObjects, isPartner)
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(getNextPage(modifiedPageObjects, isPartner))
             }
@@ -193,4 +131,25 @@ If a user responding about a partner and that partner doesn't satisfy the minimu
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
+
+  private def getModifiedPageObjects(selfEmployed: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
+    val minEarns = if(selfEmployed) {
+      Some(MinimumEarnings(selfEmployedIn12Months = Some(true)))
+    } else {
+      Some(MinimumEarnings(selfEmployedIn12Months = Some(false)))
+    }
+
+    if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
+      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(minimumEarnings = minEarns)
+      ))
+    } else {
+      pageObjects.copy(household = pageObjects.household.copy(
+        partner = pageObjects.household.partner.map(x => x.copy(minimumEarnings = minEarns))
+      ))
+    }
+
+  }
+
 }
