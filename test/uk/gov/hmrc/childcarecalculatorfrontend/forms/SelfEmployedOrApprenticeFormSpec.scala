@@ -27,7 +27,7 @@ class SelfEmployedOrApprenticeFormSpec extends UnitSpec with FakeCCApplication {
       val SelfEmployedOrApprentice = List("SELFEMPLOYED", "APPRENTICE", "NEITHER")
       SelfEmployedOrApprentice.foreach { selfOrApp => {
 
-        s"${selfOrApp} is selected" in {
+        s"$selfOrApp is selected" in {
           val result = new SelfEmployedOrApprenticeForm(true, applicationMessagesApi).form.bind(
             Map(
               selfEmployedOrApprenticeKey -> selfOrApp
@@ -44,7 +44,7 @@ class SelfEmployedOrApprenticeFormSpec extends UnitSpec with FakeCCApplication {
       val invalidValues = List("abcd", "123")
 
       invalidValues.foreach { invalidValue =>
-        s"'${invalidValue}' is selected for parent" in {
+        s"'$invalidValue' is selected for parent" in {
           val result = new SelfEmployedOrApprenticeForm(false, applicationMessagesApi).form.bind(Map(
             selfEmployedOrApprenticeKey -> invalidValue
           ))
@@ -55,7 +55,7 @@ class SelfEmployedOrApprenticeFormSpec extends UnitSpec with FakeCCApplication {
           result.value shouldBe None
         }
 
-        s"'${invalidValue}' is selected for partner" in {
+        s"'$invalidValue' is selected for partner" in {
           val result = new SelfEmployedOrApprenticeForm(true, applicationMessagesApi).form.bind(Map(
             selfEmployedOrApprenticeKey -> invalidValue
           ))

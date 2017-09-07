@@ -33,7 +33,7 @@ class SelfEmployedOrApprenticeForm @Inject()(isPartner: Boolean, val messagesApi
     single(
       selfEmployedOrApprenticeKey -> optional(text)
       .verifying(
-        Messages(s"self.employed.or.apprentice.not.selected.${userType}"),
+        Messages(s"self.employed.or.apprentice.not.selected.$userType"),
         selfOrApprentice => EmploymentStatusEnum.values.exists(_.toString == selfOrApprentice.getOrElse("NEITHER"))
       )
     )
