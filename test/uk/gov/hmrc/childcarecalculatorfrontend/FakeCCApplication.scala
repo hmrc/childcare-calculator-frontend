@@ -27,7 +27,7 @@ import uk.gov.hmrc.play.http.{SessionKeys, HeaderCarrier}
 import play.api.inject._
 import org.scalatest.mock.MockitoSugar
 
-trait FakeCCApplication extends OneAppPerSuite with MockitoSugar with CCRoutes with CCConstants {
+trait FakeCCApplication extends OneAppPerSuite with MockitoSugar with CCConstants with CCRoutes {
   this: Suite =>
 
   val config: Map[String, _] = Map()

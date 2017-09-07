@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend
 
 import org.jsoup.nodes.Document
-import play.api.test.FakeRequest
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
 import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.ExecutionContext.Implicits.global
