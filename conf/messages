@@ -193,3 +193,10 @@ whats.your.age.radio.over25 = 25 or over
 whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
 whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
+####### On average how much will you earn  #########
+on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.parent.header = On average, will you earn £{0} or more a week?
+on.average.how.much.will.you.earn.partner.header = On average, will your partner earn £{0} or more a week?
+on.average.how.much.will.you.earn.hint.parent = This is the National Minimum Wage or National Living Wage a week for someone your age.
+on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.

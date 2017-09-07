@@ -1,0 +1,54 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@(form: Form[Option[Boolean]], isPartner: Boolean, amount: BigDecimal, backUrl: Call)(implicit request: Request[_], messages: Messages)
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+
+@userType = @{ CCConstants.getUserType(isPartner) }
+
+@ccMain(
+    header = messages(s"on.average.how.much.will.you.earn.${userType}.header", amount),
+    backLink = Some(backUrl)
+) {
+    @helpers.form(
+        action = routes.MinimumEarningsController.onSubmit(isPartner),
+        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+
+        @error.ccErrorSummary(form)
+
+        <p>@messages(s"on.average.how.much.will.you.earn.hint.${userType}")</p>
+
+        @radio.ccRadioOptions(
+            field = form(CCConstants.minimumEarningKey),
+            fieldForm = form,
+            radioOptions = Seq(
+                ("true", messages("radio.yes")),
+                ("false", messages("radio.no"))
+            ),
+            args = '_groupClass -> "form-group inline",
+                '_radioClass -> "block-label",
+                '_legendClass -> "visuallyhidden",
+                '_legend -> messages(s"on.average.how.much.will.you.earn.${userType}.header", amount),
+                '_globalErrorKey -> messages(s"on.average.how.much.will.you.earn.${userType}.error", amount)
+        )
+        @buttons.nextButton()
+    }
+}
