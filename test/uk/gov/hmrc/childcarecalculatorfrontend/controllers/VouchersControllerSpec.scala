@@ -258,7 +258,6 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
     }
 
     "redirect to correct next page" when {
-      // TODO: Update all urls to go to 'Benefits' page
       val nextPageTest = Table(
         ("User in paid employment", "Partner", "Selected vouchers", "Next page"),
         (None, None, YesNoUnsureEnum.YES, getBenefitsPath),
@@ -270,7 +269,7 @@ class VouchersControllerSpec extends ControllersValidator with BeforeAndAfterEac
         (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.YES, getBenefitsPath),
         (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NO, getBenefitsPath),
         (Some(YouPartnerBothEnum.PARTNER), Some(Claimant()), YesNoUnsureEnum.NOTSURE, getBenefitsPath),
-        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.YES, underConstrctionPath), // TODO: Only this line should go to 'Which of you is offered vouchers'
+        (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.YES, whoGetsVouchersPath),
         (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NO, getBenefitsPath),
         (Some(YouPartnerBothEnum.BOTH), Some(Claimant()), YesNoUnsureEnum.NOTSURE, getBenefitsPath)
       )

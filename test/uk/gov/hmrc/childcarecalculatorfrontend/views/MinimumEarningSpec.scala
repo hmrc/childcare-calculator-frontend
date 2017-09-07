@@ -25,13 +25,11 @@ import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
+import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
-class MinimumEarningSpec extends TemplatesValidator with FakeCCApplication {
-
-  val backURL = Call("GET", whatsYourAgePath)
-  val amount = 100
+class MinimumEarningSpec extends TemplatesValidator with  FakeCCApplication with HelperManager {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(attribute = Some("for"), attributeValue = Some("minimumEarnings-true"), value = "Yes"),
@@ -44,6 +42,10 @@ class MinimumEarningSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = whatsYourAgePath)
   )
 
+  val backURL = Call("GET", whatsYourAgePath)
+
+  var amount = 120.30
+
   def getTemplate(form: Form[Option[Boolean]], isPartner: Boolean): Document = {
     val template = minimumEarning(form, isPartner, amount, backURL)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
@@ -54,6 +56,7 @@ class MinimumEarningSpec extends TemplatesValidator with FakeCCApplication {
     (false, "on.average.how.much.will.you.earn.parent.error", s"On average, will you earn £${amount} or more a week?", "This is the National Minimum Wage or National Living Wage a week for someone your age.", parentMinimumEarningsPath),
     (true, "on.average.how.much.will.you.earn.partner.error", s"On average, will your partner earn £${amount} or more a week?", "This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.", partnerMinimumEarningsPath)
   )
+
 
   forAll(isPartnerTestCase) { case (isPartner, errorMessage, pageTitle, hintText, submitURL) =>
     s"calling benefits template when isPartner = ${isPartner}" should {

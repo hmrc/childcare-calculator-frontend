@@ -57,13 +57,12 @@ case class Benefits(
                    )
 object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
-
 }
 
 case class MinimumEarnings(
                            amount: BigDecimal =   0.00,
-                           employmentStatus: Option[EmploymentStatusEnum] =   None,
-                           selfEmployedIn12Months: Option[Boolean] =   None,
+                           employmentStatus: Option[EmploymentStatusEnum] = None,
+                           selfEmployedIn12Months: Option[Boolean] = None,
                            earnMoreThanNMW: Option[Boolean] = None
                           )
 object MinimumEarnings {
@@ -140,10 +139,10 @@ case class PageObjects(
                         paidOrSelfEmployed: Option[Boolean] = None,
                         whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
                         getVouchers: Option[YesNoUnsureEnum] = None,
+                        whoGetsVouchers: Option[YouPartnerBothEnum] = None,
                         getBenefits: Option[Boolean] = None,
-                        minimumEarnings: Option[Boolean] = None
-                       )
-
+                        getMinimumEarnings: Option[Boolean] = None
+                      )
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]
 }
