@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat
 import org.joda.time.LocalDate
 import play.api.Play.current
 import play.api.{Configuration, Play}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 
 trait HelperManager {
 
@@ -57,6 +59,10 @@ trait HelperManager {
 
   def getNMWConfig(currentDate: LocalDate): Configuration = {
     getLatestConfig("nmw", currentDate)
+  }
+
+  def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
+    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 }
 
