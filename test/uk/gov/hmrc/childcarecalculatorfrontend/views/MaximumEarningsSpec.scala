@@ -24,15 +24,15 @@ import play.api.data.Form
 import play.api.i18n.Messages.Implicits._
 import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.MaximumEarningForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.MaximumEarningsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html. maximumEarning
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maximumEarnings
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
 /**
  * Created by user on 07/09/17.
  */
-class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with HelperManager {
+class MaximumEarningsSpec extends TemplatesValidator with  FakeCCApplication with HelperManager {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(attribute = Some("for"), attributeValue = Some("maximumEarnings-true"), value = "Yes"),
@@ -49,7 +49,7 @@ class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with
 
 
   def getTemplate(form: Form[Option[Boolean]], youPartnerBoth : String): Document = {
-    val template = maximumEarning(form, youPartnerBoth, backURL)(request, applicationMessages)
+    val template = maximumEarnings(form, youPartnerBoth, backURL)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
@@ -64,10 +64,10 @@ class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with
   forAll(isPartnerTestCase) { case (youPartnerBoth, errorMessage, pageTitle, hintText, submitURL) =>
     s"calling maximum earning template when its = ${youPartnerBoth}" should {
       "render template" in {
-        val template = maximumEarning.render(new MaximumEarningForm(youPartnerBoth, applicationMessagesApi).form, youPartnerBoth, backURL, request, applicationMessages)
+        val template = maximumEarnings.render(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form, youPartnerBoth, backURL, request, applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = maximumEarning.f(new MaximumEarningForm(youPartnerBoth, applicationMessagesApi).form, youPartnerBoth, backURL)(request, applicationMessages)
+        val template1 = maximumEarnings.f(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form, youPartnerBoth, backURL)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 
@@ -82,7 +82,7 @@ class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with
 
       "display correct content" when {
         "nothing is selected initially" in {
-          implicit val doc: Document = getTemplate(new MaximumEarningForm(youPartnerBoth, applicationMessagesApi).form.fill(None), youPartnerBoth)
+          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(None), youPartnerBoth)
 
           verifyPageContent(dynamicContent)
 //          verifyPageLinks(dynamicLinks)
@@ -91,7 +91,7 @@ class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with
         }
 
         "true is selected" in {
-          implicit val doc: Document = getTemplate(new MaximumEarningForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(true)), youPartnerBoth)
+          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(true)), youPartnerBoth)
 
           verifyPageContent(dynamicContent)
 //          verifyPageLinks(dynamicLinks)
@@ -102,7 +102,7 @@ class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with
         }
 
         "false is selected" in {
-          implicit val doc: Document = getTemplate(new MaximumEarningForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(false)), youPartnerBoth)
+          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(false)), youPartnerBoth)
 
           verifyPageContent(dynamicContent)
 //          verifyPageLinks(dynamicLinks)
@@ -113,7 +113,7 @@ class MaximumEarningSpec extends TemplatesValidator with  FakeCCApplication with
         }
 
         s"display ${applicationMessages.messages(errorMessage)} form is submitted without data" in {
-          val form = new MaximumEarningForm(youPartnerBoth, applicationMessagesApi).form.bind(
+          val form = new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.bind(
             Map(
               "maximumEarnings" -> ""
             )

@@ -25,17 +25,16 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class MaximumEarningForm @Inject()(youPartnerBoth : String, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class MaximumEarningsForm @Inject()(youPartnerBoth : String, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  type MaximumEarningFormType = Option[Boolean]
+  type MaximumEarningsFormType = Option[Boolean]
 
-  val form = Form[MaximumEarningFormType](
+  val form = Form[MaximumEarningsFormType](
     single(
-      maximumEarningKey -> optional(boolean).verifying(
+      maximumEarningsKey -> optional(boolean).verifying(
         if(youPartnerBoth == "both") {
           Messages("maximum.earning.error.both")
         } else {

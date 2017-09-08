@@ -22,22 +22,25 @@ import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 
-class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
+/**
+ * Created by user on 05/09/17.
+ */
+class MaximumEarningsFormSpec extends UnitSpec with FakeCCApplication {
 
-  "MinimumEarningForm" when {
-    val isPartnerTestCase = Table(
-      ("isPartner", "errorMessage"),
-      (false, "on.average.how.much.will.you.earn.parent.error"),
-      (true, "on.average.how.much.will.you.earn.partner.error")
-    )
+  val testCases = Table(
+    ("youPartnerBoth", "Error message key"),
+    ("both", "maximum.earning.error.both"),
+    ("you", "maximum.earning.error.you"),
+    ("partner", "maximum.earning.error.partner")
+  )
 
-    forAll(isPartnerTestCase) { case (isPartner, errorMessage) =>
-
-      s"is partner = ${isPartner}" should {
+  "MaximumEarningsForm" when {
+    forAll(testCases) { case (parentPartnerBoth, errorMessageKey) =>
+      s"accept for ${parentPartnerBoth}" should {
         "accept value true" in {
-          val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
+          val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
-              minimumEarningKey -> "true"
+              maximumEarningKey -> "true"
             )
           )
           form.value.get.get shouldBe true
@@ -46,9 +49,9 @@ class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
         }
 
         "accept value false" in {
-          val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
+          val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
-              minimumEarningKey -> "false"
+              maximumEarningKey -> "false"
             )
           )
           form.value.get.get shouldBe false
@@ -56,25 +59,25 @@ class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
           form.errors shouldBe empty
         }
 
-        "return error if no value supplied" in {
-          val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
+        s"return error (${applicationMessages.messages(errorMessageKey)}) if no value supplied" in {
+          val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
-              minimumEarningKey -> ""
+              maximumEarningKey -> ""
             )
           )
           form.value shouldBe None
           form.hasErrors shouldBe true
           form.errors.length shouldBe 1
-          form.errors.head.message shouldBe applicationMessages.messages(errorMessage, 100)
-          form.errors.head.message should not be errorMessage
+          form.errors.head.message shouldBe applicationMessages.messages(errorMessageKey)
+          form.errors.head.message should not be errorMessageKey
         }
 
         val invalidValues = List("abcd", "1234")
         invalidValues.foreach { invalidValue =>
           s"return error if invalid value '${invalidValue}' is supplied" in {
-            val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
+            val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
               Map(
-                minimumEarningKey -> invalidValue
+                maximumEarningKey -> invalidValue
               )
             )
             form.value shouldBe None

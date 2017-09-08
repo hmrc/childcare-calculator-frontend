@@ -33,7 +33,7 @@ class MinimumEarningsForm @Inject()(isPartner: Boolean, amount: BigDecimal, val 
 
   val form = Form[minimumEarningFormType](
     single(
-      minimumEarningKey -> optional(boolean).verifying(
+      minimumEarningsKey -> optional(boolean).verifying(
         Messages(s"on.average.how.much.will.you.earn.${userType}.error", amount),
         _.isDefined
       )

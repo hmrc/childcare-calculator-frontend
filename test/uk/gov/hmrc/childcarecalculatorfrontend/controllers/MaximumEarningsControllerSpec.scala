@@ -32,7 +32,7 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
   val sut = new MinimumEarningsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
