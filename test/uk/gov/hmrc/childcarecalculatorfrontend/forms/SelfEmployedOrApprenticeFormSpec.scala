@@ -68,6 +68,19 @@ class SelfEmployedOrApprenticeFormSpec extends UnitSpec with FakeCCApplication {
       }
     }
 
+    "throw error" when {
+        "there is no value selected" in {
+          val result = new SelfEmployedOrApprenticeForm(false, applicationMessagesApi).form.bind(Map(
+            selfEmployedOrApprenticeKey -> ""
+          ))
+          result.hasErrors shouldBe true
+          result.errors.length shouldBe 1
+          result.errors.head.message shouldBe applicationMessages.messages("self.employed.or.apprentice.not.selected.parent")
+          result.errors.head.message should not be "self.employed.or.apprentice.not.selected.parentr"
+          result.value shouldBe None
+        }
+      }
+
   }
 
 }
