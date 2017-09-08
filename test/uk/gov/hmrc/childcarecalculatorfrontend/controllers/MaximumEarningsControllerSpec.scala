@@ -34,7 +34,7 @@ import scala.concurrent.Future
 
 class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new MinimumEarningsController(applicationMessagesApi) {
+  val sut = new MaximumEarningsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
@@ -43,8 +43,9 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     reset(sut.keystore)
   }
 
-  validateUrl(parentMinimumEarningsPath)
-  validateUrl(partnerMinimumEarningsPath)
+  validateUrl(parentMaximumEarningsPath)
+  validateUrl(partnerMaximumEarningsPath)
+  validateUrl(maximumEarningsPath)
 
   def buildPageObjects(isPartner: Boolean,
                        parentAgeRange: Option[AgeRangeEnum] = None,
@@ -53,16 +54,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                        partnerEarnMoreThanNMW: Option[Boolean] = None,
                        whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
                       ): PageObjects = {
-    val parent = if (parentEarnMoreThanNMW.isEmpty) {
-      Claimant(ageRange = parentAgeRange, minimumEarnings = None)
-    } else {
-      Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
-    }
-    val partner = if(partnerEarnMoreThanNMW.isEmpty) {
-      Claimant(ageRange = partnerAgeRange, minimumEarnings = None)
-    } else {
-      Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
-    }
+    val parent = Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
+    val partner = Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
 
     if (isPartner) {
       PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
@@ -79,7 +72,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     AgeRangeEnum.OVERTWENTYFOUR
   )
 
-  "MinimumEarningsController" when {
+  "MaximumEarningsController" when {
 
     "onPageLoad is called" should {
 
@@ -136,7 +129,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       }
 
       "load template successfully if there is data in keystore for parent and define correctly backURL" when {
-        "redirect to parent's age page" in {
+        "redirect to partner's self employed page" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -151,7 +144,39 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/parent"
         }
 
-        "redirect to partner's age page when both are in paid employment" in {
+        "redirect to partner's self or apprentice page" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+            )
+          )
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
+        }
+
+        "redirect to partner's minimum earnings page" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+            )
+          )
+          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
+        }
+
+        "redirect to parent's minimum earnings page" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -180,7 +205,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       }
 
       "load template successfully if there is data in keystore for partner and display correct backurl" when {
-        "redirect to partner's age page" in {
+        "redirect to parent's maximum earnings page" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -199,7 +224,47 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
         }
 
-        "redirect to parent's minimum earnings page if both are in paid employment" in {
+        "redirect to partner's minimum earnings page" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true,
+                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+                parentEarnMoreThanNMW = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                partnerEarnMoreThanNMW = Some(true)))
+            )
+          )
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+        }
+
+        "redirect to parent's self employed page" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true,
+                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+                parentEarnMoreThanNMW = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                partnerEarnMoreThanNMW = Some(true)))
+            )
+          )
+          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+        }
+
+        "redirect to parent's self or apprentice page" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -304,7 +369,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     }
 
     "saving in keystore is successful as a partner" should {
-      s"for each age range for a partner" when {
+      s"redirect to technical difficulties page" when {
 
         ageRanges.foreach { range =>
           s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for partner" in {
@@ -327,7 +392,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for partner" in {
+          s"redirect to tc/uc page" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -356,44 +421,6 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               sut.onSubmit(true)(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
-          }
-
-          s"${range.toString} has been previously selected and there is data in keystore when partner in paid employment for partner" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
-                  parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnMoreThanNMW = Some(true),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
-                  partnerEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(true)(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -490,102 +517,6 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               sut.onSubmit(false)(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
-          }
-
-        }
-      }
-    }
-
-    "saving in keystore is successful as a parent and earnOverNMW = false" should {
-      s"for each age range for a parent" when {
-
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for parent" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
-          }
-
-          s"${range.toString} has been previously selected and there is data in keystore for parent" in {
-            val po = buildPageObjects(isPartner = false,
-              parentAgeRange = Some(range),
-              parentEarnMoreThanNMW = Some(false))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = false,
-                  parentAgeRange = Some(range),
-                  parentEarnMoreThanNMW = Some(false)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
-          }
-
-          s"${range.toString} has been previously selected and there is data in keystore for parent when both are in paid employment" in {
-            val po = buildPageObjects(isPartner = true,
-              parentAgeRange = Some(range),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-              parentEarnMoreThanNMW = Some(false))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(range),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                  parentEarnMoreThanNMW = Some(false)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit(false)(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )

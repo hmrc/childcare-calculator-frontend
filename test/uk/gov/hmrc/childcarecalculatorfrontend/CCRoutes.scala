@@ -54,6 +54,6 @@ trait CCRoutes {
   val partnerSelfEmployedPath: String = path("/self-employed/partner")
   val parentMaximumEarningsPath: String = path("/maximum-earnings/parent")
   val partnerMaximumEarningsPath: String = path("/maximum-earnings/partner")
-  val bothMaximumEarningsPath: String = path("/maximum-earnings")
+  val maximumEarningsPath: String = path("/maximum-earnings")
 
 }
