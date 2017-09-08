@@ -57,7 +57,7 @@ object AgeRangeEnum extends Enumeration {
 
 object EmploymentStatusEnum extends Enumeration {
   type EmploymentStatusEnum = Value
-  val SELFEMPLOYED, APPRENTICE = Value
+  val SELFEMPLOYED, APPRENTICE, NEITHER = Value
   val enumReads: Reads[EmploymentStatusEnum] = EnumUtils.enumReads(EmploymentStatusEnum)
 
   val enumWrites: Writes[EmploymentStatusEnum] = EnumUtils.enumWrites

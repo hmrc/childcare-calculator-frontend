@@ -52,8 +52,10 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
                        partnerSelfEmployedIn12Months: Option[Boolean] = None,
                        whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
                       ): PageObjects = {
-    val parent = Claimant(minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW, selfEmployedIn12Months = parentSelfEmployedIn12Months)))
-    val partner = Claimant(minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW, selfEmployedIn12Months = partnerSelfEmployedIn12Months)))
+    val parent = Claimant(minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW,
+      selfEmployedIn12Months = parentSelfEmployedIn12Months)))
+    val partner = Claimant(minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW,
+      selfEmployedIn12Months = partnerSelfEmployedIn12Months)))
     if (isPartner) {
       PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
         partner = Some(partner)))
@@ -92,24 +94,47 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "load template successfully if there is data in keystore for parent and define correctly backURL" when {
-        "display self employed page for parent" in {
+      "load successfully parent template" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(isPartner = false))
+          )
+        )
+        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        status(result) shouldBe OK
+      }
+
+      "load successfully partner template" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(isPartner = true))
+          )
+        )
+        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        status(result) shouldBe OK
+      }
+
+      "load template successfully if there is data in keystore for parent and define correctly backUrl" when {
+        "redirect to parent's self or apprentice page" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = false,
-                parentSelfEmployedIn12Months = Some(true)))
+              Some(buildPageObjects(isPartner = false, parentEarnMoreThanNMW = Some(false)))
             )
           )
           val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath //TODO Should be 'selfemployed or apprentice' path for partner
+          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
         }
 
-        "redirect to error page if can't connect with keystore if parent" in {
+        "redirect to error page if can't connect with keystore" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -121,23 +146,21 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         }
       }
 
-      "load template successfully if there is data in keystore for partner and display correct backurl" when {
-        "display self employed page for partner" in {
+      "load template successfully if there is data in keystore for partner and display correct backUrl" when {
+        "redirect to partner's self or apprentice page" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
               Some(buildPageObjects(isPartner = true,
-                parentSelfEmployedIn12Months = Some(true),
-                partnerEarnMoreThanNMW = Some(false),
-                partnerSelfEmployedIn12Months = Some(true)))
+                partnerEarnMoreThanNMW = Some(false)))
             )
           )
           val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath //TODO Should be 'selfemployed or apprentice' path for partner
+          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
         }
 
         "redirect to error page if can't connect with keystore if partner" in {
@@ -152,36 +175,35 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         }
       }
 
-      "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any(), any())
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(true, None))
-            )
-          )
-
-          when(
-            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-
-          val result = await(
-            sut.onSubmit(true)(
-              request
-                .withFormUrlEncodedBody(selfEmployedKey -> "true")
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
     }
 
     "onSubmit is called" when {
+
+      "connecting with keystore fails" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(true, None))
+          )
+        )
+
+        when(
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+
+        val result = await(
+          sut.onSubmit(true)(
+            request
+              .withFormUrlEncodedBody(selfEmployedKey -> "true")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
 
       "there are errors" should {
         "load same template and return BAD_REQUEST as a partner" in {
@@ -205,7 +227,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
         }
 
-        "load same template and return BAD_REQUEST with a parent" in {
+        "load same template and return BAD_REQUEST as a parent" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -225,9 +247,9 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         }
       }
 
-      "saving in keystore is successful as a partner" should {
+      "saving in keystore is successful as a partner with SelfEmployed = true" should {
 
-        s"has been previously selected and there is no data in keystore for PageObjects object for partner" in {
+        s"there is no data in keystore for PageObjects object for partner" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -246,17 +268,105 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
-      }
 
-
-      "saving in keystore is successful as a parent and SelfEmployed = true" should {
-
-        s"has been previously selected and there is no data in keystore for PageObjects object for parent" in {
+        s"there is data in keystore, redirect to parent's max earnings page" in {
+          val po = buildPageObjects(isPartner = true,
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            parentEarnMoreThanNMW = Some(true),
+            partnerSelfEmployedIn12Months = Some(false))
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
             Future.successful(
-              None
+              Some(po)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true,
+                parentEarnMoreThanNMW = Some(true),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                partnerSelfEmployedIn12Months = Some(true)
+              ))
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "true")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+
+      }
+
+      "saving in keystore is successful as a partner with SelfEmployed = false" should {
+
+        s"there is data in keystore, redirect to tc/uc page" in {
+          val po = buildPageObjects(isPartner = true,
+            partnerSelfEmployedIn12Months = None)
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(po)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true,
+                partnerSelfEmployedIn12Months = Some(false)
+              ))
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "false")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+
+      }
+
+      "saving in keystore is successful as a parent with SelfEmployed = true" should {
+
+        s"there is data in keystore, redirect to partner's self or apprentice page" in {
+          val po = buildPageObjects(isPartner = true,
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            partnerEarnMoreThanNMW = Some(false),
+            parentSelfEmployedIn12Months = None)
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(po)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true,
+                partnerEarnMoreThanNMW = Some(false),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                parentSelfEmployedIn12Months = Some(true)
+              ))
             )
           )
 
@@ -268,13 +378,13 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          result.header.headers("Location") shouldBe underConstrctionPath
         }
 
-        s"has been previously selected and there is data in keystore for selfEmployed object for parent" in {
-          val po = buildPageObjects(isPartner = false,
+        s"there is data in keystore, redirect to partner's max earnings page" in {
+          val po = buildPageObjects(isPartner = true,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-            parentEarnMoreThanNMW = Some(false),
+            partnerEarnMoreThanNMW = Some(true),
             parentSelfEmployedIn12Months = Some(true))
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
@@ -288,36 +398,11 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = false,
-                parentEarnMoreThanNMW = Some(false),
+              Some(buildPageObjects(isPartner = true,
+                partnerEarnMoreThanNMW = Some(true),
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                 parentSelfEmployedIn12Months = Some(true)
               ))
-            )
-          )
-
-          val result = await(
-            sut.onSubmit(false)(
-              request
-                .withFormUrlEncodedBody(selfEmployedKey -> "false")
-                .withSession(validSession)
-            )
-          )
-          println(result.header.headers)
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
-        }
-      }
-
-
-      "saving in keystore is successful as a parent and SelfEmployed = false" should {
-
-        s"has been previously selected and there is no data in keystore for PageObjects object for parent" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              None
             )
           )
 
@@ -329,14 +414,36 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstrctionPath
+        }
+
+      }
+
+      "saving in keystore is successful as a parent and SelfEmployed = false" should {
+
+        s"there is no data in keystore for PageObjects object for parent" in {
+          when(
+            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              None
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "false")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-        s"has been previously selected and there is data in keystore for SelfEmployed object for parent" in {
+        s"there is data in keystore, redirect to tc/uc page" in {
           val po = buildPageObjects(isPartner = false,
-            parentEarnMoreThanNMW = Some(false),
             parentSelfEmployedIn12Months = Some(false))
-
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
@@ -350,8 +457,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           ).thenReturn(
             Future.successful(
               Some(buildPageObjects(isPartner = false,
-                parentEarnMoreThanNMW = Some(false),
-                parentSelfEmployedIn12Months = Some(false)))
+                parentSelfEmployedIn12Months = Some(false)
+              ))
             )
           )
 
@@ -365,6 +472,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe underConstrctionPath
         }
+
       }
     }
 

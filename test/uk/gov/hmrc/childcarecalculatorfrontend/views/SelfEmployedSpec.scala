@@ -31,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployed
 
 class SelfEmployedSpec extends TemplatesValidator with FakeCCApplication {
 
-  val backURL = Call("GET", underConstrctionPath)//TODO Should be 'selfemployed or apprentice' path
+  val backURL = Call("GET", underConstrctionPath)
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(attribute = Some("for"), attributeValue = Some("selfEmployed-true"), value = "Yes"),
@@ -41,7 +41,7 @@ class SelfEmployedSpec extends TemplatesValidator with FakeCCApplication {
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = underConstrctionPath)//TODO Should be 'selfemployed or apprentice' path
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = underConstrctionPath)
   )
 
   def getTemplate(form: Form[Option[Boolean]], isPartner: Boolean): Document = {

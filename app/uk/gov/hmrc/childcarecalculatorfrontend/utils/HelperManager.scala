@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-
 import java.text.SimpleDateFormat
 
 import org.joda.time.LocalDate

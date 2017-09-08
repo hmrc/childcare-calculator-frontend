@@ -35,11 +35,11 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(isPartner: Boolean, isEarningMoreThanNWM: Option[Boolean]): Call = {
-    if(isPartner && (!isEarningMoreThanNWM.get)) { //if No selected in "Is your partner self employed or apprentice" page
+  private def getBackUrl(isPartner: Boolean, isSelfEmployed: Boolean): Call = {
+    if (isPartner) { //Is employmentStatus == Self-Employed for partner
       //TODO redirect to partner's "Is your partner self employed or apprentice" page
       routes.ChildCareBaseController.underConstruction()
-    } else {//if No selected in "Are you self employed or apprentice" page
+    } else {//Is employmentStatus == Self-Employed for parent
       //TODO redirect to parent's "Are you self employed or apprentice" page
       routes.ChildCareBaseController.underConstruction()
     }
@@ -69,7 +69,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
         Ok(
           selfEmployed(
             new SelfEmployedForm(isPartner, messagesApi).form.fill(defineSelfEmployed(isPartner, pageObjects)), isPartner,
-              getBackUrl(isPartner, defineMinimumEarnings(isPartner, pageObjects))
+              getBackUrl(isPartner, defineMinimumEarnings(isPartner, pageObjects).getOrElse(false))
           )
         )
       case _ =>
@@ -89,7 +89,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
           errors =>
             Future(
               BadRequest(
-                selfEmployed(errors, isPartner, getBackUrl(isPartner, defineMinimumEarnings(isPartner, pageObjects)))
+                selfEmployed(errors, isPartner, getBackUrl(isPartner, defineMinimumEarnings(isPartner, pageObjects).getOrElse(false)))
               )
             ),
           success => {
@@ -111,21 +111,33 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
 
   private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
     val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
-    val earnMoreThanNMW = defineMinimumEarnings(isPartner, pageObjects)
+    println(s"pageObjects in getModifiedPageObjects(val inPaidEmployment)>>$pageObjects")
+
+    val earnMoreThanNMW = defineMinimumEarnings(isPartner, pageObjects).getOrElse(false)
+    println(s"pageObjects in getModifiedPageObjects(val earnMoreThanNMW)>>$pageObjects and $earnMoreThanNMW")
+
     if(!isPartner) {
-      if(!earnMoreThanNMW.get && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+      if(!earnMoreThanNMW && inPaidEmployment == YouPartnerBothEnum.BOTH) {
         //TODO partner's self or apprentice page
+        println(s"pageObjects in getModifiedPageObjects(!earnMoreThanNMW && inPaidEmployment)>>$pageObjects")
+        routes.ChildCareBaseController.underConstruction()
+      } else if(earnMoreThanNMW && inPaidEmployment == YouPartnerBothEnum.BOTH) {
+        //TODO partner's max earnings page
+        println(s"pageObjects in getModifiedPageObjects(!earnMoreThanNMW && inPaidEmployment)>>$pageObjects")
         routes.ChildCareBaseController.underConstruction()
       } else {
         //TODO redirect to TC/UC page
+        println(s"pageObjects in getModifiedPageObjects(earnMoreThanNMW && !inPaidEmployment)>>$pageObjects")
         routes.ChildCareBaseController.underConstruction()
       }
     } else {
-      if(inPaidEmployment == YouPartnerBothEnum.BOTH) {
+      if(earnMoreThanNMW && inPaidEmployment == YouPartnerBothEnum.BOTH) {
         //TODO redirect to parent's max earnings page
+        println(s"pageObjects in getModifiedPageObjects(inPaidEmployment)>>$pageObjects")
         routes.ChildCareBaseController.underConstruction()
       } else {
         //TODO redirect to TC/UC page
+        println(s"pageObjects in getModifiedPageObjects(!inPaidEmployment)>>$pageObjects")
         routes.ChildCareBaseController.underConstruction()
       }
     }
@@ -138,7 +150,6 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
     } else {
       Some(MinimumEarnings(selfEmployedIn12Months = Some(false)))
     }
-
     if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
       defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
       pageObjects.copy(household = pageObjects.household.copy(

@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
-class MinimumEarningSpec extends TemplatesValidator with  FakeCCApplication with HelperManager {
+class MinimumEarningsSpec extends TemplatesValidator with  FakeCCApplication with HelperManager {
 
   override val contentData: List[ElementDetails] = List(
     ElementDetails(attribute = Some("for"), attributeValue = Some("minimumEarnings-true"), value = "Yes"),
