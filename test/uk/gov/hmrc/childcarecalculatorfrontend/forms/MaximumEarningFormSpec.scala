@@ -28,17 +28,17 @@ import uk.gov.hmrc.play.test.UnitSpec
 class MaximumEarningFormSpec extends UnitSpec with FakeCCApplication {
 
   val testCases = Table(
-    ("singleCouple", "parentPartner", "Error message key"),
-    (true, true, "maximum.earning.error.both"),
-    (false, true, "maximum.earning.error.partner"),
-    (false, false, "maximum.earning.error.parent")
+    ("youPartnerBoth", "Error message key"),
+    ("both", "maximum.earning.error.both"),
+    ("you", "maximum.earning.error.you"),
+    ("partner", "maximum.earning.error.partner")
   )
 
   "MaximumEarningForm" when {
-    forAll(testCases) { case (singleCouple, parentPartner, errorMessageKey) =>
-      s"accept for couple = ${singleCouple} and partner =  ${parentPartner}" should {
+    forAll(testCases) { case (parentPartnerBoth, errorMessageKey) =>
+      s"accept for ${parentPartnerBoth}" should {
         "accept value true" in {
-          val form = new MaximumEarningForm(singleCouple, parentPartner, applicationMessagesApi).form.bind(
+          val form = new MaximumEarningForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
               maximumEarningKey -> "true"
             )
@@ -49,7 +49,7 @@ class MaximumEarningFormSpec extends UnitSpec with FakeCCApplication {
         }
 
         "accept value false" in {
-          val form = new MaximumEarningForm(singleCouple, parentPartner, applicationMessagesApi).form.bind(
+          val form = new MaximumEarningForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
               maximumEarningKey -> "false"
             )
@@ -60,7 +60,7 @@ class MaximumEarningFormSpec extends UnitSpec with FakeCCApplication {
         }
 
         s"return error (${applicationMessages.messages(errorMessageKey)}) if no value supplied" in {
-          val form = new MaximumEarningForm(singleCouple, parentPartner, applicationMessagesApi).form.bind(
+          val form = new MaximumEarningForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
               maximumEarningKey -> ""
             )
@@ -75,7 +75,7 @@ class MaximumEarningFormSpec extends UnitSpec with FakeCCApplication {
         val invalidValues = List("abcd", "1234")
         invalidValues.foreach { invalidValue =>
           s"return error if invalid value '${invalidValue}' is supplied" in {
-            val form = new MaximumEarningForm(singleCouple, parentPartner, applicationMessagesApi).form.bind(
+            val form = new MaximumEarningForm(parentPartnerBoth, applicationMessagesApi).form.bind(
               Map(
                 maximumEarningKey -> invalidValue
               )

@@ -29,20 +29,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class MaximumEarningForm @Inject()(hasPartner: Boolean = false, isPartner: Boolean, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
-
-  val familyStatus: String = getFamilyStatus(hasPartner)
-  val user = getUserType(isPartner)
+class MaximumEarningForm @Inject()(youPartnerBoth : String, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
   type MaximumEarningFormType = Option[Boolean]
 
   val form = Form[MaximumEarningFormType](
     single(
       maximumEarningKey -> optional(boolean).verifying(
-        if(familyStatus == "couple") {
-          Messages(s"maximum.earning.error.both")
+        if(youPartnerBoth == "both") {
+          Messages("maximum.earning.error.both")
         } else {
-          Messages(s"maximum.earning.error.${user}")
+          if (youPartnerBoth == "you") {
+            Messages("maximum.earning.error.you")
+          } else {
+            Messages("maximum.earning.error.partner")
+          }
         },
         _.isDefined
       )

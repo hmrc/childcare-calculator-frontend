@@ -203,9 +203,10 @@ on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wa
 
 
 ####### Maximum Earning #######
-maximum.earning.header.parent = Will you earn more than £100,000 a year?
+maximum.earning.header.you = Will you earn more than £100,000 a year?
 maximum.earning.header.partner = Will your partner earn more than £100,000 a year?
 maximum.earning.header.both = Will either of you earn more than £100,000 a year?
-maximum.earning.error.parent = You must answer yes if you will earn more than £100,000 a year?
+maximum.earning.error.you = You must answer yes if you will earn more than £100,000 a year?
 maximum.earning.error.partner = You must answer yes if your partner will earn more than £100,000 a year?
 maximum.earning.error.both = You must answer yes if either of you will earn more than £100,000 a year?
+maximum.earning.hint.text = This is with any pension and gift aid contributions taken off.

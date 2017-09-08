@@ -36,7 +36,7 @@ trait CCConstants {
   lazy val whoGetsBeneftsKey = "whoGetsBenefits"
   lazy val whatsYourAgeKey = "whatsYourAge"
   lazy val minimumEarningKey = "minimumEarnings"
-  lazy val maximumEarningKey = "whatsYourAge"
+  lazy val maximumEarningKey = "maximumEarnings"
 
   def getFamilyStatus(hasPartner: Boolean): String = {
     if(hasPartner) "couple" else "single"
