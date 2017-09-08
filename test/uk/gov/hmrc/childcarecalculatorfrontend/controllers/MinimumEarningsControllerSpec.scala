@@ -53,12 +53,12 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                        partnerEarnMoreThanNMW: Option[Boolean] = None,
                        whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
                       ): PageObjects = {
-    val parent = if (parentEarnMoreThanNMW == None) {
+    val parent = if (parentEarnMoreThanNMW.isEmpty) {
       Claimant(ageRange = parentAgeRange, minimumEarnings = None)
     } else {
       Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
     }
-    val partner = if(partnerEarnMoreThanNMW == None) {
+    val partner = if(partnerEarnMoreThanNMW.isEmpty) {
       Claimant(ageRange = partnerAgeRange, minimumEarnings = None)
     } else {
       Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))

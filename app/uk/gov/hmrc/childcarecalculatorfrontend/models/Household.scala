@@ -141,7 +141,6 @@ case class PageObjects(
                         getVouchers: Option[YesNoUnsureEnum] = None,
                         whoGetsVouchers: Option[YouPartnerBothEnum] = None,
                         getBenefits: Option[Boolean] = None,
-                        getMinimumEarnings: Option[Boolean] = None,
                         getMaximumEarnings: Option[Boolean] = None
                       )
 object PageObjects {

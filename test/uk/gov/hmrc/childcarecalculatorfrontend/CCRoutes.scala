@@ -50,8 +50,10 @@ trait CCRoutes {
   val whatsYourAgePath: String = path("/whats-your-age")
   val parentMinimumEarningsPath: String = path("/minimum-earnings/parent")
   val partnerMinimumEarningsPath: String = path("/minimum-earnings/partner")
-  val parentMaximumEarningsPath: String = path("/minimum-earnings/parent")
-  val partnerMaximumEarningsPath: String = path("/minimum-earnings/partner")
-  val bothMaximumEarningsPath: String = path("/minimum-earnings/partner")
+  val parentSelfEmployedPath: String = path("/self-employed/parent")
+  val partnerSelfEmployedPath: String = path("/self-employed/partner")
+  val parentMaximumEarningsPath: String = path("/maximum-earnings/parent")
+  val partnerMaximumEarningsPath: String = path("/maximum-earnings/partner")
+  val bothMaximumEarningsPath: String = path("/maximum-earnings")
 
 }

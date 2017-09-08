@@ -16,19 +16,40 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-
 import java.text.SimpleDateFormat
+
 import org.joda.time.LocalDate
 import play.api.Play.current
 import play.api.{Configuration, Play}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 
 trait HelperManager {
+
+  def defineMinimumEarnings(isPartner: Boolean, pageObjects: PageObjects): Option[Boolean] = {
+    if(isPartner) {
+      if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
+        pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.isDefined) {
+        pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
+      } else {
+        None
+      }
+    } else {
+      if(pageObjects.household.parent.minimumEarnings.isDefined && pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.isDefined) {
+        pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW
+      } else {
+        None
+      }
+    }
+  }
+
+  def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
+    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
+  }
 
   def getMinimumEarningsAmountForAgeRange(ageRange: Option[String]): Int = {
     val nmwConfig: Configuration = getNMWConfig(LocalDate.now)
 
-//    val nmwPerAge = nmwConfig.getInt(claimant.age.getOrElse("non-existing-age"))
-//    nmwPerAge.isDefined && claimant.minimumEarnings.isDefined && (nmwPerAge.get > claimant.minimumEarnings.get)
     nmwConfig.getInt(ageRange.getOrElse("non-existing-age")).get
   }
 

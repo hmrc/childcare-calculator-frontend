@@ -56,25 +56,11 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
-        val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
-        val minimumEarnings: Option[Boolean] = if(isPartner) {
-          if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.minimumEarnings.isDefined &&
-            pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.isDefined) {
-            pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW
-          } else {
-            None
-          }
-        } else {
-          if(pageObjects.household.parent.minimumEarnings.isDefined && pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.isDefined) {
-            pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW
-          } else {
-            None
-          }
-        }
         Ok(
           minimumEarning(
-            new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(minimumEarnings),
-            isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(inPaidEmployment, isPartner)
+            new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(
+              defineMinimumEarnings(isPartner, pageObjects)),
+              isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(defineInPaidEmployment(pageObjects), isPartner)
           )
         )
       case _ =>
@@ -136,10 +122,6 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         routes.ChildCareBaseController.underConstruction()
       }
     }
-  }
-
-  private def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
-    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 
   private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
