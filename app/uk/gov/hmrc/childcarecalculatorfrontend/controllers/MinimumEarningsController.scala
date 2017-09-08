@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPart
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{MinimumEarnings, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarnings
 
 import scala.concurrent.Future
 
@@ -57,7 +57,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects)  =>
         Ok(
-          minimumEarning(
+          minimumEarnings(
             new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.fill(
               defineMinimumEarnings(isPartner, pageObjects)),
               isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(defineInPaidEmployment(pageObjects), isPartner)
@@ -81,7 +81,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
           errors =>
             Future(
               BadRequest(
-                minimumEarning(
+                minimumEarnings(
                   errors, isPartner, getMinWageForScreen(pageObjects, isPartner), backURL(inPaidEmployment, isPartner)
                 )
               )

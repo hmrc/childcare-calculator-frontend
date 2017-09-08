@@ -37,7 +37,7 @@ class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
         "accept value true" in {
           val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
             Map(
-              minimumEarningKey -> "true"
+              minimumEarningsKey -> "true"
             )
           )
           form.value.get.get shouldBe true
@@ -48,7 +48,7 @@ class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
         "accept value false" in {
           val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
             Map(
-              minimumEarningKey -> "false"
+              minimumEarningsKey -> "false"
             )
           )
           form.value.get.get shouldBe false
@@ -59,7 +59,7 @@ class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
         "return error if no value supplied" in {
           val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
             Map(
-              minimumEarningKey -> ""
+              minimumEarningsKey -> ""
             )
           )
           form.value shouldBe None
@@ -74,7 +74,7 @@ class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
           s"return error if invalid value '${invalidValue}' is supplied" in {
             val form = new MinimumEarningsForm(isPartner, 100, applicationMessagesApi).form.bind(
               Map(
-                minimumEarningKey -> invalidValue
+                minimumEarningsKey -> invalidValue
               )
             )
             form.value shouldBe None

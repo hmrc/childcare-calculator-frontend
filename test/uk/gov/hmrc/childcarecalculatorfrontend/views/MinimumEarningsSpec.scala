@@ -26,7 +26,7 @@ import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MinimumEarningsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarning
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.minimumEarnings
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeCCApplication, TemplatesValidator}
 
 class MinimumEarningsSpec extends TemplatesValidator with  FakeCCApplication with HelperManager {
@@ -47,7 +47,7 @@ class MinimumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
   var amount = 120.30
 
   def getTemplate(form: Form[Option[Boolean]], isPartner: Boolean): Document = {
-    val template = minimumEarning(form, isPartner, amount, backURL)(request, applicationMessages)
+    val template = minimumEarnings(form, isPartner, amount, backURL)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
@@ -61,10 +61,10 @@ class MinimumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
   forAll(isPartnerTestCase) { case (isPartner, errorMessage, pageTitle, hintText, submitURL) =>
     s"calling benefits template when isPartner = ${isPartner}" should {
       "render template" in {
-        val template = minimumEarning.render(new MinimumEarningsForm(isPartner, amount, applicationMessagesApi).form, isPartner, amount, backURL, request, applicationMessages)
+        val template = minimumEarnings.render(new MinimumEarningsForm(isPartner, amount, applicationMessagesApi).form, isPartner, amount, backURL, request, applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = minimumEarning.f(new MinimumEarningsForm(isPartner, amount, applicationMessagesApi).form, isPartner, amount, backURL)(request, applicationMessages)
+        val template1 = minimumEarnings.f(new MinimumEarningsForm(isPartner, amount, applicationMessagesApi).form, isPartner, amount, backURL)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 

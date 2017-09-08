@@ -275,7 +275,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(true)(
             request
-              .withFormUrlEncodedBody(minimumEarningKey -> "")
+              .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
           )
         )
@@ -294,7 +294,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(false)(
             request
-              .withFormUrlEncodedBody(minimumEarningKey -> "")
+              .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
           )
         )
@@ -319,7 +319,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(true)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "123")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "123")
                   .withSession(validSession)
               )
             )
@@ -355,7 +355,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(true)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -393,7 +393,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(true)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -421,7 +421,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -454,7 +454,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -489,7 +489,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -517,7 +517,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -550,7 +550,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -585,7 +585,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
