@@ -37,17 +37,38 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
 
   val keystore: KeystoreService = KeystoreService
 
-  def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map { pageObjects =>
+  private def filledForm(pageObjects: PageObjects, isPartner: Boolean) = {
+    new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
+      if (isPartner) {
+        pageObjects.household.partner match {
+          case Some(claimant) => claimant.minimumEarnings.map(_.employmentStatus.toString)
+          case _ => None
+        }
+      }
+      else {
+        pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.toString)
+      }
 
-   Ok(selfEmployedOrApprentice(new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(pageObjects.map{
-       x => {
-         if(isPartner) {x.household.partner.map(_.minimumEarnings.map(_.employmentStatus)).toString}
-         else {x.household.parent.minimumEarnings.map(_.employmentStatus).toString}
-       }
-      }),
-        isPartner,
-        Call("GET", "") ))
+    )
+  }
+
+  /**
+    * Called on page load with default isPartner = false for in partner mode and
+    * isPartner = true in partner mode
+    * @param isPartner
+    * @return
+    */
+  def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects)  =>
+        Ok(selfEmployedOrApprentice(filledForm(pageObjects, isPartner),
+          isPartner,
+          getBackUrl(pageObjects, isPartner)
+        ))
+
+      case _ =>
+        Logger.warn("Invalid PageObjects in SelfEmployedOrApprenticeController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }.recover {
       case ex: Exception =>
         Logger.warn(s"Exception from SelfEmployedOrApprenticeController.onPageLoad: ${ex.getMessage}")
@@ -55,6 +76,12 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     }
   }
 
+  /**
+    * Called on page submission with default isPartner = false for in partner mode and
+    * isPartner = true in partner mode
+    * @param isPartner
+    * @return
+    */
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
@@ -87,39 +114,29 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
   }
 
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    if(isPartner) {
+    val paidEmployment = HelperManager.defineInPaidEmployment(pageObjects)
+    val yourPartnerAge = routes.WhatsYourAgeController.onPageLoad(true)
 
-      val paidEmployment = HelperManager.defineInPaidEmployment(pageObjects)
-
+    if (isPartner) {
       paidEmployment match {
         case YouPartnerBothEnum.BOTH => {
-          if(pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE OR EmploymentStatusEnum.NEITHER)))
+          pageObjects.household.parent.minimumEarnings.fold(yourPartnerAge) {
+            x => {
+              if (x.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
+                Call("GET", "parent/self-employed-timescale") //TODO - to be replaced by actual call
+              } else {
+                routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+              }
+            }
+          }
+
         }
         case YouPartnerBothEnum.PARTNER => {
-          
+          routes.MinimumEarningsController.onPageLoad(true)
         }
-        case _ => {}
       }
-
-
-  /*    if(pageObjects.getBenefits.contains(false) &&
-        pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
-        routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH)) {
-        routes.WhatsYourAgeController.onPageLoad(false)
-      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
-      } else {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      }*/
     } else {
-      if(pageObjects.getBenefits.contains(false)) { //replaced pageObjects.getBenefits == Some(false)
-        routes.GetBenefitsController.onPageLoad()
-      } else if (pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
-      } else {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      }
+      routes.MinimumEarningsController.onPageLoad(false)
     }
   }
 
