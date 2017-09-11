@@ -45,8 +45,10 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
       if (isPartner) {
         pageObjects.household.partner match {
-          case Some(claimant) => claimant.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
-          case _ => None
+          case Some(claimant) => println(s"SOme(Claimant)>>>$claimant")
+            claimant.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
+          case _ => println(s"None")
+            None
         }
       } else {
         pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
@@ -202,20 +204,23 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
                                      pageObjects: PageObjects,
                                      isPartner: Boolean): PageObjects = {
 
+
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
-    if(!isPartner && (paidEmployment == YouPartnerBothEnum.BOTH || paidEmployment == YouPartnerBothEnum.YOU)) {
+    if(isPartner) {
       pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings())(_.copy(
-            employmentStatus = Some(employmentStatus)))
-          ))
+        partner = Some(pageObjects.household.partner.fold(Claimant())(x => x.copy(
+          minimumEarnings = Some(x.minimumEarnings.fold(
+            MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
+            employmentStatus = Some(employmentStatus))))
+        ))
+        )
       ))
     } else {
       pageObjects.copy(household = pageObjects.household.copy(
-        partner = pageObjects.household.partner.map(x => x.copy(
-          minimumEarnings = Some(x.minimumEarnings.fold(MinimumEarnings())(_.copy(
-          employmentStatus = Some(employmentStatus))))
-        ))
+        parent = pageObjects.household.parent.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
+            employmentStatus = Some(employmentStatus)))
+          ))
       ))
     }
 
