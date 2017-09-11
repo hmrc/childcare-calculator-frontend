@@ -145,7 +145,11 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         }
       }
     } else {
-      routes.MinimumEarningsController.onPageLoad(false)
+      if(paidEmployment == Some(YouPartnerBothEnum.YOU)) {
+        routes.MinimumEarningsController.onPageLoad(false)
+      } else {
+        routes.MinimumEarningsController.onPageLoad(true)
+      }
     }
   }
 
@@ -202,20 +206,23 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
                                      pageObjects: PageObjects,
                                      isPartner: Boolean): PageObjects = {
 
+
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
-    if(!isPartner && (paidEmployment == YouPartnerBothEnum.BOTH || paidEmployment == YouPartnerBothEnum.YOU)) {
+    if(isPartner) {
       pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings())(_.copy(
-            employmentStatus = Some(employmentStatus)))
-          ))
+        partner = Some(pageObjects.household.partner.fold(Claimant())(x => x.copy(
+          minimumEarnings = Some(x.minimumEarnings.fold(
+            MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
+            employmentStatus = Some(employmentStatus))))
+        ))
+        )
       ))
     } else {
       pageObjects.copy(household = pageObjects.household.copy(
-        partner = pageObjects.household.partner.map(x => x.copy(
-          minimumEarnings = Some(x.minimumEarnings.fold(MinimumEarnings())(_.copy(
-          employmentStatus = Some(employmentStatus))))
-        ))
+        parent = pageObjects.household.parent.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
+            employmentStatus = Some(employmentStatus)))
+          ))
       ))
     }
 
