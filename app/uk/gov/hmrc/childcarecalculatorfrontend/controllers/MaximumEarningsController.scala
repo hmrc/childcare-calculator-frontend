@@ -59,8 +59,7 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       } else if (!pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
         pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
         !pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.fold(false)(identity)) {
-        //TODO: redirect to self employed/apprentice page
-        routes.WhichBenefitsDoYouGetController.onPageLoad(true)
+        routes.SelfEmployedOrApprenticeController.onPageLoad(true)
         // if parent doesn't meet minimum earning and partner does AND parent is in self employment then go back to parent self employed page
       } else if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
         !pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
@@ -68,8 +67,7 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         routes.SelfEmployedController.onPageLoad(false)
         // if parent doesn't meet minimum earning and partner does AND parent is apprentice/neither then go back to parent self employed/apprentice page
       } else {
-        //TODO: redirect to self employed/apprentice page
-        routes.SelfEmployedController.onPageLoad(false)
+        routes.SelfEmployedOrApprenticeController.onPageLoad(false)
       }
     // if doesn't have a partner then go back to parent minimum earning page
     } else {
