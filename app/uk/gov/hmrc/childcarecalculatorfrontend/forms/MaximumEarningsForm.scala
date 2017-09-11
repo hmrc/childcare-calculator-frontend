@@ -37,12 +37,10 @@ class MaximumEarningsForm @Inject()(youPartnerBoth : String, val messagesApi: Me
       maximumEarningsKey -> optional(boolean).verifying(
         if(youPartnerBoth == "both") {
           Messages("maximum.earning.error.both")
+        } else if (youPartnerBoth == "you") {
+          Messages("maximum.earning.error.you")
         } else {
-          if (youPartnerBoth == "you") {
-            Messages("maximum.earning.error.you")
-          } else {
-            Messages("maximum.earning.error.partner")
-          }
+          Messages("maximum.earning.error.partner")
         },
         _.isDefined
       )
