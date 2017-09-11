@@ -37,6 +37,12 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
 
   val keystore: KeystoreService = KeystoreService
 
+  /**
+    * Fills the form with Employment status value
+    * @param pageObjects
+    * @param isPartner
+    * @return
+    */
   private def filledForm(pageObjects: PageObjects, isPartner: Boolean) = {
     new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
       if (isPartner) {
@@ -113,6 +119,12 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     }
   }
 
+  /**
+    * Gets the back url
+    * @param pageObjects
+    * @param isPartner
+    * @return
+    */
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
     val paidEmployment = HelperManager.defineInPaidEmployment(pageObjects)
     val yourPartnerAge = routes.WhatsYourAgeController.onPageLoad(true)
@@ -140,6 +152,12 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     }
   }
 
+  /**
+    * Gets the next page url
+    * @param pageObjects
+    * @param isPartner
+    * @return
+    */
   private def getNextPageUrl(pageObjects: PageObjects, isPartner: Boolean): Result = {
     Redirect("")
   }
