@@ -122,8 +122,8 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    val minEarns = if(minEarningsBoolean) {
+  private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
+    val minEarns = if(minEarnings) {
       Some(MinimumEarnings(earnMoreThanNMW=Some(true)))
     } else {
       Some(MinimumEarnings(earnMoreThanNMW=Some(false)))
