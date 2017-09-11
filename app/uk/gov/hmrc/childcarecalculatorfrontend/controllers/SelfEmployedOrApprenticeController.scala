@@ -105,7 +105,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
 
             val employedStatusValue = EmploymentStatusEnum.withName(selectedEmployedStatus.get)
             keystore.cache(getModifiedPageObjects(employedStatusValue, pageObjects, isPartner)).map { _ =>
-              getNextPageUrl(pageObjects, isPartner)
+              getNextPageUrl(pageObjects, isPartner, selectedEmployedStatus.get)
             }
           }
         )
@@ -158,8 +158,45 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     * @param isPartner
     * @return
     */
-  private def getNextPageUrl(pageObjects: PageObjects, isPartner: Boolean): Result = {
-    Redirect("")
+  private def getNextPageUrl(pageObjects: PageObjects, isPartner: Boolean, selectedEmployedStatus: String): Result = {
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
+
+    if(isPartner){
+     paidEmployment match {
+        case YouPartnerBothEnum.BOTH =>{
+          if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
+            Redirect("partner-self-employed-timescale") //TODO: Need to keep the correct url
+          }else{
+            Redirect("parent-credits") //TODO: Need to keep the correct url
+          }
+        }
+        case YouPartnerBothEnum.PARTNER => {
+          if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
+            Redirect("partner-self-employed-timescale") //TODO: Need to keep the correct url
+          }else{
+            Redirect("parent-credits") //TODO: Need to keep the correct url
+          }
+        }
+      }
+
+    }else {
+      paidEmployment match {
+        case YouPartnerBothEnum.BOTH =>{
+          if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
+            Redirect("parent-self-employed-timescale") //TODO: Need to keep the correct url
+          }else{
+            Redirect("partner-self-employed") //TODO: Need to keep the correct url
+          }
+        }
+        case YouPartnerBothEnum.YOU => {
+          if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
+            Redirect("parent-self-employed-timescale") //TODO: Need to keep the correct url
+          }else{
+            Redirect("partner-credits") //TODO: Need to keep the correct url
+          }
+      }
+      }
+    }
   }
 
   private def getModifiedPageObjects(employmentStatus: EmploymentStatusEnum.Value,
