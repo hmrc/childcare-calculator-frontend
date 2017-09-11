@@ -44,30 +44,23 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
     "onPageLoad is called" should {
       "show technical difficulties page if there is no data in keystore" in {
-        when(
-          selfEmployedOrApprenticeController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
+
+        setupMocks(modelToFetch = None)
+
         val result = selfEmployedOrApprenticeController.onPageLoad(false)(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
         redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "load template successfully if there is data in keystore" in {
-        when(
-          selfEmployedOrApprenticeController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(false))
-          )
-        )
+
+        setupMocks(modelToFetch = Some(buildPageObjects(false)))
+
         val result = selfEmployedOrApprenticeController.onPageLoad(false)(request.withSession(validSession))
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
+
       "redirect to error page if can't connect with keystore" in {
         when(
           selfEmployedOrApprenticeController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -85,31 +78,22 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
       "there are errors" should {
         "load same template and return BAD_REQUEST as parent" in {
-          when(
-            selfEmployedOrApprenticeController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(false))
-            )
-          )
+
+          setupMocks(modelToFetch = Some(buildPageObjects(false)))
 
           val result = selfEmployedOrApprenticeController.onSubmit(false)(
                  request
                 .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "")
                 .withSession(validSession)
               )
+
           status(result) shouldBe BAD_REQUEST
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
         }
 
         "load same template and return BAD_REQUEST as partner" in {
-          when(
-            selfEmployedOrApprenticeController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(true))
-            )
-          )
+
+          setupMocks(modelToFetch = Some(buildPageObjects(true)))
 
           val result = selfEmployedOrApprenticeController.onSubmit(true)(
             request
@@ -128,25 +112,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
-          when(
-            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(false, YouPartnerBothEnum.YOU))
-            )
-          )
+          val modelToStore = model.copy(household = model.household.copy(
+            parent = model.household.parent.copy(
+              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+                employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))))))
 
-          when(
-            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(model.copy(household = model.household.copy(
-                parent = model.household.parent.copy(
-                  minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                    employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))))))
-              )
-            )
-          )
+          setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 
           val result = await(
             selfEmployedOrApprenticeController.onSubmit(false)(
@@ -165,25 +136,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
-          when(
-            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(false, YouPartnerBothEnum.YOU))
-            )
-          )
+          val modelToStore = model.copy(household = model.household.copy(
+            parent = model.household.parent.copy(
+              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+                employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))))
 
-          when(
-            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(model.copy(household = model.household.copy(
-                parent = model.household.parent.copy(
-                  minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                    employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))))
-              )
-            )
-          )
+          setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 
           val result = await(
             selfEmployedOrApprenticeController.onSubmit(false)(
@@ -201,26 +159,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         s"go to ${selfEmployedTimescaleParentPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
+          val modelToStore = model.copy(household = model.household.copy(
+            parent = model.household.parent.copy(
+              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+                employmentStatus = Some(EmploymentStatusEnum.NEITHER))))))
 
-          when(
-            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(false, YouPartnerBothEnum.YOU))
-            )
-          )
-
-          when(
-            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(model.copy(household = model.household.copy(
-                parent = model.household.parent.copy(
-                  minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                    employmentStatus = Some(EmploymentStatusEnum.NEITHER))))))
-              )
-            )
-          )
+          setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 
           val result = await(
             selfEmployedOrApprenticeController.onSubmit(false)(
@@ -529,12 +473,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
       )
     }
 
-   if (storePageObjects) {
-     when(
-       selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-     ).thenReturn(
-       Future.successful(modelToStore)
-     )
+    if (storePageObjects) {
+      when(
+        selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
 
     }
 
