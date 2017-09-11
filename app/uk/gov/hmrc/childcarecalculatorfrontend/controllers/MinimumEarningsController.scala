@@ -115,30 +115,30 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       if(!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
         routes.MinimumEarningsController.onPageLoad(true)
       } else if(inPaidEmployment == YouPartnerBothEnum.PARTNER) {
-        //TODO redirect to Is your partner self emp or apprentice
-        routes.ChildCareBaseController.underConstruction()
+        routes.SelfEmployedOrApprenticeController.onPageLoad(true)
       } else {
-        //TODO redirect to Are you self emp or apprentice
-        routes.ChildCareBaseController.underConstruction()
+        routes.SelfEmployedOrApprenticeController.onPageLoad(false)
       }
     }
   }
 
-  private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    val minEarns = if(minEarningsBoolean) {
-      Some(MinimumEarnings(earnMoreThanNMW=Some(true)))
-    } else {
-      Some(MinimumEarnings(earnMoreThanNMW=Some(false)))
-    }
-
+  private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
     if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
       defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
       pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(minimumEarnings = minEarns)
+        parent = pageObjects.household.parent.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+            earnMoreThanNMW = Some(minEarnings)))
+            )
+          )
       ))
     } else {
       pageObjects.copy(household = pageObjects.household.copy(
-        partner = pageObjects.household.partner.map(x => x.copy(minimumEarnings = minEarns))
+        partner = pageObjects.household.partner.map(x => x.copy(
+          minimumEarnings = Some(x.minimumEarnings.fold(
+            MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+            earnMoreThanNMW = Some(minEarnings))))
+        ))
       ))
     }
 

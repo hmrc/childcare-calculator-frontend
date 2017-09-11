@@ -22,12 +22,12 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 trait ControllersValidator extends UnitSpec with FakeCCApplication {
 
-  def validateUrl(path: String, requestTypes: List[String] = List(GET, POST)) = {
+  def validateUrl(path: String, requestTypes: List[String] = List(GET, POST)): Unit = {
 
-    s"${path}" should {
+    s"$path" should {
       "be available" when {
         requestTypes.foreach { requestType =>
-          s"${requestType} request is made" in {
+          s"$requestType request is made" in {
             val req = FakeRequest(requestType, path).withSession(validSession)
             val result = route(app, req)
             result.isDefined shouldBe true

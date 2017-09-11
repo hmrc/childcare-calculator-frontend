@@ -21,8 +21,8 @@ import java.text.SimpleDateFormat
 import org.joda.time.LocalDate
 import play.api.Play.current
 import play.api.{Configuration, Play}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
 
 trait HelperManager {
 
@@ -41,10 +41,6 @@ trait HelperManager {
         None
       }
     }
-  }
-
-  def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
-    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 
   def getMinimumEarningsAmountForAgeRange(ageRange: Option[String]): Int = {
@@ -78,6 +74,10 @@ trait HelperManager {
 
   def getNMWConfig(currentDate: LocalDate): Configuration = {
     getLatestConfig("nmw", currentDate)
+  }
+
+  def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
+    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 }
 
