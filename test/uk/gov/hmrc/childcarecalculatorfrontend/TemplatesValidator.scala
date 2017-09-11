@@ -40,38 +40,38 @@ trait TemplatesValidator extends UnitSpec {
   }
 
   private def verifyContent(data: List[ElementDetails])(implicit doc: Document): Unit = {
-    data.map { element =>
+    data.foreach { element =>
       element match {
         case ElementDetails(value, Some(id), Some(elementClass), _, _, _, _, _) =>
-          withClue(s"Element with id '${id}' has class '${elementClass}': ") {
+          withClue(s"Element with id '$id' has class '$elementClass': ") {
             doc.getElementById(id).hasClass(elementClass) shouldBe value
           }
         case ElementDetails(value, Some(id), _, _, _, _, Some(tagName), Some(tagIndex)) =>
-          withClue(s"Element with id '${id}', tag '${tagName}' and tagIndex '${tagIndex}': ") {
+          withClue(s"Element with id '$id', tag '$tagName' and tagIndex '$tagIndex': ") {
             doc.getElementById(id).getElementsByTag(tagName).get(tagIndex).text() shouldBe value
           }
         case ElementDetails(value, Some(id), _, _, _, None, _, _) =>
-          withClue(s"Element with id '${id}': ") {
+          withClue(s"Element with id '$id': ") {
             doc.getElementById(id).text() shouldBe value
           }
         case ElementDetails(value, Some(id), _, _, _, Some(checkAttribute), _, _) =>
-          withClue(s"Element with id '${id}' and attribute '${checkAttribute}': ") {
+          withClue(s"Element with id '$id' and attribute '$checkAttribute': ") {
             doc.getElementById(id).attr(checkAttribute) shouldBe value
           }
         case ElementDetails(value, _, _, Some(attribute), Some(attributeValue), None, _, _) =>
-          withClue(s"Element with attribute's '${attribute}' value '${attributeValue}' should have value '${value}': ") {
+          withClue(s"Element with attribute's '$attribute' value '$attributeValue' should have value '$value': ") {
             doc.getElementsByAttributeValue(attribute, attributeValue).text() shouldBe value
           }
         case ElementDetails(value, _, _, Some(attribute), Some(attributeValue), Some(checkAttribute), _, _) =>
-          withClue(s"Element with attribute's '${attribute}' value '${attributeValue}' should have attribure '${checkAttribute}' with value '${value}': ") {
+          withClue(s"Element with attribute's '$attribute' value '$attributeValue' should have attribure '$checkAttribute' with value '$value': ") {
             doc.getElementsByAttributeValue(attribute, attributeValue).attr(checkAttribute) shouldBe value
           }
         case ElementDetails(value, id, _, _, _, _, Some(tagName), tagIndex) =>
-          withClue(s"Element with tag '${tagName}' and tagIndex '${tagIndex.getOrElse(0)}': ") {
+          withClue(s"Element with tag '$tagName' and tagIndex '${tagIndex.getOrElse(0)}': ") {
             doc.getElementById(id.getOrElse("content")).getElementsByTag(tagName).get(tagIndex.getOrElse(0)).text() shouldBe value
           }
         case ElementDetails(value, _, Some(elementClass), _, _, _, _, tagIndex) =>
-          withClue(s"Element with class '${elementClass}' and index '${tagIndex.getOrElse(0)}': ") {
+          withClue(s"Element with class '$elementClass' and index '${tagIndex.getOrElse(0)}': ") {
             doc.getElementsByClass(elementClass).get(tagIndex.getOrElse(0)).text() shouldBe value
           }
         case _ => throw new NotImplementedException
@@ -84,10 +84,10 @@ trait TemplatesValidator extends UnitSpec {
   }
 
   def verifyMissingContent(data: List[ElementDetails] = List.empty)(implicit doc: Document): Unit = {
-    data.map { element =>
+    data.foreach { element =>
       element match {
         case ElementDetails(value, Some(id), _, _, _, _, _, _) =>
-          withClue(s"Element with id '${id}' shouldn't be displayed:  ") {
+          withClue(s"Element with id '$id' shouldn't be displayed:  ") {
             doc.getElementById(id) shouldBe null
           }
         case _ => throw new NotImplementedException
@@ -96,15 +96,15 @@ trait TemplatesValidator extends UnitSpec {
   }
 
   def verifyLinks(links: List[ElementDetails])(implicit doc: Document): Unit = {
-    links.map { element =>
+    links.foreach { element =>
       element match {
         case ElementDetails(value, Some(id), _, _, _, Some(checkAttribute), _, _) => {
-          withClue(s"Attribute '${checkAttribute}' for element with id '${id}' should be '${value}': ") {
+          withClue(s"Attribute '$checkAttribute' for element with id '$id' should be '$value': ") {
             doc.getElementById(id).attr(checkAttribute).endsWith(value) shouldBe true
           }
         }
         case ElementDetails(value, _, Some(elementClass), _, _, Some(checkAttribute), _, _) =>
-          withClue(s"Attribute '${checkAttribute}' for element with class '${elementClass}' should be '${value}': ") {
+          withClue(s"Attribute '$checkAttribute' for element with class '$elementClass' should be '$value': ") {
             doc.getElementsByClass(elementClass).attr(checkAttribute).endsWith(value) shouldBe true
           }
         case _ => throw new NotImplementedException
@@ -131,7 +131,7 @@ trait TemplatesValidator extends UnitSpec {
       doc.getElementsByClass("error-notification").size() shouldBe totalAmountOfErrors
     }
     doc.getElementById("error-summary-display").hasClass("error-summary--show") should not be errors.isEmpty
-    errors.map {
+    errors.foreach {
       case (focusElement, errorMessage) => {
         val errorSummary = doc.getElementById(focusElement + "-error-summary")
         errorSummary.text() shouldBe errorMessage

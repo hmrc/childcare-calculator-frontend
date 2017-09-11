@@ -19,11 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import play.api.libs.json.{Format, Reads, Writes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
-
 object TcUcBenefitsEnum extends Enumeration {
   type TcUcBenefitsEnum = Value
-  val TAXCREDITS,
-    UNIVERSALCREDITS = Value
+  val TAXCREDITS, UNIVERSALCREDITS, NEITHER = Value
+
   val enumReads: Reads[TcUcBenefitsEnum] = EnumUtils.enumReads(TcUcBenefitsEnum)
 
   val enumWrites: Writes[TcUcBenefitsEnum] = EnumUtils.enumWrites
@@ -58,6 +57,7 @@ object AgeRangeEnum extends Enumeration {
 object EmploymentStatusEnum extends Enumeration {
   type EmploymentStatusEnum = Value
   val SELFEMPLOYED, APPRENTICE, NEITHER = Value
+
   val enumReads: Reads[EmploymentStatusEnum] = EnumUtils.enumReads(EmploymentStatusEnum)
 
   val enumWrites: Writes[EmploymentStatusEnum] = EnumUtils.enumWrites
@@ -68,6 +68,7 @@ object EmploymentStatusEnum extends Enumeration {
 object YesNoUnsureEnum extends Enumeration {
   type YesNoUnsureEnum = Value
   val YES, NO, NOTSURE = Value
+
   val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
 
   val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites
@@ -78,6 +79,7 @@ object YesNoUnsureEnum extends Enumeration {
 object PeriodEnum extends Enumeration {
   type PeriodEnum = Value
   val DAILY, WEEKLY, FORTNIGHTLY, MONTHLY, QUARTERLY, YEARLY, INVALID = Value
+
   val enumReads: Reads[PeriodEnum] = EnumUtils.enumReads(PeriodEnum)
 
   val enumWrites: Writes[PeriodEnum] = EnumUtils.enumWrites
