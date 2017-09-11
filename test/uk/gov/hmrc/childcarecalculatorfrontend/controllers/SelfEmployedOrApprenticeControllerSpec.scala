@@ -38,17 +38,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
-  def buildPageObjects(isPartner: Boolean, inPaidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.BOTH): PageObjects = {
-    val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
-    val claimant = Claimant(minimumEarnings = Some(minimumEarning))
-    if (isPartner) {
-      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant, partner = Some(claimant)),
-        whichOfYouInPaidEmployment = Some(inPaidEmployment))
-    } else {
-      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant),
-        whichOfYouInPaidEmployment = Some(inPaidEmployment))
-    }
-  }
+
 
   "SelfEmployedOrApprenticeController" when {
 
@@ -207,6 +197,42 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         }
       }
 
+      "saving in keystore is successful as parent, only paid employment and neither apprentice nor selfemployed" should {
+        s"go to ${selfEmployedTimescaleParentPath}" in {
+
+          val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
+
+          when(
+            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(false, YouPartnerBothEnum.YOU))
+            )
+          )
+
+          when(
+            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(model.copy(household = model.household.copy(
+                parent = model.household.parent.copy(
+                  minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+                    employmentStatus = Some(EmploymentStatusEnum.NEITHER))))))
+              )
+            )
+          )
+
+          val result = await(
+            selfEmployedOrApprenticeController.onSubmit(false)(
+              request
+                .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "NEITHER")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          // redirectLocation(result) should be (Some(.url))
+        }
+      }
 
       "saving in keystore is successful as parent, both are in paid employment and selfemployed" should {
         s"go to ${selfEmployedTimescaleParentPath}" in {
@@ -245,7 +271,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         }
       }
 
-      "saving in keystore is successful as parent, both are in paid employment and apprentice" should {
+      "saving in keystore is successful as parent, both are in paid employment and neither apprentice nor selfemployed" should {
         s"go to ${selfEmployedTimescaleParentPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
@@ -265,7 +291,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
               Some(model.copy(household = model.household.copy(
                 parent = model.household.parent.copy(
                   minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                    employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))))
+                    employmentStatus = Some(EmploymentStatusEnum.NEITHER))))))
               )
             )
           )
@@ -273,7 +299,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           val result = await(
             selfEmployedOrApprenticeController.onSubmit(false)(
               request
-                .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
+                .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "NEITHER")
                 .withSession(validSession)
             )
           )
@@ -395,6 +421,43 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           // redirectLocation(result) should be (Some(.url))
         }
       }
+
+      "saving in keystore is successful as partner, both are in paid employment and neither apprentice nor selfemployed" should {
+        s"go to ${selfEmployedTimescaleParentPath}" in {
+
+          val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
+
+          when(
+            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(true, YouPartnerBothEnum.BOTH))
+            )
+          )
+
+          when(
+            selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(model.copy(household = model.household.copy(
+                partner = model.household.partner.map(_.copy(
+                  minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+                    employmentStatus = Some(EmploymentStatusEnum.NEITHER)))))))
+              )
+            )
+          )
+
+          val result = await(
+            selfEmployedOrApprenticeController.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "NEITHER")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          // redirectLocation(result) should be (Some(.url))
+        }
+      }
       //================================ Partner Mode Ends   =======================================
 
      "connecting with keystore fails" should {
@@ -420,10 +483,60 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
 
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
         }
       }
 
     }
+  }
+
+  /**
+    * Builds the model
+    * @param isPartner
+    * @param inPaidEmployment
+    * @return
+    */
+  private def buildPageObjects(isPartner: Boolean, inPaidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.BOTH): PageObjects = {
+    val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
+    val claimant = Claimant(minimumEarnings = Some(minimumEarning))
+    if (isPartner) {
+      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant, partner = Some(claimant)),
+        whichOfYouInPaidEmployment = Some(inPaidEmployment))
+    } else {
+      PageObjects(household = Household(location = LocationEnum.ENGLAND, parent = claimant),
+        whichOfYouInPaidEmployment = Some(inPaidEmployment))
+    }
+  }
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        selfEmployedOrApprenticeController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+   if (storePageObjects) {
+     when(
+       selfEmployedOrApprenticeController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+     ).thenReturn(
+       Future.successful(modelToStore)
+     )
+
+    }
+
   }
 }
