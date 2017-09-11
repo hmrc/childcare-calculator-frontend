@@ -42,6 +42,10 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
   lazy val  selfEmployedTimescalePartnerPathTemp = Call("GET", "TO_BE_IMPLEMENTED") //to be replaced by selfEmployedTimescalePartnerPath
 
   override val contentData: List[ElementDetails] = List(
+
+    ElementDetails(attribute = Some(attributeFor), attributeValue = Some("selfEmployedOrApprentice-selfemployed"), value = "Self-employed"),
+    ElementDetails(attribute = Some(attributeFor), attributeValue = Some("selfEmployedOrApprentice-apprentice"), value = "Apprentice"),
+    ElementDetails(attribute = Some(attributeFor), attributeValue = Some("selfEmployedOrApprentice-neither"), value = "Neither self-employed or an apprentice"),
     ElementDetails(id = Some(nextButtonId), value = nextButtonLabel),
     ElementDetails(id = Some(backButtonId), value = backButtonLabel)
   )
