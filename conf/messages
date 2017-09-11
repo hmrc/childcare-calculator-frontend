@@ -213,9 +213,9 @@ on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wa
 
 ###### Have you been self-employed less than 12 months ######
 self.employed.less.than.12.months.parent.error = You must answer yes if you''ve been self-employed less than 12 months
-self.employed.less.than.12.months.partner.error = You must answer yes if your partner has been self-employed for less than 12 months
+self.employed.less.than.12.months.partner.error = You must answer yes if your partner has been self-employed less than 12 months
 self.employed.less.than.12.months.parent.header = Have you been self-employed less than 12 months?
-self.employed.less.than.12.months.partner.header = Has your partner been self-employed for less than 12 months?
+self.employed.less.than.12.months.partner.header = Has your partner been self-employed less than 12 months?
 
 ####### Maximum Earning #######
 maximum.earning.header.you = Will you earn more than £100,000 a year?

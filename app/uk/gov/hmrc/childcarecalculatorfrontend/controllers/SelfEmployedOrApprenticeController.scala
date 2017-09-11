@@ -45,10 +45,8 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
       if (isPartner) {
         pageObjects.household.partner match {
-          case Some(claimant) => println(s"SOme(Claimant)>>>$claimant")
-            claimant.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
-          case _ => println(s"None")
-            None
+          case Some(claimant) => claimant.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
+          case _ => None
         }
       } else {
         pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
@@ -147,7 +145,11 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         }
       }
     } else {
-      routes.MinimumEarningsController.onPageLoad(false)
+      if(paidEmployment == Some(YouPartnerBothEnum.YOU)) {
+        routes.MinimumEarningsController.onPageLoad(false)
+      } else {
+        routes.MinimumEarningsController.onPageLoad(true)
+      }
     }
   }
 
