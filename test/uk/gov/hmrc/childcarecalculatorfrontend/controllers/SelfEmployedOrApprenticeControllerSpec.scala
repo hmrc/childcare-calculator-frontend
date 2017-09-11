@@ -68,7 +68,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
       }
 
       "redirect to error page if can't connect with keystore" in {
-        setupMocksForException
+        setupMocksForException()
 
         val result = selfEmployedOrApprenticeController.onPageLoad(false)(request.withSession(validSession))
 
@@ -326,7 +326,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
      "connecting with keystore fails" should {
         s"redirect to ${technicalDifficultiesPath}" in {
 
-          setupMocksForException
+          setupMocksForException()
           setupMocks(modelToFetch = Some(buildPageObjects(false)))
 
           val result = selfEmployedOrApprenticeController.onSubmit(false)(
