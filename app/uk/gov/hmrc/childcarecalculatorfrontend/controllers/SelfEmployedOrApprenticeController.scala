@@ -102,10 +102,9 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
             )},
 
           selectedEmployedStatus => {
-
             val employedStatusValue = EmploymentStatusEnum.withName(selectedEmployedStatus.get)
             keystore.cache(getModifiedPageObjects(employedStatusValue, pageObjects, isPartner)).map { _ =>
-              getNextPageUrl(pageObjects, isPartner, selectedEmployedStatus.get)
+              Redirect(getNextPageUrl(pageObjects, isPartner, selectedEmployedStatus.get))
             }
           }
         )
@@ -158,23 +157,27 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     * @param isPartner
     * @return
     */
-  private def getNextPageUrl(pageObjects: PageObjects, isPartner: Boolean, selectedEmployedStatus: String): Result = {
+  private def getNextPageUrl(pageObjects: PageObjects, isPartner: Boolean, selectedEmployedStatus: String): Call = {
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
 
     if(isPartner){
      paidEmployment match {
         case YouPartnerBothEnum.BOTH =>{
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
-            Redirect("partner-self-employed-timescale") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url  //Redirect("partner-self-employed-timescale")
+            routes.ChildCareBaseController.underConstruction()
           }else{
-            Redirect("parent-credits") //TODO: Need to keep the correct url
+             //TODO: Need to keep the correct url //Redirect("parent-credits")
+            routes.ChildCareBaseController.underConstruction()
           }
         }
         case YouPartnerBothEnum.PARTNER => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
-            Redirect("partner-self-employed-timescale") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url  //Redirect("partner-self-employed-timescale")
+            routes.ChildCareBaseController.underConstruction()
           }else{
-            Redirect("parent-credits") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url //Redirect("parent-credits")
+            routes.ChildCareBaseController.underConstruction()
           }
         }
       }
@@ -183,16 +186,20 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
       paidEmployment match {
         case YouPartnerBothEnum.BOTH =>{
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
-            Redirect("parent-self-employed-timescale") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url Redirect("parent-self-employed-timescale")
+            routes.ChildCareBaseController.underConstruction()
           }else{
-            Redirect("partner-self-employed") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url Redirect("partner-self-employed")
+            routes.ChildCareBaseController.underConstruction()
           }
         }
         case YouPartnerBothEnum.YOU => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString){
-            Redirect("parent-self-employed-timescale") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url Redirect("parent-self-employed-timescale")
+            routes.ChildCareBaseController.underConstruction()
           }else{
-            Redirect("partner-credits") //TODO: Need to keep the correct url
+            //TODO: Need to keep the correct url Redirect("partner-credits")
+            routes.ChildCareBaseController.underConstruction()
           }
       }
       }
@@ -206,7 +213,8 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
       pageObjects.copy(
         household = pageObjects.household.copy(
           partner = pageObjects.household.partner.map {
-            x => x.copy(minimumEarnings = Some(x.minimumEarnings.fold(MinimumEarnings())(_.copy(employmentStatus = Some(employmentStatus)))))
+            x => x.copy(minimumEarnings = Some(x.minimumEarnings.fold(MinimumEarnings())(_.copy(
+              employmentStatus = Some(employmentStatus)))))
           }
         )
       )
@@ -214,7 +222,8 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
       pageObjects.copy(
         household = pageObjects.household.copy(
           parent = pageObjects.household.parent.copy(
-            minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings())(_.copy(employmentStatus = Some(employmentStatus)))))
+            minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings())(_.copy(
+              employmentStatus = Some(employmentStatus)))))
         )
       )
     }

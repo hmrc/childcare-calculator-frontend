@@ -31,7 +31,7 @@
 ) {
 
 @helpers.form(
-     action = Call("GET", "TO_BE_IMPLEMENTED"),
+     action = routes.SelfEmployedOrApprenticeController.onSubmit(isPartner),
      args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
      @error.ccErrorSummary(form)
