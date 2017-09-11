@@ -89,7 +89,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
           success => {
             val minEarnings: Boolean = success.get
             keystore.cache(getModifiedPageObjects(minEarnings, pageObjects, isPartner)).map { _ =>
-              Redirect(getNextPage(inPaidEmployment, minEarnings, isPartner))
+              Redirect(getNextPage(pageObjects, minEarnings, isPartner))
             }
           }
         )
@@ -103,23 +103,51 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  private def getNextPage(inPaidEmployment: YouPartnerBothEnum, minEarnings: Boolean, isPartner: Boolean): Call = {
-    if(minEarnings) { //if Yes is selected
-      if (!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        routes.MinimumEarningsController.onPageLoad(true)
-      } else {
-        //TODO redirect to max earnings or TC/UC page
-        routes.ChildCareBaseController.underConstruction()
+  private def getNextPage(pageObjects: PageObjects, minEarnings: Boolean, isPartner: Boolean): Call = {
+    val inPaidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
+    if(isPartner) {
+      inPaidEmployment match {
+        case YouPartnerBothEnum.BOTH => {
+          if(minEarnings) {
+            if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+              //TODO redirect to max earnings or TC/UC page
+              routes.ChildCareBaseController.underConstruction()
+            } else {
+              routes.SelfEmployedOrApprenticeController.onPageLoad(false)
+            }
+          } else {
+            if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+              routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+            } else {
+              routes.SelfEmployedOrApprenticeController.onPageLoad(false)
+            }
+          }
+        }
+        case YouPartnerBothEnum.PARTNER => {
+          if(minEarnings) {
+            //TODO redirect to max earnings or TC/UC page
+            routes.ChildCareBaseController.underConstruction()
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+          }
+        }
       }
-    } else {//if No is selected
-      if(!isPartner && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        routes.MinimumEarningsController.onPageLoad(true)
-      } else if(inPaidEmployment == YouPartnerBothEnum.PARTNER) {
-        routes.SelfEmployedOrApprenticeController.onPageLoad(true)
-      } else {
-        routes.SelfEmployedOrApprenticeController.onPageLoad(false)
+    } else {
+      inPaidEmployment match {
+        case YouPartnerBothEnum.BOTH => {
+          routes.MinimumEarningsController.onPageLoad(true)
+        }
+        case YouPartnerBothEnum.YOU => {
+          if(minEarnings) {
+            //TODO redirect to max earnings or TC/UC page
+            routes.ChildCareBaseController.underConstruction()
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(false)
+          }
+        }
       }
     }
+
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
