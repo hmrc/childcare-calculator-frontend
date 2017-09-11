@@ -131,7 +131,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
+          content.getElementById("back-button").attr("href") shouldBe
+            routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
         }
 
         "redirect to error page if can't connect with keystore" in {
@@ -160,7 +161,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe underConstrctionPath
+          content.getElementById("back-button").attr("href") shouldBe
+                        routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
         }
 
         "redirect to error page if can't connect with keystore if partner" in {
@@ -378,7 +380,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
         }
 
         s"there is data in keystore, redirect to partner's max earnings page" in {
@@ -414,7 +416,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
         }
 
       }

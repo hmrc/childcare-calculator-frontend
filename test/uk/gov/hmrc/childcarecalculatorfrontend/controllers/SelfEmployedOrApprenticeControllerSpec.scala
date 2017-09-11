@@ -130,12 +130,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(false).url))
         }
       }
 
       "saving in keystore is successful as parent, only paid employment and apprentice" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${underConstrctionPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
@@ -154,12 +154,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
         }
       }
 
       "saving in keystore is successful as parent, only paid employment and neither apprentice nor selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${underConstrctionPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
           val modelToStore = model.copy(household = model.household.copy(
@@ -177,7 +177,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
         }
       }
 
@@ -200,12 +200,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(false).url))
         }
       }
 
       "saving in keystore is successful as parent, both are in paid employment and neither apprentice nor selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${selfEmployedOrApprenticePartnerPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -223,7 +223,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.SelfEmployedOrApprenticeController.onPageLoad(true).url))
         }
       }
 
@@ -231,7 +231,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
       //================================ Partner Mode Starts =======================================
       "saving in keystore is successful as partner, only paid employment and selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${partnerSelfEmployedPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
           val modelToStore = model.copy(household = model.household.copy(
@@ -249,12 +249,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(true).url))
         }
       }
 
       "saving in keystore is successful as partner, both are in paid employment and selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${partnerSelfEmployedPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -272,12 +272,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(true).url))
         }
       }
 
       "saving in keystore is successful as partner, both are in paid employment and apprentice" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${underConstrctionPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -295,12 +295,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
         }
       }
 
       "saving in keystore is successful as partner, both are in paid employment and neither apprentice nor selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+        s"go to ${underConstrctionPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -318,7 +318,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          // redirectLocation(result) should be (Some(.url))
+          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
         }
       }
       //================================ Partner Mode Ends   =======================================
