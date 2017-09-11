@@ -183,7 +183,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(false)
           } else {
-            routes.SelfEmployedController.onPageLoad(true)
+            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
           }
         }
         case YouPartnerBothEnum.YOU => {

@@ -38,8 +38,8 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
   lazy val pageTitleContentPartner = "Is your partner an apprentice or self-employed?"
 
   //To be deleted
-  lazy val  selfEmployedTimescaleParentPathTemp = Call("GET", "TO_BE_IMPLEMENTED") //to be replaced by selfEmployedTimescaleParentPath
-  lazy val  selfEmployedTimescalePartnerPathTemp = Call("GET", "TO_BE_IMPLEMENTED") //to be replaced by selfEmployedTimescalePartnerPath
+  lazy val  selfEmployedTimescaleParentPathTemp = Call("GET", "/self-employed/parent")
+  lazy val  selfEmployedTimescalePartnerPathTemp = Call("GET", "/self-employed/partner")
 
   override val contentData: List[ElementDetails] = List(
 
