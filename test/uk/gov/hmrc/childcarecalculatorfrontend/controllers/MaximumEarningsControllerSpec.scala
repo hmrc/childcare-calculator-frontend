@@ -107,8 +107,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(isPartner = true, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = None,
-              partnerAgeRange = Some(AgeRangeEnum.UNDER18), partnerEarnMoreThanNMW = None
+            Some(buildPageObjects(isPartner = true, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
+              partnerAgeRange = Some(AgeRangeEnum.UNDER18), partnerEarnMoreThanNMW = Some(true)
             ))
           )
         )
@@ -125,6 +125,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
+        redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(true).url))
         status(result) shouldBe OK
       }
 
@@ -396,7 +397,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
-          s"redirect to tc/uc page" in {
+          /*s"redirect to tc/uc page" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -430,7 +431,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
             status(result) shouldBe SEE_OTHER
             redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
+          }*/
 
         }
       }
