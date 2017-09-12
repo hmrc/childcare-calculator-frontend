@@ -29,9 +29,9 @@ class MaximumEarningsFormSpec extends UnitSpec with FakeCCApplication {
 
   val testCases = Table(
     ("youPartnerBoth", "Error message key"),
-    ("both", "maximum.earning.error.both"),
-    ("you", "maximum.earning.error.you"),
-    ("partner", "maximum.earning.error.partner")
+    ("BOTH", "maximum.earning.error.BOTH"),
+    ("YOU", "maximum.earning.error.YOU"),
+    ("PARTNER", "maximum.earning.error.PARTNER")
   )
 
   "MaximumEarningsForm" when {
