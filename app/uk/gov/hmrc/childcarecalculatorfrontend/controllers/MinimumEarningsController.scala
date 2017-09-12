@@ -110,8 +110,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         case YouPartnerBothEnum.BOTH => {
           if(minEarnings) {
             if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
-              //TODO redirect to max earnings or TC/UC page
-              routes.ChildCareBaseController.underConstruction()
+              routes.MaximumEarningsController.onPageLoad(false, false)
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
             }
@@ -125,8 +124,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
         case YouPartnerBothEnum.PARTNER => {
           if(minEarnings) {
-            //TODO redirect to max earnings or TC/UC page
-            routes.ChildCareBaseController.underConstruction()
+            routes.MaximumEarningsController.onPageLoad(true, true)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(true)
           }
@@ -139,8 +137,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
         case YouPartnerBothEnum.YOU => {
           if(minEarnings) {
-            //TODO redirect to max earnings or TC/UC page
-            routes.ChildCareBaseController.underConstruction()
+            routes.MaximumEarningsController.onPageLoad(false, false)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(false)
           }

@@ -26,10 +26,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageO
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maximumEarnings
 
-
-/**
- * Created by user on 11/09/17.
- */
 @Singleton
 class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
@@ -75,22 +71,46 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
+  def defineMaximumEarnings(isPartner: Boolean, pageObjects: PageObjects): Option[Boolean] = {
+    if(isPartner) {
+      if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.maximumEarnings.isDefined &&
+        pageObjects.household.partner.get.maximumEarnings.isDefined) {
+        pageObjects.household.partner.get.maximumEarnings
+      } else {
+        None
+      }
+    } else {
+      if(pageObjects.household.parent.maximumEarnings.isDefined && pageObjects.household.parent.maximumEarnings.isDefined) {
+        pageObjects.household.parent.maximumEarnings
+      } else {
+        None
+      }
+    }
+  }
+
   def onPageLoad(hasPartner: Boolean, isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        val youPartnerBoth = if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-          pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
+//        val youPartnerBoth = if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
+//          pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
+//          YouPartnerBothEnum.BOTH.toString
+//        } else {
+//          if (!pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
+//               pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
+//            YouPartnerBothEnum.PARTNER.toString
+//          } else {
+//            YouPartnerBothEnum.YOU.toString
+//          }
+//        }
+        val youPartnerBoth = if(hasPartner) {
           YouPartnerBothEnum.BOTH.toString
+        } else if(isPartner) {
+          YouPartnerBothEnum.PARTNER.toString
         } else {
-          if (!pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-               pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
-            YouPartnerBothEnum.PARTNER.toString
-          } else {
-            YouPartnerBothEnum.YOU.toString
-          }
+          YouPartnerBothEnum.YOU.toString
         }
         Ok(maximumEarnings(
-          new MaximumEarningsForm(youPartnerBoth, messagesApi).form.fill(pageObjects.getMaximumEarnings),
+          new MaximumEarningsForm(youPartnerBoth, messagesApi).form.fill(defineMaximumEarnings(isPartner, pageObjects)),
           youPartnerBoth,
           getBackUrl(pageObjects, hasPartner, isPartner))
         )

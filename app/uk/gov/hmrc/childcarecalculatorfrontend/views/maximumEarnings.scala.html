@@ -14,14 +14,13 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]], youPartnerBoth : String, backUrl: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[Boolean]], youPartnerBoth: String, backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
-
 
 @ccMain(
     header = messages(s"maximum.earning.header.${youPartnerBoth}"),

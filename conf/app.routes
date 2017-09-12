@@ -90,5 +90,8 @@ POST   /self-employed/partner           uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /maximum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(hasPartner: Boolean = false, isPartner: Boolean = false)
 POST   /maximum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(hasPartner: Boolean = false, isPartner: Boolean = false)
 
-GET    /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(hasPartner: Boolean = true, isPartner: Boolean = true)
-POST   /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(hasPartner: Boolean = true, isPartner: Boolean = true)
+GET    /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(hasPartner: Boolean = false, isPartner: Boolean = true)
+POST   /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(hasPartner: Boolean = false, isPartner: Boolean = true)
+
+GET    /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(hasPartner: Boolean = true, isPartner: Boolean = true)
+POST   /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(hasPartner: Boolean = true, isPartner: Boolean = true)
