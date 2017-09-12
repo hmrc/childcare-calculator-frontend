@@ -91,17 +91,6 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   def onPageLoad(hasPartner: Boolean, isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if validatePageObjects(pageObjects) =>
-//        val youPartnerBoth = if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-//          pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
-//          YouPartnerBothEnum.BOTH.toString
-//        } else {
-//          if (!pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-//               pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
-//            YouPartnerBothEnum.PARTNER.toString
-//          } else {
-//            YouPartnerBothEnum.YOU.toString
-//          }
-//        }
         val youPartnerBoth = if(hasPartner) {
           YouPartnerBothEnum.BOTH.toString
         } else if(isPartner) {

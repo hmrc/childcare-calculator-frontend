@@ -132,10 +132,10 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         case YouPartnerBothEnum.BOTH => {
           pageObjects.household.parent.minimumEarnings.fold(yourPartnerAge) {
             x => {
-              if(x.earnMoreThanNMW.get) {
-                routes.MinimumEarningsController.onPageLoad(true)
-              } else {
+              if (x.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
                 routes.SelfEmployedController.onPageLoad(false)
+              } else {
+                routes.SelfEmployedOrApprenticeController.onPageLoad(false)
               }
             }
           }
@@ -145,7 +145,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         }
       }
     } else {
-      if(paidEmployment == YouPartnerBothEnum.YOU) {
+      if(paidEmployment == Some(YouPartnerBothEnum.YOU)) {
         routes.MinimumEarningsController.onPageLoad(false)
       } else {
         routes.MinimumEarningsController.onPageLoad(true)
