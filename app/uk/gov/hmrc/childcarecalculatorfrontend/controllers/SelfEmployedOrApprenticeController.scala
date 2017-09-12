@@ -20,8 +20,9 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedOrApprenticeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
@@ -123,21 +124,18 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     * @return
     */
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
-
     val paidEmployment = HelperManager.defineInPaidEmployment(pageObjects)
     val yourPartnerAge = routes.WhatsYourAgeController.onPageLoad(true)
 
     if (isPartner) {
       paidEmployment match {
         case YouPartnerBothEnum.BOTH => {
-          pageObjects.household.parent.minimumEarnings.fold(yourPartnerAge) {
-            x => {
-              if (x.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
-                routes.SelfEmployedController.onPageLoad(false)
-              } else {
-                routes.SelfEmployedOrApprenticeController.onPageLoad(false)
-              }
-            }
+          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            routes.MinimumEarningsController.onPageLoad(true)
+          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus == Some(EmploymentStatusEnum.SELFEMPLOYED)) {
+            routes.SelfEmployedController.onPageLoad(false)
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(false)
           }
         }
         case YouPartnerBothEnum.PARTNER => {
