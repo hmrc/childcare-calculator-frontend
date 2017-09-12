@@ -206,14 +206,18 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
       "saving in keystore is successful as parent, both are in paid employment and neither apprentice nor selfemployed" should {
         s"go to ${selfEmployedOrApprenticePartnerPath}" in {
+          val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
+          val claimant = Claimant(minimumEarnings = Some(minimumEarning))
 
           val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
-          val modelToStore = model.copy(household = model.household.copy(
+
+          val modelToMock = model.copy(household = model.household.copy(
             parent = model.household.parent.copy(
               minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                employmentStatus = Some(EmploymentStatusEnum.NEITHER))))))
+                employmentStatus = Some(EmploymentStatusEnum.NEITHER)))),
+            partner = Some(claimant)))
 
-          setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
+          setupMocks(modelToFetch = Some(modelToMock), modelToStore = Some(modelToMock), storePageObjects = true)
 
           val result = await(
             selfEmployedOrApprenticeController.onSubmit(false)(
