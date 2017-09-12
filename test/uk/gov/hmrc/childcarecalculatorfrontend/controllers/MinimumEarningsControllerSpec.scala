@@ -398,7 +398,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
           }
 
         }
@@ -459,7 +459,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
           }
 
           s"${range.toString} selected and there is data in keystore and both are in paid employment and getting min earnings as parent" in {
@@ -555,7 +555,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
           }
 
           s"${range.toString} has been previously selected and there is data in keystore for parent when both are in paid employment" in {

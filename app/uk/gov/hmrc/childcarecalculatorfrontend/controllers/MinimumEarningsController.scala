@@ -130,17 +130,14 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         routes.MinimumEarningsController.onPageLoad(true)
       } else if(inPaidEmployment == YouPartnerBothEnum.PARTNER) {
         //TODO redirect to Is your partner self emp or apprentice
-        routes.ChildCareBaseController.underConstruction()
+        routes.SelfEmployedOrApprenticeController.onPageLoad(true)
       } else {
         //TODO redirect to Are you self emp or apprentice
-        routes.ChildCareBaseController.underConstruction()
+        routes.SelfEmployedOrApprenticeController.onPageLoad(false)
       }
     }
   }
 
-  private def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
-    pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
-  }
 
   private def getModifiedPageObjects(minEarningsBoolean: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
     val minEarns = if(minEarningsBoolean) {

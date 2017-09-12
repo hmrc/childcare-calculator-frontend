@@ -193,6 +193,15 @@ whats.your.age.radio.over25 = 25 or over
 whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
 whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
+####### Self-employed or apprentice ######
+self.employed.or.apprentice.header.parent = Are you self-employed or an apprentice?
+self.employed.or.apprentice.header.partner = Is your partner an apprentice or self-employed?
+self.employed.or.apprentice.selfemployed = Self-employed
+self.employed.or.apprentice.apprentice = Apprentice
+self.employed.or.apprentice.neither = Neither self-employed or an apprentice
+self.employed.or.apprentice.not.selected.parent = You must tell the calculator if you are self-employed or an apprentice
+self.employed.or.apprentice.not.selected.partner = You must tell the calculator if your partner is self-employed or an apprentice
+
 ####### On average how much will you earn  #########
 on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
 on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week
