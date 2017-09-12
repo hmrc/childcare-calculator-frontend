@@ -43,8 +43,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     reset(sut.keystore)
   }
 
-  validateUrl(parentMaximumEarningsPath)
-  validateUrl(partnerMaximumEarningsPath)
+  validateUrl(maximumEarningsParentPath)
+  validateUrl(maximumEarningsPartnerPath)
   validateUrl(maximumEarningsPath)
 
   def buildPageObjects(isPartner: Boolean,

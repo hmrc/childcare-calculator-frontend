@@ -55,19 +55,27 @@ class MaximumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
 
   val isPartnerTestCase = Table(
     ("youPartnerBoth", "errorMessage", "pageTitle", "hintText", "submitURL"),
-    ("YOU", "maximum.earning.error.you", "Will you earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath),
-    ("PARTNER", "maximum.earning.error.partner", "Will your partner earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath),
-    ("BOTH", "maximum.earning.error.both", "Will either of you earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath)
+    ("YOU", "maximum.earning.error.YOU", "Will you earn more than £100,000 a year?",
+      "This is with any pension and gift aid contributions taken off.", maximumEarningsParentPath),
+    ("PARTNER", "maximum.earning.error.PARTNER", "Will your partner earn more than £100,000 a year?",
+      "This is with any pension and gift aid contributions taken off.", maximumEarningsPartnerPath),
+    ("BOTH", "maximum.earning.error.BOTH", "Will either of you earn more than £100,000 a year?",
+      "This is with any pension and gift aid contributions taken off.", maximumEarningsPath)
   )
 
 
   forAll(isPartnerTestCase) { case (youPartnerBoth, errorMessage, pageTitle, hintText, submitURL) =>
     s"calling maximum earning template when its = ${youPartnerBoth}" should {
       "render template" in {
-        val template = maximumEarnings.render(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form, youPartnerBoth, backURL, request, applicationMessages)
+        val template = maximumEarnings.render(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form,
+          youPartnerBoth,
+          backURL,
+          request,
+          applicationMessages)
         template.contentType shouldBe "text/html"
 
-        val template1 = maximumEarnings.f(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form, youPartnerBoth, backURL)(request, applicationMessages)
+        val template1 = maximumEarnings.f(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form,
+          youPartnerBoth, backURL)(request, applicationMessages)
         template1.contentType shouldBe "text/html"
       }
 
@@ -82,19 +90,21 @@ class MaximumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
 
       "display correct content" when {
         "nothing is selected initially" in {
-          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(None), youPartnerBoth)
+          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(None),
+                                                   youPartnerBoth)
 
           verifyPageContent(dynamicContent)
-//          verifyPageLinks(dynamicLinks)
+          verifyPageLinks(dynamicLinks)
           verifyChecks()
           verifyErrors()
         }
 
-        "true is selected" in {
-          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(true)), youPartnerBoth)
+     "true is selected" in {
+          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(true)),
+                                                   youPartnerBoth)
 
           verifyPageContent(dynamicContent)
-//          verifyPageLinks(dynamicLinks)
+          verifyPageLinks(dynamicLinks)
           verifyChecks(
             List("maximumEarnings-true")
           )
@@ -102,10 +112,11 @@ class MaximumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
         }
 
         "false is selected" in {
-          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(false)), youPartnerBoth)
+          implicit val doc: Document = getTemplate(new MaximumEarningsForm(youPartnerBoth, applicationMessagesApi).form.fill(Some(false)),
+                                                   youPartnerBoth)
 
           verifyPageContent(dynamicContent)
-//          verifyPageLinks(dynamicLinks)
+          verifyPageLinks(dynamicLinks)
           verifyChecks(
             List("maximumEarnings-false")
           )
@@ -121,7 +132,7 @@ class MaximumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
           implicit val doc: Document = getTemplate(form, youPartnerBoth)
 
           verifyPageContent(dynamicContent)
-//          verifyPageLinks(dynamicLinks)
+          verifyPageLinks(dynamicLinks)
           verifyChecks()
           verifyErrors(
             errors = Map("maximumEarnings" -> applicationMessages.messages(errorMessage)),
