@@ -186,6 +186,9 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         case YouPartnerBothEnum.BOTH => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(false)
+          } else if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
+            //TODO: redirect to partner's max earnings page
+            routes.ChildCareBaseController.underConstruction()
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(true)
           }
