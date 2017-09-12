@@ -95,7 +95,6 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         }
 
         "load same template and return BAD_REQUEST as partner" in {
-
           setupMocks(modelToFetch = Some(buildPageObjects(true)))
 
           val result = selfEmployedOrApprenticeController.onSubmit(true)(
@@ -103,6 +102,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
               .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "")
               .withSession(validSession)
           )
+
           status(result) shouldBe BAD_REQUEST
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
         }

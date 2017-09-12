@@ -37,6 +37,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
 
   /**
     * Fills the form with Employment status value
+    *
     * @param pageObjects
     * @param isPartner
     * @return
@@ -58,6 +59,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
   /**
     * Called on page load with default isPartner = false for in partner mode and
     * isPartner = true in partner mode
+    *
     * @param isPartner
     * @return
     */
@@ -82,22 +84,23 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
   /**
     * Called on page submission with default isPartner = false for in partner mode and
     * isPartner = true in partner mode
+    *
     * @param isPartner
     * @return
     */
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) =>
-        val paidEmployment = HelperManager.defineInPaidEmployment(pageObjects)
+      case Some(pageObjects) => {
         new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.bindFromRequest().fold(
-          errors =>{
+          errors => {
             Future(
               BadRequest(
-                selfEmployedOrApprentice(
-                  errors, isPartner, getBackUrl(pageObjects, isPartner)
-                )
+                  selfEmployedOrApprentice(
+                    errors, isPartner, getBackUrl(pageObjects, isPartner)
+                  )
               )
-            )},
+            )
+          },
 
           selectedEmployedStatus => {
             val employedStatusValue = EmploymentStatusEnum.withName(selectedEmployedStatus.get)
@@ -106,6 +109,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
             }
           }
         )
+      }
       case _ =>
         Logger.warn("PageObjects object is missing in SelfEmployedOrApprenticeController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
@@ -118,6 +122,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
 
   /**
     * Gets the back url
+    *
     * @param pageObjects
     * @param isPartner
     * @return
@@ -132,7 +137,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         case YouPartnerBothEnum.BOTH => {
           pageObjects.household.parent.minimumEarnings.fold(yourPartnerAge) {
             x => {
-              if(x.earnMoreThanNMW.get) {
+              if(x.earnMoreThanNMW.fold(false)(identity)) {
                 routes.MinimumEarningsController.onPageLoad(true)
               } else {
                 routes.SelfEmployedController.onPageLoad(false)
@@ -155,6 +160,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
 
   /**
     * Gets the next page url
+    *
     * @param pageObjects
     * @param isPartner
     * @return

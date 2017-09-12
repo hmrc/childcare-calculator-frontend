@@ -310,10 +310,11 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
       }
 
       "saving in keystore is successful as a partner with SelfEmployed = false" should {
-
         s"there is data in keystore, redirect to tc/uc page" in {
           val po = buildPageObjects(isPartner = true,
-            partnerSelfEmployedIn12Months = None)
+            partnerSelfEmployedIn12Months = None,
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
@@ -327,7 +328,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           ).thenReturn(
             Future.successful(
               Some(buildPageObjects(isPartner = true,
-                partnerSelfEmployedIn12Months = Some(false)
+                partnerSelfEmployedIn12Months = Some(false),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
               ))
             )
           )
@@ -416,12 +418,12 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
+          redirectLocation(result) shouldBe Some(routes.ChildCareBaseController.underConstruction().url)
         }
 
       }
 
-      "saving in keystore is successful as a parent and SelfEmployed = false" should {
+     "saving in keystore is successful as a parent and SelfEmployed = false" should {
 
         s"there is no data in keystore for PageObjects object for parent" in {
           when(
@@ -446,6 +448,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         s"there is data in keystore, redirect to tc/uc page" in {
           val po = buildPageObjects(isPartner = false,
             parentSelfEmployedIn12Months = Some(false))
+
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(

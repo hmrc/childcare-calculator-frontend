@@ -75,7 +75,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) =>
+      case Some(pageObjects) => {
         val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
         new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.bindFromRequest().fold(
           errors =>
@@ -93,6 +93,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
             }
           }
         )
+      }
       case _ =>
         Logger.warn("PageObjects object is missing in MinimumEarningsController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
@@ -108,15 +109,18 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     if(isPartner) {
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
+
+          val  parentEarnMoreThanMW= pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)
+
           if(minEarnings) {
-            if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            if(parentEarnMoreThanMW) {
               //TODO redirect to max earnings or TC/UC page
               routes.ChildCareBaseController.underConstruction()
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
             }
           } else {
-            if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            if(parentEarnMoreThanMW) {
               routes.SelfEmployedOrApprenticeController.onPageLoad(true)
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
