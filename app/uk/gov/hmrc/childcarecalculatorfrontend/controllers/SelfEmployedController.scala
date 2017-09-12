@@ -111,48 +111,57 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
     val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
     val earnMoreThanNMW = defineMinimumEarnings(isPartner, pageObjects).getOrElse(false)
 
-    if(!isPartner) {
-      if(!earnMoreThanNMW && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        //TODO partner's self or apprentice page
-        println(s"pageObjects in getModifiedPageObjects(!earnMoreThanNMW && inPaidEmployment)>>$pageObjects")
-        routes.SelfEmployedOrApprenticeController.onPageLoad(true)
-      } else if(earnMoreThanNMW && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        //TODO partner's max earnings page
-        println(s"pageObjects in getModifiedPageObjects(!earnMoreThanNMW && inPaidEmployment)>>$pageObjects")
-        routes.ChildCareBaseController.underConstruction()
-      } else {
-        //TODO redirect to TC/UC page
-        println(s"pageObjects in getModifiedPageObjects(earnMoreThanNMW && !inPaidEmployment)>>$pageObjects")
-        routes.ChildCareBaseController.underConstruction()
+    if(isPartner) {
+      inPaidEmployment match {
+        case YouPartnerBothEnum.BOTH => {
+          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            //TODO redirect to parent max earnings page
+            routes.ChildCareBaseController.underConstruction()
+          } else {
+            //TODO redirect to tc/uc page
+            routes.ChildCareBaseController.underConstruction()
+          }
+        }
+        case YouPartnerBothEnum.PARTNER => {
+          //TODO redirect to tc/uc page
+          routes.ChildCareBaseController.underConstruction()
+        }
       }
     } else {
-      if(earnMoreThanNMW && inPaidEmployment == YouPartnerBothEnum.BOTH) {
-        //TODO redirect to parent's max earnings page
-        println(s"pageObjects in getModifiedPageObjects(inPaidEmployment)>>$pageObjects")
-        routes.ChildCareBaseController.underConstruction()
-      } else {
-        //TODO redirect to TC/UC page
-        println(s"pageObjects in getModifiedPageObjects(!inPaidEmployment)>>$pageObjects")
-        routes.ChildCareBaseController.underConstruction()
+      inPaidEmployment match {
+        case YouPartnerBothEnum.BOTH => {
+          if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
+            //TODO redirect to partner max earnings page
+            routes.ChildCareBaseController.underConstruction()
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+          }
+        }
+        case YouPartnerBothEnum.YOU => {
+          //TODO redirect to tc/uc page
+          routes.ChildCareBaseController.underConstruction()
+        }
       }
     }
 
   }
 
   private def getModifiedPageObjects(selfEmployed: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
-      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
+    if(isPartner) {
       pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings())(_.copy(
-            selfEmployedIn12Months = Some(selfEmployed)))
-          ))
+        partner = Some(pageObjects.household.partner.fold(Claimant())(x => x.copy(
+          minimumEarnings = Some(x.minimumEarnings.fold(
+            MinimumEarnings(selfEmployedIn12Months = Some(selfEmployed)))(_.copy(
+            selfEmployedIn12Months = Some(selfEmployed))))
+        ))
+        )
       ))
     } else {
       pageObjects.copy(household = pageObjects.household.copy(
-        partner = pageObjects.household.partner.map(x => x.copy(
-          minimumEarnings = Some(x.minimumEarnings.fold(MinimumEarnings())(_.copy(
-            selfEmployedIn12Months = Some(selfEmployed))))
+        parent = pageObjects.household.parent.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
+            MinimumEarnings(selfEmployedIn12Months = Some(selfEmployed)))(_.copy(
+            selfEmployedIn12Months = Some(selfEmployed)))
           ))
       ))
     }
