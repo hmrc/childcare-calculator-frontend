@@ -84,9 +84,9 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             None
           )
         )
-        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "redirect to technical difficulty page if there is no data in keystore for partner" in {
@@ -97,9 +97,9 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             None
           )
         )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "load template when user visiting the page first time for partner" in {
@@ -112,7 +112,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             ))
           )
         )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
         status(result) shouldBe OK
       }
 
@@ -124,7 +124,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = None))
           )
         )
-        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
         status(result) shouldBe OK
       }
 
@@ -137,7 +137,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -153,7 +153,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
             )
           )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -169,7 +169,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
             )
           )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -185,7 +185,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
             )
           )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -198,7 +198,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
@@ -217,7 +217,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 partnerEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -237,7 +237,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 partnerEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -257,7 +257,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 partnerEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -277,7 +277,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                 partnerEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -290,7 +290,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
@@ -313,14 +313,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
 
           val result = await(
-            sut.onSubmit(true)(
+            sut.onSubmit("YOU")(
               request
                 .withFormUrlEncodedBody(whatsYourAgeKey -> AgeRangeEnum.OVERTWENTYFOUR.toString)
                 .withSession(validSession)
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
         }
       }
     }
@@ -334,11 +334,13 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(true, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
+            Some(buildPageObjects(true,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
           )
         )
         val result = await(
-          sut.onSubmit(true)(
+          sut.onSubmit("PARTNER")(
             request
               .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
@@ -353,11 +355,13 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
+            Some(buildPageObjects(false,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
           )
         )
         val result = await(
-          sut.onSubmit(false)(
+          sut.onSubmit("YOU")(
             request
               .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
@@ -382,14 +386,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
 
             val result = await(
-              sut.onSubmit(true)(
+              sut.onSubmit("BOTH")(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "123")
                   .withSession(validSession)
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
+            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
           s"redirect to tc/uc page" in {
@@ -418,14 +422,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
 
             val result = await(
-              sut.onSubmit(true)(
+              sut.onSubmit("BOTH")(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
         }
@@ -446,14 +450,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
 
             val result = await(
-              sut.onSubmit(false)(
+              sut.onSubmit("YOU")(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe technicalDifficultiesPath
+            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
           s"${range.toString} has been previously selected and there is data in keystore for parent" in {
@@ -479,14 +483,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
 
             val result = await(
-              sut.onSubmit(false)(
+              sut.onSubmit("YOU")(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
           s"${range.toString} selected and there is data in keystore and both are in paid employment and getting min earnings as parent" in {
@@ -514,14 +518,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
 
             val result = await(
-              sut.onSubmit(false)(
+              sut.onSubmit("YOU")(
                 request
                   .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
+            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
         }

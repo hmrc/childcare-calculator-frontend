@@ -55,9 +55,9 @@ class MaximumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
 
   val isPartnerTestCase = Table(
     ("youPartnerBoth", "errorMessage", "pageTitle", "hintText", "submitURL"),
-    ("you", "maximum.earning.error.you", "Will you earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath),
-    ("partner", "maximum.earning.error.partner", "Will your partner earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath),
-    ("both", "maximum.earning.error.both", "Will either of you earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath)
+    ("YOU", "maximum.earning.error.you", "Will you earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath),
+    ("PARTNER", "maximum.earning.error.partner", "Will your partner earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath),
+    ("BOTH", "maximum.earning.error.both", "Will either of you earn more than £100,000 a year?", "This is with any pension and gift aid contributions taken off.", parentMinimumEarningsPath)
   )
 
 
