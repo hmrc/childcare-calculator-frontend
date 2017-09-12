@@ -26,6 +26,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -53,22 +54,22 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                        partnerEarnMoreThanNMW: Option[Boolean] = None,
                        whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
                       ): PageObjects = {
-    val parent = if (parentEarnMoreThanNMW == None) {
+    val parent = if (parentEarnMoreThanNMW.isEmpty) {
       Claimant(ageRange = parentAgeRange, minimumEarnings = None)
     } else {
       Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
     }
-    val partner = if(partnerEarnMoreThanNMW == None) {
+    val partner = if (partnerEarnMoreThanNMW.isEmpty) {
       Claimant(ageRange = partnerAgeRange, minimumEarnings = None)
     } else {
       Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
     }
 
     if (isPartner) {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
         partner = Some(partner)))
     } else {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
     }
   }
 
@@ -275,7 +276,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(true)(
             request
-              .withFormUrlEncodedBody(minimumEarningKey -> "")
+              .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
           )
         )
@@ -294,7 +295,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(false)(
             request
-              .withFormUrlEncodedBody(minimumEarningKey -> "")
+              .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
           )
         )
@@ -319,7 +320,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(true)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "123")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "123")
                   .withSession(validSession)
               )
             )
@@ -328,6 +329,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           }
 
           s"${range.toString} has been previously selected and there is data in keystore for partner" in {
+
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -336,7 +338,8 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                   parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                   partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
                   parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
+                  partnerEarnMoreThanNMW = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
               )
             )
 
@@ -355,7 +358,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(true)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -393,7 +396,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(true)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -421,7 +424,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -454,7 +457,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -489,7 +492,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "true")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
                   .withSession(validSession)
               )
             )
@@ -517,7 +520,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -550,7 +553,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -585,7 +588,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             val result = await(
               sut.onSubmit(false)(
                 request
-                  .withFormUrlEncodedBody(minimumEarningKey -> "false")
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
                   .withSession(validSession)
               )
             )
@@ -595,7 +598,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         }
       }
-    }
 
+    }
   }
 }

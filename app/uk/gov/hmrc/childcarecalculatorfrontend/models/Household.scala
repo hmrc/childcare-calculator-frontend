@@ -140,8 +140,7 @@ case class PageObjects(
                         whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
                         getVouchers: Option[YesNoUnsureEnum] = None,
                         whoGetsVouchers: Option[YouPartnerBothEnum] = None,
-                        getBenefits: Option[Boolean] = None,
-                        getMinimumEarnings: Option[Boolean] = None
+                        getBenefits: Option[Boolean] = None
                       )
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]

@@ -81,3 +81,8 @@ POST   /self-employed-or-apprentice/parent        uk.gov.hmrc.childcarecalculato
 GET    /self-employed-or-apprentice/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedOrApprenticeController.onPageLoad(isPartner: Boolean = true)
 POST   /self-employed-or-apprentice/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedOrApprenticeController.onSubmit(isPartner: Boolean = true)
 
+GET    /self-employed/parent            uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedController.onPageLoad(isPartner: Boolean = false)
+POST   /self-employed/parent            uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedController.onSubmit(isPartner: Boolean = false)
+
+GET    /self-employed/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedController.onPageLoad(isPartner: Boolean = true)
+POST   /self-employed/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedController.onSubmit(isPartner: Boolean = true)

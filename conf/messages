@@ -209,3 +209,9 @@ on.average.how.much.will.you.earn.parent.header = On average, will you earn £{0
 on.average.how.much.will.you.earn.partner.header = On average, will your partner earn £{0} or more a week?
 on.average.how.much.will.you.earn.hint.parent = This is the National Minimum Wage or National Living Wage a week for someone your age.
 on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
+
+###### Have you been self-employed less than 12 months ######
+self.employed.less.than.12.months.parent.error = You must answer yes if you''ve been self-employed less than 12 months
+self.employed.less.than.12.months.partner.error = You must answer yes if your partner has been self-employed less than 12 months
+self.employed.less.than.12.months.parent.header = Have you been self-employed less than 12 months?
+self.employed.less.than.12.months.partner.header = Has your partner been self-employed less than 12 months?

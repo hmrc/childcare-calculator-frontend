@@ -16,26 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
 
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{Messages, I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class MinimumEarningsForm @Inject()(isPartner: Boolean, amount: BigDecimal, val messagesApi: MessagesApi) extends
-  I18nSupport with CCConstants {
+class SelfEmployedForm @Inject()(isPartner: Boolean = false, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  val userType = getUserType(isPartner)
+  val userType: String = getUserType(isPartner)
 
-  type minimumEarningFormType = Option[Boolean]
+  type SelfEmployedFormType = Option[Boolean]
 
-  val form = Form[minimumEarningFormType](
+  val form = Form[SelfEmployedFormType](
     single(
-      minimumEarningsKey -> optional(boolean).verifying(
-        Messages(s"on.average.how.much.will.you.earn.${userType}.error", amount),
-        _.isDefined
+      selfEmployedKey -> optional(boolean).verifying(
+        Messages(s"self.employed.less.than.12.months.${userType}.error"), _.isDefined
       )
     )
   )

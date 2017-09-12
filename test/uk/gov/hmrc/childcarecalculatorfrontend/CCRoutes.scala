@@ -56,5 +56,7 @@ trait CCRoutes {
 
   val parentMinimumEarningsPath: String = path("/minimum-earnings/parent")
   val partnerMinimumEarningsPath: String = path("/minimum-earnings/partner")
+  val parentSelfEmployedPath: String = path("/self-employed/parent")
+  val partnerSelfEmployedPath: String = path("/self-employed/partner")
 
 }
