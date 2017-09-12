@@ -20,11 +20,15 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, AnyContent, Action}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MaximumEarningsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentStatusEnum, MinimumEarnings, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maximumEarnings
+
+import scala.concurrent.Future
 
 @Singleton
 class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
@@ -36,43 +40,40 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getBackUrl(pageObjects: PageObjects,
-                         hasPartner: Boolean,
-                         isPartner: Boolean): Call = {
-    if(hasPartner) {
-      // if parent doesn't meet minimum earning and partner does then go back to partner minimum earning page
-      if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-          !pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) ||
-          //OR if both parent and partner both meet minimum earning then go back to partner minimum earning page
-          pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-          pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
+                         youPartnerBoth: String): Call = {
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
+    youPartnerBoth match {
+      case "YOU" =>
+        if(paidEmployment == YouPartnerBothEnum.BOTH) {
+          if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
+            routes.MinimumEarningsController.onPageLoad(true)
+          } else if(pageObjects.household.partner.get.minimumEarnings.get.employmentStatus == Some(EmploymentStatusEnum.SELFEMPLOYED)) {
+            routes.SelfEmployedController.onPageLoad(true)
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+          }
+        } else {
+          routes.MinimumEarningsController.onPageLoad(false)
+        }
+      case "PARTNER" =>
+        if(paidEmployment == YouPartnerBothEnum.BOTH) {
+          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            routes.MinimumEarningsController.onPageLoad(true)
+          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus == Some(EmploymentStatusEnum.SELFEMPLOYED)) {
+            routes.SelfEmployedController.onPageLoad(false)
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(false)
+          }
+        } else {
+          routes.MinimumEarningsController.onPageLoad(true)
+        }
+      case "BOTH" =>
         routes.MinimumEarningsController.onPageLoad(true)
-        // if partner doesn't meet minimum earning and parent does AND partner is in self employment then go back to partner self employed page
-      } else if (!pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-        pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-        pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.fold(false)(identity)) {
-        routes.SelfEmployedController.onPageLoad(true)
-        // if partner doesn't meet minimum earning and parent does AND partner is apprentice/neither then go back to partner self employed/apprentice page
-      } else if (!pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-        pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-        !pageObjects.household.partner.get.minimumEarnings.get.selfEmployedIn12Months.fold(false)(identity)) {
-        routes.SelfEmployedOrApprenticeController.onPageLoad(true)
-        // if parent doesn't meet minimum earning and partner does AND parent is in self employment then go back to parent self employed page
-      } else if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-        !pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-        pageObjects.household.parent.minimumEarnings.get.selfEmployedIn12Months.fold(false)(identity)) {
-        routes.SelfEmployedController.onPageLoad(false)
-        // if parent doesn't meet minimum earning and partner does AND parent is apprentice/neither then go back to parent self employed/apprentice page
-      } else {
-        routes.SelfEmployedOrApprenticeController.onPageLoad(false)
-      }
-    // if doesn't have a partner then go back to parent minimum earning page
-    } else {
-      routes.MinimumEarningsController.onPageLoad(false)
     }
   }
 
-  def defineMaximumEarnings(isPartner: Boolean, pageObjects: PageObjects): Option[Boolean] = {
-    if(isPartner) {
+  def defineMaximumEarnings(parentPartnerBoth: String, pageObjects: PageObjects): Option[Boolean] = {
+    if(parentPartnerBoth == YouPartnerBothEnum.PARTNER.toString) {
       if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.maximumEarnings.isDefined &&
         pageObjects.household.partner.get.maximumEarnings.isDefined) {
         pageObjects.household.partner.get.maximumEarnings
@@ -88,20 +89,13 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  def onPageLoad(hasPartner: Boolean, isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
+  def onPageLoad(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        val youPartnerBoth = if(hasPartner) {
-          YouPartnerBothEnum.BOTH.toString
-        } else if(isPartner) {
-          YouPartnerBothEnum.PARTNER.toString
-        } else {
-          YouPartnerBothEnum.YOU.toString
-        }
         Ok(maximumEarnings(
-          new MaximumEarningsForm(youPartnerBoth, messagesApi).form.fill(defineMaximumEarnings(isPartner, pageObjects)),
+          new MaximumEarningsForm(youPartnerBoth, messagesApi).form.fill(defineMaximumEarnings(youPartnerBoth, pageObjects)),
           youPartnerBoth,
-          getBackUrl(pageObjects, hasPartner, isPartner))
+          getBackUrl(pageObjects, youPartnerBoth))
         )
       case _ =>
         Logger.warn("Invalid PageObjects in MaximumEarningsController.onPageLoad")
@@ -113,6 +107,60 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  def onSubmit(hasPartner: Boolean, isPartner: Boolean): Action[AnyContent] = withSession { ??? }
+  def onSubmit(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
+        val inPaidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
+        new MaximumEarningsForm(youPartnerBoth, messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                maximumEarnings(
+                  errors, youPartnerBoth, getBackUrl(pageObjects, youPartnerBoth)
+                )
+              )
+            ),
+          success => {
+            keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map { _ =>
+              //TODO: redirect to tc/uc page
+              Redirect(routes.ChildCareBaseController.underConstruction())
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("PageObjects object is missing in MaximumEarningsController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from MaximumEarningsController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def getModifiedPageObjects(maxEarnings: Boolean, pageObjects: PageObjects, youPartnerBoth: String): PageObjects = {
+    if(HelperManager.defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU) {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(
+          maximumEarnings = Some(maxEarnings)
+        )
+      ))
+    } else if(HelperManager.defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER) {
+      pageObjects.copy(household = pageObjects.household.copy(
+        partner = pageObjects.household.partner.map(x => x.copy(
+          maximumEarnings = Some(maxEarnings)
+        ))
+      ))
+    } else {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(
+          maximumEarnings = Some(maxEarnings)
+        ),
+        partner = pageObjects.household.partner.map(x => x.copy(
+          maximumEarnings = Some(maxEarnings)
+        ))
+      ))
+    }
+
+  }
 
 }

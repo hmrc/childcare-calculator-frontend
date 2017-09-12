@@ -22,7 +22,6 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedOrApprenticeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
@@ -143,7 +142,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         }
       }
     } else {
-      if(paidEmployment == Some(YouPartnerBothEnum.YOU)) {
+      if(paidEmployment == YouPartnerBothEnum.YOU) {
         routes.MinimumEarningsController.onPageLoad(false)
       } else {
         routes.MinimumEarningsController.onPageLoad(true)
@@ -165,6 +164,8 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         case YouPartnerBothEnum.BOTH => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(true)
+          } else if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
           } else {
              //TODO: redirect to tc/uc page
             routes.ChildCareBaseController.underConstruction()
@@ -185,7 +186,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(false)
           } else if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
-            routes.MaximumEarningsController.onPageLoad(false, true)
+            routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(true)
           }

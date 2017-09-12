@@ -115,8 +115,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
           if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
-            //TODO redirect to parent max earnings page
-            routes.ChildCareBaseController.underConstruction()
+            routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
           } else {
             //TODO redirect to tc/uc page
             routes.ChildCareBaseController.underConstruction()
@@ -131,8 +130,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
           if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
-            //TODO redirect to partner max earnings page
-            routes.ChildCareBaseController.underConstruction()
+            routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(true)
           }

@@ -16,10 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-/**
- * Created by user on 05/09/17.
- */
-
 import javax.inject.{Inject, Singleton}
 
 import play.api.data.Form
@@ -28,21 +24,14 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class MaximumEarningsForm @Inject()(youPartnerBoth : String, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+class MaximumEarningsForm @Inject()(youPartnerBoth: String, val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
   type MaximumEarningsFormType = Option[Boolean]
 
   val form = Form[MaximumEarningsFormType](
     single(
       maximumEarningsKey -> optional(boolean).verifying(
-        if(youPartnerBoth == "both") {
-          Messages("maximum.earning.error.both")
-        } else if (youPartnerBoth == "you") {
-          Messages("maximum.earning.error.you")
-        } else {
-          Messages("maximum.earning.error.partner")
-        },
-        _.isDefined
+        Messages(s"maximum.earning.error.${youPartnerBoth}"), _.isDefined
       )
     )
   )
