@@ -45,7 +45,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
+  private def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
     if (isPartner) {
       getMinimumEarningsAmountForAgeRange(pageObjects.household.partner.get.ageRange.map(_.toString))
     } else {
@@ -155,22 +155,22 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
-      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
-      pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings)))
-            )
-          )
-      ))
-    } else {
+    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER)) {
       pageObjects.copy(household = pageObjects.household.copy(
         partner = pageObjects.household.partner.map(x => x.copy(
           minimumEarnings = Some(x.minimumEarnings.fold(
             MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings))))
+            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner))))
         ))
+      ))
+    } else {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
+            MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner)))
+          )
+        )
       ))
     }
 
