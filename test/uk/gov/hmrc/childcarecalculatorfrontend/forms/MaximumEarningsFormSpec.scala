@@ -40,7 +40,7 @@ class MaximumEarningsFormSpec extends UnitSpec with FakeCCApplication {
         "accept value true" in {
           val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
-              maximumEarningKey -> "true"
+              maximumEarningsKey -> "true"
             )
           )
           form.value.get.get shouldBe true
@@ -51,7 +51,7 @@ class MaximumEarningsFormSpec extends UnitSpec with FakeCCApplication {
         "accept value false" in {
           val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
-              maximumEarningKey -> "false"
+              maximumEarningsKey -> "false"
             )
           )
           form.value.get.get shouldBe false
@@ -62,7 +62,7 @@ class MaximumEarningsFormSpec extends UnitSpec with FakeCCApplication {
         s"return error (${applicationMessages.messages(errorMessageKey)}) if no value supplied" in {
           val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
             Map(
-              maximumEarningKey -> ""
+              maximumEarningsKey -> ""
             )
           )
           form.value shouldBe None
@@ -77,7 +77,7 @@ class MaximumEarningsFormSpec extends UnitSpec with FakeCCApplication {
           s"return error if invalid value '${invalidValue}' is supplied" in {
             val form = new MaximumEarningsForm(parentPartnerBoth, applicationMessagesApi).form.bind(
               Map(
-                maximumEarningKey -> invalidValue
+                maximumEarningsKey -> invalidValue
               )
             )
             form.value shouldBe None
