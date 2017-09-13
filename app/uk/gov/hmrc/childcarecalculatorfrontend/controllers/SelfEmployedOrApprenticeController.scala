@@ -22,8 +22,8 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SelfEmployedOrApprenticeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.selfEmployedOrApprentice
@@ -123,15 +123,15 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     * @return
     */
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
+
     val paidEmployment = HelperManager.defineInPaidEmployment(pageObjects)
-    val yourPartnerAge = routes.WhatsYourAgeController.onPageLoad(true)
 
     if (isPartner) {
       paidEmployment match {
         case YouPartnerBothEnum.BOTH => {
-          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
             routes.MinimumEarningsController.onPageLoad(true)
-          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus == Some(EmploymentStatusEnum.SELFEMPLOYED)) {
+          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus.contains(Some(EmploymentStatusEnum.SELFEMPLOYED))) {
             routes.SelfEmployedController.onPageLoad(false)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(false)
@@ -182,10 +182,11 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
       }
     } else {
       paidEmployment match {
+
         case YouPartnerBothEnum.BOTH => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(false)
-          } else if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
+          } else if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
             routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(true)

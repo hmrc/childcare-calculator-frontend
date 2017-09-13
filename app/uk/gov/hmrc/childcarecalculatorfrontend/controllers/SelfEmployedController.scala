@@ -82,7 +82,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
-      case Some(pageObjects) =>
+      case Some(pageObjects) => {
         new SelfEmployedForm(isPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
@@ -97,6 +97,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
             }
           }
         )
+      }
       case _ =>
         Logger.warn("Invalid PageObjects in SelfEmployedController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
@@ -114,8 +115,9 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
     if(isPartner) {
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
-          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+          if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
             routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
+
           } else {
             //TODO redirect to tc/uc page
             routes.ChildCareBaseController.underConstruction()
@@ -126,6 +128,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
           routes.ChildCareBaseController.underConstruction()
         }
       }
+
     } else {
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {

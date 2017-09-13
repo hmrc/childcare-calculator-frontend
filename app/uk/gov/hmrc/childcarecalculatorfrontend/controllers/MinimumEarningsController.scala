@@ -45,7 +45,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
+  private def getMinWageForScreen(pageObjects: PageObjects, isPartner: Boolean): BigDecimal = {
     if (isPartner) {
       getMinimumEarningsAmountForAgeRange(pageObjects.household.partner.get.ageRange.map(_.toString))
     } else {
@@ -75,7 +75,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) =>
+      case Some(pageObjects) => {
         val inPaidEmployment: YouPartnerBothEnum = defineInPaidEmployment(pageObjects)
         new MinimumEarningsForm(isPartner, getMinWageForScreen(pageObjects, isPartner), messagesApi).form.bindFromRequest().fold(
           errors =>
@@ -93,6 +93,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
             }
           }
         )
+      }
       case _ =>
         Logger.warn("PageObjects object is missing in MinimumEarningsController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
@@ -108,14 +109,18 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     if(isPartner) {
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
+
+          val  parentEarnMoreThanMW= pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)
+
           if(minEarnings) {
-            if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            if(parentEarnMoreThanMW) {
               routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString)
+
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
             }
           } else {
-            if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            if(parentEarnMoreThanMW) {
               routes.SelfEmployedOrApprenticeController.onPageLoad(true)
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
@@ -148,22 +153,22 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    if(!isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH ||
-      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU)) {
-      pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings)))
-            )
-          )
-      ))
-    } else {
+    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER)) {
       pageObjects.copy(household = pageObjects.household.copy(
         partner = pageObjects.household.partner.map(x => x.copy(
           minimumEarnings = Some(x.minimumEarnings.fold(
             MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings))))
+            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner))))
         ))
+      ))
+    } else {
+      pageObjects.copy(household = pageObjects.household.copy(
+        parent = pageObjects.household.parent.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
+            MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner)))
+          )
+        )
       ))
     }
 

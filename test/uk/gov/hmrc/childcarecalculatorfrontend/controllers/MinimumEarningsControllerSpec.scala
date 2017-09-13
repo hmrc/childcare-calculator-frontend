@@ -26,6 +26,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -58,17 +59,17 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     } else {
       Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
     }
-    val partner = if(partnerEarnMoreThanNMW.isEmpty) {
+    val partner = if (partnerEarnMoreThanNMW.isEmpty) {
       Claimant(ageRange = partnerAgeRange, minimumEarnings = None)
     } else {
       Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
     }
 
     if (isPartner) {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
         partner = Some(partner)))
     } else {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
     }
   }
 
@@ -328,6 +329,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           }
 
           s"${range.toString} has been previously selected and there is data in keystore for partner" in {
+
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -336,7 +338,8 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
                   parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                   partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
                   parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
+                  partnerEarnMoreThanNMW = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
               )
             )
 
@@ -595,7 +598,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         }
       }
-    }
 
+    }
   }
 }
