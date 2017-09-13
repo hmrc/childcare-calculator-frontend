@@ -388,7 +388,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         s"there is data in keystore, redirect to partner's max earnings page" in {
           val po = buildPageObjects(isPartner = true,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-            partnerEarnMoreThanNMW = Some(false),
+            partnerEarnMoreThanNMW = Some(true),
             parentSelfEmployedIn12Months = Some(true))
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
@@ -418,7 +418,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) shouldBe Some(routes.ChildCareBaseController.underConstruction().url)
+          redirectLocation(result) shouldBe Some(routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString).url)
         }
 
       }
