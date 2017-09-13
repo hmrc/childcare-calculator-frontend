@@ -153,7 +153,8 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER)) {
+    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER ||
+      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH)) {
       pageObjects.copy(household = pageObjects.household.copy(
         partner = pageObjects.household.partner.map(x => x.copy(
           minimumEarnings = Some(x.minimumEarnings.fold(
