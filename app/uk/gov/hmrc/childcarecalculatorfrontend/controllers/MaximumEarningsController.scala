@@ -123,7 +123,7 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
           success => {
             keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map { _ =>
               //TODO: redirect to tc/uc page
-              Redirect(routes.ChildCareBaseController.underConstruction())
+              Redirect(routes.ChildCareBaseController.underConstruction)
             }
           }
         )
