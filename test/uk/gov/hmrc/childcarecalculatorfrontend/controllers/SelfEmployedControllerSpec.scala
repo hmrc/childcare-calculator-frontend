@@ -304,7 +304,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe maximumEarningsParentPath
         }
 
       }
@@ -313,6 +313,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
 
         s"there is data in keystore, redirect to tc/uc page" in {
           val po = buildPageObjects(isPartner = true,
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
             partnerSelfEmployedIn12Months = None)
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
@@ -386,7 +387,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         s"there is data in keystore, redirect to partner's max earnings page" in {
           val po = buildPageObjects(isPartner = true,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-            partnerEarnMoreThanNMW = Some(true),
+            partnerEarnMoreThanNMW = Some(false),
             parentSelfEmployedIn12Months = Some(true))
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
