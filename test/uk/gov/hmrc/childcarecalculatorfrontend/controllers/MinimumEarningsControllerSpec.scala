@@ -73,13 +73,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     }
   }
 
-  val ageRanges = List(
-    AgeRangeEnum.UNDER18,
-    AgeRangeEnum.EIGHTEENTOTWENTY,
-    AgeRangeEnum.TWENTYONETOTWENTYFOUR,
-    AgeRangeEnum.OVERTWENTYFOUR
-  )
-
   "MinimumEarningsController" when {
 
     "onPageLoad is called" should {
@@ -307,8 +300,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     "saving in keystore is successful as a partner" should {
       s"for each age range for a partner" when {
 
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for partner" in {
+          "has been previously selected and there is no data in keystore for PageObjects object for partner" in {
             when(
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
             ).thenReturn(
@@ -328,7 +320,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for partner then go to maximum earning" in {
+          "has been previously selected and there is data in keystore for partner then go to maximum earning" in {
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -366,7 +358,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString).url
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for partner then go to parent self employed/apprentice page" in {
+          "has been previously selected and there is data in keystore for partner then go to parent self employed/apprentice page" in {
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -404,7 +396,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore when partner in paid employment for partner" in {
+          "has been previously selected and there is data in keystore when partner in paid employment for partner" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -442,15 +434,13 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
           }
 
-        }
       }
     }
 
     "saving in keystore is successful as a parent and earnOverNMW = true" should {
       s"for each age range for a parent" when {
 
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for parent" in {
+          "has been previously selected and there is no data in keystore for PageObjects object for parent" in {
             when(
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
             ).thenReturn(
@@ -470,9 +460,9 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for parent" in {
+          "has been previously selected and there is data in keystore for parent" in {
             val po = buildPageObjects(isPartner = false,
-              parentAgeRange = Some(range),
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
               parentEarnMoreThanNMW = Some(true))
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -487,7 +477,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             ).thenReturn(
               Future.successful(
                 Some(buildPageObjects(isPartner = false,
-                  parentAgeRange = Some(range),
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                   parentEarnMoreThanNMW = Some(true)))
               )
             )
@@ -503,7 +493,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for parent then go to partner self employed/apprentice page" in {
+          "has been previously selected and there is data in keystore for parent then go to partner self employed/apprentice page" in {
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -542,9 +532,47 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
           }
 
-          s"${range.toString} selected and there is data in keystore and both are in paid employment and getting min earnings as parent" in {
+
+          "has been previously selected and there is data in keystore for parent then go to partner self employed/apprentice page test" in {
+            val model = buildPageObjects(isPartner = true,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+              parentEarnMoreThanNMW = Some(true),
+              partnerEarnMoreThanNMW = Some(false),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+            val modifiedModel = model.copy(household = model.household.copy(partner = Some(model.household.partner.get.copy(minimumEarnings = Some(MinimumEarnings())))))
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+                Future.successful(
+                  Some(modifiedModel)
+                )
+              )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+                Future.successful(
+                  Some(modifiedModel)
+                )
+              )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
+          }
+
+          "selected and there is data in keystore and both are in paid employment and getting min earnings as parent" in {
             val po = buildPageObjects(isPartner = true,
-              parentAgeRange = Some(range),
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
               whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
               parentEarnMoreThanNMW = Some(true))
             when(
@@ -560,7 +588,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             ).thenReturn(
               Future.successful(
                 Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(range),
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                   whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                   parentEarnMoreThanNMW = Some(true)))
               )
@@ -577,15 +605,13 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe partnerMinimumEarningsPath
           }
 
-        }
       }
     }
 
     "saving in keystore is successful as a parent and earnOverNMW = false" should {
       s"for each age range for a parent" when {
 
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for parent" in {
+          "has been previously selected and there is no data in keystore for PageObjects object for parent" in {
             when(
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
             ).thenReturn(
@@ -605,9 +631,9 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for parent" in {
+          "has been previously selected and there is data in keystore for parent" in {
             val po = buildPageObjects(isPartner = false,
-              parentAgeRange = Some(range),
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
               parentEarnMoreThanNMW = Some(false))
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -622,7 +648,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             ).thenReturn(
               Future.successful(
                 Some(buildPageObjects(isPartner = false,
-                  parentAgeRange = Some(range),
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                   parentEarnMoreThanNMW = Some(false)))
               )
             )
@@ -638,9 +664,9 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for parent when both are in paid employment" in {
+          "has been previously selected and there is data in keystore for parent when both are in paid employment" in {
             val po = buildPageObjects(isPartner = true,
-              parentAgeRange = Some(range),
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
               whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
               parentEarnMoreThanNMW = Some(false))
             when(
@@ -656,7 +682,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             ).thenReturn(
               Future.successful(
                 Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(range),
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                   whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
                   parentEarnMoreThanNMW = Some(false)))
               )
@@ -673,7 +699,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe partnerMinimumEarningsPath
           }
 
-        }
       }
 
     }
