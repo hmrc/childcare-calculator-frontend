@@ -135,6 +135,74 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         status(result) shouldBe OK
       }
 
+      //****************************************
+
+      "load template successfully for parent only " when  {
+        "should go back to parent Minimum Earnings page when parent earns more than NMW" in {
+
+        }
+
+        "should go back to parent Selfemployed or Apprentice  page when parent does not earn more than NMW and " +
+          "is not selfemployed" in {
+
+        }
+
+        "should go back to parent Selfemployed 12 months page when parent does not earn more than NMW and " +
+          "is selfemployed" in {
+
+        }
+
+      }
+
+      "load template successfully for partner only " when  {
+        "should go back to partner Minimum Earnings page when partner earns more than NMW" in {
+
+        }
+
+        "should go back to partner Selfemployed or Apprentice  page when partner does not earn more than NMW and " +
+          "is not selfemployed" in {
+
+        }
+
+        "should go back to partner Selfemployed 12 months page when partner does not earn more than NMW and " +
+          "is selfemployed" in {
+
+        }
+
+      }
+
+      "load template successfully when both are in paid employment " when  {
+        "should go back to partner Minimum Earnings page when both earns more than NMW" in {
+
+        }
+
+        "should go back to partner Selfemployed or Apprentice  page when parent earns more than NMW and " +
+          "partner doesn't and partner is not selfemployed" in {
+
+        }
+
+        "should go back to partner Selfemployed 12 months page when parent earns more than NMW and " +
+          "partner doesn't and partner is selfemployed" in {
+
+        }
+
+
+        "should go back to parent Selfemployed or Apprentice  page when partner earns more than NMW and " +
+          "parent doesn't and parent is not selfemployed" in {
+
+        }
+
+        "should go back to parent Selfemployed 12 months page when partner earns more than NMW and " +
+          "parent doesn't and parent is selfemployed" in {
+
+        }
+
+      }
+
+
+      //****************************************
+
+
       "load template successfully if there is data in keystore for parent and define correctly backURL" when {
         "redirect to parent's minimum earnings page" in {
           when(
@@ -334,142 +402,34 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
           }
 
-          /*s"redirect to tc/uc page" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit("BOTH")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }*/
-
         }
       }
     }
 
-    "saving in keystore is successful as a parent and earnOverNMW = true" should {
-      s"for each age range for a parent" when {
 
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for parent" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
 
-            val result = await(
-              sut.onSubmit("YOU")(
-                request
-                  .withFormUrlEncodedBody(maximumEarningsKey -> "YOU")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
+    "save the data in keystore successfully for parent" should {
+      "redirect to tc/uc page" in {
 
-          // TODO: To be redone
-         /* s"${range.toString} has been previously selected and there is data in keystore for parent" in {
-            val po = buildPageObjects(isPartner = false,
-              parentAgeRange = Some(range),
-              parentEarnMoreThanNMW = Some(true))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = false,
-                  parentAgeRange = Some(range),
-                  parentEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit("YOU")(
-                request
-                  .withFormUrlEncodedBody(maximumEarningsKey -> "YOU")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            //redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }*/
-
-          s"${range.toString} selected and there is data in keystore and both are in paid employment and getting min earnings as parent" in {
-            val po = buildPageObjects(isPartner = true,
-              parentAgeRange = Some(range),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-              parentEarnMoreThanNMW = Some(true))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
-
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(range),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                  parentEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit("YOU")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
-
-        }
       }
     }
 
+    "save the data in keystore successfully for partner" should {
+        "redirect to tc/uc pag " in {
+        }
+
+    }
+
+
+    "save the data in keystore successfully for both parent and partner" should {
+      "redirect to tc/uc page" in {
+
+      }
+    }
+
+    //redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+//================================================
+
+ 
   }
 }
