@@ -23,7 +23,7 @@ trait CCRoutes {
   private def path(endPoint: String): String = s"${rootPath}${endPoint}"
 
   // TODO: Delete when all pages are ready
-  val underConstrctionPath: String = path("/under-construction")
+  val underConstructionPath: String = path("/under-construction")
 
   val technicalDifficultiesPath: String = path("/error")
   val whatYouNeedPath: String = path("/what-you-need")
@@ -48,18 +48,14 @@ trait CCRoutes {
   val parentBenefitsPath: String = path("/benefits/parent")
   val partnerBenefitsPath: String = path("/benefits/partner")
   val whatsYourAgePath: String = path("/whats-your-age")
-
-  val selfEmployedOrApprenticeParentPath = path("/self-employed-or-apprentice/parent")
-  val selfEmployedOrApprenticePartnerPath = path("/self-employed-or-apprentice/partner")
-  val selfEmployedTimescaleParentPath = path("/self-employed-timescale/parent")
-  val selfEmployedTimescalePartnerPath = path("/self-employed-timescale/partner")
-
   val parentMinimumEarningsPath: String = path("/minimum-earnings/parent")
   val partnerMinimumEarningsPath: String = path("/minimum-earnings/partner")
+  val parentSelfEmployedOrApprenticePath = path("/self-employed-or-apprentice/parent")
+  val partnerSelfEmployedOrApprenticePath = path("/self-employed-or-apprentice/partner")
   val parentSelfEmployedPath: String = path("/self-employed/parent")
   val partnerSelfEmployedPath: String = path("/self-employed/partner")
-  val maximumEarningsParentPath: String = path("/maximum-earnings/parent")
-  val maximumEarningsPartnerPath: String = path("/maximum-earnings/partner")
+  val parentMaximumEarningsPath: String = path("/maximum-earnings/parent")
+  val partnerMaximumEarningsPath: String = path("/maximum-earnings/partner")
   val maximumEarningsPath: String = path("/maximum-earnings")
 
 }

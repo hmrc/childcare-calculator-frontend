@@ -158,7 +158,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
 
         "single user selects 'no'" should {
           // TODO: Redirect to Benefits page when it's done
-          s"go to results page ${underConstrctionPath}" in {
+          s"go to results page ${underConstructionPath}" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
@@ -182,13 +182,13 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe underConstructionPath
           }
         }
 
         "user with partner selects 'no'" should {
           // TODO: Redirect to Benefits page when it's done
-          s"go to results page ${underConstrctionPath} and clear related data" in {
+          s"go to results page ${underConstructionPath} and clear related data" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
@@ -234,7 +234,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe underConstructionPath
           }
         }
 
