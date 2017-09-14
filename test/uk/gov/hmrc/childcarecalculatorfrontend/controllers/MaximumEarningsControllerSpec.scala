@@ -23,7 +23,7 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.{ObjectBuilder, ControllersValidator}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -32,113 +32,78 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder{
 
-  val sut = new MaximumEarningsController(applicationMessagesApi) {
+  val maximumEarningsController = new MaximumEarningsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(sut.keystore)
+    reset(maximumEarningsController.keystore)
   }
 
   validateUrl(maximumEarningsParentPath)
   validateUrl(maximumEarningsPartnerPath)
   validateUrl(maximumEarningsPath)
 
-  def buildPageObjects(isPartner: Boolean,
-                       parentAgeRange: Option[AgeRangeEnum] = None,
-                       partnerAgeRange: Option[AgeRangeEnum] = None,
-                       parentEarnMoreThanNMW: Option[Boolean] = None,
-                       partnerEarnMoreThanNMW: Option[Boolean] = None,
-                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
-                      ): PageObjects = {
-    val parent = Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
-    val partner = Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
-
-    if (isPartner) {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
-        partner = Some(partner)))
-    } else {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
-    }
-  }
-
-  val ageRanges = List(
-    AgeRangeEnum.UNDER18,
-    AgeRangeEnum.EIGHTEENTOTWENTY,
-    AgeRangeEnum.TWENTYONETOTWENTYFOUR,
-    AgeRangeEnum.OVERTWENTYFOUR
-  )
 
   "MaximumEarningsController" when {
 
     "onPageLoad is called" should {
 
       "redirect to technical difficulty page if there is no data in keystore for parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+       setupMocks(modelToFetch = None)
+
+        val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
         redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "redirect to technical difficulty page if there is no data in keystore for partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+        setupMocks(modelToFetch = None)
+
+        val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
         redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "load template when user visiting the page first time for partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = true,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              parentEarnMoreThanNMW = Some(true),
-              partnerAgeRange = Some(AgeRangeEnum.UNDER18),
-              partnerEarnMoreThanNMW = Some(true),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
-            ))
-          )
+
+        val modelToFetch = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = Some(true),
+          partnerEarnMoreThanNMW = Some(true),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
         )
 
-        val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
+        setupMocks(modelToFetch = Some(modelToFetch))
+
+        val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
         status(result) shouldBe OK
       }
 
       "load template when user visiting the page first time for parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = false,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              parentEarnMoreThanNMW = None))
-          )
-        )
-        val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
+
+       val modelToFetch = buildPageObjectsModel(isPartner = false,
+          parentEarnMoreThanNMW = None)
+
+        setupMocks(modelToFetch = Some(modelToFetch))
+
+        val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
         status(result) shouldBe OK
       }
 
-      //****************************************
-
       "load template successfully for parent only " when  {
         "should go back to parent Minimum Earnings page when parent earns more than NMW" in {
+
+          val modelToFetch = buildPageObjectsModel(isPartner = false,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch))
+
+          val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
+          status(result) shouldBe SEE_OTHER
+          redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
 
         }
 
@@ -206,17 +171,16 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       "load template successfully if there is data in keystore for parent and define correctly backURL" when {
         "redirect to parent's minimum earnings page" in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(
+              Some(buildPageObjectsModel(
                 isPartner = false,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
                 parentEarnMoreThanNMW = Some(true)))
             )
           )
 
-          val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
 
@@ -226,17 +190,16 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         "redirect to partner's minimum page" in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = false,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              Some(buildPageObjectsModel(isPartner = false,
                 parentEarnMoreThanNMW = Some(true),
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
             )
           )
 
-          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
 
@@ -246,17 +209,16 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         "redirect to partner's minimum earnings page" in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = false,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              Some(buildPageObjectsModel(isPartner = false,
                 parentEarnMoreThanNMW = Some(true),
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
             )
           )
 
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
 
@@ -266,12 +228,12 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         "redirect to error page if can't connect with keystore if parent" in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
 
-          val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession)))
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
@@ -280,17 +242,15 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       "load template successfully if there is data in keystore for partner and display correct backurl" when {
         "redirect to partner's minimum earnings page" in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+              Some(buildPageObjectsModel(isPartner = true,
                 parentEarnMoreThanNMW = Some(true),
                 partnerEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -300,18 +260,16 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
        "redirect to partner's minimum earnings page when in paid partner " in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+              Some(buildPageObjectsModel(isPartner = true,
                 parentEarnMoreThanNMW = Some(true),
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER),
                 partnerEarnMoreThanNMW = Some(true)))
             )
           )
-          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession)))
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
@@ -320,11 +278,11 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
        "redirect to error page if can't connect with keystore if partner" in {
           when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+            maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
             Future.failed(new RuntimeException)
           )
-          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
+          val result = await(maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession)))
           status(result) shouldBe SEE_OTHER
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
@@ -337,16 +295,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     "there are errors" should {
       "load same template and return BAD_REQUEST as a partner" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(true,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
+            Some(buildPageObjectsModel(true))
           )
         )
         val result = await(
-          sut.onSubmit("PARTNER")(
+          maximumEarningsController.onSubmit("PARTNER")(
             request
               .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
@@ -358,16 +314,14 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       "load same template and return BAD_REQUEST as a parent" in {
         when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+          maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(false,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
+            Some(buildPageObjectsModel(false))
           )
         )
         val result = await(
-          sut.onSubmit("YOU")(
+          maximumEarningsController.onSubmit("YOU")(
             request
               .withFormUrlEncodedBody(minimumEarningsKey -> "")
               .withSession(validSession)
@@ -377,36 +331,6 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
     }
-
-    "saving in keystore is successful as a partner" should {
-      s"redirect to technical difficulties page" when {
-
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for partner" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
-
-            val result = await(
-              sut.onSubmit("BOTH")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "123")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
-
-        }
-      }
-    }
-
-
 
     "save the data in keystore successfully for parent" should {
       "redirect to tc/uc page" in {
@@ -426,10 +350,70 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       }
     }
+    
+  }
 
-    //redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-//================================================
+  private def buildPageObjectsModel(isPartner: Boolean,
+                       parentEarnMoreThanNMW: Option[Boolean] = None,
+                       partnerEarnMoreThanNMW: Option[Boolean] = None,
+                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
+                      ): PageObjects = {
 
- 
+    val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = parentEarnMoreThanNMW)))
+    val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = partnerEarnMoreThanNMW)))
+
+    if (isPartner) {
+
+      buildPageObjects.copy(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
+        household = buildHousehold.copy(location = LocationEnum.ENGLAND, parent = parent, partner = Some(partner)))
+
+    } else {
+      buildPageObjects.copy(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
+        household = buildHousehold.copy(location = LocationEnum.ENGLAND, parent = parent))
+    }
+  }
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        maximumEarningsController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
+    }
+
+  }
+
+  /**
+    * setup the mock with runtimeException
+    * @return
+    */
+  private def setupMocksForException() = {
+    when(
+      maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+    ).thenReturn(
+      Future.failed(new RuntimeException)
+    )
   }
 }
