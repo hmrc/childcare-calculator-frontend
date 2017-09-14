@@ -298,8 +298,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     }
 
     "saving in keystore is successful as a partner" should {
-      s"for each age range for a partner" when {
-
           "has been previously selected and there is no data in keystore for PageObjects object for partner" in {
             when(
               sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -356,6 +354,41 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
             status(result) shouldBe SEE_OTHER
             result.header.headers("Location") shouldBe routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString).url
+          }
+
+
+        "without parent then go to maximum earning" in {
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(isPartner = false,
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                  parentEarnMoreThanNMW = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)))
+              )
+            )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(isPartner = false,
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                  parentEarnMoreThanNMW = Some(true)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString).url
           }
 
           "has been previously selected and there is data in keystore for partner then go to parent self employed/apprentice page" in {
@@ -438,7 +471,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     }
 
     "saving in keystore is successful as a parent and earnOverNMW = true" should {
-      s"for each age range for a parent" when {
 
           "has been previously selected and there is no data in keystore for PageObjects object for parent" in {
             when(
@@ -606,7 +638,6 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           }
 
       }
-    }
 
     "saving in keystore is successful as a parent and earnOverNMW = false" should {
       s"for each age range for a parent" when {
@@ -701,6 +732,5 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       }
 
-    }
   }
 }
