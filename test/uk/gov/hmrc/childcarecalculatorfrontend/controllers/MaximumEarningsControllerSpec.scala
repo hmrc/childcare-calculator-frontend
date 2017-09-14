@@ -23,9 +23,11 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.{ObjectBuilder, ControllersValidator}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -94,39 +96,103 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       }
 
       "load template successfully for parent only " when  {
-        "should go back to parent Minimum Earnings page when parent earns more than NMW" in {
+        "have back url of parent Minimum Earnings page when parent earns more than NMW" in {
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))))
 
           val modelToFetch = buildPageObjectsModel(isPartner = false,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch))
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
 
-          val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
-          status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+          val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+
+          //redirectLocation(result) should be(Some(routes.MinimumEarningsController.onPageLoad(false).url))
 
         }
 
-        "should go back to parent Selfemployed or Apprentice  page when parent does not earn more than NMW and " +
+        "have back url of parent Selfemployed or Apprentice  page when parent does not earn more than NMW and " +
           "is not selfemployed" in {
 
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = false,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
+
+          val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticeParentPath
+
         }
 
-        "should go back to parent Selfemployed 12 months page when parent does not earn more than NMW and " +
+        "have back url as parent Selfemployed 12 months page when parent does not earn more than NMW and " +
           "is selfemployed" in {
 
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = false,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
+
+          val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe parentSelfEmployedPath
         }
 
       }
 
       "load template successfully for partner only " when  {
-        "should go back to partner Minimum Earnings page when partner earns more than NMW" in {
+        "have back url as partner Minimum Earnings page when partner earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
 
         }
 
-        "should go back to partner Selfemployed or Apprentice  page when partner does not earn more than NMW and " +
+        "have back url as partner Selfemployed or Apprentice  page when partner does not earn more than NMW and " +
           "is not selfemployed" in {
 
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
         }
 
         "should go back to partner Selfemployed 12 months page when partner does not earn more than NMW and " +
@@ -350,7 +416,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       }
     }
-    
+
   }
 
   private def buildPageObjectsModel(isPartner: Boolean,
@@ -407,6 +473,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
   /**
     * setup the mock with runtimeException
+    *
     * @return
     */
   private def setupMocksForException() = {
