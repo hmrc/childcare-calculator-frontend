@@ -328,7 +328,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             result.header.headers("Location") shouldBe technicalDifficultiesPath
           }
 
-          s"${range.toString} has been previously selected and there is data in keystore for partner" in {
+          s"${range.toString} has been previously selected and there is data in keystore for partner then go to maximum earning" in {
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -363,7 +363,84 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe underConstrctionPath
+            result.header.headers("Location") shouldBe routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString).url
+          }
+
+          s"${range.toString} has been previously selected and there is data in keystore for partner then go to parent self employed/apprentice page" in {
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(isPartner = true,
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+                  parentEarnMoreThanNMW = Some(false),
+                  partnerEarnMoreThanNMW = Some(true),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(isPartner = true,
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+                  parentEarnMoreThanNMW = Some(false),
+                  partnerEarnMoreThanNMW = Some(true)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
+          }
+
+          s"${range.toString} has been previously selected and there is data in keystore for parent then go to partner self employed/apprentice page" in {
+
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(isPartner = true,
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+                  parentEarnMoreThanNMW = Some(true),
+                  partnerEarnMoreThanNMW = Some(false),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+              )
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(buildPageObjects(isPartner = true,
+                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+                  parentEarnMoreThanNMW = Some(true),
+                  partnerEarnMoreThanNMW = Some(false),
+                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(true)(
+                request
+                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe routes.SelfEmployedOrApprenticeController.onPageLoad(true).url
           }
 
           s"${range.toString} has been previously selected and there is data in keystore when partner in paid employment for partner" in {
