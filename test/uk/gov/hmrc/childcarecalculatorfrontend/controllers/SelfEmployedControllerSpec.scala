@@ -270,7 +270,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-        s"there is data in keystore, redirect to parent's max earnings page" in {
+        s"there is data in keystore and is self employed for less than 12 months, redirect to parent's max earnings page" in {
           val po = buildPageObjects(isPartner = true,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
             parentEarnMoreThanNMW = Some(true),
@@ -309,6 +309,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
       }
 
       "saving in keystore is successful as a partner with SelfEmployed = false" should {
+
         s"redirect to tc/uc page when both are in paid employment" in {
           val po = buildPageObjects(isPartner = true,
             partnerSelfEmployedIn12Months = None,

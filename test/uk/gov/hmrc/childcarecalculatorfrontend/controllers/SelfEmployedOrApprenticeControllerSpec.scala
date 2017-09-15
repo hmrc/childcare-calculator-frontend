@@ -322,12 +322,36 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           redirectLocation(result) should be (Some(partnerSelfEmployedOrApprenticePath))
       }
 
+      s"saving in keystore is successful as parent, both in paid employment and apprentice redirect to ${partnerSelfEmployedOrApprenticePath}" in {
+        val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
+        val claimant = Claimant(minimumEarnings = Some(minimumEarning))
+
+        val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
+
+        val modelToMock = model.copy(household = model.household.copy(
+          parent = model.household.parent.copy(
+            minimumEarnings = None
+          ),
+          partner = Some(claimant)))
+
+        setupMocks(modelToFetch = Some(modelToMock), modelToStore = Some(modelToMock), storePageObjects = true)
+
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(false)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(partnerSelfEmployedOrApprenticePath))
+      }
+
       s"saving in keystore is successful as parent, both in paid employment with partner satisfy min earnings, " +
         s"redirect to ${partnerMaximumEarningsPath}" in {
 
         val minimumEarning = MinimumEarnings(earnMoreThanNMW = Some(true), employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
         val claimant = Claimant(minimumEarnings = Some(minimumEarning))
-
         val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
 
         val modelToMock = model.copy(household = model.household.copy(
@@ -357,7 +381,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
           val modelToStore = model.copy(household = model.household.copy(
             partner = model.household.partner.map(_.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
                 employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED)))))))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
@@ -378,7 +402,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
         val modelToStore = model.copy(household = model.household.copy(
           partner = model.household.partner.map(_.copy(
-            minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+            minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
               employmentStatus = Some(EmploymentStatusEnum.APPRENTICE)))))))
 
         setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
@@ -399,7 +423,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
             partner = model.household.partner.map(_.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
                 employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED)))))))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
@@ -425,8 +449,9 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
               earnMoreThanNMW = Some(true)))
           ),
           partner = model.household.partner.map(_.copy(
-            minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
-              earnMoreThanNMW = Some(false), employmentStatus = Some(EmploymentStatusEnum.APPRENTICE)))))))
+            minimumEarnings = None
+          ))
+        ))
 
         setupMocks(modelToFetch = Some(modelToStore), modelToStore = Some(modelToStore), storePageObjects = true)
 
@@ -466,9 +491,14 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
+            parent = model.household.parent.copy(
+              minimumEarnings = None
+            ),
             partner = model.household.partner.map(_.copy(
               minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
-                employmentStatus = Some(EmploymentStatusEnum.NEITHER)))))))
+                employmentStatus = Some(EmploymentStatusEnum.NEITHER)))
+            ))
+          ))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 

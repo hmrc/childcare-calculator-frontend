@@ -219,7 +219,8 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     } else {
       pageObjects.copy(household = pageObjects.household.copy(
         parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
+            MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
             employmentStatus = Some(employmentStatus)))
           ))
       ))
