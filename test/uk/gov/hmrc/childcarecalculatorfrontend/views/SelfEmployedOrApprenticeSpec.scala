@@ -63,8 +63,8 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
 
   val testCases = Table(
     ("Is partner", "Submission path", "Page title", "Back Url"),
-    (false, selfEmployedOrApprenticeParentPath, pageTitleContentParent, backUrlForParent),
-    (true, selfEmployedOrApprenticePartnerPath, pageTitleContentPartner, backUrlForPartner)
+    (false, parentSelfEmployedOrApprenticePath, pageTitleContentParent, backUrlForParent),
+    (true, partnerSelfEmployedOrApprenticePath, pageTitleContentPartner, backUrlForPartner)
   )
 
   forAll(testCases) {

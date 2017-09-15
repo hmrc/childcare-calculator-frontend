@@ -42,8 +42,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     reset(maximumEarningsController.keystore)
   }
 
-  validateUrl(maximumEarningsParentPath)
-  validateUrl(maximumEarningsPartnerPath)
+  validateUrl(parentMaximumEarningsPath)
+  validateUrl(partnerMaximumEarningsPath)
   validateUrl(maximumEarningsPath)
 
 

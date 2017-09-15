@@ -44,10 +44,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
   private def filledForm(pageObjects: PageObjects, isPartner: Boolean) = {
     new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
       if (isPartner) {
-        pageObjects.household.partner match {
-          case Some(claimant) => claimant.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
-          case _ => None
-        }
+        pageObjects.household.partner.getOrElse(Claimant()).minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
       } else {
         pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
       }
@@ -131,7 +128,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
         case YouPartnerBothEnum.BOTH => {
           if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
             routes.MinimumEarningsController.onPageLoad(true)
-          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus.contains(Some(EmploymentStatusEnum.SELFEMPLOYED))) {
+          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
             routes.SelfEmployedController.onPageLoad(false)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(false)
@@ -222,7 +219,8 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
     } else {
       pageObjects.copy(household = pageObjects.household.copy(
         parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
+          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
+            MinimumEarnings(employmentStatus = Some(employmentStatus)))(_.copy(
             employmentStatus = Some(employmentStatus)))
           ))
       ))

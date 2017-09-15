@@ -32,7 +32,7 @@ class ChildCareBaseControllerSpec extends ControllersValidator {
 
     validateUrl(whatYouNeedPath, List(GET))
     validateUrl(technicalDifficultiesPath, List(GET))
-    validateUrl(underConstrctionPath, List(GET))
+    validateUrl(underConstructionPath, List(GET))
 
     "load home page" when {
       "request with session Id is received" in {
@@ -52,8 +52,8 @@ class ChildCareBaseControllerSpec extends ControllersValidator {
     }
 
     "load under construction page" when {
-      s"receive GET request on ${underConstrctionPath}" in {
-        val req = FakeRequest(GET, underConstrctionPath)
+      s"receive GET request on ${underConstructionPath}" in {
+        val req = FakeRequest(GET, underConstructionPath)
         val result = route(app, req)
         result.isDefined shouldBe true
         status(result.get) shouldBe OK
