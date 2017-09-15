@@ -46,7 +46,6 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
   validateUrl(maximumEarningsPartnerPath)
   validateUrl(maximumEarningsPath)
 
-
   "MaximumEarningsController" when {
 
     "onPageLoad is called" should {
@@ -61,6 +60,22 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       "redirect to technical difficulty page if there is no data in keystore for partner" in {
         setupMocks(modelToFetch = None)
+
+        val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+
+      "redirect to technical difficulty page if there is some runtime exception" in {
+
+        val modelToFetch = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = Some(true),
+          partnerEarnMoreThanNMW = Some(true),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
+        )
+
+        setupMocks(modelToFetch = Some(modelToFetch))
+        setupMocksForException()
 
         val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
@@ -438,6 +453,35 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
 
         setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+    }
+
+    "runtime exception occurs" should {
+      "redirect to technical difficulties page" in {
+
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+        setupMocksForException()
 
         val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
           request
