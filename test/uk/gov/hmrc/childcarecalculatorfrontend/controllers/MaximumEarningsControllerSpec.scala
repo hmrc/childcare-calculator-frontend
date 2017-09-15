@@ -42,8 +42,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     reset(maximumEarningsController.keystore)
   }
 
-  validateUrl(parentMaximumEarningsPath)
-  validateUrl(partnerMaximumEarningsPath)
+  validateUrl(maximumEarningsParentPath)
+  validateUrl(maximumEarningsPartnerPath)
   validateUrl(maximumEarningsPath)
 
 
@@ -107,7 +107,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
 
         }
       }
@@ -127,7 +127,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
 
         }
 
@@ -147,7 +147,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
 
       }
@@ -171,7 +171,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
 
         }
 
@@ -217,7 +217,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerSelfEmployedPath
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedPartnerPath
 
         }
 
@@ -241,7 +241,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerSelfEmployedPath
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedPartnerPath
 
         }
 
@@ -289,7 +289,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
 
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentSelfEmployedPath
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedParentPath
 
         }
       }

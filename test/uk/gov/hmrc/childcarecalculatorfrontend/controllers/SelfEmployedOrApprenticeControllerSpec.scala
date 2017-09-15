@@ -75,7 +75,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      s"redirect to ${parentMinimumEarningsPath} when back button is pressed as parent" in {
+      s"redirect to ${minimumEarningsParentPath} when back button is pressed as parent" in {
 
         val modifiedObject = buildPageObjects(false)
         setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
@@ -84,7 +84,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
         val content = Jsoup.parse(bodyOf(result))
-        content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+        content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
       }
 
       "load template successfully if there is data in keystore for partner" in {
@@ -109,7 +109,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
       "redirect to correct page when back button is pressed as partner" when {
         val modifiedObject = buildPageObjects(true)
 
-        s"redirect to ${partnerMinimumEarningsPath}" in {
+        s"redirect to ${minimumEarningsPartnerPath}" in {
 
           setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
 
@@ -117,10 +117,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
 
-        s"redirect to ${partnerMinimumEarningsPath} if both are in paid employment and parent satisfy minimum earnings" in {
+        s"redirect to ${minimumEarningsPartnerPath} if both are in paid employment and parent satisfy minimum earnings" in {
 
           setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
             household = modifiedObject.household.copy(
@@ -134,10 +134,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
 
-        s"redirect to ${parentSelfEmployedPath} if both are in paid employment and parent not satisfy minimum earnings & selected as self employed" in {
+        s"redirect to ${selfEmployedParentPath} if both are in paid employment and parent not satisfy minimum earnings & selected as self employed" in {
 
           setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
             household = modifiedObject.household.copy(
@@ -152,10 +152,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentSelfEmployedPath
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedParentPath
         }
 
-        s"redirect to ${parentSelfEmployedOrApprenticePath} if both are in paid employment & parent not satisfy minimum earnings & selected as apprentice" in {
+        s"redirect to ${selfEmployedOrApprenticeParentPath} if both are in paid employment & parent not satisfy minimum earnings & selected as apprentice" in {
 
           setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
             household = modifiedObject.household.copy(
@@ -170,7 +170,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentSelfEmployedOrApprenticePath
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticeParentPath
         }
 
       }
@@ -211,7 +211,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
       //================================ Parent Mode Starts =======================================
       //TODO: Redirection location to be changed for both parent and partner
-      s"saving in keystore is successful as parent, only paid employment and selfemployed redirect to ${parentSelfEmployedPath}" in {
+      s"saving in keystore is successful as parent, only paid employment and selfemployed redirect to ${selfEmployedParentPath}" in {
 
         val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
@@ -230,7 +230,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
         )
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(parentSelfEmployedPath))
+        redirectLocation(result) should be (Some(selfEmployedParentPath))
       }
 
       s"saving in keystore is successful as parent, only paid employment and apprentice redirect to (tc/uc)${underConstructionPath}" in {
@@ -276,7 +276,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           redirectLocation(result) should be (Some(underConstructionPath))
       }
 
-      s"saving in keystore is successful as parent, both in paid employment and is self employed redirect to ${parentSelfEmployedPath}" in {
+      s"saving in keystore is successful as parent, both in paid employment and is self employed redirect to ${selfEmployedParentPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -294,10 +294,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(parentSelfEmployedPath))
+          redirectLocation(result) should be (Some(selfEmployedParentPath))
       }
 
-      s"saving in keystore is successful as parent, both in paid employment and neither redirect to ${partnerSelfEmployedOrApprenticePath}" in {
+      s"saving in keystore is successful as parent, both in paid employment and neither redirect to ${selfEmployedOrApprenticePartnerPath}" in {
           val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
           val claimant = Claimant(minimumEarnings = Some(minimumEarning))
 
@@ -319,10 +319,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(partnerSelfEmployedOrApprenticePath))
+          redirectLocation(result) should be (Some(selfEmployedOrApprenticePartnerPath))
       }
 
-      s"saving in keystore is successful as parent, both in paid employment and apprentice redirect to ${partnerSelfEmployedOrApprenticePath}" in {
+      s"saving in keystore is successful as parent, both in paid employment and apprentice redirect to ${selfEmployedOrApprenticePartnerPath}" in {
         val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
         val claimant = Claimant(minimumEarnings = Some(minimumEarning))
 
@@ -344,11 +344,11 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
         )
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(partnerSelfEmployedOrApprenticePath))
+        redirectLocation(result) should be (Some(selfEmployedOrApprenticePartnerPath))
       }
 
       s"saving in keystore is successful as parent, both in paid employment with partner satisfy min earnings, " +
-        s"redirect to ${partnerMaximumEarningsPath}" in {
+        s"redirect to ${maximumEarningsPartnerPath}" in {
 
         val minimumEarning = MinimumEarnings(earnMoreThanNMW = Some(true), employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
         val claimant = Claimant(minimumEarnings = Some(minimumEarning))
@@ -370,13 +370,13 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
         )
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(partnerMaximumEarningsPath))
+        redirectLocation(result) should be (Some(maximumEarningsPartnerPath))
       }
 
       //================================ Parent Mode Ends ==========================================
 
       //================================ Partner Mode Starts =======================================
-      s"saving in keystore is successful as partner, only paid employment and selfemployed, redirect to ${partnerSelfEmployedPath}" in {
+      s"saving in keystore is successful as partner, only paid employment and selfemployed, redirect to ${selfEmployedPartnerPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
           val modelToStore = model.copy(household = model.household.copy(
@@ -394,7 +394,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(partnerSelfEmployedPath))
+          redirectLocation(result) should be (Some(selfEmployedPartnerPath))
       }
 
       s"saving in keystore is successful as partner, only paid employment and apprentice, redirect to (tc/uc)${underConstructionPath}" in {
@@ -418,7 +418,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         redirectLocation(result) should be (Some(underConstructionPath))
       }
 
-      s"saving in keystore is successful as partner, both are in paid employment and selfemployed, redirect to ${partnerSelfEmployedPath}" in {
+      s"saving in keystore is successful as partner, both are in paid employment and selfemployed, redirect to ${selfEmployedPartnerPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -436,11 +436,11 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(partnerSelfEmployedPath))
+          redirectLocation(result) should be (Some(selfEmployedPartnerPath))
       }
 
       s"saving in keystore is successful as partner, both are in paid employment and parent satisfy min earnings, " +
-        s"redirect to ${parentMaximumEarningsPath}" in {
+        s"redirect to ${maximumEarningsParentPath}" in {
 
         val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
         val modelToStore = model.copy(household = model.household.copy(
@@ -463,7 +463,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
         )
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(parentMaximumEarningsPath))
+        redirectLocation(result) should be (Some(maximumEarningsParentPath))
       }
 
       s"saving in keystore is successful as partner, both are in paid employment and apprentice, redirect to ${underConstructionPath}" in {

@@ -44,8 +44,8 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     reset(sut.keystore)
   }
 
-  validateUrl(parentMinimumEarningsPath)
-  validateUrl(partnerMinimumEarningsPath)
+  validateUrl(minimumEarningsParentPath)
+  validateUrl(minimumEarningsPartnerPath)
 
   def buildPageObjects(isPartner: Boolean,
                        parentAgeRange: Option[AgeRangeEnum] = None,
@@ -202,7 +202,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
         }
 
         "redirect to error page if can't connect with keystore if partner" in {
@@ -349,7 +349,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         result.header.headers("Location") shouldBe maximumEarningsPath
       }
 
-      s"parent not satisfy minimum earnings, redirect to ${parentSelfEmployedOrApprenticePath}" in {
+      s"parent not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
@@ -383,10 +383,10 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe parentSelfEmployedOrApprenticePath
+        result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
       }
 
-      s"partner not satisfy, parent satisfy minimum earnings, redirect to ${partnerSelfEmployedOrApprenticePath}" in {
+      s"partner not satisfy, parent satisfy minimum earnings, redirect to ${selfEmployedOrApprenticePartnerPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
@@ -421,10 +421,10 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe partnerSelfEmployedOrApprenticePath
+        result.header.headers("Location") shouldBe selfEmployedOrApprenticePartnerPath
       }
 
-      s"both not satisfy minimum earnings, redirect to ${parentSelfEmployedOrApprenticePath}" in {
+      s"both not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
@@ -459,10 +459,10 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe parentSelfEmployedOrApprenticePath
+        result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
       }
 
-      s"only partner satisfy minimum earnings, redirect to ${partnerMaximumEarningsPath}" in {
+      s"only partner satisfy minimum earnings, redirect to ${maximumEarningsPartnerPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
@@ -492,10 +492,10 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe partnerMaximumEarningsPath
+        result.header.headers("Location") shouldBe maximumEarningsPartnerPath
       }
 
-      s"only partner not satisfy minimum earnings, redirect to ${partnerSelfEmployedOrApprenticePath}" in {
+      s"only partner not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticePartnerPath}" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
@@ -530,7 +530,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe partnerSelfEmployedOrApprenticePath
+        result.header.headers("Location") shouldBe selfEmployedOrApprenticePartnerPath
       }
 
     }
@@ -558,7 +558,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       result.header.headers("Location") shouldBe technicalDifficultiesPath
     }
 
-    s"both in paid employment, redirect to ${partnerMinimumEarningsPath}" in {
+    s"both in paid employment, redirect to ${minimumEarningsPartnerPath}" in {
       val model = buildPageObjects(isPartner = true,
         parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
         partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
@@ -592,10 +592,10 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe partnerMinimumEarningsPath
+      result.header.headers("Location") shouldBe minimumEarningsPartnerPath
     }
 
-    s"only parent not satisfy minimum earnings, redirect to ${parentSelfEmployedOrApprenticePath}" in {
+    s"only parent not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
       val po = buildPageObjects(isPartner = false,
         parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
         parentEarnMoreThanNMW = Some(true))
@@ -625,10 +625,10 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe parentSelfEmployedOrApprenticePath
+      result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
     }
 
-    s"only parent satisfy minimum earnings, redirect to ${parentMaximumEarningsPath}" in {
+    s"only parent satisfy minimum earnings, redirect to ${maximumEarningsParentPath}" in {
       val po = buildPageObjects(isPartner = false,
         parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
         whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU),
@@ -657,7 +657,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe parentMaximumEarningsPath
+      result.header.headers("Location") shouldBe maximumEarningsParentPath
     }
 
   }

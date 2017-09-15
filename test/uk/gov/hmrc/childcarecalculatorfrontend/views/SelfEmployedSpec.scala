@@ -51,8 +51,8 @@ class SelfEmployedSpec extends TemplatesValidator with FakeCCApplication {
 
   val isPartnerTestCase = Table(
     ("isPartner", "errorMessage", "pageTitle", "submitURL"),
-    (false, "self.employed.less.than.12.months.parent.error", "Have you been self-employed less than 12 months?", parentSelfEmployedPath),
-    (true, "self.employed.less.than.12.months.partner.error", "Has your partner been self-employed less than 12 months?", partnerSelfEmployedPath)
+    (false, "self.employed.less.than.12.months.parent.error", "Have you been self-employed less than 12 months?", selfEmployedParentPath),
+    (true, "self.employed.less.than.12.months.partner.error", "Has your partner been self-employed less than 12 months?", selfEmployedPartnerPath)
   )
 
   forAll(isPartnerTestCase) { case (isPartner, errorMessage, pageTitle, submitURL) =>

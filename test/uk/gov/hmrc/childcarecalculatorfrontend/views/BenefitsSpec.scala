@@ -57,8 +57,8 @@ class BenefitsSpec extends TemplatesValidator with FakeCCApplication {
 
   val isPartnerTestCase = Table(
     ("isPartner", "errorMessage", "pageTitle", "submitURL"),
-    (false, "which.benefits.do.you.get.not.selected.parent.error", "Which benefits do you get?", parentBenefitsPath),
-    (true, "which.benefits.do.you.get.not.selected.partner.error", "Which benefits does your partner get?", partnerBenefitsPath)
+    (false, "which.benefits.do.you.get.not.selected.parent.error", "Which benefits do you get?", benefitsParentPath),
+    (true, "which.benefits.do.you.get.not.selected.partner.error", "Which benefits does your partner get?", benefitsPartnerPath)
   )
   forAll(isPartnerTestCase) { case(isPartner, errorMessage, pageTitle, submitURL) =>
     s"calling benefits template when isPartner = ${isPartner}" should {

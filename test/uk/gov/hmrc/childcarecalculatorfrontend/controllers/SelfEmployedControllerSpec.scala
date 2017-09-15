@@ -42,8 +42,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
     reset(sut.keystore)
   }
 
-  validateUrl(parentSelfEmployedPath)
-  validateUrl(partnerSelfEmployedPath)
+  validateUrl(selfEmployedParentPath)
+  validateUrl(selfEmployedPartnerPath)
 
   def buildPageObjects(isPartner: Boolean,
                        parentEarnMoreThanNMW: Option[Boolean] = None,
@@ -131,7 +131,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentSelfEmployedOrApprenticePath
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticeParentPath
         }
 
         "redirect to error page if can't connect with keystore" in {
@@ -303,7 +303,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe parentMaximumEarningsPath
+          result.header.headers("Location") shouldBe maximumEarningsParentPath
         }
 
       }
@@ -455,7 +455,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) shouldBe Some(partnerMaximumEarningsPath)
+          redirectLocation(result) shouldBe Some(maximumEarningsPartnerPath)
         }
 
       }
