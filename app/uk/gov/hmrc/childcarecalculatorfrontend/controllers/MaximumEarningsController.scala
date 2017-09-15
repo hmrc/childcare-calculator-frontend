@@ -137,18 +137,9 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
   def defineMaximumEarnings(parentPartnerBoth: String, pageObjects: PageObjects): Option[Boolean] = {
     if(parentPartnerBoth == YouPartnerBothEnum.PARTNER.toString) {
-      if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.maximumEarnings.isDefined &&
-        pageObjects.household.partner.get.maximumEarnings.isDefined) {
-        pageObjects.household.partner.get.maximumEarnings
-      } else {
-        None
-      }
+      pageObjects.household.partner.fold[Option[Boolean]](None)(_.maximumEarnings.map(identity))
     } else {
-      if(pageObjects.household.parent.maximumEarnings.isDefined && pageObjects.household.parent.maximumEarnings.isDefined) {
-        pageObjects.household.parent.maximumEarnings
-      } else {
-        None
-      }
+      pageObjects.household.parent.maximumEarnings.map(identity)
     }
   }
 

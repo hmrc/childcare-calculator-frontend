@@ -385,7 +385,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             parentEarnMoreThanNMW = None)
 
           val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner)),
-            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))
 
           val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
             partner = Some(partner.copy(maximumEarnings = Some(true)))))
@@ -454,6 +454,21 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
 
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+    }
+
+    "page objects not found in keystore" should {
+      "redirect to technical difficulties page" in {
+
+        setupMocks(modelToFetch = None)
         val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
           request
             .withFormUrlEncodedBody(maximumEarningsKey -> "true")
