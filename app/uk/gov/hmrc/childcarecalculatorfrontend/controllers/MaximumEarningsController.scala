@@ -46,23 +46,10 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   val parentSelfEmployedOrApprenticePage= routes.SelfEmployedOrApprenticeController.onPageLoad(false)
   val partnerSelfEmployedOrApprenticePage = routes.SelfEmployedOrApprenticeController.onPageLoad(true)
 
-  def onPageLoad(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request => {
-
-    val testObjects = keystore.fetch[PageObjects]()
-
-
-
-    for{
-      testObjectsToPrint <- testObjects
-    }yield{
-      val testee = testObjectsToPrint
-      println("*********************** testObjects are :::: *************************"+testee)
-    }
-
-    testObjects.map {
+  def onPageLoad(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
+      keystore.fetch[PageObjects]().map {
       case Some(pageObjects) => {
 
-        println("****************************** Model in onplage load *********************" + pageObjects)
         Ok(maximumEarnings(
           new MaximumEarningsForm(youPartnerBoth, messagesApi).form.fill(defineMaximumEarnings(youPartnerBoth, pageObjects)),
           youPartnerBoth,
@@ -77,7 +64,7 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         Logger.warn(s"Exception from MaximumEarningsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
-  }
+
   }
 
   def onSubmit(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
@@ -93,9 +80,12 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
               )
             ),
           success => {
-            keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map { _ =>
-              //TODO: redirect to tc/uc page
-              Redirect(routes.ChildCareBaseController.underConstruction)
+            keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map {
+              x => x match {
+                case Some(model) =>  Redirect(routes.ChildCareBaseController.underConstruction()) //TODO: to be redirected to tc/uc page
+                case _ => Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+              }
+
             }
           }
         )
@@ -112,10 +102,8 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   private def getBackUrl(pageObjects: PageObjects,
                          youPartnerBoth: String): Call = {
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
-    println("*************************88 In getBackUrl value of youPartnerBoth is :::::: *****************************"+youPartnerBoth)
     youPartnerBoth match {
       case "YOU" => {
-        println("*************************88 In getBackUrl YOU :::::: *****************************")
         if (paidEmployment == YouPartnerBothEnum.BOTH) {
           if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
             routes.MinimumEarningsController.onPageLoad(true)
@@ -129,7 +117,6 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
       }
       case "PARTNER" => {
-        println("*************************88 In getBackUrl PARTNER :::::: *****************************")
         if (paidEmployment == YouPartnerBothEnum.BOTH) {
           if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
             routes.MinimumEarningsController.onPageLoad(true)
@@ -143,7 +130,6 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
       }
       case "BOTH" => {
-        println("*************************88 In getBackUrl BOTH :::::: *****************************")
         routes.MinimumEarningsController.onPageLoad(true)
       }
     }

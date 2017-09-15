@@ -306,7 +306,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         val result = maximumEarningsController.onSubmit("PARTNER")(
             request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "")
+              .withFormUrlEncodedBody(maximumEarningsKey -> "")
               .withSession(validSession)
           )
 
@@ -321,7 +321,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         val result = maximumEarningsController.onSubmit("YOU")(
             request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "")
+              .withFormUrlEncodedBody(maximumEarningsKey -> "")
               .withSession(validSession)
           )
 
@@ -333,6 +333,28 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     "save the data in keystore successfully for parent" should {
       "redirect to tc/uc page" in {
 
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
+          parent = parent.copy(maximumEarnings = Some(true))))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.YOU.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        //TODO: To be replaced by TC/UC page
         redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
 
       }
@@ -340,14 +362,91 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
     "save the data in keystore successfully for partner" should {
         "redirect to tc/uc page " in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val model = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner)),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+          val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
+            partner = Some(partner.copy(maximumEarnings = Some(true)))))
+
+          setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+
+          val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.PARTNER.toString)(
+            request
+              .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+              .withSession(validSession)
+          )
+
+          status(result) shouldBe SEE_OTHER
+          //TODO: To be replaced by TC/UC page
+          redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
         }
 
     }
 
-
     "save the data in keystore successfully for both parent and partner" should {
       "redirect to tc/uc page" in {
 
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(parent = parent.copy(maximumEarnings = Some(true)),
+          partner = Some(partner.copy(maximumEarnings = Some(true)))))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        //TODO: To be replaced by TC/UC page
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
+      }
+    }
+
+    "data store in keystore fails" should {
+      "redirect to technical difficulties page" in {
+
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
     }
 
