@@ -47,28 +47,9 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
   validateUrl(minimumEarningsParentPath)
   validateUrl(minimumEarningsPartnerPath)
 
-  def buildPageObjects(isPartner: Boolean,
-                       parentAgeRange: Option[AgeRangeEnum] = None,
-                       partnerAgeRange: Option[AgeRangeEnum] = None,
-                       parentEarnMoreThanNMW: Option[Boolean] = None,
-                       partnerEarnMoreThanNMW: Option[Boolean] = None,
-                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
-                      ): PageObjects = {
-    val parent = Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
-    val partner = Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
-
-    if (isPartner) {
-      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
-        partner = Some(partner)))
-    } else {
-      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
-    }
-  }
-
   "MinimumEarningsController" when {
 
     "onPageLoad is called" should {
-
       "redirect to technical difficulty page if there is no data in keystore for parent" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -660,6 +641,25 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       result.header.headers("Location") shouldBe maximumEarningsParentPath
     }
 
+  }
+
+  def buildPageObjects(isPartner: Boolean,
+                       parentAgeRange: Option[AgeRangeEnum] = None,
+                       partnerAgeRange: Option[AgeRangeEnum] = None,
+                       parentEarnMoreThanNMW: Option[Boolean] = None,
+                       partnerEarnMoreThanNMW: Option[Boolean] = None,
+                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
+                      ): PageObjects = {
+    val parent = Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
+    val partner = Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
+
+    if (isPartner) {
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
+        household = Household(location = LocationEnum.ENGLAND, parent = parent, partner = Some(partner)))
+    } else {
+      PageObjects(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
+        household = Household(location = LocationEnum.ENGLAND, parent = parent))
+    }
   }
 
 }
