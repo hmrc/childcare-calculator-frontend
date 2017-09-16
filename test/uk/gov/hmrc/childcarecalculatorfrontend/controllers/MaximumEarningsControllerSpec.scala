@@ -109,8 +109,26 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       "load template successfully for parent only " when  {
         "have back url of parent Minimum Earnings page when parent earns more than NMW" in {
-
           val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = false,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
+
+          val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
+
+        }
+
+        "have back url of parent Minimum Earnings page when parent earns more than NMW and " +
+          "maximum earnings page selection exists" in {
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))),
+            maximumEarnings = Some(true))
 
           val modelToFetch = buildPageObjectsModel(isPartner = false,
             parentEarnMoreThanNMW = None)
@@ -130,7 +148,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       "load template successfully for partner only " when  {
         "have back url as partner Minimum Earnings page when partner earns more than NMW" in {
 
-          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))))
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))),
+            maximumEarnings = Some(true))
 
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
@@ -164,6 +183,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val content = Jsoup.parse(bodyOf(result))
           content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
+
 
       }
 
