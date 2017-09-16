@@ -212,7 +212,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticePartnerPath
         }
 
-        "should go back to partner Selfemployed 12 months page when parent earns more than NMW and " +
+        "have back url as partner Selfemployed 12 months page when parent earns more than NMW and " +
           "partner doesn't, partner is selfemployed and been selfemployed for less than 12 months" in {
 
           val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
@@ -236,7 +236,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         }
 
-        "should go back to partner Selfemployed 12 months page when parent earns more than NMW and " +
+        "have back url as to partner Selfemployed 12 months page when parent earns more than NMW and " +
           "partner doesn't, partner is selfemployed and not been selfemployed for less than 12 months" in {
 
           val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
@@ -260,7 +260,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         }
 
-        "should go back to parent Selfemployed or Apprentice  page when partner earns more than NMW and " +
+        "have back url as parent Selfemployed or Apprentice  page when partner earns more than NMW and " +
           "parent doesn't and parent is not selfemployed" in {
 
           val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
@@ -284,7 +284,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         }
 
-        "should go back to parent Selfemployed 12 months page when partner earns more than NMW and " +
+        "have back url as parent Selfemployed 12 months page when partner earns more than NMW and " +
           "parent doesn't and parent is selfemployed" in {
 
           val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
@@ -305,6 +305,48 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
           val content = Jsoup.parse(bodyOf(result))
           content.getElementById("back-button").attr("href") shouldBe selfEmployedParentPath
+
+        }
+
+        "have back url partner Minimum Earnings page when partner earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
+        }
+
+        "have back url partner Minimum Earnings page when parent earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
 
         }
       }
