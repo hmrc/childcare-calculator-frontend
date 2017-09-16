@@ -165,6 +165,22 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
         }
 
+        "maps form to None when there is no partner model in household and have back url as partner Minimum Earnings page" in {
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = None),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
+        }
+
         "have back url as partner Selfemployed or Apprentice  page when partner does not earn more than NMW and " +
           "is not selfemployed" in {
 
