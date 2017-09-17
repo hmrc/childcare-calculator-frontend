@@ -60,7 +60,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
         val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        redirectLocation(result) should be(Some(technicalDifficultiesPath))
       }
 
       "redirect to technical difficulty page if there is no data in keystore for partner" in {
@@ -73,7 +73,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
         val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        redirectLocation(result) should be(Some(technicalDifficultiesPath))
       }
 
       "load template when user visiting the page first time for partner" in {
@@ -142,7 +142,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
           val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          redirectLocation(result) should be(Some(technicalDifficultiesPath))
         }
       }
 
@@ -194,7 +194,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
           val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          redirectLocation(result) should be(Some(technicalDifficultiesPath))
         }
       }
 
@@ -222,7 +222,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          redirectLocation(result) should be(Some(technicalDifficultiesPath))
         }
       }
     }
@@ -290,7 +290,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        redirectLocation(result) should be(Some(technicalDifficultiesPath))
       }
 
     }
@@ -331,7 +331,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe maximumEarningsPath
+        redirectLocation(result) should be(Some(maximumEarningsPath))
       }
 
       s"both satisfy minimum earnings, parent has none for earnings more than NMWredirect to ${selfEmployedOrApprenticeParentPath}" in {
@@ -368,7 +368,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
+        redirectLocation(result) should be(Some(selfEmployedOrApprenticeParentPath))
       }
 
       s"parent not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
@@ -405,7 +405,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
+        redirectLocation(result) should be(Some(selfEmployedOrApprenticeParentPath))
       }
 
       s"partner not satisfy, parent satisfy minimum earnings, redirect to ${selfEmployedOrApprenticePartnerPath}" in {
@@ -447,7 +447,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe selfEmployedOrApprenticePartnerPath
+        redirectLocation(result) should be(Some(selfEmployedOrApprenticePartnerPath))
       }
 
       s"both not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
@@ -485,7 +485,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
+        redirectLocation(result) should be(Some(selfEmployedOrApprenticeParentPath))
       }
 
       s"only partner satisfy minimum earnings, redirect to ${maximumEarningsPartnerPath}" in {
@@ -518,7 +518,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe maximumEarningsPartnerPath
+        redirectLocation(result) should be(Some(maximumEarningsPartnerPath))
       }
 
       s"only partner not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticePartnerPath}" in {
@@ -556,7 +556,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           )
         )
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe selfEmployedOrApprenticePartnerPath
+        redirectLocation(result) should be(Some(selfEmployedOrApprenticePartnerPath))
       }
 
     }
@@ -581,7 +581,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe technicalDifficultiesPath
+      redirectLocation(result) should be(Some(technicalDifficultiesPath))
     }
 
     s"both in paid employment, redirect to ${minimumEarningsPartnerPath}" in {
@@ -615,7 +615,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe minimumEarningsPartnerPath
+      redirectLocation(result) should be(Some(minimumEarningsPartnerPath))
     }
 
     s"only parent not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
@@ -648,7 +648,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
+      redirectLocation(result) should be(Some(selfEmployedOrApprenticeParentPath))
     }
 
     s"only parent satisfy minimum earnings, redirect to ${maximumEarningsParentPath}" in {
@@ -680,7 +680,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
       )
       status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe maximumEarningsParentPath
+      redirectLocation(result) should be(Some(maximumEarningsParentPath))
     }
 
   }
