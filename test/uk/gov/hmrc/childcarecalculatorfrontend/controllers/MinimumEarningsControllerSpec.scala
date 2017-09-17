@@ -236,7 +236,9 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(true, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
+            Some(buildPageObjects(true,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
           )
         )
         val result = await(
@@ -255,7 +257,9 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
+            Some(buildPageObjects(false,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
           )
         )
         val result = await(
@@ -301,7 +305,7 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
             Some(buildPageObjects(isPartner = true,
               parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
               partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-              parentEarnMoreThanNMW = Some(true),
+              parentEarnMoreThanNMW = Some(true)  ,
               partnerEarnMoreThanNMW = Some(true),
               whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
           )
@@ -328,6 +332,43 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe maximumEarningsPath
+      }
+
+      s"both satisfy minimum earnings, parent has none for earnings more than NMWredirect to ${selfEmployedOrApprenticeParentPath}" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(isPartner = true,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+              parentEarnMoreThanNMW = None  ,
+              partnerEarnMoreThanNMW = Some(true),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+          )
+        )
+
+        when(
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(isPartner = true,
+              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+              parentEarnMoreThanNMW = None,
+              partnerEarnMoreThanNMW = Some(true)))
+          )
+        )
+
+        val result = await(
+          sut.onSubmit(true)(
+            request
+              .withFormUrlEncodedBody(minimumEarningsKey -> "true")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe selfEmployedOrApprenticeParentPath
       }
 
       s"parent not satisfy minimum earnings, redirect to ${selfEmployedOrApprenticeParentPath}" in {
@@ -368,16 +409,20 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       }
 
       s"partner not satisfy, parent satisfy minimum earnings, redirect to ${selfEmployedOrApprenticePartnerPath}" in {
+
+        val modelToFetch = buildPageObjects(isPartner = true,
+          parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
+          partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+          parentEarnMoreThanNMW = Some(true),
+          partnerEarnMoreThanNMW = Some(false),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(isPartner = true,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-              parentEarnMoreThanNMW = Some(true),
-              partnerEarnMoreThanNMW = Some(false),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
+            Some(modelToFetch.copy(household = modelToFetch.household.copy(
+              partner = Some(modelToFetch.household.partner.fold(Claimant())(_.copy(minimumEarnings = None))))))
           )
         )
 
@@ -546,14 +591,11 @@ class MinimumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         parentEarnMoreThanNMW = Some(false),
         whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
 
-      val modifiedModel = model.copy(household = model.household.copy(partner = Some(model.household.partner.get.copy(
-        minimumEarnings = Some(MinimumEarnings())))))
-
       when(
         sut.keystore.fetch[PageObjects]()(any(), any())
       ).thenReturn(
         Future.successful(
-          Some(model)
+          Some(model.copy(household = model.household.copy(parent = model.household.parent.copy(minimumEarnings = None))))
         )
       )
 
