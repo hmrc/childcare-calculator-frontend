@@ -23,14 +23,20 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.{ObjectBuilder, ControllersValidator}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder{
 
   val sut = new LivingWithPartnerController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -42,13 +48,6 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
   }
 
   validateUrl(livingWithPartnerPath, List(GET))
-
-  def buildPageObjects(livingWithPartner: Option[Boolean],
-                     childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
-    location = LocationEnum.ENGLAND),
-    childAgedThreeOrFour = childAgedThreeOrFour,
-    livingWithPartner = livingWithPartner
-  )
 
   "LivingWithPartnerController" when {
 
@@ -453,6 +452,47 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
       "data for all further partner pages must be reset to default" should {
         "user changes the selection from yes to No for Do have a partner question" in {
 
+          val parent = buildClaimant.copy(
+            ageRange = None,
+            benefits = None,
+            lastYearlyIncome = None,
+            currentYearlyIncome = None,
+            hours = Some(20),
+            minimumEarnings = None,
+            escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+            maximumEarnings = None
+          )
+           val partner = parent.copy(benefits = Some(buildBenefits))
+
+          val houseHoldModel = buildHousehold.copy(tcUcBenefits = None,
+            location = LocationEnum.NORTHERNIRELAND,
+            children = List(),
+            parent = parent,
+            partner = Some(partner))
+
+          val modelToFetch = buildPageObjects.copy(household = houseHoldModel,
+          childAgedTwo = None,
+          childAgedThreeOrFour = Some(false),
+          expectChildcareCosts = Some(true),
+          livingWithPartner = Some(true),
+          paidOrSelfEmployed = Some(true),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+          getVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          whoGetsVouchers = None,
+          getBenefits = Some(true),
+          getMaximumEarnings = None)
+
+          val modelToStore = modelToFetch.copy(
+            household = modelToFetch.household.copy(partner = None),
+            livingWithPartner = Some(false),
+            paidOrSelfEmployed = None,
+            whichOfYouInPaidEmployment = None,
+            getVouchers = None,
+            whoGetsVouchers = None,
+            getBenefits = None,
+            getMaximumEarnings = None
+          )
+
         }
 
       }
@@ -513,6 +553,45 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
+    }
+
+  }
+
+  private def buildPageObjects(livingWithPartner: Option[Boolean],
+                       childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
+    location = LocationEnum.ENGLAND),
+    childAgedThreeOrFour = childAgedThreeOrFour,
+    livingWithPartner = livingWithPartner
+  )
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
     }
 
   }

@@ -53,6 +53,9 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+
+        println("**************************** PageObjects is :::: *******************"+pageObjects)
+
         val claimantBenefits: Option[Benefits] = if(!isPartner) {
           pageObjects.household.parent.benefits
         } else {
