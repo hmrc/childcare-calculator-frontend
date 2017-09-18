@@ -445,8 +445,23 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
               status(result) shouldBe SEE_OTHER
               result.header.headers("Location") should not be technicalDifficultiesPath
             }
+
           }
         }
+      }
+
+      "data for all further partner pages must be reset to default" should {
+        "user changes the selection from yes to No for Do have a partner question" in {
+
+        }
+
+      }
+
+      "data for all further parent pages must be reset to default" should {
+        "user changes the selection from No to yes for Do have a partner question" in {
+
+        }
+
       }
     }
 

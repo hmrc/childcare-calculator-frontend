@@ -422,6 +422,50 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
 
 
       }
+
+      "data for all further partner pages must be reset to default" should {
+        "user changes the selection from Both to You for which of you is in Paid employment question" in {
+
+        }
+
+      }
+
+      "data for all further parent pages must be reset to default" should {
+        "user changes the selection from Both to Partner for Do have a partner question" in {
+
+        }
+
+      }
+
+      "data for all further partner pages must be reset to default" should {
+        "user changes the selection from Partner to You for Do have a partner question" in {
+
+        }
+
+      }
+
+      "data for all further parent pages must be reset to default" should {
+        "user changes the selection from You to Partner for Do have a partner question" in {
+
+        }
+
+      }
+
+      "data for all further partner pages must be reset to default and parent should have its values" should {
+        "user changes the selection from You to Both for Do have a partner question" in {
+
+        }
+
+      }
+
+      "data for all further parent pages must be reset to default and partner should have its values" should {
+        "user changes the selection from Partner to Both for Do have a partner question" in {
+
+        }
+
+      }
+
+
     }
 
 
