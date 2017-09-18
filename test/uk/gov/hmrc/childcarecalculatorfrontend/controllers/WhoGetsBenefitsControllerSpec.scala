@@ -147,9 +147,9 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
     "redirect to correct next page" when {
       val testCases = Table(
         ("Selected", "Next page"),
-        (YouPartnerBothEnum.YOU.toString, parentBenefitsPath),
-        (YouPartnerBothEnum.PARTNER.toString, partnerBenefitsPath),
-        (YouPartnerBothEnum.BOTH.toString, parentBenefitsPath)
+        (YouPartnerBothEnum.YOU.toString, benefitsParentPath),
+        (YouPartnerBothEnum.PARTNER.toString, benefitsPartnerPath),
+        (YouPartnerBothEnum.BOTH.toString, benefitsParentPath)
       )
 
       forAll(testCases) { case (selection, nextPage) =>

@@ -114,8 +114,8 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
 
           if(minEarnings) {
             if(parentEarnMoreThanMW) {
-              //TODO redirect to max earnings or TC/UC page
-              routes.ChildCareBaseController.underConstruction()
+              routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString)
+
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
             }
@@ -129,8 +129,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
         case YouPartnerBothEnum.PARTNER => {
           if(minEarnings) {
-            //TODO redirect to max earnings or TC/UC page
-            routes.ChildCareBaseController.underConstruction()
+            routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(true)
           }
@@ -143,8 +142,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         }
         case YouPartnerBothEnum.YOU => {
           if(minEarnings) {
-            //TODO redirect to max earnings or TC/UC page
-            routes.ChildCareBaseController.underConstruction()
+            routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
           } else {
             routes.SelfEmployedOrApprenticeController.onPageLoad(false)
           }
@@ -155,7 +153,8 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER)) {
+    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER ||
+      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH)) {
       pageObjects.copy(household = pageObjects.household.copy(
         partner = pageObjects.household.partner.map(x => x.copy(
           minimumEarnings = Some(x.minimumEarnings.fold(

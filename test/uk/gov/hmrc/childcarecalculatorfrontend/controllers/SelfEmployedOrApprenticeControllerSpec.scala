@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
@@ -23,8 +24,6 @@ import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
@@ -49,16 +48,25 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
   "SelfEmployedOrApprenticeController" when {
 
     "onPageLoad is called" should {
-      "show technical difficulties page if there is no data in keystore" in {
+      "show technical difficulties page if there is no data in keystore for parent" in {
 
         setupMocks(modelToFetch = None)
 
         val result = selfEmployedOrApprenticeController.onPageLoad(false)(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+        redirectLocation(result) should be (Some(technicalDifficultiesPath))
       }
 
-      "load template successfully if there is data in keystore" in {
+      "redirect to error page if can't connect with keystore for parent" in {
+        setupMocksForException()
+
+        val result = selfEmployedOrApprenticeController.onPageLoad(false)(request.withSession(validSession))
+
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "load template successfully if there is data in keystore for parent" in {
 
         setupMocks(modelToFetch = Some(buildPageObjects(false)))
 
@@ -67,14 +75,107 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      "redirect to error page if can't connect with keystore" in {
-        setupMocksForException()
+      s"redirect to ${minimumEarningsParentPath} when back button is pressed as parent" in {
+
+        val modifiedObject = buildPageObjects(false)
+        setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
 
         val result = selfEmployedOrApprenticeController.onPageLoad(false)(request.withSession(validSession))
-
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
       }
+
+      "load template successfully if there is data in keystore for partner" in {
+
+        setupMocks(modelToFetch = Some(buildPageObjects(true)))
+
+        val result = selfEmployedOrApprenticeController.onPageLoad(true)(request.withSession(validSession))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "load template successfully if partner is empty" in {
+
+        val modified = buildPageObjects(true)
+        setupMocks(modelToFetch = Some(modified.copy(household = modified.household.copy(partner = None))))
+
+        val result = selfEmployedOrApprenticeController.onPageLoad(true)(request.withSession(validSession))
+        status(result) shouldBe OK
+        result.body.contentType.get shouldBe "text/html; charset=utf-8"
+      }
+
+      "redirect to correct page when back button is pressed as partner" when {
+        val modifiedObject = buildPageObjects(true)
+
+        s"redirect to ${minimumEarningsPartnerPath}" in {
+
+          setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = selfEmployedOrApprenticeController.onPageLoad(true)(request.withSession(validSession))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+        }
+
+        s"redirect to ${minimumEarningsPartnerPath} if both are in paid employment and parent satisfy minimum earnings" in {
+
+          setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            household = modifiedObject.household.copy(
+              parent = modifiedObject.household.parent.copy(
+                minimumEarnings = modifiedObject.household.parent.minimumEarnings.map(x => x.copy(earnMoreThanNMW = Some(true)))
+              )
+            )
+          )))
+
+          val result = selfEmployedOrApprenticeController.onPageLoad(true)(request.withSession(validSession))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+        }
+
+        s"redirect to ${selfEmployedParentPath} if both are in paid employment and parent not satisfy minimum earnings & selected as self employed" in {
+
+          setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            household = modifiedObject.household.copy(
+              parent = modifiedObject.household.parent.copy(
+                minimumEarnings = modifiedObject.household.parent.minimumEarnings.map(x => x.copy(
+                  employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED)))
+              )
+            )
+          )))
+
+          val result = selfEmployedOrApprenticeController.onPageLoad(true)(request.withSession(validSession))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedParentPath
+        }
+
+        s"redirect to ${selfEmployedOrApprenticeParentPath} if both are in paid employment & parent not satisfy minimum earnings & selected as apprentice" in {
+
+          setupMocks(modelToFetch = Some(modifiedObject.copy(whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            household = modifiedObject.household.copy(
+              parent = modifiedObject.household.parent.copy(
+                minimumEarnings = modifiedObject.household.parent.minimumEarnings.map(x => x.copy(
+                  employmentStatus = Some(EmploymentStatusEnum.APPRENTICE)))
+              )
+            )
+          )))
+
+          val result = selfEmployedOrApprenticeController.onPageLoad(true)(request.withSession(validSession))
+          status(result) shouldBe OK
+          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticeParentPath
+        }
+
+      }
+
+
     }
 
     "onSubmit is called" when {
@@ -110,56 +211,51 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
 
       //================================ Parent Mode Starts =======================================
       //TODO: Redirection location to be changed for both parent and partner
-      "saving in keystore is successful as parent, only paid employment and selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+      s"saving in keystore is successful as parent, only paid employment and selfemployed redirect to ${selfEmployedParentPath}" in {
 
-          val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
+        val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
-          val modelToStore = model.copy(household = model.household.copy(
-            parent = model.household.parent.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))))))
+        val modelToStore = model.copy(household = model.household.copy(
+          parent = model.household.parent.copy(
+            minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))))))
 
-          setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 
-          val result = await(
-            selfEmployedOrApprenticeController.onSubmit(false)(
-              request
-                .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "SELFEMPLOYED")
-                .withSession(validSession)
-            )
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(false)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "SELFEMPLOYED")
+              .withSession(validSession)
           )
-          status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(false).url))
-        }
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(selfEmployedParentPath))
       }
 
-      "saving in keystore is successful as parent, only paid employment and apprentice" should {
-        s"go to ${underConstrctionPath}" in {
+      s"saving in keystore is successful as parent, only paid employment and apprentice redirect to (tc/uc)${underConstructionPath}" in {
 
-          val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
+        val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
-          val modelToStore = model.copy(household = model.household.copy(
-            parent = model.household.parent.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))))
+        val modelToStore = model.copy(household = model.household.copy(
+          parent = model.household.parent.copy(
+            minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))))
 
-          setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 
-          val result = await(
-            selfEmployedOrApprenticeController.onSubmit(false)(
-              request
-                .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
-                .withSession(validSession)
-            )
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(false)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
+              .withSession(validSession)
           )
-          status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
-        }
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(underConstructionPath))
       }
 
-      "saving in keystore is successful as parent, only paid employment and neither apprentice nor selfemployed" should {
-        s"go to ${underConstrctionPath}" in {
+      s"saving in keystore is successful as parent, only paid employment and neither redirect to ${underConstructionPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
           val modelToStore = model.copy(household = model.household.copy(
@@ -177,12 +273,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
-        }
+          redirectLocation(result) should be (Some(underConstructionPath))
       }
 
-      "saving in keystore is successful as parent, both are in paid employment and selfemployed" should {
-        s"go to ${selfEmployedTimescaleParentPath}" in {
+      s"saving in keystore is successful as parent, both in paid employment and is self employed redirect to ${selfEmployedParentPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -200,12 +294,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(false).url))
-        }
+          redirectLocation(result) should be (Some(selfEmployedParentPath))
       }
 
-      "saving in keystore is successful as parent, both are in paid employment and neither apprentice nor selfemployed" should {
-        s"go to ${selfEmployedOrApprenticePartnerPath}" in {
+      s"saving in keystore is successful as parent, both in paid employment and neither redirect to ${selfEmployedOrApprenticePartnerPath}" in {
           val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
           val claimant = Claimant(minimumEarnings = Some(minimumEarning))
 
@@ -227,20 +319,69 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.SelfEmployedOrApprenticeController.onPageLoad(true).url))
-        }
+          redirectLocation(result) should be (Some(selfEmployedOrApprenticePartnerPath))
+      }
+
+      s"saving in keystore is successful as parent, both in paid employment and apprentice redirect to ${selfEmployedOrApprenticePartnerPath}" in {
+        val minimumEarning = MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
+        val claimant = Claimant(minimumEarnings = Some(minimumEarning))
+
+        val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
+
+        val modelToMock = model.copy(household = model.household.copy(
+          parent = model.household.parent.copy(
+            minimumEarnings = None
+          ),
+          partner = Some(claimant)))
+
+        setupMocks(modelToFetch = Some(modelToMock), modelToStore = Some(modelToMock), storePageObjects = true)
+
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(false)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(selfEmployedOrApprenticePartnerPath))
+      }
+
+      s"saving in keystore is successful as parent, both in paid employment with partner satisfy min earnings, " +
+        s"redirect to ${maximumEarningsPartnerPath}" in {
+
+        val minimumEarning = MinimumEarnings(earnMoreThanNMW = Some(true), employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))
+        val claimant = Claimant(minimumEarnings = Some(minimumEarning))
+        val model = buildPageObjects(false, YouPartnerBothEnum.BOTH)
+
+        val modelToMock = model.copy(household = model.household.copy(
+          parent = model.household.parent.copy(
+            minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              employmentStatus = Some(EmploymentStatusEnum.NEITHER)))),
+          partner = Some(claimant)))
+
+        setupMocks(modelToFetch = Some(modelToMock), modelToStore = Some(modelToMock), storePageObjects = true)
+
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(false)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "NEITHER")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(maximumEarningsPartnerPath))
       }
 
       //================================ Parent Mode Ends ==========================================
 
       //================================ Partner Mode Starts =======================================
-      "saving in keystore is successful as partner, only paid employment and selfemployed" should {
-        s"go to ${partnerSelfEmployedPath}" in {
+      s"saving in keystore is successful as partner, only paid employment and selfemployed, redirect to ${selfEmployedPartnerPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
           val modelToStore = model.copy(household = model.household.copy(
             partner = model.household.partner.map(_.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
                 employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED)))))))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
@@ -253,17 +394,36 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(true).url))
-        }
+          redirectLocation(result) should be (Some(selfEmployedPartnerPath))
       }
 
-      "saving in keystore is successful as partner, both are in paid employment and selfemployed" should {
-        s"go to ${partnerSelfEmployedPath}" in {
+      s"saving in keystore is successful as partner, only paid employment and apprentice, redirect to (tc/uc)${underConstructionPath}" in {
+
+        val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
+        val modelToStore = model.copy(household = model.household.copy(
+          partner = model.household.partner.map(_.copy(
+            minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
+              employmentStatus = Some(EmploymentStatusEnum.APPRENTICE)))))))
+
+        setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
+
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(true)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(underConstructionPath))
+      }
+
+      s"saving in keystore is successful as partner, both are in paid employment and selfemployed, redirect to ${selfEmployedPartnerPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
             partner = model.household.partner.map(_.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
                 employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED)))))))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
@@ -276,17 +436,42 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(true).url))
-        }
+          redirectLocation(result) should be (Some(selfEmployedPartnerPath))
       }
 
-      "saving in keystore is successful as partner, both are in paid employment and apprentice" should {
-        s"go to ${underConstrctionPath}" in {
+      s"saving in keystore is successful as partner, both are in paid employment and parent satisfy min earnings, " +
+        s"redirect to ${maximumEarningsParentPath}" in {
+
+        val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
+        val modelToStore = model.copy(household = model.household.copy(
+          parent = model.household.parent.copy(
+            minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              earnMoreThanNMW = Some(true)))
+          ),
+          partner = model.household.partner.map(_.copy(
+            minimumEarnings = None
+          ))
+        ))
+
+        setupMocks(modelToFetch = Some(modelToStore), modelToStore = Some(modelToStore), storePageObjects = true)
+
+        val result = await(
+          selfEmployedOrApprenticeController.onSubmit(true)(
+            request
+              .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> "APPRENTICE")
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be (Some(maximumEarningsParentPath))
+      }
+
+      s"saving in keystore is successful as partner, both are in paid employment and apprentice, redirect to ${underConstructionPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
             partner = model.household.partner.map(_.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
+              minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
                 employmentStatus = Some(EmploymentStatusEnum.APPRENTICE)))))))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
@@ -299,18 +484,21 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
-        }
+          redirectLocation(result) should be (Some(underConstructionPath))
       }
 
-      "saving in keystore is successful as partner, both are in paid employment and neither apprentice nor selfemployed" should {
-        s"go to ${underConstrctionPath}" in {
+      s"saving in keystore is successful as partner, both are in paid employment and neither, redirect to ${underConstructionPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
+            parent = model.household.parent.copy(
+              minimumEarnings = None
+            ),
             partner = model.household.partner.map(_.copy(
-              minimumEarnings = model.household.parent.minimumEarnings.map(x => x.copy(
-                employmentStatus = Some(EmploymentStatusEnum.NEITHER)))))))
+              minimumEarnings = model.household.partner.get.minimumEarnings.map(x => x.copy(
+                employmentStatus = Some(EmploymentStatusEnum.NEITHER)))
+            ))
+          ))
 
           setupMocks(modelToFetch = Some(model), modelToStore = Some(modelToStore), storePageObjects = true)
 
@@ -322,13 +510,12 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
-        }
+          redirectLocation(result) should be (Some(underConstructionPath))
       }
       //================================ Partner Mode Ends   =======================================
 
      "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
+        s"while fetching, redirect to ${technicalDifficultiesPath}" in {
 
           setupMocksForException()
           setupMocks(modelToFetch = Some(buildPageObjects(false)))
@@ -340,8 +527,24 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
 
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+          redirectLocation(result) should be (Some(technicalDifficultiesPath))
         }
+
+       s"while caching, redirect to ${technicalDifficultiesPath}" in {
+
+         setupMocksForException()
+         setupMocks(modelToStore = Some(buildPageObjects(true)))
+
+         val result = selfEmployedOrApprenticeController.onSubmit(true)(
+           request
+             .withFormUrlEncodedBody(selfEmployedOrApprenticeKey -> EmploymentStatusEnum.SELFEMPLOYED.toString)
+             .withSession(validSession)
+         )
+
+         status(result) shouldBe SEE_OTHER
+         redirectLocation(result) should be (Some(technicalDifficultiesPath))
+       }
+
       }
 
     }

@@ -42,8 +42,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
     reset(sut.keystore)
   }
 
-  validateUrl(parentSelfEmployedPath)
-  validateUrl(partnerSelfEmployedPath)
+  validateUrl(selfEmployedParentPath)
+  validateUrl(selfEmployedPartnerPath)
 
   def buildPageObjects(isPartner: Boolean,
                        parentEarnMoreThanNMW: Option[Boolean] = None,
@@ -99,7 +99,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(isPartner = false))
+            Some(buildPageObjects(isPartner = false, parentSelfEmployedIn12Months = Some(true)))
           )
         )
         val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
@@ -111,7 +111,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(isPartner = true))
+            Some(buildPageObjects(isPartner = true, partnerSelfEmployedIn12Months = Some(true)))
           )
         )
         val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
@@ -131,8 +131,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe
-            routes.SelfEmployedOrApprenticeController.onPageLoad(false).url
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticeParentPath
         }
 
         "redirect to error page if can't connect with keystore" in {
@@ -271,7 +270,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-        s"there is data in keystore, redirect to parent's max earnings page" in {
+        s"there is data in keystore and is self employed for less than 12 months, redirect to parent's max earnings page" in {
           val po = buildPageObjects(isPartner = true,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
             parentEarnMoreThanNMW = Some(true),
@@ -304,13 +303,14 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe maximumEarningsParentPath
         }
 
       }
 
       "saving in keystore is successful as a partner with SelfEmployed = false" should {
-        s"there is data in keystore, redirect to tc/uc page" in {
+
+        s"redirect to tc/uc page when both are in paid employment" in {
           val po = buildPageObjects(isPartner = true,
             partnerSelfEmployedIn12Months = None,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
@@ -342,9 +342,43 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe underConstructionPath
         }
 
+        s"redirect to tc/uc page when only partner is in paid employment" in {
+          val po = buildPageObjects(isPartner = true,
+            partnerSelfEmployedIn12Months = None,
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))
+
+          when(
+            sut.keystore.fetch[PageObjects]()(any(), any())
+          ).thenReturn(
+            Future.successful(
+              Some(po)
+            )
+          )
+
+          when(
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+          ).thenReturn(
+            Future.successful(
+              Some(buildPageObjects(isPartner = true,
+                partnerSelfEmployedIn12Months = Some(false),
+                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
+              ))
+            )
+          )
+
+          val result = await(
+            sut.onSubmit(true)(
+              request
+                .withFormUrlEncodedBody(selfEmployedKey -> "false")
+                .withSession(validSession)
+            )
+          )
+          status(result) shouldBe SEE_OTHER
+          result.header.headers("Location") shouldBe underConstructionPath
+        }
       }
 
       "saving in keystore is successful as a parent with SelfEmployed = true" should {
@@ -388,8 +422,10 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
         s"there is data in keystore, redirect to partner's max earnings page" in {
           val po = buildPageObjects(isPartner = true,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+            parentEarnMoreThanNMW = Some(false),
             partnerEarnMoreThanNMW = Some(true),
             parentSelfEmployedIn12Months = Some(true))
+
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
@@ -403,8 +439,9 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           ).thenReturn(
             Future.successful(
               Some(buildPageObjects(isPartner = true,
-                partnerEarnMoreThanNMW = Some(true),
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+                parentEarnMoreThanNMW = Some(false),
+                partnerEarnMoreThanNMW = Some(true),
                 parentSelfEmployedIn12Months = Some(true)
               ))
             )
@@ -418,7 +455,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) shouldBe Some(routes.ChildCareBaseController.underConstruction().url)
+          redirectLocation(result) shouldBe Some(maximumEarningsPartnerPath)
         }
 
       }
@@ -445,9 +482,8 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-        s"there is data in keystore, redirect to tc/uc page" in {
-          val po = buildPageObjects(isPartner = false,
-            parentSelfEmployedIn12Months = Some(false))
+        s"redirect to tc/uc page" in {
+          val po = buildPageObjects(isPartner = false, parentSelfEmployedIn12Months = Some(false))
 
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
@@ -461,9 +497,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(isPartner = false,
-                parentSelfEmployedIn12Months = Some(false)
-              ))
+              Some(po)
             )
           )
 
@@ -475,7 +509,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstrctionPath
+          result.header.headers("Location") shouldBe underConstructionPath
         }
 
       }

@@ -38,6 +38,7 @@ trait CCConstants {
   lazy val minimumEarningsKey = "minimumEarnings"
   lazy val selfEmployedOrApprenticeKey = "selfEmployedOrApprentice"
   lazy val selfEmployedKey = "selfEmployed"
+  lazy val maximumEarningsKey = "maximumEarnings"
 
   def getFamilyStatus(hasPartner: Boolean): String = {
     if(hasPartner) "couple" else "single"

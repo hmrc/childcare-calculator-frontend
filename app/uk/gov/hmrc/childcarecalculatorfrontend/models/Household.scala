@@ -60,7 +60,7 @@ object Benefits {
 }
 
 case class MinimumEarnings(
-                           amount: BigDecimal =   0.00,
+                           amount: BigDecimal = 0.00,
                            employmentStatus: Option[EmploymentStatusEnum] = None,
                            selfEmployedIn12Months: Option[Boolean] = None,
                            earnMoreThanNMW: Option[Boolean] = None
@@ -79,8 +79,8 @@ object Disability {
 }
 
 case class ChildCareCost(
-                         amount: Option[BigDecimal] =   None,
-                         period: Option[PeriodEnum] =   None
+                         amount: Option[BigDecimal] = None,
+                         period: Option[PeriodEnum] = None
                         )
 object ChildCareCost {
   implicit val formatChildCareCost = Json.format[ChildCareCost]
@@ -88,7 +88,7 @@ object ChildCareCost {
 
 case class Education(
                       inEducation: Boolean = false,
-                      startDate: Option[LocalDate] =   None
+                      startDate: Option[LocalDate] = None
                     )
 object Education {
   implicit val formatEducation = Json.format[Education]
@@ -97,10 +97,10 @@ object Education {
 case class Child(
                   id: Short,
                   name: String,
-                  dob: Option[LocalDate]=None,
-                  disability: Option[Disability]=None,
-                  childcareCost: Option[ChildCareCost]=None,
-                  education: Option[Education]= None
+                  dob: Option[LocalDate] = None,
+                  disability: Option[Disability] = None,
+                  childcareCost: Option[ChildCareCost] = None,
+                  education: Option[Education] = None
                 )
 object Child {
   implicit val formatChild = Json.format[Child]
@@ -109,11 +109,12 @@ object Child {
 case class Claimant(
                      ageRange: Option[AgeRangeEnum] = None,
                      benefits: Option[Benefits] = None,
-                     lastYearlyIncome: Option[Income]  =   None,
-                     currentYearlyIncome: Option[Income]  = None,
+                     lastYearlyIncome: Option[Income] =   None,
+                     currentYearlyIncome: Option[Income] = None,
                      hours: Option[BigDecimal] = None,
-                     minimumEarnings: Option[MinimumEarnings]= None,
-                     escVouchers: Option[YesNoUnsureEnum] =   None
+                     minimumEarnings: Option[MinimumEarnings] = None,
+                     escVouchers: Option[YesNoUnsureEnum] = None,
+                     maximumEarnings: Option[Boolean] = None
                    )
 object Claimant {
   implicit val formatClaimant = Json.format[Claimant]
@@ -140,7 +141,8 @@ case class PageObjects(
                         whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
                         getVouchers: Option[YesNoUnsureEnum] = None,
                         whoGetsVouchers: Option[YouPartnerBothEnum] = None,
-                        getBenefits: Option[Boolean] = None
+                        getBenefits: Option[Boolean] = None,
+                        getMaximumEarnings: Option[Boolean] = None
                       )
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]

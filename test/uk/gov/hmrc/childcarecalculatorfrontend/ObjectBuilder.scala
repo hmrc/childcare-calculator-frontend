@@ -37,10 +37,19 @@ trait ObjectBuilder {
   val defaultAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)
   val defaultHours = Some(BigDecimal(12))
 
+  val buildStatutoryIncome = StatutoryIncome(
+    statutoryWeeks = 0.00,
+    statutoryAmount = Some(BigDecimal(100))
+  )
 
   val buildBenefits = Benefits()
 
-  val buildIncome = Income()
+  val buildIncome = Income(
+    employmentIncome = Some(BigDecimal(100)),
+    pension = Some(BigDecimal(100)),
+    otherIncome = Some(BigDecimal(100)),
+    benefits = Some(BigDecimal(100)),
+    statutoryIncome = Some(buildStatutoryIncome))
 
   val buildMinimumEarnings = MinimumEarnings()
 

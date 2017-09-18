@@ -6,7 +6,7 @@ GET    /error                           uk.gov.hmrc.childcarecalculatorfrontend.
 GET    /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 
 # TODO: Delete when all pages are ready
-GET    /under-construction              uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.underConstruction
+GET    /under-construction              uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildCareBaseController.underConstruction(pageName: Option[String]=None)
 
 GET    /what-you-need                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatYouNeedController.onPageLoad
 
@@ -86,3 +86,12 @@ POST   /self-employed/parent            uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET    /self-employed/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedController.onPageLoad(isPartner: Boolean = true)
 POST   /self-employed/partner           uk.gov.hmrc.childcarecalculatorfrontend.controllers.SelfEmployedController.onSubmit(isPartner: Boolean = true)
+
+GET    /maximum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(youPartnerBoth: String = "YOU")
+POST   /maximum-earnings/parent         uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(youPartnerBoth: String = "YOU")
+
+GET    /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(youPartnerBoth: String = "PARTNER")
+POST   /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(youPartnerBoth: String = "PARTNER")
+
+GET    /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(youPartnerBoth: String = "BOTH")
+POST   /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(youPartnerBoth: String = "BOTH")

@@ -22,7 +22,7 @@ import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
 import uk.gov.hmrc.play.test.UnitSpec
 
-class MinimumEarningFormSpec extends UnitSpec with FakeCCApplication {
+class MinimumEarningsFormSpec extends UnitSpec with FakeCCApplication {
 
   "MinimumEarningForm" when {
     val isPartnerTestCase = Table(
