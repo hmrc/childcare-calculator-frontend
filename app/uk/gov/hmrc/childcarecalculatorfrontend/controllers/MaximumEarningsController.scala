@@ -34,18 +34,7 @@ import scala.concurrent.Future
 class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
-  val technicalDifficultyPage = routes.ChildCareBaseController.onTechnicalDifficulties()
-  val underConstructionPage = routes.ChildCareBaseController.underConstruction
-
-  val parentMinimumEarningsPage = routes.MinimumEarningsController.onPageLoad(false)
-  val partnerMinimumEarningsPage = routes.MinimumEarningsController.onPageLoad(true)
-
-  val parentSelfEmployedPage = routes.SelfEmployedController.onPageLoad(false)
-  val partnerSelfEmployedPage = routes.SelfEmployedController.onPageLoad(true)
-
-  val parentSelfEmployedOrApprenticePage= routes.SelfEmployedOrApprenticeController.onPageLoad(false)
-  val partnerSelfEmployedOrApprenticePage = routes.SelfEmployedOrApprenticeController.onPageLoad(true)
-
+  
   def onPageLoad(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
       keystore.fetch[PageObjects]().map {
       case Some(pageObjects) => {
