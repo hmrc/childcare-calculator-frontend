@@ -23,7 +23,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.MaximumEarningsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentStatusEnum, MinimumEarnings, PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentStatusEnum, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maximumEarnings
@@ -34,69 +34,17 @@ import scala.concurrent.Future
 class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
-
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.livingWithPartner.isDefined
-  }
-
-  private def getBackUrl(pageObjects: PageObjects,
-                         youPartnerBoth: String): Call = {
-    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
-    youPartnerBoth match {
-      case "YOU" =>
-        if(paidEmployment == YouPartnerBothEnum.BOTH) {
-          if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
-            routes.MinimumEarningsController.onPageLoad(true)
-          } else if(pageObjects.household.partner.get.minimumEarnings.get.employmentStatus == Some(EmploymentStatusEnum.SELFEMPLOYED)) {
-            routes.SelfEmployedController.onPageLoad(true)
-          } else {
-            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
-          }
-        } else {
-          routes.MinimumEarningsController.onPageLoad(false)
-        }
-      case "PARTNER" =>
-        if(paidEmployment == YouPartnerBothEnum.BOTH) {
-          if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
-            routes.MinimumEarningsController.onPageLoad(true)
-          } else if(pageObjects.household.parent.minimumEarnings.get.employmentStatus == Some(EmploymentStatusEnum.SELFEMPLOYED)) {
-            routes.SelfEmployedController.onPageLoad(false)
-          } else {
-            routes.SelfEmployedOrApprenticeController.onPageLoad(false)
-          }
-        } else {
-          routes.MinimumEarningsController.onPageLoad(true)
-        }
-      case "BOTH" =>
-        routes.MinimumEarningsController.onPageLoad(true)
-    }
-  }
-
-  def defineMaximumEarnings(parentPartnerBoth: String, pageObjects: PageObjects): Option[Boolean] = {
-    if(parentPartnerBoth == YouPartnerBothEnum.PARTNER.toString) {
-      if(pageObjects.household.partner.isDefined && pageObjects.household.partner.get.maximumEarnings.isDefined &&
-        pageObjects.household.partner.get.maximumEarnings.isDefined) {
-        pageObjects.household.partner.get.maximumEarnings
-      } else {
-        None
-      }
-    } else {
-      if(pageObjects.household.parent.maximumEarnings.isDefined && pageObjects.household.parent.maximumEarnings.isDefined) {
-        pageObjects.household.parent.maximumEarnings
-      } else {
-        None
-      }
-    }
-  }
-
+  
   def onPageLoad(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+      keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) => {
+
         Ok(maximumEarnings(
           new MaximumEarningsForm(youPartnerBoth, messagesApi).form.fill(defineMaximumEarnings(youPartnerBoth, pageObjects)),
           youPartnerBoth,
           getBackUrl(pageObjects, youPartnerBoth))
         )
+      }
       case _ =>
         Logger.warn("Invalid PageObjects in MaximumEarningsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -105,12 +53,12 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         Logger.warn(s"Exception from MaximumEarningsController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
+
   }
 
   def onSubmit(youPartnerBoth: String): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
       case Some(pageObjects) =>
-        val inPaidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
         new MaximumEarningsForm(youPartnerBoth, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
@@ -121,9 +69,12 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
               )
             ),
           success => {
-            keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map { _ =>
-              //TODO: redirect to tc/uc page
-              Redirect(routes.ChildCareBaseController.underConstruction)
+            keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map {
+              x => x match {
+                case Some(model) =>  Redirect(routes.ChildCareBaseController.underConstruction()) //TODO: to be redirected to tc/uc page
+                case _ => Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+              }
+
             }
           }
         )
@@ -134,6 +85,50 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       case ex: Exception =>
         Logger.warn(s"Exception from MaximumEarningsController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def getBackUrl(pageObjects: PageObjects,
+                         youPartnerBoth: String): Call = {
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
+    youPartnerBoth match {
+      case "YOU" => {
+        if (paidEmployment == YouPartnerBothEnum.BOTH) {
+          if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.get) {
+            routes.MinimumEarningsController.onPageLoad(true)
+          } else if (pageObjects.household.partner.get.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
+            routes.SelfEmployedController.onPageLoad(true)
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+          }
+        } else {
+          routes.MinimumEarningsController.onPageLoad(false)
+        }
+      }
+      case "PARTNER" => {
+        if (paidEmployment == YouPartnerBothEnum.BOTH) {
+          if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.get) {
+            routes.MinimumEarningsController.onPageLoad(true)
+          } else if (pageObjects.household.parent.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
+            routes.SelfEmployedController.onPageLoad(false)
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(false)
+          }
+        } else {
+          routes.MinimumEarningsController.onPageLoad(true)
+        }
+      }
+      case "BOTH" => {
+        routes.MinimumEarningsController.onPageLoad(true)
+      }
+    }
+  }
+
+  def defineMaximumEarnings(parentPartnerBoth: String, pageObjects: PageObjects): Option[Boolean] = {
+    if(parentPartnerBoth == YouPartnerBothEnum.PARTNER.toString) {
+      pageObjects.household.partner.fold[Option[Boolean]](None)(_.maximumEarnings.map(identity))
+    } else {
+      pageObjects.household.parent.maximumEarnings.map(identity)
     }
   }
 

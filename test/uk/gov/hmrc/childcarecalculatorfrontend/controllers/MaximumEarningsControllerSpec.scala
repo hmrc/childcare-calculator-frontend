@@ -23,515 +23,634 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.{ControllersValidator, ObjectBuilder}
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder{
 
-  val sut = new MaximumEarningsController(applicationMessagesApi) {
+  val maximumEarningsController = new MaximumEarningsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(sut.keystore)
+    reset(maximumEarningsController.keystore)
   }
 
-  validateUrl(parentMaximumEarningsPath)
-  validateUrl(partnerMaximumEarningsPath)
+  validateUrl(maximumEarningsParentPath)
+  validateUrl(maximumEarningsPartnerPath)
   validateUrl(maximumEarningsPath)
-
-  def buildPageObjects(isPartner: Boolean,
-                       parentAgeRange: Option[AgeRangeEnum] = None,
-                       partnerAgeRange: Option[AgeRangeEnum] = None,
-                       parentEarnMoreThanNMW: Option[Boolean] = None,
-                       partnerEarnMoreThanNMW: Option[Boolean] = None,
-                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
-                      ): PageObjects = {
-    val parent = Claimant(ageRange = parentAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = parentEarnMoreThanNMW)))
-    val partner = Claimant(ageRange = partnerAgeRange, minimumEarnings = Some(MinimumEarnings(earnMoreThanNMW = partnerEarnMoreThanNMW)))
-
-    if (isPartner) {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent,
-        partner = Some(partner)))
-    } else {
-      PageObjects(whichOfYouInPaidEmployment=whichOfYouInPaidEmployment, household = Household(location = LocationEnum.ENGLAND, parent = parent))
-    }
-  }
-
-  val ageRanges = List(
-    AgeRangeEnum.UNDER18,
-    AgeRangeEnum.EIGHTEENTOTWENTY,
-    AgeRangeEnum.TWENTYONETOTWENTYFOUR,
-    AgeRangeEnum.OVERTWENTYFOUR
-  )
 
   "MaximumEarningsController" when {
 
     "onPageLoad is called" should {
 
-      "redirect to technical difficulty page if there is no data in keystore for parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+    "redirect to technical difficulty page if there is no data in keystore for parent" in {
+       setupMocks(modelToFetch = None)
+
+        val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "redirect to technical difficulty page if there is no data in keystore for partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+        setupMocks(modelToFetch = None)
+
+        val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+
+      "redirect to technical difficulty page if there is some runtime exception" in {
+
+        val modelToFetch = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = Some(true),
+          partnerEarnMoreThanNMW = Some(true),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
+        )
+
+        setupMocks(modelToFetch = Some(modelToFetch))
+        setupMocksForException()
+
+        val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
       }
 
       "load template when user visiting the page first time for partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = true, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
-              partnerAgeRange = Some(AgeRangeEnum.UNDER18), partnerEarnMoreThanNMW = Some(true)
-            ))
-          )
+
+        val modelToFetch = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = Some(true),
+          partnerEarnMoreThanNMW = Some(true),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
         )
-        val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+
+        setupMocks(modelToFetch = Some(modelToFetch))
+
+        val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
         status(result) shouldBe OK
       }
 
       "load template when user visiting the page first time for parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = None))
-          )
-        )
-        val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
-        redirectLocation(result) should be (Some(routes.SelfEmployedController.onPageLoad(true).url))
+
+       val modelToFetch = buildPageObjectsModel(isPartner = false,
+          parentEarnMoreThanNMW = None)
+
+        setupMocks(modelToFetch = Some(modelToFetch))
+
+        val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
         status(result) shouldBe OK
       }
 
-      "load template successfully if there is data in keystore for parent and define correctly backURL" when {
-        "redirect to partner's self employed page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
+      "load template successfully for parent only " when  {
+        "have back url of parent Minimum Earnings page when parent earns more than NMW" in {
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = false,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
+
+          val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
           status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/parent"
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
+
         }
 
-        "redirect to partner's self or apprentice page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
-            )
-          )
-          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
-        }
+        "have back url of parent Minimum Earnings page when parent earns more than NMW and " +
+          "maximum earnings page selection exists" in {
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))),
+            maximumEarnings = Some(true))
 
-        "redirect to partner's minimum earnings page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
-            )
-          )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
-        }
+          val modelToFetch = buildPageObjectsModel(isPartner = false,
+            parentEarnMoreThanNMW = None)
 
-        "redirect to parent's minimum earnings page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
-            )
-          )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
-        }
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
 
-        "redirect to error page if can't connect with keystore if parent" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-          val result = await(sut.onPageLoad("YOU")(request.withSession(validSession)))
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+          val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsParentPath
+
         }
       }
 
-      "load template successfully if there is data in keystore for partner and display correct backurl" when {
-        "redirect to parent's maximum earnings page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                parentEarnMoreThanNMW = Some(true),
-                partnerEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+      "load template successfully for partner only " when  {
+        "have back url as partner Minimum Earnings page when partner earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))),
+            maximumEarnings = Some(true))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
           status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
         }
 
-        "redirect to partner's minimum earnings page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                partnerEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+        "maps form to None when there is no partner model in household and have back url as partner Minimum Earnings page" in {
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = None),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
           status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
         }
 
-        "redirect to parent's self employed page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                partnerEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+        "have back url as partner Selfemployed or Apprentice  page when partner does not earn more than NMW and " +
+          "is not selfemployed" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
+
+          val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
           status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
 
-        "redirect to parent's self or apprentice page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                partnerEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad("BOTH")(request.withSession(validSession)))
+
+      }
+
+      "load template successfully when both are in paid employment " when  {
+        "have back url partner Minimum Earnings page when both earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
           status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
+
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
         }
 
-        "redirect to error page if can't connect with keystore if partner" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-          val result = await(sut.onPageLoad("PARTNER")(request.withSession(validSession)))
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        "have back url as partner Selfemployed or Apprentice  page when parent earns more than NMW and " +
+          "partner doesn't and partner is not selfemployed" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticePartnerPath
+        }
+
+        "have back url as partner Selfemployed 12 months page when parent earns more than NMW and " +
+          "partner doesn't, partner is selfemployed and been selfemployed for less than 12 months" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED),
+            selfEmployedIn12Months = Some(true))))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedPartnerPath
+
+        }
+
+        "have back url as to partner Selfemployed 12 months page when parent earns more than NMW and " +
+          "partner doesn't, partner is selfemployed and not been selfemployed for less than 12 months" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED),
+            selfEmployedIn12Months = Some(true))))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedPartnerPath
+
+        }
+
+        "have back url as parent Selfemployed or Apprentice  page when partner earns more than NMW and " +
+          "parent doesn't and parent is not selfemployed" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None,
+            selfEmployedIn12Months = Some(true))))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedOrApprenticeParentPath
+
+        }
+
+        "have back url as parent Selfemployed 12 months page when partner earns more than NMW and " +
+          "parent doesn't and parent is selfemployed" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None,
+            selfEmployedIn12Months = Some(true))))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED))))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe selfEmployedParentPath
+
+        }
+
+        "have back url partner Minimum Earnings page when partner earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
+        }
+
+        "have back url partner Minimum Earnings page when parent earns more than NMW" in {
+
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings))
+
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
+
+          val modelToFetch = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
+
+          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+
+          val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
+          status(result) shouldBe OK
+
+          val content = Jsoup.parse(bodyOf(result))
+          content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
+
         }
       }
 
-      "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any(), any())
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(true, None))
-            )
-          )
-
-          when(
-            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-
-          val result = await(
-            sut.onSubmit("YOU")(
-              request
-                .withFormUrlEncodedBody(whatsYourAgeKey -> AgeRangeEnum.OVERTWENTYFOUR.toString)
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-        }
-      }
-    }
-  }
+     }
+ }
 
   "onSubmit is called" when {
 
     "there are errors" should {
       "load same template and return BAD_REQUEST as a partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(true,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
-          )
-        )
-        val result = await(
-          sut.onSubmit("PARTNER")(
+        val model = buildPageObjectsModel(true)
+        setupMocks(modelToFetch = Some(model))
+
+        val result = maximumEarningsController.onSubmit("PARTNER")(
             request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "")
+              .withFormUrlEncodedBody(maximumEarningsKey -> "")
               .withSession(validSession)
           )
-        )
+
         status(result) shouldBe BAD_REQUEST
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
       "load same template and return BAD_REQUEST as a parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(false,
-              parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-              partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
-          )
-        )
-        val result = await(
-          sut.onSubmit("YOU")(
+
+        val model = buildPageObjectsModel(false)
+        setupMocks(modelToFetch = Some(model))
+
+        val result = maximumEarningsController.onSubmit("YOU")(
             request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "")
+              .withFormUrlEncodedBody(maximumEarningsKey -> "")
               .withSession(validSession)
           )
-        )
+
         status(result) shouldBe BAD_REQUEST
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
     }
 
-    "saving in keystore is successful as a partner" should {
-      s"redirect to technical difficulties page" when {
+    "save the data in keystore successfully for parent" should {
+      "redirect to tc/uc page" in {
 
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for partner" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
 
-            val result = await(
-              sut.onSubmit("BOTH")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "123")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
 
-          /*s"redirect to tc/uc page" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
-              )
-            )
+        val modelToFetch = model.copy(household = model.household.copy(parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
 
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                  partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                  parentEarnMoreThanNMW = Some(true),
-                  partnerEarnMoreThanNMW = Some(true)))
-              )
-            )
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
+          parent = parent.copy(maximumEarnings = Some(true))))
 
-            val result = await(
-              sut.onSubmit("BOTH")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }*/
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
 
-        }
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.YOU.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        //TODO: To be replaced by TC/UC page
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
+
       }
     }
 
-    "saving in keystore is successful as a parent and earnOverNMW = true" should {
-      s"for each age range for a parent" when {
+    "save the data in keystore successfully for partner" should {
+        "redirect to tc/uc page " in {
 
-        ageRanges.foreach { range =>
-          s"${range.toString} has been previously selected and there is no data in keystore for PageObjects object for parent" in {
-            when(
-              sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
 
-            val result = await(
-              sut.onSubmit("YOU")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
+          val model = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
 
-          s"${range.toString} has been previously selected and there is data in keystore for parent" in {
-            val po = buildPageObjects(isPartner = false,
-              parentAgeRange = Some(range),
-              parentEarnMoreThanNMW = Some(true))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
+          val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner)),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))
 
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = false,
-                  parentAgeRange = Some(range),
-                  parentEarnMoreThanNMW = Some(true)))
-              )
-            )
+          val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
+            partner = Some(partner.copy(maximumEarnings = Some(true)))))
 
-            val result = await(
-              sut.onSubmit("YOU")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "false")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
+          setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
 
-          s"${range.toString} selected and there is data in keystore and both are in paid employment and getting min earnings as parent" in {
-            val po = buildPageObjects(isPartner = true,
-              parentAgeRange = Some(range),
-              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-              parentEarnMoreThanNMW = Some(true))
-            when(
-              sut.keystore.fetch[PageObjects]()(any(), any())
-            ).thenReturn(
-              Future.successful(
-                Some(po)
-              )
-            )
+          val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.PARTNER.toString)(
+            request
+              .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+              .withSession(validSession)
+          )
 
-            when(
-              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-            ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(isPartner = true,
-                  parentAgeRange = Some(range),
-                  whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                  parentEarnMoreThanNMW = Some(true)))
-              )
-            )
-
-            val result = await(
-              sut.onSubmit("YOU")(
-                request
-                  .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-                  .withSession(validSession)
-              )
-            )
-            status(result) shouldBe SEE_OTHER
-            redirectLocation(result) should be (Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
-          }
-
+          status(result) shouldBe SEE_OTHER
+          //TODO: To be replaced by TC/UC page
+          redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
         }
+
+    }
+
+    "save the data in keystore successfully for both parent and partner" should {
+      "redirect to tc/uc page" in {
+
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(parent = parent.copy(maximumEarnings = Some(true)),
+          partner = Some(partner.copy(maximumEarnings = Some(true)))))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        //TODO: To be replaced by TC/UC page
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
       }
     }
 
+    "data store in keystore fails" should {
+      "redirect to technical difficulties page" in {
+
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+    }
+
+    "page objects not found in keystore" should {
+      "redirect to technical difficulties page" in {
+
+        setupMocks(modelToFetch = None)
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+    }
+
+    "runtime exception occurs" should {
+      "redirect to technical difficulties page" in {
+
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
+
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
+
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+
+        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+        setupMocksForException()
+
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+      }
+    }
+
+  }
+
+  private def buildPageObjectsModel(isPartner: Boolean,
+                       parentEarnMoreThanNMW: Option[Boolean] = None,
+                       partnerEarnMoreThanNMW: Option[Boolean] = None,
+                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
+                      ): PageObjects = {
+
+    val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = parentEarnMoreThanNMW)))
+    val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = partnerEarnMoreThanNMW)))
+
+    if (isPartner) {
+
+      buildPageObjects.copy(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
+        household = buildHousehold.copy(location = LocationEnum.ENGLAND, parent = parent, partner = Some(partner)))
+
+    } else {
+      buildPageObjects.copy(whichOfYouInPaidEmployment = whichOfYouInPaidEmployment,
+        household = buildHousehold.copy(location = LocationEnum.ENGLAND, parent = parent))
+    }
+  }
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        maximumEarningsController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
+    }
+
+  }
+
+  /**
+    * setup the mock with runtimeException
+    *
+    * @return
+    */
+  private def setupMocksForException() = {
+    when(
+      maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+    ).thenReturn(
+      Future.failed(new RuntimeException)
+    )
   }
 }

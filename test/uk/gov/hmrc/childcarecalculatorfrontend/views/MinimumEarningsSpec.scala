@@ -53,8 +53,8 @@ class MinimumEarningsSpec extends TemplatesValidator with  FakeCCApplication wit
 
   val isPartnerTestCase = Table(
     ("isPartner", "errorMessage", "pageTitle", "hintText", "submitURL"),
-    (false, "on.average.how.much.will.you.earn.parent.error", s"On average, will you earn £${amount} or more a week?", "This is the National Minimum Wage or National Living Wage a week for someone your age.", parentMinimumEarningsPath),
-    (true, "on.average.how.much.will.you.earn.partner.error", s"On average, will your partner earn £${amount} or more a week?", "This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.", partnerMinimumEarningsPath)
+    (false, "on.average.how.much.will.you.earn.parent.error", s"On average, will you earn £${amount} or more a week?", "This is the National Minimum Wage or National Living Wage a week for someone your age.", minimumEarningsParentPath),
+    (true, "on.average.how.much.will.you.earn.partner.error", s"On average, will your partner earn £${amount} or more a week?", "This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.", minimumEarningsPartnerPath)
   )
 
 

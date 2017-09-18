@@ -31,21 +31,23 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{TestDataForViews, FakeCCApplicat
 
 class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplication with TestDataForViews{
 
-  lazy val backUrlForParent: Call = Call("GET", parentMinimumEarningsPath)
-  lazy val backUrlForPartner: Call = Call("GET", partnerMinimumEarningsPath)
+  lazy val backUrlForParent: Call = Call("GET", minimumEarningsParentPath)
+  lazy val backUrlForPartner: Call = Call("GET", minimumEarningsPartnerPath)
 
   lazy val pageTitleContentParent = "Are you self-employed or an apprentice?"
   lazy val pageTitleContentPartner = "Is your partner an apprentice or self-employed?"
 
-  //To be deleted
-  lazy val  selfEmployedTimescaleParentPathTemp = Call("GET", "/self-employed/parent")
-  lazy val  selfEmployedTimescalePartnerPathTemp = Call("GET", "/self-employed/partner")
-
   override val contentData: List[ElementDetails] = List(
 
-    ElementDetails(attribute = Some(attributeFor), attributeValue = Some("selfEmployedOrApprentice-selfemployed"), value = "Self-employed"),
-    ElementDetails(attribute = Some(attributeFor), attributeValue = Some("selfEmployedOrApprentice-apprentice"), value = "Apprentice"),
-    ElementDetails(attribute = Some(attributeFor), attributeValue = Some("selfEmployedOrApprentice-neither"), value = "Neither self-employed or an apprentice"),
+    ElementDetails(attribute = Some(attributeFor),
+                  attributeValue = Some("selfEmployedOrApprentice-selfemployed"),
+                  value = "Self-employed"),
+    ElementDetails(attribute = Some(attributeFor),
+                  attributeValue = Some("selfEmployedOrApprentice-apprentice"),
+                  value = "Apprentice"),
+    ElementDetails(attribute = Some(attributeFor),
+                  attributeValue = Some("selfEmployedOrApprentice-neither"),
+                  value = "Neither self-employed or an apprentice"),
     ElementDetails(id = Some(nextButtonId), value = nextButtonLabel),
     ElementDetails(id = Some(backButtonId), value = backButtonLabel)
   )
@@ -63,8 +65,8 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
 
   val testCases = Table(
     ("Is partner", "Submission path", "Page title", "Back Url"),
-    (false, parentSelfEmployedOrApprenticePath, pageTitleContentParent, backUrlForParent),
-    (true, partnerSelfEmployedOrApprenticePath, pageTitleContentPartner, backUrlForPartner)
+    (false, selfEmployedOrApprenticeParentPath, pageTitleContentParent, backUrlForParent),
+    (true, selfEmployedOrApprenticePartnerPath, pageTitleContentPartner, backUrlForPartner)
   )
 
   forAll(testCases) {
@@ -84,7 +86,12 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
     s"if user is $userType" should {
 
       "render template successfully" in {
-        val template = selfEmployedOrApprentice.render(getNewForm(isPartner).form, isPartner, backUrl, request, applicationMessages)
+        val template = selfEmployedOrApprentice.render(getNewForm(isPartner).form,
+          isPartner,
+          backUrl,
+          request,
+          applicationMessages)
+
         template.contentType shouldBe "text/html"
 
         val template1 = selfEmployedOrApprentice.f(getNewForm(isPartner).form, isPartner, backUrl)(request, applicationMessages)
@@ -101,7 +108,9 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
         }
 
         "valid value is given" in {
-          implicit val doc: Document = getTemplate(getNewForm(isPartner).form.fill(Some(EmploymentStatusEnum.SELFEMPLOYED.toString)), isPartner, backUrl)
+          implicit val doc: Document = getTemplate(getNewForm(isPartner).form.fill(Some(EmploymentStatusEnum.SELFEMPLOYED.toString)),
+            isPartner,
+            backUrl)
 
           verifyPageContent(dynamicContent)
           verifyPageLinks(dynamicLinks)
@@ -123,7 +132,8 @@ class SelfEmployedOrApprenticeSpec extends TemplatesValidator with FakeCCApplica
           verifyErrors(
             errors = Map(selfEmployedOrApprenticeKey -> applicationMessages.messages(s"self.employed.or.apprentice.not.selected.$userType"))
           )
-          applicationMessages.messages(s"self.employed.or.apprentice.not.selected.$userType") should not be s"self.employed.or.apprentice.not.selected.$userType"
+          applicationMessages.messages(s"self.employed.or.apprentice.not.selected.$userType") should not be
+            s"self.employed.or.apprentice.not.selected.$userType"
         }
       }
 

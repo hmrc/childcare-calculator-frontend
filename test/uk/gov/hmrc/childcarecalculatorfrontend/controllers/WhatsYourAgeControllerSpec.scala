@@ -89,7 +89,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentBenefitsPath
+          content.getElementById("back-button").attr("href") shouldBe benefitsParentPath
         }
 
         "partner gets benefits" in {
@@ -110,7 +110,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerBenefitsPath
+          content.getElementById("back-button").attr("href") shouldBe benefitsPartnerPath
         }
 
         "both get benefits" in {
@@ -131,7 +131,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerBenefitsPath
+          content.getElementById("back-button").attr("href") shouldBe benefitsPartnerPath
         }
 
         "noone get benefits" in {
@@ -195,7 +195,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentBenefitsPath
+          content.getElementById("back-button").attr("href") shouldBe benefitsParentPath
         }
 
         "both gets benefits" in {
@@ -216,7 +216,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           status(result) shouldBe OK
           result.body.contentType.get shouldBe "text/html; charset=utf-8"
           val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe partnerBenefitsPath
+          content.getElementById("back-button").attr("href") shouldBe benefitsPartnerPath
         }
 
         "both are in paid employment" in {
@@ -403,7 +403,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
+            result.header.headers("Location") shouldBe minimumEarningsPartnerPath
           }
 
           s"${range.toString} is selected if there is data in keystore when both are in paid employment object for partner" in {
@@ -431,7 +431,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe parentMinimumEarningsPath
+            result.header.headers("Location") shouldBe minimumEarningsParentPath
           }
 
         }
@@ -492,7 +492,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe parentMinimumEarningsPath
+            result.header.headers("Location") shouldBe minimumEarningsParentPath
           }
 
           s"${range.toString} is selected if there is data in keystore when partner is in paid employment for parent" in {
@@ -520,7 +520,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
               )
             )
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe partnerMinimumEarningsPath
+            result.header.headers("Location") shouldBe minimumEarningsPartnerPath
           }
 
           s"${range.toString} is selected if there is data in keystore for PageObjects and both are in paid employment object for parent" in {

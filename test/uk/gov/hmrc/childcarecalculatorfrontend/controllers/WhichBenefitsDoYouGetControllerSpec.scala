@@ -42,8 +42,8 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
     reset(sut.keystore)
   }
 
-  validateUrl(parentBenefitsPath)
-  validateUrl(partnerBenefitsPath)
+  validateUrl(benefitsParentPath)
+  validateUrl(benefitsPartnerPath)
 
   "Benefits Controller" when {
 
@@ -163,7 +163,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
         val content = Jsoup.parse(bodyOf(result))
-        content.getElementById("back-button").attr("href") shouldBe parentBenefitsPath
+        content.getElementById("back-button").attr("href") shouldBe benefitsParentPath
       }
 
       "load template successfully if there is no data in keystore" in {
@@ -275,7 +275,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
       }
 
       "redirect to correct next page" when {
-        s"parent has partner - go to ${partnerBenefitsPath}" in {
+        s"parent has partner - go to ${benefitsPartnerPath}" in {
           val benefits = Benefits(true, true, true, true)
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier],any[Reads[PageObjects]])
@@ -307,7 +307,7 @@ class WhichBenefitsDoYouGetControllerSpec  extends ControllersValidator with Bef
           val form = new WhichBenefitsDoYouGetForm(false, applicationMessagesApi).form.fill(benefits)
           val result = await(sut.onSubmit(false)(request.withFormUrlEncodedBody(form.data.toSeq: _*).withSession(validSession)))
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe partnerBenefitsPath
+          result.header.headers("Location") shouldBe benefitsPartnerPath
         }
 
         s"parent has partner without benefits - go to ${whatsYourAgePath}/parent" in {
