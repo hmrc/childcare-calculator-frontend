@@ -135,3 +135,7 @@ IE8: Add missing arrow to Back Button
 #back-button {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKCAYAAACXDi8zAAAAAXNSR0IArs4c6QAAAFRJREFUCB1jYMACSsvK/qMIf/r06X9YePh/Ll5ehMTly5f/m5ubgwXhElu2bPkvISEBFwRLTJ06FUUAJAjCTCiWoHOwGgVThNVymCRW58IkQTTIgwDiajmA797qnwAAAABJRU5ErkJggg==) 0 2px no-repeat
 }
+
+article h2 {
+    margin: 1.2em 0 0.4em 0 !important;
+}

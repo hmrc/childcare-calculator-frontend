@@ -225,3 +225,7 @@ maximum.earning.error.YOU = You must answer yes if you will earn more than £100
 maximum.earning.error.PARTNER = You must answer yes if your partner will earn more than £100,000 a year
 maximum.earning.error.BOTH = You must answer yes if either of you will earn more than £100,000 a year
 maximum.earning.hint.text = This is with any pension and gift aid contributions taken off.
+
+####### Max free hours Earning #######
+max.free.hours.info.header = It looks like you’re eligible for the maximum free hours
+max.free.hours.info.can.get.maximum.hours.paragraph = Based on the information you’ve given so far, you can get a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
