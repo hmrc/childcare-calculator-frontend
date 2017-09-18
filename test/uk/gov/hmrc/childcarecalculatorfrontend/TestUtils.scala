@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package uk.gov.hmrc.childcarecalculatorfrontend
 
 import org.mockito.Mockito._

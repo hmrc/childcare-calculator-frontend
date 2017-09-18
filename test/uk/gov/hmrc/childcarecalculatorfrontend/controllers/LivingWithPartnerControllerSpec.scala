@@ -29,14 +29,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.{ObjectBuilder, ControllersValidator}
+import uk.gov.hmrc.childcarecalculatorfrontend.{TestUtils, ObjectBuilder, ControllersValidator}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder{
+class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder with TestUtils{
 
   val sut = new LivingWithPartnerController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -58,7 +58,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(None))
+            Some(buildPageObjectsModel(None))
           )
         )
 
@@ -72,7 +72,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(Some(true)))
+            Some(buildPageObjectsModel(Some(true)))
           )
         )
 
@@ -111,7 +111,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         ).thenReturn(
           Future.successful(
             Some(
-              buildPageObjects(
+              buildPageObjectsModel(
                 livingWithPartner = None,
                 childAgedThreeOrFour = None
               )
@@ -132,7 +132,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         ).thenReturn(
           Future.successful(
             Some(
-              buildPageObjects(
+              buildPageObjectsModel(
                 livingWithPartner = None,
                 childAgedThreeOrFour = Some(true)
               )
@@ -157,7 +157,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(None))
+              Some(buildPageObjectsModel(None))
             )
           )
 
@@ -176,7 +176,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
       "saving in keystore is successful" should {
         s"redirect to next page ${paidEmploymentPath}" when {
           "user selects 'YES'" in {
-            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+            val keystoreObject: PageObjects = buildPageObjectsModel(livingWithPartner = None)
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -206,7 +206,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           }
 
           "user selects 'NO'" in {
-            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+            val keystoreObject: PageObjects = buildPageObjectsModel(livingWithPartner = None)
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -470,20 +470,20 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
             parent = parent,
             partner = Some(partner))
 
-          val modelToFetch = buildPageObjects.copy(household = houseHoldModel,
-          childAgedTwo = None,
-          childAgedThreeOrFour = Some(false),
-          expectChildcareCosts = Some(true),
-          livingWithPartner = Some(true),
-          paidOrSelfEmployed = Some(true),
-          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-          getVouchers = Some(YesNoUnsureEnum.NOTSURE),
-          whoGetsVouchers = None,
-          getBenefits = Some(true),
-          getMaximumEarnings = None)
+          val model = buildPageObjects.copy(household = houseHoldModel,
+              childAgedTwo = None,
+              childAgedThreeOrFour = Some(false),
+              expectChildcareCosts = Some(true),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = Some(true),
+              whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
+              getVouchers = Some(YesNoUnsureEnum.NOTSURE),
+              whoGetsVouchers = None,
+              getBenefits = Some(true),
+              getMaximumEarnings = None)
 
-          val modelToStore = modelToFetch.copy(
-            household = modelToFetch.household.copy(partner = None),
+          val expectedModel = model.copy(
+            household = model.household.copy(partner = None),
             livingWithPartner = Some(false),
             paidOrSelfEmployed = None,
             whichOfYouInPaidEmployment = None,
@@ -492,6 +492,18 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
             getBenefits = None,
             getMaximumEarnings = None
           )
+
+          setupMocks(modelToFetch = Some(model), modelToStore = Some(model), storePageObjects = true)
+
+          val result = sut.onSubmit(
+              request
+                .withFormUrlEncodedBody(livingWithPartnerKey -> "false")
+                .withSession(validSession)
+            )
+
+          val capturedValue = verifyAndReturnStoredPageObjects(sut.keystore)
+          val expectedPartner = expectedModel.household.partner
+          capturedValue.household.partner shouldBe Some(expectedPartner)
 
         }
 
@@ -511,7 +523,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(Some(true), None))
+            Some(buildPageObjectsModel(Some(true), None))
           )
         )
 
@@ -557,7 +569,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
   }
 
-  private def buildPageObjects(livingWithPartner: Option[Boolean],
+  private def buildPageObjectsModel(livingWithPartner: Option[Boolean],
                        childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
     location = LocationEnum.ENGLAND),
     childAgedThreeOrFour = childAgedThreeOrFour,
