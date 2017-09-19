@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.config
 
 import uk.gov.hmrc.play.audit.http.config.LoadAuditingConfig
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector => Auditing}
-import uk.gov.hmrc.play.config.{AppName, RunMode, ServicesConfig}
+import uk.gov.hmrc.play.config.{AppName, ServicesConfig}
 import uk.gov.hmrc.play.http.ws.{WSDelete, WSGet, WSPost, WSPut}
 import uk.gov.hmrc.http.cache.client.SessionCache
 

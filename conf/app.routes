@@ -95,3 +95,6 @@ POST   /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET    /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(youPartnerBoth: String = "BOTH")
 POST   /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(youPartnerBoth: String = "BOTH")
+
+GET    /credits                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.CreditsController.onPageLoad
+POST   /credits                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.CreditsController.onSubmit

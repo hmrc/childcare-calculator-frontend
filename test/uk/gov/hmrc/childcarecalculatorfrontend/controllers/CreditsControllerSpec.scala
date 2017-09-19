@@ -34,7 +34,7 @@ import scala.concurrent.Future
 
 class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new MinimumEarningsController(applicationMessagesApi) {
+  val sut = new CreditsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
@@ -67,7 +67,18 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
 
     "onPageLoad is called" should {
 
-      "redirect to technical difficulty page if there is no data in keystore for parent" in {
+      "redirect to error page if can't connect with keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+        val result = await(sut.onPageLoad()(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "redirect to technical difficulties page if there is no data in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -75,39 +86,12 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
             None
           )
         )
-        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        val result = await(sut.onPageLoad()(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "redirect to technical difficulty page if there is no data in keystore for partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
-
-      "load template when user visiting the page first time for partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(isPartner = true, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = None,
-              partnerAgeRange = Some(AgeRangeEnum.UNDER18), partnerEarnMoreThanNMW = None
-            ))
-          )
-        )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-        status(result) shouldBe OK
-      }
-
-      "load template when user visiting the page first time for parent" in {
+      "load template when user visiting the page first time" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -115,140 +99,94 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
             Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = None))
           )
         )
-        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+        val result = await(sut.onPageLoad()(request.withSession(validSession)))
         status(result) shouldBe OK
       }
 
-      "load template successfully if there is data in keystore for parent and define correctly backURL" when {
-        "redirect to parent's age page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/parent"
+      "load template successfully if there is data in keystore and define correct backURL" when {
+
+        "redirect to maximum earnings page when single parent satisfy minimum earnings" in {
         }
 
-        "redirect to partner's age page when both are in paid employment" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)))
-            )
-          )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
+        "redirect to self employed/apprentice page when single parent not satisfy minimum earnings and apprentice or neither is selected on " +
+          "self employed/apprentice page" in {
         }
 
-        "redirect to error page if can't connect with keystore if parent" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-          val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
+        "redirect to self employed page when single parent not satisfy minimum earnings & select self employed on self employed/apprentice page" in {
         }
+
+        "redirect to parent maximum earnings page when only parent is in paid employment & satisfy minimum earnings" in {
+        }
+
+        "redirect to parent self employed/apprentice page when only parent in paid employment & not satisfy minimum earnings & apprentice or " +
+          "neither is selected on self employed/apprentice page" in {
+        }
+
+        "redirect to parent self employed page when only parent in paid employment & not satisfy minimum earnings & select self employed on self " +
+          "employed/ apprentice page" in {
+        }
+
+        "redirect to partner maximum earnings page when only partner is in paid employment & satisfy minimum earnings" in {
+        }
+
+        "redirect to partner self employed/apprentice page when only partner in paid employment & not satisfy minimum earnings & apprentice or " +
+          "neither is selected on self employed/apprentice page" in {
+        }
+
+        "redirect to partner self employed page when only parent in paid employment & not satisfy minimum earnings & select self employed on self " +
+          "employed/ apprentice page" in {
+        }
+
+        "redirect to both maximum earnings page when both are in paid employment & satisfy minimum earnings" in {
+        }
+
+        "redirect to partner maximum earnings page when both are in paid employment & partner satisfy & parent not satisfy min earnings" in {
+        }
+
+        "redirect to parent maximum earnings page when both are in paid employment & parent satisfy & partner not satisfy min earnings" in {
+        }
+
+        "redirect to partner self employed/apprentice page when both are in paid employment & not satisfy minimum earnings & apprentice or " +
+          "neither is selected on partner self employed/apprentice page" in {
+        }
+
+        "redirect to partner self employed page when both are in paid employment & not satisfy minimum earnings & selects self employed on partner " +
+          "self employed/ apprentice page" in {
+        }
+
       }
 
-      "load template successfully if there is data in keystore for partner and display correct backurl" when {
-        "redirect to partner's age page" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                parentEarnMoreThanNMW = Some(true),
-                partnerEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe whatsYourAgePath + "/partner"
-        }
-
-        "redirect to parent's minimum earnings page if both are in paid employment" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(isPartner = true,
-                parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-                partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-                parentEarnMoreThanNMW = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-                partnerEarnMoreThanNMW = Some(true)))
-            )
-          )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-          status(result) shouldBe OK
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-          val content = Jsoup.parse(bodyOf(result))
-          content.getElementById("back-button").attr("href") shouldBe parentMinimumEarningsPath
-        }
-
-        "redirect to error page if can't connect with keystore if partner" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-          val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
-
-      "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any(), any())
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(true, None))
-            )
-          )
-
-          when(
-            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-
-          val result = await(
-            sut.onSubmit(true)(
-              request
-                .withFormUrlEncodedBody(whatsYourAgeKey -> AgeRangeEnum.OVERTWENTYFOUR.toString)
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
     }
-  }
 
-  "onSubmit is called" when {
+    "onSubmit is called" should {
 
-    "there are errors" should {
-      "load same template and return BAD_REQUEST as a partner" in {
+      s"redirect to ${technicalDifficultiesPath} when unable to store in keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any(), any())
+        ).thenReturn(
+          Future.successful(
+            Some(buildPageObjects(true, None))
+          )
+        )
+
+        when(
+          sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+
+        val result = await(
+          sut.onSubmit()(
+            request
+              .withFormUrlEncodedBody(creditsKey -> CreditsEnum.UNIVERSALCREDIT.toString)
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      "load template when there is no input, return BAD_REQUEST" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -257,9 +195,9 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
           )
         )
         val result = await(
-          sut.onSubmit(true)(
+          sut.onSubmit()(
             request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "")
+              .withFormUrlEncodedBody(creditsKey -> "")
               .withSession(validSession)
           )
         )
@@ -267,26 +205,7 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      "load same template and return BAD_REQUEST as a parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(false, parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR), partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)))
-          )
-        )
-        val result = await(
-          sut.onSubmit(false)(
-            request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "")
-              .withSession(validSession)
-          )
-        )
-        status(result) shouldBe BAD_REQUEST
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
-      }
-
-      "has been previously selected and there is no data in keystore for PageObjects object for partner" in {
+      "redirect to technical difficulties page when there is no data in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -296,9 +215,9 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         )
 
         val result = await(
-          sut.onSubmit(true)(
+          sut.onSubmit()(
             request
-              .withFormUrlEncodedBody(minimumEarningsKey -> "123")
+              .withFormUrlEncodedBody(creditsKey -> "123")
               .withSession(validSession)
           )
         )
@@ -306,164 +225,31 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-    }
+      s"successful submission with location=England, has child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
+        "redirect to maximum free hours info page" in {
+      }
 
-    s"successful submission with location=England, has child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
-      "redirect to maximum free hours info page" should {
-      ""
-    }
+      s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
+        "redirect to how many children page" in {
+      }
 
-    s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
-      "redirect to how many children page" should {
+      s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
+        "redirect to how many children page" in {
+      }
 
-    }
+      s"successful submission with location=England, no child of 3 or 4 years, not satisfy minimum earnings and not self employed or neither, " +
+        "redirect to how many children page" in {
+      }
 
-    s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
-      "redirect to how many children page" should {
+      s"successful submission with location=England, has child of 3 or 4 years, not satisfy minimum earnings and is apprentice, " +
+        "redirect to maximum free hours info page" in {
+      }
 
-    }
-
-    s"successful submission with location=England, no child of 3 or 4 years, not satisfy minimum earnings and not self employed or neither, " +
-      "redirect to how many children page" should {
-
-    }
-
-    s"successful submission with location=England, has child of 3 or 4 years, not satisfy minimum earnings and is apprentice, " +
-      "redirect to maximum free hours info page" should {
-
-    }
-
-    s"successful submission with location=England, has only child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
-      "redirect to result page" should {
+      s"successful submission with location=England, has only child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
+        "redirect to result page" in {
+      }
 
     }
-
-  }
-
-  "saving in keystore is successful as a parent" should {
-
-    "no data in keystore, redirect to techincal difficulties page" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-      ).thenReturn(
-        Future.successful(
-          None
-        )
-      )
-
-      val result = await(
-        sut.onSubmit(false)(
-          request
-            .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-            .withSession(validSession)
-        )
-      )
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe technicalDifficultiesPath
-    }
-
-    s"both in paid employment, redirect to ${partnerMinimumEarningsPath}" in {
-      val model = buildPageObjects(isPartner = true,
-        parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-        partnerAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-        parentEarnMoreThanNMW = Some(false),
-        whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
-
-      val modifiedModel = model.copy(household = model.household.copy(partner = Some(model.household.partner.get.copy(
-        minimumEarnings = Some(MinimumEarnings())))))
-
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.successful(
-          Some(model)
-        )
-      )
-
-      when(
-        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-      ).thenReturn(
-        Future.successful(
-          Some(model)
-        )
-      )
-
-      val result = await(
-        sut.onSubmit(false)(
-          request
-            .withFormUrlEncodedBody(minimumEarningsKey -> "false")
-            .withSession(validSession)
-        )
-      )
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe partnerMinimumEarningsPath
-    }
-
-    s"only parent not satisfy minimum earnings, redirect to ${parentSelfEmployedOrApprenticePath}" in {
-      val po = buildPageObjects(isPartner = false,
-        parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-        parentEarnMoreThanNMW = Some(true))
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.successful(
-          Some(po)
-        )
-      )
-
-      when(
-        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-      ).thenReturn(
-        Future.successful(
-          Some(buildPageObjects(isPartner = false,
-            parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-            parentEarnMoreThanNMW = Some(true)))
-        )
-      )
-
-      val result = await(
-        sut.onSubmit(false)(
-          request
-            .withFormUrlEncodedBody(minimumEarningsKey -> "false")
-            .withSession(validSession)
-        )
-      )
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe parentSelfEmployedOrApprenticePath
-    }
-
-    s"only parent satisfy minimum earnings, redirect to ${parentMaximumEarningsPath}" in {
-      val po = buildPageObjects(isPartner = false,
-        parentAgeRange = Some(AgeRangeEnum.TWENTYONETOTWENTYFOUR),
-        whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU),
-        parentEarnMoreThanNMW = Some(true))
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.successful(
-          Some(po)
-        )
-      )
-
-      when(
-        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-      ).thenReturn(
-        Future.successful(
-          Some(po)
-        )
-      )
-
-      val result = await(
-        sut.onSubmit(false)(
-          request
-            .withFormUrlEncodedBody(minimumEarningsKey -> "true")
-            .withSession(validSession)
-        )
-      )
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe parentMaximumEarningsPath
-    }
-
   }
 
 }

@@ -30,7 +30,7 @@ trait ObjectBuilder {
   val defaultWhoGetsVouchers = Some(YouPartnerBothEnum.YOU)
   val defaultGetBenefits = Some(false)
 
-  val defaultTcUcBenefits = Some(TcUcBenefitsEnum.NEITHER)
+  val defaultCredits = Some(CreditsEnum.NONE)
   val defaultLocation = LocationEnum.ENGLAND
   val defaultChildrenList = List.empty
 
@@ -64,7 +64,7 @@ trait ObjectBuilder {
   )
 
   val buildHousehold = Household(
-    tcUcBenefits = defaultTcUcBenefits,
+    credits = defaultCredits,
     location = defaultLocation,
     children = defaultChildrenList,
     parent = buildClaimant,
