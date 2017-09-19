@@ -45,9 +45,6 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if (pageObjects.livingWithPartner.isDefined) =>
         val hasPartner = pageObjects.livingWithPartner.get
-
-        println("**********************8 PageObjects is ******************"+pageObjects)
-
         Ok(
           getBenefits(
             new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits), hasPartner, getBackUrl(pageObjects)

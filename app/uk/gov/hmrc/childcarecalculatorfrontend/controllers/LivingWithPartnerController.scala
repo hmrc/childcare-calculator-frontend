@@ -33,14 +33,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
-    if (hasChildAgedThreeOrFour.getOrElse(false)) {
-      routes.FreeHoursInfoController.onPageLoad()
-    } else {
-      routes.ExpectChildcareCostsController.onPageLoad(false)
-    }
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
@@ -59,41 +51,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
     }
   }
 
-  private def modifyPageObject(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
-    if(oldPageObjects.livingWithPartner == Some(newLivingWithPartner)) {
-      oldPageObjects
-    }
-    else {
-      clearData(livingWithPartnerController, newLivingWithPartner, oldPageObjects).getOrElse(oldPageObjects)
-    /*  val modified = oldPageObjects.copy(
-        livingWithPartner = Some(newLivingWithPartner),
-        whichOfYouInPaidEmployment = None,
-        paidOrSelfEmployed = None,
-        getVouchers = None,
-        household = oldPageObjects.household.copy(
-          parent = oldPageObjects.household.parent.copy(
-            escVouchers = None
-          )
-        )
-      )
-      if(newLivingWithPartner) {
-        modified.copy(
-          household = modified.household.copy(
-            partner = Some(Claimant())
-          )
-        )
-      }
-      else {
-        modified.copy(
-          household = modified.household.copy(
-            partner = None
-          )
-        )
-      }*/
-
-
-    }
-  }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
@@ -110,9 +67,9 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
             ),
           success => {
             val livingWithPartnerAnswer = success.get
-            val modifiedPageObjects = modifyPageObject(pageObjects, livingWithPartnerAnswer)
+            val modifiedPageObjects = updatePageObjects(pageObjects, livingWithPartnerAnswer)
 
-            val pageObjectsAfterClearData = clearData(livingWithPartnerController, livingWithPartnerAnswer, modifiedPageObjects)
+            //val pageObjectsAfterClearData = clearData(livingWithPartnerController, livingWithPartnerAnswer, modifiedPageObjects)
 
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
@@ -128,4 +85,51 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
+
+  private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
+    if (hasChildAgedThreeOrFour.getOrElse(false)) {
+      routes.FreeHoursInfoController.onPageLoad()
+    } else {
+      routes.ExpectChildcareCostsController.onPageLoad(false)
+    }
+  }
+
+  private def updatePageObjects(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
+    if(oldPageObjects.livingWithPartner.contains(newLivingWithPartner)) {
+      oldPageObjects
+    } else {
+     // clearData(livingWithPartnerController, newLivingWithPartner, oldPageObjects).getOrElse(oldPageObjects)
+     val existingValueForLivingWithPartner = oldPageObjects.livingWithPartner.getOrElse(false)
+
+     (existingValueForLivingWithPartner, newLivingWithPartner) match {
+          case (true, false) => {
+            oldPageObjects.copy(household = oldPageObjects.household.copy(partner = None,
+              parent = oldPageObjects.household.parent.copy(benefits = None)),
+              livingWithPartner = Some(false),
+              paidOrSelfEmployed = None,
+              whichOfYouInPaidEmployment = None,
+              getVouchers = None,
+              whoGetsVouchers = None,
+              getBenefits = None,
+              getMaximumEarnings = None
+            )
+          }
+          case (false, true) => {
+            oldPageObjects.copy(household = oldPageObjects.household.copy(parent = Claimant(),
+              partner = Some(oldPageObjects.household.partner.fold(Claimant())(_.copy(benefits = None)))),
+              livingWithPartner = Some(true),
+              paidOrSelfEmployed = None,
+              whichOfYouInPaidEmployment = None,
+              getVouchers = None,
+              whoGetsVouchers = None,
+              getBenefits = None,
+              getMaximumEarnings = None
+            )
+          }
+          case _ => oldPageObjects
+        }
+
+    }
+  }
+
 }

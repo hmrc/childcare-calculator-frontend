@@ -41,7 +41,6 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if validatePageObjects(pageObjects) =>
         val hasPartner = pageObjects.livingWithPartner.get
-        println("**************************8 In Paid employment page *********************"+pageObjects)
         Ok(
           paidEmployment(
             new PaidEmploymentForm(hasPartner, messagesApi).form.fill(pageObjects.paidOrSelfEmployed),
