@@ -64,7 +64,8 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
       oldPageObjects
     }
     else {
-      val modified = oldPageObjects.copy(
+      clearData(livingWithPartnerController, newLivingWithPartner, oldPageObjects).getOrElse(oldPageObjects)
+    /*  val modified = oldPageObjects.copy(
         livingWithPartner = Some(newLivingWithPartner),
         whichOfYouInPaidEmployment = None,
         paidOrSelfEmployed = None,
@@ -88,7 +89,9 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
             partner = None
           )
         )
-      }
+      }*/
+
+
     }
   }
 
@@ -106,7 +109,11 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               )
             ),
           success => {
-            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
+            val livingWithPartnerAnswer = success.get
+            val modifiedPageObjects = modifyPageObject(pageObjects, livingWithPartnerAnswer)
+
+            val pageObjectsAfterClearData = clearData(livingWithPartnerController, livingWithPartnerAnswer, modifiedPageObjects)
+
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
             }
