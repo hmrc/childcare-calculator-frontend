@@ -66,4 +66,51 @@ trait MockBuilder {
       Future.failed(new RuntimeException)
     )
   }
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  def setupMocks(controllerKeystore: KeystoreService,
+                         modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        controllerKeystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        controllerKeystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
+    }
+
+  }
+
+  /**
+    * setup the mock with runtimeException
+    *
+    * @return
+    */
+  def setupMocksForException(controllerKeystore: KeystoreService) = {
+    when(
+      controllerKeystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+    ).thenReturn(
+      Future.failed(new RuntimeException)
+    )
+  }
+
 }

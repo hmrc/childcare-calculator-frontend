@@ -160,7 +160,23 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
 
     "onSubmit is called" should {
 
-      s"redirect to ${technicalDifficultiesPath} when unable to store in keystore" in {
+      s"redirect to ${technicalDifficultiesPath} if can't connect with keystore" in {
+        when(
+          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+        ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+        val result = await(sut.onSubmit()(
+          request
+            .withFormUrlEncodedBody(creditsKey -> CreditsEnum.UNIVERSALCREDIT.toString)
+            .withSession(validSession)
+        ))
+
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
+      s"redirect to ${technicalDifficultiesPath} if keystore is unable to cache" in {
         when(
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
@@ -186,7 +202,7 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      "load template when there is no input, return BAD_REQUEST" in {
+      "load template when there is incorrect input, return BAD_REQUEST" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -205,7 +221,7 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
 
-      "redirect to technical difficulties page when there is no data in keystore" in {
+      s"redirect to ${technicalDifficultiesPath} page when there is no data in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
         ).thenReturn(
@@ -225,8 +241,33 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
-      s"successful submission with location=England, has child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
+      s"successful submission with location is England, has child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
         "redirect to maximum free hours info page" in {
+//        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+//          employmentStatus = None)))
+//
+//        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+//          employmentStatus = None)))
+//
+//        val model = buildPageObjectsModel(isPartner = true,
+//          parentEarnMoreThanNMW = None)
+//
+//        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+//          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+//
+//        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(parent = parent.copy(maximumEarnings = Some(true)),
+//          partner = Some(partner.copy(maximumEarnings = Some(true)))))
+//
+//        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+//
+//        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+//          request
+//            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+//            .withSession(validSession)
+//        )
+//
+//        status(result) shouldBe SEE_OTHER
+//        redirectLocation(result) should be(Some(creditsPath))
       }
 
       s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +

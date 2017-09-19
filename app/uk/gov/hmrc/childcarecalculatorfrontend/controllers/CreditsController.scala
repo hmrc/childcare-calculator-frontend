@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.CreditsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{CreditsEnum, Household, LocationEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{CreditsEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.credits
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -35,8 +35,14 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
   val keystore: KeystoreService = KeystoreService
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map { pageObjects =>
-      Ok(credits(new CreditsForm(messagesApi).form.fill(pageObjects.map(_.household.location.toString))))
+    keystore.fetch[PageObjects]().map {
+      case Some(pageObjects) =>
+        val creditsValue = pageObjects.household.credits.getOrElse("").toString
+        Ok(credits(new CreditsForm(messagesApi).form.fill(Some(creditsValue))))
+
+      case _ =>
+        Logger.warn("Invalid PageObjects in CreditsController.onPageLoad")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }.recover {
       case ex: Exception =>
         Logger.warn(s"Exception from CreditsController.onPageLoad: ${ex.getMessage}")
@@ -44,57 +50,48 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     }
   }
 
-  private def getModifiedPageObjects(pageObjects: Option[PageObjects], selectedCredits: String): PageObjects = {
-    pageObjects match {
-      case Some(po) =>
-//        val modifiedChildAgedTwo = if(selectedCredits == CreditsEnum.TAXCREDITS.toString) {
-//          None
-//        } else {
-//          po.childAgedTwo
-//        }
-//
-//        val modifiedHousehold = po.household.copy(credits = Some(CreditsEnum.withName(selectedCredits)))
-//
-//        po.copy(household = modifiedHousehold, childAgedTwo = modifiedChildAgedTwo)
-        po
-
-      case _ =>
-        PageObjects(
-          household = Household(credits = Some(CreditsEnum.withName(selectedCredits)),
-            location = LocationEnum.SCOTLAND)
-        )
-    }
+  private def getModifiedPageObjects(pageObjects: PageObjects, selectedCredits: String): PageObjects = {
+    pageObjects.copy(
+      household = pageObjects.household.copy(credits = Some(CreditsEnum.withName(selectedCredits)))
+    )
   }
 
-  private def saveAndGoToNextPage(pageObjects: Option[PageObjects], selectedCredits: String)(implicit hc: HeaderCarrier): Future[Result] = {
+  private def nextPage(pageObjects: PageObjects, selectedCredits: String)(implicit hc: HeaderCarrier): Future[Result] = {
     val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedCredits)
 
     keystore.cache(modifiedPageObjects).map { res =>
       if (selectedCredits == CreditsEnum.TAXCREDITS.toString) {
-        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
+        Redirect(routes.ChildCareBaseController.underConstruction())
       } else if (selectedCredits == CreditsEnum.UNIVERSALCREDIT.toString) {
-        Redirect(routes.ChildAgedTwoController.onPageLoad(false))
+        Redirect(routes.ChildCareBaseController.underConstruction())
       } else {
-        Redirect(routes.ChildAgedTwoController.onPageLoad(false))
+        Redirect(routes.ChildCareBaseController.underConstruction())
       }
     }
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    new CreditsForm(messagesApi).form.bindFromRequest().fold(
-      errors => {
-        Future(BadRequest(credits(errors)))
-      },
-      success => {
-        keystore.fetch[PageObjects]().flatMap { pageObjects =>
-          saveAndGoToNextPage(pageObjects, success.get)
-        } recover {
-          case ex: Exception =>
-            Logger.warn(s"Exception from CreditsController.onSubmit: ${ex.getMessage}")
-            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-        }
-      }
-    )
+    keystore.fetch[PageObjects]().flatMap {
+      case Some(pageObjects) =>
+        new CreditsForm(messagesApi).form.bindFromRequest().fold(
+          errors => {
+            Future(BadRequest(credits(errors)))
+          },
+          success => {
+            nextPage(pageObjects, success.get)
+          }
+        )
+
+      case _ =>
+        Logger.warn("PageObjects object is missing in CreditsController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from CreditsController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+
   }
 
 }
