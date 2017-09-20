@@ -35,16 +35,14 @@ class MaxFreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication wit
     ElementDetails(id = Some("page-title"), value = "It looks like you’re eligible for the maximum free hours"),
     ElementDetails(tagName = Some("p"), tagIndex = Some(0), value = "Based on the information you’ve given so far, you can get a maximum of 30 hours free early " +
       "education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old."),
-    ElementDetails(tagName = Some("h2"), tagIndex = Some(0), value = "Still to check"),
-    ElementDetails(tagName = Some("p"), tagIndex = Some(1), value = "By giving more information, the calculator can check to see if you’re eligible to get help from:"),
-    ElementDetails(tagName = Some("li"), tagIndex = Some(0), value = "Tax-Free Childcare"),
     ElementDetails(id = Some("next-button"), value = "Continue"),
     ElementDetails(id = Some("back-button"), value = "Back")
   )
 
   override val linksData: List[ElementDetails] = List(
-    ElementDetails(elementClass = Some("form"), checkAttribute = Some("action"), value = freeHoursInfoPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = creditsPath)
+  //TODO: update both links
+    ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = maxFreeHoursInfoPath),
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = maxFreeHoursInfoPath)
   )
 
   def getTemplate(): Document = {
@@ -63,5 +61,10 @@ class MaxFreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication wit
   "display correct content" in {
       implicit val doc: Document = getTemplate()
       verifyPageContent()
+  }
+
+  "verify links" in {
+      implicit val doc: Document = getTemplate()
+      verifyLinks(linksData)
   }
 }

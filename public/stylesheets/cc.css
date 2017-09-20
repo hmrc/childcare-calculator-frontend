@@ -99,6 +99,13 @@ button,
   }
 }
 
+@media (max-width: 640px) {
+  .button {
+      width: 94%;
+      text-align: center;
+  }
+}
+
 td.numeric {
   text-align: right;
 }
@@ -138,4 +145,8 @@ IE8: Add missing arrow to Back Button
 
 article h2 {
     margin: 1.2em 0 0.4em 0 !important;
+}
+
+.multiple-choice {
+  margin-bottom: 0;
 }

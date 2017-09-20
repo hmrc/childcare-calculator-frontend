@@ -36,7 +36,7 @@ import scala.concurrent.Future
 class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
   val keystore: KeystoreService = KeystoreService
-
+//TODO: update paths
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
@@ -53,6 +53,6 @@ class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    Future(Redirect(routes.LivingWithPartnerController.onPageLoad()))
+    Future(Redirect(routes.MaxFreeHoursInfoController.onPageLoad()))
   }
 }

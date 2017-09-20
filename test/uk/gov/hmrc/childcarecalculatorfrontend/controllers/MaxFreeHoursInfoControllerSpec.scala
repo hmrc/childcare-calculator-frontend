@@ -15,14 +15,17 @@
  */
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
+
+import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
+import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, LocationEnum, Household, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 
 
@@ -31,95 +34,95 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
  */
 class MaxFreeHoursInfoControllerSpec extends ControllersValidator with BeforeAndAfterEach {
 
-  val sut = new FreeHoursInfoController(applicationMessagesApi) {
+  val maxFreeHoursInfoController = new MaxFreeHoursInfoController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
   }
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(sut.keystore)
+    reset(maxFreeHoursInfoController.keystore)
   }
-
-  validateUrl(maxFreeHoursInfoPath)
 
   "MaxFreeHoursInfoController" should {
     "load successfully template when data in keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(),any())
-      ).thenReturn(
-          Future.successful(
-            Some(
-              PageObjects(
-                household = Household(location = LocationEnum.ENGLAND),
-                expectChildcareCosts = Some(true),
-                childAgedThreeOrFour = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
-              )
-            )
-          )
-        )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
+
+      val modelToFetch = PageObjects(
+        household = Household(location = LocationEnum.ENGLAND)
+      )
+
+      setupMocks(modelToFetch = Some(modelToFetch))
+
+      val result = await(maxFreeHoursInfoController.onPageLoad(request.withSession(validSession)))
       status(result) shouldBe OK
       result.body.contentType.get shouldBe "text/html; charset=utf-8"
     }
 
     "load successfully template when no data in keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(),any())
-      ).thenReturn(
-          Future.successful(
-            Some(
-              PageObjects(
-                household = Household(location = LocationEnum.ENGLAND),
-                expectChildcareCosts = Some(true),
-                childAgedThreeOrFour = Some(true),
-                whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH)
-              )
-            )
-          )
-        )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
+
+      val modelToFetch = PageObjects(
+        household = Household(location = LocationEnum.ENGLAND)
+      )
+
+      setupMocks(modelToFetch = Some(modelToFetch))
+
+      val result = await(maxFreeHoursInfoController.onPageLoad(request.withSession(validSession)))
       status(result) shouldBe OK
       result.body.contentType.get shouldBe "text/html; charset=utf-8"
     }
 
     "redirect to error page if there is no data keystore for pageObjects object" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-          Future.successful(None)
-        )
-
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
+      setupMocks()
+      val result = await(maxFreeHoursInfoController.onPageLoad(request.withSession(validSession)))
       status(result) shouldBe SEE_OTHER
       result.header.headers("Location") shouldBe technicalDifficultiesPath
     }
 
     "redirect to error page if can't connect with keystore" in {
       when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
+        maxFreeHoursInfoController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
       ).thenReturn(
           Future.failed(new RuntimeException)
         )
-
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
+      val result = await(maxFreeHoursInfoController.onPageLoad(request.withSession(validSession)))
       status(result) shouldBe SEE_OTHER
       result.header.headers("Location") shouldBe technicalDifficultiesPath
     }
-
+// TODO: update paths
     "redirect successfully to next and back page" when {
       "next button is clicked then go to how many children page" in {
-        val result = await(sut.onSubmit(request.withSession(validSession)))
+        val result = await(maxFreeHoursInfoController.onSubmit(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe livingWithPartnerPath
+        result.header.headers("Location") shouldBe maxFreeHoursInfoPath
       }
 
       "back link is clicked then go to tc/us page" in {
-        val result = await(sut.onSubmit(request.withSession(validSession)))
+        val result = await(maxFreeHoursInfoController.onSubmit(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe creditsPath
+        result.header.headers("Location") shouldBe maxFreeHoursInfoPath
       }
     }
   }
 
+  validateUrl(maxFreeHoursInfoPath)
+
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        maxFreeHoursInfoController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+          Future.successful(modelToFetch)
+        )
+    }
+
+    if (storePageObjects) {
+      when(
+        maxFreeHoursInfoController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+          Future.successful(modelToStore)
+        )
+    }
+  }
 }
