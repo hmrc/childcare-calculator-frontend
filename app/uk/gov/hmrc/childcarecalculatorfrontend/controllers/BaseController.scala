@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ClearData, CCConstants}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
-trait BaseController extends FrontendController with SessionProvider with CCConstants with ClearData
+trait BaseController extends FrontendController with SessionProvider with CCConstants
