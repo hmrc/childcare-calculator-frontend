@@ -310,7 +310,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
 
       "saving in keystore is successful as a partner with SelfEmployed = false" should {
 
-        s"redirect to tc/uc page when both are in paid employment" in {
+        s"redirect to ${creditsPath} page when both are in paid employment" in {
           val po = buildPageObjects(isPartner = true,
             partnerSelfEmployedIn12Months = None,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
@@ -342,10 +342,10 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstructionPath
+          result.header.headers("Location") shouldBe creditsPath
         }
 
-        s"redirect to tc/uc page when only partner is in paid employment" in {
+        s"redirect to ${creditsPath} page when only partner is in paid employment" in {
           val po = buildPageObjects(isPartner = true,
             partnerSelfEmployedIn12Months = None,
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))
@@ -377,7 +377,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstructionPath
+          result.header.headers("Location") shouldBe creditsPath
         }
       }
 
@@ -482,7 +482,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
 
-        s"redirect to tc/uc page" in {
+        s"redirect to ${creditsPath} page" in {
           val po = buildPageObjects(isPartner = false, parentSelfEmployedIn12Months = Some(false))
 
           when(
@@ -509,7 +509,7 @@ class SelfEmployedControllerSpec extends ControllersValidator with BeforeAndAfte
             )
           )
           status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe underConstructionPath
+          result.header.headers("Location") shouldBe creditsPath
         }
 
       }
