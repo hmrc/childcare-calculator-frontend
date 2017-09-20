@@ -193,7 +193,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
                 whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)
               )
               when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
                   Some(modifiedObject)

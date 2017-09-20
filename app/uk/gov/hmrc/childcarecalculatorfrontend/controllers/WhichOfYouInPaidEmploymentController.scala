@@ -125,6 +125,7 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
           case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.BOTH) => {
             pageObjectsWithResetValues.copy(household = pageObjectsWithResetValues.household.copy(partner = None))
           }
+          case (_, _) => pageObjectsWithResetValues
 
         }
       }
