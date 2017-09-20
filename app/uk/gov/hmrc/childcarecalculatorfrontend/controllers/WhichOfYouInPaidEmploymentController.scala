@@ -99,12 +99,13 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
         updatedPageObjects
       } else {
         val  pageObjectsWithResetValues = updatedPageObjects.copy(getVouchers = None,
-                                                                  whoGetsVouchers = None,
-                                                                  getBenefits = None)
+                                                                  whoGetsVouchers = None)
 
         (existingPaidEmployment, newPaidEmployment) match {
           case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.YOU) => {
-            pageObjectsWithResetValues.copy(household = pageObjectsWithResetValues.household.copy(partner = None))
+           val t = pageObjectsWithResetValues.copy(household = pageObjectsWithResetValues.household.copy(partner = None))
+            println("*****************************8 OageObjects are **********************"+t)
+            t
           }
           case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.PARTNER) => {
             pageObjectsWithResetValues.copy(household = pageObjectsWithResetValues.household.copy(parent = Claimant()))
