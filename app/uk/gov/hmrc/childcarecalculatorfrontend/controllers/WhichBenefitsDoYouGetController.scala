@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, Benefits, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits
@@ -54,12 +54,10 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
 
-        println("**************************** PageObjects is :::: *******************"+pageObjects)
-
         val claimantBenefits: Option[Benefits] = if(!isPartner) {
           pageObjects.household.parent.benefits
         } else {
-          pageObjects.household.partner.get.benefits
+          pageObjects.household.partner.fold[Option[Benefits]](None)(_.benefits)
         }
         Ok(
           benefits(

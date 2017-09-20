@@ -343,7 +343,6 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
           result.header.headers("Location") shouldBe technicalDifficultiesPath
         }
       }
-
     }
   }
 }

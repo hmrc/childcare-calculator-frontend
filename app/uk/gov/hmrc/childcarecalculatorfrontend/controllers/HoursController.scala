@@ -22,7 +22,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HoursForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hours
 import scala.concurrent.Future
@@ -32,39 +32,15 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
 
   val keystore: KeystoreService = KeystoreService
 
-  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
-    pageObjects.livingWithPartner.isDefined && (
-      !pageObjects.livingWithPartner.get || (
-        pageObjects.livingWithPartner.get && pageObjects.whichOfYouInPaidEmployment.isDefined
-      )
-    ) && (
-      !isPartner ||
-        (isPartner && pageObjects.household.partner.isDefined)
-    )
-  }
-
-  private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    if(pageObjects.livingWithPartner.get) {
-      if(!isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
-        routes.HoursController.onPageLoad(isPartner = !isPartner)
-      }
-      else {
-        routes.WhichOfYouInPaidEmploymentController.onPageLoad()
-      }
-    }
-    else {
-      routes.PaidEmploymentController.onPageLoad()
-    }
-  }
-
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
-        val poHours: Option[BigDecimal] = if(!isPartner) {
+      case Some(pageObjects) => {
+
+        val poHours: Option[BigDecimal] = if (!isPartner) {
           pageObjects.household.parent.hours
         }
         else {
-          pageObjects.household.partner.get.hours
+          pageObjects.household.partner.fold[Option[BigDecimal]](None)(_.hours)
         }
         Ok(
           hours(
@@ -73,6 +49,7 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
             getBackUrl(pageObjects, isPartner)
           )
         )
+      }
       case _ =>
         Logger.warn("Invalid PageObjects in HoursController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -83,42 +60,9 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
     }
   }
 
-  private def modifyPageObjects(pageObjects: PageObjects, isPartner: Boolean, newHours: Option[BigDecimal]): PageObjects = {
-    if (!isPartner) {
-      pageObjects.copy(
-        household = pageObjects.household.copy(
-          parent = pageObjects.household.parent.copy(
-            hours = newHours
-          )
-        )
-      )
-    }
-    else {
-      pageObjects.copy(
-        household = pageObjects.household.copy(
-          partner = Some(
-            pageObjects.household.partner.get.copy(
-              hours = newHours
-            )
-          )
-        )
-      )
-    }
-  }
-
-
-  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
-    if(isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
-      routes.HoursController.onPageLoad(isPartner = !isPartner)
-    }
-    else {
-      routes.VouchersController.onPageLoad()
-    }
-  }
-
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+      case Some(pageObjects) =>
         new HoursForm(messagesApi).form.bindFromRequest().fold(
           errors => {
             Future(
@@ -145,6 +89,65 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
       case ex: Exception =>
         Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
+    pageObjects.livingWithPartner.isDefined && (
+      !pageObjects.livingWithPartner.get || (
+        pageObjects.livingWithPartner.get && pageObjects.whichOfYouInPaidEmployment.isDefined
+        )
+      ) && (
+      !isPartner ||
+        (isPartner && pageObjects.household.partner.isDefined)
+      )
+  }
+
+  private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    if(pageObjects.livingWithPartner.get) {
+      if(!isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
+        routes.HoursController.onPageLoad(isPartner = !isPartner)
+      }
+      else {
+        routes.WhichOfYouInPaidEmploymentController.onPageLoad()
+      }
+    }
+    else {
+      routes.PaidEmploymentController.onPageLoad()
+    }
+  }
+
+  private def modifyPageObjects(pageObjects: PageObjects,
+                                isPartner: Boolean,
+                                newHours: Option[BigDecimal]): PageObjects = {
+    if (!isPartner) {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(
+            hours = newHours
+          )
+        )
+      )
+    }
+    else {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          partner = Some(
+            pageObjects.household.partner.fold(Claimant())(_.copy(
+              hours = newHours
+            ))
+          )
+        )
+      )
+    }
+  }
+
+  private def getNextPage(pageObjects: PageObjects, isPartner: Boolean): Call = {
+    if(isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
+      routes.HoursController.onPageLoad(isPartner = !isPartner)
+    }
+    else {
+      routes.VouchersController.onPageLoad()
     }
   }
 
