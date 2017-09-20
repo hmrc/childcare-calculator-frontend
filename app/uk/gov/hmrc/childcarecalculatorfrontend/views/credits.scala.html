@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[String]])(implicit request: Request[_], messages: Messages)
+@(form: Form[Option[String]], backUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
@@ -28,7 +28,7 @@
 
 @ccMain(
     header = messages("credits.header"),
-    backLink = Some(routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString))
+    backLink = Some(backUrl)
 ) {
     @helpers.form(
         action = routes.CreditsController.onSubmit,

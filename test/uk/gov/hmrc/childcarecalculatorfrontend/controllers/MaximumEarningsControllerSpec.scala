@@ -195,7 +195,6 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
 
-
       }
 
       "load template successfully when both are in paid employment " when {
@@ -370,8 +369,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
-            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner =
+            Some(partner), parent = parent), whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
           status(result) shouldBe OK

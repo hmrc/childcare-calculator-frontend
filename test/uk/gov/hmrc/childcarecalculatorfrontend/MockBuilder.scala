@@ -95,14 +95,24 @@ trait MockBuilder {
       ).thenReturn(
         Future.successful(modelToStore)
       )
-
     }
 
   }
 
   /**
+    * throw run time exception with the message detail
+    *
+    * @param message
+    * @return
+    */
+  def objectException(message: String) = {
+    throw new RuntimeException(message)
+  }
+
+  /**
     * setup the mock with runtimeException
     *
+    * @param controllerKeystore object
     * @return
     */
   def setupMocksForException(controllerKeystore: KeystoreService) = {

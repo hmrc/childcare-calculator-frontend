@@ -119,13 +119,11 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
             routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
 
           } else {
-            //TODO redirect to tc/uc page
-            routes.ChildCareBaseController.underConstruction()
+            routes.CreditsController.onPageLoad()
           }
         }
         case YouPartnerBothEnum.PARTNER => {
-          //TODO redirect to tc/uc page
-          routes.ChildCareBaseController.underConstruction()
+          routes.CreditsController.onPageLoad()
         }
       }
 
@@ -139,8 +137,7 @@ class SelfEmployedController @Inject()(val messagesApi: MessagesApi) extends I18
           }
         }
         case YouPartnerBothEnum.YOU => {
-          //TODO redirect to tc/uc page
-          routes.ChildCareBaseController.underConstruction()
+          routes.CreditsController.onPageLoad()
         }
       }
     }

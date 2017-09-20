@@ -20,6 +20,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.i18n.Messages.Implicits._
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.CreditsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum
@@ -42,18 +43,20 @@ class CreditsSpec extends TemplatesValidator with FakeCCApplication {
     ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = maximumEarningsParentPath)
   )
 
+  val backURL = Call("GET", maximumEarningsParentPath)
+
   def getTemplate(form: Form[Option[String]]): Document = {
-    val template = credits(form)(request, applicationMessages)
+    val template = credits(form, backURL)(request, applicationMessages)
     Jsoup.parse(contentAsString(template))
   }
 
   "calling credits template" should {
 
     "render template" in {
-      val template = credits.render(new CreditsForm(applicationMessagesApi).form, request, applicationMessages)
+      val template = credits.render(new CreditsForm(applicationMessagesApi).form, backURL, request, applicationMessages)
       template.contentType shouldBe "text/html"
 
-      val template1 = credits.f(new CreditsForm(applicationMessagesApi).form)(request, applicationMessages)
+      val template1 = credits.f(new CreditsForm(applicationMessagesApi).form, backURL)(request, applicationMessages)
       template1.contentType shouldBe "text/html"
     }
 
