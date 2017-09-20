@@ -32,10 +32,6 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
   val keystore: KeystoreService = KeystoreService
 
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.household.partner.isDefined
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
