@@ -71,10 +71,9 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
           success => {
             keystore.cache(getModifiedPageObjects(success.get, pageObjects, youPartnerBoth)).map {
               x => x match {
-                case Some(model) =>  Redirect(routes.ChildCareBaseController.underConstruction()) //TODO: to be redirected to tc/uc page
+                case Some(model) =>  Redirect(routes.CreditsController.onPageLoad())
                 case _ => Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
               }
-
             }
           }
         )
@@ -88,8 +87,7 @@ class MaximumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  private def getBackUrl(pageObjects: PageObjects,
-                         youPartnerBoth: String): Call = {
+  private def getBackUrl(pageObjects: PageObjects, youPartnerBoth: String): Call = {
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
     youPartnerBoth match {
       case "YOU" => {

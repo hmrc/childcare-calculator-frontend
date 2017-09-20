@@ -193,6 +193,14 @@ whats.your.age.radio.over25 = 25 or over
 whats.your.age.radio.not.selected.error.parent = You must tell the calculator what your age is
 whats.your.age.radio.not.selected.error.partner = You must tell the calculator what your partner’s age is
 
+####### How much will you earn - Minimum earnings #########
+on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week
+on.average.how.much.will.you.earn.parent.header = On average, will you earn £{0} or more a week?
+on.average.how.much.will.you.earn.partner.header = On average, will your partner earn £{0} or more a week?
+on.average.how.much.will.you.earn.hint.parent = This is the National Minimum Wage or National Living Wage a week for someone your age.
+on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
+
 ####### Self-employed or apprentice ######
 self.employed.or.apprentice.header.parent = Are you self-employed or an apprentice?
 self.employed.or.apprentice.header.partner = Is your partner an apprentice or self-employed?
@@ -202,22 +210,13 @@ self.employed.or.apprentice.neither = Neither self-employed or an apprentice
 self.employed.or.apprentice.not.selected.parent = You must tell the calculator if you are self-employed or an apprentice
 self.employed.or.apprentice.not.selected.partner = You must tell the calculator if your partner is self-employed or an apprentice
 
-####### On average how much will you earn  #########
-on.average.how.much.will.you.earn.parent.error = You must answer yes if you will earn an average of more than £{0} a week
-on.average.how.much.will.you.earn.partner.error = You must answer yes if your partner will earn an average of more than £{0} a week
-on.average.how.much.will.you.earn.parent.header = On average, will you earn £{0} or more a week?
-on.average.how.much.will.you.earn.partner.header = On average, will your partner earn £{0} or more a week?
-on.average.how.much.will.you.earn.hint.parent = This is the National Minimum Wage or National Living Wage a week for someone your age.
-on.average.how.much.will.you.earn.hint.partner = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
-
-
-###### Have you been self-employed less than 12 months ######
+###### Self-employed less than 12 months ######
 self.employed.less.than.12.months.parent.error = You must answer yes if you''ve been self-employed less than 12 months
 self.employed.less.than.12.months.partner.error = You must answer yes if your partner has been self-employed less than 12 months
 self.employed.less.than.12.months.parent.header = Have you been self-employed less than 12 months?
 self.employed.less.than.12.months.partner.header = Has your partner been self-employed less than 12 months?
 
-####### Maximum Earning #######
+####### Maximum earnings #######
 maximum.earning.header.YOU = Will you earn more than £100,000 a year?
 maximum.earning.header.PARTNER = Will your partner earn more than £100,000 a year?
 maximum.earning.header.BOTH = Will either of you earn more than £100,000 a year?
@@ -225,6 +224,13 @@ maximum.earning.error.YOU = You must answer yes if you will earn more than £100
 maximum.earning.error.PARTNER = You must answer yes if your partner will earn more than £100,000 a year
 maximum.earning.error.BOTH = You must answer yes if either of you will earn more than £100,000 a year
 maximum.earning.hint.text = This is with any pension and gift aid contributions taken off.
+
+####### TC/UC Benefits #######
+credits.header = Do you get tax credits or Universal Credit?
+credits.radio.tc = Tax credits (includes Working and Child Tax Credit)
+credits.radio.uc = Universal Credit
+credits.radio.none = None of these
+credits.radio.not.selected.error = You must tell the calculator if you get tax credits or Universal Credit
 
 ####### Max free hours Earning #######
 max.free.hours.info.header = It looks like you’re eligible for the maximum free hours

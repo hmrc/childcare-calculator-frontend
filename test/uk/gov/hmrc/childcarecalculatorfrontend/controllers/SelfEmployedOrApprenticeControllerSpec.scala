@@ -174,8 +174,6 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         }
 
       }
-
-
     }
 
     "onSubmit is called" when {
