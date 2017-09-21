@@ -103,26 +103,23 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
 
      (existingValueForLivingWithPartner, newLivingWithPartner) match {
           case (true, false) => {
-            oldPageObjects.copy(household = oldPageObjects.household.copy(partner = None,
-              parent = oldPageObjects.household.parent.copy(benefits = None)),
+            oldPageObjects.copy(household = oldPageObjects.household.copy(partner = None),
               livingWithPartner = Some(false),
               paidOrSelfEmployed = None,
               whichOfYouInPaidEmployment = None,
               getVouchers = None,
               whoGetsVouchers = None,
-              getBenefits = None,
               getMaximumEarnings = None
             )
           }
           case (false, true) => {
-            oldPageObjects.copy(household = oldPageObjects.household.copy(parent = Claimant(),
-              partner = Some(oldPageObjects.household.partner.fold(Claimant())(_.copy(benefits = None)))),
+            oldPageObjects.copy(household = oldPageObjects.household.copy(
+              partner = Some(Claimant())),
               livingWithPartner = Some(true),
               paidOrSelfEmployed = None,
               whichOfYouInPaidEmployment = None,
               getVouchers = None,
               whoGetsVouchers = None,
-              getBenefits = None,
               getMaximumEarnings = None
             )
           }

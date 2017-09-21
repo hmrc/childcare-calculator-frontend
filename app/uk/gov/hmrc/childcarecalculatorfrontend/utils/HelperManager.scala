@@ -79,6 +79,20 @@ trait HelperManager {
   def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
     pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
+
+  /**
+    * Throws exception if optional element value is None otherwise returns the value
+    * ex - val a = Some(5), return value is 5
+    *      val a = None , return is runtime exception
+    * @param optionalElement
+    * @param errorMessage
+    * @tparam T
+    * @return
+    */
+  def getOrException[T](optionalElement: Option[T],
+                        errorMessage: String = "error while fetching the object"): T =
+    optionalElement.fold(throw new RuntimeException(errorMessage))(identity)
+
 }
 
 object HelperManager extends HelperManager

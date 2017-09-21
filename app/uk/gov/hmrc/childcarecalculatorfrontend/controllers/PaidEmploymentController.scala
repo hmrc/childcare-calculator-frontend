@@ -24,6 +24,7 @@ import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PaidEmploymentForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, Claimant, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
 
 import scala.concurrent.Future
@@ -35,8 +36,10 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        val hasPartner = pageObjects.livingWithPartner.get
+      case Some(pageObjects) =>
+
+        val hasPartner = isLivingWithPartner(pageObjects)
+
         Ok(
           paidEmployment(
             new PaidEmploymentForm(hasPartner, messagesApi).form.fill(pageObjects.paidOrSelfEmployed),
@@ -56,8 +59,10 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        val hasPartner = pageObjects.livingWithPartner.get
+      case Some(pageObjects) =>
+
+        val hasPartner = isLivingWithPartner(pageObjects)
+
         new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
@@ -84,9 +89,9 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     }
   }
 
-
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.livingWithPartner.isDefined
+  private def isLivingWithPartner(pageObjects: PageObjects) = {
+    HelperManager.getOrException(pageObjects.livingWithPartner,
+      "Error occured while fetching livingWithPartner value in PaidEmploymentController")
   }
 
   private def updatePageObjects(oldPageObjects: PageObjects, newPaidOrSelfEmployed: Boolean): PageObjects = {
@@ -94,6 +99,23 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
       oldPageObjects
     }
     else {
+
+      newPaidOrSelfEmployed match {
+        case false => {
+          oldPageObjects.copy(
+            paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+            whichOfYouInPaidEmployment = None,
+            getVouchers = None,
+            household = oldPageObjects.household.copy(
+              parent = Claimant(),
+              partner = oldPageObjects.household.partner.map{x => Claimant()}
+            )
+          )
+        }
+        case _ =>
+      }
+
+
       oldPageObjects.copy(
         paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
         whichOfYouInPaidEmployment = None,
