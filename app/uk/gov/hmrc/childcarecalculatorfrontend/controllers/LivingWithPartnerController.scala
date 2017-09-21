@@ -46,7 +46,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
       case Some(pageObjects) =>
         Ok(
           livingWithPartner(new LivingWithPartnerForm(messagesApi).form.fill(pageObjects.livingWithPartner),
-            getBackUrl(pageObjects.childAgedThreeOrFour)
+            getBackUrl(pageObjects.household.childAgedThreeOrFour)
           )
         )
       case _ =>
@@ -101,7 +101,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               BadRequest(
                 livingWithPartner(
                   errors,
-                  getBackUrl(pageObjects.childAgedThreeOrFour)
+                  getBackUrl(pageObjects.household.childAgedThreeOrFour)
                 )
               )
             ),

@@ -42,9 +42,8 @@ class ExpectChildcareCostsControllerSpec extends ControllersValidator {
                        childAgedTwo: Option[Boolean] = None,
                        childAgedThreeOrFour: Option[Boolean] = None,
                        expectChildcareCosts: Option[Boolean] =  None): PageObjects = PageObjects(household = Household(
-    location = location),
+    childAgedThreeOrFour = childAgedThreeOrFour, location = location),
     childAgedTwo = childAgedTwo,
-    childAgedThreeOrFour = childAgedThreeOrFour,
     expectChildcareCosts =  expectChildcareCosts
   )
 

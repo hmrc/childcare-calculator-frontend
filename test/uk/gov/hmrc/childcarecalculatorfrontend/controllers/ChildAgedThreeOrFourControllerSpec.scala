@@ -43,9 +43,9 @@ class ChildAgedThreeOrFourControllerSpec extends ControllersValidator with Befor
 
   def buildPageObjects(childAgedTwo: Option[Boolean] = None,
                        childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
-    location = LocationEnum.ENGLAND),
-    childAgedTwo = childAgedTwo,
-    childAgedThreeOrFour = childAgedThreeOrFour
+    location = LocationEnum.ENGLAND,
+    childAgedThreeOrFour = childAgedThreeOrFour),
+    childAgedTwo = childAgedTwo
   )
 
   "onPageLoad" should {

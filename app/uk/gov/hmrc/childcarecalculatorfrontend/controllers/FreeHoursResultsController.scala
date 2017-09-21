@@ -40,7 +40,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
 
   val keystore: KeystoreService = KeystoreService
   // TODO: Delete it once we get real results page
-  val connector: EligibilityConnector = EligibilityConnector
+//  val connector: EligibilityConnector = EligibilityConnector
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
@@ -49,74 +49,74 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
         // TODO: This is just for test purposes to make sure connection is fine
         // TODO: It should be deleted and connection to eligibility should be done before final results using real data
         // TODO: Delete it once we get real results page
-        val testObject = Household(
-          credits = None,
-          location = LocationEnum.ENGLAND,
-          children = List(
-            Child(
-              id = 1,
-              name = "Child 1",
-              dob = Some(LocalDate.parse("2011-01-01")),
-              disability = Some(
-                Disability(
-                  disabled = false,
-                  severelyDisabled = false,
-                  blind = false
-                )
-              ),
-              childcareCost = Some(
-                ChildCareCost(
-                  amount = Some(200),
-                  period = Some(PeriodEnum.MONTHLY)
-                )
-              ),
-              education = None
-            )
-          ),
-          parent = Claimant(
-            ageRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
-            benefits = Some(
-              Benefits(
-                disabilityBenefits = false,
-                highRateDisabilityBenefits = false,
-                incomeBenefits = false,
-                carersAllowance = false
-              )
-            ),
-            lastYearlyIncome = Some(
-              Income(
-                employmentIncome = Some(25000),
-                pension = None,
-                otherIncome = None,
-                benefits = None,
-                statutoryIncome = None
-              )
-            ),
-            currentYearlyIncome = Some(
-              Income(
-                employmentIncome = Some(25000),
-                pension = None,
-                otherIncome = None,
-                benefits = None,
-                statutoryIncome = None
-              )
-            ),
-            hours = Some(37.5),
-            minimumEarnings = Some(
-              MinimumEarnings(
-                amount = 130,
-                employmentStatus = None,
-                selfEmployedIn12Months = None
-              )
-            ),
-            escVouchers = Some(YesNoUnsureEnum.YES)
-          ),
-          partner = None
-        )
-        connector.getEligibility(testObject).map { result =>
-          Logger.warn("----------- Test result: " + result)
-        }
-        Ok(freeHoursResults(pageObjects.childAgedThreeOrFour.getOrElse(false), pageObjects.household.location))
+//        val testObject = Household(
+//          credits = None,
+//          location = LocationEnum.ENGLAND,
+//          children = List(
+//            Child(
+//              id = 1,
+//              name = "Child 1",
+//              dob = Some(LocalDate.parse("2011-01-01")),
+//              disability = Some(
+//                Disability(
+//                  disabled = false,
+//                  severelyDisabled = false,
+//                  blind = false
+//                )
+//              ),
+//              childcareCost = Some(
+//                ChildCareCost(
+//                  amount = Some(200),
+//                  period = Some(PeriodEnum.MONTHLY)
+//                )
+//              ),
+//              education = None
+//            )
+//          ),
+//          parent = Claimant(
+//            ageRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
+//            benefits = Some(
+//              Benefits(
+//                disabilityBenefits = false,
+//                highRateDisabilityBenefits = false,
+//                incomeBenefits = false,
+//                carersAllowance = false
+//              )
+//            ),
+//            lastYearlyIncome = Some(
+//              Income(
+//                employmentIncome = Some(25000),
+//                pension = None,
+//                otherIncome = None,
+//                benefits = None,
+//                statutoryIncome = None
+//              )
+//            ),
+//            currentYearlyIncome = Some(
+//              Income(
+//                employmentIncome = Some(25000),
+//                pension = None,
+//                otherIncome = None,
+//                benefits = None,
+//                statutoryIncome = None
+//              )
+//            ),
+//            hours = Some(37.5),
+//            minimumEarnings = Some(
+//              MinimumEarnings(
+//                amount = 130,
+//                employmentStatus = None,
+//                selfEmployedIn12Months = None
+//              )
+//            ),
+//            escVouchers = Some(YesNoUnsureEnum.YES)
+//          ),
+//          partner = None
+//        )
+////        connector.getEligibility(testObject).map { result =>
+////          Logger.warn("----------- Test result: " + result)
+////        }
+        Ok(freeHoursResults(pageObjects.household.childAgedThreeOrFour.getOrElse(false), pageObjects.household.location))
       case _ =>
         Logger.warn("PageObjects object is missing in FreeHoursResultsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())

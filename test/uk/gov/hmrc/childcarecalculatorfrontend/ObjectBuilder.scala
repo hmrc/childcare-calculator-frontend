@@ -66,6 +66,7 @@ trait ObjectBuilder {
   val buildHousehold = Household(
     credits = defaultCredits,
     location = defaultLocation,
+    childAgedThreeOrFour = defaultChildAgedThreeOrFour,
     children = defaultChildrenList,
     parent = buildClaimant,
     partner = Some(buildClaimant))
@@ -73,7 +74,6 @@ trait ObjectBuilder {
   val buildPageObjects = PageObjects(
     household = buildHousehold,
     childAgedTwo = defaultChildAgedTwo,
-    childAgedThreeOrFour = defaultChildAgedThreeOrFour,
     expectChildcareCosts = defaultExpectChildcareCosts,
     livingWithPartner = defaultLivingWithPartner,
     paidOrSelfEmployed = defaultPaidOrSelfEmployed,

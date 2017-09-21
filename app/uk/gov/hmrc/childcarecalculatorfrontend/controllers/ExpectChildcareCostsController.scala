@@ -66,7 +66,7 @@ class ExpectChildcareCostsController @Inject()(val messagesApi: MessagesApi) ext
   private def getNextPage(modifiedPageObjects: PageObjects): Call = {
       val location: LocationEnum = modifiedPageObjects.household.location
       val hasChildAgedTwo: Boolean = modifiedPageObjects.childAgedTwo.getOrElse(false)
-      val hasChildAgedThreeOrFour: Boolean = modifiedPageObjects.childAgedThreeOrFour.getOrElse(false)
+      val hasChildAgedThreeOrFour: Boolean = modifiedPageObjects.household.childAgedThreeOrFour.getOrElse(false)
       val hasExpectedChildcareCost: Boolean = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
       if(
         hasChildAgedThreeOrFour &&

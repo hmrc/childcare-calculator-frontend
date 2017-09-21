@@ -21,6 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, Result}
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.CreditsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{CreditsEnum, EmploymentStatusEnum, PageObjects, YouPartnerBothEnum}
@@ -117,16 +118,27 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
 
   private def nextPage(pageObjects: PageObjects, selectedCredits: String)(implicit hc: HeaderCarrier): Future[Result] = {
     val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedCredits)
+    EligibilityConnector.getEligibility(modifiedPageObjects.household)map {
+      result => {
 
-    keystore.cache(modifiedPageObjects).map { res =>
-      if (selectedCredits == CreditsEnum.TAXCREDITS.toString) {
-        Redirect(routes.ChildCareBaseController.underConstruction())
-      } else if (selectedCredits == CreditsEnum.UNIVERSALCREDIT.toString) {
-        Redirect(routes.ChildCareBaseController.underConstruction())
-      } else {
+        println(s"******modifiedPageObjects.household>>>>${modifiedPageObjects.household}")
+        println(s"******result>>>>$result")
+
+        keystore.cache(modifiedPageObjects).map { res =>
+
+          if (selectedCredits == CreditsEnum.TAXCREDITS.toString) {
+            Redirect(routes.ChildCareBaseController.underConstruction())
+          } else if (selectedCredits == CreditsEnum.UNIVERSALCREDIT.toString) {
+            Redirect(routes.ChildCareBaseController.underConstruction())
+          } else {
+            Redirect(routes.ChildCareBaseController.underConstruction())
+          }
+        }
+
         Redirect(routes.ChildCareBaseController.underConstruction())
       }
     }
+
   }
 
   private def getModifiedPageObjects(pageObjects: PageObjects, selectedCredits: String): PageObjects = {

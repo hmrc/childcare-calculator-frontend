@@ -63,7 +63,7 @@ case class MinimumEarnings(
                            amount: BigDecimal = 0.00,
                            employmentStatus: Option[EmploymentStatusEnum] = None,
                            selfEmployedIn12Months: Option[Boolean] = None,
-                           earnMoreThanNMW: Option[Boolean] = None
+                           earnMoreThanNMW: Option[Boolean] = None //Not required in eligibility service as amount is being used
                           )
 object MinimumEarnings {
   implicit val formatMinimumEarnings = Json.format[MinimumEarnings]
@@ -123,6 +123,7 @@ object Claimant {
 case class Household(
                       credits: Option[CreditsEnum] = None,
                       location: LocationEnum,
+                      childAgedThreeOrFour: Option[Boolean] = None,
                       children: List[Child] = List.empty,
                       parent: Claimant = Claimant(),
                       partner: Option[Claimant] = None
@@ -134,15 +135,13 @@ object Household {
 case class PageObjects(
                         household: Household,
                         childAgedTwo: Option[Boolean] = None,
-                        childAgedThreeOrFour: Option[Boolean] = None,
                         expectChildcareCosts: Option[Boolean] = None,
                         livingWithPartner: Option[Boolean] = None,
                         paidOrSelfEmployed: Option[Boolean] = None,
                         whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None,
                         getVouchers: Option[YesNoUnsureEnum] = None,
                         whoGetsVouchers: Option[YouPartnerBothEnum] = None,
-                        getBenefits: Option[Boolean] = None,
-                        getMaximumEarnings: Option[Boolean] = None
+                        getBenefits: Option[Boolean] = None
                       )
 object PageObjects {
   implicit val formatPageObjects = Json.format[PageObjects]
