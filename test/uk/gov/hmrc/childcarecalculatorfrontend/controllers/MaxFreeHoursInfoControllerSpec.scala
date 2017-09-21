@@ -88,17 +88,11 @@ class MaxFreeHoursInfoControllerSpec extends ControllersValidator with BeforeAnd
       result.header.headers("Location") shouldBe technicalDifficultiesPath
     }
 // TODO: update forward path
-    "redirect successfully to next and back page" when {
+    "redirect successfully to next page" when {
       "next button is clicked then go to how many children page" in {
         val result = await(maxFreeHoursInfoController.onSubmit(request.withSession(validSession)))
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe maxFreeHoursInfoPath
-      }
-
-      "back link is clicked then go to tc/us page" in {
-        val result = await(maxFreeHoursInfoController.onSubmit(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe creditsPath
       }
     }
   }
