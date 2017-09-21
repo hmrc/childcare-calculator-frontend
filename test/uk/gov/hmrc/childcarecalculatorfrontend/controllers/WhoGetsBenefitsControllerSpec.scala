@@ -89,9 +89,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         status(result) shouldBe OK
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
-    }
 
-    s"redirect to error page ${technicalDifficultiesPath}" when {
       "partner object doesn't exist in keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -110,10 +108,11 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         )
 
         val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
+        status(result) shouldBe OK
       }
+    }
 
+    s"redirect to error page ${technicalDifficultiesPath}" when {
       "can't connect to keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
