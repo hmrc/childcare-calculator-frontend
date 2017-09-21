@@ -40,9 +40,9 @@ class MaxFreeHoursInfoSpec extends TemplatesValidator with FakeCCApplication wit
   )
 
   override val linksData: List[ElementDetails] = List(
-  //TODO: update both links
+  //TODO: update forward link
     ElementDetails(id = Some("next-button"), checkAttribute = Some("href"), value = maxFreeHoursInfoPath),
-    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = maxFreeHoursInfoPath)
+    ElementDetails(id = Some("back-button"), checkAttribute = Some("href"), value = creditsPath)
   )
 
   def getTemplate(): Document = {
