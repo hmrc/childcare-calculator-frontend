@@ -108,23 +108,36 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
             getVouchers = None,
             household = oldPageObjects.household.copy(
               parent = Claimant(),
-              partner = oldPageObjects.household.partner.map{x => Claimant()}
+              partner = None
             )
           )
         }
-        case _ =>
+        case _ => {
+          val hasPartner = isLivingWithPartner(oldPageObjects)
+
+          if(hasPartner){
+            oldPageObjects.copy(
+              paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+              whichOfYouInPaidEmployment = None,
+              getVouchers = None
+            )
+
+          }else{
+            oldPageObjects.copy(
+              paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+              whichOfYouInPaidEmployment = None,
+              getVouchers = None,
+              household = oldPageObjects.household.copy(
+                parent = oldPageObjects.household.parent,
+                partner = None
+              )
+            )
+          }
+
+
+        }
       }
 
-
-      oldPageObjects.copy(
-        paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-        whichOfYouInPaidEmployment = None,
-        getVouchers = None,
-        household = oldPageObjects.household.copy(
-          parent = Claimant(),
-          partner = oldPageObjects.household.partner.map{x => Claimant()}
-        )
-      )
     }
   }
 
