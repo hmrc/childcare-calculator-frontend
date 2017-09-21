@@ -84,57 +84,52 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
     }
   }
 
+  
   private def updatePageObjects(oldPageObjects: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
-
     val newPaidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
 
-    if(oldPageObjects.whichOfYouInPaidEmployment.contains(newPaidEmployment)) {
+    if (oldPageObjects.whichOfYouInPaidEmployment.contains(newPaidEmployment)) {
       oldPageObjects
     } else {
 
-     val existingPaidEmployment = oldPageObjects.whichOfYouInPaidEmployment
-     val updatedPageObjects = oldPageObjects.copy(whichOfYouInPaidEmployment = Some(newPaidEmployment))
+      val existingPaidEmployment = oldPageObjects.whichOfYouInPaidEmployment
+      val updatedPageObjects = oldPageObjects.copy(whichOfYouInPaidEmployment = Some(newPaidEmployment))
 
-      if(existingPaidEmployment.isEmpty){
+      if (existingPaidEmployment.isEmpty) {
         updatedPageObjects
       } else {
-        val  pageObjectsWithResetValues = updatedPageObjects.copy(getVouchers = None,
-                                                                  whoGetsVouchers = None)
-
+        val pageObjectsWithResetValues = updatedPageObjects.copy(getVouchers = None,
+          whoGetsVouchers = None)
         val houseHoldValue = pageObjectsWithResetValues.household
+        val existingPartnerBenefits = houseHoldValue.partner.fold[Option[Benefits]](None)(_.benefits)
+        val existingParentBenefits = houseHoldValue.parent.benefits
 
         (existingPaidEmployment, newPaidEmployment) match {
 
           case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.YOU) => {
-           pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner =
-                                                              Some(Claimant(benefits = houseHoldValue.partner.fold[Option[Benefits]](None)(_.benefits)))))
+            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits))))
           }
           case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.PARTNER) => {
-            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = houseHoldValue.parent.benefits)))
+            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits)))
           }
           case (Some(YouPartnerBothEnum.PARTNER), YouPartnerBothEnum.YOU) => {
-            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner =
-              Some(Claimant(benefits = houseHoldValue.partner.fold[Option[Benefits]](None)(_.benefits)))))
+            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits))))
           }
           case (Some(YouPartnerBothEnum.PARTNER), YouPartnerBothEnum.BOTH) => {
-            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = houseHoldValue.parent.benefits)))
+            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits)))
           }
           case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.PARTNER) => {
-            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = houseHoldValue.parent.benefits)))
+            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits)))
           }
           case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.BOTH) => {
-            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner =
-              Some(Claimant(benefits = houseHoldValue.partner.fold[Option[Benefits]](None)(_.benefits)))))
+            pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits))))
           }
           case (_, _) => pageObjectsWithResetValues
 
         }
       }
 
-
-
     }
   }
-
 
 }
