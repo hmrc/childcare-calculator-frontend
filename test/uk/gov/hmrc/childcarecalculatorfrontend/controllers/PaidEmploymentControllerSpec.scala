@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import java.lang
 
-import org.mockito.Matchers.any
+import org.mockito.Matchers._
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
@@ -138,7 +138,8 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
-            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+              livingWithPartner = Some(true))))
           )
 
           val result = await(
@@ -162,14 +163,17 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+                livingWithPartner = Some(false))))
             )
 
             when(
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), paidOrSelfEmployed = Some(false)))
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+                  livingWithPartner = Some(false),
+                  paidOrSelfEmployed = Some(false)))
               )
             )
 
@@ -218,7 +222,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             when(
-              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
                 Some(modifiedObject)
@@ -243,14 +247,17 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
+              Future.successful(Some(PageObjects(household =
+                Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
             )
 
             when(
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), paidOrSelfEmployed = Some(true)))
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+                  livingWithPartner = Some(false),
+                  paidOrSelfEmployed = Some(true)))
               )
             )
 
@@ -267,7 +274,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           }
         }
 
-        s"user with partner selects 'yes' - go to 'Which of you is in paid employment' page ${whoIsInPaidEmploymentPath}" should {
+        s"user with partner selects 'yes' - go to 'Which of you is in paid employment' page $whoIsInPaidEmploymentPath" should {
           "shouldn't modify related data in keystore if vaalue for paid employment is not changed" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
@@ -336,7 +343,7 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
             )
 
             when(
-              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
                 Some(modifiedObject)
@@ -399,7 +406,9 @@ class PaidEmploymentControllerSpec extends ControllersValidator with BeforeAndAf
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
-            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+            Future.successful(Some(PageObjects(
+              household = Household(location = LocationEnum.ENGLAND),
+                                    livingWithPartner = Some(true))))
           )
 
           when(

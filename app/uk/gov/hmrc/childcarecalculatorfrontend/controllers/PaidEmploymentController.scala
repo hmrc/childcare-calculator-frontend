@@ -89,12 +89,9 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     }
   }
 
-  private def isLivingWithPartner(pageObjects: PageObjects) = {
-    HelperManager.getOrException(pageObjects.livingWithPartner,
-      "Error occured while fetching livingWithPartner value in PaidEmploymentController")
-  }
+  private def updatePageObjects(oldPageObjects: PageObjects,
+                                newPaidOrSelfEmployed: Boolean): PageObjects = {
 
-  private def updatePageObjects(oldPageObjects: PageObjects, newPaidOrSelfEmployed: Boolean): PageObjects = {
     if(oldPageObjects.paidOrSelfEmployed.contains(newPaidOrSelfEmployed)) {
       oldPageObjects
     }
@@ -126,7 +123,8 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
               paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
               whichOfYouInPaidEmployment = None,
               getVouchers = None,
-              household = oldPageObjects.household.copy(parent = oldPageObjects.household.parent, partner = None)
+              household = oldPageObjects.household.copy(parent = oldPageObjects.household.parent,
+                                                        partner = None)
             )
           }
 
@@ -134,6 +132,12 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
       }
 
     }
+  }
+
+
+  private def isLivingWithPartner(pageObjects: PageObjects) = {
+    HelperManager.getOrException(pageObjects.livingWithPartner,
+      "Error occured while fetching livingWithPartner value in PaidEmploymentController")
   }
 
   private def getNextPage(hasPartner: Boolean, newPaidEmployment: Boolean): Call = {
