@@ -44,15 +44,6 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
 
   validateUrl(whoIsInPaidEmploymentPath)
 
-  def buildPageObjects(youOrPartner: Option[YouPartnerBothEnum] = None): PageObjects = PageObjects(
-    whichOfYouInPaidEmployment = youOrPartner,
-    household = Household(
-      location = LocationEnum.ENGLAND,
-      parent = Claimant(),
-      partner = Some(Claimant())
-    )
-  )
-
   "WhichOfYouInPaidEmploymentController" when {
 
     "onPageLoad is called" should {
@@ -212,6 +203,7 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
             }
           }
         }
+
         s"go to ${hoursPartnerPath}" when {
           "user selects 'PARTNER'" should {
             "keep hours for partner but delete parents's" in {
@@ -251,7 +243,8 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               )
 
               when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],
+                                                                                         any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
                   Some(modifiedObject)
@@ -295,7 +288,8 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               )
 
               when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier],
+                                                                                         any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
                   Some(keystoreObject)
@@ -313,11 +307,137 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
               result.header.headers("Location") shouldBe hoursPartnerPath
             }
           }
+
         }
+
+        s"go to $hoursParentPath" when {
+          "user selects 'YOU' and previous selection was PARTNER" in {
+              val initialObject = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.PARTNER))
+              val keystoreObject = initialObject.copy(
+                household = initialObject.household.copy(
+                  parent = initialObject.household.parent.copy(
+                    hours = Some(15)
+                  ),
+                  partner = Some(
+                    initialObject.household.partner.get.copy(
+                      hours = Some(37.5)
+                    )
+                  )
+                )
+              )
+
+              setupMocks(modelToFetch = Some(keystoreObject),
+                modelToStore = Some(keystoreObject),
+                storePageObjects = true)
+
+              val result = await(
+                sut.onSubmit(
+                  request
+                    .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.YOU.toString)
+                    .withSession(validSession)
+                )
+              )
+              status(result) shouldBe SEE_OTHER
+              result.header.headers("Location") shouldBe hoursParentPath
+            }
+        }
+
+        s"go to $hoursPartnerPath" when {
+          "user selects 'BOTH' and previous selection was PARTNER" in {
+            val initialObject = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.PARTNER))
+            val keystoreObject = initialObject.copy(
+              household = initialObject.household.copy(
+                parent = initialObject.household.parent.copy(
+                  hours = Some(15)
+                ),
+                partner = Some(
+                  initialObject.household.partner.get.copy(
+                    hours = Some(37.5)
+                  )
+                )
+              )
+            )
+
+            setupMocks(modelToFetch = Some(keystoreObject),
+              modelToStore = Some(keystoreObject),
+              storePageObjects = true)
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.BOTH.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPartnerPath
+          }
+        }
+
+        s"go to $hoursPartnerPath" when {
+          "user selects 'PARTNER' and previous selection was YOU" in {
+            val initialObject = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU))
+            val keystoreObject = initialObject.copy(
+              household = initialObject.household.copy(
+                parent = initialObject.household.parent.copy(
+                  hours = Some(15)
+                ),
+                partner = Some(
+                  initialObject.household.partner.get.copy(
+                    hours = Some(37.5)
+                  )
+                )
+              )
+            )
+
+            setupMocks(modelToFetch = Some(keystoreObject),
+              modelToStore = Some(keystoreObject),
+              storePageObjects = true)
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.PARTNER.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPartnerPath
+          }
+        }
+
+        s"go to $hoursPartnerPath" when {
+          "user selects 'BOTH' and previous selection was YOU" in {
+            val initialObject = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU))
+            val keystoreObject = initialObject.copy(
+              household = initialObject.household.copy(
+                parent = initialObject.household.parent.copy(
+                  hours = Some(15)
+                ),
+                partner = None
+                )
+              )
+
+            setupMocks(modelToFetch = Some(keystoreObject),
+              modelToStore = Some(keystoreObject),
+              storePageObjects = true)
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(whichOfYouInPaidEmploymentKey -> YouPartnerBothEnum.BOTH.toString)
+                  .withSession(validSession)
+              )
+            )
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe hoursPartnerPath
+          }
+        }
+
       }
 
       "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
+        s"redirect to $technicalDifficultiesPath" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -344,5 +464,58 @@ class WhichOfYouInPaidEmploymentControllerSpec extends ControllersValidator with
         }
       }
     }
+  }
+
+  private def buildPageObjects(youOrPartner: Option[YouPartnerBothEnum] = None): PageObjects = PageObjects(
+    whichOfYouInPaidEmployment = youOrPartner,
+    household = Household(
+      location = LocationEnum.ENGLAND,
+      parent = Claimant(),
+      partner = Some(Claimant())
+    )
+  )
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
+    }
+
+  }
+
+  /**
+    * setup the mock with runtimeException
+    * @return
+    */
+  private def setupMocksForException() = {
+    when(
+      sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+    ).thenReturn(
+      Future.failed(new RuntimeException)
+    )
   }
 }
