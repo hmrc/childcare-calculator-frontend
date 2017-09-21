@@ -99,7 +99,6 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
       oldPageObjects
     }
     else {
-
       newPaidOrSelfEmployed match {
         case false => {
           oldPageObjects.copy(
@@ -127,13 +126,9 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
               paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
               whichOfYouInPaidEmployment = None,
               getVouchers = None,
-              household = oldPageObjects.household.copy(
-                parent = oldPageObjects.household.parent,
-                partner = None
-              )
+              household = oldPageObjects.household.copy(parent = oldPageObjects.household.parent, partner = None)
             )
           }
-
 
         }
       }
