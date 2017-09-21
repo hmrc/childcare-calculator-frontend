@@ -112,7 +112,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
       }
     }
 
-    s"redirect to error page ${technicalDifficultiesPath}" when {
+    s"redirect to error page $technicalDifficultiesPath" when {
       "can't connect to keystore" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -125,6 +125,18 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
+
+    s"redirect to error page $technicalDifficultiesPath" when {
+      "data can not be fetched from keystore " in {
+
+        setupMocks(modelToFetch = None)
+
+        val result = await(sut.onPageLoad(request.withSession(validSession)))
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+    }
+
   }
 
   "calling onSubmit" should {
@@ -328,9 +340,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
             household = Household(
               location = LocationEnum.ENGLAND,
               parent = Claimant(benefits = None),
-              partner = Some(
-                Claimant(benefits = Some(Benefits(true, false, false, false)))
-              )
+              partner = None
             )
           )
 
@@ -343,7 +353,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           )
 
           when(
-            sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
           ).thenReturn(
             Future.successful(Some(keystoreObject))
           )
@@ -464,9 +474,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
                   household = Household(
                     location = LocationEnum.ENGLAND,
                     parent = Claimant(benefits = None),
-                    partner = Some(
-                      Claimant(benefits = None)
-                    )
+                    partner = None
                   )
                 )
               )
@@ -595,6 +603,20 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
+      "no data fetched from keystore" in {
+
+        setupMocks(modelToFetch = None)
+        val result = await(
+          sut.onSubmit(
+            request
+              .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+              .withSession(validSession)
+          )
+        )
+        status(result) shouldBe SEE_OTHER
+        result.header.headers("Location") shouldBe technicalDifficultiesPath
+      }
+
       "can't connect to keystore while caching data" in {
         when(
           sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
@@ -629,6 +651,50 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
     }
+  }
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
+    }
+
+  }
+
+  /**
+    * setup the mock with runtimeException
+    * @return
+    */
+  private def setupMocksForException() = {
+    when(
+      sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+    ).thenReturn(
+      Future.failed(new RuntimeException)
+    )
   }
 
 }

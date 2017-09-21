@@ -92,17 +92,6 @@ class HoursController @Inject()(val messagesApi: MessagesApi) extends I18nSuppor
     }
   }
 
-  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
-    pageObjects.livingWithPartner.isDefined && (
-      !pageObjects.livingWithPartner.get || (
-        pageObjects.livingWithPartner.get && pageObjects.whichOfYouInPaidEmployment.isDefined
-        )
-      ) && (
-      !isPartner ||
-        (isPartner && pageObjects.household.partner.isDefined)
-      )
-  }
-
   private def getBackUrl(pageObjects: PageObjects, isPartner: Boolean): Call = {
     if(pageObjects.livingWithPartner.get) {
       if(!isPartner && pageObjects.whichOfYouInPaidEmployment.get == YouPartnerBothEnum.BOTH) {
