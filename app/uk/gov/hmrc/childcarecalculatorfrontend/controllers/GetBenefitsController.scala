@@ -91,11 +91,6 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
 
       val hasPartner = isLivingWithPartner(oldPageObjects)
 
-      modifiedObject.copy(household = modifiedObject.household.copy(
-        parent = modifiedObject.household.parent.copy(benefits = None),
-        partner = modifiedObject.household.partner.map { x => x.copy(benefits = None) }
-      ))
-
       (hasPartner, newGetBenefits) match {
         case (false, true) =>  {
           modifiedObject.copy(household = modifiedObject.household.copy(
