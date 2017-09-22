@@ -134,7 +134,7 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           content.getElementById("back-button").attr("href") shouldBe benefitsPartnerPath
         }
 
-        "noone get benefits" in {
+        "none get benefits" in {
           when(
             sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
           ).thenReturn(
@@ -150,30 +150,6 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
           val content = Jsoup.parse(bodyOf(result))
           content.getElementById("back-button").attr("href") shouldBe getBenefitsPath
         }
-      }
-
-      "redirect to error page if can't connect with keystore if parent" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.failed(new RuntimeException)
-        )
-        val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
-
-      "redirect successfully if there is no data in keystore if partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
 
       "load template successfully if there is data in keystore for partner and display correct backurl" when {
@@ -266,20 +242,46 @@ class WhatsYourAgeControllerSpec extends ControllersValidator with BeforeAndAfte
         }
       }
 
-      "redirect to error page if can't connect with keystore if partner" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.failed(new RuntimeException)
-        )
-        val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
     }
   }
 
   "connecting with keystore fails" should {
+
+    "redirect to error page if can't connect with keystore if parent" in {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.failed(new RuntimeException)
+      )
+      val result = await(sut.onPageLoad(false)(request.withSession(validSession)))
+      status(result) shouldBe SEE_OTHER
+      result.header.headers("Location") shouldBe technicalDifficultiesPath
+    }
+
+    "redirect successfully if there is no data in keystore if partner" in {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(
+          None
+        )
+      )
+      val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+      status(result) shouldBe SEE_OTHER
+      result.header.headers("Location") shouldBe technicalDifficultiesPath
+    }
+
+    "redirect to error page if can't connect with keystore if partner" in {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.failed(new RuntimeException)
+      )
+      val result = await(sut.onPageLoad(true)(request.withSession(validSession)))
+      status(result) shouldBe SEE_OTHER
+      result.header.headers("Location") shouldBe technicalDifficultiesPath
+    }
+
     s"redirect to ${technicalDifficultiesPath}" in {
       when(
         sut.keystore.fetch[PageObjects]()(any(), any())

@@ -17,21 +17,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.jsoup.Jsoup
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, when}
+import org.mockito.Mockito.reset
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
-import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.{ControllersValidator, ObjectBuilder}
-import uk.gov.hmrc.play.http.HeaderCarrier
+import uk.gov.hmrc.childcarecalculatorfrontend.{ControllersValidator, MockBuilder, ObjectBuilder}
 
-import scala.concurrent.Future
-
-class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder{
+class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder with MockBuilder {
 
   val maximumEarningsController = new MaximumEarningsController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -50,8 +45,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
     "onPageLoad is called" should {
 
-    "redirect to technical difficulty page if there is no data in keystore for parent" in {
-       setupMocks(modelToFetch = None)
+      "redirect to technical difficulty page if there is no data in keystore for parent" in {
+        setupMocks(maximumEarningsController.keystore, modelToFetch = None)
 
         val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
@@ -59,7 +54,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       }
 
       "redirect to technical difficulty page if there is no data in keystore for partner" in {
-        setupMocks(modelToFetch = None)
+        setupMocks(maximumEarningsController.keystore, modelToFetch = None)
 
         val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
@@ -74,8 +69,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
         )
 
-        setupMocks(modelToFetch = Some(modelToFetch))
-        setupMocksForException()
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch))
+        setupMocksForException(maximumEarningsController.keystore)
 
         val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
         status(result) shouldBe SEE_OTHER
@@ -90,7 +85,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER)
         )
 
-        setupMocks(modelToFetch = Some(modelToFetch))
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch))
 
         val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
         status(result) shouldBe OK
@@ -98,23 +93,23 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
 
       "load template when user visiting the page first time for parent" in {
 
-       val modelToFetch = buildPageObjectsModel(isPartner = false,
+        val modelToFetch = buildPageObjectsModel(isPartner = false,
           parentEarnMoreThanNMW = None)
 
-        setupMocks(modelToFetch = Some(modelToFetch))
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch))
 
         val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
         status(result) shouldBe OK
       }
 
-      "load template successfully for parent only " when  {
+      "load template successfully for parent only " when {
         "have back url of parent Minimum Earnings page when parent earns more than NMW" in {
           val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))))
 
           val modelToFetch = buildPageObjectsModel(isPartner = false,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
 
           val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
@@ -133,7 +128,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = false,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))))
 
           val result = maximumEarningsController.onPageLoad("YOU")(request.withSession(validSession))
@@ -145,7 +140,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         }
       }
 
-      "load template successfully for partner only " when  {
+      "load template successfully for partner only " when {
         "have back url as partner Minimum Earnings page when partner earns more than NMW" in {
 
           val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))),
@@ -154,7 +149,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
 
           val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
@@ -170,7 +165,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = None),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = None),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
 
           val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
@@ -190,7 +185,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner)),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))))
 
           val result = maximumEarningsController.onPageLoad("PARTNER")(request.withSession(validSession))
@@ -200,10 +195,9 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           content.getElementById("back-button").attr("href") shouldBe minimumEarningsPartnerPath
         }
 
-
       }
 
-      "load template successfully when both are in paid employment " when  {
+      "load template successfully when both are in paid employment " when {
         "have back url partner Minimum Earnings page when both earns more than NMW" in {
 
           val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
@@ -215,8 +209,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
-            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner =
+            Some(partner), parent = parent), whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad("BOTH")(request.withSession(validSession))
           status(result) shouldBe OK
@@ -238,7 +232,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
@@ -261,7 +255,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
@@ -285,7 +279,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
@@ -309,7 +303,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
@@ -333,7 +327,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
@@ -354,7 +348,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
             whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)(request.withSession(validSession))
@@ -375,8 +369,8 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
           val modelToFetch = buildPageObjectsModel(isPartner = true,
             parentEarnMoreThanNMW = None)
 
-          setupMocks(modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner = Some(partner), parent = parent),
-            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch.copy(household = modelToFetch.household.copy(partner =
+            Some(partner), parent = parent), whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))))
 
           val result = maximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)(request.withSession(validSession))
           status(result) shouldBe OK
@@ -387,21 +381,19 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         }
       }
 
-     }
- }
+    }
 
-  "onSubmit is called" when {
+    "onSubmit is called" should {
 
-    "there are errors" should {
       "load same template and return BAD_REQUEST as a partner" in {
         val model = buildPageObjectsModel(true)
-        setupMocks(modelToFetch = Some(model))
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(model))
 
         val result = maximumEarningsController.onSubmit("PARTNER")(
-            request
-              .withFormUrlEncodedBody(maximumEarningsKey -> "")
-              .withSession(validSession)
-          )
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "")
+            .withSession(validSession)
+        )
 
         status(result) shouldBe BAD_REQUEST
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
@@ -410,21 +402,19 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
       "load same template and return BAD_REQUEST as a parent" in {
 
         val model = buildPageObjectsModel(false)
-        setupMocks(modelToFetch = Some(model))
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(model))
 
         val result = maximumEarningsController.onSubmit("YOU")(
-            request
-              .withFormUrlEncodedBody(maximumEarningsKey -> "")
-              .withSession(validSession)
-          )
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "")
+            .withSession(validSession)
+        )
 
         status(result) shouldBe BAD_REQUEST
         result.body.contentType.get shouldBe "text/html; charset=utf-8"
       }
-    }
 
-    "save the data in keystore successfully for parent" should {
-      "redirect to tc/uc page" in {
+      s"save the data in keystore successfully for parent, redirect to ${creditsPath} page" in {
 
         val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
           employmentStatus = None)))
@@ -438,7 +428,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
           parent = parent.copy(maximumEarnings = Some(true))))
 
-        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
 
         val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.YOU.toString)(
           request
@@ -447,44 +437,38 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
 
         status(result) shouldBe SEE_OTHER
-        //TODO: To be replaced by TC/UC page
-        redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
+        redirectLocation(result) should be(Some(creditsPath))
 
       }
-    }
 
-    "save the data in keystore successfully for partner" should {
-        "redirect to tc/uc page " in {
+      s"save the data in keystore successfully for partner, redirect to ${creditsPath} page " in {
 
-          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
-            employmentStatus = None)))
+        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+          employmentStatus = None)))
 
-          val model = buildPageObjectsModel(isPartner = true,
-            parentEarnMoreThanNMW = None)
+        val model = buildPageObjectsModel(isPartner = true,
+          parentEarnMoreThanNMW = None)
 
-          val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner)),
-            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))
+        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner)),
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.PARTNER))
 
-          val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
-            partner = Some(partner.copy(maximumEarnings = Some(true)))))
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(
+          partner = Some(partner.copy(maximumEarnings = Some(true)))))
 
-          setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
 
-          val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.PARTNER.toString)(
-            request
-              .withFormUrlEncodedBody(maximumEarningsKey -> "true")
-              .withSession(validSession)
-          )
+        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.PARTNER.toString)(
+          request
+            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+            .withSession(validSession)
+        )
 
-          status(result) shouldBe SEE_OTHER
-          //TODO: To be replaced by TC/UC page
-          redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
-        }
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(creditsPath))
 
-    }
+      }
 
-    "save the data in keystore successfully for both parent and partner" should {
-      "redirect to tc/uc page" in {
+      s"save the data in keystore successfully for both parent and partner, redirect to ${creditsPath} page" in {
 
         val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
           employmentStatus = None)))
@@ -501,7 +485,7 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(parent = parent.copy(maximumEarnings = Some(true)),
           partner = Some(partner.copy(maximumEarnings = Some(true)))))
 
-        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
 
         val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
           request
@@ -510,90 +494,87 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
         )
 
         status(result) shouldBe SEE_OTHER
-        //TODO: To be replaced by TC/UC page
-        redirectLocation(result) should be(Some(routes.ChildCareBaseController.underConstruction().url))
+        redirectLocation(result) should be(Some(creditsPath))
       }
-    }
 
-    "data store in keystore fails" should {
-      "redirect to technical difficulties page" in {
+      "data store in keystore fails" should {
+        "redirect to technical difficulties page" in {
 
-        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
-          employmentStatus = None)))
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
 
-        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
-          employmentStatus = None)))
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
 
-        val model = buildPageObjectsModel(isPartner = true,
-          parentEarnMoreThanNMW = None)
+          val model = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
 
-        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
-          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+          val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
 
-        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
 
-        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
-          request
-            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
-            .withSession(validSession)
-        )
+          val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+            request
+              .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+              .withSession(validSession)
+          )
 
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+          status(result) shouldBe SEE_OTHER
+          redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+        }
       }
-    }
 
-    "page objects not found in keystore" should {
-      "redirect to technical difficulties page" in {
+      "page objects not found in keystore" should {
+        "redirect to technical difficulties page" in {
 
-        setupMocks(modelToFetch = None)
-        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
-          request
-            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
-            .withSession(validSession)
-        )
+          setupMocks(maximumEarningsController.keystore, modelToFetch = None)
+          val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+            request
+              .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+              .withSession(validSession)
+          )
 
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+          status(result) shouldBe SEE_OTHER
+          redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+        }
       }
-    }
 
-    "runtime exception occurs" should {
-      "redirect to technical difficulties page" in {
+      s"runtime exception occurs, redirect to ${technicalDifficultiesPath} page" in {
 
-        val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
-          employmentStatus = None)))
+          val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
 
-        val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
-          employmentStatus = None)))
+          val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true),
+            employmentStatus = None)))
 
-        val model = buildPageObjectsModel(isPartner = true,
-          parentEarnMoreThanNMW = None)
+          val model = buildPageObjectsModel(isPartner = true,
+            parentEarnMoreThanNMW = None)
 
-        val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
-          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
+          val modelToFetch = model.copy(household = model.household.copy(partner = Some(partner), parent = parent),
+            whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH))
 
-        setupMocks(modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
-        setupMocksForException()
+          setupMocks(maximumEarningsController.keystore, modelToFetch = Some(modelToFetch), modelToStore = None, storePageObjects = true)
+          setupMocksForException(maximumEarningsController.keystore)
 
-        val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
-          request
-            .withFormUrlEncodedBody(maximumEarningsKey -> "true")
-            .withSession(validSession)
-        )
+          val result = maximumEarningsController.onSubmit(YouPartnerBothEnum.BOTH.toString)(
+            request
+              .withFormUrlEncodedBody(maximumEarningsKey -> "true")
+              .withSession(validSession)
+          )
 
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be(Some(routes.ChildCareBaseController.onTechnicalDifficulties().url))
+          status(result) shouldBe SEE_OTHER
+          redirectLocation(result) should be(Some(technicalDifficultiesPath))
       }
-    }
 
+    }
   }
 
   private def buildPageObjectsModel(isPartner: Boolean,
-                       parentEarnMoreThanNMW: Option[Boolean] = None,
-                       partnerEarnMoreThanNMW: Option[Boolean] = None,
-                       whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
-                      ): PageObjects = {
+                                    parentEarnMoreThanNMW: Option[Boolean] = None,
+                                    partnerEarnMoreThanNMW: Option[Boolean] = None,
+                                    whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
+                                   ): PageObjects = {
 
     val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = parentEarnMoreThanNMW)))
     val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = partnerEarnMoreThanNMW)))
@@ -609,48 +590,4 @@ class MaximumEarningsControllerSpec extends ControllersValidator with BeforeAndA
     }
   }
 
-  /**
-    * Setup the mocks
-    *
-    * @param modelToFetch
-    * @param modelToStore
-    * @param fetchPageObjects
-    * @param storePageObjects
-    * @return
-    */
-  private def setupMocks(modelToFetch: Option[PageObjects] = None,
-                         modelToStore: Option[PageObjects] = None,
-                         fetchPageObjects: Boolean = true,
-                         storePageObjects: Boolean = false) = {
-    if (fetchPageObjects) {
-      when(
-        maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-      ).thenReturn(
-        Future.successful(modelToFetch)
-      )
-    }
-
-    if (storePageObjects) {
-      when(
-        maximumEarningsController.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-      ).thenReturn(
-        Future.successful(modelToStore)
-      )
-
-    }
-
-  }
-
-  /**
-    * setup the mock with runtimeException
-    *
-    * @return
-    */
-  private def setupMocksForException() = {
-    when(
-      maximumEarningsController.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-    ).thenReturn(
-      Future.failed(new RuntimeException)
-    )
-  }
 }

@@ -30,7 +30,7 @@ class WhoGetsBenefitsFormSpec extends UnitSpec with FakeCCApplication {
         s"'${youOrPartner}' is given" in {
           val result = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
             Map(
-              whoGetsBeneftsKey -> youOrPartner.toString
+              whoGetsBenefitsKey -> youOrPartner.toString
             )
           )
           result.hasErrors shouldBe false
@@ -45,7 +45,7 @@ class WhoGetsBenefitsFormSpec extends UnitSpec with FakeCCApplication {
         s"invalid value '${invalidValue}' is given" in {
           val result = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
             Map(
-              whoGetsBeneftsKey -> invalidValue
+              whoGetsBenefitsKey -> invalidValue
             )
           )
           result.hasErrors shouldBe true

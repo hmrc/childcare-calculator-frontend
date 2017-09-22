@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeRangeEnum.AgeRangeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum.TcUcBenefitsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 
@@ -121,7 +121,7 @@ object Claimant {
 }
 
 case class Household(
-                      tcUcBenefits: Option[TcUcBenefitsEnum] = None,
+                      credits: Option[CreditsEnum] = None,
                       location: LocationEnum,
                       children: List[Child] = List.empty,
                       parent: Claimant = Claimant(),

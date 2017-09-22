@@ -74,7 +74,7 @@ class WhoGetsBenefitsSpec extends TemplatesValidator with FakeCCApplication {
 
         verifyPageContent()
         verifyPageLinks()
-        verifyChecks(List(s"${whoGetsBeneftsKey}-${whoValue}"))
+        verifyChecks(List(s"${whoGetsBenefitsKey}-${whoValue}"))
         verifyErrors()
       }
     }}
@@ -86,7 +86,7 @@ class WhoGetsBenefitsSpec extends TemplatesValidator with FakeCCApplication {
       s"invalid value '${invalidValue}' is selected" in {
         val form = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
           Map(
-            whoGetsBeneftsKey -> invalidValue
+            whoGetsBenefitsKey -> invalidValue
           )
         )
         implicit val doc: Document = getTemplate(form)
@@ -95,7 +95,7 @@ class WhoGetsBenefitsSpec extends TemplatesValidator with FakeCCApplication {
         verifyPageLinks()
         verifyChecks()
         verifyErrors(
-          errors = Map(whoGetsBeneftsKey -> applicationMessages.messages("who.gets.benefits.not.selected.error"))
+          errors = Map(whoGetsBenefitsKey -> applicationMessages.messages("who.gets.benefits.not.selected.error"))
         )
         applicationMessages.messages("who.gets.benefits.not.selected.error") should not be "who.gets.benefits.not.selected.error"
       }

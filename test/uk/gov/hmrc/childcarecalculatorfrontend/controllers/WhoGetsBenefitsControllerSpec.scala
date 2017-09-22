@@ -135,7 +135,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(whoGetsBeneftsKey -> "")
+              .withFormUrlEncodedBody(whoGetsBenefitsKey -> "")
               .withSession(validSession)
           )
         )
@@ -179,7 +179,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> selection)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> selection)
                 .withSession(validSession)
             )
           )
@@ -221,7 +221,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
                 .withSession(validSession)
             )
           )
@@ -267,7 +267,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
                 .withSession(validSession)
             )
           )
@@ -313,7 +313,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
                 .withSession(validSession)
             )
           )
@@ -352,7 +352,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.PARTNER.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.PARTNER.toString)
                 .withSession(validSession)
             )
           )
@@ -398,7 +398,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.PARTNER.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.PARTNER.toString)
                 .withSession(validSession)
             )
           )
@@ -444,7 +444,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.PARTNER.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.PARTNER.toString)
                 .withSession(validSession)
             )
           )
@@ -493,7 +493,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.BOTH.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.BOTH.toString)
                 .withSession(validSession)
             )
           )
@@ -539,7 +539,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
           val result = await(
             sut.onSubmit(
               request
-                .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.BOTH.toString)
+                .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.BOTH.toString)
                 .withSession(validSession)
             )
           )
@@ -570,7 +570,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+              .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
               .withSession(validSession)
           )
         )
@@ -588,7 +588,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+              .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
               .withSession(validSession)
           )
         )
@@ -622,7 +622,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+              .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
               .withSession(validSession)
           )
         )

@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.childcarecalculatorfrontend.controllers
+@()(implicit request: Request[_], messages: Messages)
 
-import uk.gov.hmrc.childcarecalculatorfrontend.services.SessionProvider
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
-import uk.gov.hmrc.play.frontend.controller.FrontendController
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
+@import uk.gov.hmrc.play.views.html._
 
-trait BaseController extends FrontendController with SessionProvider with CCConstants
+@ccMain(
+    header = messages("max.free.hours.info.header"),
+    backLink = Some(routes.CreditsController.onPageLoad)
+) {
+
+    <p>@messages("max.free.hours.info.can.get.maximum.hours.paragraph")</p>
+
+    <a class="button" id="next-button" href="@routes.MaxFreeHoursInfoController.onPageLoad">
+        @messages("next.button")
+    </a>
+}

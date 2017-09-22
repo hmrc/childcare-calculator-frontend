@@ -16,24 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
+
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{Messages, I18nSupport, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
 
 @Singleton
-class WhoGetsBenefitsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
-  type WhoGetsBenefitsForm = Option[String]
+class CreditsForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
 
-  val form = Form[WhoGetsBenefitsForm](
+  type CreditsFormType = Option[String]
+
+  val form = Form[CreditsFormType](
     single(
-      whoGetsBenefitsKey -> optional(text).verifying(
-        Messages("who.gets.benefits.not.selected.error"),
-        youOrPartner =>
-          YouPartnerBothEnum.values.exists(_.toString == youOrPartner.getOrElse(""))
+      creditsKey -> optional(text).verifying(
+        Messages("credits.radio.not.selected.error"),
+        credits =>
+          CreditsEnum.values.exists(_.toString == credits.getOrElse(""))
       )
     )
   )
+
 }
