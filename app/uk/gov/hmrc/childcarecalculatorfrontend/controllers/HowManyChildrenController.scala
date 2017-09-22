@@ -36,7 +36,6 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
-        println(s"****************$pageObjects*************")
         val noChildren: Option[Int] = pageObjects.howManyChildren
         Ok(
           howManyChildren(
@@ -45,11 +44,11 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
           )
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in HoursController.onPageLoad")
+        Logger.warn("Invalid PageObjects in HowManyChildrenController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from HoursController.onPageLoad: ${ex.getMessage}")
+        Logger.warn(s"Exception from HowManyChildrenController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
@@ -76,11 +75,11 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
           }
         )
       case _ =>
-        Logger.warn("Invalid PageObjects in HoursController.onSubmit")
+        Logger.warn("Invalid PageObjects in HowManyChildrenController.onSubmit")
         Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
     } recover {
       case ex: Exception =>
-        Logger.warn(s"Exception from HoursController.onSubmit: ${ex.getMessage}")
+        Logger.warn(s"Exception from HowManyChildrenController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
@@ -94,8 +93,6 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
     )
   }
 
-
-  // private def getBackUrl(pageObjects: PageObjects) = Call("GET","To_Go_Back")
 
   private def getBackUrl(pageObjects: PageObjects): Call = {
     routes.ChildCareBaseController.underConstruction()
