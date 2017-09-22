@@ -38,7 +38,7 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
 
-        val hasPartner = isLivingWithPartner(pageObjects)
+        val hasPartner = HelperManager.isLivingWithPartner(pageObjects, CCConstants.paidEmploymentControllerId)
 
         Ok(
           paidEmployment(
@@ -61,7 +61,7 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     keystore.fetch[PageObjects].flatMap {
       case Some(pageObjects) =>
 
-        val hasPartner = isLivingWithPartner(pageObjects)
+        val hasPartner = HelperManager.isLivingWithPartner(pageObjects, CCConstants.paidEmploymentControllerId)
 
         new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
@@ -109,7 +109,7 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
           )
         }
         case _ => {
-          val hasPartner = isLivingWithPartner(oldPageObjects)
+          val hasPartner = HelperManager.isLivingWithPartner(oldPageObjects, CCConstants.paidEmploymentControllerId)
 
           if(hasPartner){
             oldPageObjects.copy(
@@ -132,12 +132,6 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
       }
 
     }
-  }
-
-  private def isLivingWithPartner(pageObjects: PageObjects) = {
-    HelperManager.getOrException(pageObjects.livingWithPartner,
-      Some(CCConstants.paidEmploymentControllerId),
-      Some("livingWithPartner"))
   }
 
   private def getNextPage(hasPartner: Boolean, newPaidEmployment: Boolean): Call = {

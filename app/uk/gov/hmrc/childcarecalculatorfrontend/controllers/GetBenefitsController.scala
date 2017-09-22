@@ -24,6 +24,7 @@ import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.GetBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CCConstants, HelperManager}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.getBenefits
 
 import scala.concurrent.Future
@@ -33,21 +34,15 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(pageObjects: PageObjects): Call = {
-    if(pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.BOTH) && pageObjects.getVouchers == Some(YesNoUnsureEnum.YES)) {
-      routes.WhoGetsVouchersController.onPageLoad()
-    } else {
-      routes.VouchersController.onPageLoad()
-    }
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if (pageObjects.livingWithPartner.isDefined) =>
-        val hasPartner = pageObjects.livingWithPartner.get
+      case Some(pageObjects) =>
+        val hasPartner = isLivingWithPartner(pageObjects)
         Ok(
           getBenefits(
-            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits), hasPartner, getBackUrl(pageObjects)
+            new GetBenefitsForm(hasPartner, messagesApi).form.fill(pageObjects.getBenefits),
+            hasPartner,
+            getBackUrl(pageObjects)
           )
         )
       case _ =>
@@ -60,42 +55,10 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
     }
   }
 
-  private def modifyPageObjects(oldPageObjects: PageObjects, newGetBenefits: Boolean): PageObjects = {
-    if(oldPageObjects.getBenefits == Some(newGetBenefits)) {
-      oldPageObjects
-    } else {
-      val modifiedObject = oldPageObjects.copy(
-        getBenefits = Some(newGetBenefits)
-      )
-      modifiedObject.copy(
-        household = modifiedObject.household.copy(
-          parent = modifiedObject.household.parent.copy(benefits = None),
-          partner = modifiedObject.household.partner.map { x => x.copy(benefits = None) }
-        )
-      )
-    }
-  }
-
-  private def getNextPage(pageObjects: PageObjects, hasPartner: Boolean, getBenefits: Boolean): Call = {
-    if(getBenefits) {
-      if(hasPartner) {
-        routes.WhoGetsBenefitsController.onPageLoad()
-      } else {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      }
-    } else {
-      if(hasPartner && pageObjects.whichOfYouInPaidEmployment == Some(YouPartnerBothEnum.PARTNER)) {
-        routes.WhatsYourAgeController.onPageLoad(true)
-      } else {
-        routes.WhatsYourAgeController.onPageLoad(false)
-      }
-    }
-  }
-
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects].flatMap {
-      case Some(pageObjects) if (pageObjects.livingWithPartner.isDefined) =>
-        val hasPartner = pageObjects.livingWithPartner.get
+      case Some(pageObjects) =>
+        val hasPartner = isLivingWithPartner(pageObjects)
         new GetBenefitsForm(hasPartner, messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
@@ -119,4 +82,75 @@ class GetBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18n
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
+
+  private def modifyPageObjects(oldPageObjects: PageObjects, newGetBenefits: Boolean): PageObjects = {
+    if(oldPageObjects.getBenefits.contains(newGetBenefits)) {
+      oldPageObjects
+    } else {
+      val modifiedObject = oldPageObjects.copy(getBenefits = Some(newGetBenefits))
+
+      val hasPartner = isLivingWithPartner(oldPageObjects)
+
+      modifiedObject.copy(household = modifiedObject.household.copy(
+        parent = modifiedObject.household.parent.copy(benefits = None),
+        partner = modifiedObject.household.partner.map { x => x.copy(benefits = None) }
+      ))
+
+      (hasPartner, newGetBenefits) match {
+        case (false, true) =>  {
+          modifiedObject.copy(household = modifiedObject.household.copy(
+            partner = modifiedObject.household.partner.map { x => x.copy(benefits = None)}
+          ))
+        }
+        case (false, false) => {
+          modifiedObject.copy(household = modifiedObject.household.copy(
+            partner = modifiedObject.household.partner.map { x => x.copy(benefits = None)},
+            parent = modifiedObject.household.parent.copy(benefits = None)
+          ))
+        }
+        case (true, true) => {
+          modifiedObject.copy(household = modifiedObject.household.copy(
+            parent = modifiedObject.household.parent.copy(benefits = None)
+          ))
+        }
+        case (true, false) => {
+          modifiedObject.copy(household = modifiedObject.household.copy(
+            parent = modifiedObject.household.parent.copy(benefits = None),
+            partner = modifiedObject.household.partner.map { x => x.copy(benefits = None) }
+          ))
+        }
+      }
+
+    }
+  }
+
+  private def getBackUrl(pageObjects: PageObjects): Call = {
+    if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.BOTH) &&
+      pageObjects.getVouchers.contains(YesNoUnsureEnum.YES)) {
+      routes.WhoGetsVouchersController.onPageLoad()
+    } else {
+      routes.VouchersController.onPageLoad()
+    }
+  }
+
+  private def getNextPage(pageObjects: PageObjects, hasPartner: Boolean, getBenefits: Boolean): Call = {
+    if(getBenefits) {
+      if(hasPartner) {
+        routes.WhoGetsBenefitsController.onPageLoad()
+      } else {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
+      }
+    } else {
+      if(hasPartner && pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
+        routes.WhatsYourAgeController.onPageLoad(true)
+      } else {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      }
+    }
+  }
+
+  private def isLivingWithPartner(pageObjects: PageObjects) = {
+    HelperManager.isLivingWithPartner(pageObjects, CCConstants.getBenefitsControllerId)
+  }
+
 }

@@ -80,6 +80,12 @@ trait HelperManager {
     pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 
+  def isLivingWithPartner(pageObjects: PageObjects, controllerId: String = "HelperManager"): Boolean = {
+    getOrException(pageObjects.livingWithPartner,
+      Some(controllerId),
+      Some("livingWithPartner"))
+  }
+
   /**
     * Throws exception with appropriate error message if optional element value is None otherwise returns the value
     * ex - val a = Some(5), return value is 5
