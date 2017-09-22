@@ -27,4 +27,7 @@ trait CCValidationRules {
     value.toString.matches(regex.toString)
   }
 
+  def validateNoChildren(value: Int, minValue: Int, maxValue: Int): Boolean = {
+    value >= minValue && value <= maxValue
+  }
 }
