@@ -29,7 +29,7 @@
     @error.ccErrorSummary(form)
 
     @helpers.form(
-        action = Call("GET", "TO_DO"),
+        action = routes.HowManyChildrenController.onSubmit(),
         args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
 
         @ccInput(

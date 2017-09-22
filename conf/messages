@@ -240,3 +240,5 @@ max.free.hours.info.can.get.maximum.hours.paragraph = Based on the information y
 #### How many children
 number.of.children.not.selected.error = You must tell the calculator how many children you have
 number.of.children.invalid.error = You must enter a number that's not below 1 or above 19
+how.many.children.header = How many children do you have?
+how.many.children.hint.text = Only include children under the age of 20 that you're responsible for.
