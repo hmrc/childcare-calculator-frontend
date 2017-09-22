@@ -117,28 +117,41 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
     val pageObjectsWithResetValues = pageObjects.copy(getVouchers = None, whoGetsVouchers = None)
     val houseHoldValue = pageObjectsWithResetValues.household
-    val existingPartnerBenefits = houseHoldValue.partner.fold[Option[Benefits]](None)(_.benefits)
-    val existingParentBenefits = houseHoldValue.parent.benefits
 
-    (existingPaidEmployment, newPaidEmployment) match {
+    val existingParent = houseHoldValue.parent
+    val existingPartner = houseHoldValue.partner
+
+    val existingPartnerBenefits = existingPartner.fold[Option[Benefits]](None)(_.benefits)
+    val existingParentBenefits = existingParent.benefits
+
+    val existingParentWithNoMaximumEarnings = existingParent.copy(maximumEarnings = None)
+    val existingPartnerWithNoMaximumEarnings = Some(existingPartner.getOrElse(Claimant()).copy(maximumEarnings = None))
+
+      (existingPaidEmployment, newPaidEmployment) match {
 
       case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.YOU) => {
-        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits))))
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits)),
+          parent = existingParentWithNoMaximumEarnings))
       }
       case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.PARTNER) => {
-        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits)))
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits),
+          partner = existingPartnerWithNoMaximumEarnings))
       }
       case (Some(YouPartnerBothEnum.PARTNER), YouPartnerBothEnum.YOU) => {
-        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits))))
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits)),
+          parent = existingParentWithNoMaximumEarnings))
       }
       case (Some(YouPartnerBothEnum.PARTNER), YouPartnerBothEnum.BOTH) => {
-        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits)))
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits),
+          partner = existingPartnerWithNoMaximumEarnings))
       }
       case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.PARTNER) => {
-        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits)))
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits),
+          partner = existingPartnerWithNoMaximumEarnings))
       }
       case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.BOTH) => {
-        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits))))
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits)),
+          parent = existingParentWithNoMaximumEarnings))
       }
       case (_, _) => pageObjectsWithResetValues
 
