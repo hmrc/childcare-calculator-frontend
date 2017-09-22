@@ -121,8 +121,8 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
     val existingParent = houseHoldValue.parent
     val existingPartner = houseHoldValue.partner
 
-    val existingPartnerBenefits = existingPartner.fold[Option[Benefits]](None)(_.benefits)
     val existingParentBenefits = existingParent.benefits
+    val existingPartnerBenefits = existingPartner.fold[Option[Benefits]](None)(_.benefits)
 
     val existingParentWithNoMaximumEarnings = existingParent.copy(maximumEarnings = None)
     val existingPartnerWithNoMaximumEarnings = Some(existingPartner.getOrElse(Claimant()).copy(maximumEarnings = None))

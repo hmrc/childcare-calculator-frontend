@@ -110,7 +110,8 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               whichOfYouInPaidEmployment = None,
               getVouchers = None,
               whoGetsVouchers = None,
-              getMaximumEarnings = None
+              getMaximumEarnings = None,
+              getBenefits = None
             )
           }
           case (false, true) => {
@@ -121,7 +122,8 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               whichOfYouInPaidEmployment = None,
               getVouchers = None,
               whoGetsVouchers = None,
-              getMaximumEarnings = None
+              getMaximumEarnings = None,
+              getBenefits = None
             )
           }
           case _ => oldPageObjects
