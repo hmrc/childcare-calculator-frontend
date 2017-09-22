@@ -24,7 +24,7 @@ import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PaidEmploymentForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, Claimant, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CCConstants, HelperManager}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
 
 import scala.concurrent.Future
@@ -134,10 +134,10 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     }
   }
 
-
   private def isLivingWithPartner(pageObjects: PageObjects) = {
     HelperManager.getOrException(pageObjects.livingWithPartner,
-      "Error occured while fetching livingWithPartner value in PaidEmploymentController")
+      Some(CCConstants.paidEmploymentControllerId),
+      Some("livingWithPartner"))
   }
 
   private def getNextPage(hasPartner: Boolean, newPaidEmployment: Boolean): Call = {

@@ -41,6 +41,7 @@ trait CCConstants {
   lazy val maximumEarningsKey = "maximumEarnings"
 
   lazy val livingWithPartnerController = "livingWithPartnerController"
+  lazy val paidEmploymentControllerId = "PaidEmploymentController"
 
   def getFamilyStatus(hasPartner: Boolean): String = {
     if(hasPartner) "couple" else "single"
