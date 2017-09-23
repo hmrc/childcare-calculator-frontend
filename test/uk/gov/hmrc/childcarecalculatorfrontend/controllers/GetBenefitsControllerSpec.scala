@@ -208,18 +208,22 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
       "redirect to correct next page" when {
 
         "single user selects 'no'" should {
-          s"go to which benefits page ${whatsYourAgePath}/parent" in {
+          s"go to which benefits page $whatsYourAgePath/parent" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND,
+                partner = Some(Claimant())),
+                livingWithPartner = Some(false))))
             )
 
             when(
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), getBenefits = Some(false)))
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+                  livingWithPartner = Some(false),
+                  getBenefits = Some(false)))
               )
             )
 
@@ -232,12 +236,47 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe s"${whatsYourAgePath}/parent"
+            result.header.headers("Location") shouldBe s"$whatsYourAgePath/parent"
+          }
+        }
+
+        "single user selects 'yes'" should {
+          s"go to which benefits page $whoGetsBenefitsPath" in {
+            when(
+              sut.keystore.fetch[PageObjects]()(any(), any())
+            ).thenReturn(
+              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND,
+                partner = Some(Claimant())),
+                livingWithPartner = Some(false),
+                getBenefits = Some(false))))
+            )
+
+            when(
+              sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+            ).thenReturn(
+              Future.successful(
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND,
+                  partner = Some(Claimant())),
+                  livingWithPartner = Some(false),
+                  getBenefits = Some(true)))
+              )
+            )
+
+            val result = await(
+              sut.onSubmit(
+                request
+                  .withFormUrlEncodedBody(getBenefitsKey -> "true")
+                  .withSession(validSession)
+              )
+            )
+
+            status(result) shouldBe SEE_OTHER
+            result.header.headers("Location") shouldBe s"$benefitsParentPath"
           }
         }
 
         "user with partner selects 'no'" should {
-          s"go to age page ${whatsYourAgePath}/parent and clear related data" in {
+          s"go to age page $whatsYourAgePath/parent and clear related data" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
@@ -264,7 +303,8 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             when(
-              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],
+                any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
                 Some(modifiedObject)
@@ -280,10 +320,10 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe s"${whatsYourAgePath}/parent"
+            result.header.headers("Location") shouldBe s"$whatsYourAgePath/parent"
           }
 
-          s"go to age page ${whatsYourAgePath}/partner and clear related data if only partner is in paid employment" in {
+          s"go to age page $whatsYourAgePath/partner and clear related data if only partner is in paid employment" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
                 location = LocationEnum.ENGLAND,
@@ -312,7 +352,8 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             when(
-              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],
+                any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
                 Some(modifiedObject)
@@ -328,24 +369,27 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             status(result) shouldBe SEE_OTHER
-            result.header.headers("Location") shouldBe s"${whatsYourAgePath}/partner"
+            result.header.headers("Location") shouldBe s"$whatsYourAgePath/partner"
           }
 
         }
 
         "single user selects 'yes'" should {
-          s"go to what benefits do you get ${benefitsParentPath}" in {
+          s"go to what benefits do you get $benefitsParentPath" in {
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
             ).thenReturn(
-              Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false))))
+              Future.successful(Some(PageObjects(
+                household = Household(location = LocationEnum.ENGLAND),
+                livingWithPartner = Some(false))))
             )
 
             when(
               sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
-                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(false), getBenefits = Some(true)))
+                Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+                  livingWithPartner = Some(false), getBenefits = Some(true)))
               )
             )
 
@@ -362,7 +406,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
           }
         }
 
-        s"user with partner selects 'yes' - go to 'which of you get benefits page' page ${whoGetsBenefitsPath}" should {
+        s"user with partner selects 'yes' - go to 'which of you get benefits page' page $whoGetsBenefitsPath" should {
           "shouldn't modify related data in keystore if value for paid employment is not changed" in {
             val keystoreObject: PageObjects = PageObjects(
               household = Household(
@@ -381,7 +425,8 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             when(
-              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier],
+                any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
                 Some(keystoreObject)
@@ -428,7 +473,8 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
             )
 
             when(
-              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+              sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier],
+                any[Format[PageObjects]])
             ).thenReturn(
               Future.successful(
                 Some(modifiedObject)
@@ -449,7 +495,7 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
         }
       }
 
-      s"redirect technichal difficulties page (${technicalDifficultiesPath})" when {
+      s"redirect technical difficulties page ($technicalDifficultiesPath)" when {
 
         "can't connect to keystore while fetching data" in {
           when(
@@ -491,7 +537,8 @@ class GetBenefitsControllerSpec extends ControllersValidator with BeforeAndAfter
           when(
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
-            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND), livingWithPartner = Some(true))))
+            Future.successful(Some(PageObjects(household = Household(location = LocationEnum.ENGLAND),
+              livingWithPartner = Some(true))))
           )
 
           when(
