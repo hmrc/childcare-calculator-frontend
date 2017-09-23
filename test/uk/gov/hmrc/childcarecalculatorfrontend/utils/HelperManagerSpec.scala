@@ -129,9 +129,29 @@ class HelperManagerSpec extends UnitSpec with FakeCCApplication with HelperManag
         HelperManager.getOrException(optionalBoolean, controllerId, objectName) shouldBe true
         HelperManager.getOrException(optionalString, controllerId, objectName) shouldBe "testString"
         HelperManager.getOrException(optionalPageObjects, controllerId, objectName) shouldBe pageObjects
-
+        HelperManager.getOrException(optionalPageObjects) shouldBe pageObjects
       }
 
     }
   }
+
+  "HelperManager" when {
+    "isLivingWithPartner is called" should {
+      "throw exception and return the default error when value for livingWithPartner is None" in {
+        val pageObjects = buildPageObjects.copy(livingWithPartner = None)
+
+        intercept[RuntimeException] {
+          HelperManager.isLivingWithPartner(pageObjects)
+        }.getMessage should include ("no element found in HelperManager while fetching livingWithPartner")
+
+      }
+
+      "return the value of livingWithPartner" in {
+        val pageObjects = buildPageObjects
+
+        HelperManager.isLivingWithPartner(pageObjects) shouldBe true
+      }
+    }
+  }
+
 }

@@ -80,7 +80,14 @@ trait HelperManager {
     pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
 
-  def isLivingWithPartner(pageObjects: PageObjects, controllerId: String = "HelperManager"): Boolean = {
+  /**
+    * Returns the value as true if living with partner else false
+    * @param pageObjects
+    * @param controllerId
+    * @return
+    */
+  def isLivingWithPartner(pageObjects: PageObjects,
+                          controllerId: String = CCConstants.helperManagerId): Boolean = {
     getOrException(pageObjects.livingWithPartner,
       Some(controllerId),
       Some("livingWithPartner"))
