@@ -24,7 +24,7 @@ import play.api.mvc.{Action, AnyContent, Call, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.CreditsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{CreditsEnum, EmploymentStatusEnum, PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.credits
@@ -78,9 +78,11 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
 
   private def getBackUrl(pageObjects: PageObjects): Call = {
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
+    val hasParentMinEarnings = pageObjects.household.parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
+
     paidEmployment match {
       case YouPartnerBothEnum.YOU => {
-        if (pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
+        if (hasParentMinEarnings) {
           routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
         } else if (pageObjects.household.parent.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
           routes.SelfEmployedController.onPageLoad(false)
@@ -89,7 +91,9 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
         }
       }
       case YouPartnerBothEnum.PARTNER => {
-        if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
+        val hasPartnerMinEarnings = pageObjects.household.partner.get.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
+
+        if (hasPartnerMinEarnings) {
           routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
         } else if (pageObjects.household.partner.get.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
           routes.SelfEmployedController.onPageLoad(true)
@@ -98,44 +102,75 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
         }
       }
       case YouPartnerBothEnum.BOTH => {
-        if (pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-          pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
-          routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString)
-        } else if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-          !pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
-          routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
-        } else if(pageObjects.household.partner.get.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity) &&
-          !pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
-          routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
-        } else if (pageObjects.household.partner.get.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
-          routes.SelfEmployedController.onPageLoad(true)
-        } else {
-          routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+        val hasPartnerMinEarnings = pageObjects.household.partner.get.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
+
+        (hasParentMinEarnings, hasPartnerMinEarnings) match {
+          case (true, true) => routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString)
+          case (true, false) => routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
+          case (false, true) => routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.PARTNER.toString)
+          case (_, _) => if (pageObjects.household.partner.get.minimumEarnings.get.employmentStatus.contains(EmploymentStatusEnum.SELFEMPLOYED)) {
+            routes.SelfEmployedController.onPageLoad(true)
+          } else {
+            routes.SelfEmployedOrApprenticeController.onPageLoad(true)
+          }
         }
       }
     }
   }
 
+  private def validMinEarnings(modifiedPageObjects: PageObjects): Boolean = {
+    val parent = modifiedPageObjects.household.parent
+    val parentNMW = parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
+    val parentApprentice = parent.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
+    val parentSelfEmployed = parent.minimumEarnings.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
+
+    val partner = modifiedPageObjects.household.partner.fold(false)
+    val partnerNMW = partner(_.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity)))
+    val partnerApprentice = partner(_.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE)))
+    val partnerSelfEmployed = partner(_.minimumEarnings.fold(false)(_.selfEmployedIn12Months.fold(false)(identity)))
+
+    (parentNMW, partnerNMW) match {
+      case (true, true) => true
+      case (true, false) => minEarnEligibility(partnerApprentice, partnerSelfEmployed)
+      case (false, true) => minEarnEligibility(parentApprentice, parentSelfEmployed)
+      case (false, false) => minEarnEligibility(partnerApprentice, partnerSelfEmployed) &&
+                             minEarnEligibility(parentApprentice, parentSelfEmployed)
+    }
+  }
+
+  private def minEarnEligibility(isApp: Boolean, isSelfEmployed: Boolean): Boolean = {
+    isApp || isSelfEmployed
+  }
+
+  private def validMaxEarnings(modifiedPageObjects: PageObjects): Boolean = {
+    val parentMaxEarnings = modifiedPageObjects.household.parent.maximumEarnings.fold(false)(identity)
+    val partnerMaxEarnings = modifiedPageObjects.household.partner.fold(false)(_.maximumEarnings.fold(false)(identity))
+
+    (parentMaxEarnings, partnerMaxEarnings) match {
+      case (true, true) => true
+      case (_, _) => false
+    }
+  }
+
+  private def checkMaxHoursEligibility(modifiedPageObjects: PageObjects): Boolean = {
+    validMinEarnings(modifiedPageObjects) && validMaxEarnings(modifiedPageObjects) &&
+      modifiedPageObjects.household.location == LocationEnum.ENGLAND
+  }
+
   private def nextPage(pageObjects: PageObjects, selectedCredits: String)(implicit hc: HeaderCarrier): Future[Result] = {
     val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedCredits)
-    EligibilityConnector.getEligibility(modifiedPageObjects.household)map {
-      result => {
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
 
-        println(s"******modifiedPageObjects.household>>>>${modifiedPageObjects.household}")
-        println(s"******result>>>>$result")
+    val hasChild3Or4 = modifiedPageObjects.household.childAgedThreeOrFour.getOrElse(false)
+    val hasChildcareCost = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
 
-        keystore.cache(modifiedPageObjects).map { res =>
+    println(s"******modifiedPageObjects.household>>>>${modifiedPageObjects.household}")
 
-          if (selectedCredits == CreditsEnum.TAXCREDITS.toString) {
-            Redirect(routes.ChildCareBaseController.underConstruction())
-          } else if (selectedCredits == CreditsEnum.UNIVERSALCREDIT.toString) {
-            Redirect(routes.ChildCareBaseController.underConstruction())
-          } else {
-            Redirect(routes.ChildCareBaseController.underConstruction())
-          }
-        }
-
-        Redirect(routes.ChildCareBaseController.underConstruction())
+    keystore.cache(modifiedPageObjects).map { res =>
+      (checkMaxHoursEligibility(modifiedPageObjects), hasChild3Or4) match {
+        case (true, true) => Redirect(routes.ChildCareBaseController.underConstruction()) //Maximum hours
+        case (true, false) => Redirect(routes.ChildCareBaseController.underConstruction()) //How many children
+        case (_, _) => Redirect(routes.ChildCareBaseController.underConstruction()) // Results page
       }
     }
 

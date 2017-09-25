@@ -110,12 +110,11 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
 
-          val  parentEarnMoreThanMW= pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)
+          val parentEarnMoreThanMW= pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)
 
           if(minEarnings) {
             if(parentEarnMoreThanMW) {
               routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString)
-
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
             }
@@ -153,13 +152,15 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
+    val minAmount = getMinWageForScreen(pageObjects, isPartner)
+
     if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER ||
       defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH)) {
       pageObjects.copy(household = pageObjects.household.copy(
         partner = pageObjects.household.partner.map(x => x.copy(
           minimumEarnings = Some(x.minimumEarnings.fold(
             MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner))))
+            earnMoreThanNMW = Some(minEarnings), amount = minAmount)))
         ))
       ))
     } else {
@@ -167,7 +168,7 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
         parent = pageObjects.household.parent.copy(
           minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
             MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner)))
+            earnMoreThanNMW = Some(minEarnings), amount = minAmount))
           )
         )
       ))
