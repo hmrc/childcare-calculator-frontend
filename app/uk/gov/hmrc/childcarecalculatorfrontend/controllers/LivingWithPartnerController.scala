@@ -98,35 +98,34 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
     if(oldPageObjects.livingWithPartner.contains(newLivingWithPartner)) {
       oldPageObjects
     } else {
-     // clearData(livingWithPartnerController, newLivingWithPartner, oldPageObjects).getOrElse(oldPageObjects)
      val existingValueForLivingWithPartner = oldPageObjects.livingWithPartner.getOrElse(false)
 
+      val  updatedPageObjectWithNoPartner= oldPageObjects.copy(household = oldPageObjects.household.copy(partner = None,
+        parent = oldPageObjects.household.parent.copy(maximumEarnings = None)),
+        livingWithPartner = Some(false),
+        paidOrSelfEmployed = None,
+        whichOfYouInPaidEmployment = None,
+        getVouchers = None,
+        whoGetsVouchers = None,
+        getMaximumEarnings = None,
+        getBenefits = None
+      )
+
+      val  updatedPageObjectWithEmptyParent =  oldPageObjects.copy(household = oldPageObjects.household.copy(
+        partner = Some(Claimant())),
+        livingWithPartner = Some(true),
+        paidOrSelfEmployed = None,
+        whichOfYouInPaidEmployment = None,
+        getVouchers = None,
+        whoGetsVouchers = None,
+        getMaximumEarnings = None,
+        getBenefits = None
+      )
+
      (existingValueForLivingWithPartner, newLivingWithPartner) match {
-          case (true, false) => {
-            oldPageObjects.copy(household = oldPageObjects.household.copy(partner = None,
-              parent = oldPageObjects.household.parent.copy(maximumEarnings = None)),
-              livingWithPartner = Some(false),
-              paidOrSelfEmployed = None,
-              whichOfYouInPaidEmployment = None,
-              getVouchers = None,
-              whoGetsVouchers = None,
-              getMaximumEarnings = None,
-              getBenefits = None
-            )
-          }
-          case (false, true) => {
-            oldPageObjects.copy(household = oldPageObjects.household.copy(
-              partner = Some(Claimant())),
-              livingWithPartner = Some(true),
-              paidOrSelfEmployed = None,
-              whichOfYouInPaidEmployment = None,
-              getVouchers = None,
-              whoGetsVouchers = None,
-              getMaximumEarnings = None,
-              getBenefits = None
-            )
-          }
-          case _ => oldPageObjects
+          case (true, false) => updatedPageObjectWithNoPartner
+          case (false, true) => updatedPageObjectWithEmptyParent
+          case _ => updatedPageObjectWithNoPartner
         }
 
     }
