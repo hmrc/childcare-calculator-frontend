@@ -35,7 +35,6 @@ import scala.concurrent.Future
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     Future(Ok(maxFreeHoursInfo()))
   }

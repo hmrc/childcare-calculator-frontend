@@ -609,7 +609,7 @@ class WhoGetsBenefitsControllerSpec extends ControllersValidator with BeforeAndA
         val result = await(
           sut.onSubmit(
             request
-              .withFormUrlEncodedBody(whoGetsBeneftsKey -> YouPartnerBothEnum.YOU.toString)
+              .withFormUrlEncodedBody(whoGetsBenefitsKey -> YouPartnerBothEnum.YOU.toString)
               .withSession(validSession)
           )
         )
