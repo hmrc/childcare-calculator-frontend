@@ -22,7 +22,7 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, PageObjects, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, Benefits, PageObjects, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits
@@ -34,29 +34,14 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
 
   val keystore: KeystoreService = KeystoreService
 
-  private def isDataValid(pageObjects: PageObjects, isPartner: Boolean): Boolean = {
-    (!isPartner || (isPartner && pageObjects.household.partner.isDefined)) && pageObjects.livingWithPartner.isDefined
-  }
-
-  private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
-    if(pageObjects.livingWithPartner.get) {
-      if(isPartner && pageObjects.household.parent.benefits.isDefined) {
-        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
-      } else {
-        routes.WhoGetsBenefitsController.onPageLoad()
-      }
-    } else {
-      routes.GetBenefitsController.onPageLoad()
-    }
-  }
-
   def onPageLoad(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if isDataValid(pageObjects, isPartner) =>
+      case Some(pageObjects) =>
+
         val claimantBenefits: Option[Benefits] = if(!isPartner) {
           pageObjects.household.parent.benefits
         } else {
-          pageObjects.household.partner.get.benefits
+          pageObjects.household.partner.fold[Option[Benefits]](None)(_.benefits)
         }
         Ok(
           benefits(
@@ -75,43 +60,9 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
     }
   }
 
-  private def modifyPageObject(pageObjects: PageObjects, selectedBenefits : Benefits, isPartner: Boolean) : PageObjects = {
-    if (isPartner) {
-      pageObjects.copy(
-        household = pageObjects.household.copy(
-          partner = Some(
-            pageObjects.household.partner.get.copy(
-                benefits = Some(selectedBenefits)
-            )
-          )
-        )
-      )
-    } else {
-      pageObjects.copy(
-        household = pageObjects.household.copy(
-          parent = pageObjects.household.parent.copy(
-              benefits = Some(selectedBenefits)
-          )
-        )
-      )
-    }
-  }
-
-  private def nextPage(isPartner: Boolean, pageObjects: PageObjects): Call = {
-    if (!isPartner && pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
-      routes.WhichBenefitsDoYouGetController.onPageLoad(true)
-    } else {
-      if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
-        routes.WhatsYourAgeController.onPageLoad(true)
-      } else {
-        routes.WhatsYourAgeController.onPageLoad(false)
-      }
-    }
-  }
-
   def onSubmit(isPartner: Boolean): Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObject) if isDataValid(pageObject, isPartner) => {
+      case Some(pageObject) => {
         new WhichBenefitsDoYouGetForm(isPartner, messagesApi).form.bindFromRequest().fold(
           errors => {
             val userType = getUserType(isPartner)
@@ -144,6 +95,56 @@ class WhichBenefitsDoYouGetController @Inject()(val messagesApi: MessagesApi) ex
       case ex: Exception =>
         Logger.warn(s"Exception from WhichBenefitsDoYouGetController.onPageLoad: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+
+  private def backURL(isPartner: Boolean, pageObjects: PageObjects): Call = {
+    if(pageObjects.livingWithPartner.get) {
+      if(isPartner && pageObjects.household.parent.benefits.isDefined) {
+        routes.WhichBenefitsDoYouGetController.onPageLoad(false)
+      } else {
+        routes.WhoGetsBenefitsController.onPageLoad()
+      }
+    } else {
+      routes.GetBenefitsController.onPageLoad()
+    }
+  }
+
+  private def modifyPageObject(pageObjects: PageObjects,
+                               selectedBenefits : Benefits,
+                               isPartner: Boolean) : PageObjects = {
+    if (isPartner) {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          partner = Some(
+            pageObjects.household.partner.get.copy(
+              benefits = Some(selectedBenefits)
+            )
+          )
+        )
+      )
+    } else {
+      pageObjects.copy(
+        household = pageObjects.household.copy(
+          parent = pageObjects.household.parent.copy(
+            benefits = Some(selectedBenefits)
+          )
+        )
+      )
+    }
+  }
+
+  private def nextPage(isPartner: Boolean,
+                       pageObjects: PageObjects): Call = {
+    if (!isPartner && pageObjects.household.partner.isDefined && pageObjects.household.partner.get.benefits.isDefined) {
+      routes.WhichBenefitsDoYouGetController.onPageLoad(true)
+    } else {
+      if(pageObjects.whichOfYouInPaidEmployment.contains(YouPartnerBothEnum.PARTNER)) {
+        routes.WhatsYourAgeController.onPageLoad(true)
+      } else {
+        routes.WhatsYourAgeController.onPageLoad(false)
+      }
     }
   }
 

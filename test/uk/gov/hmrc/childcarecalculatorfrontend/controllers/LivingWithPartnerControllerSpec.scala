@@ -23,14 +23,20 @@ import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.{TestUtils, ObjectBuilder, ControllersValidator}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAndAfterEach with ObjectBuilder with TestUtils{
 
   val sut = new LivingWithPartnerController(applicationMessagesApi) {
     override val keystore: KeystoreService = mock[KeystoreService]
@@ -43,13 +49,6 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
   validateUrl(livingWithPartnerPath, List(GET))
 
-  def buildPageObjects(livingWithPartner: Option[Boolean],
-                     childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
-      location = LocationEnum.ENGLAND,
-      childAgedThreeOrFour = childAgedThreeOrFour),
-    livingWithPartner = livingWithPartner
-  )
-
   "LivingWithPartnerController" when {
 
     "onPageLoad is called" should {
@@ -59,7 +58,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(None))
+            Some(buildPageObjectsModel(None))
           )
         )
 
@@ -73,7 +72,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(Some(true)))
+            Some(buildPageObjectsModel(Some(true)))
           )
         )
 
@@ -112,7 +111,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         ).thenReturn(
           Future.successful(
             Some(
-              buildPageObjects(
+              buildPageObjectsModel(
                 livingWithPartner = None,
                 childAgedThreeOrFour = None
               )
@@ -133,7 +132,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         ).thenReturn(
           Future.successful(
             Some(
-              buildPageObjects(
+              buildPageObjectsModel(
                 livingWithPartner = None,
                 childAgedThreeOrFour = Some(true)
               )
@@ -158,7 +157,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
             sut.keystore.fetch[PageObjects]()(any(), any())
           ).thenReturn(
             Future.successful(
-              Some(buildPageObjects(None))
+              Some(buildPageObjectsModel(None))
             )
           )
 
@@ -177,7 +176,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
       "saving in keystore is successful" should {
         s"redirect to next page ${paidEmploymentPath}" when {
           "user selects 'YES'" in {
-            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+            val keystoreObject: PageObjects = buildPageObjectsModel(livingWithPartner = None)
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -207,7 +206,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           }
 
           "user selects 'NO'" in {
-            val keystoreObject: PageObjects = buildPageObjects(livingWithPartner = None)
+            val keystoreObject: PageObjects = buildPageObjectsModel(livingWithPartner = None)
 
             when(
               sut.keystore.fetch[PageObjects]()(any(), any())
@@ -321,7 +320,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
               )
 
               when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
                   Some(modifiedObject)
@@ -428,7 +427,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
               )
 
               when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
+                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
               ).thenReturn(
                 Future.successful(
                   Some(modifiedObject)
@@ -445,9 +444,11 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
               status(result) shouldBe SEE_OTHER
               result.header.headers("Location") should not be technicalDifficultiesPath
             }
+
           }
         }
       }
+
     }
 
     "connecting with keystore fails" should {
@@ -456,7 +457,7 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
           sut.keystore.fetch[PageObjects]()(any(), any())
         ).thenReturn(
           Future.successful(
-            Some(buildPageObjects(Some(true), None))
+            Some(buildPageObjectsModel(Some(true), None))
           )
         )
 
@@ -498,6 +499,45 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
         status(result) shouldBe SEE_OTHER
         result.header.headers("Location") shouldBe technicalDifficultiesPath
       }
+    }
+
+  }
+
+  private def buildPageObjectsModel(livingWithPartner: Option[Boolean],
+                       childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
+    location = LocationEnum.ENGLAND,
+    childAgedThreeOrFour = childAgedThreeOrFour),
+    livingWithPartner = livingWithPartner
+  )
+
+  /**
+    * Setup the mocks
+    *
+    * @param modelToFetch
+    * @param modelToStore
+    * @param fetchPageObjects
+    * @param storePageObjects
+    * @return
+    */
+  private def setupMocks(modelToFetch: Option[PageObjects] = None,
+                         modelToStore: Option[PageObjects] = None,
+                         fetchPageObjects: Boolean = true,
+                         storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToFetch)
+      )
+    }
+
+    if (storePageObjects) {
+      when(
+        sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+        Future.successful(modelToStore)
+      )
+
     }
 
   }

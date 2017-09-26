@@ -43,25 +43,27 @@ import scala.concurrent.Future
 
 trait MockBuilder {
 
-  def createMockToFetchPageObjects(modelToFetch: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
+  def createMockToFetchPageObjects(keyStore: KeystoreService,
+                                   modelToFetch: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
     when(
-      KeystoreService.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      keyStore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
     ).thenReturn(
       Future.successful(modelToFetch)
     )
   }
 
-  def createMockToStorePageObjects(modelToStore: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
+  def createMockToStorePageObjects(keyStore: KeystoreService,
+                                   modelToStore: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
     when(
-      KeystoreService.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      keyStore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
     ).thenReturn(
       Future.successful(modelToStore)
     )
   }
 
-  def createMockToThrowRuntimeException(): OngoingStubbing[Future[Option[PageObjects]]] = {
+  def createMockToThrowRuntimeException(keyStore: KeystoreService): OngoingStubbing[Future[Option[PageObjects]]] = {
     when(
-      KeystoreService.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      keyStore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
     ).thenReturn(
       Future.failed(new RuntimeException)
     )

@@ -33,26 +33,15 @@ class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends 
 
   val keystore: KeystoreService = KeystoreService
 
-  private def validatePageObjects(pageObject: PageObjects): Boolean = {
-    pageObject.household.partner.isDefined
-  }
-
-  private def getSelection(parentBenefits: Option[Benefits], partnerBenefits: Option[Benefits]): Option[YouPartnerBothEnum] = {
-    (parentBenefits, partnerBenefits) match {
-      case (None, None) => None
-      case (Some(_), None) => Some(YouPartnerBothEnum.YOU)
-      case (None, Some(_)) => Some(YouPartnerBothEnum.PARTNER)
-      case (Some(_), Some(_)) => Some(YouPartnerBothEnum.BOTH)
-    }
-  }
 
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObject) if validatePageObjects(pageObject) =>
-        val selection: Option[YouPartnerBothEnum] = getSelection(pageObject.household.parent.benefits, pageObject.household.partner.get.benefits)
-        Ok(
-          whoGetsBenefits(new WhoGetsBenefitsForm(messagesApi).form.fill(selection.map(_.toString)))
-        )
+      case Some(pageObject)  =>
+        val selection: Option[YouPartnerBothEnum] = getSelection(pageObject.household.parent.benefits,
+                                                                 pageObject.household.partner.fold[Option[Benefits]](None)(_.benefits))
+
+        Ok(whoGetsBenefits(new WhoGetsBenefitsForm(messagesApi).form.fill(selection.map(_.toString))))
+
       case _ =>
         Logger.warn("Invalid PageObjects in WhoGetsBenefitsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
@@ -63,55 +52,6 @@ class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends 
     }
   }
 
-  private def modifyPageObject(pageObject: PageObjects, selectedWhoGetsBenefits: YouPartnerBothEnum): PageObjects = {
-    if(getSelection(pageObject.household.parent.benefits, pageObject.household.partner.get.benefits) == Some(selectedWhoGetsBenefits)) {
-      pageObject
-    }
-    else {
-      selectedWhoGetsBenefits match {
-        case YouPartnerBothEnum.YOU => pageObject.copy(
-          household = pageObject.household.copy(
-            parent = pageObject.household.parent.copy(
-              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
-            ),
-            partner = Some(
-              pageObject.household.partner.get.copy(
-                benefits = None
-              )
-            )
-          )
-        )
-        case YouPartnerBothEnum.PARTNER => pageObject.copy(
-          household = pageObject.household.copy(
-            parent = pageObject.household.parent.copy(
-              benefits = None
-            ),
-            partner = Some(
-              pageObject.household.partner.get.copy(
-                benefits = Some(pageObject.household.partner.get.benefits.getOrElse(Benefits()))
-              )
-            )
-          )
-        )
-        case YouPartnerBothEnum.BOTH => pageObject.copy(
-          household = pageObject.household.copy(
-            parent = pageObject.household.parent.copy(
-              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
-            ),
-            partner = Some(
-              pageObject.household.partner.get.copy(
-                benefits = Some(pageObject.household.partner.get.benefits.getOrElse(Benefits()))
-              )
-            )
-          )
-        )
-      }
-    }
-  }
-
-  private def getNextPage(selectedWhoGetsBenefits: YouPartnerBothEnum): Call = {
-    routes.WhichBenefitsDoYouGetController.onPageLoad(selectedWhoGetsBenefits == YouPartnerBothEnum.PARTNER)
-  }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     new WhoGetsBenefitsForm(messagesApi).form.bindFromRequest().fold(
@@ -124,7 +64,7 @@ class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends 
       },
       success => {
         keystore.fetch[PageObjects]().flatMap {
-          case Some(pageObject) if validatePageObjects(pageObject) =>
+          case Some(pageObject) =>
             val selectedWhoGetsBenefits: YouPartnerBothEnum = YouPartnerBothEnum.withName(success.get)
             val modifiedPageObject: PageObjects = modifyPageObject(pageObject, selectedWhoGetsBenefits)
             keystore.cache(modifiedPageObject).map { result =>
@@ -140,6 +80,70 @@ class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends 
         }
       }
     )
+  }
+
+  private def modifyPageObject(pageObject: PageObjects,
+                               selectedWhoGetsBenefits: YouPartnerBothEnum): PageObjects = {
+
+    if(getSelection(pageObject.household.parent.benefits,
+                    pageObject.household.partner.fold[Option[Benefits]](None)(_.benefits)).contains(selectedWhoGetsBenefits)) {
+      pageObject
+    }
+    else {
+      selectedWhoGetsBenefits match {
+        case YouPartnerBothEnum.YOU => pageObject.copy(
+          household = pageObject.household.copy(
+            parent = pageObject.household.parent.copy(
+              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
+            ),
+            partner = Some(
+              pageObject.household.partner.fold(Claimant())(_.copy(benefits = None)
+              )
+            )
+          )
+        )
+
+        case YouPartnerBothEnum.PARTNER => pageObject.copy(
+          household = pageObject.household.copy(
+            parent = pageObject.household.parent.copy(benefits = None),
+            partner = Some(
+              pageObject.household.partner.fold(Claimant(benefits = Some(Benefits())))( x => x.copy(
+                benefits = Some(x.benefits.getOrElse(Benefits()))
+              )
+            )
+          )
+        ))
+
+        case YouPartnerBothEnum.BOTH => pageObject.copy(
+          household = pageObject.household.copy(
+            parent = pageObject.household.parent.copy(
+              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
+            ),
+            partner = Some(
+              pageObject.household.partner.fold(Claimant(benefits = Some(Benefits())))( x => x.copy(
+                benefits = Some(x.benefits.getOrElse(Benefits()))
+              )
+              )
+            )
+          )
+        )
+      }
+    }
+  }
+
+  private def getSelection(parentBenefits: Option[Benefits],
+                           partnerBenefits: Option[Benefits]): Option[YouPartnerBothEnum] = {
+    (parentBenefits, partnerBenefits) match {
+      case (None, None) => None
+      case (Some(_), None) => Some(YouPartnerBothEnum.YOU)
+      case (None, Some(_)) => Some(YouPartnerBothEnum.PARTNER)
+      case (Some(_), Some(_)) => Some(YouPartnerBothEnum.BOTH)
+    }
+  }
+
+
+  private def getNextPage(selectedWhoGetsBenefits: YouPartnerBothEnum): Call = {
+    routes.WhichBenefitsDoYouGetController.onPageLoad(selectedWhoGetsBenefits == YouPartnerBothEnum.PARTNER)
   }
 
 }
