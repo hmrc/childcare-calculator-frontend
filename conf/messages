@@ -231,3 +231,7 @@ credits.radio.tc = Tax credits (includes Working and Child Tax Credit)
 credits.radio.uc = Universal Credit
 credits.radio.none = None of these
 credits.radio.not.selected.error = You must tell the calculator if you get tax credits or Universal Credit
+
+####### Max free hours Earning #######
+max.free.hours.info.header = It looks like you’re eligible for the maximum free hours
+max.free.hours.info.can.get.maximum.hours.paragraph = Based on the information you’ve given so far, you can get a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.

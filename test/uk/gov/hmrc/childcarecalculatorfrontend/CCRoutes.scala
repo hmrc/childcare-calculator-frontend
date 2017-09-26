@@ -66,11 +66,18 @@ trait CCRoutes {
 
   val minimumEarningsParentPath: String = path("/minimum-earnings/parent")
   val minimumEarningsPartnerPath: String = path("/minimum-earnings/partner")
+
   val selfEmployedParentPath: String = path("/self-employed/parent")
   val selfEmployedPartnerPath: String = path("/self-employed/partner")
+
   val maximumEarningsParentPath: String = path("/maximum-earnings/parent")
   val maximumEarningsPartnerPath: String = path("/maximum-earnings/partner")
   val maximumEarningsPath: String = path("/maximum-earnings")
+
   val creditsPath: String = path("/credits")
+
+  val maxFreeHoursInfoPath: String = path("/max-free-hours-info")
+
+  val howManyChildrenPath: String = path("/how-many-children")
 
 }
