@@ -24,6 +24,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.{ControllersValidator, MockBuilder, ObjectBuilder}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -357,13 +358,20 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
 
       s"successful submission with location is England, has child of 3 or 4 years, satisfy minimum earnings and earning less than £100,000, " +
         s"redirect to ${maxFreeHoursInfoPath} info page" in {
-        val model = buildPageObjectsModel(isPartner = false, whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+        val model = buildPageObjectsModel(isPartner = false,
+                                          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
 
-        val modelToFetch = model.copy(household = model.household.copy(credits = None))
+        val modelToFetch = model.copy(household = model.household.copy(credits = None,
+          parent = model.household.parent.copy(maximumEarnings = Some(false),
+                                               minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true)))),
+          childAgedThreeOrFour = Some(true)))
 
         val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
 
-        setupMocks(sut.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(sut.keystore,
+          modelToFetch = Some(modelToFetch),
+          modelToStore = Some(modelToStore),
+          storePageObjects = true)
 
         val result = sut.onSubmit()(
           request
@@ -376,14 +384,17 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
       }
 
       s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
-        s"redirect to ${howManyChildrenPath} page" in {
+        s"redirect to $howManyChildrenPath page" in {
         val model = buildPageObjectsModel(isPartner = false, whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
 
         val modelToFetch = model.copy(household = model.household.copy(credits = None))
 
         val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
 
-        setupMocks(sut.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+        setupMocks(sut.keystore,
+          modelToFetch = Some(modelToFetch),
+          modelToStore = Some(modelToStore),
+          storePageObjects = true)
 
         val result = sut.onSubmit()(
           request
@@ -396,19 +407,116 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
       }
 
       s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
-        "redirect to how many children page" in {
+        s"redirect to $howManyChildrenPath page" in {
+        val model = buildPageObjectsModel(isPartner = false,
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+
+        val modelToFetch = model.copy(household = model.household.copy(credits = None,
+          parent = model.household.parent.copy(maximumEarnings = Some(true),
+            minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true)))),
+          childAgedThreeOrFour = Some(false)))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
+
+        setupMocks(sut.keystore,
+          modelToFetch = Some(modelToFetch),
+          modelToStore = Some(modelToStore),
+          storePageObjects = true)
+
+        val result = sut.onSubmit()(
+          request
+            .withFormUrlEncodedBody(creditsKey -> "NONE")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(howManyChildrenPath))
       }
 
       s"successful submission with location=England, no child of 3 or 4 years, not satisfy minimum earnings and not self employed or neither, " +
-        "redirect to how many children page" in {
+        s"redirect to $howManyChildrenPath page" in {
+        val model = buildPageObjectsModel(isPartner = false,
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+
+        val modelToFetch = model.copy(household = model.household.copy(credits = None,
+          parent = model.household.parent.copy(
+          minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+            employmentStatus = Some(EmploymentStatusEnum.NEITHER)))),
+          childAgedThreeOrFour = Some(false)))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
+
+        setupMocks(sut.keystore,
+          modelToFetch = Some(modelToFetch),
+          modelToStore = Some(modelToStore),
+          storePageObjects = true)
+
+        val result = sut.onSubmit()(
+          request
+            .withFormUrlEncodedBody(creditsKey -> "NONE")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(howManyChildrenPath))
       }
 
       s"successful submission with location=England, has child of 3 or 4 years, not satisfy minimum earnings and is apprentice, " +
-        "redirect to maximum free hours info page" in {
+        s"redirect to $maxFreeHoursInfoPath page" in {
+        val model = buildPageObjectsModel(isPartner = false,
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+
+        val modelToFetch = model.copy(household = model.household.copy(credits = None,
+          parent = model.household.parent.copy(
+            minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(false),
+              employmentStatus = Some(EmploymentStatusEnum.APPRENTICE)))),
+          childAgedThreeOrFour = Some(true)))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
+
+        setupMocks(sut.keystore,
+          modelToFetch = Some(modelToFetch),
+          modelToStore = Some(modelToStore),
+          storePageObjects = true)
+
+        val result = sut.onSubmit()(
+          request
+            .withFormUrlEncodedBody(creditsKey -> "NONE")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(maxFreeHoursInfoPath))
       }
 
+      // TODO: Need to be changed to Results page once page is developed
       s"successful submission with location=England, has only child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
-        "redirect to result page" in {
+        s"redirect to $underConstructionPath page" in {
+        val model = buildPageObjectsModel(isPartner = false,
+          whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+
+        val modelToFetch = model.copy(household = model.household.copy(credits = None,
+          parent = model.household.parent.copy(
+            minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))),
+            maximumEarnings = Some(true)),
+          childAgedThreeOrFour = Some(true)),
+          expectChildcareCosts = None)
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
+
+        setupMocks(sut.keystore,
+          modelToFetch = Some(modelToFetch),
+          modelToStore = Some(modelToStore),
+          storePageObjects = true)
+
+        val result = sut.onSubmit()(
+          request
+            .withFormUrlEncodedBody(creditsKey -> "NONE")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(underConstructionPath)) // TODO: Need to be changed to Results page once page is developed
       }
 
     }
@@ -422,9 +530,12 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
                                     whichOfYouInPaidEmployment: Option[YouPartnerBothEnum] = None
                                    ): PageObjects = {
 
-    val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = parentEarnMoreThanNMW,
+    val parent = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(
+      earnMoreThanNMW = parentEarnMoreThanNMW,
       employmentStatus = parentEmploymentStatus)))
-    val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = partnerEarnMoreThanNMW,
+
+    val partner = buildClaimant.copy(minimumEarnings = Some(buildMinimumEarnings.copy(
+      earnMoreThanNMW = partnerEarnMoreThanNMW,
       employmentStatus = partnerEmploymentStatus)))
 
     if (isPartner) {
@@ -435,6 +546,5 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         household = buildHousehold.copy(location = LocationEnum.ENGLAND, parent = parent))
     }
   }
-
 
 }

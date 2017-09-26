@@ -124,34 +124,61 @@ trait HelperManager {
   private def validMinEarnings(modifiedPageObjects: PageObjects): Boolean = {
     val parent = modifiedPageObjects.household.parent
     val parentNMW = parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
-    val parentApprentice = parent.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
-    val parentSelfEmployed = parent.minimumEarnings.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
 
-    val partnerNMW = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
-    (_.earnMoreThanNMW.fold(false)(identity)))
-    val partnerApprentice = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
-    (_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE)))
-    val partnerSelfEmployed = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
-    (_.selfEmployedIn12Months.fold(false)(identity)))
+    val partnerOption = modifiedPageObjects.household.partner
+    val partnerNMW = partnerOption.fold(false)(_.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity)))
 
-    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(modifiedPageObjects)
-    paidEmployment match {
-      case YouPartnerBothEnum.BOTH =>
-        (parentNMW, partnerNMW) match {
-          case (true, true) => true
-          case (true, false) => minEarnEligibility (partnerApprentice, partnerSelfEmployed)
-          case (false, true) => minEarnEligibility (parentApprentice, parentSelfEmployed)
-          case (false, false) => minEarnEligibility (partnerApprentice, partnerSelfEmployed) &&
-            minEarnEligibility (parentApprentice, parentSelfEmployed)
-        }
-      case YouPartnerBothEnum.YOU => if(parentNMW) true else { minEarnEligibility (parentApprentice, parentSelfEmployed) }
-      case YouPartnerBothEnum.PARTNER => if(partnerNMW) true else { minEarnEligibility (partnerApprentice, partnerSelfEmployed) }
+    val parentMinEarnElig = minimumEarningsEligibility(modifiedPageObjects)
+    val partnerMinEarnElig = minimumEarningsEligibility(modifiedPageObjects, isPartner = true)
+
+   HelperManager.defineInPaidEmployment(modifiedPageObjects) match {
+      case YouPartnerBothEnum.BOTH =>{
+        minEarningsEligibilityForPaidEmpBoth(modifiedPageObjects, parentNMW, partnerNMW)
+      }
+      case YouPartnerBothEnum.YOU => if(parentNMW) true else parentMinEarnElig
+      case YouPartnerBothEnum.PARTNER => if(partnerNMW) true else partnerMinEarnElig
     }
 
   }
 
-  private def minEarnEligibility(isApp: Boolean, isSelfEmployed: Boolean): Boolean = {
-    isApp || isSelfEmployed
+  /**
+    * Returns the Parent and partner minimum earnings eligibility
+    * @param pageObjects
+    * @param isPartner
+    * @return
+    */
+  private def minimumEarningsEligibility(pageObjects: PageObjects,
+                                         isPartner: Boolean = false) = {
+    if(isPartner){
+      val partnerOption = pageObjects.household.partner
+      val partnerMinEarningsOption = partnerOption.flatMap(_.minimumEarnings)
+      val partnerApprentice = partnerMinEarningsOption.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
+      val partnerSelfEmployed = partnerMinEarningsOption.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
+
+      partnerApprentice || partnerSelfEmployed
+
+    }else{
+      val parent = pageObjects.household.parent
+      val parentMinEarningsOption = parent.minimumEarnings
+      val parentApprentice = parentMinEarningsOption.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
+      val parentSelfEmployed = parentMinEarningsOption.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
+
+      parentApprentice || parentSelfEmployed
+    }
+  }
+
+  private def minEarningsEligibilityForPaidEmpBoth(pageObjects: PageObjects,
+                                                    parentNMW: Boolean,
+                                                   partnerNMW: Boolean) = {
+    val parentMinEarnElig = minimumEarningsEligibility(pageObjects)
+    val partnerMinEarnElig = minimumEarningsEligibility(pageObjects, isPartner = true)
+
+    (parentNMW, partnerNMW) match {
+      case (true, true) => true
+      case (true, false) => partnerMinEarnElig
+      case (false, true) => parentMinEarnElig
+      case (false, false) => partnerMinEarnElig && parentMinEarnElig
+    }
   }
 
   private def validMaxEarnings(modifiedPageObjects: PageObjects): Boolean = {
@@ -171,8 +198,9 @@ trait HelperManager {
   }
 
   def checkMaxHoursEligibility(modifiedPageObjects: PageObjects): Boolean = {
-    validMinEarnings(modifiedPageObjects) && validMaxEarnings(modifiedPageObjects) &&
-      modifiedPageObjects.household.location == LocationEnum.ENGLAND
+    validMinEarnings(modifiedPageObjects) &&
+    validMaxEarnings(modifiedPageObjects) &&
+    modifiedPageObjects.household.location == LocationEnum.ENGLAND
   }
 
 }

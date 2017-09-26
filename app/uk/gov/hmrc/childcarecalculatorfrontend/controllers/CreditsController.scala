@@ -119,7 +119,6 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
 
   private def nextPage(pageObjects: PageObjects, selectedCredits: String)(implicit hc: HeaderCarrier): Future[Result] = {
     val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedCredits)
-    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
 
     val hasChild3Or4 = modifiedPageObjects.household.childAgedThreeOrFour.getOrElse(false)
     val expectChildcareCost = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
