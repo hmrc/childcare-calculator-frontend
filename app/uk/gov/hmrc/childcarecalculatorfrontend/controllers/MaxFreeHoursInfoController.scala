@@ -18,19 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{AnyContent, Action}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
 
 import scala.concurrent.Future
-
-/**
- * Created by user on 18/09/17.
- */
 
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {

@@ -22,7 +22,7 @@ import org.joda.time.LocalDate
 import play.api.Play.current
 import play.api.{Configuration, Play}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentStatusEnum, LocationEnum, PageObjects, YouPartnerBothEnum}
 
 trait HelperManager {
 
@@ -120,6 +120,61 @@ trait HelperManager {
     }
 
   }
+
+  private def validMinEarnings(modifiedPageObjects: PageObjects): Boolean = {
+    val parent = modifiedPageObjects.household.parent
+    val parentNMW = parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
+    val parentApprentice = parent.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
+    val parentSelfEmployed = parent.minimumEarnings.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
+
+    val partnerNMW = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
+    (_.earnMoreThanNMW.fold(false)(identity)))
+    val partnerApprentice = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
+    (_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE)))
+    val partnerSelfEmployed = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
+    (_.selfEmployedIn12Months.fold(false)(identity)))
+
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(modifiedPageObjects)
+    paidEmployment match {
+      case YouPartnerBothEnum.BOTH =>
+        (parentNMW, partnerNMW) match {
+          case (true, true) => true
+          case (true, false) => minEarnEligibility (partnerApprentice, partnerSelfEmployed)
+          case (false, true) => minEarnEligibility (parentApprentice, parentSelfEmployed)
+          case (false, false) => minEarnEligibility (partnerApprentice, partnerSelfEmployed) &&
+            minEarnEligibility (parentApprentice, parentSelfEmployed)
+        }
+      case YouPartnerBothEnum.YOU => if(parentNMW) true else { minEarnEligibility (parentApprentice, parentSelfEmployed) }
+      case YouPartnerBothEnum.PARTNER => if(partnerNMW) true else { minEarnEligibility (partnerApprentice, partnerSelfEmployed) }
+    }
+
+  }
+
+  private def minEarnEligibility(isApp: Boolean, isSelfEmployed: Boolean): Boolean = {
+    isApp || isSelfEmployed
+  }
+
+  private def validMaxEarnings(modifiedPageObjects: PageObjects): Boolean = {
+    val parentMaxEarnings = modifiedPageObjects.household.parent.maximumEarnings.fold(false)(identity)
+    val partnerMaxEarnings = modifiedPageObjects.household.partner.fold(false)(_.maximumEarnings.fold(false)(identity))
+
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(modifiedPageObjects)
+    paidEmployment match {
+      case YouPartnerBothEnum.BOTH =>
+        (parentMaxEarnings, partnerMaxEarnings) match {
+          case (true, true) => false
+          case (_, _) => true
+        }
+      case YouPartnerBothEnum.YOU => !parentMaxEarnings
+      case YouPartnerBothEnum.PARTNER => !partnerMaxEarnings
+    }
+  }
+
+  def checkMaxHoursEligibility(modifiedPageObjects: PageObjects): Boolean = {
+    validMinEarnings(modifiedPageObjects) && validMaxEarnings(modifiedPageObjects) &&
+      modifiedPageObjects.household.location == LocationEnum.ENGLAND
+  }
+
 }
 
 object HelperManager extends HelperManager

@@ -19,11 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.Logger
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowManyChildrenForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.HelperManager
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howManyChildren
 
 import scala.concurrent.Future
@@ -36,10 +37,9 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
-        val noChildren: Option[Int] = pageObjects.howManyChildren
         Ok(
           howManyChildren(
-            new HowManyChildrenForm(messagesApi).form.fill(noChildren),
+            new HowManyChildrenForm(messagesApi).form.fill(pageObjects.howManyChildren),
             getBackUrl(pageObjects)
           )
         )
@@ -85,17 +85,20 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
   }
 
   private def modifyPageObjects(pageObjects: PageObjects, newHowManyChildren: Option[Int]): PageObjects = {
-
     pageObjects.copy(
-
       howManyChildren = newHowManyChildren
-
     )
   }
 
 
   private def getBackUrl(pageObjects: PageObjects): Call = {
-    routes.ChildCareBaseController.underConstruction()
+    val hasChild3Or4 = pageObjects.household.childAgedThreeOrFour.getOrElse(false)
+
+    if(hasChild3Or4) {
+      routes.MaxFreeHoursInfoController.onPageLoad()
+    } else {
+      routes.CreditsController.onPageLoad()
+    }
   }
 }
 
