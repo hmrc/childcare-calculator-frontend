@@ -117,7 +117,7 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     }
   }
 
-  private def validMinEarnings(modifiedPageObjects: PageObjects, paidEmployment: YouPartnerBothEnum): Boolean = {
+  private def validMinEarnings(modifiedPageObjects: PageObjects): Boolean = {
     val parent = modifiedPageObjects.household.parent
     val parentNMW = parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
     val parentApprentice = parent.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
@@ -130,13 +130,20 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     val partnerSelfEmployed = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
       (_.selfEmployedIn12Months.fold(false)(identity)))
 
-    (parentNMW, partnerNMW) match {
-      case (true, true) => true
-      case (true, false) => minEarnEligibility(partnerApprentice, partnerSelfEmployed)
-      case (false, true) => minEarnEligibility(parentApprentice, parentSelfEmployed)
-      case (false, false) => minEarnEligibility(partnerApprentice, partnerSelfEmployed) &&
-                             minEarnEligibility(parentApprentice, parentSelfEmployed)
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(modifiedPageObjects)
+    paidEmployment match {
+      case YouPartnerBothEnum.BOTH =>
+        (parentNMW, partnerNMW) match {
+          case (true, true) => true
+          case (true, false) => minEarnEligibility (partnerApprentice, partnerSelfEmployed)
+          case (false, true) => minEarnEligibility (parentApprentice, parentSelfEmployed)
+          case (false, false) => minEarnEligibility (partnerApprentice, partnerSelfEmployed) &&
+          minEarnEligibility (parentApprentice, parentSelfEmployed)
+        }
+      case YouPartnerBothEnum.YOU => if(parentNMW) true else { minEarnEligibility (parentApprentice, parentSelfEmployed) }
+      case YouPartnerBothEnum.PARTNER => if(partnerNMW) true else { minEarnEligibility (partnerApprentice, partnerSelfEmployed) }
     }
+
   }
 
   private def minEarnEligibility(isApp: Boolean, isSelfEmployed: Boolean): Boolean = {
@@ -147,14 +154,20 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     val parentMaxEarnings = modifiedPageObjects.household.parent.maximumEarnings.fold(false)(identity)
     val partnerMaxEarnings = modifiedPageObjects.household.partner.fold(false)(_.maximumEarnings.fold(false)(identity))
 
-    (parentMaxEarnings, partnerMaxEarnings) match {
-      case (true, true) => true
-      case (_, _) => false
+    val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(modifiedPageObjects)
+    paidEmployment match {
+      case YouPartnerBothEnum.BOTH =>
+        (parentMaxEarnings, partnerMaxEarnings) match {
+          case (true, true) => false
+          case (_, _) => true
+        }
+      case YouPartnerBothEnum.YOU => !parentMaxEarnings
+      case YouPartnerBothEnum.PARTNER => !partnerMaxEarnings
     }
   }
 
-  private def checkMaxHoursEligibility(modifiedPageObjects: PageObjects, paidEmployment: YouPartnerBothEnum): Boolean = {
-    validMinEarnings(modifiedPageObjects, paidEmployment) && validMaxEarnings(modifiedPageObjects) &&
+  private def checkMaxHoursEligibility(modifiedPageObjects: PageObjects): Boolean = {
+    validMinEarnings(modifiedPageObjects) && validMaxEarnings(modifiedPageObjects) &&
       modifiedPageObjects.household.location == LocationEnum.ENGLAND
   }
 
@@ -166,8 +179,8 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     val hasChildcareCost = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
 
     keystore.cache(modifiedPageObjects).map { res =>
-      (checkMaxHoursEligibility(modifiedPageObjects, paidEmployment), hasChild3Or4) match {
-        case (true, true) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Maximum hours info
+      (checkMaxHoursEligibility(modifiedPageObjects), hasChild3Or4) match {
+        case (true, true) => Redirect(routes.MaxFreeHoursInfoController.onPageLoad()) //TODO Maximum hours info
         case (true, false) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO How many children
         case (_, _) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Results page
       }

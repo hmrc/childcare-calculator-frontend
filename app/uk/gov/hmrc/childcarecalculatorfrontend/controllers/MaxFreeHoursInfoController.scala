@@ -44,7 +44,6 @@ class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends
       case _ =>
         Logger.warn("PageObjects object is missing in MaxFreeHoursInfoController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-
     } recover {
       case ex: Exception =>
         Logger.warn(s"Exception from MaxFreeHoursInfoController.onPageLoad: ${ex.getMessage}")
