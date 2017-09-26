@@ -21,8 +21,8 @@ import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichOfYouPaidEmploymentForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Benefits, Claimant, YouPartnerBothEnum, PageObjects}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichOfYouPaidOrSelfEmployed
 import scala.concurrent.Future
@@ -32,13 +32,9 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
 
   val keystore: KeystoreService = KeystoreService
 
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.household.partner.isDefined
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+      case Some(pageObjects) =>
         Ok(
           whichOfYouPaidOrSelfEmployed(
             new WhichOfYouPaidEmploymentForm(messagesApi).form.fill(pageObjects.whichOfYouInPaidEmployment.map(_.toString))
@@ -54,58 +50,10 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
     }
   }
 
-  private def modifyPageObject(oldPageObject: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
-    val paidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
-    if(oldPageObject.whichOfYouInPaidEmployment == Some(paidEmployment)) {
-      oldPageObject
-    }
-    else {
-      val modified = oldPageObject.copy(
-        whichOfYouInPaidEmployment = Some(paidEmployment),
-        getVouchers = None,
-        whoGetsVouchers = None,
-        household = oldPageObject.household.copy(
-          parent = oldPageObject.household.parent.copy(
-            escVouchers = None
-          ),
-          partner = Some(
-            oldPageObject.household.partner.get.copy(
-              escVouchers = None
-            )
-          )
-        )
-      )
-      paidEmployment match {
-        case YouPartnerBothEnum.YOU => modified.copy(
-          household = modified.household.copy(
-            partner = Some(
-              modified.household.partner.get.copy(
-                hours = None,
-                ageRange = None,
-                escVouchers = None,
-                minimumEarnings = None
-              )
-            )
-          )
-        )
-        case YouPartnerBothEnum.PARTNER => modified.copy(
-          household = modified.household.copy(
-            parent = modified.household.parent.copy(
-              hours = None,
-              ageRange = None,
-              escVouchers = None,
-              minimumEarnings = None
-            )
-          )
-        )
-        case YouPartnerBothEnum.BOTH => modified
-      }
-    }
-  }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
+      case Some(pageObjects) =>
         new WhichOfYouPaidEmploymentForm(messagesApi).form.bindFromRequest().fold(
           errors =>
             Future(
@@ -113,13 +61,14 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
                 whichOfYouPaidOrSelfEmployed(errors)
               )
             ),
+
           success => {
-            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
+            val modifiedPageObjects = updatePageObjects(pageObjects, success.get)
             keystore.cache(modifiedPageObjects).map {
               result =>
                 Redirect(
                   routes.HoursController.onPageLoad(
-                    isPartner = (YouPartnerBothEnum.withName(success.get) != YouPartnerBothEnum.YOU)
+                    isPartner = YouPartnerBothEnum.withName(success.get) != YouPartnerBothEnum.YOU
                   )
                 )
             }
@@ -132,6 +81,80 @@ class WhichOfYouInPaidEmploymentController @Inject()(val messagesApi: MessagesAp
       case ex: Exception =>
         Logger.warn(s"Exception from WhichOfYouInPaidEmploymentController.onSubmit: ${ex.getMessage}")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+
+  private def updatePageObjects(oldPageObjects: PageObjects, newWhichOfYouInPaidEmployment: String): PageObjects = {
+    val newPaidEmployment: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhichOfYouInPaidEmployment)
+
+    if (oldPageObjects.whichOfYouInPaidEmployment.contains(newPaidEmployment)) {
+      oldPageObjects
+    } else {
+      val existingPaidEmployment = oldPageObjects.whichOfYouInPaidEmployment
+      val updatedPageObjects = oldPageObjects.copy(whichOfYouInPaidEmployment = Some(newPaidEmployment))
+
+      if (existingPaidEmployment.isEmpty) {
+        updatedPageObjects
+      } else {
+       updatePageObjectsWithResetValuesForParentAndPartner(updatedPageObjects,
+                                                            existingPaidEmployment,
+                                                            newPaidEmployment)
+      }
+    }
+  }
+
+  /**
+    * Resets the parent and partner value as per the change in selection
+    * @param pageObjects
+    * @param existingPaidEmployment
+    * @param newPaidEmployment
+    * @return
+    */
+  private def  updatePageObjectsWithResetValuesForParentAndPartner(pageObjects: PageObjects,
+                                                                   existingPaidEmployment: Option[YouPartnerBothEnum],
+                                                                   newPaidEmployment: YouPartnerBothEnum) = {
+
+    val pageObjectsWithResetValues = pageObjects.copy(getVouchers = None, whoGetsVouchers = None)
+    val houseHoldValue = pageObjectsWithResetValues.household
+
+    val existingParent = houseHoldValue.parent
+    val existingPartner = houseHoldValue.partner
+
+    val existingParentBenefits = existingParent.benefits
+    val existingPartnerBenefits = existingPartner.fold[Option[Benefits]](None)(_.benefits)
+
+    val existingParentWithNoMaximumEarnings = existingParent.copy(maximumEarnings = None)
+    val existingPartnerWithNoMaximumEarnings = Some(existingPartner.getOrElse(Claimant()).copy(maximumEarnings = None))
+
+      (existingPaidEmployment, newPaidEmployment) match {
+
+      case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.YOU) => {
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits)),
+          parent = existingParentWithNoMaximumEarnings))
+      }
+      case (Some(YouPartnerBothEnum.BOTH), YouPartnerBothEnum.PARTNER) => {
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits),
+          partner = existingPartnerWithNoMaximumEarnings))
+      }
+      case (Some(YouPartnerBothEnum.PARTNER), YouPartnerBothEnum.YOU) => {
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits)),
+          parent = existingParentWithNoMaximumEarnings))
+      }
+      case (Some(YouPartnerBothEnum.PARTNER), YouPartnerBothEnum.BOTH) => {
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits),
+          partner = existingPartnerWithNoMaximumEarnings))
+      }
+      case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.PARTNER) => {
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(parent = Claimant(benefits = existingParentBenefits),
+          partner = existingPartnerWithNoMaximumEarnings))
+      }
+      case (Some(YouPartnerBothEnum.YOU), YouPartnerBothEnum.BOTH) => {
+        pageObjectsWithResetValues.copy(household = houseHoldValue.copy(partner = Some(Claimant(benefits = existingPartnerBenefits)),
+          parent = existingParentWithNoMaximumEarnings))
+      }
+      case (_, _) => pageObjectsWithResetValues
+
     }
   }
 

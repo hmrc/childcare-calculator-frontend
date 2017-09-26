@@ -33,14 +33,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
 
   val keystore: KeystoreService = KeystoreService
 
-  private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
-    if (hasChildAgedThreeOrFour.getOrElse(false)) {
-      routes.FreeHoursInfoController.onPageLoad()
-    } else {
-      routes.ExpectChildcareCostsController.onPageLoad(false)
-    }
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
       case Some(pageObjects) =>
@@ -59,38 +51,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
     }
   }
 
-  private def modifyPageObject(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
-    if(oldPageObjects.livingWithPartner == Some(newLivingWithPartner)) {
-      oldPageObjects
-    }
-    else {
-      val modified = oldPageObjects.copy(
-        livingWithPartner = Some(newLivingWithPartner),
-        whichOfYouInPaidEmployment = None,
-        paidOrSelfEmployed = None,
-        getVouchers = None,
-        household = oldPageObjects.household.copy(
-          parent = oldPageObjects.household.parent.copy(
-            escVouchers = None
-          )
-        )
-      )
-      if(newLivingWithPartner) {
-        modified.copy(
-          household = modified.household.copy(
-            partner = Some(Claimant())
-          )
-        )
-      }
-      else {
-        modified.copy(
-          household = modified.household.copy(
-            partner = None
-          )
-        )
-      }
-    }
-  }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().flatMap {
@@ -106,7 +66,11 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               )
             ),
           success => {
-            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
+            val livingWithPartnerAnswer = success.get
+            val modifiedPageObjects = updatePageObjects(pageObjects, livingWithPartnerAnswer)
+
+            //val pageObjectsAfterClearData = clearData(livingWithPartnerController, livingWithPartnerAnswer, modifiedPageObjects)
+
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
             }
@@ -121,4 +85,50 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
+
+  private def getBackUrl(hasChildAgedThreeOrFour: Option[Boolean]): Call = {
+    if (hasChildAgedThreeOrFour.getOrElse(false)) {
+      routes.FreeHoursInfoController.onPageLoad()
+    } else {
+      routes.ExpectChildcareCostsController.onPageLoad(false)
+    }
+  }
+
+  private def updatePageObjects(oldPageObjects: PageObjects, newLivingWithPartner: Boolean): PageObjects = {
+    if(oldPageObjects.livingWithPartner.contains(newLivingWithPartner)) {
+      oldPageObjects
+    } else {
+     val existingValueForLivingWithPartner = oldPageObjects.livingWithPartner.getOrElse(false)
+
+      val  updatedPageObjectWithNoPartner= oldPageObjects.copy(household = oldPageObjects.household.copy(partner = None,
+        parent = oldPageObjects.household.parent.copy(maximumEarnings = None)),
+        livingWithPartner = Some(false),
+        paidOrSelfEmployed = None,
+        whichOfYouInPaidEmployment = None,
+        getVouchers = None,
+        whoGetsVouchers = None,
+        getMaximumEarnings = None,
+        getBenefits = None
+      )
+
+      val  updatedPageObjectWithEmptyParent =  oldPageObjects.copy(household = oldPageObjects.household.copy(
+        partner = Some(Claimant())),
+        livingWithPartner = Some(true),
+        paidOrSelfEmployed = None,
+        whichOfYouInPaidEmployment = None,
+        getVouchers = None,
+        whoGetsVouchers = None,
+        getMaximumEarnings = None,
+        getBenefits = None
+      )
+
+     (existingValueForLivingWithPartner, newLivingWithPartner) match {
+          case (true, false) => updatedPageObjectWithNoPartner
+          case (false, true) => updatedPageObjectWithEmptyParent
+          case _ => updatedPageObjectWithNoPartner
+        }
+
+    }
+  }
+
 }

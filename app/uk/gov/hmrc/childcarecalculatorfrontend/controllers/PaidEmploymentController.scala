@@ -24,6 +24,7 @@ import play.api.mvc.{Call, Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PaidEmploymentForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, Claimant, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CCConstants, HelperManager}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
 
 import scala.concurrent.Future
@@ -33,14 +34,12 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
 
   val keystore: KeystoreService = KeystoreService
 
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.livingWithPartner.isDefined
-  }
-
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
     keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        val hasPartner = pageObjects.livingWithPartner.get
+      case Some(pageObjects) =>
+
+        val hasPartner = HelperManager.isLivingWithPartner(pageObjects, CCConstants.paidEmploymentControllerId)
+
         Ok(
           paidEmployment(
             new PaidEmploymentForm(hasPartner, messagesApi).form.fill(pageObjects.paidOrSelfEmployed),
@@ -57,20 +56,81 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     }
   }
 
-  private def modifyPageObjects(oldPageObjects: PageObjects, newPaidOrSelfEmployed: Boolean): PageObjects = {
-    if(oldPageObjects.paidOrSelfEmployed == Some(newPaidOrSelfEmployed)) {
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    keystore.fetch[PageObjects].flatMap {
+      case Some(pageObjects) =>
+
+        val hasPartner = HelperManager.isLivingWithPartner(pageObjects, CCConstants.paidEmploymentControllerId)
+
+        new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
+          errors =>
+            Future(
+              BadRequest(
+                paidEmployment(
+                  errors, hasPartner
+                )
+              )
+            ),
+          success => {
+            val modifiedPageObjects = updatePageObjects(pageObjects, success.get)
+            keystore.cache(modifiedPageObjects).map { result =>
+              Redirect(getNextPage(hasPartner, success.get))
+            }
+          }
+        )
+      case _ =>
+        Logger.warn("Invalid PageObjects in PaidEmploymentController.onSubmit")
+        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
+    } recover {
+      case ex: Exception =>
+        Logger.warn(s"Exception from PaidEmploymentController.onSubmit: ${ex.getMessage}")
+        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
+    }
+  }
+
+  private def updatePageObjects(oldPageObjects: PageObjects,
+                                newPaidOrSelfEmployed: Boolean): PageObjects = {
+
+    if(oldPageObjects.paidOrSelfEmployed.contains(newPaidOrSelfEmployed)) {
       oldPageObjects
     }
     else {
-      oldPageObjects.copy(
-        paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-        whichOfYouInPaidEmployment = None,
-        getVouchers = None,
-        household = oldPageObjects.household.copy(
-          parent = Claimant(),
-          partner = oldPageObjects.household.partner.map{x => Claimant()}
-        )
-      )
+      newPaidOrSelfEmployed match {
+        case false => {
+          oldPageObjects.copy(
+            paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+            whichOfYouInPaidEmployment = None,
+            getVouchers = None,
+            household = oldPageObjects.household.copy(
+              parent = Claimant(),
+              partner = None
+            )
+          )
+        }
+        case _ => {
+          val hasPartner = HelperManager.isLivingWithPartner(oldPageObjects, CCConstants.paidEmploymentControllerId)
+
+          if(hasPartner){
+            oldPageObjects.copy(
+              paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+              whichOfYouInPaidEmployment = None,
+              getVouchers = None
+            )
+
+          }else{
+            oldPageObjects.copy(
+              paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
+              whichOfYouInPaidEmployment = None,
+              getVouchers = None,
+              household = oldPageObjects.household.copy(parent = oldPageObjects.household.parent,
+                                                        partner = None)
+            )
+          }
+
+        }
+      }
+
     }
   }
 
@@ -84,36 +144,6 @@ class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I
     } else {
       //TODO - redirect to result page when prototype is ready
       routes.ChildCareBaseController.underConstruction()
-    }
-  }
-
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects].flatMap {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        val hasPartner = pageObjects.livingWithPartner.get
-        new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
-          errors =>
-            Future(
-              BadRequest(
-                paidEmployment(
-                  errors, hasPartner
-                )
-              )
-            ),
-          success => {
-            val modifiedPageObjects = modifyPageObjects(pageObjects, success.get)
-            keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(getNextPage(hasPartner, success.get))
-            }
-          }
-        )
-      case _ =>
-        Logger.warn("Invalid PageObjects in PaidEmploymentController.onSubmit")
-        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from PaidEmploymentController.onSubmit: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
     }
   }
 }

@@ -21,10 +21,10 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import play.api.Application
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.childcarecalculatorfrontend.{ObjectBuilder, FakeCCApplication}
 import uk.gov.hmrc.play.test.UnitSpec
 
-class HelperManagerSpec extends UnitSpec with FakeCCApplication with HelperManager {
+class HelperManagerSpec extends UnitSpec with FakeCCApplication with HelperManager with ObjectBuilder{
 
   "HelperManager" should {
 
@@ -67,7 +67,7 @@ class HelperManagerSpec extends UnitSpec with FakeCCApplication with HelperManag
       )
 
       forAll(testCases) { case (date, configuration) =>
-        s"return ${configuration} configuration for date ${date}" in {
+        s"return $configuration configuration for date $date" in {
           val nmw = getNMWConfig(LocalDate.parse(date))
           val conf = configValues(configuration)
           nmw.getInt("UNDER18").get shouldBe conf("UNDER18")
@@ -78,4 +78,80 @@ class HelperManagerSpec extends UnitSpec with FakeCCApplication with HelperManag
       }
     }
   }
+
+  "HelperManager" when {
+    "getOrException is called" should {
+      "throw exception and return the default error when only None value is given" in {
+
+        val testString = None
+        intercept[RuntimeException] {
+          HelperManager.getOrException(testString)
+        }.getMessage should include ("no element found")
+
+      }
+
+      "throw exception and return the custom error message when only None value and custom message is given" in {
+
+        val testString = None
+        val customMessage = "error occured while fetching the object"
+
+        intercept[RuntimeException] {
+          HelperManager.getOrException(testString, errorMessage = customMessage)
+        }.getMessage should include (customMessage)
+
+      }
+
+      "throw exception and return the correct error when only None value and other fields are given" in {
+
+        val testString = None
+        val controllerId = Some("testController")
+        val objectName = Some("testObject")
+
+        intercept[RuntimeException] {
+          HelperManager.getOrException(optionalElement = testString,
+                                        controllerId = controllerId,
+                                        objectName = objectName)
+        }.getMessage should include
+            (s"no element found in ${controllerId.getOrElse("")} while fetching ${objectName.getOrElse("")} object")
+
+      }
+
+      "return the value of the optional element" in {
+        val controllerId = Some("testController")
+        val objectName = Some("testObject")
+
+        val optionalBoolean = Some(true)
+        val optionalString = Some("testString")
+
+        val pageObjects = buildPageObjects
+        val optionalPageObjects = Some(pageObjects)
+
+        HelperManager.getOrException(optionalBoolean, controllerId, objectName) shouldBe true
+        HelperManager.getOrException(optionalString, controllerId, objectName) shouldBe "testString"
+        HelperManager.getOrException(optionalPageObjects, controllerId, objectName) shouldBe pageObjects
+        HelperManager.getOrException(optionalPageObjects) shouldBe pageObjects
+      }
+
+    }
+  }
+
+  "HelperManager" when {
+    "isLivingWithPartner is called" should {
+      "throw exception and return the default error when value for livingWithPartner is None" in {
+        val pageObjects = buildPageObjects.copy(livingWithPartner = None)
+
+        intercept[RuntimeException] {
+          HelperManager.isLivingWithPartner(pageObjects)
+        }.getMessage should include ("no element found in HelperManager while fetching livingWithPartner")
+
+      }
+
+      "return the value of livingWithPartner" in {
+        val pageObjects = buildPageObjects
+
+        HelperManager.isLivingWithPartner(pageObjects) shouldBe true
+      }
+    }
+  }
+
 }

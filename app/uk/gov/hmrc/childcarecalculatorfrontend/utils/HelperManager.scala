@@ -79,6 +79,47 @@ trait HelperManager {
   def defineInPaidEmployment(pageObjects: PageObjects): YouPartnerBothEnum = {
     pageObjects.whichOfYouInPaidEmployment.getOrElse(YouPartnerBothEnum.YOU)
   }
+
+  /**
+    * Returns the value as true if living with partner else false
+    * @param pageObjects
+    * @param controllerId
+    * @return
+    */
+  def isLivingWithPartner(pageObjects: PageObjects,
+                          controllerId: String = CCConstants.helperManagerId): Boolean = {
+    getOrException(pageObjects.livingWithPartner,
+      Some(controllerId),
+      Some("livingWithPartner"))
+  }
+
+  /**
+    * Throws exception with appropriate error message if optional element value is None otherwise returns the value
+    * ex - val a = Some(5), return value is 5
+    *      val a = Some(PageObjects), return value is PageObjects
+    *      val a = None , return is runtime exception
+    * @param optionalElement
+    * @param controllerId
+    * @param objectName
+    * @param errorMessage
+    * @tparam T
+    */
+
+  def getOrException[T](optionalElement: Option[T],
+                        controllerId: Option[String] = None,
+                        objectName: Option[String] = None,
+                        errorMessage: String = "no element found"): T = {
+
+    val controller = controllerId.getOrElse("")
+    val objectId = objectName.getOrElse("")
+
+    if(controllerId.isDefined && objectName.isDefined){
+      optionalElement.fold(throw new RuntimeException(s"no element found in $controller while fetching $objectId"))(identity)
+    }else{
+      optionalElement.fold(throw new RuntimeException(errorMessage))(identity)
+    }
+
+  }
 }
 
 object HelperManager extends HelperManager
