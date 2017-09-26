@@ -94,7 +94,7 @@ class HowManyChildrenController @Inject() (val messagesApi: MessagesApi) extends
   private def getBackUrl(pageObjects: PageObjects): Call = {
     val hasChild3Or4 = pageObjects.household.childAgedThreeOrFour.getOrElse(false)
 
-    if(hasChild3Or4) {
+    if(HelperManager.checkMaxHoursEligibility(pageObjects) && hasChild3Or4) {
       routes.MaxFreeHoursInfoController.onPageLoad()
     } else {
       routes.CreditsController.onPageLoad()

@@ -356,7 +356,7 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
       }
 
       s"successful submission with location is England, has child of 3 or 4 years, satisfy minimum earnings and earning less than £100,000, " +
-        "redirect to maximum free hours info page" in {
+        s"redirect to ${maxFreeHoursInfoPath} info page" in {
         val model = buildPageObjectsModel(isPartner = false, whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
 
         val modelToFetch = model.copy(household = model.household.copy(credits = None))
@@ -372,12 +372,27 @@ class CreditsControllerSpec extends ControllersValidator with BeforeAndAfterEach
         )
 
         status(result) shouldBe SEE_OTHER
-        //TODO redirect to max free hours info page
-        redirectLocation(result) should be(Some(underConstructionPath))
+        redirectLocation(result) should be(Some(maxFreeHoursInfoPath))
       }
 
       s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings less than £100,000, " +
-        "redirect to how many children page" in {
+        s"redirect to ${howManyChildrenPath} page" in {
+        val model = buildPageObjectsModel(isPartner = false, whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU))
+
+        val modelToFetch = model.copy(household = model.household.copy(credits = None))
+
+        val modelToStore = modelToFetch.copy(household = modelToFetch.household.copy(credits = Some(CreditsEnum.NONE)))
+
+        setupMocks(sut.keystore, modelToFetch = Some(modelToFetch), modelToStore = Some(modelToStore), storePageObjects = true)
+
+        val result = sut.onSubmit()(
+          request
+            .withFormUrlEncodedBody(creditsKey -> "NONE")
+            .withSession(validSession)
+        )
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) should be(Some(howManyChildrenPath))
       }
 
       s"successful submission with location=England, no child of 3 or 4 years, satisfy minimum earnings and earnings greater than £100,000, " +
