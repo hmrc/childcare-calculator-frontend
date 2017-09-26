@@ -16,15 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import play.api.i18n.Messages.Implicits.applicationMessagesApi
 import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howManyChildren
 import uk.gov.hmrc.childcarecalculatorfrontend.{ControllersValidator, ObjectBuilder}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, PageObjects}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.childcarecalculatorfrontend.MockBuilder._
@@ -152,26 +154,33 @@ class HowManyChildrenControllerSpec extends ControllersValidator with BeforeAndA
         }
 
 
-      "to previous page when" in {
+      s"to previous page ${maxFreeHoursInfoPath}" in {
 
-//        setupMocks(howManyChildrenController.keystore,
-//          modelToFetch = Some(buildPageObjects.copy(household = (childAgedThreeOrFour = true))),
-//          modelToStore = Some(buildPageObjects.copy(howManyChildren = Some(4))),
-//          storePageObjects = true
-//        )
-//
-//
-//        val result = await(
-//          howManyChildrenController.onSubmit()(
-//            request
-//              .withFormUrlEncodedBody(howManyChildrenKey -> "4")
-//              .withSession(validSession)
-//          )
-//        )
-//        status(result) shouldBe SEE_OTHER
-//        redirectLocation(result) should be (Some(routes.ChildCareBaseController.underConstruction().url))
-//
-???
+        val parent = buildPageObjects.household.parent.copy(minimumEarnings = Some(buildMinimumEarnings.copy(earnMoreThanNMW = Some(true))), maximumEarnings = Some(false))
+        val model = Some(buildPageObjects.copy(
+          household = buildPageObjects.household.copy(childAgedThreeOrFour = Some(true), parent = parent), whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.YOU)
+        ))
+
+        setupMocks(howManyChildrenController.keystore,
+          modelToFetch = model)
+
+        val result = await(howManyChildrenController.onPageLoad()(request.withSession(validSession)))
+        status(result) shouldBe OK
+
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe maxFreeHoursInfoPath
+      }
+
+        s"to previous page $creditsPath}" in {
+
+        setupMocks(howManyChildrenController.keystore,
+          modelToFetch = Some(buildPageObjects))
+
+        val result = await(howManyChildrenController.onPageLoad()(request.withSession(validSession)))
+        status(result) shouldBe OK
+
+        val content = Jsoup.parse(bodyOf(result))
+        content.getElementById("back-button").attr("href") shouldBe creditsPath
       }
 
      }
