@@ -69,8 +69,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
             val livingWithPartnerAnswer = success.get
             val modifiedPageObjects = updatePageObjects(pageObjects, livingWithPartnerAnswer)
 
-            //val pageObjectsAfterClearData = clearData(livingWithPartnerController, livingWithPartnerAnswer, modifiedPageObjects)
-
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
             }
@@ -107,7 +105,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
         whichOfYouInPaidEmployment = None,
         getVouchers = None,
         whoGetsVouchers = None,
-        getMaximumEarnings = None,
         getBenefits = None
       )
 
@@ -118,7 +115,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
         whichOfYouInPaidEmployment = None,
         getVouchers = None,
         whoGetsVouchers = None,
-        getMaximumEarnings = None,
         getBenefits = None
       )
 

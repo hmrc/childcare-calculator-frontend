@@ -21,7 +21,6 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, Result}
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.CreditsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -120,14 +119,12 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
 
   private def validMinEarnings(modifiedPageObjects: PageObjects, paidEmployment: YouPartnerBothEnum): Boolean = {
     val parent = modifiedPageObjects.household.parent
-    val parentNMW = if(paidEmployment == YouPartnerBothEnum.PARTNER) false else
-      parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
-    val parentApprentice = if(paidEmployment == YouPartnerBothEnum.PARTNER) false else
-      parent.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
-    val parentSelfEmployed = if(paidEmployment == YouPartnerBothEnum.PARTNER) false else
-      parent.minimumEarnings.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
+    val parentNMW = parent.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity))
+    val parentApprentice = parent.minimumEarnings.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
+    val parentSelfEmployed = parent.minimumEarnings.fold(false)(_.selfEmployedIn12Months.fold(false)(identity))
 
-    val partnerNMW = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)(_.earnMoreThanNMW.fold(false)(identity)))
+    val partnerNMW = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
+      (_.earnMoreThanNMW.fold(false)(identity)))
     val partnerApprentice = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
       (_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE)))
     val partnerSelfEmployed = modifiedPageObjects.household.partner.fold(false)(_.minimumEarnings.fold(false)
@@ -168,13 +165,11 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     val hasChild3Or4 = modifiedPageObjects.household.childAgedThreeOrFour.getOrElse(false)
     val hasChildcareCost = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
 
-    println(s"******modifiedPageObjects.household>>>>${modifiedPageObjects.household}")
-
     keystore.cache(modifiedPageObjects).map { res =>
       (checkMaxHoursEligibility(modifiedPageObjects, paidEmployment), hasChild3Or4) match {
-        case (true, true) => Redirect(routes.ChildCareBaseController.underConstruction()) //Maximum hours
-        case (true, false) => Redirect(routes.ChildCareBaseController.underConstruction()) //How many children
-        case (_, _) => Redirect(routes.ChildCareBaseController.underConstruction()) // Results page
+        case (true, true) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Maximum hours info
+        case (true, false) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO How many children
+        case (_, _) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Results page
       }
     }
 
