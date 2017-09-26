@@ -1,0 +1,45 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
+
+@(
+viewModel: InputViewModelBase,
+legend: String,
+legendClass: Option[String] = None,
+hint: Option[String] = None,
+trackGa: Boolean = false,
+inputs: Seq[RadioOption]
+)(implicit messages: Messages)
+
+<div class="form-field">
+    <fieldset class="form-group" id="@{viewModel.id}">
+        <legend class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</legend>
+        @if(hint.nonEmpty){
+        <span class="form-hint">@{hint.get}</span>
+        }
+        @if(viewModel.errorKey.nonEmpty){
+        <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
+        }
+        @for(input <- inputs) {
+        <label class="block-label selection-button-radio" for="@{input.id}">
+            <input id="@{input.id}" type="radio" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value == Some(input.value)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
+            @messages(input.messageKey)
+        </label>
+        }
+    </fieldset>
+</div>

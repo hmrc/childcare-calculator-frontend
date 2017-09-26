@@ -1,0 +1,56 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
+
+@(
+viewModel: InputViewModelBase,
+label: String,
+secondaryLabel: Option[String] = None,
+inputClass: Option[String] = None,
+hint: Option[String] = None,
+charLimit: Option[Int] = None
+)(implicit messages: Messages)
+
+<div class="form-field @if(viewModel.errorKey != ""){form-field--error}">
+    <label class="form-label" for="@{viewModel.id}">
+        <span class="bold">@label</span>
+        @if(hint != ""){
+        <span class="form-hint">@hint</span>
+        }
+        @if(viewModel.errorKey != ""){
+        <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
+        }
+    </label>
+    <div class="form-control-wrapper char-counter" data-char-counter>
+        <textarea
+                class="form-control form-control--full-width @inputClass"
+                id="@{viewModel.id}"
+                name="@{viewModel.id}"
+                value="@{viewModel.value}"
+                aria-describedby="error-message-@{viewModel.id}-input"
+                @if(charLimit.isDefined){maxLength="@{charLimit}"}
+                data-char-field
+                cols="30"
+                rows="20"
+        ></textarea>
+        @if(charLimit.isDefined){
+        <noscript>
+            <p class="char-counter-text flush">@messages("site.textarea.char_limit", charLimit.get)</p>
+        </noscript>
+        }
+    </div>
+</div>

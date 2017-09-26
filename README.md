@@ -1,5 +1,3 @@
-
-# legged-up-childcare-frontend
+# childcare-calculator-frontend
 
 This is a placeholder README.md for a new repository
-    
