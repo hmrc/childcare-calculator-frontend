@@ -122,12 +122,16 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
     val paidEmployment: YouPartnerBothEnum = HelperManager.defineInPaidEmployment(pageObjects)
 
     val hasChild3Or4 = modifiedPageObjects.household.childAgedThreeOrFour.getOrElse(false)
+    val expectChildcareCost = modifiedPageObjects.expectChildcareCosts.getOrElse(false)
 
     keystore.cache(modifiedPageObjects).map { res =>
       (HelperManager.checkMaxHoursEligibility(modifiedPageObjects), hasChild3Or4) match {
         case (true, true) => Redirect(routes.MaxFreeHoursInfoController.onPageLoad())
-        case (true, false) => Redirect(routes.HowManyChildrenController.onPageLoad())
-        case (_, _) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Results page
+        case (_, _) => if(expectChildcareCost) {
+          Redirect(routes.HowManyChildrenController.onPageLoad())
+        } else {
+          Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Results page
+        }
       }
     }
 
