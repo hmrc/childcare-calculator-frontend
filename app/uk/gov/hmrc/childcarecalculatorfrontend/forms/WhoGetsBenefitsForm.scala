@@ -29,7 +29,7 @@ class WhoGetsBenefitsForm @Inject()(val messagesApi: MessagesApi) extends I18nSu
 
   val form = Form[WhoGetsBenefitsForm](
     single(
-      whoGetsBeneftsKey -> optional(text).verifying(
+      whoGetsBenefitsKey -> optional(text).verifying(
         Messages("who.gets.benefits.not.selected.error"),
         youOrPartner =>
           YouPartnerBothEnum.values.exists(_.toString == youOrPartner.getOrElse(""))

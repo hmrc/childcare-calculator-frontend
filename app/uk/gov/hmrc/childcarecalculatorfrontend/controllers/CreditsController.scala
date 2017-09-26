@@ -180,8 +180,8 @@ class CreditsController @Inject()(val messagesApi: MessagesApi) extends I18nSupp
 
     keystore.cache(modifiedPageObjects).map { res =>
       (checkMaxHoursEligibility(modifiedPageObjects), hasChild3Or4) match {
-        case (true, true) => Redirect(routes.MaxFreeHoursInfoController.onPageLoad()) //TODO Maximum hours info
-        case (true, false) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO How many children
+        case (true, true) => Redirect(routes.MaxFreeHoursInfoController.onPageLoad())
+        case (true, false) => Redirect(routes.HowManyChildrenController.onPageLoad())
         case (_, _) => Redirect(routes.ChildCareBaseController.underConstruction()) //TODO Results page
       }
     }

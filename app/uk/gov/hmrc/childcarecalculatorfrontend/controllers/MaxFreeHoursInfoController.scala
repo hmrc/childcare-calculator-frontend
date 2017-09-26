@@ -35,23 +35,12 @@ import scala.concurrent.Future
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
 
-  val keystore: KeystoreService = KeystoreService
-//TODO: update paths
+
   def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) =>
-        Ok(maxFreeHoursInfo())
-      case _ =>
-        Logger.warn("PageObjects object is missing in MaxFreeHoursInfoController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from MaxFreeHoursInfoController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
+    Future(Ok(maxFreeHoursInfo()))
   }
 
   def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    Future(Redirect(routes.MaxFreeHoursInfoController.onPageLoad()))
+    Future(Redirect(routes.HowManyChildrenController.onPageLoad()))
   }
 }

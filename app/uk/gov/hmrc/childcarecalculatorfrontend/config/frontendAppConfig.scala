@@ -45,4 +45,6 @@ object FrontendAppConfig extends AppConfig with ServicesConfig {
   lazy val eligibilityUrl = baseUrl("cc-eligibility") + getString("microservice.services.cc-eligibility.url")
   lazy val minWorkingHours: Double = getString("variables.working.hours.min").toDouble
   lazy val maxWorkingHours: Double = getString("variables.working.hours.max").toDouble
+  lazy val minNumberOfChildren: Int = getString("children.how.many.min").toInt
+  lazy val maxNumberOfChildren: Int = getString("children.how.many.max").toInt
 }

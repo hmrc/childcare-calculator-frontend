@@ -101,3 +101,6 @@ POST   /credits                         uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET    /max-free-hours-info             uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad
 POST   /max-free-hours-info             uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onSubmit
+
+GET    /how-many-children              uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowManyChildrenController.onPageLoad
+POST   /how-many-children              uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowManyChildrenController.onSubmit
