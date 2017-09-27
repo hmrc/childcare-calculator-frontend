@@ -24,3 +24,6 @@ You'll then need to touch these areas yourself as needed (and the order is less 
 * Add in the messages, and add any guidance etc. you need to the screen.  You can easily test this in the relevant `ViewSpec`
 * Change the URLs in `app.routes` as necessary
 * If you're using a Check Your Answers page, add the new screen to that and add appropriate tests
+* If you added an `optionsPage` you can change the available options in `forms\<YourClass>Form`
+* If you added a `questionPage` you'll need to change `models\<YourClass>`, `forms\<YourClass>Form` and `views\<yourClass>` as needed, along with the relevant tests and messages
+
