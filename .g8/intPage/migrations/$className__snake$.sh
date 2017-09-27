@@ -10,12 +10,12 @@ echo "Applying migration $className;format="snake"$"
 
 echo "Adding routes to conf/app.routes"
 
-echo "" >> ../conf/app.Routes
-echo "GET        /$className;format="decap"$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /$className;format="decap"$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /$className;format="decap"$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /$className;format="decap"$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /change$className$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /change$className$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
+echo "GET        /change$className$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /change$className$               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$className$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

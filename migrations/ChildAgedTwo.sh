@@ -10,12 +10,12 @@ echo "Applying migration ChildAgedTwo"
 
 echo "Adding routes to conf/app.routes"
 
-echo "" >> ../conf/app.Routes
-echo "GET        /childAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /childAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /childAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /childAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeChildAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /changeChildAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
+echo "GET        /changeChildAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeChildAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

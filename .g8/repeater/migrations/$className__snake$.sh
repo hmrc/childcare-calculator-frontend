@@ -10,35 +10,35 @@ echo "Applying migration $className;format="snake"$"
 
 echo "Adding routes to conf/app.routes"
 
-echo "" >> ../conf/app.Routes
-echo "GET        /$pluralName;format="decap"$/overview                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.$className$OverviewController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /$pluralName;format="decap"$/add                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /$pluralName;format="decap"$/add                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /any$pluralName$                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /any$pluralName$                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /$pluralName;format="decap"$/:index/change                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onPageLoad(index: Int, mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /$pluralName;format="decap"$/:index/change                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onSubmit(index: Int, mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /$pluralName;format="decap"$/:index/remove                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onPageLoad(index: Int, mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /$pluralName;format="decap"$/:index/remove                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onSubmit(index: Int, mode: Mode = NormalMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /$pluralName;format="decap"$/overview                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.$className$OverviewController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /$pluralName;format="decap"$/add                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /$pluralName;format="decap"$/add                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /any$pluralName$                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /any$pluralName$                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /$pluralName;format="decap"$/:index/change                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onPageLoad(index: Int, mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /$pluralName;format="decap"$/:index/change                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onSubmit(index: Int, mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /$pluralName;format="decap"$/:index/remove                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onPageLoad(index: Int, mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /$pluralName;format="decap"$/:index/remove                uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onSubmit(index: Int, mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "" >> ../conf/app.Routes
-echo "GET        /change$pluralName$/overview               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.$className$OverviewController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /change$pluralName$/add                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /change$pluralName$/add                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /changeAny$pluralName$                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /changeAny$pluralName$                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /change$pluralName$/:index/change          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onPageLoad(index: Int, mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /change$pluralName$/:index/change          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onSubmit(index: Int, mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "" >> ../conf/app.Routes
-echo "GET        /change$pluralName$/:index/remove          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onPageLoad(index: Int, mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /change$pluralName$/:index/remove          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onSubmit(index: Int, mode: Mode = CheckMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /change$pluralName$/overview               uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.$className$OverviewController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /change$pluralName$/add                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /change$pluralName$/add                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Add$className$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /changeAny$pluralName$                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeAny$pluralName$                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Any$pluralName$Controller.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /change$pluralName$/:index/change          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onPageLoad(index: Int, mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /change$pluralName$/:index/change          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Edit$className$Controller.onSubmit(index: Int, mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "" >> ../conf/app.routes
+echo "GET        /change$pluralName$/:index/remove          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onPageLoad(index: Int, mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /change$pluralName$/:index/remove          uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.Delete$className$Controller.onSubmit(index: Int, mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
