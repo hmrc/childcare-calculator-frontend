@@ -198,9 +198,11 @@ trait HelperManager {
   }
 
   def checkMaxHoursEligibility(modifiedPageObjects: PageObjects): Boolean = {
-    validMinEarnings(modifiedPageObjects) &&
+    val max = validMinEarnings(modifiedPageObjects) &&
     validMaxEarnings(modifiedPageObjects) &&
     modifiedPageObjects.household.location == LocationEnum.ENGLAND
+    println(s"*****MAX>>>$max")
+    max
   }
 
 }
