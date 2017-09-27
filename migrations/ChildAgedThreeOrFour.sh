@@ -10,12 +10,12 @@ echo "Applying migration ChildAgedThreeOrFour"
 
 echo "Adding routes to conf/app.routes"
 
-echo "" >> ../conf/app.Routes
-echo "GET        /childAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /childAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /childAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /childAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeChildAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /changeChildAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
+echo "GET        /changeChildAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeChildAgedThreeOrFour                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

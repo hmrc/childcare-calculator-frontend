@@ -10,12 +10,12 @@ echo "Applying migration DoYouLiveWithPartner"
 
 echo "Adding routes to conf/app.routes"
 
-echo "" >> ../conf/app.Routes
-echo "GET        /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
+echo "GET        /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

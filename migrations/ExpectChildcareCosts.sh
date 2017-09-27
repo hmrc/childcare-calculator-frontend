@@ -10,12 +10,12 @@ echo "Applying migration ExpectChildcareCosts"
 
 echo "Adding routes to conf/app.routes"
 
-echo "" >> ../conf/app.Routes
-echo "GET        /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.Routes
-echo "POST       /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.Routes
+echo "" >> ../conf/app.routes
+echo "GET        /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.Routes
-echo "POST       /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.Routes
+echo "GET        /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

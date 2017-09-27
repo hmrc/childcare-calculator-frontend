@@ -22,6 +22,11 @@ POST       /childAgedTwo                       uk.gov.hmrc.childcarecalculatorfr
 GET        /changeChildAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeChildAgedTwo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit(mode: Mode = CheckMode)
 
+GET        /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = CheckMode)
+
 GET        /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = NormalMode)
 POST       /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = CheckMode)
@@ -31,8 +36,3 @@ GET        /location               uk.gov.hmrc.childcarecalculatorfrontend.contr
 POST       /location               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = NormalMode)
 GET        /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = CheckMode)
-
-GET        /doYouLiveWithPartner               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = NormalMode)
-POST       /doYouLiveWithPartner               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = NormalMode)
-GET        /changeDoYouLiveWithPartner               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeDoYouLiveWithPartner               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = CheckMode)
