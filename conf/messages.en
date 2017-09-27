@@ -37,7 +37,7 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.save_and_continue = Continue
-site.service_name = childcare-calculator-frontend
+site.service_name = Childcare calculator
 site.textarea.char_limit = (Limit is {0} characters)
 
 unauthorised.title = You can’t access this service with this account
@@ -50,6 +50,7 @@ childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are e
 childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
 childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
 childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.error = You must answer yes if you have any children aged 3 or 4
 
 childAgedTwo.title = Do you have a child aged 2?
 childAgedTwo.heading = Do you have a child aged 2?
@@ -57,6 +58,7 @@ childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to
 childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time.
 childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
 childAgedTwo.checkYourAnswersLabel = Do you have a child aged 2?
+childAgedTwo.error = You must answer yes if you have a child aged 2
 
 expectChildcareCosts.title = Do you have or expect to have childcare costs with an approved provider?
 expectChildcareCosts.heading = Do you have or expect to have childcare costs with an approved provider?
@@ -68,6 +70,7 @@ expectChildcareCosts.guidance.scotland = Support is only available for childcare
 expectChildcareCosts.guidance.wales = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or a Care and Social Services Inspectorate Wales-registered childminding agency.
 expectChildcareCosts.guidance.northernIreland = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.
 expectChildcareCosts.checkYourAnswersLabel = Do you have or expect to have childcare costs with an approved provider?
+expectChildcareCosts.error = You must answer yes if you expect to have childcare costs with an approved provider
 
 location.title = Where do you live?
 location.heading = Where do you live?
@@ -77,6 +80,7 @@ location.scotland = Scotland
 location.wales = Wales
 location.northernIreland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
+location.error = You must tell the calculator where you live
 
 doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
