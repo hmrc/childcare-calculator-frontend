@@ -30,6 +30,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("expectChildcareCosts.checkYourAnswersLabel", s"expectChildcareCosts.$x", true, routes.ExpectChildcareCostsController.onPageLoad(CheckMode).url)
   }
 
+  def doYouLiveWithPartner: Option[AnswerRow] = userAnswers.doYouLiveWithPartner map {
+    x => AnswerRow("doYouLiveWithPartner.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouLiveWithPartnerController.onPageLoad(CheckMode).url)
+  }
+
   def childAgedTwo: Option[AnswerRow] = userAnswers.childAgedTwo map {
     x => AnswerRow("childAgedTwo.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildAgedTwoController.onPageLoad(CheckMode).url)
   }

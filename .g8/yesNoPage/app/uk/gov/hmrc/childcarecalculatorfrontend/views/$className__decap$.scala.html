@@ -14,10 +14,10 @@
 
     @helpers.form(action = $className$Controller.onSubmit(mode), 'autoComplete -> "off") {
 
+        @components.back_link()
+
         @components.error_summary(form.errors)
 
-        @components.back_link()
-        
         @components.heading("$className;format="decap"$.heading")
 
         @components.input_yes_no(

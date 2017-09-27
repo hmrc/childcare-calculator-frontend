@@ -18,8 +18,8 @@ error.integer = Give an answer in whole numbers
 error.non_numeric = Give a value using only numbers
 error.number = Please enter a valid number
 error.required = Please enter a value
-error.summary.title = There’s been a problem
-error.summary.text = Check the following
+error.summary.title = There is a problem
+error.summary.text = Check you have answered the question correctly
 
 index.title = childcare-calculator-frontend
 index.heading = childcare-calculator-frontend
@@ -36,7 +36,7 @@ site.hidden-delete = Delete {0}
 site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
-site.save_and_continue = Save and continue
+site.save_and_continue = Continue
 site.service_name = childcare-calculator-frontend
 site.textarea.char_limit = (Limit is {0} characters)
 
@@ -77,3 +77,8 @@ location.scotland = Scotland
 location.wales = Wales
 location.northernIreland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
+
+doYouLiveWithPartner.title = Do you have a partner that you live with?
+doYouLiveWithPartner.heading = Do you have a partner that you live with?
+doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
+doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with

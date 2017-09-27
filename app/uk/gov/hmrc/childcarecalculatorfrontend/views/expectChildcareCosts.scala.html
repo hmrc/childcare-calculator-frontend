@@ -31,9 +31,9 @@
 
     @helpers.form(action = ExpectChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.error_summary(form.errors)
-
         @components.back_link()
+
+        @components.error_summary(form.errors)
 
         @components.heading("expectChildcareCosts.heading")
 
