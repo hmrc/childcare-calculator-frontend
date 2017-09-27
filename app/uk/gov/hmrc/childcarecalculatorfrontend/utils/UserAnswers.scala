@@ -25,8 +25,9 @@ class UserAnswers(val cacheMap: CacheMap) {
 
   def expectChildcareCosts: Option[String] = cacheMap.getEntry[String](ExpectChildcareCostsId.toString)
 
+  def doYouLiveWithPartner: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouLiveWithPartnerId.toString)
+
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
   def childAgedThreeOrFour: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedThreeOrFourId.toString)
-
 }

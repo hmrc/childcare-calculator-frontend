@@ -77,3 +77,27 @@ location.scotland = Scotland
 location.wales = Wales
 location.northernIreland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
+
+childAgedThreeOrFour.title = childAgedThreeOrFour
+childAgedThreeOrFour.heading = childAgedThreeOrFour
+childAgedThreeOrFour.checkYourAnswersLabel = childAgedThreeOrFour
+
+childAgedTwo.title = childAgedTwo
+childAgedTwo.heading = childAgedTwo
+childAgedTwo.checkYourAnswersLabel = childAgedTwo
+
+doYouLiveWithPartner.title = doYouLiveWithPartner
+doYouLiveWithPartner.heading = doYouLiveWithPartner
+doYouLiveWithPartner.checkYourAnswersLabel = doYouLiveWithPartner
+
+expectChildcareCosts.title = expectChildcareCosts
+expectChildcareCosts.heading = expectChildcareCosts
+expectChildcareCosts.option1 = expectChildcareCosts Option 1
+expectChildcareCosts.option2 = expectChildcareCosts Option 2
+expectChildcareCosts.checkYourAnswersLabel = expectChildcareCosts
+
+location.title = location
+location.heading = location
+location.option1 = location Option 1
+location.option2 = location Option 2
+location.checkYourAnswersLabel = location
