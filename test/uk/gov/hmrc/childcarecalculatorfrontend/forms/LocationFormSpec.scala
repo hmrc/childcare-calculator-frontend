@@ -29,6 +29,6 @@ class LocationFormSpec extends FormBehaviours {
   "Location form" must {
     behave like questionForm[String](LocationForm.options.head.value)
 
-    behave like formWithOptionField("value", LocationForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "location.error", LocationForm.options.map{x => x.value}:_*)
   }
 }

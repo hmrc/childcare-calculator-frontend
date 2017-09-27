@@ -60,7 +60,7 @@ class ChildAgedThreeOrFourController @Inject()(appConfig: FrontendAppConfig,
       if (request.userAnswers.location.isEmpty) {
         Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
       } else {
-        BooleanForm().bindFromRequest().fold(
+        BooleanForm("childAgedThreeOrFour.error").bindFromRequest().fold(
           (formWithErrors: Form[Boolean]) =>
             Future.successful(BadRequest(childAgedThreeOrFour(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
           (value) =>
