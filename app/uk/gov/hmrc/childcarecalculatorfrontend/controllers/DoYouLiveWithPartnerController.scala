@@ -50,7 +50,7 @@ class DoYouLiveWithPartnerController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("doYouLiveWithPartner.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(doYouLiveWithPartner(appConfig, formWithErrors, mode))),
         (value) =>

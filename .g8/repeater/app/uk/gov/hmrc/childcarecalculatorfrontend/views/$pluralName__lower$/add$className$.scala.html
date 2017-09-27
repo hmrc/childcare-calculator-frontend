@@ -15,9 +15,9 @@
 
     @helpers.form(action = Add$className;format="cap"$Controller.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.error_summary(form.errors)
-
         @components.back_link()
+
+        @components.error_summary(form.errors)
         
         @components.heading("$pluralName;format="decap"$.add.heading")
 
