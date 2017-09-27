@@ -149,7 +149,7 @@ trait HelperManager {
     */
   private def minimumEarningsEligibility(pageObjects: PageObjects,
                                          isPartner: Boolean = false) = {
-    if(isPartner){
+    if(isPartner) {
       val partnerOption = pageObjects.household.partner
       val partnerMinEarningsOption = partnerOption.flatMap(_.minimumEarnings)
       val partnerApprentice = partnerMinEarningsOption.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
@@ -157,7 +157,7 @@ trait HelperManager {
 
       partnerApprentice || partnerSelfEmployed
 
-    }else{
+    } else {
       val parent = pageObjects.household.parent
       val parentMinEarningsOption = parent.minimumEarnings
       val parentApprentice = parentMinEarningsOption.fold(false)(_.employmentStatus.contains(EmploymentStatusEnum.APPRENTICE))
