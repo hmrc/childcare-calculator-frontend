@@ -89,19 +89,24 @@ checkYourAnswers.guidance = Guidance for check your answers
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.notEligibleInfo = Based on the information you’ve given, you're not eligible for:
-freeHoursResult.info.freeHours = Free hours
+freeHoursResult.info.entitled.england = 15 free hours
+freeHoursResult.info.entitled.scotland = 16 Free hours
+freeHoursResult.info.entitled.wales = 10 free hours
+freeHoursResult.info.entitled.northern-ireland = 12 and a half free hours
+
 freeHoursResult.info.esc = Childcare vouchers
 freeHoursResult.info.tfc = Tax-Free Childcare
 freeHoursResult.info.tc = Tax credits
 freeHoursResult.notEligible.heading = Why you’re not eligible for any of the schemes
-freeHoursResult.notEligible.info = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.notEligible.info = You‘re currently not eligible for any free hours because you don’t have a child aged 2 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.notEligible.info.northern-ireland = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+
 freeHoursResult.toBeEligible.heading = To be eligible
 freeHoursResult.toBeEligible.info1 = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can answer as though your 2 year old is aged 3 or 4 to see what you could get.
 freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You'll need to give an estimate of how much you think you might pay as part of the calculation.
 freeHoursResult.summary.heading = What you told the calculator
 freeHoursResult.summary.info = You can go back and change your answers and see what you could get.
 freeHoursResult.summary.table.header = General
-freeHoursResult.summary.table.location =
 freeHoursResult.summary.table.child.age2 = Child aged 2
-freeHoursResult.summary.table.child.age3or4= Children aged 3 or 4
- freeHoursResult.summary.table.childCareCosts= Approved childcare costs
+freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
+freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs

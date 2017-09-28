@@ -16,29 +16,74 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
+import play.api.i18n.Messages
+import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerRow, AnswerSection}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
 
-class FreeHoursResultViewSpec extends YesNoViewBehaviours {
+class FreeHoursResultViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursResult"
 
-  val location = "england"
+  def createView = () => freeHoursResult(frontendAppConfig, "", Seq())(fakeRequest, messages)
 
-  def createView = () => childAgedThreeOrFour(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => childAgedThreeOrFour(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
+  def createViewWithAnswers = (location: String,
+                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig, location, Seq())(fakeRequest, messages)
 
   "FreeHoursResult view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, s"guidance.$location")
+    behave like normalPage(createView,
+      messageKeyPrefix,
+      "notEligibleInfo",
+      "info.esc",
+      "info.tfc",
+      "info.tc",
+      "notEligible.heading",
+      "toBeEligible.heading",
+      "toBeEligible.info1",
+      "toBeEligible.info2",
+      "summary.heading",
+      "summary.info")
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedThreeOrFourController.onSubmit(NormalMode).url)
   }
+
+  "FreeHoursResult view" when {
+    "rendered" must {
+      "contain 15 free hours and correct not eligibility guidance for location England" in {
+
+        val answerRow = AnswerRow("location.checkYourAnswersLabel","england", true, Call("GET", "TO_DO").url)
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers("england", answerSections))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.england"))
+        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
+
+      }
+
+      "contain 16 free hours and correct not eligibility for location Scotland" in {
+
+        val doc = asDocument(createViewWithAnswers("scotland", Seq()))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
+
+      }
+
+      "contain 10 free hours and correct not eligibility for location Wales" in {
+        val doc = asDocument(createViewWithAnswers("wales", Seq()))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
+        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
+      }
+
+      "contain 12.5 free hours and correct not eligibility for location NI" in {
+        val doc = asDocument(createViewWithAnswers("northern-ireland", Seq()))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info.northern-ireland"))
+      }
+    }
+
+  }
+
 }
