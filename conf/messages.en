@@ -1,7 +1,3 @@
-checkYourAnswers.title = Check Your Answers
-checkYourAnswers.heading = Check Your Answers
-checkYourAnswers.guidance = Guidance for check your answers
-
 date.day = Day
 date.month = Month
 date.year = Year
@@ -86,3 +82,26 @@ doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+
+checkYourAnswers.title = Check Your Answers
+checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.guidance = Guidance for check your answers
+
+freeHoursResult.title = Your eligibility for childcare support
+freeHoursResult.notEligibleInfo = Based on the information you’ve given, you're not eligible for:
+freeHoursResult.info.freeHours = Free hours
+freeHoursResult.info.esc = Childcare vouchers
+freeHoursResult.info.tfc = Tax-Free Childcare
+freeHoursResult.info.tc = Tax credits
+freeHoursResult.notEligible.heading = Why you’re not eligible for any of the schemes
+freeHoursResult.notEligible.info = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.toBeEligible.heading = To be eligible
+freeHoursResult.toBeEligible.info1 = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can answer as though your 2 year old is aged 3 or 4 to see what you could get.
+freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You'll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.summary.heading = What you told the calculator
+freeHoursResult.summary.info = You can go back and change your answers and see what you could get.
+freeHoursResult.summary.table.header = General
+freeHoursResult.summary.table.location =
+freeHoursResult.summary.table.child.age2 = Child aged 2
+freeHoursResult.summary.table.child.age3or4= Children aged 3 or 4
+ freeHoursResult.summary.table.childCareCosts= Approved childcare costs
