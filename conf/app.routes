@@ -41,3 +41,18 @@ GET        /approvedProvider               uk.gov.hmrc.childcarecalculatorfronte
 POST       /approvedProvider               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode = NormalMode)
 GET        /changeApprovedProvider               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeApprovedProvider               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode = CheckMode)
+
+GET        /paidEmployment                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad(mode: Mode = NormalMode)
+POST       /paidEmployment                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit(mode: Mode = NormalMode)
+GET        /changePaidEmployment                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePaidEmployment                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoIsInPaidEmployment               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoIsInPaidEmployment               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoIsInPaidEmployment               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoIsInPaidEmployment               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onSubmit(mode: Mode = CheckMode)
+
+GET        /parentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onPageLoad(mode: Mode = NormalMode)
+POST       /parentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = NormalMode)
+GET        /changeParentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeParentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = CheckMode)
