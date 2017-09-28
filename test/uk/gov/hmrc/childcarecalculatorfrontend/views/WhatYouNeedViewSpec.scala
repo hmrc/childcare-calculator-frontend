@@ -17,14 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.index
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatYouNeed
 
-class IndexViewSpec extends ViewBehaviours {
+class WhatYouNeedViewSpec extends ViewBehaviours {
 
-  def view = () => index(frontendAppConfig)(fakeRequest, messages)
+  def view = () => whatYouNeed(frontendAppConfig)(fakeRequest, messages)
 
-  "Index view" must {
+  "whatYouNeed view" must {
 
-    behave like normalPage(view, "index", "guidance")
+    behave like normalPage(view, "whatYouNeed", "guidance")
   }
 }

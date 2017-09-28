@@ -21,9 +21,17 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.summary.text = Check you have answered the question correctly
 
-index.title = childcare-calculator-frontend
-index.heading = childcare-calculator-frontend
-index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
+whatYouNeed.title = What you may need
+whatYouNeed.heading = What you may need
+whatYouNeed.guidance = You can use exact figures if you know them or estimates for any you may be unsure of about you and your partner (if you have one) such as:
+
+whatYouNeed.li.childcare_costs = estimated or known childcare costs
+whatYouNeed.li.employment = employment and working hours
+whatYouNeed.li.income = income this year and last
+whatYouNeed.li.tax_code = personal tax code
+whatYouNeed.li.pension = pension contributions
+whatYouNeed.li.benefits = family’s benefits
+whatYouNeed.li.statutory_leave = weeks and pay taken while on leave for a birth or an adoption
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
