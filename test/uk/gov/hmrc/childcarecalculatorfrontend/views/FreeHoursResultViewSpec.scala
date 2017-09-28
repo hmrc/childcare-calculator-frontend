@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import play.api.i18n.Messages
 import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, CheckMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerRow, AnswerSection}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
@@ -29,7 +30,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
   def createView = () => freeHoursResult(frontendAppConfig, "", Seq())(fakeRequest, messages)
 
   def createViewWithAnswers = (location: String,
-                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig, location, Seq())(fakeRequest, messages)
+                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig, location, answerSections)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
 
@@ -54,7 +55,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
     "rendered" must {
       "contain 15 free hours and correct not eligibility guidance for location England" in {
 
-        val answerRow = AnswerRow("location.checkYourAnswersLabel","england", true, Call("GET", "TO_DO").url)
+        val answerRow = AnswerRow("location.checkYourAnswersLabel","england", true, routes.LocationController.onPageLoad(NormalMode).url)
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
         val doc = asDocument(createViewWithAnswers("england", answerSections))
@@ -82,6 +83,37 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info.northern-ireland"))
       }
+
+     "display all the answer rows with correct contents " in {
+       val answerSections = Seq(AnswerSection(None, Seq(
+         AnswerRow("childAgedTwo.checkYourAnswersLabel",
+           "site.no",
+           true,
+           routes.ChildAgedTwoController.onPageLoad(NormalMode).url),
+         AnswerRow("childAgedThreeOrFour.checkYourAnswersLabel",
+           "site.no",
+           true,
+           routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode).url),
+         AnswerRow("expectChildcareCosts.checkYourAnswersLabel",
+           "expectChildcareCosts.yes",
+           true,
+           routes.ExpectChildcareCostsController.onPageLoad(NormalMode).url)
+       )))
+
+       val doc = asDocument(createViewWithAnswers("england", answerSections))
+
+       assertContainsText(doc, messagesApi("childAgedTwo.checkYourAnswersLabel"))
+       assertContainsText(doc, messagesApi("site.no"))
+       assertContainsText(doc, messagesApi(messages("site.edit")))
+       assertContainsText(doc, routes.ChildAgedTwoController.onPageLoad(NormalMode).url)
+
+       assertContainsText(doc, messagesApi("childAgedThreeOrFour.checkYourAnswersLabel"))
+       assertContainsText(doc, routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode).url)
+
+       assertContainsText(doc, messagesApi("expectChildcareCosts.checkYourAnswersLabel"))
+       assertContainsText(doc, routes.ExpectChildcareCostsController.onPageLoad(NormalMode).url)
+     }
+
     }
 
   }
