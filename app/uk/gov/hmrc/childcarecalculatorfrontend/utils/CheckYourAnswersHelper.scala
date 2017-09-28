@@ -21,11 +21,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, RepeaterAnswerRow, RepeaterAnswerSection}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
-
-  def freeHoursInfo: Option[AnswerRow] = userAnswers.freeHoursInfo map {
-    x => AnswerRow("freeHoursInfo.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.FreeHoursInfoController.onPageLoad(CheckMode).url)
-  }
-
   def location: Option[AnswerRow] = userAnswers.location map {
     x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
   }

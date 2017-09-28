@@ -58,8 +58,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildAgedThreeOrFourId, NormalMode)(mock[UserAnswers]) mustBe routes.ExpectChildcareCostsController.onPageLoad(NormalMode)
       }
 
-      "go to do you live with partner from childcare cost" in {
-        navigator.nextPage(ExpectChildcareCostsId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      "go to free hours info from childcare cost" in {
+        navigator.nextPage(ExpectChildcareCostsId, NormalMode)(mock[UserAnswers]) mustBe routes.FreeHoursInfoController.onPageLoad
+      }
+
+      "go to do you live with partner from free hours info" in {
+        navigator.nextPage(FreeHoursInfoId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
     }
 

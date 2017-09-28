@@ -16,27 +16,38 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "freeHoursInfo"
 
-  def createView = () => freeHoursInfo(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => freeHoursInfo(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => freeHoursInfo(frontendAppConfig, false, "")(fakeRequest, messages)
 
   "FreeHoursInfo view" must {
+    behave like normalPage(createView, messageKeyPrefix, "heading2", "guidance",
+      "li.vouchers", "li.tfc", "li.tax_credits")
+  }
 
-    behave like normalPage(createView, messageKeyPrefix)
+  "FreeHoursInfo view " must {
+    Seq("england", "scotland", "wales").foreach { location =>
+      s"display correct content when user with location $location and have child aged 2" in {
+        val view = freeHoursInfo(frontendAppConfig, true, location)(fakeRequest, messages)
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$location"))
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para2.$location"))
+      }
+    }
+  }
 
-    behave like pageWithBackLink(createView)
-
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.FreeHoursInfoController.onSubmit(NormalMode).url)
+  "FreeHoursInfo view " must {
+    Seq("england", "scotland", "wales", "northernIreland").foreach { location =>
+      s"display correct content when user with location $location and don't have child aged 2" in {
+        val view = freeHoursInfo(frontendAppConfig, false, location)(fakeRequest, messages)
+        val doc = asDocument(view)
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$location"))
+        assertNotContainsText(doc, messagesApi(s"$messageKeyPrefix.para2.$location"))
+      }
+    }
   }
 }

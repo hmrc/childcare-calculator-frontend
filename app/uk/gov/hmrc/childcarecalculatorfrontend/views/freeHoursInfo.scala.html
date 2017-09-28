@@ -15,33 +15,37 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, location: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursInfo.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = FreeHoursInfoController.onSubmit(mode), 'autoComplete -> "off") {
+    @components.back_link()
 
-        @components.back_link()
+    @components.heading("freeHoursInfo.heading")
 
-        @components.error_summary(form.errors)
+    <p>@messages(s"freeHoursInfo.para1.$location")</p>
 
-        @components.heading("freeHoursInfo.heading")
-
-        @components.input_yes_no(
-            InputViewModel[Boolean]("value", form),
-            label = messages("freeHoursInfo.heading"),
-            labelClass = Some("visually-hidden")
-        )
-
-        @components.submit_button()
+    @if(isChildAgedTwo) {
+        <p>@messages(s"freeHoursInfo.para2.$location")</p>
     }
+
+    <h2>@messages(s"freeHoursInfo.heading2")</h2>
+    <p>@messages(s"freeHoursInfo.guidance")</p>
+
+    <ul class="bullets">
+        <li>@messages("freeHoursInfo.li.vouchers")</li>
+        <li>@messages("freeHoursInfo.li.tfc")</li>
+        <li>@messages("freeHoursInfo.li.tax_credits")</li>
+    </ul>
+
+    @components.button_link(
+        messageKey = "site.save_and_continue",
+        href = DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+    )
 }

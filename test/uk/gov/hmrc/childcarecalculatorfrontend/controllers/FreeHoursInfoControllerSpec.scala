@@ -16,78 +16,62 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.{JsBoolean, JsString}
+import play.api.mvc.Call
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.FreeHoursInfoId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedTwoId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = routes.IndexController.onPageLoad()
+  def onwardRoute: Call = routes.IndexController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new FreeHoursInfoController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
-
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = freeHoursInfo(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+    new FreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction)
 
   "FreeHoursInfo Controller" must {
 
-    "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+    Seq("England", "Wales", "Scotland").foreach { location =>
+      s"return OK with childAgedTwo as true and location $location and the correct view for a GET" in {
+        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(true), LocationId.toString -> JsString(location))
+        val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
+
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true, location)(fakeRequest, messages).toString
+      }
+    }
+
+    Seq("England", "Wales", "Scotland").foreach { location =>
+      s"return OK with childAgedTwo as false, location $location and the correct view for a GET" in {
+        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(false), LocationId.toString -> JsString(location))
+        val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
+
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, location)(fakeRequest, messages).toString
+      }
+    }
+
+    "return OK with childAgedTwo as false, location Northern Ireland and the correct view for a GET" in {
+      val validData = Map(LocationId.toString -> JsString("Northern Ireland"))
+      val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString()
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, "Northern Ireland")(fakeRequest, messages).toString
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(FreeHoursInfoId.toString -> JsBoolean(true))
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
-
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
-    }
-
-    "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
-
-      val result = controller().onSubmit(NormalMode)(postRequest)
+    "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
+      val result = controller(getEmptyCacheMap).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(onwardRoute.url)
-    }
-
-    "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
-
-      val result = controller().onSubmit(NormalMode)(postRequest)
-
-      status(result) mustBe BAD_REQUEST
-      contentAsString(result) mustBe viewAsString(boundForm)
-    }
-
-    "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad(NormalMode).url)
     }
   }
 }
