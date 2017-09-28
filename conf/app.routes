@@ -36,3 +36,8 @@ GET        /location               uk.gov.hmrc.childcarecalculatorfrontend.contr
 POST       /location               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = NormalMode)
 GET        /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = CheckMode)
+
+GET        /freeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad(mode: Mode = NormalMode)
+POST       /freeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeFreeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeFreeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onSubmit(mode: Mode = CheckMode)

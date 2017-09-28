@@ -86,3 +86,6 @@ doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+freeHoursInfo.title = freeHoursInfo
+freeHoursInfo.heading = freeHoursInfo
+freeHoursInfo.checkYourAnswersLabel = freeHoursInfo
