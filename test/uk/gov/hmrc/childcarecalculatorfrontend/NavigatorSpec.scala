@@ -58,6 +58,20 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildAgedThreeOrFourId, NormalMode)(mock[UserAnswers]) mustBe routes.ExpectChildcareCostsController.onPageLoad(NormalMode)
       }
 
+      "go to live with partner from approved childcare cost when children 3-4 is false and approved provider is true" in {
+        val answer = mock[UserAnswers]
+        when(answer.childAgedThreeOrFour) thenReturn Some(false)
+        when(answer.approvedProvider) thenReturn Some("true") thenReturn Some("unsure")
+        navigator.nextPage(ApprovedProviderId, NormalMode)(answer) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+
+      "go to free hours info from approved childcare cost when children 3-4 is true and approved provider is true" in {
+        val answer = mock[UserAnswers]
+        when(answer.childAgedThreeOrFour) thenReturn Some(true)
+        when(answer.approvedProvider) thenReturn Some("true") thenReturn Some("unsure")
+        navigator.nextPage(ApprovedProviderId, NormalMode)(answer) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+
       "go to do you live with partner from childcare cost" in {
         navigator.nextPage(ExpectChildcareCostsId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
