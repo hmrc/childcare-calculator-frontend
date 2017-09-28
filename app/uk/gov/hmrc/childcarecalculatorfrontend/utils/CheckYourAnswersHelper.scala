@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, RepeaterAn
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def approvedProvider: Option[AnswerRow] = userAnswers.approvedProvider map {
+    x => AnswerRow("approvedProvider.checkYourAnswersLabel", s"approvedProvider.$x", true, routes.ApprovedProviderController.onPageLoad(CheckMode).url)
+  }
+
   def location: Option[AnswerRow] = userAnswers.location map {
     x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
   }
