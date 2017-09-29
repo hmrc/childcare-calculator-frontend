@@ -21,17 +21,16 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.summary.text = Check you have answered the question correctly
 
-whatYouNeed.title = What you may need
-whatYouNeed.heading = What you may need
-whatYouNeed.guidance = You can use exact figures if you know them or estimates for any you may be unsure of about you and your partner (if you have one) such as:
+whatToTellTheCalculator.title = What to tell the calculator
+whatToTellTheCalculator.heading = What to tell the calculator
+whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
 
-whatYouNeed.li.childcare_costs = estimated or known childcare costs
-whatYouNeed.li.employment = employment and working hours
-whatYouNeed.li.income = income this year and last
-whatYouNeed.li.tax_code = personal tax code
-whatYouNeed.li.pension = pension contributions
-whatYouNeed.li.benefits = family’s benefits
-whatYouNeed.li.statutory_leave = weeks and pay taken while on leave for a birth or an adoption
+whatToTellTheCalculator.li.childcare_costs = known or estimated childcare costs
+whatToTellTheCalculator.li.pay = weeks and pay taken while on leave for a birth or an adoption
+
+whatToTellTheCalculator.text = For a more accurate result, you'll need to know your:
+whatToTellTheCalculator.li.tax_code = personal tax code
+whatToTellTheCalculator.li.pension = pension contributions
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset

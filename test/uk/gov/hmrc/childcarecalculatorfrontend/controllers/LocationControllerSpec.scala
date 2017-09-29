@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
 class LocationControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = routes.WhatYouNeedController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new LocationController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
