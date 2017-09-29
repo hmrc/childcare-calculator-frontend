@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if grep -Fxp $className;format="snake"$ applied
-then
-    echo "Migration $className;format="snake"$ has already been applied, exiting"
-    exit 1
-fi
-
 echo "Applying migration $className;format="snake"$"
 
 echo "Adding routes to conf/app.routes"
@@ -107,8 +101,6 @@ echo "Moving test files from generated-test/ to test/"
 rsync -avm --include='*.scala' -f 'hide,! */' ../generated-test/ ../test/
 rm -rf ../generated-test/
 
-echo "Registering this migration as completed"
-echo "$className;format="snake"$" >> applied
-
 echo ""
 echo "All done.  Please see migrations/$className$_migration_notes.md for info and next steps."
+echo "Migration $className;format="snake"$ complete"
