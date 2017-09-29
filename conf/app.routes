@@ -27,12 +27,12 @@ POST       /doYouLiveWithPartner                       uk.gov.hmrc.childcarecalc
 GET        /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeDoYouLiveWithPartner                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = CheckMode)
 
-GET        /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = NormalMode)
-POST       /expectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeExpectChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectChildcareCostsController.onSubmit(mode: Mode = CheckMode)
-
 GET        /location               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad(mode: Mode = NormalMode)
 POST       /location               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = NormalMode)
 GET        /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = CheckMode)
+
+GET        /childcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onPageLoad(mode: Mode = NormalMode)
+POST       /childcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onSubmit(mode: Mode = CheckMode)

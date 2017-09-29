@@ -22,12 +22,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, RepeaterAn
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
-  def location: Option[AnswerRow] = userAnswers.location map {
-    x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
+  def childcareCosts: Option[AnswerRow] = userAnswers.childcareCosts map {
+    x => AnswerRow("childcareCosts.checkYourAnswersLabel", s"childcareCosts.$x", true, routes.ChildcareCostsController.onPageLoad(CheckMode).url)
   }
 
-  def expectChildcareCosts: Option[AnswerRow] = userAnswers.expectChildcareCosts map {
-    x => AnswerRow("expectChildcareCosts.checkYourAnswersLabel", s"expectChildcareCosts.$x", true, routes.ExpectChildcareCostsController.onPageLoad(CheckMode).url)
+  def location: Option[AnswerRow] = userAnswers.location map {
+    x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
   }
 
   def doYouLiveWithPartner: Option[AnswerRow] = userAnswers.doYouLiveWithPartner map {

@@ -21,9 +21,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) {
-  def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
-  def expectChildcareCosts: Option[String] = cacheMap.getEntry[String](ExpectChildcareCostsId.toString)
+  def childcareCosts: Option[String] = cacheMap.getEntry[String](ChildcareCostsId.toString)
+
+  def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
   def doYouLiveWithPartner: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouLiveWithPartnerId.toString)
 
