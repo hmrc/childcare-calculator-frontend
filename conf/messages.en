@@ -105,3 +105,23 @@ freeHoursInfo.guidance = By giving more information, the calculator can check to
 freeHoursInfo.li.vouchers = Childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = Tax credits
+
+approvedProvider.title = approvedProvider
+approvedProvider.heading = approvedProvider
+approvedProvider.option1 = approvedProvider Option 1
+approvedProvider.option2 = approvedProvider Option 2
+approvedProvider.checkYourAnswersLabel = approvedProvider
+
+paidEmployment.title = paidEmployment
+paidEmployment.heading = paidEmployment
+paidEmployment.checkYourAnswersLabel = paidEmployment
+
+whoIsInPaidEmployment.title = whoIsInPaidEmployment
+whoIsInPaidEmployment.heading = whoIsInPaidEmployment
+whoIsInPaidEmployment.option1 = whoIsInPaidEmployment Option 1
+whoIsInPaidEmployment.option2 = whoIsInPaidEmployment Option 2
+whoIsInPaidEmployment.checkYourAnswersLabel = whoIsInPaidEmployment
+
+parentWorkHours.title = parentWorkHours
+parentWorkHours.heading = parentWorkHours
+parentWorkHours.checkYourAnswersLabel = parentWorkHours
