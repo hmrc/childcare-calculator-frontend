@@ -18,17 +18,24 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-class UserAnswers(val cacheMap: CacheMap) {
+class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
-  def childcareCosts: Option[String] = cacheMap.getEntry[String](ChildcareCostsId.toString)
+  def parentWorkHours: Option[Int] = cacheMap.getEntry[Int](ParentWorkHoursId.toString)
 
-  def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
+  def whoIsInPaidEmployment: Option[String] = cacheMap.getEntry[String](WhoIsInPaidEmploymentId.toString)
+
+  def paidEmployment: Option[Boolean] = cacheMap.getEntry[Boolean](PaidEmploymentId.toString)
 
   def doYouLiveWithPartner: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouLiveWithPartnerId.toString)
 
-  def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
+  def approvedProvider: Option[String] = cacheMap.getEntry[String](ApprovedProviderId.toString)
+
+  def childcareCosts: Option[String] = cacheMap.getEntry[String](ChildcareCostsId.toString)
 
   def childAgedThreeOrFour: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedThreeOrFourId.toString)
+
+  def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
+
+  def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 }
