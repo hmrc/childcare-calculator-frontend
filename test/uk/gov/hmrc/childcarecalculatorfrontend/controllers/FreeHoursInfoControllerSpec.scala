@@ -59,12 +59,13 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
     }
 
     "return OK with childAgedTwo as false, location Northern Ireland and the correct view for a GET" in {
-      val validData = Map(LocationId.toString -> JsString("Northern Ireland"))
+      val location = "Northern Ireland"
+      val validData = Map(LocationId.toString -> JsString(location))
       val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, "Northern Ireland")(fakeRequest, messages).toString
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, location)(fakeRequest, messages).toString
     }
 
     "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {

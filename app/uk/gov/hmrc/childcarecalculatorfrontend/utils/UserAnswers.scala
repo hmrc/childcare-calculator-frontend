@@ -21,8 +21,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) {
-  def freeHoursInfo: Option[Boolean] = cacheMap.getEntry[Boolean](FreeHoursInfoId.toString)
-
   def parentWorkHours: Option[Int] = cacheMap.getEntry[Int](ParentWorkHoursId.toString)
 
   def whoIsInPaidEmployment: Option[String] = cacheMap.getEntry[String](WhoIsInPaidEmploymentId.toString)
