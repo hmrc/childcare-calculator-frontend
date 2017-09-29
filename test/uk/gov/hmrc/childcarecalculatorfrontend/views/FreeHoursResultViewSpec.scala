@@ -89,15 +89,15 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
          AnswerRow("childAgedTwo.checkYourAnswersLabel",
            "site.no",
            true,
-           routes.ChildAgedTwoController.onPageLoad(NormalMode).url),
+           routes.ChildAgedTwoController.onPageLoad(CheckMode).url),
          AnswerRow("childAgedThreeOrFour.checkYourAnswersLabel",
            "site.no",
            true,
-           routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode).url),
+           routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url),
          AnswerRow("expectChildcareCosts.checkYourAnswersLabel",
            "expectChildcareCosts.yes",
            true,
-           routes.ExpectChildcareCostsController.onPageLoad(NormalMode).url)
+           routes.ExpectChildcareCostsController.onPageLoad(CheckMode).url)
        )))
 
        val doc = asDocument(createViewWithAnswers("england", answerSections))
@@ -105,13 +105,13 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
        assertContainsText(doc, messagesApi("childAgedTwo.checkYourAnswersLabel"))
        assertContainsText(doc, messagesApi("site.no"))
        assertContainsText(doc, messagesApi(messages("site.edit")))
-       assertContainsText(doc, routes.ChildAgedTwoController.onPageLoad(NormalMode).url)
+       assertContainsText(doc, routes.ChildAgedTwoController.onPageLoad(CheckMode).url)
 
        assertContainsText(doc, messagesApi("childAgedThreeOrFour.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode).url)
+       assertContainsText(doc, routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url)
 
        assertContainsText(doc, messagesApi("expectChildcareCosts.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ExpectChildcareCostsController.onPageLoad(NormalMode).url)
+       assertContainsText(doc, routes.ExpectChildcareCostsController.onPageLoad(CheckMode).url)
      }
 
     }
