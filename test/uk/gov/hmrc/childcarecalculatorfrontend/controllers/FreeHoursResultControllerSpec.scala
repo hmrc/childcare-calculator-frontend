@@ -20,7 +20,7 @@ import play.api.libs.json.{JsString, JsBoolean}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, AnswerSection}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -30,18 +30,17 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new FreeHoursResultController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
 
-  "FreeHoursResult Controller" must {
+ "FreeHoursResult Controller" must {
     "return 200 and the correct view for a GET" in {
-      val answerRow = AnswerRow("location.checkYourAnswersLabel","england", true, routes.LocationController.onPageLoad(NormalMode).url)
-      val validData = Map(
-        LocationId.toString -> JsString("england")
-        )
+      val answerRow = AnswerRow("location.checkYourAnswersLabel","location.england", true, routes.LocationController.onPageLoad(CheckMode).url)
+      val validData = Map(LocationId.toString -> JsString("england"))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()((fakeRequest))
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursResult(frontendAppConfig,"",  Seq(AnswerSection(None, Seq(answerRow))))(fakeRequest, messages).toString
+      contentAsString(result) mustBe
+        freeHoursResult(frontendAppConfig,"england", Seq(AnswerSection(None, Seq(answerRow))))(fakeRequest, messages).toString
     }
 
     "return 200 and the correct view for a GET when data exists in UserAnswers" in {
@@ -53,7 +52,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad()((fakeRequest))
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
       status(result) mustBe OK
     }
 
@@ -64,18 +63,14 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
 
-    "throw exception if location is not found in UserAnswers" in {
-      intercept[RuntimeException] {
+   "throw exception if location is not found in UserAnswers" in {
+     val validData = Map(ChildAgedTwoId.toString -> JsBoolean(false))
+     val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-        val validData = Map(
-          ChildAgedTwoId.toString -> JsBoolean(false),
-          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-          ExpectChildcareCostsId.toString -> JsString("temp"))
-
-        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-
-        controller(getRelevantData).onPageLoad()((fakeRequest))
-      }
-    }
+     intercept[RuntimeException] {
+       await(controller(getRelevantData).onPageLoad()(fakeRequest))
+     }
+   }
   }
+
 }

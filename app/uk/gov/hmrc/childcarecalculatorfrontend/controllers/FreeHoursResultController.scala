@@ -34,7 +34,10 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad() = (getData andThen requireData) {
     implicit request =>
+
+      val location = Utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+
       val sections = Seq(AnswerSection(None, Seq(
         checkYourAnswersHelper.location,
         checkYourAnswersHelper.childAgedTwo,
@@ -42,8 +45,6 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
         checkYourAnswersHelper.expectChildcareCosts
       ).flatten))
 
-    Ok(freeHoursResult(appConfig,
-      Utils.getOrException(checkYourAnswersHelper.location, Some("freeHoursController"), Some("location")).answer,
-      sections))
+    Ok(freeHoursResult(appConfig, location, sections))
   }
 }
