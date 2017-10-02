@@ -71,7 +71,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.childcareCosts) thenReturn Some("no")
 
         when(answers.isEligibleForFreeHours) thenReturn NotEligible
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.IndexController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
       }
 
       "go to free hours info page if you are eligible for free hours and don't have childcare cost" in {
@@ -79,7 +79,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
 
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.IndexController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
       }
 
       "got to partner page if your eligibility for free hours yet to be determined and don't have childcare cost" ignore {

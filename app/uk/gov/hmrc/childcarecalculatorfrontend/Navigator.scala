@@ -37,7 +37,7 @@ class Navigator @Inject()() {
   )
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
-    case Some("no") => routes.IndexController.onPageLoad()
+    case Some("no") => routes.WhatToTellTheCalculatorController.onPageLoad()
     case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
