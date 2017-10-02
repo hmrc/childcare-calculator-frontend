@@ -32,7 +32,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
     "in Normal mode" must {
       "go to Index from an identifier that doesn't exist in the route map" in {
         case object UnknownIdentifier extends Identifier
-        navigator.nextPage(UnknownIdentifier, NormalMode)(mock[UserAnswers]) mustBe routes.IndexController.onPageLoad()
+        navigator.nextPage(UnknownIdentifier, NormalMode)(mock[UserAnswers]) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
       }
 
       "go to Child Aged Two from Location when the location is England, Scotland or Wales" in {

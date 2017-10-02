@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.views
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.index
-
-class IndexViewSpec extends ViewBehaviours {
-
-  def view = () => index(frontendAppConfig)(fakeRequest, messages)
-
-  "Index view" must {
-
-    behave like normalPage(view, "index", "guidance")
-  }
+case object PartnerWorkHoursId extends Identifier {
+  override def toString: String = "partnerWorkHours"
 }

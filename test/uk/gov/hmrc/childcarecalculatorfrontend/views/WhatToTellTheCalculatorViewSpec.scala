@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 
-@main_template(
-    title = messages("index.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
 
-    <h1 class="heading-xlarge">@messages("index.heading")</h1>
+  def view = () => whatToTellTheCalculator(frontendAppConfig)(fakeRequest, messages)
 
-    <p>@messages("index.guidance")</p>
+  "whatToTellTheCalculator view" must {
+
+    behave like normalPage(view, "whatToTellTheCalculator", "guidance",
+      "li.childcare_costs", "li.pay", "text", "li.childcare_costs", "li.pay")
+  }
 }
