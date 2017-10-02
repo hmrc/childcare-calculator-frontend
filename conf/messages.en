@@ -132,3 +132,7 @@ whoIsInPaidEmployment.checkYourAnswersLabel = whoIsInPaidEmployment
 parentWorkHours.title = parentWorkHours
 parentWorkHours.heading = parentWorkHours
 parentWorkHours.checkYourAnswersLabel = parentWorkHours
+
+partnerWorkHours.title = partnerWorkHours
+partnerWorkHours.heading = partnerWorkHours
+partnerWorkHours.checkYourAnswersLabel = partnerWorkHours
