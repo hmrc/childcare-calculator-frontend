@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute: Call = routes.IndexController.onPageLoad()
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new FreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
