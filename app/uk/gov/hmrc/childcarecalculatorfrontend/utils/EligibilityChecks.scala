@@ -27,7 +27,7 @@ trait EligibilityChecks {
       Eligible
     } else if (!location.contains("northernIreland") && childAgedTwo.getOrElse(false)) {
       Eligible
-    }else if(hasAnsweredChildAge2Or3Or4 && hasNoChildren){
+    } else if(hasAnsweredChildAge2Or3Or4 && hasNoChildren) {
       NotEligible
     } else if (location.contains("northernIreland") && !childAgedThreeOrFour.getOrElse(false)) {
       NotEligible
@@ -43,6 +43,12 @@ trait EligibilityChecks {
     childAgedThreeOrFour.contains(false) && childAgedTwo.contains(false)
 
   def isEligibleForMaxFreeHours: Eligibility = {
-    isEligibleForFreeHours
+    if (isEligibleForFreeHours == Eligible &&
+      location.contains("england") &&
+      childAgedThreeOrFour.contains(true)) {
+        Eligible
+    } else {
+      NotEligible
+    }
   }
 }

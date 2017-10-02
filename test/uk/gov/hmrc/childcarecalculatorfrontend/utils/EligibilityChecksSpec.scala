@@ -99,5 +99,29 @@ class EligibilityChecksSpec extends WordSpec with MustMatchers {
       helper(data).isEligibleForMaxFreeHours mustEqual NotEligible
     }
 
+    "return eligible when they are eligible for free hours, live in england and have a child aged 3 or 4" in {
+      val data: CacheMap = cacheMap(
+        ChildAgedThreeOrFourId.toString -> JsBoolean(true),
+        LocationId.toString -> JsString("england")
+      )
+      helper(data).isEligibleForMaxFreeHours mustEqual Eligible
+    }
+
+    "return not eligible when they are eligible for free hours but are not in england" in {
+      val data: CacheMap = cacheMap(
+        ChildAgedThreeOrFourId.toString -> JsBoolean(true),
+        LocationId.toString -> JsString("wales")
+      )
+      helper(data).isEligibleForMaxFreeHours mustEqual NotEligible
+    }
+
+    "return not eligible when they are eligible for free hours, live in england but do not have a child aged 3 or 4" in {
+      val data: CacheMap = cacheMap(
+        ChildAgedThreeOrFourId.toString -> JsBoolean(false),
+        ChildAgedTwoId.toString -> JsBoolean(true),
+        LocationId.toString -> JsString("england")
+      )
+      helper(data).isEligibleForMaxFreeHours mustEqual NotEligible
+    }
   }
 }
