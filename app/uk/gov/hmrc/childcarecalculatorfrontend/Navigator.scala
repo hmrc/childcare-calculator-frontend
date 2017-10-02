@@ -32,7 +32,9 @@ class Navigator @Inject()() {
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
     ExpectChildcareCostsId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
+    DoYouLiveWithPartnerId -> (_ => routes.PaidEmploymentController.onPageLoad(NormalMode)),
+    PaidEmploymentId -> (_ => routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)),
+    WhoIsInPaidEmploymentId -> (_ => routes.ParentWorkHoursController.onPageLoad(NormalMode))
   )
 
   private def locationRoute(answers: UserAnswers) = answers.location match {

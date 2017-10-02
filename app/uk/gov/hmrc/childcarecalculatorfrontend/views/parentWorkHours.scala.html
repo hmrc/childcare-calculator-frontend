@@ -35,7 +35,7 @@
 
         @components.heading("parentWorkHours.heading")
 
-        @components.input_text(InputViewModel[Int]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"))
+        @components.input_text(InputViewModel[Int]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"), hint = Some(messages("parentWorkHours.hint")))
 
         @components.submit_button()
     }

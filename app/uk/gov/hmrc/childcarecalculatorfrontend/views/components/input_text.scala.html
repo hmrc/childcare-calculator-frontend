@@ -25,11 +25,14 @@ labelClass: Option[String] = None
 )(implicit messages: Messages)
 
 <div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
-    <label class="form-label @if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">
-        <span class="bold">@label</span>
-        @if(hint.nonEmpty){
-        <span class="form-hint">@hint</span>
+    <label class="form-label" for="@{viewModel.id}">
+
+        <span class="bold visuallyhidden">@label</span>
+
+        @hint.map{ hintText =>
+            <span class="form-hint">@hintText</span>
         }
+
         @if(viewModel.errorKey.nonEmpty){
         <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
         }

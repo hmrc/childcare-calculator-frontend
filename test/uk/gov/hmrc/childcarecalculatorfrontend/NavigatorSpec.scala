@@ -61,6 +61,18 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to do you live with partner from childcare cost" in {
         navigator.nextPage(ExpectChildcareCostsId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
+
+      "go to paid employment from do you live with partner" in {
+        navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(mock[UserAnswers]) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+      }
+
+      "go to who is in paid employment from paid employment" in {
+        navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+      }
+
+      "go to parent work hours from who is in paid employment" in {
+        navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      }
     }
 
     "in Check mode" must {

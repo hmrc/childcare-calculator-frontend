@@ -51,7 +51,7 @@ class ParentWorkHoursController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      ParentWorkHoursForm().bindFromRequest().fold(
+      ParentWorkHoursForm("parentWorkHours.error").bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
           Future.successful(BadRequest(parentWorkHours(appConfig, formWithErrors, mode))),
         (value) =>

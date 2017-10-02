@@ -86,22 +86,28 @@ doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+
 approvedProvider.title = approvedProvider
 approvedProvider.heading = approvedProvider
 approvedProvider.option1 = approvedProvider Option 1
 approvedProvider.option2 = approvedProvider Option 2
 approvedProvider.checkYourAnswersLabel = approvedProvider
 
-paidEmployment.title = paidEmployment
-paidEmployment.heading = paidEmployment
-paidEmployment.checkYourAnswersLabel = paidEmployment
+paidEmployment.title = Are you, your partner, or both of you in paid work?
+paidEmployment.heading = Are you, your partner, or both of you in paid work?
+paidEmployment.checkYourAnswersLabel = Are you, your partner, or both of you in paid work?
+paidEmployment.error = You must answer yes if you, your partner, or both in paid work
 
-whoIsInPaidEmployment.title = whoIsInPaidEmployment
-whoIsInPaidEmployment.heading = whoIsInPaidEmployment
-whoIsInPaidEmployment.option1 = whoIsInPaidEmployment Option 1
-whoIsInPaidEmployment.option2 = whoIsInPaidEmployment Option 2
-whoIsInPaidEmployment.checkYourAnswersLabel = whoIsInPaidEmployment
+whoIsInPaidEmployment.title = Who’s in paid work?
+whoIsInPaidEmployment.heading = Who’s in paid work?
+whoIsInPaidEmployment.you = You
+whoIsInPaidEmployment.partner = Partner
+whoIsInPaidEmployment.both = Both
+whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
+whoIsInPaidEmployment.error = You must answer who’s in paid work
 
-parentWorkHours.title = parentWorkHours
-parentWorkHours.heading = parentWorkHours
-parentWorkHours.checkYourAnswersLabel = parentWorkHours
+parentWorkHours.title = How many hours a week do you usually work?
+parentWorkHours.heading = How many hours a week do you usually work?
+parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
+parentWorkHours.hint = This is the hours worked in all your paid jobs, 'zero hours' contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work.
+parentWorkHours.error = Please enter how many hours a week do you usually work

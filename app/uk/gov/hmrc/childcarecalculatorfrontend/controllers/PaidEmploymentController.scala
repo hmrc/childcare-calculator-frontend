@@ -50,7 +50,7 @@ class PaidEmploymentController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("paidEmployment.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(paidEmployment(appConfig, formWithErrors, mode))),
         (value) =>
