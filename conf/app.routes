@@ -56,3 +56,5 @@ GET        /parentWorkHours               uk.gov.hmrc.childcarecalculatorfronten
 POST       /parentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = NormalMode)
 GET        /changeParentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeParentWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = CheckMode)
+
+GET        /freeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
