@@ -74,7 +74,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.IndexController.onPageLoad()
       }
 
-      "go to info page if you are eligible for free hours and don't have childcare cost" in {
+      "go to free hours info page if you are eligible for free hours and don't have childcare cost" in {
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
