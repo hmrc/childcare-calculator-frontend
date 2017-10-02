@@ -34,7 +34,7 @@ class ParentWorkHoursViewSpec extends IntViewBehaviours {
   val form = ParentWorkHoursForm()
 
   "ParentWorkHours view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 

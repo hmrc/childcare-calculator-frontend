@@ -77,6 +77,16 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
+    "return a Bad Request and errors when no data is submitted" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ""))
+      val boundForm = ParentWorkHoursForm("parentWorkHours.error").bind(Map("value" -> ""))
+
+      val result = controller().onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) mustBe viewAsString(boundForm)
+    }
+
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
