@@ -28,12 +28,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
-                                        getData: DataRetrievalAction) extends FrontendController with I18nSupport {
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = getData {
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val isChildAgedTwo = request.userAnswers.flatMap(_.childAgedTwo).getOrElse(false)
-      val locationOption = request.userAnswers.flatMap(_.location)
+      val isChildAgedTwo = request.userAnswers.childAgedTwo.getOrElse(false)
+      val locationOption = request.userAnswers.location
 
       locationOption match {
         case None =>
