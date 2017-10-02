@@ -45,6 +45,8 @@ trait ViewSpecBase extends SpecBase {
 
   def assertContainsText(doc:Document, text: String) = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
 
+  def assertNotContainsText(doc:Document, text: String) = assert(!doc.toString.contains(text), "\n\ntext " + text + " was rendered on the page.\n")
+
   def assertContainsMessages(doc: Document, expectedMessageKeys: String*) = {
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))
   }
@@ -68,7 +70,6 @@ trait ViewSpecBase extends SpecBase {
   def assertContainsLabel(doc: Document, forElement: String, expectedText: String) = {
     val labels = doc.getElementsByAttributeValue("for", forElement)
     assert(labels.size == 1, s"\n\nLabel for $forElement was not rendered on the page.")
-    println("\n\n\nlabels.first.text() : "+labels.first.text())
     assert(labels.first.text() == expectedText, s"\n\nLabel for $forElement was not $expectedText")
   }
 

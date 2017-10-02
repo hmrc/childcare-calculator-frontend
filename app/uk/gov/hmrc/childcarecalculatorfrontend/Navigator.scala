@@ -31,11 +31,34 @@ class Navigator @Inject()() {
     LocationId -> (ua => locationRoute(ua)),
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
-    ExpectChildcareCostsId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    ExpectChildcareCostsId -> (_ => routes.FreeHoursInfoController.onPageLoad),
+    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> (_ => routes.PaidEmploymentController.onPageLoad(NormalMode)),
     PaidEmploymentId -> (_ => routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)),
-    WhoIsInPaidEmploymentId -> (_ => routes.ParentWorkHoursController.onPageLoad(NormalMode))
+    WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
+    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua))
   )
+
+  private def workHoursRoute(answers: UserAnswers) = {
+    answers.whoIsInPaidEmployment match {
+      case Some("you") =>
+        routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      case Some("partner") =>
+        routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      case Some("both") =>
+        routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def partnerWorkHoursRoute(answers: UserAnswers) = {
+    if(answers.whoIsInPaidEmployment.contains("both")) {
+      routes.ParentWorkHoursController.onPageLoad(NormalMode)
+    } else {
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    }
+  }
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
