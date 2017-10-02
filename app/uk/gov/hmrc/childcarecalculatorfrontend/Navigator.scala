@@ -31,11 +31,13 @@ class Navigator @Inject()() {
     LocationId -> (ua => locationRoute(ua)),
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
-    ChildcareCostsId -> (ua => costRoute(ua))
+    ChildcareCostsId -> (ua => costRoute(ua)),
+    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
   )
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
-    case Some("no") => routes.IndexController.onPageLoad()
+    case Some("no") => routes.WhatToTellTheCalculatorController.onPageLoad()
     case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
@@ -52,7 +54,7 @@ class Navigator @Inject()() {
 
   def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>
-      routeMap.getOrElse(id, _ => routes.IndexController.onPageLoad())
+      routeMap.getOrElse(id, _ => routes.WhatToTellTheCalculatorController.onPageLoad())
     case CheckMode =>
       editRouteMap.getOrElse(id, _ => routes.CheckYourAnswersController.onPageLoad())
   }

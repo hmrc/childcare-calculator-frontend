@@ -1,6 +1,6 @@
 # microservice specific routes
 
-GET        /                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.IndexController.onPageLoad
+GET        /                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatToTellTheCalculatorController.onPageLoad
 GET        /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 GET        /language/:lang                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)
 GET        /this-service-has-been-reset     uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionExpiredController.onPageLoad
@@ -51,3 +51,9 @@ GET        /parentWorkHours                 uk.gov.hmrc.childcarecalculatorfront
 POST       /parentWorkHours                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = NormalMode)
 GET        /changeParentWorkHours           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeParentWorkHours           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = CheckMode)
+
+GET        /freeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
+GET        /partnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = CheckMode)

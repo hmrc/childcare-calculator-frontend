@@ -16,20 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.index
+import javax.inject.{Inject, Singleton}
 
-class IndexControllerSpec extends ControllerSpecBase {
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 
-  "Index Controller" must {
-    "return 200 for a GET" in {
-      val result = new IndexController(frontendAppConfig, messagesApi).onPageLoad()(fakeRequest)
-      status(result) mustBe OK
-    }
+@Singleton
+class WhatToTellTheCalculatorController @Inject()(val appConfig: FrontendAppConfig,
+                                val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
-    "return the correct view for a GET" in {
-      val result = new IndexController(frontendAppConfig, messagesApi).onPageLoad()(fakeRequest)
-      contentAsString(result) mustBe index(frontendAppConfig)(fakeRequest, messages).toString
-    }
+  def onPageLoad: Action[AnyContent] = Action { implicit request =>
+    Ok(whatToTellTheCalculator(appConfig))
   }
 }
