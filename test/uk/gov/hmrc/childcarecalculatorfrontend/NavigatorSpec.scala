@@ -54,27 +54,42 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildAgedTwoId, NormalMode)(mock[UserAnswers]) mustBe routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
       }
 
-      "go to Expect Childcare Costs from Child Aged Three or Four" in {
-        navigator.nextPage(ChildAgedThreeOrFourId, NormalMode)(mock[UserAnswers]) mustBe routes.ExpectChildcareCostsController.onPageLoad(NormalMode)
+      "go to Childcare Costs from Child Aged Three or Four" in {
+        navigator.nextPage(ChildAgedThreeOrFourId, NormalMode)(mock[UserAnswers]) mustBe routes.ChildcareCostsController.onPageLoad(NormalMode)
       }
 
-      "go to live with partner from approved childcare cost when children 3-4 is false and approved provider is true" in {
-        val answer = mock[UserAnswers]
-        when(answer.childAgedThreeOrFour) thenReturn Some(false)
-        when(answer.approvedProvider) thenReturn Some("true") thenReturn Some("unsure")
-        navigator.nextPage(ApprovedProviderId, NormalMode)(answer) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      "go to expect approved childcare cost from childcare cost when you have childcare cost or not yet decided" in {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("yes") thenReturn Some("notYet")
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to free hours info from approved childcare cost when children 3-4 is true and approved provider is true" in {
-        val answer = mock[UserAnswers]
-        when(answer.childAgedThreeOrFour) thenReturn Some(true)
-        when(answer.approvedProvider) thenReturn Some("true") thenReturn Some("unsure")
-        navigator.nextPage(ApprovedProviderId, NormalMode)(answer) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+
+        when(answers.isEligibleForFreeHours) thenReturn NotEligible
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.IndexController.onPageLoad()
       }
 
-      "go to do you live with partner from childcare cost" in {
-        navigator.nextPage(ExpectChildcareCostsId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      "go to info page if you are eligible for free hours and don't have childcare cost" in {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+        when(answers.isEligibleForFreeHours) thenReturn Eligible
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.IndexController.onPageLoad()
       }
+
+      "got to partner page if your eligibility for free hours yet to be determined and don't have childcare cost" ignore {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+        when(answers.isEligibleForFreeHours) thenReturn NotDetermined
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+
     }
 
     "in Check mode" must {

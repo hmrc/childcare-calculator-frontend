@@ -21,9 +21,9 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 
-object ExpectChildcareCostsForm extends FormErrorHelper {
+object ChildcareCostsForm extends FormErrorHelper {
 
-  def ExpectChildcareCostsFormatter = new Formatter[String] {
+  def ChildcareCostsFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, "error.required")
@@ -34,12 +34,12 @@ object ExpectChildcareCostsForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(ExpectChildcareCostsFormatter)))
+    Form(single("value" -> of(ChildcareCostsFormatter)))
 
   def options = Seq(
-    RadioOption("expectChildcareCosts", "yes"),
-    RadioOption("expectChildcareCosts", "no"),
-    RadioOption("expectChildcareCosts", "notYet")
+    RadioOption("childcareCosts", "yes"),
+    RadioOption("childcareCosts", "no"),
+    RadioOption("childcareCosts", "notYet")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

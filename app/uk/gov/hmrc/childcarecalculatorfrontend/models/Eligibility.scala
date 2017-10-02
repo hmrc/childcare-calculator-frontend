@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-case object ExpectChildcareCostsId extends Identifier {
-  override def toString: String = "expectChildcareCosts"
-}
+sealed trait Eligibility
+case object Eligible extends Eligibility
+case object NotEligible extends Eligibility
+case object NotDetermined extends Eligibility

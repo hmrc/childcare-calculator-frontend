@@ -60,18 +60,6 @@ childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled 
 childAgedTwo.checkYourAnswersLabel = Do you have a child aged 2?
 childAgedTwo.error = You must answer yes if you have a child aged 2
 
-expectChildcareCosts.title = Do you have or expect to have childcare costs with an approved provider?
-expectChildcareCosts.heading = Do you have or expect to have childcare costs with an approved provider?
-expectChildcareCosts.yes = Yes
-expectChildcareCosts.no = No
-expectChildcareCosts.notYet = Not yet, but maybe in the future
-expectChildcareCosts.guidance.england = Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or an Ofsted-registered childminding agency.
-expectChildcareCosts.guidance.scotland = Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or a Scottish Care Inspectorate-registered childminding agency.
-expectChildcareCosts.guidance.wales = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or a Care and Social Services Inspectorate Wales-registered childminding agency.
-expectChildcareCosts.guidance.northernIreland = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.
-expectChildcareCosts.checkYourAnswersLabel = Do you have or expect to have childcare costs with an approved provider?
-expectChildcareCosts.error = You must answer yes if you expect to have childcare costs with an approved provider
-
 location.title = Where do you live?
 location.heading = Where do you live?
 location.guidance = Free childcare hours are different between countries in the UK.
@@ -82,12 +70,35 @@ location.northernIreland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
 location.error = You must tell the calculator where you live
 
+childcareCosts.title = Do you have childcare costs?
+childcareCosts.heading = Do you have childcare costs?
+childcareCosts.yes = Yes
+childcareCosts.no = No
+childcareCosts.notYet = Not yet but maybe in the future
+childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
+childcareCosts.error = You must tell the calculator if you expect to have childcare costs
+
 doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+
 approvedProvider.title = approvedProvider
 approvedProvider.heading = approvedProvider
 approvedProvider.option1 = approvedProvider Option 1
 approvedProvider.option2 = approvedProvider Option 2
 approvedProvider.checkYourAnswersLabel = approvedProvider
+
+paidEmployment.title = paidEmployment
+paidEmployment.heading = paidEmployment
+paidEmployment.checkYourAnswersLabel = paidEmployment
+
+whoIsInPaidEmployment.title = whoIsInPaidEmployment
+whoIsInPaidEmployment.heading = whoIsInPaidEmployment
+whoIsInPaidEmployment.option1 = whoIsInPaidEmployment Option 1
+whoIsInPaidEmployment.option2 = whoIsInPaidEmployment Option 2
+whoIsInPaidEmployment.checkYourAnswersLabel = whoIsInPaidEmployment
+
+parentWorkHours.title = parentWorkHours
+parentWorkHours.heading = parentWorkHours
+parentWorkHours.checkYourAnswersLabel = parentWorkHours

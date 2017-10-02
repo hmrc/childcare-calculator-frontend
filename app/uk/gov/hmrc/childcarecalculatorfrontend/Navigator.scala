@@ -30,10 +30,15 @@ class Navigator @Inject()() {
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> (ua => locationRoute(ua)),
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
-    ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
-    ExpectChildcareCostsId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildcareCostsId -> (ua => costRoute(ua))
   )
+
+  private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
+    case Some("no") => routes.IndexController.onPageLoad()
+    case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
