@@ -17,14 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.index
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 
-class IndexViewSpec extends ViewBehaviours {
+class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
 
-  def view = () => index(frontendAppConfig)(fakeRequest, messages)
+  def view = () => whatToTellTheCalculator(frontendAppConfig)(fakeRequest, messages)
 
-  "Index view" must {
+  "whatToTellTheCalculator view" must {
 
-    behave like normalPage(view, "index", "guidance")
+    behave like normalPage(view, "whatToTellTheCalculator", "guidance",
+      "li.childcare_costs", "li.pay", "text", "li.childcare_costs", "li.pay")
   }
 }
