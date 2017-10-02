@@ -11,7 +11,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$pluralName;format="lo
 
 class $className$OverviewControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = baseRoutes.IndexController.onPageLoad()
+  def onwardRoute = baseRoutes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new $className$OverviewController(frontendAppConfig, messagesApi, new FakeNavigator(desiredRoute = onwardRoute),

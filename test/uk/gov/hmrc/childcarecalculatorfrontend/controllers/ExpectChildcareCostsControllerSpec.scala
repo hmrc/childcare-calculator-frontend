@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
 
 class ExpectChildcareCostsControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = routes.IndexController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val location = "england"
 
