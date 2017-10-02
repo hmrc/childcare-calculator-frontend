@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
-class FreeHoursInfoViewSpec extends YesNoViewBehaviours {
+class FreeHoursInfoViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursInfo"
 

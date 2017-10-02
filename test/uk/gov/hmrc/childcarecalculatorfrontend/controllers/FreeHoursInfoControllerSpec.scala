@@ -68,12 +68,20 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, location)(fakeRequest, messages).toString
     }
 
+    "redirect to Session Expired for a GET if no existing data is found" in {
+      val result = controller(dontGetAnyData).onPageLoad(fakeRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
+
     "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
       val result = controller(getEmptyCacheMap).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad(NormalMode).url)
     }
+
   }
 }
 
