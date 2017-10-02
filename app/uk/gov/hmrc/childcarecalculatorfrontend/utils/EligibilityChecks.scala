@@ -22,24 +22,23 @@ trait EligibilityChecks {
   self: UserAnswers =>
 
   def isEligibleForFreeHours: Eligibility = {
-
     if (childAgedThreeOrFour.getOrElse(false)) {
       Eligible
-    } else if (!location.contains("northernIreland") && childAgedTwo.getOrElse(false)) {
+    } else if(!location.contains("northernIreland") && childAgedTwo.getOrElse(false)) {
       Eligible
-    } else if(hasAnsweredChildAge2Or3Or4 && hasNoChildren) {
+    } else if(hasAnsweredChildAged2Or3Or4 && hasNoChild) {
       NotEligible
-    } else if (location.contains("northernIreland") && !childAgedThreeOrFour.getOrElse(false)) {
+    } else if(location.contains("northernIreland") && !childAgedThreeOrFour.getOrElse(false)) {
       NotEligible
     } else {
       NotDetermined
     }
   }
 
-  private def hasAnsweredChildAge2Or3Or4: Boolean =
+  private def hasAnsweredChildAged2Or3Or4: Boolean =
     childAgedThreeOrFour.isDefined || childAgedTwo.isDefined
 
-  private def hasNoChildren: Boolean =
+  private def hasNoChild: Boolean =
     childAgedThreeOrFour.contains(false) && childAgedTwo.contains(false)
 
   def isEligibleForMaxFreeHours: Eligibility = {
