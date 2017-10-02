@@ -30,6 +30,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
   "Navigator" when {
 
     "in Normal mode" must {
+
       "go to Index from an identifier that doesn't exist in the route map" in {
         case object UnknownIdentifier extends Identifier
         navigator.nextPage(UnknownIdentifier, NormalMode)(mock[UserAnswers]) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -79,10 +80,10 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
 
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
       }
 
-      "got to partner page if your eligibility for free hours yet to be determined and don't have childcare cost" ignore {
+      "got to partner page if your eligibility for free hours yet to be determined and don't have childcare cost" in {
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn NotDetermined
@@ -93,10 +94,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
     }
 
     "in Check mode" must {
+
       "go to CheckYourAnswers from an identifier that doesn't exist in the edit route map" in {
         case object UnknownIdentifier extends Identifier
         navigator.nextPage(UnknownIdentifier, CheckMode)(mock[UserAnswers]) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
     }
+
   }
 }

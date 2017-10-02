@@ -21,7 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{CheckMode, Mode, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
@@ -37,7 +37,15 @@ class Navigator @Inject()() {
   )
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
-    case Some("no") => routes.WhatToTellTheCalculatorController.onPageLoad()
+    case Some("no") => {
+      if(answers.isEligibleForFreeHours == Eligible) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else if(answers.isEligibleForFreeHours == NotEligible) {//TODO - go to Free hours results page
+        routes.WhatToTellTheCalculatorController.onPageLoad()
+      } else {
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+    }
     case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
@@ -49,7 +57,6 @@ class Navigator @Inject()() {
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
-
   )
 
   def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = mode match {
