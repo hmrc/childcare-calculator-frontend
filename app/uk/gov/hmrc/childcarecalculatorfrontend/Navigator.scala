@@ -33,7 +33,8 @@ class Navigator @Inject()() {
     ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
     ExpectChildcareCostsId -> (_ => routes.FreeHoursInfoController.onPageLoad),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
+    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    VouchersId -> (vouchers => vouchersRoute(vouchers))
   )
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
@@ -42,6 +43,12 @@ class Navigator @Inject()() {
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
+  private def vouchersRoute(answers: UserAnswers) = answers.vouchers match {
+    case Some("yes") => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+    case Some(v) => routes.GetBenefitsController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+  
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
 
   )

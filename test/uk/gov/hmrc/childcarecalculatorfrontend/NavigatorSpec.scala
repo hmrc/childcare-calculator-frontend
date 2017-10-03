@@ -65,6 +65,20 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to do you live with partner from free hours info" in {
         navigator.nextPage(FreeHoursInfoId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
+
+      "go to who gets vouchers page from do either of you get vouchers page when user selects 'yes'" in {
+        val answers = mock[UserAnswers]
+        when(answers.vouchers) thenReturn Some("yes")
+        navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+        navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+      }
+
+      "go to do you get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure'" in {
+        val answers = mock[UserAnswers]
+        when(answers.vouchers) thenReturn Some("no") thenReturn Some("notSure")
+        navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
+        navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
+      }
     }
 
     "in Check mode" must {
