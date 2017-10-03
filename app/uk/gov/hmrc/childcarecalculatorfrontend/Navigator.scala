@@ -37,20 +37,18 @@ class Navigator @Inject()() {
   )
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
-      case Some("no") => {
-        if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england")) {
-          routes.FreeHoursInfoController.onPageLoad()
-        } else if(answers.isEligibleForFreeHours == Eligible && !answers.location.contains("england")) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else if(answers.isEligibleForFreeHours == NotEligible) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
-        }
+    case Some("no") => {
+      if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england") && answers.childAgedThreeOrFour.getOrElse(false)) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else if(answers.isEligibleForFreeHours == Eligible) {
+        routes.FreeHoursResultController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
       }
-      case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
     }
+    case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
@@ -65,6 +63,6 @@ class Navigator @Inject()() {
     case NormalMode =>
       routeMap.getOrElse(id, _ => routes.WhatToTellTheCalculatorController.onPageLoad())
     case CheckMode =>
-      editRouteMap.getOrElse(id, _ => routes.FreeHoursResultController.onPageLoad())
+      editRouteMap.getOrElse(id, _ => routes.CheckYourAnswersController.onPageLoad())
   }
 }

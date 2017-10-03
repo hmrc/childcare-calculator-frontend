@@ -84,3 +84,18 @@ GET        /changeHasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.c
 POST       /changeHasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode = CheckMode)
 
 GET        /freeHoursResult                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+
+GET        /getBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /getBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeGetBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeGetBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /vouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /vouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /changeVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = CheckMode)
