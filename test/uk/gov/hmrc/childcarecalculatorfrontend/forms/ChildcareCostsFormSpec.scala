@@ -29,6 +29,6 @@ class ChildcareCostsFormSpec extends FormBehaviours {
   "ChildcareCosts form" must {
     behave like questionForm[String](ChildcareCostsForm.options.head.value)
 
-    behave like formWithOptionField("value", ChildcareCostsForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "childcareCosts.error", ChildcareCostsForm.options.map{x => x.value}:_*)
   }
 }

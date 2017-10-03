@@ -97,7 +97,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
          AnswerRow("expectChildcareCosts.checkYourAnswersLabel",
            "expectChildcareCosts.yes",
            true,
-           routes.ExpectChildcareCostsController.onPageLoad(CheckMode).url)
+           routes.ChildcareCostsController.onPageLoad(CheckMode).url)
        )))
 
        val doc = asDocument(createViewWithAnswers("england", answerSections))
@@ -111,7 +111,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
        assertContainsText(doc, routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url)
 
        assertContainsText(doc, messagesApi("expectChildcareCosts.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ExpectChildcareCostsController.onPageLoad(CheckMode).url)
+       assertContainsText(doc, routes.ChildcareCostsController.onPageLoad(CheckMode).url)
      }
 
     }
