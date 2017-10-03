@@ -163,7 +163,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to parent work hours from partner work hours when user selects both on paid employment" in {
         val answers = mock[UserAnswers]
         when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-        when(answers.partnerWorkHours) thenReturn Some(23)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
         navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
       }
     }

@@ -27,7 +27,7 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, "whoIsInPaidEmployment.error")
-      case _ => produceError(key, "whoIsInPaidEmployment.error")
+      case _ => produceError(key, "error.unknown")
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
