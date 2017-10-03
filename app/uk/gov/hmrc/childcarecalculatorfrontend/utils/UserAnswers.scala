@@ -50,4 +50,6 @@ class UserAnswers(val cacheMap: CacheMap) {
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
   def childAgedThreeOrFour: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedThreeOrFourId.toString)
+
+  def hasPartnerInPaidWork: Boolean = whoIsInPaidEmployment.contains("partner") || whoIsInPaidEmployment.contains("both")
 }

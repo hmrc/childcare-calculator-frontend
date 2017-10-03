@@ -65,6 +65,36 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to do you live with partner from free hours info" in {
         navigator.nextPage(FreeHoursInfoId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
+
+      "single user will be taken to DoYouKnowYourAdjustedTaxCode screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(true)
+        when(answers.doYouLiveWithPartner) thenReturn Some (false)
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+      }
+
+      "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner) thenReturn Some (false)
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+      }
+
+      "user with a partner in paid work will be taken to HasYourPartnerTaxCodeBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner) thenReturn Some (true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some ("both")
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      }
+
+      "user with a partner in paid work will be taken to HasYourPartnerTaxCodeBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner) thenReturn Some (true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some ("partner")
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      }
     }
 
     "in Check mode" must {

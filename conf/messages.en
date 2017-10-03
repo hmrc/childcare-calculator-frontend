@@ -157,6 +157,9 @@ hasYourPartnersTaxCodeBeenAdjusted.title = hasYourPartnersTaxCodeBeenAdjusted
 hasYourPartnersTaxCodeBeenAdjusted.heading = hasYourPartnersTaxCodeBeenAdjusted
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCodeBeenAdjusted
 
-hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
+hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
+

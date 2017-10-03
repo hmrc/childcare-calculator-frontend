@@ -33,7 +33,8 @@ class Navigator @Inject()() {
     ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
     ExpectChildcareCostsId -> (_ => routes.FreeHoursInfoController.onPageLoad),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
+    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    HasYourTaxCodeBeenAdjustedId -> (_ => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode))
   )
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
