@@ -51,11 +51,11 @@ class ParentWorkHoursController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      ParentWorkHoursForm("parentWorkHours.error").bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
+      ParentWorkHoursForm().bindFromRequest().fold(
+        (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentWorkHours(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Int](request.sessionId, ParentWorkHoursId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[BigDecimal](request.sessionId, ParentWorkHoursId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ParentWorkHoursId, mode)(new UserAnswers(cacheMap))))
       )
   }

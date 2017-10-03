@@ -19,49 +19,58 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 class ParentWorkHoursFormSpec extends FormSpec {
 
   val errorKeyBlank = "blank"
-  val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "non numeric"
+  val errorKeyInvalid = "invalid character"
 
   "ParentWorkHours Form" must {
 
     "bind zero" in {
-      val form = ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "0"))
-      form.get shouldBe 0
+      val expectedError = error("value", errorKeyBlank)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "0"), expectedError)
     }
 
-    "bind positive numbers" in {
-      val form = ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "1"))
-      form.get shouldBe 1
+    "bind positive whole number" in {
+      val form = ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "12"))
+      form.get shouldBe 12
     }
 
-    "bind positive, comma separated numbers" in {
-      val form = ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "10,000"))
-      form.get shouldBe 10000
+    "bind decimal numbers with one decimal place" in {
+      val form = ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "12.6"))
+      form.get shouldBe 12.6
+    }
+
+    "fail to bind decimal numbers more than 99.5" in {
+      val expectedError = error("value", errorKeyBlank)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "99.6"), expectedError)
+    }
+
+    "fail to bind decimal numbers with two decimal places" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "12.67"), expectedError)
+    }
+
+    "fail to bind decimal numbers with more than 2 digits with one decimal places" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "124.6"), expectedError)
     }
 
     "fail to bind negative numbers" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "-1"), expectedError)
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "-1"), expectedError)
     }
 
     "fail to bind non-numerics" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "not a number"), expectedError)
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> ""), expectedError)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), emptyForm, expectedError)
-    }
-
-    "fail to bind decimal numbers" in {
-      val expectedError = error("value", errorKeyDecimal)
-      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "123.45"), expectedError)
+      checkForError(ParentWorkHoursForm(errorKeyBlank, errorKeyInvalid), emptyForm, expectedError)
     }
   }
 }

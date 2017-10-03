@@ -29,7 +29,7 @@ class ParentWorkHoursViewSpec extends IntViewBehaviours {
 
   def createView = () => parentWorkHours(frontendAppConfig, ParentWorkHoursForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   val form = ParentWorkHoursForm()
 

@@ -52,10 +52,10 @@ class PartnerWorkHoursController @Inject()(
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       PartnerWorkHoursForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
+        (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerWorkHours(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Int](request.sessionId, PartnerWorkHoursId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[BigDecimal](request.sessionId, PartnerWorkHoursId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerWorkHoursId, mode)(new UserAnswers(cacheMap))))
       )
   }

@@ -137,8 +137,10 @@ parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
 parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
 parentWorkHours.hint = This is the hours worked in all your paid jobs, 'zero hours' contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work.
-parentWorkHours.error = Please enter how many hours a week do you usually work
+workHours.blank = You must enter a number between 1 and 99.5
+workHours.invalid = You must enter a number with no more than 2 digits and 1 decimal place
 
-partnerWorkHours.title = partnerWorkHours
-partnerWorkHours.heading = partnerWorkHours
-partnerWorkHours.checkYourAnswersLabel = partnerWorkHours
+partnerWorkHours.title = How many hours a week does your partner usually work?
+partnerWorkHours.heading = How many hours a week does your partner usually work?
+partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
+partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.

@@ -36,9 +36,9 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
     new ParentWorkHoursController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = ParentWorkHoursForm()) = parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = ParentWorkHoursForm()) = parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 12
 
   "ParentWorkHours Controller" must {
 
@@ -79,7 +79,7 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when no data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ""))
-      val boundForm = ParentWorkHoursForm("parentWorkHours.error").bind(Map("value" -> ""))
+      val boundForm = ParentWorkHoursForm().bind(Map("value" -> ""))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

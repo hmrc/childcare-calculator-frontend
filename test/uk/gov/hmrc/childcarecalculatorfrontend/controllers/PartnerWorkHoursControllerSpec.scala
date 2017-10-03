@@ -36,9 +36,9 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
     new PartnerWorkHoursController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = PartnerWorkHoursForm()) = partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = PartnerWorkHoursForm()) = partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 12
 
   "PartnerWorkHours Controller" must {
 
