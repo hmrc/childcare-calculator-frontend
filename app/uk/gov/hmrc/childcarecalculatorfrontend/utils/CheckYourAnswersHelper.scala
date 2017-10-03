@@ -22,6 +22,26 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
+    x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+  }
+
+  def hasYourPartnersTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourPartnersTaxCodeBeenAdjusted map {
+    x => AnswerRow("hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+  }
+
+  def doYouKnowYourAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourAdjustedTaxCode map {
+    x => AnswerRow("doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(CheckMode).url)
+  }
+
+  def doesYourEmployerOfferChildcareVouchers: Option[AnswerRow] = userAnswers.doesYourEmployerOfferChildcareVouchers map {
+    x => AnswerRow("doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel", s"doesYourEmployerOfferChildcareVouchers.$x", true, routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(CheckMode).url)
+  }
+
+  def doEitherOfYourEmployersOfferChildcareVouchers: Option[AnswerRow] = userAnswers.doEitherOfYourEmployersOfferChildcareVouchers map {
+    x => AnswerRow("doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel", s"doEitherOfYourEmployersOfferChildcareVouchers.$x", true, routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(CheckMode).url)
+  }
+
   def partnerWorkHours: Option[AnswerRow] = userAnswers.partnerWorkHours map {
     x => AnswerRow("partnerWorkHours.checkYourAnswersLabel", s"$x", false, routes.PartnerWorkHoursController.onPageLoad(CheckMode).url)
   }
