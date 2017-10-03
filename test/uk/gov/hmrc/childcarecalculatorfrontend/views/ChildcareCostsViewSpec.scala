@@ -17,44 +17,42 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 
-class ExpectChildcareCostsViewSpec extends ViewBehaviours {
+class ChildcareCostsViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "expectChildcareCosts"
+  val messageKeyPrefix = "childcareCosts"
 
-  val location = "england"
+  def createView = () => childcareCosts(frontendAppConfig, ChildcareCostsForm(), NormalMode)(fakeRequest, messages)
 
-  def createView = () => expectChildcareCosts(frontendAppConfig, ExpectChildcareCostsForm(), NormalMode, location)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => childcareCosts(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => expectChildcareCosts(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
-
-  "ExpectChildcareCosts view" must {
-    behave like normalPage(createView, messageKeyPrefix, s"guidance.$location")
+  "ChildcareCosts view" must {
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
   }
 
-  "ExpectChildcareCosts view" when {
+  "ChildcareCosts view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(ExpectChildcareCostsForm()))
-        for (option <- ExpectChildcareCostsForm.options) {
+        val doc = asDocument(createViewUsingForm(ChildcareCostsForm()))
+        for (option <- ChildcareCostsForm.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for(option <- ExpectChildcareCostsForm.options) {
+    for(option <- ChildcareCostsForm.options) {
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(ExpectChildcareCostsForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(createViewUsingForm(ChildcareCostsForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- ExpectChildcareCostsForm.options.filterNot(o => o == option)) {
+          for(unselectedOption <- ChildcareCostsForm.options.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

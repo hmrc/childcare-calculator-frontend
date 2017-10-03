@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-case object ExpectChildcareCostsId extends Identifier {
-  override def toString: String = "expectChildcareCosts"
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+
+class ChildcareCostsFormSpec extends FormBehaviours {
+
+  val validData: Map[String, String] = Map(
+    "value" -> ChildcareCostsForm.options.head.value
+  )
+
+  val form = ChildcareCostsForm()
+
+  "ChildcareCosts form" must {
+    behave like questionForm[String](ChildcareCostsForm.options.head.value)
+
+    behave like formWithOptionFieldError("value", "childcareCosts.error", ChildcareCostsForm.options.map{x => x.value}:_*)
+  }
 }
