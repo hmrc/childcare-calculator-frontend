@@ -55,7 +55,11 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
     "rendered" must {
       "contain 15 free hours and correct not eligibility guidance for location England" in {
 
-        val answerRow = AnswerRow("location.checkYourAnswersLabel","england", true, routes.LocationController.onPageLoad(NormalMode).url)
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
         val doc = asDocument(createViewWithAnswers("england", answerSections))
