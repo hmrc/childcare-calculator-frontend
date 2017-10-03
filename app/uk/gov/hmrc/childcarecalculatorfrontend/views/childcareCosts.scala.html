@@ -35,7 +35,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("childcareCosts.heading")
+        <h1 class="heading-xlarge">@messages("childcareCosts.heading")</h1>
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),

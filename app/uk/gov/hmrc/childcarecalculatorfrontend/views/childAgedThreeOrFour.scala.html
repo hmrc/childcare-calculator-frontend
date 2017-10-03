@@ -33,8 +33,7 @@
         @components.back_link()
 
         @components.error_summary(form.errors)
-
-        @components.heading("childAgedThreeOrFour.heading")
+        <h1 class="heading-xlarge">@messages("childAgedThreeOrFour.heading")</h1>
 
         <p>@messages(s"childAgedThreeOrFour.guidance.$location")</p>
 
