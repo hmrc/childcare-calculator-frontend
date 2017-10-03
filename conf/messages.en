@@ -17,10 +17,6 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.summary.text = Check you have answered the question correctly
 
-index.title = childcare-calculator-frontend
-index.heading = childcare-calculator-frontend
-index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
-
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
 session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
@@ -39,34 +35,14 @@ site.textarea.char_limit = (Limit is {0} characters)
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
-childAgedThreeOrFour.title = Do you have any children aged 3 or 4?
-childAgedThreeOrFour.heading = Do you have any children aged 3 or 4?
-childAgedThreeOrFour.guidance.england = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
-childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
-childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
-childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
-childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
-childAgedThreeOrFour.error = You must answer yes if you have any children aged 3 or 4
-
-childAgedTwo.title = Do you have a child aged 2?
-childAgedTwo.heading = Do you have a child aged 2?
-childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
-childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time.
-childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
-childAgedTwo.checkYourAnswersLabel = Do you have a child aged 2?
-childAgedTwo.error = You must answer yes if you have a child aged 2
-
-expectChildcareCosts.title = Do you have or expect to have childcare costs with an approved provider?
-expectChildcareCosts.heading = Do you have or expect to have childcare costs with an approved provider?
-expectChildcareCosts.yes = Yes
-expectChildcareCosts.no = No
-expectChildcareCosts.notYet = Not yet, but maybe in the future
-expectChildcareCosts.guidance.england = Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or an Ofsted-registered childminding agency.
-expectChildcareCosts.guidance.scotland = Support is only available for childcare with an approved provider. For example, a registered childminder, nursery or a Scottish Care Inspectorate-registered childminding agency.
-expectChildcareCosts.guidance.wales = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or a Care and Social Services Inspectorate Wales-registered childminding agency.
-expectChildcareCosts.guidance.northernIreland = You can get support for childcare costs with an approved provider. For example, a registered childminder, nursery or an early years team-registered childminding agency.
-expectChildcareCosts.checkYourAnswersLabel = Do you have or expect to have childcare costs with an approved provider?
-expectChildcareCosts.error = You must answer yes if you expect to have childcare costs with an approved provider
+whatToTellTheCalculator.title = What to tell the calculator
+whatToTellTheCalculator.heading = What to tell the calculator
+whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
+whatToTellTheCalculator.li.childcare_costs = known or estimated childcare costs
+whatToTellTheCalculator.li.pay = weeks and pay taken while on leave for a birth or an adoption
+whatToTellTheCalculator.text = For a more accurate result, you'll need to know your:
+whatToTellTheCalculator.li.tax_code = personal tax code
+whatToTellTheCalculator.li.pension = pension contributions
 
 location.title = Where do you live?
 location.heading = Where do you live?
@@ -78,35 +54,132 @@ location.northernIreland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
 location.error = You must tell the calculator where you live
 
-doYouLiveWithPartner.title = Do you have a partner that you live with?
-doYouLiveWithPartner.heading = Do you have a partner that you live with?
-doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
-doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+childAgedTwo.title = Do you have a child aged 2?
+childAgedTwo.heading = Do you have a child aged 2?
+childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time.
+childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+childAgedTwo.checkYourAnswersLabel = Do you have a child aged 2?
+childAgedTwo.error = You must answer yes if you have a child aged 2
 
-checkYourAnswers.title = Check Your Answers
-checkYourAnswers.heading = Check Your Answers
-checkYourAnswers.guidance = Guidance for check your answers
+childAgedThreeOrFour.title = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.heading = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.guidance.england = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
+childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
+childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.error = You must answer yes if you have any children aged 3 or 4
+
+childcareCosts.title = Do you have childcare costs?
+childcareCosts.heading = Do you have childcare costs?
+childcareCosts.yes = Yes
+childcareCosts.no = No
+childcareCosts.notYet = Not yet but maybe in the future
+childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
+childcareCosts.error = You must tell the calculator if you expect to have childcare costs
+
+approvedProvider.title = approvedProvider
+approvedProvider.heading = approvedProvider
+approvedProvider.option1 = approvedProvider Option 1
+approvedProvider.option2 = approvedProvider Option 2
+approvedProvider.checkYourAnswersLabel = approvedProvider
+
+freeHoursInfo.title = It looks like you’re eligible for free hours
+freeHoursInfo.heading = It looks like you’re eligible for free hours
+freeHoursInfo.para1.england = Based on the information you’ve given so far, you can get a minimum of 15 hours free early education and childcare a week in term time (570 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para1.scotland = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para1.wales = Based on the information you’ve given so far, you can get 10 hours of free childcare a week in term time (390 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para1.northernIreland = Based on the information you’ve given so far, you can get 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para2.england = You could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year) for your 2 year old.
+freeHoursInfo.para2.scotland = You could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 2 year old.
+freeHoursInfo.para2.wales = You could be entitled to 10 hours of free childcare a week in term time (390 hours a year) for your 2 year old.
+freeHoursInfo.heading2 = Still to check
+freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible to get help from:
+freeHoursInfo.li.vouchers = Childcare vouchers
+freeHoursInfo.li.tfc = Tax-Free Childcare
+freeHoursInfo.li.tax_credits = Tax credits
 
 freeHoursResult.title = Your eligibility for childcare support
+freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.notEligibleInfo = Based on the information you’ve given, you're not eligible for:
+freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.entitled.england = 15 free hours
 freeHoursResult.info.entitled.scotland = 16 Free hours
 freeHoursResult.info.entitled.wales = 10 free hours
 freeHoursResult.info.entitled.northern-ireland = 12 and a half free hours
-
 freeHoursResult.info.esc = Childcare vouchers
 freeHoursResult.info.tfc = Tax-Free Childcare
 freeHoursResult.info.tc = Tax credits
 freeHoursResult.notEligible.heading = Why you’re not eligible for any of the schemes
 freeHoursResult.notEligible.info = You‘re currently not eligible for any free hours because you don’t have a child aged 2 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
 freeHoursResult.notEligible.info.northern-ireland = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
-
+freeHoursResult.partialEligible.guidance.scotland = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.guidance.wales = Based on the information you’ve given so far, you can get 10 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.guidance.northern-ireland = Based on the information you’ve given so far, you can get 12 and a half hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.info1 = As you don’t currently have or expect to have any approved childcare costs, you would not be eligible for any further support other than free hours.
 freeHoursResult.toBeEligible.heading = To be eligible
-freeHoursResult.toBeEligible.info1 = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can answer as though your 2 year old is aged 3 or 4 to see what you could get.
+freeHoursResult.toBeEligible.info1.start = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can
+freeHoursResult.toBeEligible.info1.end = to see what you could get.
+freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
 freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You'll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info2.start  = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you
+freeHoursResult.toBeEligible.info2.end = You'll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info2.link.text = expect to have childcare costs.
 freeHoursResult.summary.heading = What you told the calculator
 freeHoursResult.summary.info = You can go back and change your answers and see what you could get.
 freeHoursResult.summary.table.header = General
 freeHoursResult.summary.table.child.age2 = Child aged 2
 freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
 freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs
+
+checkYourAnswers.title = Check Your Answers
+checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.guidance = Guidance for check your answers
+
+doYouLiveWithPartner.title = Do you have a partner that you live with?
+doYouLiveWithPartner.heading = Do you have a partner that you live with?
+doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
+doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+
+paidEmployment.title = paidEmployment
+paidEmployment.heading = paidEmployment
+paidEmployment.checkYourAnswersLabel = paidEmployment
+
+whoIsInPaidEmployment.title = whoIsInPaidEmployment
+whoIsInPaidEmployment.heading = whoIsInPaidEmployment
+whoIsInPaidEmployment.option1 = whoIsInPaidEmployment Option 1
+whoIsInPaidEmployment.option2 = whoIsInPaidEmployment Option 2
+whoIsInPaidEmployment.checkYourAnswersLabel = whoIsInPaidEmployment
+
+parentWorkHours.title = parentWorkHours
+parentWorkHours.heading = parentWorkHours
+parentWorkHours.checkYourAnswersLabel = parentWorkHours
+
+partnerWorkHours.title = partnerWorkHours
+partnerWorkHours.heading = partnerWorkHours
+partnerWorkHours.checkYourAnswersLabel = partnerWorkHours
+
+doEitherOfYourEmployersOfferChildcareVouchers.title = doEitherOfYourEmployersOfferChildcareVouchers
+doEitherOfYourEmployersOfferChildcareVouchers.heading = doEitherOfYourEmployersOfferChildcareVouchers
+doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersOfferChildcareVouchers Option 1
+doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
+doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
+
+doesYourEmployerOfferChildcareVouchers.title = doesYourEmployerOfferChildcareVouchers
+doesYourEmployerOfferChildcareVouchers.heading = doesYourEmployerOfferChildcareVouchers
+doesYourEmployerOfferChildcareVouchers.option1 = doesYourEmployerOfferChildcareVouchers Option 1
+doesYourEmployerOfferChildcareVouchers.option2 = doesYourEmployerOfferChildcareVouchers Option 2
+doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
+
+doYouKnowYourAdjustedTaxCode.title = doYouKnowYourAdjustedTaxCode
+doYouKnowYourAdjustedTaxCode.heading = doYouKnowYourAdjustedTaxCode
+doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourAdjustedTaxCode
+
+hasYourPartnersTaxCodeBeenAdjusted.title = hasYourPartnersTaxCodeBeenAdjusted
+hasYourPartnersTaxCodeBeenAdjusted.heading = hasYourPartnersTaxCodeBeenAdjusted
+hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCodeBeenAdjusted
+
+hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
+hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
+hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted

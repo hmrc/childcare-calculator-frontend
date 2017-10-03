@@ -37,14 +37,15 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
 
       val location = Utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+      val eligibility = request.userAnswers.isEligibleForFreeHours
 
       val sections = Seq(AnswerSection(None, Seq(
         checkYourAnswersHelper.location,
         checkYourAnswersHelper.childAgedTwo,
         checkYourAnswersHelper.childAgedThreeOrFour,
-        checkYourAnswersHelper.expectChildcareCosts
+        checkYourAnswersHelper.childcareCosts
       ).flatten))
 
-    Ok(freeHoursResult(appConfig, location, sections))
+    Ok(freeHoursResult(appConfig, location, eligibility, sections))
   }
 }

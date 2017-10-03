@@ -16,13 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.libs.json.{JsString, JsBoolean}
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
-import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, AnswerSection}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class FreeHoursResultControllerSpec extends ControllerSpecBase {
@@ -31,24 +28,12 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
     new FreeHoursResultController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
 
  "FreeHoursResult Controller" must {
-    "return 200 and the correct view for a GET" in {
-      val answerRow = AnswerRow("location.checkYourAnswersLabel","location.england", true, routes.LocationController.onPageLoad(CheckMode).url)
-      val validData = Map(LocationId.toString -> JsString("england"))
-
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-
-      val result = controller(getRelevantData).onPageLoad()((fakeRequest))
-      status(result) mustBe OK
-      contentAsString(result) mustBe
-        freeHoursResult(frontendAppConfig,"england", Seq(AnswerSection(None, Seq(answerRow))))(fakeRequest, messages).toString
-    }
-
-    "return 200 and the correct view for a GET when data exists in UserAnswers" in {
+   "return 200 and the correct view for a GET when data exists in UserAnswers" in {
       val validData = Map(
         LocationId.toString -> JsString("england"),
         ChildAgedTwoId.toString -> JsBoolean(false),
         ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-        ExpectChildcareCostsId.toString -> JsString("temp"))
+        ChildcareCostsId.toString -> JsString("no"))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 

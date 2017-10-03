@@ -21,7 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{CheckMode, Mode, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
@@ -30,10 +30,27 @@ class Navigator @Inject()() {
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> (ua => locationRoute(ua)),
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
-    ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
-    ExpectChildcareCostsId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildcareCostsId -> (ua => costRoute(ua)),
+    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
   )
+
+  private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
+      case Some("no") => {
+        if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england")) {
+          routes.FreeHoursInfoController.onPageLoad()
+        } else if(answers.isEligibleForFreeHours == Eligible && !answers.location.contains("england")) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else if(answers.isEligibleForFreeHours == NotEligible) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+        }
+      }
+      case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
@@ -42,13 +59,12 @@ class Navigator @Inject()() {
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
-
   )
 
   def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = mode match {
     case NormalMode =>
-      routeMap.getOrElse(id, _ => routes.IndexController.onPageLoad())
+      routeMap.getOrElse(id, _ => routes.WhatToTellTheCalculatorController.onPageLoad())
     case CheckMode =>
-      editRouteMap.getOrElse(id, _ => routes.CheckYourAnswersController.onPageLoad())
+      editRouteMap.getOrElse(id, _ => routes.FreeHoursResultController.onPageLoad())
   }
 }
