@@ -131,7 +131,7 @@ whoIsInPaidEmployment.you = You
 whoIsInPaidEmployment.partner = Partner
 whoIsInPaidEmployment.both = Both
 whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
-whoIsInPaidEmployment.error = You must answer who’s in paid work
+whoIsInPaidEmployment.error = You must tell the calculator if you or your partner is in paid work
 
 parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
