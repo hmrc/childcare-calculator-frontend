@@ -186,6 +186,10 @@ hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
 hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
 
+areYouInPaidWork.title = areYouInPaidWork
+areYouInPaidWork.heading = areYouInPaidWork
+areYouInPaidWork.checkYourAnswersLabel = areYouInPaidWork
+
 getBenefits.title = getBenefits
 getBenefits.heading = getBenefits
 getBenefits.checkYourAnswersLabel = getBenefits
