@@ -22,6 +22,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, RepeaterAn
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def whoGetsVouchers: Option[AnswerRow] = userAnswers.whoGetsVouchers map {
+    x => AnswerRow("whoGetsVouchers.checkYourAnswersLabel", s"whoGetsVouchers.$x", true, routes.WhoGetsVouchersController.onPageLoad(CheckMode).url)
+  }
+
+  def vouchers: Option[AnswerRow] = userAnswers.vouchers map {
+    x => AnswerRow("vouchers.checkYourAnswersLabel", s"vouchers.$x", true, routes.VouchersController.onPageLoad(CheckMode).url)
+  }
+
+  def getBenefits: Option[AnswerRow] = userAnswers.getBenefits map {
+    x => AnswerRow("getBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.GetBenefitsController.onPageLoad(CheckMode).url)
+  }
+
   def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
     x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
   }
