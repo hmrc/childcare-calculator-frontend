@@ -22,7 +22,7 @@ trait EligibilityChecks {
   self: UserAnswers =>
 
   def isEligibleForFreeHours: Eligibility = {
-    if (childAgedThreeOrFour.getOrElse(false)) {
+    if(childAgedThreeOrFour.getOrElse(false)) {
       Eligible
     } else if(!location.contains("northernIreland") && childAgedTwo.getOrElse(false)) {
       Eligible

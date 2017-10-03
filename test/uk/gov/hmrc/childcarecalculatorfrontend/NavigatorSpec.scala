@@ -70,12 +70,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {//TODO - results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
-
         when(answers.isEligibleForFreeHours) thenReturn NotEligible
+
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are eligible for free hours, does not live in england & don't have the child care cost" in {//TODO results page
+      "go to results page from childcare cost if you are eligible for free hours, don't have the child care cost" in {//TODO results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.location) thenReturn Some("wales") thenReturn Some("scotland") thenReturn Some("northern-ireland")
@@ -89,18 +89,11 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to free hours info page if you are eligible for free hours and don't have childcare cost and lives in england" in {
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
+        when(answers.childAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some("england")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
 
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
-      }
-
-      "got to partner page if your eligibility for free hours yet to be determined and don't have childcare cost" in {
-        val answers = mock[UserAnswers]
-        when(answers.childcareCosts) thenReturn Some("no")
-        when(answers.isEligibleForFreeHours) thenReturn NotDetermined
-
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
 
     }
