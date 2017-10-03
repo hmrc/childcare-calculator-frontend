@@ -23,28 +23,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ExpectChildcareCostsId, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcareCostsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 
-class ExpectChildcareCostsControllerSpec extends ControllerSpecBase {
+class ChildcareCostsControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  val location = "england"
-
-  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location)))
-
-  def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
-
-  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
-    new ExpectChildcareCostsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+    new ChildcareCostsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = ExpectChildcareCostsForm()) = expectChildcareCosts(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = ChildcareCostsForm()) = childcareCosts(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "ExpectChildcareCosts Controller" must {
+  "ChildcareCosts Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -54,26 +48,16 @@ class ExpectChildcareCostsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(
-        LocationId.toString -> JsString(location),
-        ExpectChildcareCostsId.toString -> JsString(ExpectChildcareCostsForm.options.head.value)
-      )
+      val validData = Map(ChildcareCostsId.toString -> JsString(ChildcareCostsForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(ExpectChildcareCostsForm().fill(ExpectChildcareCostsForm.options.head.value))
-    }
-
-    "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
-      val result = controller(getEmptyCacheMap).onPageLoad(NormalMode)(fakeRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad(NormalMode).url)
+      contentAsString(result) mustBe viewAsString(ChildcareCostsForm().fill(ChildcareCostsForm.options.head.value))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ExpectChildcareCostsForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcareCostsForm.options.head.value))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -81,18 +65,9 @@ class ExpectChildcareCostsControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
-    "redirect to Location when valid data is submitted and previous data exists, but the location hasn't been answered" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ExpectChildcareCostsForm.options.head.value))
-
-      val result = controller(getEmptyCacheMap).onSubmit(NormalMode)(postRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad(NormalMode).url)
-    }
-
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = ExpectChildcareCostsForm().bind(Map("value" -> "invalid value"))
+      val boundForm = ChildcareCostsForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -108,7 +83,7 @@ class ExpectChildcareCostsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ExpectChildcareCostsForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcareCostsForm.options.head.value))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
