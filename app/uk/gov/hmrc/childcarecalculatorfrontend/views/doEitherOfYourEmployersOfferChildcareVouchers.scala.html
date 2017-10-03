@@ -17,31 +17,31 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoEitherOfYourEmployersOfferChildcareVouchersForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, location: String)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("childAgedThreeOrFour.title"),
+    title = messages("doEitherOfYourEmployersOfferChildcareVouchers.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = ChildAgedThreeOrFourController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = DoEitherOfYourEmployersOfferChildcareVouchersController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("childAgedThreeOrFour.heading", "heading-xlarge")
+        @components.heading("doEitherOfYourEmployersOfferChildcareVouchers.heading")
 
-        <p>@messages(s"childAgedThreeOrFour.guidance.$location")</p>
-
-        @components.input_yes_no(
-            InputViewModel[Boolean]("value", form),
-            label = messages("childAgedThreeOrFour.heading"),
-            labelClass = Some("visually-hidden")
+        @components.input_radio(
+            viewModel = InputViewModel[String]("value", form),
+            legend = messages("doEitherOfYourEmployersOfferChildcareVouchers.heading"),
+            legendClass = Some("visually-hidden"),
+            inputs = DoEitherOfYourEmployersOfferChildcareVouchersForm.options
         )
 
         @components.submit_button()
