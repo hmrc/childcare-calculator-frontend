@@ -160,3 +160,19 @@ hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCod
 hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
 hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
+
+getBenefits.title = getBenefits
+getBenefits.heading = getBenefits
+getBenefits.checkYourAnswersLabel = getBenefits
+
+vouchers.title = vouchers
+vouchers.heading = vouchers
+vouchers.option1 = vouchers Option 1
+vouchers.option2 = vouchers Option 2
+vouchers.checkYourAnswersLabel = vouchers
+
+whoGetsVouchers.title = whoGetsVouchers
+whoGetsVouchers.heading = whoGetsVouchers
+whoGetsVouchers.option1 = whoGetsVouchers Option 1
+whoGetsVouchers.option2 = whoGetsVouchers Option 2
+whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
