@@ -34,11 +34,38 @@ class Navigator @Inject()() {
     ExpectChildcareCostsId -> (_ => routes.FreeHoursInfoController.onPageLoad),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    DoYouLiveWithPartnerId -> (_ => routes.PaidEmploymentController.onPageLoad(NormalMode)),
-    PaidEmploymentId -> (_ => routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)),
+    DoYouLiveWithPartnerId -> (ua => doYouLiveRoute(ua)),
+    AreYouInPaidWorkId -> (ua => areYouInPaidWorkRoute(ua)),
+    PaidEmploymentId -> (ua => paidEmploymentRoute(ua)),
     WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
     PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua))
   )
+
+  private def doYouLiveRoute(answers: UserAnswers) = {
+    if(answers.doYouLiveWithPartner.contains(true)){
+      routes.PaidEmploymentController.onPageLoad(NormalMode)
+    } else {
+      routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
+    }
+  }
+
+  private def areYouInPaidWorkRoute(answers: UserAnswers) = {
+    if(answers.areYouInPaidWork.contains(true)){
+      routes.ParentWorkHoursController.onPageLoad(NormalMode)
+    } else {
+      //TODO-Eligibility results
+      routes.WhatToTellTheCalculatorController.onPageLoad
+    }
+  }
+
+  private def paidEmploymentRoute(answers: UserAnswers) = {
+    if(answers.paidEmployment.contains(true)){
+      routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+    } else {
+      //TODO-Eligibility results
+      routes.WhatToTellTheCalculatorController.onPageLoad
+    }
+  }
 
   private def workHoursRoute(answers: UserAnswers) = {
     answers.whoIsInPaidEmployment match {

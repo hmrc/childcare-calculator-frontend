@@ -50,7 +50,7 @@ class AreYouInPaidWorkController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("areYouInPaidWork.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(areYouInPaidWork(appConfig, formWithErrors, mode))),
         (value) =>

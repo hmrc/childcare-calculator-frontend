@@ -66,12 +66,42 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(FreeHoursInfoId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
 
-      "go to paid employment from do you live with partner" in {
-        navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(mock[UserAnswers]) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+      "go to are you in paid work from do you live with partner when user selects No" in {
+        val answers = mock[UserAnswers]
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(answers) mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
       }
 
-      "go to who is in paid employment from paid employment" in {
-        navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+      "go to parent work hours from are you in paid work when user selects Yes" in {
+        val answers = mock[UserAnswers]
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      }
+
+      "go to eligibility results from are you in paid work when user selects No" in {
+        val answers = mock[UserAnswers]
+        when(answers.areYouInPaidWork) thenReturn Some(false)
+        //TODO: Once eligibility screenm is ready redirect to eligibility
+        //navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      }
+
+      "go to paid employment from do you live with partner when user selects yes" in {
+        val answers = mock[UserAnswers]
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+      }
+
+      "go to who is in paid employment from paid employment when user answers yes" in {
+        val answers = mock[UserAnswers]
+        when(answers.paidEmployment) thenReturn Some(true)
+        navigator.nextPage(PaidEmploymentId, NormalMode)(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+      }
+
+      "go to eligibility results from paid employment when user answers no" in {
+        val answers = mock[UserAnswers]
+        when(answers.paidEmployment) thenReturn Some(false)
+        //TODO: Once eligibility screenm is ready redirect to eligibility
+        //navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
       }
 
       "go to parent work hours from who is in paid employment when user selects you" in {
