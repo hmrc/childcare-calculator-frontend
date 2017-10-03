@@ -45,10 +45,10 @@ class Navigator @Inject()() {
 
   private def vouchersRoute(answers: UserAnswers) = answers.vouchers match {
     case Some("yes") => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    case Some(v) => routes.GetBenefitsController.onPageLoad(NormalMode)
+    case Some(_) => routes.GetBenefitsController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
-  
+
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
 
   )
