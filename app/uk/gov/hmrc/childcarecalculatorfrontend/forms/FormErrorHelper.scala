@@ -16,10 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.Inject
-
 import play.api.data.FormError
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
 class FormErrorHelper {
 

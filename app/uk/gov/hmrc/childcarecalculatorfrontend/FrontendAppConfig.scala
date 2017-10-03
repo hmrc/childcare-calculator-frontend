@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @Singleton
 class FrontendAppConfig @Inject() (override val configuration: Configuration) extends AppName with BaseUrl {
 
-  private def loadConfig(key: String) = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
+  private def loadConfig(key: String) = configuration.getString(key).getOrElse(throw new ConfigException.Missing(s"Missing configuration key: $key"))
 
   private lazy val contactHost = configuration.getString("contact-frontend.host").getOrElse("")
   private val contactFormServiceIdentifier = "childcarecalculatorfrontend"
@@ -49,8 +49,8 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   def routeToSwitchLanguage = (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
   lazy val minWorkingHours: Double = configuration.getDouble("workingHours.min").
-    getOrElse(throw new ConfigException.Missing("Missing configuration"))
+    getOrElse(throw new ConfigException.Missing("Missing configuration workingHours.min"))
 
   lazy val maxWorkingHours: Double = configuration.getDouble("workingHours.max").
-    getOrElse(throw new ConfigException.Missing("Missing configuration"))
+    getOrElse(throw new ConfigException.Missing("Missing configuration workingHours.max"))
 }
