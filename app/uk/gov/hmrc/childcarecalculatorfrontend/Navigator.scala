@@ -48,7 +48,7 @@ class Navigator @Inject()() {
         routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
     }
-    case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+    case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 

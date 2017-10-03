@@ -66,8 +66,8 @@ childAgedThreeOrFour.title = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.heading = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.guidance.england = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
 childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
-childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
-childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
+childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 12 and a half hours of free preschool education a week in term time.
+childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 10 hours of free early education a week in term time (390 hours a year).
 childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.error = You must answer yes if you have any children aged 3 or 4
 
