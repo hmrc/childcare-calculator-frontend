@@ -21,7 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{CheckMode, Mode, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
@@ -30,9 +30,8 @@ class Navigator @Inject()() {
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> (ua => locationRoute(ua)),
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
-    ChildAgedThreeOrFourId -> (_ => routes.ExpectChildcareCostsController.onPageLoad(NormalMode)),
-    ExpectChildcareCostsId -> (_ => routes.FreeHoursInfoController.onPageLoad),
-    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildcareCostsId -> (ua => costRoute(ua)),
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> (ua => doYouLiveRoute(ua)),
     AreYouInPaidWorkId -> (ua => areYouInPaidWorkRoute(ua)),
@@ -53,7 +52,7 @@ class Navigator @Inject()() {
     if(answers.areYouInPaidWork.contains(true)){
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      //TODO-Eligibility results
+      //TODO-Free hours results
       routes.WhatToTellTheCalculatorController.onPageLoad
     }
   }
@@ -62,7 +61,7 @@ class Navigator @Inject()() {
     if(answers.paidEmployment.contains(true)){
       routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
     } else {
-      //TODO-Eligibility results
+      //TODO-Free hours results
       routes.WhatToTellTheCalculatorController.onPageLoad
     }
   }
@@ -87,6 +86,22 @@ class Navigator @Inject()() {
     }
   }
 
+  private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
+    case Some("no") => {
+      if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england")) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else if(answers.isEligibleForFreeHours == Eligible && !answers.location.contains("england")) {//TODO - go to Free hours results page
+        routes.PaidEmploymentController.onPageLoad(NormalMode)
+      } else if(answers.isEligibleForFreeHours == NotEligible) {//TODO - go to Free hours results page
+        routes.PaidEmploymentController.onPageLoad(NormalMode)
+      } else {
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+    }
+    case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
     case Some(l) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
@@ -94,7 +109,6 @@ class Navigator @Inject()() {
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
-
   )
 
   def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = mode match {
