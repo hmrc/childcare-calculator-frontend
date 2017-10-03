@@ -32,11 +32,13 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val parentWorkHoursForm = new ParentWorkHoursForm(frontendAppConfig).apply()
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentWorkHoursController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new ParentWorkHoursForm(frontendAppConfig))
 
-  def viewAsString(form: Form[BigDecimal] = ParentWorkHoursForm()) = parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 12
 
@@ -55,7 +57,7 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(ParentWorkHoursForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(parentWorkHoursForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -69,7 +71,7 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = ParentWorkHoursForm().bind(Map("value" -> "invalid value"))
+      val boundForm = parentWorkHoursForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -79,7 +81,7 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when no data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ""))
-      val boundForm = ParentWorkHoursForm().bind(Map("value" -> ""))
+      val boundForm = parentWorkHoursForm.bind(Map("value" -> ""))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

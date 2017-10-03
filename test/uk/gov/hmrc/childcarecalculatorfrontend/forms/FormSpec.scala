@@ -16,10 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.data.{Form, FormError}
+import play.api.inject.Injector
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.play.test.UnitSpec
 
-trait FormSpec extends UnitSpec {
+trait FormSpec extends UnitSpec with GuiceOneAppPerSuite {
+
+  def injector: Injector = app.injector
+
+  def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
   def checkForError(form: Form[_], data: Map[String, String], expectedErrors: Seq[FormError]) = {
     form.bind(data).fold(
       formWithErrors => {

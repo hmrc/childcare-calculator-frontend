@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend
 
 import com.google.inject.{Inject, Singleton}
+import com.typesafe.config.ConfigException
 import play.api.Configuration
 import play.api.i18n.Lang
 import uk.gov.hmrc.play.bootstrap.config.{AppName, BaseUrl}
@@ -46,4 +47,10 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
     "english" -> Lang("en"),
     "cymraeg" -> Lang("cy"))
   def routeToSwitchLanguage = (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
+
+  lazy val minWorkingHours: Double = configuration.getDouble("workingHours.min").
+    getOrElse(throw new ConfigException.Missing("Missing configuration"))
+
+  lazy val maxWorkingHours: Double = configuration.getDouble("workingHours.max").
+    getOrElse(throw new ConfigException.Missing("Missing configuration"))
 }

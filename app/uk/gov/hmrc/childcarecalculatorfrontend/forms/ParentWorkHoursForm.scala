@@ -16,25 +16,41 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.{Inject, Singleton}
+
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import scala.util.matching.Regex
 
-object ParentWorkHoursForm extends FormErrorHelper {
+@Singleton
+class ParentWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   def parentWorkHoursFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val decimalRegex = "[0-9]{1,2}(\\.[0-9])?".r
+    val minValue: Double = appConfig.minWorkingHours
+    val maxValue: Double = appConfig.maxWorkingHours
+    val decimalRegex: Regex = "[0-9]{1,2}(\\.[0-9])?".r
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
       data.get(key) match {
+
         case None => produceError(key, errorKeyBlank)
-        case Some("") | Some("0") => produceError(key, errorKeyBlank)
-        case Some(str) if(str.matches(decimalRegex.toString())) =>
-          if(BigDecimal(str) > 99.5 && BigDecimal(str) < 100) {
+
+        case Some("") => produceError(key, errorKeyBlank)
+
+        case Some(str) if str.matches(decimalRegex.toString()) =>
+          val value = BigDecimal(str)
+
+          if(validateInRange(value, minValue, maxValue)) {
+            Right(value)
+          } else {
             produceError(key, errorKeyBlank)
-          } else Right(BigDecimal(str))
-          case _ => produceError(key, errorKeyInvalid)
+          }
+
+          case _ =>
+            produceError(key, errorKeyInvalid)
         }
       }
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)

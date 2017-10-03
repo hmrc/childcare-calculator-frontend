@@ -31,12 +31,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
 class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  val partnerWorkHoursForm = new PartnerWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerWorkHoursController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new PartnerWorkHoursForm(frontendAppConfig))
 
-  def viewAsString(form: Form[BigDecimal] = PartnerWorkHoursForm()) = partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = partnerWorkHoursForm) = partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 12
 
@@ -55,7 +56,7 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerWorkHoursForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(partnerWorkHoursForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -69,7 +70,7 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerWorkHoursForm().bind(Map("value" -> "invalid value"))
+      val boundForm = partnerWorkHoursForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

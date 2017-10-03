@@ -38,20 +38,21 @@ class ParentWorkHoursController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        form: ParentWorkHoursForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.parentWorkHours match {
-        case None => ParentWorkHoursForm()
-        case Some(value) => ParentWorkHoursForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(parentWorkHours(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      ParentWorkHoursForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentWorkHours(appConfig, formWithErrors, mode))),
         (value) =>

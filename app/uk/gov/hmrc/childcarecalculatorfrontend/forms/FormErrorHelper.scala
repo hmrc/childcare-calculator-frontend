@@ -16,8 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.FormError
+import javax.inject.Inject
 
-trait FormErrorHelper {
+import play.api.data.FormError
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+
+class FormErrorHelper {
+
   def produceError(key: String, error: String) = Left(Seq(FormError(key, error)))
+
+  def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
+    value >= minValue && value <= maxValue
+  }
 }

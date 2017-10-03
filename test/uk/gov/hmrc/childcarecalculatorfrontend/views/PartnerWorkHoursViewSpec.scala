@@ -27,11 +27,11 @@ class PartnerWorkHoursViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "partnerWorkHours"
 
-  def createView = () => partnerWorkHours(frontendAppConfig, PartnerWorkHoursForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerWorkHours(frontendAppConfig, new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[BigDecimal]) => partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = PartnerWorkHoursForm()
+  val form = new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply()
 
   "PartnerWorkHours view" must {
     behave like normalPage(createView, messageKeyPrefix, "hint")

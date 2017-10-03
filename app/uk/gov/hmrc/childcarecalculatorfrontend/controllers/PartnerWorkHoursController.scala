@@ -38,20 +38,21 @@ class PartnerWorkHoursController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        form : PartnerWorkHoursForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.partnerWorkHours match {
-        case None => PartnerWorkHoursForm()
-        case Some(value) => PartnerWorkHoursForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(partnerWorkHours(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      PartnerWorkHoursForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerWorkHours(appConfig, formWithErrors, mode))),
         (value) =>

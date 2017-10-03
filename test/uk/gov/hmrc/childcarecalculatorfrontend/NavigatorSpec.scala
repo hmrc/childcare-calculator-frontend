@@ -119,7 +119,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to eligibility results from are you in paid work when user selects No" in {
         val answers = mock[UserAnswers]
         when(answers.areYouInPaidWork) thenReturn Some(false)
-        //TODO: Once Free hours results is ready redirect to eligibility
+        //TODO: Once eligibility screenm is ready redirect to eligibility
         //navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
       }
 
@@ -138,8 +138,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "go to eligibility results from paid employment when user answers no" in {
         val answers = mock[UserAnswers]
         when(answers.paidEmployment) thenReturn Some(false)
-        //TODO: Once Free hours results is ready redirect to eligibility
-        navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.Re.onPageLoad(NormalMode)
+        //TODO: Once eligibility screenm is ready redirect to eligibility
+        //navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
       }
 
       "go to parent work hours from who is in paid employment when user selects you" in {
