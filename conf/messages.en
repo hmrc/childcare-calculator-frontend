@@ -160,3 +160,7 @@ hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCod
 hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
 hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
+
+areYouInPaidWork.title = areYouInPaidWork
+areYouInPaidWork.heading = areYouInPaidWork
+areYouInPaidWork.checkYourAnswersLabel = areYouInPaidWork
