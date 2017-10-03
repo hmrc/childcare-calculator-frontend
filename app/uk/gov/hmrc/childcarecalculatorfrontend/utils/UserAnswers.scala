@@ -21,6 +21,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) {
+  def hasYourTaxCodeBeenAdjusted: Option[Boolean] = cacheMap.getEntry[Boolean](HasYourTaxCodeBeenAdjustedId.toString)
+
+  def hasYourPartnersTaxCodeBeenAdjusted: Option[Boolean] = cacheMap.getEntry[Boolean](HasYourPartnersTaxCodeBeenAdjustedId.toString)
+
+  def doYouKnowYourAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourAdjustedTaxCodeId.toString)
+
+  def doesYourEmployerOfferChildcareVouchers: Option[String] = cacheMap.getEntry[String](DoesYourEmployerOfferChildcareVouchersId.toString)
+
+  def doEitherOfYourEmployersOfferChildcareVouchers: Option[String] = cacheMap.getEntry[String](DoEitherOfYourEmployersOfferChildcareVouchersId.toString)
+
   def partnerWorkHours: Option[Int] = cacheMap.getEntry[Int](PartnerWorkHoursId.toString)
 
   def parentWorkHours: Option[Int] = cacheMap.getEntry[Int](ParentWorkHoursId.toString)
