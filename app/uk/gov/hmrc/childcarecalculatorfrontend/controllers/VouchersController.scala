@@ -24,15 +24,15 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ExpectChildcareCostsId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.VouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.VouchersId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectChildcareCosts
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.vouchers
 
 import scala.concurrent.Future
 
-class ExpectChildcareCostsController @Inject()(
+class VouchersController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
                                         dataCacheConnector: DataCacheConnector,
@@ -42,32 +42,21 @@ class ExpectChildcareCostsController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      request.userAnswers.location match {
-        case None =>
-          Redirect(routes.LocationController.onPageLoad(mode))
-
-        case Some(location) =>
-          val preparedForm = request.userAnswers.expectChildcareCosts match {
-            case None => ExpectChildcareCostsForm()
-            case Some(value) => ExpectChildcareCostsForm().fill(value)
-          }
-          Ok(expectChildcareCosts(appConfig, preparedForm, mode, location))
+      val preparedForm = request.userAnswers.vouchers match {
+        case None => VouchersForm()
+        case Some(value) => VouchersForm().fill(value)
       }
+      Ok(vouchers(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-
-      if (request.userAnswers.location.isEmpty) {
-        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
-      } else {
-        ExpectChildcareCostsForm().bindFromRequest().fold(
-          (formWithErrors: Form[String]) =>
-            Future.successful(BadRequest(expectChildcareCosts(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
-          (value) =>
-            dataCacheConnector.save[String](request.sessionId, ExpectChildcareCostsId.toString, value).map(cacheMap =>
-              Redirect(navigator.nextPage(ExpectChildcareCostsId, mode)(new UserAnswers(cacheMap))))
-        )
-      }
+      VouchersForm().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
+          Future.successful(BadRequest(vouchers(appConfig, formWithErrors, mode))),
+        (value) =>
+          dataCacheConnector.save[String](request.sessionId, VouchersId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(VouchersId, mode)(new UserAnswers(cacheMap))))
+      )
   }
 }
