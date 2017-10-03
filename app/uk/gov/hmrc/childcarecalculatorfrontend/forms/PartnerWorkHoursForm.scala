@@ -41,7 +41,7 @@ class PartnerWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends Form
         case Some(str) if str.matches(decimalRegex.toString()) =>
           val value = BigDecimal(str)
           if(validateInRange(value, minValue, maxValue)) {
-            Right(BigDecimal(str))
+            Right(value)
           } else {
             produceError(key, errorKeyBlank)
           }
