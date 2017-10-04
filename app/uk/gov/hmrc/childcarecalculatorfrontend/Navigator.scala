@@ -32,9 +32,17 @@ class Navigator @Inject()() {
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
     ChildcareCostsId -> (ua => costRoute(ua)),
+    ApprovedProviderId -> (ua => approvedChildCareRoute(ua)),
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
+
   )
+
+  private def locationRoute(answers: UserAnswers) = answers.location match {
+    case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
+    case Some(l) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
     case Some("no") => {
@@ -50,11 +58,20 @@ class Navigator @Inject()() {
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def locationRoute(answers: UserAnswers) = answers.location match {
-    case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-    case Some(l) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+  private def approvedChildCareRoute(answers: UserAnswers) = answers.approvedProvider match {
+    case Some(YesNoUnsureEnum.NO.toString) if answers.isEligibleForFreeHours == Eligible => routes.FreeHoursResultController.onPageLoad()
+    case Some(_) => {
+      if (answers.isEligibleForFreeHours == Eligible) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else if (answers.isEligibleForFreeHours == NotDetermined) {
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      } else {
+        routes.SessionExpiredController.onPageLoad()
+      }
+    }
     case _ => routes.SessionExpiredController.onPageLoad()
   }
+
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
   )

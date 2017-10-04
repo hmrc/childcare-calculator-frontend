@@ -67,14 +67,15 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to results from approved provider when they are eligible for free hours and no approved childcare provider" ignore {
+      // Cases for approved childcare provider page start
+      "go to free hours results from approved provider when they are eligible for free hours and no approved childcare provider" in {
         val answers = mock[UserAnswers]
         when(answers.isEligibleForFreeHours) thenReturn Eligible
         when(answers.approvedProvider) thenReturn Some("no")
-        navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
+        navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
       }
 
-      "go to info page from approved provider when they are eligible for free hours and could be eligible for more" ignore {
+      "go to fre hours info page from approved provider when they are eligible for free hours and could be eligible for more" in {
         val answers = mock[UserAnswers]
         when(answers.isEligibleForFreeHours) thenReturn Eligible
         when(answers.approvedProvider) thenReturn Some("notYet") thenReturn Some("yes")
@@ -82,7 +83,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
       }
 
-      "go to partner page from approved provider when we dont know if they are eligible for free hours or other schemes yet" ignore {
+      "go to partner page from approved provider when we don't know if they are eligible for free hours or other schemes yet" ignore {
         val answers = mock[UserAnswers]
         when(answers.isEligibleForFreeHours) thenReturn NotDetermined
         when(answers.approvedProvider) thenReturn Some("notYet") thenReturn Some("yes")
