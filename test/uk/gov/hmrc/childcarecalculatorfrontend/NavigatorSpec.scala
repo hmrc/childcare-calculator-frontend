@@ -83,7 +83,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
       }
 
-      "go to partner page from approved provider when we don't know if they are eligible for free hours or other schemes yet" ignore {
+      "go to partner page from approved provider when we don't know if they are eligible for free hours or other schemes yet" in {
         val answers = mock[UserAnswers]
         when(answers.isEligibleForFreeHours) thenReturn NotDetermined
         when(answers.approvedProvider) thenReturn Some("notYet") thenReturn Some("yes")

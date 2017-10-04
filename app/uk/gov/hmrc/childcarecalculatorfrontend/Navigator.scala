@@ -58,18 +58,21 @@ class Navigator @Inject()() {
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def approvedChildCareRoute(answers: UserAnswers) = answers.approvedProvider match {
-    case Some(YesNoUnsureEnum.NO.toString) if answers.isEligibleForFreeHours == Eligible => routes.FreeHoursResultController.onPageLoad()
-    case Some(_) => {
-      if (answers.isEligibleForFreeHours == Eligible) {
-        routes.FreeHoursInfoController.onPageLoad()
-      } else if (answers.isEligibleForFreeHours == NotDetermined) {
-        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
-      } else {
-        routes.SessionExpiredController.onPageLoad()
+  private def approvedChildCareRoute(answers: UserAnswers) = {
+    val No = YesNoUnsureEnum.NO.toString
+
+    answers.approvedProvider match {
+      case Some(No) if answers.isEligibleForFreeHours == Eligible ||
+        answers.isEligibleForFreeHours == NotEligible => routes.FreeHoursResultController.onPageLoad()
+      case Some(_) => {
+        if (answers.isEligibleForFreeHours == Eligible) {
+          routes.FreeHoursInfoController.onPageLoad()
+        } else {
+          routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+        }
       }
+      case _ => routes.SessionExpiredController.onPageLoad()
     }
-    case _ => routes.SessionExpiredController.onPageLoad()
   }
 
 

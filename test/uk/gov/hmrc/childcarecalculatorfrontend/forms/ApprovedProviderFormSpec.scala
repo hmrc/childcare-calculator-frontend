@@ -29,6 +29,6 @@ class ApprovedProviderFormSpec extends FormBehaviours {
   "ApprovedProvider form" must {
     behave like questionForm[String](ApprovedProviderForm.options.head.value)
 
-    behave like formWithOptionField("value", ApprovedProviderForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "approvedProvider.error", ApprovedProviderForm.options.map{x => x.value}:_*)
   }
 }

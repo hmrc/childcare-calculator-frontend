@@ -37,6 +37,8 @@
 
         @components.heading("approvedProvider.heading")
 
+        <p>@messages("approvedProvider.hint")</p>
+
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
             legend = messages("approvedProvider.heading"),
