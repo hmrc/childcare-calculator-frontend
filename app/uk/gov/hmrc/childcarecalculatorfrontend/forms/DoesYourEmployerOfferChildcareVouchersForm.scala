@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
 
@@ -37,8 +37,8 @@ object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
     Form(single("value" -> of(DoesYourEmployerOfferChildcareVouchersFormatter)))
 
   def options = Seq(
-    RadioOption("doesYourEmployerOfferChildcareVouchers", "option1"),
-    RadioOption("doesYourEmployerOfferChildcareVouchers", "option2")
+    InputOption("doesYourEmployerOfferChildcareVouchers", "option1"),
+    InputOption("doesYourEmployerOfferChildcareVouchers", "option2")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

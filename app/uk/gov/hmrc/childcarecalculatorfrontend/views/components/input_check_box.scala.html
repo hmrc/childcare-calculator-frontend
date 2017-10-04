@@ -37,7 +37,7 @@ inputs: Seq[InputOption]
         }
         @for(input <- inputs) {
         <label class="block-label selection-button-radio" for="@{input.id}">
-            <input id="@{input.id}" type="radio" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value == Some(input.value)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
+            <input id="@{input.id}" type="checkbox" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value.map(_.contains(input.value)).getOrElse(false)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
             @messages(input.messageKey)
         </label>
         }

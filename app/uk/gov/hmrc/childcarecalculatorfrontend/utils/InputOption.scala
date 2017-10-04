@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-case class RadioOption(id: String, value: String, messageKey: String)
+case class InputOption(id: String, value: String, messageKey: String)
 
-object RadioOption {
-  def apply(keyPrefix: String, option: String): RadioOption = RadioOption(
+object InputOption {
+  def apply(keyPrefix: String, option: String): InputOption = InputOption(
     s"$keyPrefix.$option",
     option,
     s"$keyPrefix.$option"

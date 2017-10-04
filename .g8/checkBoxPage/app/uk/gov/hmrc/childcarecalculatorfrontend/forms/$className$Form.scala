@@ -17,8 +17,8 @@ object $className$Form extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
-    Form(single("value" -> of($className$Formatter)))
+  def apply(): Form[Set[String]] =
+    Form(set("value" -> of($className$Formatter)))
 
   def options = Seq(
     InputOption("$className;format="decap"$", "option1"),

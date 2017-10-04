@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object LocationForm extends FormErrorHelper {
 
@@ -37,10 +37,10 @@ object LocationForm extends FormErrorHelper {
     Form(single("value" -> of(LocationFormatter)))
 
   def options = Seq(
-    RadioOption("location", "england"),
-    RadioOption("location", "scotland"),
-    RadioOption("location", "wales"),
-    RadioOption("location", "northernIreland")
+    InputOption("location", "england"),
+    InputOption("location", "scotland"),
+    InputOption("location", "wales"),
+    InputOption("location", "northernIreland")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
