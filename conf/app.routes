@@ -83,6 +83,8 @@ POST       /hasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childca
 GET        /changeHasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeHasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode = CheckMode)
 
+GET        /freeHoursResult                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+
 GET        /areYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = NormalMode)
 POST       /areYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAreYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = CheckMode)

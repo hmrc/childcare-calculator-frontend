@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.jsoup.nodes.Element
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, CheckMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerRow, AnswerSection}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
@@ -27,10 +28,14 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursResult"
 
-  def createView = () => freeHoursResult(frontendAppConfig, "", Seq())(fakeRequest, messages)
+  def createView = () => freeHoursResult(frontendAppConfig, "", NotEligible, Seq())(fakeRequest, messages)
 
   def createViewWithAnswers = (location: String,
-                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig, location, answerSections)(fakeRequest, messages)
+                               eligibility:Eligibility,
+                               answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig,
+                                                                                location,
+                                                                                eligibility,
+                                                                                answerSections)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
 
@@ -42,8 +47,6 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
       "info.tc",
       "notEligible.heading",
       "toBeEligible.heading",
-      "toBeEligible.info1",
-      "toBeEligible.info2",
       "summary.heading",
       "summary.info")
 
@@ -53,35 +56,90 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
   "FreeHoursResult view" when {
     "rendered" must {
-      "contain 15 free hours and correct not eligibility guidance for location England" in {
+      "contain correct guidance when not eligible for location other than northern-ireland" in {
 
-        val answerRow = AnswerRow("location.checkYourAnswersLabel","england", true, routes.LocationController.onPageLoad(NormalMode).url)
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers("england", answerSections))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.england"))
+        val doc = asDocument(createViewWithAnswers("england", NotEligible, answerSections))
+
         assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.end"))
+
+        val childAged3Link: Element = doc.getElementById("free-hours-results-child-aged-3-link")
+        childAged3Link.attr("href") mustBe routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url
+        childAged3Link.text mustBe messagesApi("freeHoursResult.toBeEligible.info1.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.start"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
+
+        val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
+        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(CheckMode).url
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
 
       }
 
-      "contain 16 free hours and correct not eligibility for location Scotland" in {
+      "contain correct guidance when not eligible for location northern-ireland" in {
 
-        val doc = asDocument(createViewWithAnswers("scotland", Seq()))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
-        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.northern-ireland",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
 
-      }
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-      "contain 10 free hours and correct not eligibility for location Wales" in {
-        val doc = asDocument(createViewWithAnswers("wales", Seq()))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
-        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
-      }
+        val doc = asDocument(createViewWithAnswers("northernIreland", NotEligible, answerSections))
 
-      "contain 12.5 free hours and correct not eligibility for location NI" in {
-        val doc = asDocument(createViewWithAnswers("northern-ireland", Seq()))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info.northern-ireland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.end"))
+
+        val childAged3Link: Element = doc.getElementById("free-hours-results-child-aged-3-link")
+        childAged3Link.attr("href") mustBe routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url
+        childAged3Link.text mustBe messagesApi("freeHoursResult.toBeEligible.info1.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.start"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
+
+        val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
+        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(CheckMode).url
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
+      }
+
+      "eligible for 16 free hours for scotland and not eligible for other schemes" in {
+
+        val doc = asDocument(createViewWithAnswers("scotland", Eligible, Seq()))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.scotland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
+      }
+
+      "eligible for 10 free hours for wales and not eligible for other schemes" in {
+
+        val doc = asDocument(createViewWithAnswers("wales", Eligible, Seq()))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.wales"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
+      }
+
+      "eligible for 12.5 free hours for northern-ireland and not eligible for other schemes" in {
+
+        val doc = asDocument(createViewWithAnswers("northern-ireland", Eligible, Seq()))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
       }
 
      "display all the answer rows with correct contents " in {
@@ -100,7 +158,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
            routes.ChildcareCostsController.onPageLoad(CheckMode).url)
        )))
 
-       val doc = asDocument(createViewWithAnswers("england", answerSections))
+       val doc = asDocument(createViewWithAnswers("england", NotEligible, answerSections))
 
        assertContainsText(doc, messagesApi("childAgedTwo.checkYourAnswersLabel"))
        assertContainsText(doc, messagesApi("site.no"))
