@@ -17,8 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json.{JsString, JsValue}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoIsInPaidEmploymentId
+import play.api.libs.json.{JsBoolean, JsString, JsValue}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, WhoIsInPaidEmploymentId}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouLiveWithPartner
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -35,7 +35,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
     "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'partner'" in {
       val answers: CacheMap = cacheMap(
         WhoIsInPaidEmploymentId.toString -> JsString("partner"),
-        doYouLiveWithPartner.toString -> JsString("true")
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
       )
       helper(answers).hasPartnerInPaidWork mustEqual true
     }
@@ -43,14 +43,14 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
     "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
       val answers: CacheMap = cacheMap(
         WhoIsInPaidEmploymentId.toString -> JsString("both"),
-        doYouLiveWithPartner.toString -> JsString("true")
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
       )
       helper(answers).hasPartnerInPaidWork mustEqual true
     }
 
     "return false when the answer to whoIsInPaidEmployment returns 'you'" in {
       val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("")
+        WhoIsInPaidEmploymentId.toString -> JsString("you")
       )
       helper(answers).hasPartnerInPaidWork mustEqual false
     }
