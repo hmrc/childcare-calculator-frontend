@@ -35,12 +35,11 @@ class Navigator @Inject()() {
     ApprovedProviderId -> (ua => approvedChildCareRoute(ua)),
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode))
-
   )
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-    case Some(l) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -54,7 +53,7 @@ class Navigator @Inject()() {
         routes.FreeHoursResultController.onPageLoad()
       }
     }
-    case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+    case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -69,7 +68,6 @@ class Navigator @Inject()() {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
-
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
   )
