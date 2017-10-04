@@ -26,6 +26,8 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def getBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](GetBenefitsId.toString)
 
+  def areYouInPaidWork: Option[Boolean] = cacheMap.getEntry[Boolean](AreYouInPaidWorkId.toString)
+
   def hasYourTaxCodeBeenAdjusted: Option[Boolean] = cacheMap.getEntry[Boolean](HasYourTaxCodeBeenAdjustedId.toString)
 
   def hasYourPartnersTaxCodeBeenAdjusted: Option[Boolean] = cacheMap.getEntry[Boolean](HasYourPartnersTaxCodeBeenAdjustedId.toString)
