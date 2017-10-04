@@ -134,7 +134,7 @@ doYouLiveWithPartner.error = You must tell the calculator if you have a partner 
 paidEmployment.title = Are you, your partner, or both of you in paid work?
 paidEmployment.heading = Are you, your partner, or both of you in paid work?
 paidEmployment.checkYourAnswersLabel = Are you, your partner, or both of you in paid work?
-paidEmployment.error = You must answer yes if you, your partner, or both of you are in paid employment or self-employed
+paidEmployment.error = You must answer yes if you, your partner, or both of you are in paid work
 
 whoIsInPaidEmployment.title = Who’s in paid work?
 whoIsInPaidEmployment.heading = Who’s in paid work?
@@ -183,7 +183,7 @@ hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
-areYouInPaidWork.error = You must answer yes if you are in paid employment or self-employed
+areYouInPaidWork.error = You must answer yes if you are in paid work
 
 getBenefits.title = getBenefits
 getBenefits.heading = getBenefits

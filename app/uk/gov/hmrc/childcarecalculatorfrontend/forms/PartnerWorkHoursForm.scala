@@ -32,7 +32,7 @@ class PartnerWorkHoursForm @Inject()(appConfig: FrontendAppConfig) extends FormE
     val minValue: Double = appConfig.minWorkingHours
     val maxValue: Double = appConfig.maxWorkingHours
 
-    val decimalRegex: Regex = "[0-9]{1,2}(\\.[0-9])?".r
+    val decimalRegex: String = "0*[0-9]{1,2}(\\.[0-9])?".r.toString()
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
       data.get(key) match {
@@ -40,8 +40,9 @@ class PartnerWorkHoursForm @Inject()(appConfig: FrontendAppConfig) extends FormE
 
         case Some("") => produceError(key, errorKeyBlank)
 
-        case Some(str) if str.matches(decimalRegex.toString()) =>
-          val value = BigDecimal(str)
+        case Some(strValue) if(strValue.matches(decimalRegex)) =>
+          val value = BigDecimal(strValue)
+
           if (validateInRange(value, minValue, maxValue)) {
             Right(value)
           } else {

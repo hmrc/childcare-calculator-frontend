@@ -26,14 +26,18 @@ class PartnerWorkHoursFormSpec extends FormSpec {
 
   "ParentWorkHours Form" must {
 
-    "bind positive whole number" in {
-      val form = partnerWorkHoursForm.bind(Map("value" -> "12"))
-      form.get shouldBe 12
+    Seq("12", "000012").foreach{ value =>
+      s"bind positive whole number $value" in {
+        val form = partnerWorkHoursForm.bind(Map("value" -> value))
+        form.get shouldBe BigDecimal(value)
+      }
     }
 
-    "bind decimal numbers with one decimal place" in {
-      val form = partnerWorkHoursForm.bind(Map("value" -> "12.6"))
-      form.get shouldBe 12.6
+    Seq("12.6", "00012.8").foreach { value =>
+      s"bind decimal numbers with one decimal place $value" in {
+        val form = partnerWorkHoursForm.bind(Map("value" -> value))
+        form.get shouldBe BigDecimal(value)
+      }
     }
 
     "fail to bind when value is omitted" in {
