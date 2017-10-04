@@ -40,10 +40,10 @@ class Navigator @Inject()() {
     case Some("no") => {
       if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england") && answers.childAgedThreeOrFour.getOrElse(false)) {
         routes.FreeHoursInfoController.onPageLoad()
-      } else if(answers.isEligibleForFreeHours == Eligible) {//TODO - go to Free hours results page
-        routes.PaidEmploymentController.onPageLoad(NormalMode)
-      } else {//TODO - go to Free hours results page
-        routes.PaidEmploymentController.onPageLoad(NormalMode)
+      } else if(answers.isEligibleForFreeHours == Eligible) {
+        routes.FreeHoursResultController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
       }
     }
     case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
@@ -52,7 +52,7 @@ class Navigator @Inject()() {
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-    case Some(l) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 

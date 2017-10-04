@@ -71,23 +71,22 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn NotEligible
-
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
       }
 
-      "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {//TODO results page
+      "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some("wales") thenReturn Some("scotland") thenReturn Some("northern-ireland")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
 
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
       }
 
-      "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {//TODO results page
+      "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {
       val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedTwo) thenReturn Some(true)
@@ -95,9 +94,9 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.location) thenReturn Some("wales") thenReturn Some("scotland") thenReturn Some("england")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
 
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
       }
 
       "go to free hours results page if you are eligible for free hours, have child 2 & 3 or 4 years, don't have childcare cost & lives in wales, scotland" in {
@@ -108,8 +107,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.location) thenReturn Some("wales") thenReturn Some("scotland")
         when(answers.isEligibleForFreeHours) thenReturn Eligible
 
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
-        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
       }
 
       "go to free hours info page if you are eligible for free hours, have child aged 3 or 4 years and don't have childcare cost and lives in england" in {
