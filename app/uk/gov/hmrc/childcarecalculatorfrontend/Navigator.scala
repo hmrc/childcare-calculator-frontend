@@ -46,13 +46,13 @@ class Navigator @Inject()() {
         routes.FreeHoursResultController.onPageLoad()
       }
     }
-    case Some(x) => routes.ApprovedProviderController.onPageLoad(NormalMode)
+    case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
     case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-    case Some(l) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
