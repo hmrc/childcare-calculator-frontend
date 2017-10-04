@@ -24,7 +24,7 @@ object LocationEnum extends Enumeration {
   val ENGLAND = Value("england")
   val SCOTLAND = Value("scotland")
   val WALES = Value("wales")
-  val NORTHERNIRELAND = Value("northern-ireland")
+  val NORTHERNIRELAND = Value("northernIreland")
 
   val enumReads: Reads[LocationEnum] = EnumUtils.enumReads(LocationEnum)
 

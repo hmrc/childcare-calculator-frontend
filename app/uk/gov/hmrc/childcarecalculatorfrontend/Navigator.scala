@@ -53,8 +53,7 @@ class Navigator @Inject()() {
     if(answers.areYouInPaidWork.contains(true)){
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      //TODO-Free hours results
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.FreeHoursResultController.onPageLoad()
     }
   }
 
@@ -62,8 +61,7 @@ class Navigator @Inject()() {
     if(answers.paidEmployment.contains(true)){
       routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
     } else {
-      //TODO-Free hours results
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.FreeHoursResultController.onPageLoad()
     }
   }
 
@@ -91,14 +89,15 @@ class Navigator @Inject()() {
   }
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
-    case Some(ChildcareConstants.no) =>
+    case Some(ChildcareConstants.no) => {
       if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england") && answers.childAgedThreeOrFour.getOrElse(false)) {
         routes.FreeHoursInfoController.onPageLoad()
-      } else if(answers.isEligibleForFreeHours == Eligible) {//TODO - go to Free hours results page
-        routes.PaidEmploymentController.onPageLoad(NormalMode)
-      } else {//TODO - go to Free hours results page
-        routes.PaidEmploymentController.onPageLoad(NormalMode)
+      } else if(answers.isEligibleForFreeHours == Eligible) {
+        routes.FreeHoursResultController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
       }
+    }
     case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
