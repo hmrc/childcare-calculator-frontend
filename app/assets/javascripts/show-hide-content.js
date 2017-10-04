@@ -19,7 +19,8 @@
 
     // Escape name attribute for use in DOM selector
     function escapeElementName (str) {
-      var result = str.replace('[', '\[').replace(']', '\]')
+      var result;
+      result = str.replace('[', '\[').replace(']', '\]')
       return result
     }
 
@@ -95,8 +96,9 @@
     // Handle radio show/hide
     function handleRadioContent ($control, $content) {
       // All radios in this group which control content
-      var selector = selectors.radio + '[name=' + escapeElementName($control.attr('name')) + '][aria-controls]'
-      var $radios = $control.closest('form').find(selector)
+      var selector, $radios;
+      selector = selectors.radio + '[name=' + escapeElementName($control.attr('name')) + '][aria-controls]'
+      $radios = $control.closest('form').find(selector)
 
       // Hide content for radios in group
       $radios.each(function () {
