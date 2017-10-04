@@ -150,11 +150,24 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
     * Executes all test cases for Approved ChildCare cost
     */
   private def  executeApprovedChildCareNavigation() = {
-    "go to free hours results from approved provider when they are eligible for free hours and no approved childcare provider" in {
+    "go to free hours results from approved provider when they are eligible for free hours, no approved childcare provider and" +
+      "location is not england" in {
       val answers = mock[UserAnswers]
       when(answers.isEligibleForFreeHours) thenReturn Eligible
+      when(answers.location) thenReturn Some("wales") thenReturn Some("scotland") thenReturn Some("northernIreland")
       when(answers.approvedProvider) thenReturn Some("no")
       navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+    }
+
+    "go to free hours info page from approved provider when they are eligible for free hours, location is england and " +
+      "don't have approved child care" in {
+      val answers = mock[UserAnswers]
+      when(answers.isEligibleForFreeHours) thenReturn Eligible
+      when(answers.location) thenReturn Some("england")
+      when(answers.approvedProvider) thenReturn Some("no")
+      navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
     }
 
     "go to free hours results from approved provider when they are not eligible for free hours and no approved childcare provider" in {
@@ -179,6 +192,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       navigator.nextPage(ApprovedProviderId, NormalMode)(answers) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
     }
+
+
   }
 
 }

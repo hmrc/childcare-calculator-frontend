@@ -34,7 +34,7 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
     @components.back_link()
 
-    @components.heading("freeHoursResult.title")
+    @components.heading("freeHoursResult.title", "heading-xlarge")
 
     @if(eligibility == Eligible) {
 

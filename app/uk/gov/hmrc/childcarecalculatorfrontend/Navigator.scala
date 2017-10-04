@@ -61,8 +61,13 @@ class Navigator @Inject()() {
     val No = YesNoUnsureEnum.NO.toString
 
     answers.approvedProvider match {
-      case Some(No) if answers.isEligibleForFreeHours == Eligible ||
-        answers.isEligibleForFreeHours == NotEligible => routes.FreeHoursResultController.onPageLoad()
+      case Some(No) => {
+        if(answers.isEligibleForFreeHours == Eligible && answers.location.contains(LocationEnum.ENGLAND.toString)){
+          routes.FreeHoursInfoController.onPageLoad()
+        } else {
+          routes.FreeHoursResultController.onPageLoad()
+        }
+      }
       case Some(_) =>  if (answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
                        else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
