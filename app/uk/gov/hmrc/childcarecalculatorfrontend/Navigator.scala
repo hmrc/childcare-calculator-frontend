@@ -64,13 +64,8 @@ class Navigator @Inject()() {
     answers.approvedProvider match {
       case Some(No) if answers.isEligibleForFreeHours == Eligible ||
         answers.isEligibleForFreeHours == NotEligible => routes.FreeHoursResultController.onPageLoad()
-      case Some(_) => {
-        if (answers.isEligibleForFreeHours == Eligible) {
-          routes.FreeHoursInfoController.onPageLoad()
-        } else {
-          routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
-        }
-      }
+      case Some(_) =>  if (answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
+                       else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
