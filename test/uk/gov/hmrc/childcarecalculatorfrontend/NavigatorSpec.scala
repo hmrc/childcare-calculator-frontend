@@ -67,7 +67,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {//TODO - results page
+      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {
+        //TODO - results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn NotEligible
@@ -75,7 +76,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {//TODO results page
+      "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {
+        //TODO results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedThreeOrFour) thenReturn Some(true)
@@ -87,8 +89,9 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {//TODO results page
-      val answers = mock[UserAnswers]
+      "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {
+        //TODO results page
+        val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedTwo) thenReturn Some(true)
         when(answers.childAgedThreeOrFour) thenReturn Some(false)
@@ -133,24 +136,25 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
       }
 
-
       "go to are you in paid work from do you live with partner when user selects No" in {
         val answers = mock[UserAnswers]
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(answers) mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
       }
 
-      "go to parent work hours from are you in paid work when user selects Yes" in {
-        val answers = mock[UserAnswers]
-        when(answers.areYouInPaidWork) thenReturn Some(true)
-        navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
-      }
-
-      "go to eligibility results from are you in paid work when user selects No" in {
-        val answers = mock[UserAnswers]
-        when(answers.areYouInPaidWork) thenReturn Some(false)
-        //TODO: Once eligibility screenm is ready redirect to eligibility
-        //navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      "Go to free hours results" when {
+        "user selects 'No' from are you in paid work" in {
+          val answers = mock[UserAnswers]
+          when(answers.areYouInPaidWork) thenReturn Some(false)
+          //TODO: Once eligibility screen is ready redirect to eligibility
+          //navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+        }
+        "user selects 'No' from paid employment" in {
+          val answers = mock[UserAnswers]
+          when(answers.paidEmployment) thenReturn Some(false)
+          //TODO: Once eligibility screen is ready redirect to eligibility
+          //navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+        }
       }
 
       "go to paid employment from do you live with partner when user selects yes" in {
@@ -165,36 +169,38 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(PaidEmploymentId, NormalMode)(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
       }
 
-      "go to eligibility results from paid employment when user answers no" in {
-        val answers = mock[UserAnswers]
-        when(answers.paidEmployment) thenReturn Some(false)
-        //TODO: Once eligibility screenm is ready redirect to eligibility
-        //navigator.nextPage(PaidEmploymentId, NormalMode)(mock[UserAnswers]) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+      "Go to Partner work hours" when {
+        "user selects 'partner' from who is in paid employment" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
+          navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+        }
+
+        "user selects 'both' from who is in paid employment" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+        }
       }
 
-      "go to parent work hours from who is in paid employment when user selects you" in {
-        val answers = mock[UserAnswers]
-        when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-        navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
-      }
+      "Go to Parent work hours" when {
+        "user selects 'Yes' from are you in paid work" in {
+          val answers = mock[UserAnswers]
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+        }
+        "user selects 'you' from who is in paid employment" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some("you")
+          navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+        }
 
-      "go to partner work hours from who is in paid employment when user selects partner" in {
-        val answers = mock[UserAnswers]
-        when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-        navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-      }
-
-      "go to partner work hours from who is in paid employment when user selects both" in {
-        val answers = mock[UserAnswers]
-        when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-        navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-      }
-
-      "go to parent work hours from partner work hours when user selects both on paid employment" in {
-        val answers = mock[UserAnswers]
-        when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
-        navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+        "when user selects 'both' on paid employment and coming from partner work hours" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
+          navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+        }
       }
     }
 

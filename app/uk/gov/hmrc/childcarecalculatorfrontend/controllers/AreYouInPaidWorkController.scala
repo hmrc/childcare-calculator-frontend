@@ -27,7 +27,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AreYouInPaidWorkId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
 import scala.concurrent.Future
@@ -38,6 +39,7 @@ class AreYouInPaidWorkController @Inject()(appConfig: FrontendAppConfig,
                                          navigator: Navigator,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -50,7 +52,7 @@ class AreYouInPaidWorkController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("areYouInPaidWork.error").bindFromRequest().fold(
+      BooleanForm(areYouInPaidWorkErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(areYouInPaidWork(appConfig, formWithErrors, mode))),
         (value) =>

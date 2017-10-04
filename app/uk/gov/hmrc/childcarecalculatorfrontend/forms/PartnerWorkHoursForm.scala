@@ -22,8 +22,7 @@ import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-
-import scala.util.matching.Regex
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class PartnerWorkHoursForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
@@ -57,6 +56,6 @@ class PartnerWorkHoursForm @Inject()(appConfig: FrontendAppConfig) extends FormE
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "workHours.blank", errorKeyDecimal: String = "workHours.invalid"): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = workHoursBlankErrorKey, errorKeyDecimal: String = workHoursInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(partnerWorkHoursFormatter(errorKeyBlank, errorKeyDecimal))))
 }

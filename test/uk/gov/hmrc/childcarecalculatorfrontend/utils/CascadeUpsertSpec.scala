@@ -64,6 +64,40 @@ class CascadeUpsertSpec extends SpecBase {
         )
       }
     }
+
+    "saving the doYouLiveWithPartner" must {
+      "remove an existing paid employment and who is in paid employment when doYouLiveWithpartner is No" in {
+        val originalCacheMap = new CacheMap("id", Map(PaidEmploymentId.toString -> JsBoolean(true),
+          WhoIsInPaidEmploymentId.toString -> JsString("you"), PartnerWorkHoursId.toString -> JsString("12")))
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)
+        result.data mustBe Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false))
+      }
+
+      "remove an existing paid employment, who is in paid employment when doYouLiveWithpartner is Yes" in {
+        val originalCacheMap = new CacheMap("id", Map(AreYouInPaidWorkId.toString -> JsBoolean(true)))
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, true, originalCacheMap)
+        result.data mustBe Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true))
+      }
+    }
+
+    "saving the whoIsInPaidEmployment" must {
+      "remove an existing partner work hours when whoIsInPaidEmployment is you" in {
+        val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12")))
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, "you", originalCacheMap)
+        result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString("you"))
+      }
+
+      "remove an existing parent work hours when whoIsInPaidEmployment is partner" in {
+        val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12")))
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, "partner", originalCacheMap)
+        result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString("partner"))
+      }
+    }
+
   }
 
   "addRepeatedValue" when {
