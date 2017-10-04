@@ -37,7 +37,7 @@ class CheckYourAnswersController @Inject()(appConfig: FrontendAppConfig,
         checkYourAnswersHelper.location,
         checkYourAnswersHelper.childAgedTwo,
         checkYourAnswersHelper.childAgedThreeOrFour,
-        checkYourAnswersHelper.expectChildcareCosts
+        checkYourAnswersHelper.childcareCosts
       ).flatten))
       Ok(check_your_answers(appConfig, sections))
   }

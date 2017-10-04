@@ -30,6 +30,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
   "Navigator" when {
 
     "in Normal mode" must {
+
       "go to Index from an identifier that doesn't exist in the route map" in {
         case object UnknownIdentifier extends Identifier
         navigator.nextPage(UnknownIdentifier, NormalMode)(mock[UserAnswers]) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -54,50 +55,86 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildAgedTwoId, NormalMode)(mock[UserAnswers]) mustBe routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
       }
 
-      "go to Expect Childcare Costs from Child Aged Three or Four" in {
-        navigator.nextPage(ChildAgedThreeOrFourId, NormalMode)(mock[UserAnswers]) mustBe routes.ExpectChildcareCostsController.onPageLoad(NormalMode)
+      "go to Childcare Costs from Child Aged Three or Four" in {
+        navigator.nextPage(ChildAgedThreeOrFourId, NormalMode)(mock[UserAnswers]) mustBe routes.ChildcareCostsController.onPageLoad(NormalMode)
       }
 
-      "go to free hours info from childcare cost" in {
-        navigator.nextPage(ExpectChildcareCostsId, NormalMode)(mock[UserAnswers]) mustBe routes.FreeHoursInfoController.onPageLoad
+      "go to expect approved childcare cost from childcare cost when you have childcare cost or not yet decided" in {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("yes") thenReturn Some("notYet")
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to do you live with partner from free hours info" in {
-        navigator.nextPage(FreeHoursInfoId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {//TODO - results page
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+
+        when(answers.isEligibleForFreeHours) thenReturn NotEligible
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
       }
 
       "single user will be taken to DoYouKnowYourAdjustedTaxCode screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
         val answers = mock[UserAnswers]
+        when(answers.hasPartnerInPaidWork) thenReturn false
         when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(true)
-        when(answers.doYouLiveWithPartner) thenReturn Some (false)
-        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
       }
 
       "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
         val answers = mock[UserAnswers]
+        when(answers.hasPartnerInPaidWork) thenReturn false
         when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
-        when(answers.doYouLiveWithPartner) thenReturn Some (false)
-        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
       }
 
       "user with a partner in paid work will be taken to HasYourPartnerTaxCodeBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
         val answers = mock[UserAnswers]
+        when(answers.hasPartnerInPaidWork) thenReturn true
         when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
-        when(answers.doYouLiveWithPartner) thenReturn Some (true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some ("both")
-        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
       }
 
       "user with a partner in paid work will be taken to HasYourPartnerTaxCodeBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
         val answers = mock[UserAnswers]
-        when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
-        when(answers.doYouLiveWithPartner) thenReturn Some (true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some ("partner")
-        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(mock[UserAnswers]) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        when(answers.hasPartnerInPaidWork) thenReturn true
+        when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(true)
+        navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
       }
+
+      "go to results page from childcare cost if you are eligible for free hours, does not live in england & don't have the child care cost" in {//TODO results page
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+        when(answers.location) thenReturn Some("wales") thenReturn Some("scotland") thenReturn Some("northern-ireland")
+        when(answers.isEligibleForFreeHours) thenReturn Eligible
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+      }
+
+      "go to free hours info page if you are eligible for free hours and don't have childcare cost and lives in england" in {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+        when(answers.location) thenReturn Some("england")
+        when(answers.isEligibleForFreeHours) thenReturn Eligible
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursInfoController.onPageLoad()
+      }
+
+      "got to partner page if your eligibility for free hours yet to be determined and don't have childcare cost" in {
+        val answers = mock[UserAnswers]
+        when(answers.childcareCosts) thenReturn Some("no")
+        when(answers.isEligibleForFreeHours) thenReturn NotDetermined
+
+        navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+
     }
 
     "in Check mode" must {
+
       "go to CheckYourAnswers from an identifier that doesn't exist in the edit route map" in {
         case object UnknownIdentifier extends Identifier
         navigator.nextPage(UnknownIdentifier, CheckMode)(mock[UserAnswers]) mustBe routes.CheckYourAnswersController.onPageLoad()

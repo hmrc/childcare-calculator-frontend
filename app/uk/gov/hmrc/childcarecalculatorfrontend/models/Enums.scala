@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import play.api.libs.json.{Reads, Writes, Format}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
-class ExpectChildcareCostsFormSpec extends FormBehaviours {
+object LocationEnum extends Enumeration {
+  type LocationEnum = Value
+  val ENGLAND = Value("england")
+  val SCOTLAND = Value("scotland")
+  val WALES = Value("wales")
+  val NORTHERNIRELAND = Value("northern-ireland")
 
-  val validData: Map[String, String] = Map(
-    "value" -> ExpectChildcareCostsForm.options.head.value
-  )
+  val enumReads: Reads[LocationEnum] = EnumUtils.enumReads(LocationEnum)
 
-  val form = ExpectChildcareCostsForm()
+  val enumWrites: Writes[LocationEnum] = EnumUtils.enumWrites
 
-  "ExpectChildcareCosts form" must {
-    behave like questionForm[String](ExpectChildcareCostsForm.options.head.value)
-
-    behave like formWithOptionField("value", ExpectChildcareCostsForm.options.map{x => x.value}:_*)
-  }
+  implicit def enumFormats: Format[LocationEnum] = EnumUtils.enumFormat(LocationEnum)
 }
+

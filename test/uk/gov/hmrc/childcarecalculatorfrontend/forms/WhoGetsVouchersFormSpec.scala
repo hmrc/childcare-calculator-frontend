@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@(errors: Seq[FormError])(implicit messages: Messages)
-@if(errors.nonEmpty) {
-    <div class="error-summary error-summary--show" role="group" aria-labelledby="error-summary-heading" tabindex="-1">
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-        <h2 class="h2-heading" id="error-summary-heading">
-            @messages("error.summary.title")
-        </h2>
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 
-        <p>@messages("error.summary.text")</p>
+class WhoGetsVouchersFormSpec extends FormBehaviours {
 
-        <ul class="error-summary-list">
-            @for(error <- errors) {
-                <li><a href="#@{error.key}">@messages(error.message, error.args:_*)</a></li>
-            }
-        </ul>
+  val validData: Map[String, String] = Map(
+    "value" -> WhoGetsVouchersForm.options.head.value
+  )
 
-    </div>
+  val form = WhoGetsVouchersForm()
+
+  "WhoGetsVouchers form" must {
+    behave like questionForm[String](WhoGetsVouchersForm.options.head.value)
+
+    behave like formWithOptionField("value", WhoGetsVouchersForm.options.map{x => x.value}:_*)
+  }
 }

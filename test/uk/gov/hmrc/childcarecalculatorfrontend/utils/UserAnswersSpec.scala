@@ -34,21 +34,23 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
 
     "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'partner'" in {
       val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("partner")
+        WhoIsInPaidEmploymentId.toString -> JsString("partner"),
+        doYouLiveWithPartner.toString -> JsString("true")
       )
       helper(answers).hasPartnerInPaidWork mustEqual true
     }
 
     "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
       val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("both")
+        WhoIsInPaidEmploymentId.toString -> JsString("both"),
+        doYouLiveWithPartner.toString -> JsString("true")
       )
       helper(answers).hasPartnerInPaidWork mustEqual true
     }
 
     "return false when the answer to whoIsInPaidEmployment returns 'you'" in {
       val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("you")
+        WhoIsInPaidEmploymentId.toString -> JsString("")
       )
       helper(answers).hasPartnerInPaidWork mustEqual false
     }
