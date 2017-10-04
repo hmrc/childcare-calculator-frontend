@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
 
 @(
+answer: Option[Set[String]],
 viewModel: InputViewModelBase,
 legend: String,
 legendClass: Option[String] = None,
@@ -35,9 +36,9 @@ inputs: Seq[InputOption]
         @if(viewModel.errorKey.nonEmpty){
         <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
         }
-        @for(input <- inputs) {
+        @for((input, i) <- inputs.zipWithIndex) {
         <label class="block-label selection-button-radio" for="@{input.id}">
-            <input id="@{input.id}" type="checkbox" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value.map(_.contains(input.value)).getOrElse(false)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
+            <input id="@{input.id}" type="checkbox" name="@{viewModel.id}[@i]" value="@{input.value}" @if(answer.map(_.contains(input.value)).getOrElse(false)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
             @messages(input.messageKey)
         </label>
         }

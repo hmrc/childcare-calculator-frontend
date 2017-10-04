@@ -192,3 +192,10 @@ whoGetsVouchers.heading = whoGetsVouchers
 whoGetsVouchers.option1 = whoGetsVouchers Option 1
 whoGetsVouchers.option2 = whoGetsVouchers Option 2
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
+
+whichBenefitsDoYouGet.title = whichBenefitsDoYouGet
+whichBenefitsDoYouGet.heading = whichBenefitsDoYouGet
+whichBenefitsDoYouGet.option1 = whichBenefitsDoYouGet Option 1
+whichBenefitsDoYouGet.option2 = whichBenefitsDoYouGet Option 2
+whichBenefitsDoYouGet.checkYourAnswersLabel = whichBenefitsDoYouGet
+

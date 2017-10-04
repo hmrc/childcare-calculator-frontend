@@ -102,3 +102,9 @@ GET        /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfronten
 POST       /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(mode: Mode = NormalMode)
+POST       /whichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(mode: Mode = CheckMode)
+
