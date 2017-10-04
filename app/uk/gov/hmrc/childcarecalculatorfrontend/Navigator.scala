@@ -88,14 +88,12 @@ class Navigator @Inject()() {
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
     case Some("no") => {
-      if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england")) {
+      if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england") && answers.childAgedThreeOrFour.getOrElse(false)) {
         routes.FreeHoursInfoController.onPageLoad()
-      } else if(answers.isEligibleForFreeHours == Eligible && !answers.location.contains("england")) {//TODO - go to Free hours results page
+      } else if(answers.isEligibleForFreeHours == Eligible) {//TODO - go to Free hours results page
         routes.PaidEmploymentController.onPageLoad(NormalMode)
-      } else if(answers.isEligibleForFreeHours == NotEligible) {//TODO - go to Free hours results page
+      } else {//TODO - go to Free hours results page
         routes.PaidEmploymentController.onPageLoad(NormalMode)
-      } else {
-        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
     }
     case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
