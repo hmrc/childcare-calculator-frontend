@@ -21,6 +21,7 @@ import javax.inject.Singleton
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
 class CascadeUpsert {
@@ -33,7 +34,7 @@ class CascadeUpsert {
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsString("northernIreland")) {
+    val mapToStore = if (value == JsString(northernIreland)) {
       cacheMap copy (data = cacheMap.data - ChildAgedTwoId.toString)
     } else
       cacheMap
@@ -52,9 +53,9 @@ class CascadeUpsert {
   }
 
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if(value == JsString("you")){
+    val mapToStore = if(value == JsString(you)){
       cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString)
-    } else if(value == JsString("partner"))
+    } else if(value == JsString(partner))
       cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString)
     else cacheMap
 

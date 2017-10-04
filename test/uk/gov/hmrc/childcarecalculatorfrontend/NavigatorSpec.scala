@@ -22,6 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class NavigatorSpec extends SpecBase with MockitoSugar {
 
@@ -157,6 +158,10 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "go to do you live with partner from free hours info page" in {
+        navigator.nextPage(FreeHoursInfoId, NormalMode)(mock[UserAnswers]) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+
       "go to paid employment from do you live with partner when user selects yes" in {
         val answers = mock[UserAnswers]
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -172,13 +177,13 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "Go to Partner work hours" when {
         "user selects 'partner' from who is in paid employment" in {
           val answers = mock[UserAnswers]
-          when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
+          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
           navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
         }
 
         "user selects 'both' from who is in paid employment" in {
           val answers = mock[UserAnswers]
-          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
           navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
         }
       }
@@ -191,13 +196,13 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
         "user selects 'you' from who is in paid employment" in {
           val answers = mock[UserAnswers]
-          when(answers.whoIsInPaidEmployment) thenReturn Some("you")
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
           navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
         }
 
         "when user selects 'both' on paid employment and coming from partner work hours" in {
           val answers = mock[UserAnswers]
-          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
           when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
           navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
         }

@@ -16,11 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-/**
-  * Created by suryabala on 04/10/17.
-  */
 object ChildcareConstants {
-
   val you = "you"
   val partner = "partner"
   val both = "both"

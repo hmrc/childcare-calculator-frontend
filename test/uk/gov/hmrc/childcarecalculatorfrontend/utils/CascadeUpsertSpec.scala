@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class CascadeUpsertSpec extends SpecBase {
 
@@ -68,7 +68,7 @@ class CascadeUpsertSpec extends SpecBase {
     "saving the doYouLiveWithPartner" must {
       "remove an existing paid employment and who is in paid employment when doYouLiveWithpartner is No" in {
         val originalCacheMap = new CacheMap("id", Map(PaidEmploymentId.toString -> JsBoolean(true),
-          WhoIsInPaidEmploymentId.toString -> JsString("you"), PartnerWorkHoursId.toString -> JsString("12")))
+          WhoIsInPaidEmploymentId.toString -> JsString(you), PartnerWorkHoursId.toString -> JsString("12")))
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)
         result.data mustBe Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false))
@@ -86,15 +86,15 @@ class CascadeUpsertSpec extends SpecBase {
       "remove an existing partner work hours when whoIsInPaidEmployment is you" in {
         val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12")))
         val cascadeUpsert = new CascadeUpsert
-        val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, "you", originalCacheMap)
-        result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString("you"))
+        val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
+        result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(you))
       }
 
       "remove an existing parent work hours when whoIsInPaidEmployment is partner" in {
         val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12")))
         val cascadeUpsert = new CascadeUpsert
-        val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, "partner", originalCacheMap)
-        result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString("partner"))
+        val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, partner, originalCacheMap)
+        result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(partner))
       }
     }
 
