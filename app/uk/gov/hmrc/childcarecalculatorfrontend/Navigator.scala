@@ -54,8 +54,10 @@ class Navigator @Inject()() {
   }
 
   private def taxCodeAdjustedRoute(answers: UserAnswers): Call = {
-    if (answers.hasPartnerInPaidWork) {
+      if (answers.hasPartnerInPaidWork && answers.hasYourTaxCodeBeenAdjusted.contains(false)) {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+    } else if (answers.hasPartnerInPaidWork && answers.hasYourTaxCodeBeenAdjusted.contains(true)) {
+      routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
     } else if ((!answers.hasPartnerInPaidWork) && answers.hasYourTaxCodeBeenAdjusted.contains(false)) {
       routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
     } else if ((!answers.hasPartnerInPaidWork) && answers.hasYourTaxCodeBeenAdjusted.contains(true)) {
@@ -68,9 +70,7 @@ class Navigator @Inject()() {
   private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
       if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
         routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-      } else if (answers.hasPartnerInPaidWork && answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
-        routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
-      } else if (!answers.hasPartnerInPaidWork && answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
+      } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
         routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
       } else {
         routes.SessionExpiredController.onPageLoad()
