@@ -34,7 +34,8 @@ class Navigator @Inject()() {
     ChildcareCostsId -> (ua => costRoute(ua)),
     DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    HasYourTaxCodeBeenAdjustedId -> (ua => taxCodeAdjustedRoute(ua))
+    HasYourTaxCodeBeenAdjustedId -> (ua => taxCodeAdjustedRoute(ua)),
+    HasYourPartnersTaxCodeBeenAdjustedId -> (ua => partnerTaxCodeAdjustedRoute(ua))
 
   )
 
@@ -64,7 +65,17 @@ class Navigator @Inject()() {
     }
   }
 
-
+  private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
+      if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
+        routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+      } else if (answers.hasPartnerInPaidWork && answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
+        routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+      } else if (!answers.hasPartnerInPaidWork && answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
+        routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+      } else {
+        routes.SessionExpiredController.onPageLoad()
+      }
+    }
 
 
   private def locationRoute(answers: UserAnswers) = answers.location match {

@@ -102,3 +102,8 @@ GET        /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfronten
 POST       /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode = CheckMode)

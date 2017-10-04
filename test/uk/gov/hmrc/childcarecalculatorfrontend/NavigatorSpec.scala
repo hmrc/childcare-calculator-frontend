@@ -103,6 +103,27 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
       }
 
+      "user with partner will be taken to DoYouKnowYourPartnersAdjustedTaxCode screen from HasYourPartnersTaxCodeBeenAdjusted when yes is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasPartnerInPaidWork) thenReturn true
+        when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(true)
+        navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+      }
+
+      "user with partner will be taken to DoEitherOfYourEmployersOfferChildcareVouchers screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasPartnerInPaidWork) thenReturn false
+        when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
+        navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+      }
+
+      "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from HasYourPartnersTaxCodeBeenAdjusted when no is selected" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasPartnerInPaidWork) thenReturn true
+        when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
+        navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+      }
+
       "go to results page from childcare cost if you are eligible for free hours, does not live in england & don't have the child care cost" in {//TODO results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")

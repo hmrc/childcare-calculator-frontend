@@ -21,22 +21,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hasYourPartnersTaxCodeBeenAdjusted
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
 
-class HasYourPartnersTaxCodeBeenAdjustedViewSpec extends YesNoViewBehaviours {
+class DoYouKnowYourPartnersAdjustedTaxCodeViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "hasYourPartnersTaxCodeBeenAdjusted"
+  val messageKeyPrefix = "doYouKnowYourPartnersAdjustedTaxCode"
 
-  def createView = () => hasYourPartnersTaxCodeBeenAdjusted(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => doYouKnowYourPartnersAdjustedTaxCode(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => hasYourPartnersTaxCodeBeenAdjusted(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => doYouKnowYourPartnersAdjustedTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  "HasYourPartnersTaxCodeBeenAdjusted view" must {
+  "DoYouKnowYourPartnersAdjustedTaxCode view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "info")
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(NormalMode).url)
   }
 }

@@ -24,23 +24,21 @@
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("hasYourPartnersTaxCodeBeenAdjusted.title"),
+    title = messages("doYouKnowYourPartnersAdjustedTaxCode.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("hasYourPartnersTaxCodeBeenAdjusted.heading")
-
-        <p>@Messages("hasYourPartnersTaxCodeBeenAdjusted.info")</p>
+        @components.heading("doYouKnowYourPartnersAdjustedTaxCode.heading")
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
-            label = messages("hasYourPartnersTaxCodeBeenAdjusted.heading"),
+            label = messages("doYouKnowYourPartnersAdjustedTaxCode.heading"),
             labelClass = Some("visually-hidden")
         )
 
