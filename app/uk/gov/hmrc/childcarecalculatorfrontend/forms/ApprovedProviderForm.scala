@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 
 object ApprovedProviderForm extends FormErrorHelper {
@@ -26,7 +27,7 @@ object ApprovedProviderForm extends FormErrorHelper {
   def ApprovedProviderFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "approvedProvider.error")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,8 +38,9 @@ object ApprovedProviderForm extends FormErrorHelper {
     Form(single("value" -> of(ApprovedProviderFormatter)))
 
   def options = Seq(
-    RadioOption("approvedProvider", "option1"),
-    RadioOption("approvedProvider", "option2")
+    RadioOption("approvedProvider", YesNoUnsureEnum.YES.toString),
+    RadioOption("approvedProvider", YesNoUnsureEnum.NO.toString),
+    RadioOption("approvedProvider", YesNoUnsureEnum.NOTSURE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

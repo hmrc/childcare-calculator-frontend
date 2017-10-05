@@ -79,11 +79,14 @@ childcareCosts.notYet = Not yet but maybe in the future
 childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
 childcareCosts.error = You must tell the calculator if you expect to have childcare costs
 
-approvedProvider.title = approvedProvider
-approvedProvider.heading = approvedProvider
-approvedProvider.option1 = approvedProvider Option 1
-approvedProvider.option2 = approvedProvider Option 2
+approvedProvider.title = Will your childcare costs be with an approved provider?
+approvedProvider.heading = Will your childcare costs be with an approved provider?
+approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It could be a school, childminder, playscheme, nursery or club.
+approvedProvider.yes = Yes
+approvedProvider.no = No
+approvedProvider.notSure = Not sure
 approvedProvider.checkYourAnswersLabel = approvedProvider
+approvedProvider.error = You must answer yes if your childcare costs will be with an approved provider
 
 freeHoursInfo.title = It looks like you’re eligible for free hours
 freeHoursInfo.heading = It looks like you’re eligible for free hours
