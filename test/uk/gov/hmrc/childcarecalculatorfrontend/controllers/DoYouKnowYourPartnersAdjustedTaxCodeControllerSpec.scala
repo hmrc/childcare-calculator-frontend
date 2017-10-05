@@ -17,31 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
+import play.api.libs.json.JsBoolean
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerWorkHoursForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerWorkHoursId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouKnowYourPartnersAdjustedTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
 
-class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
+class DoYouKnowYourPartnersAdjustedTaxCodeControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
-  val partnerWorkHoursForm = new PartnerWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerWorkHoursController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new PartnerWorkHoursForm(frontendAppConfig))
+    new DoYouKnowYourPartnersAdjustedTaxCodeController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[BigDecimal] = partnerWorkHoursForm) = partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = doYouKnowYourPartnersAdjustedTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 12
-
-  "PartnerWorkHours Controller" must {
+  "DoYouKnowYourPartnersAdjustedTaxCode Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -51,16 +48,16 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerWorkHoursId.toString -> JsNumber(testNumber))
+      val validData = Map(DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(partnerWorkHoursForm.fill(testNumber))
+      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +67,7 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = partnerWorkHoursForm.bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -86,7 +83,7 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -94,3 +91,7 @@ class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
     }
   }
 }
+
+
+
+

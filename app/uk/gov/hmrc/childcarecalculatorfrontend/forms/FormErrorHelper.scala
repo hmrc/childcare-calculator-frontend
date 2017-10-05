@@ -18,6 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.FormError
 
-trait FormErrorHelper {
+class FormErrorHelper {
+
   def produceError(key: String, error: String) = Left(Seq(FormError(key, error)))
+
+  def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
+    value >= minValue && value <= maxValue
+  }
 }

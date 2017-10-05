@@ -25,39 +25,37 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AreYouInPaidWorkId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouKnowYourPartnersAdjustedTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, UserAnswers}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
 
 import scala.concurrent.Future
 
-class AreYouInPaidWorkController @Inject()(appConfig: FrontendAppConfig,
+class DoYouKnowYourPartnersAdjustedTaxCodeController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.areYouInPaidWork match {
+      val preparedForm = request.userAnswers.doYouKnowYourPartnersAdjustedTaxCode match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(areYouInPaidWork(appConfig, preparedForm, mode))
+      Ok(doYouKnowYourPartnersAdjustedTaxCode(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(areYouInPaidWorkErrorKey).bindFromRequest().fold(
+      BooleanForm().bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(areYouInPaidWork(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(doYouKnowYourPartnersAdjustedTaxCode(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, AreYouInPaidWorkId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(AreYouInPaidWorkId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, DoYouKnowYourPartnersAdjustedTaxCodeId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
