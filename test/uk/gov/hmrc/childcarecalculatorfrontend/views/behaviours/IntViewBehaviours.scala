@@ -19,11 +19,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 import play.api.data.{Form, FormError}
 import play.twirl.api.HtmlFormat
 
-trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
+trait IntViewBehaviours extends QuestionViewBehaviours[BigDecimal] {
 
-  val number = 123
+  val number = 12
 
-  def intPage(createView: (Form[Int]) => HtmlFormat.Appendable,
+  def intPage(createView: (Form[BigDecimal]) => HtmlFormat.Appendable,
               messageKeyPrefix: String,
               expectedFormAction: String) = {
 
