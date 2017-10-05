@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def doYouOrYourPartnerGetAnyBenefits: Option[AnswerRow] = userAnswers.doYouOrYourPartnerGetAnyBenefits map {
+    x => AnswerRow("doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(CheckMode).url)
+  }
+
   def whatsYourAge: Option[AnswerRow] = userAnswers.whatsYourAge map {
     x => AnswerRow("whatsYourAge.checkYourAnswersLabel", s"whatsYourAge.$x", true, routes.WhatsYourAgeController.onPageLoad(CheckMode).url)
   }

@@ -119,3 +119,8 @@ GET        /whatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.c
 POST       /whatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode: Mode = CheckMode)

@@ -282,6 +282,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouGetAnyBenefits) thenReturn Some(false)
           navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
         }
+
+        "user selects No from Do you or your partner get any benefits" in {
+          val answers = mock[UserAnswers]
+          when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
+        }
       }
     }
 

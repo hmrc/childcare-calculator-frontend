@@ -42,11 +42,21 @@ class Navigator @Inject()() {
     WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
     ParentWorkHoursId -> (ua => parentWorkHoursRoute(ua)),
     PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
-    DoYouGetAnyBenefitsId -> (ua => doYouGetAnyBenefitsRoute(ua))
+    DoYouGetAnyBenefitsId -> (ua => doYouGetAnyBenefitsRoute(ua)),
+    identifiers.DoYouOrYourPartnerGetAnyBenefitsId -> (ua => doYouOrYourPartnerGetAnyBenefitsRoute(ua))
   )
 
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers) = {
     if(answers.doYouGetAnyBenefits.contains(false)){
+      routes.WhatsYourAgeController.onPageLoad(NormalMode)
+    } else {
+      //TODO: Go to new Which benefits do you get checkbox page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    }
+  }
+
+  private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers) = {
+    if(answers.doYouOrYourPartnerGetAnyBenefits.contains(false)){
       routes.WhatsYourAgeController.onPageLoad(NormalMode)
     } else {
       //TODO: Go to new Which benefits do you get checkbox page

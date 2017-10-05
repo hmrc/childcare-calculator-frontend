@@ -17,7 +17,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("$className;format="decap"$.heading")
+        @components.heading("$className;format="decap"$.heading", "heading-xlarge")
 
         @components.input_number(InputViewModel[Int]("value", form), label = messages("$className;format="decap"$.heading"), labelClass=Some("visually-hidden"))
 
