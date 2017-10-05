@@ -22,28 +22,30 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @Singleton
-class Navigator @Inject()() {
+class Navigator @Inject() (schemes: Schemes) {
 
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
-    LocationId -> (ua => locationRoute(ua)),
+    LocationId -> locationRoute,
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
-    ChildcareCostsId -> (ua => costRoute(ua)),
-    ApprovedProviderId -> (ua => approvedChildCareRoute(ua)),
+    ChildcareCostsId -> costRoute,
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    HasYourTaxCodeBeenAdjustedId -> (ua => taxCodeAdjustedRoute(ua)),
-    HasYourPartnersTaxCodeBeenAdjustedId -> (ua => partnerTaxCodeAdjustedRoute(ua)),
-    DoYouLiveWithPartnerId -> (ua => doYouLiveRoute(ua)),
-    AreYouInPaidWorkId -> (ua => areYouInPaidWorkRoute(ua)),
-    PaidEmploymentId -> (ua => paidEmploymentRoute(ua)),
-    WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
-    ParentWorkHoursId -> (ua => parentWorkHoursRoute(ua)),
-    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
-	  VouchersId -> (vouchers => vouchersRoute(vouchers))
+    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    ApprovedProviderId -> approvedChildCareRoute,
+	  HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
+    HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
+    DoYouLiveWithPartnerId -> doYouLiveRoute,
+    AreYouInPaidWorkId -> areYouInPaidWorkRoute,
+    PaidEmploymentId -> paidEmploymentRoute,
+    WhoIsInPaidEmploymentId -> workHoursRoute,
+    ParentWorkHoursId -> parentWorkHoursRoute,
+    PartnerWorkHoursId -> partnerWorkHoursRoute,
+	  VouchersId ->  vouchersRoute
   )
 
  private def locationRoute(answers: UserAnswers) = answers.location match {
@@ -114,12 +116,10 @@ class Navigator @Inject()() {
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
     case Some(ChildcareConstants.no) =>
-      if(answers.isEligibleForFreeHours == Eligible && answers.location.contains("england") && answers.childAgedThreeOrFour.getOrElse(false)) {
+      if (FreeHours.eligibility(answers) == Eligible) {
         routes.FreeHoursInfoController.onPageLoad()
-      } else if(answers.isEligibleForFreeHours == Eligible) {
-        routes.FreeHoursResultController.onPageLoad()
       } else {
-        routes.FreeHoursResultController.onPageLoad()
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }
 
     case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
@@ -170,10 +170,17 @@ class Navigator @Inject()() {
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
   )
 
-  def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = mode match {
-    case NormalMode =>
-      routeMap.getOrElse(id, _ => routes.WhatToTellTheCalculatorController.onPageLoad())
-    case CheckMode =>
-      editRouteMap.getOrElse(id, _ => routes.CheckYourAnswersController.onPageLoad())
+  def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
+    answers =>
+      if (schemes.allSchemesDetermined(answers)) {
+        routes.FreeHoursResultController.onPageLoad()
+      } else {
+        mode match {
+          case NormalMode =>
+            routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad())(answers)
+          case CheckMode =>
+            editRouteMap.getOrElse(id, (_: UserAnswers) => routes.CheckYourAnswersController.onPageLoad())(answers)
+        }
+      }
   }
 }
