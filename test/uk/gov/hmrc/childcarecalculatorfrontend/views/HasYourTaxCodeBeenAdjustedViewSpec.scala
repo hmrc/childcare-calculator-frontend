@@ -33,7 +33,7 @@ class HasYourTaxCodeBeenAdjustedViewSpec extends YesNoViewBehaviours {
 
   "HasYourTaxCodeBeenAdjusted view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "info")
 
     behave like pageWithBackLink(createView)
 

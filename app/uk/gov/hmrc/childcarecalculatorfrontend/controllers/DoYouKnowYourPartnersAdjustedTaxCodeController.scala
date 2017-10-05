@@ -25,14 +25,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HasYourTaxCodeBeenAdjustedId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouKnowYourPartnersAdjustedTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hasYourTaxCodeBeenAdjusted
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
 
 import scala.concurrent.Future
 
-class HasYourTaxCodeBeenAdjustedController @Inject()(appConfig: FrontendAppConfig,
+class DoYouKnowYourPartnersAdjustedTaxCodeController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
@@ -41,21 +41,21 @@ class HasYourTaxCodeBeenAdjustedController @Inject()(appConfig: FrontendAppConfi
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.hasYourTaxCodeBeenAdjusted match {
+      val preparedForm = request.userAnswers.doYouKnowYourPartnersAdjustedTaxCode match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(hasYourTaxCodeBeenAdjusted(appConfig, preparedForm, mode))
+      Ok(doYouKnowYourPartnersAdjustedTaxCode(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("hasYourTaxCodeBeenAdjusted.error").bindFromRequest().fold(
+      BooleanForm().bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(hasYourTaxCodeBeenAdjusted(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(doYouKnowYourPartnersAdjustedTaxCode(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, HasYourTaxCodeBeenAdjustedId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(HasYourTaxCodeBeenAdjustedId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, DoYouKnowYourPartnersAdjustedTaxCodeId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

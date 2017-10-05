@@ -33,7 +33,10 @@ class Navigator @Inject()() {
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
     ChildcareCostsId -> (ua => costRoute(ua)),
+    ApprovedProviderId -> (ua => approvedChildCareRoute(ua)),
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    HasYourTaxCodeBeenAdjustedId -> (ua => taxCodeAdjustedRoute(ua)),
+    HasYourPartnersTaxCodeBeenAdjustedId -> (ua => partnerTaxCodeAdjustedRoute(ua)),
     DoYouLiveWithPartnerId -> (ua => doYouLiveRoute(ua)),
     AreYouInPaidWorkId -> (ua => areYouInPaidWorkRoute(ua)),
     PaidEmploymentId -> (ua => paidEmploymentRoute(ua)),
@@ -42,6 +45,12 @@ class Navigator @Inject()() {
     PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
     WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
   )
+
+ private def locationRoute(answers: UserAnswers) = answers.location match {
+		case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
+		case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+		case _ => routes.SessionExpiredController.onPageLoad()
+	  }
 
   private def doYouLiveRoute(answers: UserAnswers) = {
     if(answers.doYouLiveWithPartner.contains(true)){
@@ -73,15 +82,9 @@ class Navigator @Inject()() {
     val Both = YouPartnerBothEnum.BOTH.toString
 
     answers.whoIsInPaidEmployment match {
-      case Some(You) =>
-        routes.ParentWorkHoursController.onPageLoad(NormalMode)
-
-      case Some(Partner) =>
-        routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-
-      case Some(Both) =>
-        routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-
+      case Some(You) => routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      case Some(Partner) => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      case Some(Both) => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -102,15 +105,9 @@ class Navigator @Inject()() {
     val Both = YouPartnerBothEnum.BOTH.toString
 
     answers.whoIsInPaidEmployment match {
-      case Some(You) =>
-        routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-
-      case Some(Partner) =>
-        routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-
-      case Some(Both) =>
-        routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-
+      case Some(You) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      case Some(Partner) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      case Some(Both) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -128,10 +125,39 @@ class Navigator @Inject()() {
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def locationRoute(answers: UserAnswers) = answers.location match {
-    case Some(ChildcareConstants.northernIreland) => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-    case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+  private def taxCodeAdjustedRoute(answers: UserAnswers): Call =
+    (answers.hasPartnerInPaidWork, answers.hasYourTaxCodeBeenAdjusted) match {
+    case (true, Some(false)) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+    case (_, Some(true)) => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+    case (false, Some(false)) => routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
+      if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
+        routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+      } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
+        routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+      } else {
+        routes.SessionExpiredController.onPageLoad()
+      }
+    }
+
+ private def approvedChildCareRoute(answers: UserAnswers) = {
+    val No = YesNoUnsureEnum.NO.toString
+
+    answers.approvedProvider match {
+      case Some(No) => {
+        if(answers.isEligibleForFreeHours == Eligible && answers.location.contains(LocationEnum.ENGLAND.toString)){
+          routes.FreeHoursInfoController.onPageLoad()
+        } else {
+          routes.FreeHoursResultController.onPageLoad()
+        }
+      }
+      case Some(_) =>  if (answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
+                       else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
