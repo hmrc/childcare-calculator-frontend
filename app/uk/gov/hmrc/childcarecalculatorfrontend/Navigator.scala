@@ -40,7 +40,7 @@ class Navigator @Inject()() {
     WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
     ParentWorkHoursId -> (ua => parentWorkHoursRoute(ua)),
     PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
-	VouchersId -> (vouchers => vouchersRoute(vouchers))
+	  VouchersId -> (vouchers => vouchersRoute(vouchers))
   )
 
   private def doYouLiveRoute(answers: UserAnswers) = {

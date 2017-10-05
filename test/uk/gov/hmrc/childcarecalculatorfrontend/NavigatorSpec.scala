@@ -68,7 +68,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {//TODO - results page
+      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {
+        //TODO - results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
 
@@ -88,7 +89,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {
-      val answers = mock[UserAnswers]
+        val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedTwo) thenReturn Some(true)
         when(answers.childAgedThreeOrFour) thenReturn Some(false)
@@ -228,7 +229,22 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-"go to who gets vouchers page from do either of you get vouchers page when user selects 'yes'" in {
+      executeVouchersNavigation()
+
+    }
+
+    "in Check mode" must {
+
+      "go to CheckYourAnswers from an identifier that doesn't exist in the edit route map" in {
+        case object UnknownIdentifier extends Identifier
+        navigator.nextPage(UnknownIdentifier, CheckMode)(mock[UserAnswers]) mustBe routes.CheckYourAnswersController.onPageLoad()
+      }
+    }
+  }
+
+    private def executeVouchersNavigation() = {
+
+      "go to who gets vouchers page from do either of you get vouchers page when user selects 'yes'" in {
         val answers = mock[UserAnswers]
         when(answers.vouchers) thenReturn Some("yes")
         navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
@@ -242,14 +258,4 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
       }
     }
-
-    "in Check mode" must {
-
-      "go to CheckYourAnswers from an identifier that doesn't exist in the edit route map" in {
-        case object UnknownIdentifier extends Identifier
-        navigator.nextPage(UnknownIdentifier, CheckMode)(mock[UserAnswers]) mustBe routes.CheckYourAnswersController.onPageLoad()
-      }
-    }
-
-  }
 }
