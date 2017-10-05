@@ -41,8 +41,18 @@ class Navigator @Inject()() {
     PaidEmploymentId -> (ua => paidEmploymentRoute(ua)),
     WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
     ParentWorkHoursId -> (ua => parentWorkHoursRoute(ua)),
-    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua))
+    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
+    DoYouGetAnyBenefitsId -> (ua => doYouGetAnyBenefitsRoute(ua))
   )
+
+  private def doYouGetAnyBenefitsRoute(answers: UserAnswers) = {
+    if(answers.doYouGetAnyBenefits.contains(false)){
+      routes.WhatsYourAgeController.onPageLoad(NormalMode)
+    } else {
+      //TODO: Go to new Which benefits do you get checkbox page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    }
+  }
 
   private def doYouLiveRoute(answers: UserAnswers) = {
     if(answers.doYouLiveWithPartner.contains(true)){
