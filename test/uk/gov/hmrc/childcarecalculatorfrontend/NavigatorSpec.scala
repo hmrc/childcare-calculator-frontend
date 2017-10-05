@@ -201,6 +201,32 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
         }
       }
+
+      "Go to Has you partners tax code been adjusted" when {
+        "user selects 'Partner' on who is in paid employment and hit continue on Partner work hours" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+          when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
+          navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Go to Has your tax code been adjusted" when {
+        "user selects 'You' on who is in paid employment and hit continue on Parent work hours" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+          when(answers.parentWorkHours) thenReturn Some(BigDecimal(23))
+          navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        }
+
+        "user selects 'Both' on who is in paid employment and hit continue on Parent work hours" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+          when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
+          when(answers.parentWorkHours) thenReturn Some(BigDecimal(23))
+          navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        }
+      }
     }
 
     "in Check mode" must {

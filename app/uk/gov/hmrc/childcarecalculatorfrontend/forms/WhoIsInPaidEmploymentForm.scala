@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
@@ -38,9 +39,9 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
     Form(single("value" -> of(WhoIsInPaidEmploymentFormatter)))
 
   def options = Seq(
-    RadioOption("whoIsInPaidEmployment", you),
-    RadioOption("whoIsInPaidEmployment", partner),
-    RadioOption("whoIsInPaidEmployment", both)
+    RadioOption("whoIsInPaidEmployment", YouPartnerBothEnum.YOU.toString),
+    RadioOption("whoIsInPaidEmployment", YouPartnerBothEnum.PARTNER.toString),
+    RadioOption("whoIsInPaidEmployment", YouPartnerBothEnum.BOTH.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
