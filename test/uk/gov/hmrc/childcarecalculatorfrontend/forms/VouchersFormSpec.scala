@@ -29,6 +29,6 @@ class VouchersFormSpec extends FormBehaviours {
   "Vouchers form" must {
     behave like questionForm[String](VouchersForm.options.head.value)
 
-    behave like formWithOptionField("value", VouchersForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "vouchers.error", VouchersForm.options.map{x => x.value}:_*)
   }
 }

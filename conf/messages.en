@@ -209,11 +209,13 @@ getBenefits.title = getBenefits
 getBenefits.heading = getBenefits
 getBenefits.checkYourAnswersLabel = getBenefits
 
-vouchers.title = vouchers
-vouchers.heading = vouchers
-vouchers.option1 = vouchers Option 1
-vouchers.option2 = vouchers Option 2
+vouchers.title = Do either of your employers offer childcare vouchers?
+vouchers.heading = Do either of your employers offer childcare vouchers?
+vouchers.yes = Yes
+vouchers.no = No
+vouchers.notSure = Not sure
 vouchers.checkYourAnswersLabel = vouchers
+vouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
 whoGetsVouchers.title = whoGetsVouchers
 whoGetsVouchers.heading = whoGetsVouchers

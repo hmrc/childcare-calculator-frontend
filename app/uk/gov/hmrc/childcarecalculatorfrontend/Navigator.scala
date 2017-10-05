@@ -42,7 +42,8 @@ class Navigator @Inject()() {
     PaidEmploymentId -> (ua => paidEmploymentRoute(ua)),
     WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
     ParentWorkHoursId -> (ua => parentWorkHoursRoute(ua)),
-    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua))
+    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
+	  VouchersId -> (vouchers => vouchersRoute(vouchers))
   )
 
  private def locationRoute(answers: UserAnswers) = answers.location match {
@@ -120,6 +121,7 @@ class Navigator @Inject()() {
       } else {
         routes.FreeHoursResultController.onPageLoad()
       }
+
     case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
@@ -157,6 +159,12 @@ class Navigator @Inject()() {
                        else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
+  }
+
+ private def vouchersRoute(answers: UserAnswers) = answers.vouchers match {
+    case Some(ChildcareConstants.yes) => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+    case Some(_) => routes.GetBenefitsController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
