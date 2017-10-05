@@ -165,7 +165,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           val answers = mock[UserAnswers]
           when(answers.hasPartnerInPaidWork) thenReturn true
           when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
-          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
         }
       }
 
@@ -328,16 +328,16 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           "DO EITHER OF YOU GET VOUCHERS" when {
             "go to who gets vouchers page from do either of you get vouchers page when user selects 'yes'" in {
               val answers = mock[UserAnswers]
-              when(answers.vouchers) thenReturn Some("yes")
-              navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-              navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+              when(answers.eitherGetsVouchers) thenReturn Some("yes")
+              navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+              navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
             }
 
             "go to do you get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure'" in {
               val answers = mock[UserAnswers]
-              when(answers.vouchers) thenReturn Some("no") thenReturn Some("notSure")
-              navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
-              navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
+              when(answers.eitherGetsVouchers) thenReturn Some("no") thenReturn Some("notSure")
+              navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
+              navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
             }
           }
         }
