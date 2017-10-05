@@ -27,14 +27,14 @@ class ParentWorkHoursViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "parentWorkHours"
 
-  def createView = () => parentWorkHours(frontendAppConfig, ParentWorkHoursForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => parentWorkHours(frontendAppConfig, new ParentWorkHoursForm(frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = ParentWorkHoursForm()
+  val form = new ParentWorkHoursForm(frontendAppConfig).apply()
 
   "ParentWorkHours view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 

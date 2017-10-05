@@ -26,7 +26,7 @@ trackGa: Boolean = false,
 inputs: Seq[RadioOption]
 )(implicit messages: Messages)
 
-<div class="form-field">
+<div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
     <fieldset class="form-group" id="@{viewModel.id}">
         <legend class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</legend>
         @if(hint.nonEmpty){

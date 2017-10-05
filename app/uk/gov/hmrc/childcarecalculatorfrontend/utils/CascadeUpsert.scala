@@ -21,22 +21,45 @@ import javax.inject.Singleton
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
 class CascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      LocationId.toString -> ((v, cm) => storeLocation(v, cm))
+      LocationId.toString -> ((v, cm) => storeLocation(v, cm)),
+      DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
+      WhoIsInPaidEmploymentId.toString -> ((v,cm) => storeWhoIsInPaidEmployment(v, cm))
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsString("northernIreland")) {
+    val mapToStore = if (value == JsString(northernIreland)) {
       cacheMap copy (data = cacheMap.data - ChildAgedTwoId.toString)
     } else
       cacheMap
 
     store(LocationId.toString, value, mapToStore)
+  }
+
+  private def storeDoYouLiveWithPartner(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - PaidEmploymentId.toString - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString)
+    } else if(value == JsBoolean(true))
+      cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString)
+    else cacheMap
+
+    store(DoYouLiveWithPartnerId.toString, value, mapToStore)
+  }
+
+  private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsString(you)){
+      cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString)
+    } else if(value == JsString(partner))
+      cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString)
+    else cacheMap
+
+    store(WhoIsInPaidEmploymentId.toString, value, mapToStore)
   }
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
