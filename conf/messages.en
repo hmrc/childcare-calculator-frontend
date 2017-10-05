@@ -208,8 +208,10 @@ vouchers.option1 = vouchers Option 1
 vouchers.option2 = vouchers Option 2
 vouchers.checkYourAnswersLabel = vouchers
 
-whoGetsVouchers.title = whoGetsVouchers
-whoGetsVouchers.heading = whoGetsVouchers
-whoGetsVouchers.option1 = whoGetsVouchers Option 1
-whoGetsVouchers.option2 = whoGetsVouchers Option 2
+whoGetsVouchers.title = Which of you is offered childcare vouchers?
+whoGetsVouchers.heading = Which of you is offered childcare vouchers?
+whoGetsVouchers.you = You
+whoGetsVouchers.partner = Partner
+whoGetsVouchers.both = Both
+whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers

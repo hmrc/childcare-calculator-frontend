@@ -68,7 +68,8 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {//TODO - results page
+      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {
+        //TODO - results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn NotEligible
@@ -88,7 +89,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {
-      val answers = mock[UserAnswers]
+        val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedTwo) thenReturn Some(true)
         when(answers.childAgedThreeOrFour) thenReturn Some(false)
@@ -227,6 +228,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
         }
       }
+
+      "WHO GETS VOUCHERS" when {
+        "user select any option go to Get Benefits page" in {
+          navigator.nextPage(WhoGetsVouchersId, NormalMode)(mock[UserAnswers]) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
+        }
+      }
     }
 
     "in Check mode" must {
@@ -236,6 +243,5 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(UnknownIdentifier, CheckMode)(mock[UserAnswers]) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
     }
-
   }
 }

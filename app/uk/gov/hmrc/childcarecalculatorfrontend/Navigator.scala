@@ -39,7 +39,8 @@ class Navigator @Inject()() {
     PaidEmploymentId -> (ua => paidEmploymentRoute(ua)),
     WhoIsInPaidEmploymentId -> (ua => workHoursRoute(ua)),
     ParentWorkHoursId -> (ua => parentWorkHoursRoute(ua)),
-    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua))
+    PartnerWorkHoursId -> (ua => partnerWorkHoursRoute(ua)),
+    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
   )
 
   private def doYouLiveRoute(answers: UserAnswers) = {
