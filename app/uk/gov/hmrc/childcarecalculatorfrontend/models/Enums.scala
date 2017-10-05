@@ -33,3 +33,16 @@ object LocationEnum extends Enumeration {
   implicit def enumFormats: Format[LocationEnum] = EnumUtils.enumFormat(LocationEnum)
 }
 
+object YouPartnerBothEnum extends Enumeration {
+  type YouPartnerBothEnum = Value
+
+  val YOU = Value("you")
+  val PARTNER = Value("partner")
+  val BOTH = Value("both")
+
+  val enumReads: Reads[YouPartnerBothEnum] = EnumUtils.enumReads(YouPartnerBothEnum)
+  val enumWrites: Writes[YouPartnerBothEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[YouPartnerBothEnum] = EnumUtils.enumFormat(YouPartnerBothEnum)
+}
+

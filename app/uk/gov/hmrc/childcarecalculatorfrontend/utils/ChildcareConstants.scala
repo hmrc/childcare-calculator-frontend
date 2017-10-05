@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.data.FormError
-
-class FormErrorHelper {
-
-  def produceError(key: String, error: String) = Left(Seq(FormError(key, error)))
-
-  def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
-    value >= minValue && value <= maxValue
-  }
+object ChildcareConstants {
+  val you = "you"
+  val partner = "partner"
+  val both = "both"
+  val no = "no"
+  val northernIreland = "northernIreland"
+  val areYouInPaidWorkErrorKey = "areYouInPaidWork.error"
+  val doYouLiveWithPartnerErrorKey = "doYouLiveWithPartner.error"
+  val whoIsInPaidEmploymentErrorKey = "whoIsInPaidEmployment.error"
+  val unknownErrorKey = "error.unknown"
+  val paidEmploymentErrorKey = "paidEmployment.error"
+  val workHoursBlankErrorKey = "workHours.blank"
+  val workHoursInvalidErrorKey = "workHours.invalid"
 }

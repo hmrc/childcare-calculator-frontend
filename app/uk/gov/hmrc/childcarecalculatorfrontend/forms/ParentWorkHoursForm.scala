@@ -16,32 +16,47 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.{Inject, Singleton}
+
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object ParentWorkHoursForm extends FormErrorHelper {
+@Singleton
+class ParentWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def parentWorkHoursFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
+  def parentWorkHoursFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val intRegex = """^(\d+)$""".r
-    val decimalRegex = """^(\d*\.\d*)$""".r
+    val minValue: Double = appConfig.minWorkingHours
+    val maxValue: Double = appConfig.maxWorkingHours
+    val decimalRegex: String = "0*[0-9]{1,2}(\\.[0-9])?".r.toString()
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
       data.get(key) match {
+
         case None => produceError(key, errorKeyBlank)
+
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) => s.trim.replace(",", "") match {
-          case intRegex(str) => Right(str.toInt)
-          case decimalRegex(_) => produceError(key, errorKeyDecimal)
-          case _ => produceError(key, errorKeyNonNumeric)
-        }
+
+        case Some(strValue) if(strValue.matches(decimalRegex)) =>
+          val value = BigDecimal(strValue)
+
+          if (validateInRange(value, minValue, maxValue)) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyBlank)
+          }
+
+        case _ =>
+          produceError(key, errorKeyInvalid)
       }
     }
 
-    def unbind(key: String, value: Int) = Map(key -> value.toString)
+    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
-    Form(single("value" -> of(parentWorkHoursFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
+  def apply(errorKeyBlank: String = workHoursBlankErrorKey, errorKeyInvalid: String = workHoursInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(parentWorkHoursFormatter(errorKeyBlank, errorKeyInvalid))))
 }
