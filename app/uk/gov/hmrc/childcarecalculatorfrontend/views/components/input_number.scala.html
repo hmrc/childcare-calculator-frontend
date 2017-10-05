@@ -37,10 +37,11 @@ labelClass: Option[String] = None
     <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
     }
 
-    <div class="form-control-wrapper">
+    <div class="form-control-wrapper ">
         <input
-                class="form-control @inputClass"
-                type="text"
+                class="form-control @inputClass input--no-spinner"
+                type="number"
+                step="any"
                 id="@{viewModel.id}"
                 name="@{viewModel.id}"
                 value="@{viewModel.value}"

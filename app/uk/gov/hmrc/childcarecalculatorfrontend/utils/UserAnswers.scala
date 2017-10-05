@@ -40,9 +40,9 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def doEitherOfYourEmployersOfferChildcareVouchers: Option[String] = cacheMap.getEntry[String](DoEitherOfYourEmployersOfferChildcareVouchersId.toString)
 
-  def partnerWorkHours: Option[Int] = cacheMap.getEntry[Int](PartnerWorkHoursId.toString)
+  def partnerWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerWorkHoursId.toString)
 
-  def parentWorkHours: Option[Int] = cacheMap.getEntry[Int](ParentWorkHoursId.toString)
+  def parentWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentWorkHoursId.toString)
 
   def whoIsInPaidEmployment: Option[String] = cacheMap.getEntry[String](WhoIsInPaidEmploymentId.toString)
 
