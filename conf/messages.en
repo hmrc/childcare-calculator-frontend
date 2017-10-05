@@ -185,13 +185,17 @@ doYouKnowYourAdjustedTaxCode.title = doYouKnowYourAdjustedTaxCode
 doYouKnowYourAdjustedTaxCode.heading = doYouKnowYourAdjustedTaxCode
 doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourAdjustedTaxCode
 
-hasYourPartnersTaxCodeBeenAdjusted.title = hasYourPartnersTaxCodeBeenAdjusted
-hasYourPartnersTaxCodeBeenAdjusted.heading = hasYourPartnersTaxCodeBeenAdjusted
-hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCodeBeenAdjusted
+hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if their tax code has been adjusted
 
-hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
+hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
@@ -213,3 +217,7 @@ whoGetsVouchers.heading = whoGetsVouchers
 whoGetsVouchers.option1 = whoGetsVouchers Option 1
 whoGetsVouchers.option2 = whoGetsVouchers Option 2
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
+
+doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode

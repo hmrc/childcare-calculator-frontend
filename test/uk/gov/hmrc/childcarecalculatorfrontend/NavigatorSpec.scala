@@ -68,11 +68,59 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.ApprovedProviderController.onPageLoad(NormalMode)
       }
 
-      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {//TODO - results page
+      "go to results page from childcare cost if you are not eligible for free hours and don't have the child care cost" in {
+        //TODO - results page
         val answers = mock[UserAnswers]
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.isEligibleForFreeHours) thenReturn NotEligible
         navigator.nextPage(ChildcareCostsId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      }
+    }
+
+      "Has Your Tax Code Been Adjusted" when {
+        "single user will be taken to DoYouKnowYourAdjustedTaxCode screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
+          val answers = mock[UserAnswers]
+          when(answers.hasPartnerInPaidWork) thenReturn false
+          when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(true)
+          navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
+          val answers = mock[UserAnswers]
+          when(answers.hasPartnerInPaidWork) thenReturn false
+          when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
+          navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+
+        "user with a partner in paid work will be taken to HasYourPartnerTaxCodeBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when no is selected" in {
+          val answers = mock[UserAnswers]
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
+          navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        }
+
+        "user with a partner in paid work will be taken to DoYouKnowYourAdjustedTaxCode screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
+          val answers = mock[UserAnswers]
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(true)
+          navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Has Your Partners Tax Code Been Adjusted" when {
+        "user with partner will be taken to DoYouKnowYourPartnersAdjustedTaxCode screen from HasYourPartnersTaxCodeBeenAdjusted when yes is selected" in {
+          val answers = mock[UserAnswers]
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(true)
+          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "user with partner will be taken to DoEitherOfYourEmployersOfferChildcareVouchers screen from HasYourPartnersTaxCodeBeenAdjusted when no is selected" in {
+          val answers = mock[UserAnswers]
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
+          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
       }
 
       "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {
@@ -236,6 +284,6 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(UnknownIdentifier, CheckMode)(mock[UserAnswers]) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
     }
-
   }
-}
+
+

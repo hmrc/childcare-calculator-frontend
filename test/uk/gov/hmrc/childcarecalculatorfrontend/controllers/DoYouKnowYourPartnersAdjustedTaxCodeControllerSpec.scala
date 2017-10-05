@@ -24,21 +24,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HasYourTaxCodeBeenAdjustedId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouKnowYourPartnersAdjustedTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hasYourTaxCodeBeenAdjusted
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
 
-class HasYourTaxCodeBeenAdjustedControllerSpec extends ControllerSpecBase {
+class DoYouKnowYourPartnersAdjustedTaxCodeControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new HasYourTaxCodeBeenAdjustedController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new DoYouKnowYourPartnersAdjustedTaxCodeController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = hasYourTaxCodeBeenAdjusted(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = doYouKnowYourPartnersAdjustedTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "HasYourTaxCodeBeenAdjusted Controller" must {
+  "DoYouKnowYourPartnersAdjustedTaxCode Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -48,7 +48,7 @@ class HasYourTaxCodeBeenAdjustedControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true))
+      val validData = Map(DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -67,7 +67,7 @@ class HasYourTaxCodeBeenAdjustedControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("hasYourTaxCodeBeenAdjusted.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

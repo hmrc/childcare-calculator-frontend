@@ -20,6 +20,8 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def doYouKnowYourPartnersAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourPartnersAdjustedTaxCodeId.toString)
+
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 
   def vouchers: Option[String] = cacheMap.getEntry[String](VouchersId.toString)
@@ -57,4 +59,8 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
+
+  def hasPartnerInPaidWork: Boolean = {
+    doYouLiveWithPartner.contains(true) && (whoIsInPaidEmployment.contains("partner") || whoIsInPaidEmployment.contains("both"))
+  }
 }
