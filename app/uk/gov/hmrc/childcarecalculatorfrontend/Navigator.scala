@@ -44,6 +44,7 @@ class Navigator @Inject() (schemes: Schemes) {
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
+    DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
     VouchersId ->  vouchersRoute
   )
 
@@ -112,6 +113,16 @@ class Navigator @Inject() (schemes: Schemes) {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
+  private def DoYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers):Call = {
+    if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
+      routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+    } else if (answers.hasPartnerInPaidWork && answers.doYouKnowYourAdjustedTaxCode.contains(false)) {
+      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+    } else if ((!answers.hasPartnerInPaidWork) && answers.doYouKnowYourAdjustedTaxCode.contains(false)) {
+      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+    } else routes.SessionExpiredController.onPageLoad()
+  }
+
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
     case Some(ChildcareConstants.no) =>

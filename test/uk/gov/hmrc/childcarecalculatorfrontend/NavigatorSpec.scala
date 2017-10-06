@@ -174,6 +174,28 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Do you know your adjusted tax code" when {
+        "when users answer yes they are taken to WhatIsYourAdjustedTaxCode screen from DoYouKnowYourAdjustedTaxCode when yes is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(true)
+          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "user with partner will be taken to DoYouKnowYourPartnersAdjustedTaxCode screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
+          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "single user will be taken to DoesYourEmployerOfferChildcareVouchersController screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn false
+          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
+          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+      }
+
       "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {
         val answers = spy(userAnswers())
         when(answers.childcareCosts) thenReturn Some("no")
