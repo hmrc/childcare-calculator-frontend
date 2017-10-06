@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
+import org.scalatest.{MustMatchers, WordSpec}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.http.cache.client.CacheMap
 
-class FakeNavigator(desiredRoute: Call, mode: Mode = NormalMode, schemes: Schemes = new Schemes()) extends Navigator(schemes) {
-  override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call = (ua) => desiredRoute
+trait SchemeSpec extends WordSpec with MustMatchers {
+
+  def helper(answers: (String, JsValue)*): UserAnswers =
+    new UserAnswers(CacheMap("", Map(answers: _*)))
 }
