@@ -335,17 +335,16 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "Go to Has your tax code been adjusted" when {
         "user selects 'You' on who is in paid employment and hit continue on Parent work hours" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.parentWorkHours) thenReturn Some(BigDecimal(23))
           navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
         }
 
-        "user selects 'Both' on who is in paid employment and hit continue on Parent work hours" in {
+        "user selects 'No' on who is in paid employment and hit continue on Parent work hours" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
-          when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
+          when(answers.areYouInPaidWork) thenReturn Some(false)
           when(answers.parentWorkHours) thenReturn Some(BigDecimal(23))
-          navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+          navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
         }
       }
 
