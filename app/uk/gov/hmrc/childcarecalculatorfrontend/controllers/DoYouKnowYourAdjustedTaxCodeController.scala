@@ -50,7 +50,7 @@ class DoYouKnowYourAdjustedTaxCodeController @Inject()(appConfig: FrontendAppCon
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("doYouKnowYourAdjustedTaxCode.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(doYouKnowYourAdjustedTaxCode(appConfig, formWithErrors, mode))),
         (value) =>

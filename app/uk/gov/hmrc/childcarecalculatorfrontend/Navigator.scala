@@ -47,7 +47,9 @@ class Navigator @Inject() (schemes: Schemes) {
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
     DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
     EitherGetsVouchersId -> vouchersRoute,
-    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
+    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
+    DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
+    EitherGetsVouchersId -> vouchersRoute
   )
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
@@ -103,18 +105,22 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def parentWorkHoursRoute(answers: UserAnswers) = {
-    val You = YouPartnerBothEnum.YOU.toString
-    val Partner = YouPartnerBothEnum.PARTNER.toString
-    val Both = YouPartnerBothEnum.BOTH.toString
-
-    answers.whoIsInPaidEmployment match {
-      case Some(You) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-      case Some(Both) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+  private def parentWorkHoursRoute(answers: UserAnswers) = answers.areYouInPaidWork match {
+      case Some(true) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      case Some(false) => routes.FreeHoursResultController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
+
+  private def DoYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers):Call = {
+    if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
+      routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+    } else if (answers.hasPartnerInPaidWork && answers.doYouKnowYourAdjustedTaxCode.contains(false)) {
+      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+    } else if ((!answers.hasPartnerInPaidWork) && answers.doYouKnowYourAdjustedTaxCode.contains(false)) {
+      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+    } else routes.SessionExpiredController.onPageLoad()
   }
+
 
   private def costRoute(answers: UserAnswers) = answers.childcareCosts match {
     case Some(ChildcareConstants.no) =>
