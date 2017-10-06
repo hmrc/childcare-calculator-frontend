@@ -36,10 +36,13 @@ inputs: Seq[RadioOption]
         <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
         }
         @for(input <- inputs) {
-        <label class="block-label selection-button-radio" for="@{input.id}">
+        <div class="multiple-choice">
             <input id="@{input.id}" type="radio" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value == Some(input.value)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
-            @messages(input.messageKey)
-        </label>
+
+            <label class="block-label selection-button-radio" for="@{input.id}">
+                @messages(input.messageKey)
+            </label>
+        </div>
         }
     </fieldset>
 </div>
