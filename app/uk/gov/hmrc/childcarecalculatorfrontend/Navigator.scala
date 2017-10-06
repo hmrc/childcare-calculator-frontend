@@ -36,6 +36,7 @@ class Navigator @Inject() (schemes: Schemes) {
     ChildcareCostsId -> costRoute,
     ApprovedProviderId -> approvedChildCareRoute,
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
+    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     PaidEmploymentId -> paidEmploymentRoute,
@@ -44,7 +45,8 @@ class Navigator @Inject() (schemes: Schemes) {
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
-    VouchersId ->  vouchersRoute
+    EitherGetsVouchersId -> vouchersRoute,
+    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
   )
 
   private def locationRoute(answers: UserAnswers) = answers.location match {
@@ -137,7 +139,7 @@ class Navigator @Inject() (schemes: Schemes) {
     if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
       routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
     } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
-      routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
@@ -160,7 +162,7 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def vouchersRoute(answers: UserAnswers) = answers.vouchers match {
+  private def vouchersRoute(answers: UserAnswers) = answers.eitherGetsVouchers match {
     case Some(ChildcareConstants.yes) => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     case Some(_) => routes.GetBenefitsController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
