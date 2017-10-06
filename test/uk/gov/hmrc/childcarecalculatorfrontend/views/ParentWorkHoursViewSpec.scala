@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentWorkHoursForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentWorkHours
 
-class ParentWorkHoursViewSpec extends IntViewBehaviours {
+class ParentWorkHoursViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "parentWorkHours"
 
