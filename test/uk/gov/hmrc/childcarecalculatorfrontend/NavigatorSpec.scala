@@ -33,7 +33,6 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
   val navigator = new Navigator(new Schemes())
-
   case object UnknownIdentifier extends Identifier
 
   "Navigator" when {
@@ -187,7 +186,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "go to results page from childcare cost if you are eligible for free hours, have child aged 2 and don't have the child care cost" in {
-      val answers = spy(userAnswers())
+        val answers = spy(userAnswers())
         when(answers.childcareCosts) thenReturn Some("no")
         when(answers.childAgedTwo) thenReturn Some(true)
         when(answers.childAgedThreeOrFour) thenReturn Some(false)
@@ -340,6 +339,20 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.vouchers) thenReturn Some("no") thenReturn Some("notSure")
           navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
           navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.GetBenefitsController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Does Your Employer Offer Childcare Vouchers" when {
+        "user with partner will be taken to Do you get any benefits screen from " +
+          "DoesYourEmployerOfferChildcareVouchers screen when any selection is done" in {
+          val answers = spy(userAnswers())
+          when(answers.doesYourEmployerOfferChildcareVouchers) thenReturn
+            Some(YesNoUnsureEnum.YES.toString) thenReturn
+            Some(YesNoUnsureEnum.NO.toString) thenReturn
+            Some(YesNoUnsureEnum.NOTSURE.toString)
+
+          navigator.nextPage(DoEitherOfYourEmployersOfferChildcareVouchersId, NormalMode)(answers) mustBe
+            routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: TO be replaced by Do you get any benefits page
         }
       }
     }

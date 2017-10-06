@@ -29,6 +29,8 @@ class DoesYourEmployerOfferChildcareVouchersFormSpec extends FormBehaviours {
   "DoesYourEmployerOfferChildcareVouchers form" must {
     behave like questionForm[String](DoesYourEmployerOfferChildcareVouchersForm.options.head.value)
 
-    behave like formWithOptionField("value", DoesYourEmployerOfferChildcareVouchersForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value",
+      "doesYourEmployerOfferChildcareVouchers.error",
+      DoesYourEmployerOfferChildcareVouchersForm.options.map{x => x.value}:_*)
   }
 }

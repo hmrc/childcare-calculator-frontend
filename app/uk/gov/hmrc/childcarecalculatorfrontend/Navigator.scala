@@ -45,7 +45,8 @@ class Navigator @Inject() (schemes: Schemes) {
     WhoIsInPaidEmploymentId -> workHoursRoute,
     ParentWorkHoursId -> parentWorkHoursRoute,
     PartnerWorkHoursId -> partnerWorkHoursRoute,
-	  VouchersId ->  vouchersRoute
+	  VouchersId ->  vouchersRoute,
+    DoesYourEmployerOfferChildcareVouchersId -> (_ => routes.WhatToTellTheCalculatorController.onPageLoad())// TODO: To be replaced by Do you get any benefits page
   )
 
  private def locationRoute(answers: UserAnswers) = answers.location match {

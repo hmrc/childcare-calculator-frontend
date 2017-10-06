@@ -27,7 +27,7 @@ object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
   def DoesYourEmployerOfferChildcareVouchersFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "doesYourEmployerOfferChildcareVouchers.error")
       case _ => produceError(key, "error.unknown")
     }
 

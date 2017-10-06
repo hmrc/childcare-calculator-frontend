@@ -184,6 +184,7 @@ doesYourEmployerOfferChildcareVouchers.yes = Yes
 doesYourEmployerOfferChildcareVouchers.no = No
 doesYourEmployerOfferChildcareVouchers.notSure = Not sure
 doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
+doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
 doYouKnowYourAdjustedTaxCode.title = doYouKnowYourAdjustedTaxCode
 doYouKnowYourAdjustedTaxCode.heading = doYouKnowYourAdjustedTaxCode
