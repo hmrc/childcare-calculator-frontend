@@ -228,3 +228,7 @@ whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
+
+whatIsYourPartnersTaxCode.title = whatIsYourPartnersTaxCode
+whatIsYourPartnersTaxCode.heading = whatIsYourPartnersTaxCode
+whatIsYourPartnersTaxCode.checkYourAnswersLabel = whatIsYourPartnersTaxCode
