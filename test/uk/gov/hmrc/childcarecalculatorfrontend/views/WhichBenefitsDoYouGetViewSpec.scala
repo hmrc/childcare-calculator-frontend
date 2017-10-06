@@ -40,25 +40,25 @@ class WhichBenefitsDoYouGetViewSpec extends ViewBehaviours {
 
   "WhichBenefitsDoYouGet view" when {
     "rendered" must {
-      "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(WhichBenefitsDoYouGetForm()))
-        for (option <- WhichBenefitsDoYouGetForm.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
+//      "contain radio buttons for the value" in {
+//        val doc = asDocument(createViewUsingForm(WhichBenefitsDoYouGetForm()))
+//        for (option <- WhichBenefitsDoYouGetForm.options) {
+//          assertContainsRadioButton(doc, option.id, "value", option.value, false)
+//        }
+//      }
     }
 
     for(option <- WhichBenefitsDoYouGetForm.options) {
-      s"rendered with a value of '${option.value}'" must {
-        s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(WhichBenefitsDoYouGetForm().bind(Map("value" -> s"${option.value}"))))
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
-
-          for(unselectedOption <- WhichBenefitsDoYouGetForm.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
+//      s"rendered with a value of '${option.value}'" must {
+//        s"have the '${option.value}' radio button selected" in {
+//          val doc = asDocument(createViewUsingForm(WhichBenefitsDoYouGetForm().bind(Map("value" -> s"${option.value}"))))
+//          assertContainsRadioButton(doc, option.id, "value", option.value, true)
+//
+//          for(unselectedOption <- WhichBenefitsDoYouGetForm.options.filterNot(o => o == option)) {
+//            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
+//          }
+//        }
+//      }
     }
   }
 }
