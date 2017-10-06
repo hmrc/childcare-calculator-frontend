@@ -34,25 +34,24 @@ class Navigator @Inject() (schemes: Schemes) {
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
     ChildcareCostsId -> costRoute,
-    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    DoYouLiveWithPartnerId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     ApprovedProviderId -> approvedChildCareRoute,
-	  HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
-    HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
+    FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     PaidEmploymentId -> paidEmploymentRoute,
     WhoIsInPaidEmploymentId -> workHoursRoute,
     ParentWorkHoursId -> parentWorkHoursRoute,
     PartnerWorkHoursId -> partnerWorkHoursRoute,
-	  VouchersId ->  vouchersRoute
+    HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
+    HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
+    VouchersId ->  vouchersRoute
   )
 
- private def locationRoute(answers: UserAnswers) = answers.location match {
-		case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-		case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
-		case _ => routes.SessionExpiredController.onPageLoad()
-	  }
+  private def locationRoute(answers: UserAnswers) = answers.location match {
+    case Some("northernIreland") => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
+    case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
 
   private def doYouLiveRoute(answers: UserAnswers) = {
     if(answers.doYouLiveWithPartner.contains(true)){
@@ -128,23 +127,23 @@ class Navigator @Inject() (schemes: Schemes) {
 
   private def taxCodeAdjustedRoute(answers: UserAnswers): Call =
     (answers.hasPartnerInPaidWork, answers.hasYourTaxCodeBeenAdjusted) match {
-    case (true, Some(false)) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    case (_, Some(true)) => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
-    case (false, Some(false)) => routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
-    case _ => routes.SessionExpiredController.onPageLoad()
-  }
-
-  private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
-      if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
-        routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-      } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
-        routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
-      } else {
-        routes.SessionExpiredController.onPageLoad()
-      }
+      case (true, Some(false)) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      case (_, Some(true)) => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+      case (false, Some(false)) => routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
     }
 
- private def approvedChildCareRoute(answers: UserAnswers) = {
+  private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
+    if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
+      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+    } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
+      routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def approvedChildCareRoute(answers: UserAnswers) = {
     val No = YesNoUnsureEnum.NO.toString
 
     answers.approvedProvider match {
@@ -156,12 +155,12 @@ class Navigator @Inject() (schemes: Schemes) {
         }
       }
       case Some(_) =>  if (answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
-                       else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
- private def vouchersRoute(answers: UserAnswers) = answers.vouchers match {
+  private def vouchersRoute(answers: UserAnswers) = answers.vouchers match {
     case Some(ChildcareConstants.yes) => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     case Some(_) => routes.GetBenefitsController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
