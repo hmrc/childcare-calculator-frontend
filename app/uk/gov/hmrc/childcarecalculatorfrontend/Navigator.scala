@@ -45,6 +45,7 @@ class Navigator @Inject() (schemes: Schemes) {
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
+    DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
   )
@@ -144,6 +145,14 @@ class Navigator @Inject() (schemes: Schemes) {
       routes.SessionExpiredController.onPageLoad()
     }
   }
+
+  private def doYouKnowPartnersTaxCodeRoute (answers: UserAnswers): Call =
+    answers.doYouKnowYourPartnersAdjustedTaxCode match{
+      case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+      case Some(false) => routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      case None => routes.SessionExpiredController.onPageLoad()
+
+    }
 
   private def approvedChildCareRoute(answers: UserAnswers) = {
     val No = YesNoUnsureEnum.NO.toString

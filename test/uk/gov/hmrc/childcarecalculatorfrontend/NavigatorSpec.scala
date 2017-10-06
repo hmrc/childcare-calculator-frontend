@@ -174,6 +174,22 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Do you know your partners adjusted tax code" when {
+        "user with partner will be taken to WhatIsYourPartnersTaxCode screen from DoYouKnowYourPartnersTaxCode when yes is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.doYouKnowYourPartnersAdjustedTaxCode) thenReturn Some(true)
+          navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "user with partner will be taken to EitherGetsVouchers screen from DoYouKnowYourPartnersTaxCode when yes is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.doYouKnowYourPartnersAdjustedTaxCode) thenReturn Some(false)
+          navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+        }
+      }
+
       "go to results page from childcare cost if you are eligible for free hours, have child aged 3 or 4 years and don't have the child care cost" in {
         val answers = spy(userAnswers())
         when(answers.childcareCosts) thenReturn Some("no")

@@ -225,9 +225,11 @@ whoGetsVouchers.both = Both
 whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
-doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
-doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
-doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.heading = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+doYouKnowYourPartnersAdjustedTaxCode.error = You must tell the calculator if you know your partner's tax code
 
 whatIsYourPartnersTaxCode.title = whatIsYourPartnersTaxCode
 whatIsYourPartnersTaxCode.heading = whatIsYourPartnersTaxCode
