@@ -49,8 +49,10 @@ class Navigator @Inject() (schemes: Schemes) {
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
+    EitherGetsVouchersId -> vouchersRoute,
+    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
     DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
-    EitherGetsVouchersId -> vouchersRoute
+    DoesYourEmployerOfferChildcareVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -63,7 +65,7 @@ class Navigator @Inject() (schemes: Schemes) {
   }
 
   private def doYouLiveRoute(answers: UserAnswers) = {
-    if(answers.doYouLiveWithPartner.contains(true)){
+    if (answers.doYouLiveWithPartner.contains(true)) {
       routes.PaidEmploymentController.onPageLoad(NormalMode)
     } else {
       routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
@@ -71,7 +73,7 @@ class Navigator @Inject() (schemes: Schemes) {
   }
 
   private def areYouInPaidWorkRoute(answers: UserAnswers) = {
-    if(answers.areYouInPaidWork.contains(true)){
+    if (answers.areYouInPaidWork.contains(true)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
       routes.FreeHoursResultController.onPageLoad()

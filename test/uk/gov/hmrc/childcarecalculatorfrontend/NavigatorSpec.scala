@@ -383,6 +383,24 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           }
         }
       }
+
+      "Does Your Employer Offer Childcare Vouchers" when {
+        "user with partner will be taken to Do you get any benefits screen from " +
+          "DoesYourEmployerOfferChildcareVouchers screen when any selection is done" in {
+          val answers = spy(userAnswers())
+          when(answers.doesYourEmployerOfferChildcareVouchers) thenReturn
+            Some(YesNoUnsureEnum.YES.toString) thenReturn
+            Some(YesNoUnsureEnum.NO.toString) thenReturn
+            Some(YesNoUnsureEnum.NOTSURE.toString)
+
+          navigator.nextPage(DoesYourEmployerOfferChildcareVouchersId, NormalMode)(answers) mustBe
+            routes.GetBenefitsController.onPageLoad(NormalMode) //TODO: Might be replaced with proper benefits page once correct name is finalised
+          navigator.nextPage(DoesYourEmployerOfferChildcareVouchersId, NormalMode)(answers) mustBe
+            routes.GetBenefitsController.onPageLoad(NormalMode)
+          navigator.nextPage(DoesYourEmployerOfferChildcareVouchersId, NormalMode)(answers) mustBe
+            routes.GetBenefitsController.onPageLoad(NormalMode)
+        }
+      }
     }
 
     "in Check mode" must {
