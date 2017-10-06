@@ -186,8 +186,9 @@ doesYourEmployerOfferChildcareVouchers.notSure = Not sure
 doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
 doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
-doYouKnowYourAdjustedTaxCode.title = doYouKnowYourAdjustedTaxCode
-doYouKnowYourAdjustedTaxCode.heading = doYouKnowYourAdjustedTaxCode
+doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
 doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourAdjustedTaxCode
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
@@ -211,18 +212,20 @@ getBenefits.title = getBenefits
 getBenefits.heading = getBenefits
 getBenefits.checkYourAnswersLabel = getBenefits
 
-vouchers.title = Do either of your employers offer childcare vouchers?
-vouchers.heading = Do either of your employers offer childcare vouchers?
-vouchers.yes = Yes
-vouchers.no = No
-vouchers.notSure = Not sure
-vouchers.checkYourAnswersLabel = vouchers
-vouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
+eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.yes = Yes
+eitherGetsVouchers.no = No
+eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.checkYourAnswersLabel = vouchers
+eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = whoGetsVouchers
-whoGetsVouchers.heading = whoGetsVouchers
-whoGetsVouchers.option1 = whoGetsVouchers Option 1
-whoGetsVouchers.option2 = whoGetsVouchers Option 2
+whoGetsVouchers.title = Which of you is offered childcare vouchers?
+whoGetsVouchers.heading = Which of you is offered childcare vouchers?
+whoGetsVouchers.you = You
+whoGetsVouchers.partner = Partner
+whoGetsVouchers.both = Both
+whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
 doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
