@@ -38,9 +38,9 @@ object EitherGetsVouchersForm extends FormErrorHelper {
     Form(single("value" -> of(VouchersFormatter)))
 
   def options = Seq(
-    RadioOption("vouchers", YesNoUnsureEnum.YES.toString),
-    RadioOption("vouchers", YesNoUnsureEnum.NO.toString),
-    RadioOption("vouchers", YesNoUnsureEnum.NOTSURE.toString)
+    RadioOption("eitherGetsVouchers", YesNoUnsureEnum.YES.toString),
+    RadioOption("eitherGetsVouchers", YesNoUnsureEnum.NO.toString),
+    RadioOption("eitherGetsVouchers", YesNoUnsureEnum.NOTSURE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
