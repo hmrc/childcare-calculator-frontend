@@ -29,6 +29,6 @@ class WhoGetsVouchersFormSpec extends FormBehaviours {
   "WhoGetsVouchers form" must {
     behave like questionForm[String](WhoGetsVouchersForm.options.head.value)
 
-    behave like formWithOptionField("value", WhoGetsVouchersForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "whoGetsVouchers.error", WhoGetsVouchersForm.options.map{x => x.value}:_*)
   }
 }

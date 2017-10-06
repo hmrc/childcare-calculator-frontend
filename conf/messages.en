@@ -209,18 +209,20 @@ getBenefits.title = getBenefits
 getBenefits.heading = getBenefits
 getBenefits.checkYourAnswersLabel = getBenefits
 
-vouchers.title = Do either of your employers offer childcare vouchers?
-vouchers.heading = Do either of your employers offer childcare vouchers?
-vouchers.yes = Yes
-vouchers.no = No
-vouchers.notSure = Not sure
-vouchers.checkYourAnswersLabel = vouchers
-vouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
+eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.yes = Yes
+eitherGetsVouchers.no = No
+eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.checkYourAnswersLabel = vouchers
+eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = whoGetsVouchers
-whoGetsVouchers.heading = whoGetsVouchers
-whoGetsVouchers.option1 = whoGetsVouchers Option 1
-whoGetsVouchers.option2 = whoGetsVouchers Option 2
+whoGetsVouchers.title = Which of you is offered childcare vouchers?
+whoGetsVouchers.heading = Which of you is offered childcare vouchers?
+whoGetsVouchers.you = You
+whoGetsVouchers.partner = Partner
+whoGetsVouchers.both = Both
+whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
 doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode

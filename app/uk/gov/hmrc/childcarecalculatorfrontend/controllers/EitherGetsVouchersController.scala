@@ -24,15 +24,15 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.VouchersForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.VouchersId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.EitherGetsVouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EitherGetsVouchersId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.vouchers
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherGetsVouchers
 
 import scala.concurrent.Future
 
-class VouchersController @Inject()(
+class EitherGetsVouchersController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
                                         dataCacheConnector: DataCacheConnector,
@@ -42,21 +42,21 @@ class VouchersController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.vouchers match {
-        case None => VouchersForm()
-        case Some(value) => VouchersForm().fill(value)
+      val preparedForm = request.userAnswers.eitherGetsVouchers match {
+        case None => EitherGetsVouchersForm()
+        case Some(value) => EitherGetsVouchersForm().fill(value)
       }
-      Ok(vouchers(appConfig, preparedForm, mode))
+      Ok(eitherGetsVouchers(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      VouchersForm().bindFromRequest().fold(
+      EitherGetsVouchersForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(vouchers(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(eitherGetsVouchers(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, VouchersId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(VouchersId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[String](request.sessionId, EitherGetsVouchersId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(EitherGetsVouchersId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
