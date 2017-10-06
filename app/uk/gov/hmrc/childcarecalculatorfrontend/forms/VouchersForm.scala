@@ -26,7 +26,7 @@ object VouchersForm extends FormErrorHelper {
   def VouchersFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "vouchers.error")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,8 +37,9 @@ object VouchersForm extends FormErrorHelper {
     Form(single("value" -> of(VouchersFormatter)))
 
   def options = Seq(
-    RadioOption("vouchers", "option1"),
-    RadioOption("vouchers", "option2")
+    RadioOption("vouchers", "yes"),
+    RadioOption("vouchers", "no"),
+    RadioOption("vouchers", "notSure")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

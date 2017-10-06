@@ -90,11 +90,6 @@ POST       /areYouInPaidWork                       uk.gov.hmrc.childcarecalculat
 GET        /changeAreYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAreYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = CheckMode)
 
-GET        /getBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad(mode: Mode = NormalMode)
-POST       /getBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeGetBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeGetBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit(mode: Mode = CheckMode)
-
 GET        /vouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad(mode: Mode = NormalMode)
 POST       /vouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit(mode: Mode = NormalMode)
 GET        /changeVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onPageLoad(mode: Mode = CheckMode)

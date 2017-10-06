@@ -21,6 +21,7 @@ object ChildcareConstants {
   val partner = "partner"
   val both = "both"
   val no = "no"
+  val yes = "yes"
   val northernIreland = "northernIreland"
   val areYouInPaidWorkErrorKey = "areYouInPaidWork.error"
   val doYouLiveWithPartnerErrorKey = "doYouLiveWithPartner.error"
