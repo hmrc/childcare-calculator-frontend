@@ -26,3 +26,11 @@
     margin-bottom: 20px;
     margin-top: 20px;
 }
+
+/*
+IE8: Fix wrapping of crown on Gov.UK in header
+*/
+.lte-ie8 #logo img {
+    max-width: none;
+}
+

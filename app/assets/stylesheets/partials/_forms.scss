@@ -151,3 +151,21 @@ override character count display
         display: block;
     }
 }
+
+/*
+=====================================
+New style radio and checkbox
+=====================================
+*/
+
+.multiple-choice {
+  margin-bottom: 0;
+}
+
+/*
+IE8: Remove square border from around new style radio buttons
+*/
+.lte-ie8 input[type="checkbox"],
+.lte-ie8 input[type="radio"] {
+    border: none!important;
+}

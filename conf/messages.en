@@ -188,8 +188,9 @@ doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if y
 
 doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
-doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourAdjustedTaxCode
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
@@ -231,3 +232,7 @@ whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
+
+whatIsYourTaxCode.title = whatIsYourTaxCode
+whatIsYourTaxCode.heading = whatIsYourTaxCode
+whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
