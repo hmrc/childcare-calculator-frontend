@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherGetsVouchers
 
 class EitherGetsVouchersViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "vouchers"
+  val messageKeyPrefix = "eitherGetsVouchers"
 
   def createView = () => eitherGetsVouchers(frontendAppConfig, EitherGetsVouchersForm(), NormalMode)(fakeRequest, messages)
 
