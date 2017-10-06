@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howManyChildren
 
 trait ObjectBuilder {
 
@@ -30,12 +31,15 @@ trait ObjectBuilder {
   val defaultWhoGetsVouchers = Some(YouPartnerBothEnum.YOU)
   val defaultGetBenefits = Some(false)
 
-  val defaultTcUcBenefits = Some(TcUcBenefitsEnum.NEITHER)
+
+  val defaultCredits = Some(CreditsEnum.NONE)
   val defaultLocation = LocationEnum.ENGLAND
   val defaultChildrenList = List.empty
 
   val defaultAgeRange = Some(AgeRangeEnum.OVERTWENTYFOUR)
   val defaultHours = Some(BigDecimal(12))
+
+  val defaultHowManyChildren = Some(2)
 
   val buildStatutoryIncome = StatutoryIncome(
     statutoryWeeks = 0.00,
@@ -64,8 +68,9 @@ trait ObjectBuilder {
   )
 
   val buildHousehold = Household(
-    tcUcBenefits = defaultTcUcBenefits,
+    credits = defaultCredits,
     location = defaultLocation,
+    childAgedThreeOrFour = defaultChildAgedThreeOrFour,
     children = defaultChildrenList,
     parent = buildClaimant,
     partner = Some(buildClaimant))
@@ -73,14 +78,14 @@ trait ObjectBuilder {
   val buildPageObjects = PageObjects(
     household = buildHousehold,
     childAgedTwo = defaultChildAgedTwo,
-    childAgedThreeOrFour = defaultChildAgedThreeOrFour,
     expectChildcareCosts = defaultExpectChildcareCosts,
     livingWithPartner = defaultLivingWithPartner,
     paidOrSelfEmployed = defaultPaidOrSelfEmployed,
     whichOfYouInPaidEmployment = defaultWhichOfYouInPaidEmployment,
     getVouchers = defaultGetVouchers,
     whoGetsVouchers = defaultWhoGetsVouchers,
-    getBenefits = defaultGetBenefits
+    getBenefits = defaultGetBenefits,
+    howManyChildren = defaultHowManyChildren
   )
 
 }

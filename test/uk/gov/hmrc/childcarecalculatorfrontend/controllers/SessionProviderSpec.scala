@@ -21,6 +21,7 @@ import play.api.http.HttpEntity
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
+import uk.gov.hmrc.childcarecalculatorfrontend.services.SessionProvider
 import uk.gov.hmrc.play.http.SessionKeys
 import uk.gov.hmrc.play.test.UnitSpec
 

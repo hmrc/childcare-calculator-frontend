@@ -110,12 +110,11 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
       inPaidEmployment match {
         case YouPartnerBothEnum.BOTH => {
 
-          val  parentEarnMoreThanMW= pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)
+          val parentEarnMoreThanMW= pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)
 
           if(minEarnings) {
             if(parentEarnMoreThanMW) {
               routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.BOTH.toString)
-
             } else {
               routes.SelfEmployedOrApprenticeController.onPageLoad(false)
             }
@@ -153,24 +152,63 @@ class MinimumEarningsController @Inject()(val messagesApi: MessagesApi) extends 
   }
 
   private def getModifiedPageObjects(minEarnings: Boolean, pageObjects: PageObjects, isPartner: Boolean): PageObjects = {
-    if(isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER ||
-      defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH)) {
-      pageObjects.copy(household = pageObjects.household.copy(
-        partner = pageObjects.household.partner.map(x => x.copy(
-          minimumEarnings = Some(x.minimumEarnings.fold(
-            MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner))))
+    val minAmount = getMinWageForScreen(pageObjects, isPartner)
+    val theHousehold = pageObjects.household
+    val theParent = pageObjects.household.parent
+
+    if(minEarnings) {
+      if (isPartner && (defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER ||
+        defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.BOTH)) {
+        pageObjects.copy(household = theHousehold.copy(
+          parent = theParent.copy(maximumEarnings = None),
+          partner = theHousehold.partner.map(x => x.copy(
+            minimumEarnings = Some(x.minimumEarnings.fold(
+              MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+              earnMoreThanNMW = Some(minEarnings), amount = minAmount, selfEmployedIn12Months = None, employmentStatus = None)))
+          ))
         ))
-      ))
-    } else {
-      pageObjects.copy(household = pageObjects.household.copy(
-        parent = pageObjects.household.parent.copy(
-          minimumEarnings = Some(pageObjects.household.parent.minimumEarnings.fold(
-            MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
-            earnMoreThanNMW = Some(minEarnings), amount = getMinWageForScreen(pageObjects, isPartner)))
+      } else {
+        pageObjects.copy(household = theHousehold.copy(
+          partner = theHousehold.partner.map(_.copy(maximumEarnings = None)),
+          parent = theParent.copy(
+            minimumEarnings = Some(theParent.minimumEarnings.fold(
+              MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+              earnMoreThanNMW = Some(minEarnings), amount = minAmount, selfEmployedIn12Months = None, employmentStatus = None))
+            )
           )
-        )
-      ))
+        ))
+      }
+    } else {
+      if(defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.PARTNER) {
+        pageObjects.copy(household = theHousehold.copy(
+          partner = theHousehold.partner.map(x => x.copy(maximumEarnings = None,
+            minimumEarnings = Some(x.minimumEarnings.fold(
+              MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+              earnMoreThanNMW = Some(minEarnings), amount = minAmount)))
+          ))
+        ))
+      } else if(defineInPaidEmployment(pageObjects) == YouPartnerBothEnum.YOU) {
+        pageObjects.copy(household = theHousehold.copy(
+          parent = theParent.copy(maximumEarnings = None,
+            minimumEarnings = Some(theParent.minimumEarnings.fold(
+              MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+              earnMoreThanNMW = Some(minEarnings), amount = minAmount)))
+          )
+        ))
+      } else {
+        pageObjects.copy(household = theHousehold.copy(
+          parent = theParent.copy(maximumEarnings = None,
+            minimumEarnings = Some(theParent.minimumEarnings.fold(
+              MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+              earnMoreThanNMW = Some(minEarnings), amount = minAmount)))
+          ),
+          partner = theHousehold.partner.map(x => x.copy(maximumEarnings = None,
+            minimumEarnings = Some(x.minimumEarnings.fold(
+              MinimumEarnings(earnMoreThanNMW = Some(minEarnings)))(_.copy(
+              earnMoreThanNMW = Some(minEarnings), amount = minAmount)))
+          ))
+        ))
+      }
     }
 
   }

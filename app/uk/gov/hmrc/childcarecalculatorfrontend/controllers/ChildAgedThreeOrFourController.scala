@@ -52,7 +52,7 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
       case Some(pageObjects) =>
         Ok(
           childAgedThreeOrFour(
-            new ChildAgedThreeOrFourForm(messagesApi).form.fill(pageObjects.childAgedThreeOrFour),
+            new ChildAgedThreeOrFourForm(messagesApi).form.fill(pageObjects.household.childAgedThreeOrFour),
             getBackUrl(summary, pageObjects.childAgedTwo),
             pageObjects.household.location
           )
@@ -83,9 +83,9 @@ class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) ext
               )
             ),
           success => {
-            val modifiedPageObjects = pageObjects.copy(
+            val modifiedPageObjects = pageObjects.copy(household = pageObjects.household.copy(
               childAgedThreeOrFour = success
-            )
+            ))
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
             } recover {

@@ -505,8 +505,8 @@ class LivingWithPartnerControllerSpec extends ControllersValidator with BeforeAn
 
   private def buildPageObjectsModel(livingWithPartner: Option[Boolean],
                        childAgedThreeOrFour: Option[Boolean] = None): PageObjects = PageObjects(household = Household(
-    location = LocationEnum.ENGLAND),
-    childAgedThreeOrFour = childAgedThreeOrFour,
+    location = LocationEnum.ENGLAND,
+    childAgedThreeOrFour = childAgedThreeOrFour),
     livingWithPartner = livingWithPartner
   )
 

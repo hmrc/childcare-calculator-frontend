@@ -99,6 +99,13 @@ button,
   }
 }
 
+@media (max-width: 640px) {
+  .button {
+      width: 94%;
+      text-align: center;
+  }
+}
+
 td.numeric {
   text-align: right;
 }
@@ -134,4 +141,8 @@ IE8: Add missing arrow to Back Button
 */
 #back-button {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKCAYAAACXDi8zAAAAAXNSR0IArs4c6QAAAFRJREFUCB1jYMACSsvK/qMIf/r06X9YePh/Ll5ehMTly5f/m5ubgwXhElu2bPkvISEBFwRLTJ06FUUAJAjCTCiWoHOwGgVThNVymCRW58IkQTTIgwDiajmA797qnwAAAABJRU5ErkJggg==) 0 2px no-repeat
+}
+
+.multiple-choice {
+  margin-bottom: 0;
 }

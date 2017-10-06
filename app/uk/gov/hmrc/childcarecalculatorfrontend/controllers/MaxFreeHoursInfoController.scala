@@ -16,8 +16,23 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.services.SessionProvider
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
-import uk.gov.hmrc.play.frontend.controller.FrontendController
+import javax.inject.{Inject, Singleton}
 
-trait BaseController extends FrontendController with SessionProvider with CCConstants
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{AnyContent, Action}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
+
+
+import scala.concurrent.Future
+
+@Singleton
+class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+
+  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
+    Future(Ok(maxFreeHoursInfo()))
+  }
+
+  def onSubmit: Action[AnyContent] = withSession { implicit request =>
+    Future(Redirect(routes.HowManyChildrenController.onPageLoad()))
+  }
+}

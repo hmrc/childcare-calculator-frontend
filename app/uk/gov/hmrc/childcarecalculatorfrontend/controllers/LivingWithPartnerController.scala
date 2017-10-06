@@ -38,7 +38,7 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
       case Some(pageObjects) =>
         Ok(
           livingWithPartner(new LivingWithPartnerForm(messagesApi).form.fill(pageObjects.livingWithPartner),
-            getBackUrl(pageObjects.childAgedThreeOrFour)
+            getBackUrl(pageObjects.household.childAgedThreeOrFour)
           )
         )
       case _ =>
@@ -61,15 +61,13 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
               BadRequest(
                 livingWithPartner(
                   errors,
-                  getBackUrl(pageObjects.childAgedThreeOrFour)
+                  getBackUrl(pageObjects.household.childAgedThreeOrFour)
                 )
               )
             ),
           success => {
             val livingWithPartnerAnswer = success.get
             val modifiedPageObjects = updatePageObjects(pageObjects, livingWithPartnerAnswer)
-
-            //val pageObjectsAfterClearData = clearData(livingWithPartnerController, livingWithPartnerAnswer, modifiedPageObjects)
 
             keystore.cache(modifiedPageObjects).map { result =>
               Redirect(routes.PaidEmploymentController.onPageLoad())
@@ -107,7 +105,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
         whichOfYouInPaidEmployment = None,
         getVouchers = None,
         whoGetsVouchers = None,
-        getMaximumEarnings = None,
         getBenefits = None
       )
 
@@ -118,7 +115,6 @@ class LivingWithPartnerController @Inject()(val messagesApi: MessagesApi) extend
         whichOfYouInPaidEmployment = None,
         getVouchers = None,
         whoGetsVouchers = None,
-        getMaximumEarnings = None,
         getBenefits = None
       )
 

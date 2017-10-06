@@ -28,7 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.TcUcBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
@@ -51,7 +50,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
         // TODO: It should be deleted and connection to eligibility should be done before final results using real data
         // TODO: Delete it once we get real results page
         val testObject = Household(
-          tcUcBenefits = None,
+          credits = None,
           location = LocationEnum.ENGLAND,
           children = List(
             Child(
@@ -77,12 +76,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
           parent = Claimant(
             ageRange = Some(AgeRangeEnum.OVERTWENTYFOUR),
             benefits = Some(
-              Benefits(
-                disabilityBenefits = false,
-                highRateDisabilityBenefits = false,
-                incomeBenefits = false,
-                carersAllowance = false
-              )
+              Benefits()
             ),
             lastYearlyIncome = Some(
               Income(
@@ -117,7 +111,7 @@ class FreeHoursResultsController @Inject()(val messagesApi: MessagesApi) extends
         connector.getEligibility(testObject).map { result =>
           Logger.warn("----------- Test result: " + result)
         }
-        Ok(freeHoursResults(pageObjects.childAgedThreeOrFour.getOrElse(false), pageObjects.household.location))
+        Ok(freeHoursResults(pageObjects.household.childAgedThreeOrFour.getOrElse(false), pageObjects.household.location))
       case _ =>
         Logger.warn("PageObjects object is missing in FreeHoursResultsController.onPageLoad")
         Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())

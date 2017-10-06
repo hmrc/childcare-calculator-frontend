@@ -43,29 +43,98 @@ import scala.concurrent.Future
 
 trait MockBuilder {
 
-  def createMockToFetchPageObjects(keyStore: KeystoreService,
-                                   modelToFetch: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
+  def createMockToFetchPageObjects(modelToFetch: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
     when(
-      keyStore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      KeystoreService.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
     ).thenReturn(
-      Future.successful(modelToFetch)
-    )
+        Future.successful(modelToFetch)
+      )
   }
 
-  def createMockToStorePageObjects(keyStore: KeystoreService,
-                                   modelToStore: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
+  def createMockToStorePageObjects(modelToStore: Option[PageObjects] = None): OngoingStubbing[Future[Option[PageObjects]]] = {
     when(
-      keyStore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      KeystoreService.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
     ).thenReturn(
-      Future.successful(modelToStore)
-    )
+        Future.successful(modelToStore)
+      )
   }
 
-  def createMockToThrowRuntimeException(keyStore: KeystoreService): OngoingStubbing[Future[Option[PageObjects]]] = {
+  def createMockToThrowRuntimeException(): OngoingStubbing[Future[Option[PageObjects]]] = {
     when(
-      keyStore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      KeystoreService.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
     ).thenReturn(
-      Future.failed(new RuntimeException)
-    )
+        Future.failed(new RuntimeException)
+      )
   }
+
+  /**
+   * Setup the mocks
+   *
+   * @param modelToFetch
+   * @param modelToStore
+   * @param fetchPageObjects
+   * @param storePageObjects
+   * @return
+   */
+  def setupMocks(controllerKeystore: KeystoreService,
+                 modelToFetch: Option[PageObjects] = None,
+                 modelToStore: Option[PageObjects] = None,
+                 fetchPageObjects: Boolean = true,
+                 storePageObjects: Boolean = false) = {
+    if (fetchPageObjects) {
+      when(
+        controllerKeystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+          Future.successful(modelToFetch)
+        )
+    }
+
+    if (storePageObjects) {
+      when(
+        controllerKeystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+          Future.successful(modelToStore)
+        )
+    }
+
+  }
+
+  /**
+   * throw run time exception with the message detail
+   *
+   * @param message
+   * @return
+   */
+  def objectException(message: String) = {
+    throw new RuntimeException(message)
+  }
+
+  /**
+   * setup the mock with runtimeException
+   *
+   * @param controllerKeystore object
+   * @return
+   */
+
+  def setupMocksForException(controllerKeystore: KeystoreService,
+                             cacheException: Boolean = false) = {
+
+    if (cacheException) {
+      when(
+        controllerKeystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
+      ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+    } else {
+      when(
+        controllerKeystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
+      ).thenReturn(
+          Future.failed(new RuntimeException)
+        )
+    }
+
+  }
+
 }
+
+object MockBuilder extends MockBuilder

@@ -174,8 +174,6 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         }
 
       }
-
-
     }
 
     "onSubmit is called" when {
@@ -233,7 +231,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         redirectLocation(result) should be (Some(selfEmployedParentPath))
       }
 
-      s"saving in keystore is successful as parent, only paid employment and apprentice redirect to (tc/uc)${underConstructionPath}" in {
+      s"saving in keystore is successful as parent, only paid employment and apprentice redirect to ${creditsPath}" in {
 
         val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
 
@@ -252,10 +250,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
         )
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(underConstructionPath))
+        redirectLocation(result) should be (Some(creditsPath))
       }
 
-      s"saving in keystore is successful as parent, only paid employment and neither redirect to ${underConstructionPath}" in {
+      s"saving in keystore is successful as parent, only paid employment and neither redirect to ${creditsPath}" in {
 
           val model = buildPageObjects(false, YouPartnerBothEnum.YOU)
           val modelToStore = model.copy(household = model.household.copy(
@@ -273,7 +271,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(underConstructionPath))
+          redirectLocation(result) should be (Some(creditsPath))
       }
 
       s"saving in keystore is successful as parent, both in paid employment and is self employed redirect to ${selfEmployedParentPath}" in {
@@ -397,7 +395,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           redirectLocation(result) should be (Some(selfEmployedPartnerPath))
       }
 
-      s"saving in keystore is successful as partner, only paid employment and apprentice, redirect to (tc/uc)${underConstructionPath}" in {
+      s"saving in keystore is successful as partner, only paid employment and apprentice, redirect to ${creditsPath}" in {
 
         val model = buildPageObjects(true, YouPartnerBothEnum.PARTNER)
         val modelToStore = model.copy(household = model.household.copy(
@@ -415,7 +413,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
           )
         )
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) should be (Some(underConstructionPath))
+        redirectLocation(result) should be (Some(creditsPath))
       }
 
       s"saving in keystore is successful as partner, both are in paid employment and selfemployed, redirect to ${selfEmployedPartnerPath}" in {
@@ -466,7 +464,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
         redirectLocation(result) should be (Some(maximumEarningsParentPath))
       }
 
-      s"saving in keystore is successful as partner, both are in paid employment and apprentice, redirect to ${underConstructionPath}" in {
+      s"saving in keystore is successful as partner, both are in paid employment and apprentice, redirect to ${creditsPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -484,10 +482,10 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(underConstructionPath))
+          redirectLocation(result) should be (Some(creditsPath))
       }
 
-      s"saving in keystore is successful as partner, both are in paid employment and neither, redirect to ${underConstructionPath}" in {
+      s"saving in keystore is successful as partner, both are in paid employment and neither, redirect to ${creditsPath}" in {
 
           val model = buildPageObjects(true, YouPartnerBothEnum.BOTH)
           val modelToStore = model.copy(household = model.household.copy(
@@ -510,7 +508,7 @@ class SelfEmployedOrApprenticeControllerSpec extends ControllersValidator with B
             )
           )
           status(result) shouldBe SEE_OTHER
-          redirectLocation(result) should be (Some(underConstructionPath))
+          redirectLocation(result) should be (Some(creditsPath))
       }
       //================================ Partner Mode Ends   =======================================
 

@@ -34,25 +34,25 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
   val sut = new FreeHoursResultsController(applicationMessagesApi){
     override val keystore: KeystoreService = mock[KeystoreService]
     // TODO: Delete it once we get real results page
-    override val connector: EligibilityConnector = mock[EligibilityConnector]
+//    override val connector: EligibilityConnector = mock[EligibilityConnector]
   }
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(sut.keystore)
     // TODO: Delete it once we get real results page
-    reset(sut.connector)
-    when(
-      sut.connector.getEligibility(any[Household])(any[HeaderCarrier])
-    ).thenReturn(
-      Future.successful(
-        SchemeResults(
-          schemes = List.empty,
-          tfcRollout = false,
-          thirtyHrsRollout = false
-        )
-      )
-    )
+//    reset(sut.connector)
+//    when(
+//      sut.connector.getEligibility(any[Household])(any[HeaderCarrier])
+//    ).thenReturn(
+//      Future.successful(
+//        SchemeResults(
+//          schemes = List.empty,
+//          tfcRollout = false,
+//          thirtyHrsRollout = false
+//        )
+//      )
+//    )
   }
 
   validateUrl(freeHoursResultsPath, List(GET))
@@ -64,8 +64,8 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
       Future.successful(
         Some(
           PageObjects(
-            household = Household(location = LocationEnum.ENGLAND),
-            childAgedThreeOrFour = Some(true)
+            household = Household(location = LocationEnum.ENGLAND,
+            childAgedThreeOrFour = Some(true))
           )
         )
       )
@@ -82,8 +82,8 @@ class FreeHoursResultsControllerSpec extends ControllersValidator with BeforeAnd
       Future.successful(
         Some(
           PageObjects(
-            household = Household(location = LocationEnum.ENGLAND),
-            childAgedThreeOrFour = None
+            household = Household(location = LocationEnum.ENGLAND,
+            childAgedThreeOrFour = None)
           )
         )
       )

@@ -95,3 +95,12 @@ POST   /maximum-earnings/partner        uk.gov.hmrc.childcarecalculatorfrontend.
 
 GET    /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onPageLoad(youPartnerBoth: String = "BOTH")
 POST   /maximum-earnings                uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaximumEarningsController.onSubmit(youPartnerBoth: String = "BOTH")
+
+GET    /credits                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.CreditsController.onPageLoad
+POST   /credits                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.CreditsController.onSubmit
+
+GET    /max-free-hours-info             uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad
+POST   /max-free-hours-info             uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onSubmit
+
+GET    /how-many-children              uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowManyChildrenController.onPageLoad
+POST   /how-many-children              uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowManyChildrenController.onSubmit

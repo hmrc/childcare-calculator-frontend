@@ -36,23 +36,6 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
   val keystore: KeystoreService = KeystoreService
 
   /**
-    * Fills the form with Employment status value
-    * @param pageObjects
-    * @param isPartner
-    * @return
-    */
-  private def filledForm(pageObjects: PageObjects, isPartner: Boolean) = {
-    new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
-      if (isPartner) {
-        pageObjects.household.partner.getOrElse(Claimant()).minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
-      } else {
-        pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
-      }
-
-    )
-  }
-
-  /**
     * Called on page load with default isPartner = false for in partner mode and
     * isPartner = true in partner mode
     * @param isPartner
@@ -114,6 +97,23 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
   }
 
   /**
+    * Fills the form with Employment status value
+    * @param pageObjects
+    * @param isPartner
+    * @return
+    */
+  private def filledForm(pageObjects: PageObjects, isPartner: Boolean) = {
+    new SelfEmployedOrApprenticeForm(isPartner, messagesApi).form.fill(
+      if (isPartner) {
+        pageObjects.household.partner.getOrElse(Claimant()).minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
+      } else {
+        pageObjects.household.parent.minimumEarnings.map(_.employmentStatus.getOrElse("").toString)
+      }
+
+    )
+  }
+
+  /**
     * Gets the back url
     * @param pageObjects
     * @param isPartner
@@ -164,22 +164,19 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
           } else if(pageObjects.household.parent.minimumEarnings.get.earnMoreThanNMW.fold(false)(identity)) {
             routes.MaximumEarningsController.onPageLoad(YouPartnerBothEnum.YOU.toString)
           } else {
-             //TODO: redirect to tc/uc page
-            routes.ChildCareBaseController.underConstruction()
+            routes.CreditsController.onPageLoad()
           }
         }
         case YouPartnerBothEnum.PARTNER => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(true)
           } else {
-            //TODO: redirect to tc/uc page
-            routes.ChildCareBaseController.underConstruction()
+            routes.CreditsController.onPageLoad()
           }
         }
       }
     } else {
       paidEmployment match {
-
         case YouPartnerBothEnum.BOTH => {
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(false)
@@ -193,8 +190,7 @@ class SelfEmployedOrApprenticeController @Inject()(val messagesApi: MessagesApi)
           if(selectedEmployedStatus == EmploymentStatusEnum.SELFEMPLOYED.toString) {
             routes.SelfEmployedController.onPageLoad(false)
           } else {
-            //TODO: redirect to tc/uc page
-            routes.ChildCareBaseController.underConstruction()
+            routes.CreditsController.onPageLoad()
           }
         }
       }
