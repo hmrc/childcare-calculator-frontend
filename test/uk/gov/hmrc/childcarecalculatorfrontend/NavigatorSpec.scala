@@ -319,7 +319,6 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           val answers = mock[UserAnswers]
           when(answers.vouchers) thenReturn Some("yes")
           navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-          navigator.nextPage(VouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
         }
 
         "go to do you get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure'" in {
@@ -331,16 +330,24 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "Go to Whats your age" when {
-        "user selects No from Do you get any benefits" in {
+        "user selects 'No' from Do you get any benefits" in {
           val answers = mock[UserAnswers]
           when(answers.doYouGetAnyBenefits) thenReturn Some(false)
           navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
         }
 
-        "user selects No from Do you or your partner get any benefits" in {
+        "user selects 'No' from Do you or your partner get any benefits" in {
           val answers = mock[UserAnswers]
           when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
           navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Go to Who Gets Benefit" when {
+        "user selects 'Yes' from Do you or your partner get any benefits" in {
+          val answers = mock[UserAnswers]
+          when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
         }
       }
     }

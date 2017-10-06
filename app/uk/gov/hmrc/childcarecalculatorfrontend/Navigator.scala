@@ -182,8 +182,7 @@ class Navigator @Inject()() {
     if(answers.doYouOrYourPartnerGetAnyBenefits.contains(false)){
       routes.WhatsYourAgeController.onPageLoad(NormalMode)
     } else {
-      //TODO: Go to new Which benefits do you get checkbox page
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
     }
   }
 
