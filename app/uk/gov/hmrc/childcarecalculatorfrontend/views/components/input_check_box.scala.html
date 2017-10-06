@@ -37,10 +37,12 @@ inputs: Seq[InputOption]
         <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
         }
         @for((input, i) <- inputs.zipWithIndex) {
-        <label class="block-label selection-button-radio" for="@{input.id}">
+        <div class="multiple-choice">
             <input id="@{input.id}" type="checkbox" name="@{viewModel.id}[@i]" value="@{input.value}" @if(answer.map(_.contains(input.value)).getOrElse(false)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
-            @messages(input.messageKey)
-        </label>
+            <label class="block-label selection-button-radio" for="@{input.id}">
+                @messages(input.messageKey)
+            </label>
+        </div>
         }
     </fieldset>
 </div>
