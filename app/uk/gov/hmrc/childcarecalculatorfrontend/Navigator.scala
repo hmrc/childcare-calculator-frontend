@@ -116,7 +116,7 @@ class Navigator @Inject() (schemes: Schemes) {
     val No = YesNoUnsureEnum.NO.toString
     answers.childcareCosts match {
       case Some(No) =>
-        if (FreeHours.eligibility(answers) == Eligible) {
+        if (answers.isEligibleForMaxFreeHours == Eligible) {
           routes.FreeHoursInfoController.onPageLoad()
         } else {
           routes.FreeHoursResultController.onPageLoad()
@@ -132,7 +132,7 @@ class Navigator @Inject() (schemes: Schemes) {
 
     answers.approvedProvider match {
       case Some(No) => {
-        if(FreeHours.eligibility(answers) == Eligible){
+        if(answers.isEligibleForMaxFreeHours == Eligible){
           routes.FreeHoursInfoController.onPageLoad()
         } else {
           routes.FreeHoursResultController.onPageLoad()
