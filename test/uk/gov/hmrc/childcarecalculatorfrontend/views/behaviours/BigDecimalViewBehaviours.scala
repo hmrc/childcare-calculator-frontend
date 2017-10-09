@@ -27,7 +27,7 @@ trait BigDecimalViewBehaviours extends QuestionViewBehaviours[BigDecimal] {
               messageKeyPrefix: String,
               expectedFormAction: String) = {
 
-    "behave like a page with an integer value field" when {
+    "behave like a page with an bigDecimal value field" when {
       "rendered" must {
 
         "contain a label for the value" in {
