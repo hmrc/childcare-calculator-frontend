@@ -20,6 +20,8 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def yourMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](YourMinimumEarningsId.toString)
+
   def whatIsYourTaxCode: Option[Int] = cacheMap.getEntry[Int](WhatIsYourTaxCodeId.toString)
 
   def doYouKnowYourPartnersAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourPartnersAdjustedTaxCodeId.toString)

@@ -236,3 +236,7 @@ doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartne
 whatIsYourTaxCode.title = whatIsYourTaxCode
 whatIsYourTaxCode.heading = whatIsYourTaxCode
 whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
+
+yourMinimumEarnings.title = yourMinimumEarnings
+yourMinimumEarnings.heading = yourMinimumEarnings
+yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings

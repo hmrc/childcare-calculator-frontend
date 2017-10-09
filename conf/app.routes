@@ -109,3 +109,8 @@ GET        /whatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfront
 POST       /whatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onSubmit(mode: Mode = CheckMode)

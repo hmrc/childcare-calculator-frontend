@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def yourMinimumEarnings: Option[AnswerRow] = userAnswers.yourMinimumEarnings map {
+    x => AnswerRow("yourMinimumEarnings.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourMinimumEarningsController.onPageLoad(CheckMode).url)
+  }
+
   def whatIsYourTaxCode: Option[AnswerRow] = userAnswers.whatIsYourTaxCode map {
     x => AnswerRow("whatIsYourTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourTaxCodeController.onPageLoad(CheckMode).url)
   }
