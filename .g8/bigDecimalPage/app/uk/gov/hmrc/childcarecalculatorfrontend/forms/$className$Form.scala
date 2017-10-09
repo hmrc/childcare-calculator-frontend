@@ -14,9 +14,8 @@ object $className$Form extends FormErrorHelper {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) => if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
         case _ => produceError(key, errorKeyInvalid)
-        }
       }
     }
 
