@@ -233,6 +233,10 @@ doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCod
 doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
 
-whatIsYourTaxCode.title = whatIsYourTaxCode
-whatIsYourTaxCode.heading = whatIsYourTaxCode
-whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
+whatIsYourTaxCode.title = What’s your tax code?
+whatIsYourTaxCode.heading = What’s your tax code?
+whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
+whatIsYourTaxCode.error = You must tell the calculator what your tax code is
+
+
+

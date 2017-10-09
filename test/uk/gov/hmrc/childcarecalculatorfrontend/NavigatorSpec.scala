@@ -261,11 +261,25 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
         }
 
-        "single user will be taken to DoesYourEmployerOfferChildcareVouchersController screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+        "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
           val answers = spy(userAnswers())
           when(answers.hasPartnerInPaidWork) thenReturn false
           when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
           navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+      }
+
+      "What is your Tax Code" when {
+        "single user goes to DoesYourEmployerOfferChildcareVouchers screen from  WhatIsYourTaxCode after entering tax code" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn false
+          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+
+        "user with partner goes to WhatIsYourPartnersTaxCodeController screen from  WhatIsYourTaxCode after entering tax code" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
         }
       }
 

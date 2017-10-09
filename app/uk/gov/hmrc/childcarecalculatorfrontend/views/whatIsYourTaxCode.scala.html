@@ -33,7 +33,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("whatIsYourTaxCode.heading")
+        @components.heading("whatIsYourTaxCode.heading", "heading-xlarge")
 
         @components.input_number(InputViewModel[Int]("value", form), label = messages("whatIsYourTaxCode.heading"), labelClass=Some("visually-hidden"))
 

@@ -51,7 +51,7 @@ class WhatIsYourTaxCodeController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhatIsYourTaxCodeForm().bindFromRequest().fold(
+      WhatIsYourTaxCodeForm("whatIsYourTaxCode.error").bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
           Future.successful(BadRequest(whatIsYourTaxCode(appConfig, formWithErrors, mode))),
         (value) =>
