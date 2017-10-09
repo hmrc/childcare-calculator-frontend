@@ -30,4 +30,9 @@ object ChildcareConstants {
   val paidEmploymentErrorKey = "paidEmployment.error"
   val workHoursBlankErrorKey = "workHours.blank"
   val workHoursInvalidErrorKey = "workHours.invalid"
+  val yourMinimumEarningsErrorKey = "yourMinimumEarnings.error"
+
+  val ruleDateConfigParam = "rule-date"
+  val ccDateFormat = "dd-MM-yyyy"
+  val nmwConfigFileAbbreviation = "nmw"
 }

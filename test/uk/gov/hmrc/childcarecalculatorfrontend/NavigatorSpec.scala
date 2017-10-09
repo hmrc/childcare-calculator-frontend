@@ -401,6 +401,51 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
             routes.GetBenefitsController.onPageLoad(NormalMode)
         }
       }
+
+      "Your Minimum Earnings" when {
+        "single parent in paid work earns more than NMW, will be redirected to parent maximum earnings page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.WhatToTellTheCalculatorController.onPageLoad()
+
+        }
+
+        "single parent in paid work and does not earns more than NMW, will be redirected to parent self employed and apprentice page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.WhatToTellTheCalculatorController.onPageLoad()
+        }
+
+
+        "parent with partner, both in paid work and parent earns more than NMW, will be redirected to partner maximum earnings page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.WhatToTellTheCalculatorController.onPageLoad()
+        }
+
+        "parent with partner, both in paid work and parent does not earn more than NMW, will be redirected to partner maximum earnings page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.WhatToTellTheCalculatorController.onPageLoad()
+        }
+
+      }
+
     }
 
     "in Check mode" must {

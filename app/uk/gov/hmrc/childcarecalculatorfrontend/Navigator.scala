@@ -52,7 +52,8 @@ class Navigator @Inject() (schemes: Schemes) {
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
     DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
-    DoesYourEmployerOfferChildcareVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
+    DoesYourEmployerOfferChildcareVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
+    YourMinimumEarningsId -> yourMinimumEarningsRoute
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -174,6 +175,22 @@ class Navigator @Inject() (schemes: Schemes) {
     case Some(ChildcareConstants.yes) => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     case Some(_) => routes.GetBenefitsController.onPageLoad(NormalMode)
     case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def yourMinimumEarningsRoute(answers: UserAnswers) = {
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(true)
+    val whoIsInPaiEmp = answers.whoIsInPaidEmployment
+    val hasMinimumEarnings = answers.yourMinimumEarnings
+
+    (hasMinimumEarnings, hasPartner, areYouInPaidWork, whoIsInPaiEmp) match {
+      case (Some(true), false, true, _) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Parent max earnings page
+      case (Some(true), true, _, Some(Both)) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Partner max earnings page
+      case (Some(false), false, true, _) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: parent self employed and apprentice page
+      case (Some(false), true, _ , Some(Both)) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Partner max earnings page
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(

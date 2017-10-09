@@ -237,6 +237,8 @@ whatIsYourTaxCode.title = whatIsYourTaxCode
 whatIsYourTaxCode.heading = whatIsYourTaxCode
 whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
 
-yourMinimumEarnings.title = yourMinimumEarnings
-yourMinimumEarnings.heading = yourMinimumEarnings
+yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
+yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
