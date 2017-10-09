@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-
-class WhoGetsVouchersFormSpec extends FormBehaviours {
-
-  val validData: Map[String, String] = Map(
-    "value" -> WhoGetsVouchersForm.options.head.value
-  )
-
-  val form = WhoGetsVouchersForm()
-
-  "WhoGetsVouchers form" must {
-    behave like questionForm[String](WhoGetsVouchersForm.options.head.value)
-
-    behave like formWithOptionFieldError("value", "whoGetsVouchers.error", WhoGetsVouchersForm.options.map{x => x.value}:_*)
-  }
+case object WhatIsYourTaxCodeId extends Identifier {
+  override def toString: String = "whatIsYourTaxCode"
 }

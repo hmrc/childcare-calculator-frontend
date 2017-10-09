@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 trait EligibilityChecks {
   self: UserAnswers =>
@@ -24,11 +24,11 @@ trait EligibilityChecks {
   def isEligibleForFreeHours: Eligibility = {
     if(childAgedThreeOrFour.getOrElse(false)) {
       Eligible
-    } else if(!location.contains("northernIreland") && childAgedTwo.getOrElse(false)) {
+    } else if(!location.contains(LocationEnum.NORTHERNIRELAND.toString) && childAgedTwo.getOrElse(false)) {
       Eligible
     } else if(hasAnsweredChildAged2Or3Or4 && hasNoChild) {
       NotEligible
-    } else if(location.contains("northernIreland") && !childAgedThreeOrFour.getOrElse(false)) {
+    } else if(location.contains(LocationEnum.NORTHERNIRELAND.toString) && !childAgedThreeOrFour.getOrElse(false)) {
       NotEligible
     } else {
       NotDetermined
@@ -43,7 +43,7 @@ trait EligibilityChecks {
 
   def isEligibleForMaxFreeHours: Eligibility = {
     if (isEligibleForFreeHours == Eligible &&
-      location.contains("england") &&
+      location.contains(LocationEnum.ENGLAND.toString) &&
       childAgedThreeOrFour.contains(true)) {
         Eligible
     } else {

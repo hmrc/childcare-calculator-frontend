@@ -178,15 +178,19 @@ doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersO
 doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
 doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
 
-doesYourEmployerOfferChildcareVouchers.title = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.heading = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.option1 = doesYourEmployerOfferChildcareVouchers Option 1
-doesYourEmployerOfferChildcareVouchers.option2 = doesYourEmployerOfferChildcareVouchers Option 2
+doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
+doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
+doesYourEmployerOfferChildcareVouchers.yes = Yes
+doesYourEmployerOfferChildcareVouchers.no = No
+doesYourEmployerOfferChildcareVouchers.notSure = Not sure
 doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
+doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
-doYouKnowYourAdjustedTaxCode.title = doYouKnowYourAdjustedTaxCode
-doYouKnowYourAdjustedTaxCode.heading = doYouKnowYourAdjustedTaxCode
-doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourAdjustedTaxCode
+doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
@@ -205,23 +209,29 @@ areYouInPaidWork.heading = Are you in paid work?
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
 areYouInPaidWork.error = You must answer yes if you are in paid work
 
-vouchers.title = Do either of your employers offer childcare vouchers?
-vouchers.heading = Do either of your employers offer childcare vouchers?
-vouchers.yes = Yes
-vouchers.no = No
-vouchers.notSure = Not sure
-vouchers.checkYourAnswersLabel = vouchers
-vouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
+eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.yes = Yes
+eitherGetsVouchers.no = No
+eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.checkYourAnswersLabel = vouchers
+eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = whoGetsVouchers
-whoGetsVouchers.heading = whoGetsVouchers
-whoGetsVouchers.option1 = whoGetsVouchers Option 1
-whoGetsVouchers.option2 = whoGetsVouchers Option 2
+whoGetsVouchers.title = Which of you is offered childcare vouchers?
+whoGetsVouchers.heading = Which of you is offered childcare vouchers?
+whoGetsVouchers.you = You
+whoGetsVouchers.partner = Partner
+whoGetsVouchers.both = Both
+whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
 doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
 doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
+
+whatIsYourTaxCode.title = whatIsYourTaxCode
+whatIsYourTaxCode.heading = whatIsYourTaxCode
+whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
 
 doYouGetAnyBenefits.title = Do you get any of these benefits?
 doYouGetAnyBenefits.heading = Do you get any of these benefits?

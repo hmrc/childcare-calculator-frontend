@@ -24,15 +24,15 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoEitherOfYourEmployersOfferChildcareVouchersForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoEitherOfYourEmployersOfferChildcareVouchersId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourTaxCodeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhatIsYourTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doEitherOfYourEmployersOfferChildcareVouchers
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourTaxCode
 
 import scala.concurrent.Future
 
-class DoEitherOfYourEmployersOfferChildcareVouchersController @Inject()(
+class WhatIsYourTaxCodeController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
                                         dataCacheConnector: DataCacheConnector,
@@ -42,21 +42,21 @@ class DoEitherOfYourEmployersOfferChildcareVouchersController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.doEitherOfYourEmployersOfferChildcareVouchers match {
-        case None => DoEitherOfYourEmployersOfferChildcareVouchersForm()
-        case Some(value) => DoEitherOfYourEmployersOfferChildcareVouchersForm().fill(value)
+      val preparedForm = request.userAnswers.whatIsYourTaxCode match {
+        case None => WhatIsYourTaxCodeForm()
+        case Some(value) => WhatIsYourTaxCodeForm().fill(value)
       }
-      Ok(doEitherOfYourEmployersOfferChildcareVouchers(appConfig, preparedForm, mode))
+      Ok(whatIsYourTaxCode(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      DoEitherOfYourEmployersOfferChildcareVouchersForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(doEitherOfYourEmployersOfferChildcareVouchers(appConfig, formWithErrors, mode))),
+      WhatIsYourTaxCodeForm().bindFromRequest().fold(
+        (formWithErrors: Form[Int]) =>
+          Future.successful(BadRequest(whatIsYourTaxCode(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, DoEitherOfYourEmployersOfferChildcareVouchersId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(DoEitherOfYourEmployersOfferChildcareVouchersId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Int](request.sessionId, WhatIsYourTaxCodeId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(WhatIsYourTaxCodeId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

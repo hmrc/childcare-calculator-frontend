@@ -53,7 +53,8 @@ class DoesYourEmployerOfferChildcareVouchersControllerSpec extends ControllerSpe
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(DoesYourEmployerOfferChildcareVouchersForm().fill(DoesYourEmployerOfferChildcareVouchersForm.options.head.value))
+      contentAsString(result) mustBe
+        viewAsString(DoesYourEmployerOfferChildcareVouchersForm().fill(DoesYourEmployerOfferChildcareVouchersForm.options.head.value))
     }
 
     "redirect to the next page when valid data is submitted" in {
