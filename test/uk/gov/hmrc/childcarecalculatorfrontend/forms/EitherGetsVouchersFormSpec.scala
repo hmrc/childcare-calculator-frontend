@@ -18,17 +18,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 
-class DoEitherOfYourEmployersOfferChildcareVouchersFormSpec extends FormBehaviours {
+class EitherGetsVouchersFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "value" -> DoEitherOfYourEmployersOfferChildcareVouchersForm.options.head.value
+    "value" -> EitherGetsVouchersForm.options.head.value
   )
 
-  val form = DoEitherOfYourEmployersOfferChildcareVouchersForm()
+  val form = EitherGetsVouchersForm()
 
-  "DoEitherOfYourEmployersOfferChildcareVouchers form" must {
-    behave like questionForm[String](DoEitherOfYourEmployersOfferChildcareVouchersForm.options.head.value)
+  "Vouchers form" must {
+    behave like questionForm[String](EitherGetsVouchersForm.options.head.value)
 
-    behave like formWithOptionField("value", DoEitherOfYourEmployersOfferChildcareVouchersForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "eitherGetsVouchers.error", EitherGetsVouchersForm.options.map{x => x.value}:_*)
   }
 }

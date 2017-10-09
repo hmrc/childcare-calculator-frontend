@@ -20,25 +20,27 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 
 object ApprovedProviderForm extends FormErrorHelper {
 
   def ApprovedProviderFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "approvedProvider.error")
       case _ => produceError(key, "error.unknown")
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(ApprovedProviderFormatter)))
 
   def options = Seq(
-    InputOption("approvedProvider", "option1"),
-    InputOption("approvedProvider", "option2")
+    InputOption("approvedProvider", YesNoUnsureEnum.YES.toString),
+    InputOption("approvedProvider", YesNoUnsureEnum.NO.toString),
+    InputOption("approvedProvider", YesNoUnsureEnum.NOTSURE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

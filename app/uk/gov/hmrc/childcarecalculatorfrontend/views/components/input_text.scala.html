@@ -27,13 +27,16 @@ labelClass: Option[String] = None
 <div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
     <label class="form-label @if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">
         <span class="bold">@label</span>
-        @if(hint.nonEmpty){
-        <span class="form-hint">@hint</span>
-        }
-        @if(viewModel.errorKey.nonEmpty){
-        <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
-        }
     </label>
+
+    @if(hint.nonEmpty){
+    <span class="form-hint">@hint</span>
+    }
+
+    @if(viewModel.errorKey.nonEmpty){
+    <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
+    }
+
     <div class="form-control-wrapper">
         <input
                 class="form-control @inputClass"

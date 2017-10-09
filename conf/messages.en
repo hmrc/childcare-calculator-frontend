@@ -35,6 +35,10 @@ site.textarea.char_limit = (Limit is {0} characters)
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
+checkYourAnswers.title = Check Your Answers
+checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.guidance = Guidance for check your answers
+
 whatToTellTheCalculator.title = What to tell the calculator
 whatToTellTheCalculator.heading = What to tell the calculator
 whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
@@ -79,11 +83,14 @@ childcareCosts.notYet = Not yet but maybe in the future
 childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
 childcareCosts.error = You must tell the calculator if you expect to have childcare costs
 
-approvedProvider.title = approvedProvider
-approvedProvider.heading = approvedProvider
-approvedProvider.option1 = approvedProvider Option 1
-approvedProvider.option2 = approvedProvider Option 2
+approvedProvider.title = Will your childcare costs be with an approved provider?
+approvedProvider.heading = Will your childcare costs be with an approved provider?
+approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It could be a school, childminder, playscheme, nursery or club.
+approvedProvider.yes = Yes
+approvedProvider.no = No
+approvedProvider.notSure = Not sure
 approvedProvider.checkYourAnswersLabel = approvedProvider
+approvedProvider.error = You must answer yes if your childcare costs will be with an approved provider
 
 freeHoursInfo.title = It looks like you’re eligible for free hours
 freeHoursInfo.heading = It looks like you’re eligible for free hours
@@ -101,20 +108,33 @@ freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = Tax credits
 
 freeHoursResult.title = Your eligibility for childcare support
+freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.notEligibleInfo = Based on the information you’ve given, you're not eligible for:
+freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.entitled.england = 15 free hours
 freeHoursResult.info.entitled.scotland = 16 Free hours
 freeHoursResult.info.entitled.wales = 10 free hours
-freeHoursResult.info.entitled.northern-ireland = 12 and a half free hours
+freeHoursResult.info.entitled.northernIreland = 12 and a half free hours
 freeHoursResult.info.esc = Childcare vouchers
 freeHoursResult.info.tfc = Tax-Free Childcare
 freeHoursResult.info.tc = Tax credits
 freeHoursResult.notEligible.heading = Why you’re not eligible for any of the schemes
 freeHoursResult.notEligible.info = You‘re currently not eligible for any free hours because you don’t have a child aged 2 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
 freeHoursResult.notEligible.info.northern-ireland = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+
+freeHoursResult.partialEligible.guidance.england = <<Need to get content and eligibility criteria>>
+freeHoursResult.partialEligible.guidance.scotland = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.guidance.wales = Based on the information you’ve given so far, you can get 10 hours of free early learning and childcare a week in term time (390 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.guidance.northernIreland = Based on the information you’ve given so far, you can get 12 and a half hours of free early learning and childcare a week in term time (525 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.info1 = As you don’t currently have or expect to have any approved childcare costs, you would not be eligible for any further support other than free hours.
 freeHoursResult.toBeEligible.heading = To be eligible
-freeHoursResult.toBeEligible.info1 = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can answer as though your 2 year old is aged 3 or 4 to see what you could get.
-freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You'll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info1.start = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can
+freeHoursResult.toBeEligible.info1.end = to see what you could get.
+freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
+freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info2.start  = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you
+freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info2.link.text = expect to have childcare costs.
 freeHoursResult.summary.heading = What you told the calculator
 freeHoursResult.summary.info = You can go back and change your answers and see what you could get.
 freeHoursResult.summary.table.header = General
@@ -122,32 +142,35 @@ freeHoursResult.summary.table.child.age2 = Child aged 2
 freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
 freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs
 
-checkYourAnswers.title = Check Your Answers
-checkYourAnswers.heading = Check Your Answers
-checkYourAnswers.guidance = Guidance for check your answers
-
 doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
 
-paidEmployment.title = paidEmployment
-paidEmployment.heading = paidEmployment
-paidEmployment.checkYourAnswersLabel = paidEmployment
+paidEmployment.title = Are you, your partner, or both of you in paid work?
+paidEmployment.heading = Are you, your partner, or both of you in paid work?
+paidEmployment.checkYourAnswersLabel = Are you, your partner, or both of you in paid work?
+paidEmployment.error = You must answer yes if you, your partner, or both of you are in paid work
 
-whoIsInPaidEmployment.title = whoIsInPaidEmployment
-whoIsInPaidEmployment.heading = whoIsInPaidEmployment
-whoIsInPaidEmployment.option1 = whoIsInPaidEmployment Option 1
-whoIsInPaidEmployment.option2 = whoIsInPaidEmployment Option 2
-whoIsInPaidEmployment.checkYourAnswersLabel = whoIsInPaidEmployment
+whoIsInPaidEmployment.title = Who’s in paid work?
+whoIsInPaidEmployment.heading = Who’s in paid work?
+whoIsInPaidEmployment.you = You
+whoIsInPaidEmployment.partner = Partner
+whoIsInPaidEmployment.both = Both
+whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
+whoIsInPaidEmployment.error = You must tell the calculator if you or your partner is in paid work
 
-parentWorkHours.title = parentWorkHours
-parentWorkHours.heading = parentWorkHours
-parentWorkHours.checkYourAnswersLabel = parentWorkHours
+parentWorkHours.title = How many hours a week do you usually work?
+parentWorkHours.heading = How many hours a week do you usually work?
+parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
+parentWorkHours.hint = This is the hours worked in all your paid jobs, 'zero hours' contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work.
+workHours.blank = You must enter a number between 1 and 99.5
+workHours.invalid = You must enter a number with no more than 2 digits and 1 decimal place
 
-partnerWorkHours.title = partnerWorkHours
-partnerWorkHours.heading = partnerWorkHours
-partnerWorkHours.checkYourAnswersLabel = partnerWorkHours
+partnerWorkHours.title = How many hours a week does your partner usually work?
+partnerWorkHours.heading = How many hours a week does your partner usually work?
+partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
+partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
 
 doEitherOfYourEmployersOfferChildcareVouchers.title = doEitherOfYourEmployersOfferChildcareVouchers
 doEitherOfYourEmployersOfferChildcareVouchers.heading = doEitherOfYourEmployersOfferChildcareVouchers
@@ -155,43 +178,64 @@ doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersO
 doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
 doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
 
-doesYourEmployerOfferChildcareVouchers.title = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.heading = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.option1 = doesYourEmployerOfferChildcareVouchers Option 1
-doesYourEmployerOfferChildcareVouchers.option2 = doesYourEmployerOfferChildcareVouchers Option 2
+doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
+doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
+doesYourEmployerOfferChildcareVouchers.yes = Yes
+doesYourEmployerOfferChildcareVouchers.no = No
+doesYourEmployerOfferChildcareVouchers.notSure = Not sure
 doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
+doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
-doYouKnowYourAdjustedTaxCode.title = doYouKnowYourAdjustedTaxCode
-doYouKnowYourAdjustedTaxCode.heading = doYouKnowYourAdjustedTaxCode
-doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourAdjustedTaxCode
+doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
 
-hasYourPartnersTaxCodeBeenAdjusted.title = hasYourPartnersTaxCodeBeenAdjusted
-hasYourPartnersTaxCodeBeenAdjusted.heading = hasYourPartnersTaxCodeBeenAdjusted
-hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCodeBeenAdjusted
+hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if their tax code has been adjusted
 
-hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted
+hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
 
-areYouInPaidWork.title = areYouInPaidWork
-areYouInPaidWork.heading = areYouInPaidWork
-areYouInPaidWork.checkYourAnswersLabel = areYouInPaidWork
+areYouInPaidWork.title = Are you in paid work?
+areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
+areYouInPaidWork.error = You must answer yes if you are in paid work
 
 getBenefits.title = getBenefits
 getBenefits.heading = getBenefits
 getBenefits.checkYourAnswersLabel = getBenefits
 
-vouchers.title = vouchers
-vouchers.heading = vouchers
-vouchers.option1 = vouchers Option 1
-vouchers.option2 = vouchers Option 2
-vouchers.checkYourAnswersLabel = vouchers
+eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.yes = Yes
+eitherGetsVouchers.no = No
+eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.checkYourAnswersLabel = vouchers
+eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = whoGetsVouchers
-whoGetsVouchers.heading = whoGetsVouchers
-whoGetsVouchers.option1 = whoGetsVouchers Option 1
-whoGetsVouchers.option2 = whoGetsVouchers Option 2
+whoGetsVouchers.title = Which of you is offered childcare vouchers?
+whoGetsVouchers.heading = Which of you is offered childcare vouchers?
+whoGetsVouchers.you = You
+whoGetsVouchers.partner = Partner
+whoGetsVouchers.both = Both
+whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
+
+doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
+
+whatIsYourTaxCode.title = whatIsYourTaxCode
+whatIsYourTaxCode.heading = whatIsYourTaxCode
+whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
 
 whichBenefitsDoYouGet.title = whichBenefitsDoYouGet
 whichBenefitsDoYouGet.heading = whichBenefitsDoYouGet

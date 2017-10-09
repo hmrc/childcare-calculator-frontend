@@ -20,11 +20,16 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+
   def whichBenefitsDoYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsDoYouGetId.toString)
+
+  def whatIsYourTaxCode: Option[Int] = cacheMap.getEntry[Int](WhatIsYourTaxCodeId.toString)
+
+  def doYouKnowYourPartnersAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourPartnersAdjustedTaxCodeId.toString)
 
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 
-  def vouchers: Option[String] = cacheMap.getEntry[String](VouchersId.toString)
+  def eitherGetsVouchers: Option[String] = cacheMap.getEntry[String](EitherGetsVouchersId.toString)
 
   def getBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](GetBenefitsId.toString)
 
@@ -38,11 +43,9 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def doesYourEmployerOfferChildcareVouchers: Option[String] = cacheMap.getEntry[String](DoesYourEmployerOfferChildcareVouchersId.toString)
 
-  def doEitherOfYourEmployersOfferChildcareVouchers: Option[String] = cacheMap.getEntry[String](DoEitherOfYourEmployersOfferChildcareVouchersId.toString)
+  def partnerWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerWorkHoursId.toString)
 
-  def partnerWorkHours: Option[Int] = cacheMap.getEntry[Int](PartnerWorkHoursId.toString)
-
-  def parentWorkHours: Option[Int] = cacheMap.getEntry[Int](ParentWorkHoursId.toString)
+  def parentWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentWorkHoursId.toString)
 
   def whoIsInPaidEmployment: Option[String] = cacheMap.getEntry[String](WhoIsInPaidEmploymentId.toString)
 
@@ -59,4 +62,8 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
+
+  def hasPartnerInPaidWork: Boolean = {
+    doYouLiveWithPartner.contains(true) && (whoIsInPaidEmployment.contains("partner") || whoIsInPaidEmployment.contains("both"))
+  }
 }

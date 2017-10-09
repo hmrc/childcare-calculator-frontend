@@ -17,8 +17,15 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerSection, RepeaterAnswerSection}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible,NotEligible}
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 
-@(appConfig: FrontendAppConfig, location: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig,
+location: String,
+eligibility: Eligibility,
+answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursResult.title"),
@@ -27,49 +34,78 @@
 
     @components.back_link()
 
-    <h1 class="heading-xlarge">@messages("freeHoursResult.heading")</h1>
+    @components.heading("freeHoursResult.title", "heading-xlarge")
 
-    <p>@messages("freeHoursResult.notEligibleInfo") </p>
+    @if(eligibility == Eligible) {
 
-    <div class="grid-layout grid-layout--stacked">
+        <div class="grid-layout grid-layout--stacked">
 
-        <div class="grid-layout__column grid-layout__column--1-2">
-            <div class="panel-indent panel-border-wide green">
-                <h2 class="visuallyhidden">Eligible</h2>
-                <ul class="list list-bullet">
-                    <li>@messages(s"freeHoursResult.info.entitled.${location}")</li>
-                </ul>
+            <div class="grid-layout__column grid-layout__column--1-2">
+                <div class="panel-indent panel-border-wide green">
+                    <h2 class="visuallyhidden">Eligible</h2>
+                    <ul class="list list-bullet">
+                        <li>@messages(s"freeHoursResult.info.entitled.${location}")</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid-layout__column grid-layout__column--1-2">
+                <div class="panel-indent panel-border-wide red">
+                    <h2 class="visuallyhidden">Ineligible</h2>
+                    <ul class="list list-bullet">
+                        <li>@messages("freeHoursResult.info.esc")</li>
+                        <li>@messages("freeHoursResult.info.tfc")</li>
+                        <li>@messages("freeHoursResult.info.tc")</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="grid-layout__column grid-layout__column--1-2">
+    <p>@messages(s"freeHoursResult.partialEligible.guidance.${location}")</p>
+    <p class="panel-indent panel-border-wide grey">@messages("freeHoursResult.partialEligible.info1")</p>
+
+    } else {
+
+            <p>@messages("freeHoursResult.notEligibleInfo") </p>
+
             <div class="panel-indent panel-border-wide red">
                 <h2 class="visuallyhidden">Ineligible</h2>
                 <ul class="list list-bullet">
+                    <li>@messages("freeHoursResult.info.freHours")</li>
                     <li>@messages("freeHoursResult.info.esc")</li>
                     <li>@messages("freeHoursResult.info.tfc")</li>
                     <li>@messages("freeHoursResult.info.tc")</li>
                 </ul>
             </div>
-        </div>
-    </div>
 
-    <h2>@messages("freeHoursResult.notEligible.heading")</h2>
+            <h2>@messages("freeHoursResult.notEligible.heading")</h2>
 
-    <div id="free-hours-results-not-entitled">
-        @if(location == LocationEnum.NORTHERNIRELAND.toString) {
-        <p>@messages("freeHoursResult.notEligible.info.northern-ireland")</p>
-        } else {
-        <p>@messages("freeHoursResult.notEligible.info")</p>
-        }
-    </div>
-
+            <div id="free-hours-results-not-entitled">
+                @if(location == LocationEnum.NORTHERNIRELAND.toString) {
+                <p>@messages("freeHoursResult.notEligible.info.northern-ireland")</p>
+                } else {
+                <p>@messages("freeHoursResult.notEligible.info")</p>
+                }
+            </div>
+    }
 
     <h2>@messages("freeHoursResult.toBeEligible.heading")</h2>
 
-    <p>@messages("freeHoursResult.toBeEligible.info1") </p>
+    @if(eligibility == NotEligible) {
+        <p>@messages("freeHoursResult.toBeEligible.info1.start")
+            <a id="free-hours-results-child-aged-3-link" href="@routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode)">
+                @messages(s"freeHoursResult.toBeEligible.info1.link.text")
+            </a>
+            @messages("freeHoursResult.toBeEligible.info1.end")
+        </p>
+     }
 
-    <p>@messages("freeHoursResult.toBeEligible.info2") </p>
+    <p>@messages("freeHoursResult.toBeEligible.info2.start")
+        <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">
+            @messages(s"freeHoursResult.toBeEligible.info2.link.text")
+        </a>
+        @messages("freeHoursResult.toBeEligible.info2.end")
+    </p>
 
     <h2>@messages("freeHoursResult.summary.heading")</h2>
 

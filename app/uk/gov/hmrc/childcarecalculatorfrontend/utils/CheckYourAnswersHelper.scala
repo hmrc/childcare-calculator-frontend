@@ -26,6 +26,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whichBenefitsDoYouGet.checkYourAnswersLabel", s"whichBenefitsDoYouGet.$x", true, routes.WhichBenefitsDoYouGetController.onPageLoad(CheckMode).url)
   }
 
+  def whatIsYourTaxCode: Option[AnswerRow] = userAnswers.whatIsYourTaxCode map {
+    x => AnswerRow("whatIsYourTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourTaxCodeController.onPageLoad(CheckMode).url)
+  }
+
+  def doYouKnowYourPartnersAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourPartnersAdjustedTaxCode map {
+    x => AnswerRow("doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(CheckMode).url)
+  }
+
   def areYouInPaidWork: Option[AnswerRow] = userAnswers.areYouInPaidWork map {
     x => AnswerRow("areYouInPaidWork.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.AreYouInPaidWorkController.onPageLoad(CheckMode).url)
   }
@@ -34,8 +42,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whoGetsVouchers.checkYourAnswersLabel", s"whoGetsVouchers.$x", true, routes.WhoGetsVouchersController.onPageLoad(CheckMode).url)
   }
 
-  def vouchers: Option[AnswerRow] = userAnswers.vouchers map {
-    x => AnswerRow("vouchers.checkYourAnswersLabel", s"vouchers.$x", true, routes.VouchersController.onPageLoad(CheckMode).url)
+  def eitherGetsVouchers: Option[AnswerRow] = userAnswers.eitherGetsVouchers map {
+    x => AnswerRow("eitherGetsVouchers.checkYourAnswersLabel", s"vouchers.$x", true, routes.EitherGetsVouchersController.onPageLoad(CheckMode).url)
   }
 
   def getBenefits: Option[AnswerRow] = userAnswers.getBenefits map {
@@ -56,10 +64,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def doesYourEmployerOfferChildcareVouchers: Option[AnswerRow] = userAnswers.doesYourEmployerOfferChildcareVouchers map {
     x => AnswerRow("doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel", s"doesYourEmployerOfferChildcareVouchers.$x", true, routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(CheckMode).url)
-  }
-
-  def doEitherOfYourEmployersOfferChildcareVouchers: Option[AnswerRow] = userAnswers.doEitherOfYourEmployersOfferChildcareVouchers map {
-    x => AnswerRow("doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel", s"doEitherOfYourEmployersOfferChildcareVouchers.$x", true, routes.DoEitherOfYourEmployersOfferChildcareVouchersController.onPageLoad(CheckMode).url)
   }
 
   def partnerWorkHours: Option[AnswerRow] = userAnswers.partnerWorkHours map {

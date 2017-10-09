@@ -31,7 +31,7 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => approvedProvider(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "ApprovedProvider view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
   }

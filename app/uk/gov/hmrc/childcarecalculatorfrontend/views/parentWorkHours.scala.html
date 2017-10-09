@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("parentWorkHours.title"),
@@ -33,9 +33,9 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("parentWorkHours.heading")
+        @components.heading("parentWorkHours.heading", "heading-xlarge")
 
-        @components.input_text(InputViewModel[Int]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"), hint = Some(messages("parentWorkHours.hint")))
 
         @components.submit_button()
     }

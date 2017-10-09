@@ -35,7 +35,9 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("approvedProvider.heading")
+        @components.heading("approvedProvider.heading", "heading-xlarge")
+
+        <p>@messages("approvedProvider.hint")</p>
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),

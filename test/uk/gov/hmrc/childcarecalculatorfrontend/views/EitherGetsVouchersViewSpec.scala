@@ -17,18 +17,18 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.VouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.EitherGetsVouchersForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.vouchers
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherGetsVouchers
 
-class VouchersViewSpec extends ViewBehaviours {
+class EitherGetsVouchersViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "vouchers"
+  val messageKeyPrefix = "eitherGetsVouchers"
 
-  def createView = () => vouchers(frontendAppConfig, VouchersForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => eitherGetsVouchers(frontendAppConfig, EitherGetsVouchersForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => vouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => eitherGetsVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "Vouchers view" must {
     behave like normalPage(createView, messageKeyPrefix)
@@ -39,20 +39,20 @@ class VouchersViewSpec extends ViewBehaviours {
   "Vouchers view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(VouchersForm()))
-        for (option <- VouchersForm.options) {
+        val doc = asDocument(createViewUsingForm(EitherGetsVouchersForm()))
+        for (option <- EitherGetsVouchersForm.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for(option <- VouchersForm.options) {
+    for(option <- EitherGetsVouchersForm.options) {
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(VouchersForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(createViewUsingForm(EitherGetsVouchersForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- VouchersForm.options.filterNot(o => o == option)) {
+          for(unselectedOption <- EitherGetsVouchersForm.options.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

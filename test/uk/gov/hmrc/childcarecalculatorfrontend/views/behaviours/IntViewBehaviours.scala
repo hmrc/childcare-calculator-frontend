@@ -21,7 +21,7 @@ import play.twirl.api.HtmlFormat
 
 trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
 
-  val number = 123
+  val number = 12
 
   def intPage(createView: (Form[Int]) => HtmlFormat.Appendable,
               messageKeyPrefix: String,

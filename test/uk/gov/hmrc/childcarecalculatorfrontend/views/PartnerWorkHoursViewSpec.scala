@@ -20,21 +20,21 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerWorkHoursForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
 
-class PartnerWorkHoursViewSpec extends IntViewBehaviours {
+class PartnerWorkHoursViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "partnerWorkHours"
 
-  def createView = () => partnerWorkHours(frontendAppConfig, PartnerWorkHoursForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerWorkHours(frontendAppConfig, new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = PartnerWorkHoursForm()
+  val form = new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply()
 
   "PartnerWorkHours view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 

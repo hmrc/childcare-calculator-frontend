@@ -8,3 +8,29 @@
 @import 'partials/_utilities';
 
 @import 'partials/_shame';
+
+.panel-border-wide {
+  border-left-width: 10px;
+}
+
+.green {
+    border-color: #006435;
+}
+
+.red {
+    border-color: #b10e1e;
+}
+
+.green, .red, .orange, .grassgreen {
+    border-left-width: 18px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/*
+IE8: Fix wrapping of crown on Gov.UK in header
+*/
+.lte-ie8 #logo img {
+    max-width: none;
+}
+
