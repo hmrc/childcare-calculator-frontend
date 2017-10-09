@@ -58,11 +58,6 @@ POST       /partnerWorkHours               uk.gov.hmrc.childcarecalculatorfronte
 GET        /changePartnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = CheckMode)
 
-GET        /doesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(mode: Mode = NormalMode)
-POST       /doesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onSubmit(mode: Mode = NormalMode)
-GET        /changeDoesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeDoesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
-
 GET        /doYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(mode: Mode = NormalMode)
 POST       /doYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeDoYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(mode: Mode = CheckMode)
@@ -89,6 +84,16 @@ GET        /eitherGetsvouchers               uk.gov.hmrc.childcarecalculatorfron
 POST       /eitherGetsvouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEitherGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEitherGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
 
 GET        /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = NormalMode)
 POST       /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = NormalMode)
