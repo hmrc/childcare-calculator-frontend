@@ -106,12 +106,6 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  /*private def parentWorkHoursRoute(answers: UserAnswers) = answers.areYouInPaidWork match {
-    case Some(true) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    case Some(false) => routes.FreeHoursResultController.onPageLoad()
-    case _ => routes.SessionExpiredController.onPageLoad()
-  }*/
-
   private def DoYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers):Call = {
     if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
       routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
