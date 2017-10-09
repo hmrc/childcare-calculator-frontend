@@ -147,6 +147,11 @@ doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
 
+areYouInPaidWork.title = Are you in paid work?
+areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
+areYouInPaidWork.error = You must answer yes if you are in paid work
+
 paidEmployment.title = Are you, your partner, or both of you in paid work?
 paidEmployment.heading = Are you, your partner, or both of you in paid work?
 paidEmployment.checkYourAnswersLabel = Are you, your partner, or both of you in paid work?
@@ -172,25 +177,15 @@ partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
 partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
 
-doEitherOfYourEmployersOfferChildcareVouchers.title = doEitherOfYourEmployersOfferChildcareVouchers
-doEitherOfYourEmployersOfferChildcareVouchers.heading = doEitherOfYourEmployersOfferChildcareVouchers
-doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersOfferChildcareVouchers Option 1
-doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
-doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
-
-doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
-doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
-doesYourEmployerOfferChildcareVouchers.yes = Yes
-doesYourEmployerOfferChildcareVouchers.no = No
-doesYourEmployerOfferChildcareVouchers.notSure = Not sure
-doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
-
 doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
 doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
+
+doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
+doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
@@ -204,14 +199,9 @@ hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjust
 hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
 hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
 
-areYouInPaidWork.title = Are you in paid work?
-areYouInPaidWork.heading = Are you in paid work?
-areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
-areYouInPaidWork.error = You must answer yes if you are in paid work
-
-getBenefits.title = getBenefits
-getBenefits.heading = getBenefits
-getBenefits.checkYourAnswersLabel = getBenefits
+whatIsYourTaxCode.title = whatIsYourTaxCode
+whatIsYourTaxCode.heading = whatIsYourTaxCode
+whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -221,6 +211,14 @@ eitherGetsVouchers.notSure = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
+doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
+doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
+doesYourEmployerOfferChildcareVouchers.yes = Yes
+doesYourEmployerOfferChildcareVouchers.no = No
+doesYourEmployerOfferChildcareVouchers.notSure = Not sure
+doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
+doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
+
 whoGetsVouchers.title = Which of you is offered childcare vouchers?
 whoGetsVouchers.heading = Which of you is offered childcare vouchers?
 whoGetsVouchers.you = You
@@ -229,13 +227,9 @@ whoGetsVouchers.both = Both
 whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
-doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
-doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
-doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
-
-whatIsYourTaxCode.title = whatIsYourTaxCode
-whatIsYourTaxCode.heading = whatIsYourTaxCode
-whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
+getBenefits.title = getBenefits
+getBenefits.heading = getBenefits
+getBenefits.checkYourAnswersLabel = getBenefits
 
 whichBenefitsDoYouGet.title = whichBenefitsDoYouGet
 whichBenefitsDoYouGet.heading = whichBenefitsDoYouGet
