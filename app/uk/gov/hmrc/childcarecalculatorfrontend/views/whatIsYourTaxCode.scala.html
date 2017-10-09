@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("whatIsYourTaxCode.title"),
@@ -35,7 +35,7 @@
 
         @components.heading("whatIsYourTaxCode.heading", "heading-xlarge")
 
-        @components.input_number(InputViewModel[Int]("value", form), label = messages("whatIsYourTaxCode.heading"), labelClass=Some("visually-hidden"))
+        @components.input_text(InputViewModel[String]("value", form), label = messages("whatIsYourTaxCode.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

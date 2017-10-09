@@ -183,9 +183,9 @@ class Navigator @Inject() (schemes: Schemes) {
 
   private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
     if (answers.hasPartnerInPaidWork) {
-      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
-    } else if (!answers.hasPartnerInPaidWork) {
       routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+    } else if (!answers.hasPartnerInPaidWork) {
+      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
