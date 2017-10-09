@@ -23,22 +23,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoEitherOfYourEmployersOfferChildcareVouchersForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoEitherOfYourEmployersOfferChildcareVouchersId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.EitherGetsVouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EitherGetsVouchersId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doEitherOfYourEmployersOfferChildcareVouchers
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherGetsVouchers
 
-class DoEitherOfYourEmployersOfferChildcareVouchersControllerSpec extends ControllerSpecBase {
+class EitherGetsVouchersControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new DoEitherOfYourEmployersOfferChildcareVouchersController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new EitherGetsVouchersController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = DoEitherOfYourEmployersOfferChildcareVouchersForm()) = doEitherOfYourEmployersOfferChildcareVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = EitherGetsVouchersForm()) = eitherGetsVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "DoEitherOfYourEmployersOfferChildcareVouchers Controller" must {
+  "Vouchers Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -48,16 +48,16 @@ class DoEitherOfYourEmployersOfferChildcareVouchersControllerSpec extends Contro
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(DoEitherOfYourEmployersOfferChildcareVouchersId.toString -> JsString(DoEitherOfYourEmployersOfferChildcareVouchersForm.options.head.value))
+      val validData = Map(EitherGetsVouchersId.toString -> JsString(EitherGetsVouchersForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(DoEitherOfYourEmployersOfferChildcareVouchersForm().fill(DoEitherOfYourEmployersOfferChildcareVouchersForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(EitherGetsVouchersForm().fill(EitherGetsVouchersForm.options.head.value))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", DoEitherOfYourEmployersOfferChildcareVouchersForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", EitherGetsVouchersForm.options.head.value))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -67,7 +67,7 @@ class DoEitherOfYourEmployersOfferChildcareVouchersControllerSpec extends Contro
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = DoEitherOfYourEmployersOfferChildcareVouchersForm().bind(Map("value" -> "invalid value"))
+      val boundForm = EitherGetsVouchersForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -83,7 +83,7 @@ class DoEitherOfYourEmployersOfferChildcareVouchersControllerSpec extends Contro
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", DoEitherOfYourEmployersOfferChildcareVouchersForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", EitherGetsVouchersForm.options.head.value))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

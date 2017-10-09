@@ -50,7 +50,7 @@ class HasYourPartnersTaxCodeBeenAdjustedController @Inject()(appConfig: Frontend
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("hasYourPartnersTaxCodeBeenAdjusted.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(hasYourPartnersTaxCodeBeenAdjusted(appConfig, formWithErrors, mode))),
         (value) =>

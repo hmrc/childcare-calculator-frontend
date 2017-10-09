@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, LocationEnum, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 object MaxFreeHours extends Scheme {
@@ -27,7 +27,7 @@ object MaxFreeHours extends Scheme {
     } else {
       (for {
         location <- answers.location
-      } yield if (location == "england") {
+      } yield if (location.contains(LocationEnum.ENGLAND.toString)) {
         NotDetermined
       } else {
         NotEligible
