@@ -18,31 +18,24 @@
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("doYouKnowYourPartnersAdjustedTaxCode.title"),
+    title = messages("whatIsYourPartnersTaxCode.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = WhatIsYourPartnersTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("doYouKnowYourPartnersAdjustedTaxCode.heading", "heading-xlarge")
+        @components.heading("whatIsYourPartnersTaxCode.heading")
 
-        <p>@Messages("doYouKnowYourPartnersAdjustedTaxCode.info")</p>
-
-        @components.input_yes_no(
-            InputViewModel[Boolean]("value", form),
-            label = messages("doYouKnowYourPartnersAdjustedTaxCode.heading"),
-            labelClass = Some("visually-hidden")
-        )
+        @components.input_number(InputViewModel[Int]("value", form), label = messages("whatIsYourPartnersTaxCode.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

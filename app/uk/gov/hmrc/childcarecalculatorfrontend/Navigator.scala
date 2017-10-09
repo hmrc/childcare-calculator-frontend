@@ -49,7 +49,9 @@ class Navigator @Inject() (schemes: Schemes) {
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
-//    WhatIsYourTaxCodeId -> whatIsYourTaxCode,
+    DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
+    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
+    WhatIsYourTaxCodeId -> whatIsYourTaxCodeRoute,
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
     DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
@@ -171,15 +173,23 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-//  private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
-//    if (answers.hasPartnerInPaidWork) {
-//      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
-//    } else if (!answers.hasPartnerInPaidWork) {
-//      routes.WhatIsYourPartnersTaxCode.onPageLoad(NormalMode)
-//    } else {
-//      routes.SessionExpiredController.onPageLoad()
-//    }
-//  }
+  private def doYouKnowPartnersTaxCodeRoute (answers: UserAnswers): Call =
+    answers.doYouKnowYourPartnersAdjustedTaxCode match{
+      case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+      case Some(false) => routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      case None => routes.SessionExpiredController.onPageLoad()
+
+    }
+
+  private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
+    if (answers.hasPartnerInPaidWork) {
+      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+    } else if (!answers.hasPartnerInPaidWork) {
+      routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def vouchersRoute(answers: UserAnswers) = answers.eitherGetsVouchers match {
     case Some(ChildcareConstants.yes) => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
