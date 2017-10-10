@@ -26,6 +26,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whatIsYourPartnersTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourPartnersTaxCodeController.onPageLoad(CheckMode).url)
   }
 
+  def yourChildcareVouchers: Option[AnswerRow] = userAnswers.yourChildcareVouchers map {
+    x => AnswerRow("yourChildcareVouchers.checkYourAnswersLabel", s"yourChildcareVouchers.$x", true, routes.YourChildcareVouchersController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerChildcareVouchers: Option[AnswerRow] = userAnswers.partnerChildcareVouchers map {
+    x => AnswerRow("partnerChildcareVouchers.checkYourAnswersLabel", s"partnerChildcareVouchers.$x", true, routes.PartnerChildcareVouchersController.onPageLoad(CheckMode).url)
+  }
+
   def whatIsYourTaxCode: Option[AnswerRow] = userAnswers.whatIsYourTaxCode map {
     x => AnswerRow("whatIsYourTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourTaxCodeController.onPageLoad(CheckMode).url)
   }
@@ -72,10 +80,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def doYouKnowYourAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourAdjustedTaxCode map {
     x => AnswerRow("doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(CheckMode).url)
-  }
-
-  def doesYourEmployerOfferChildcareVouchers: Option[AnswerRow] = userAnswers.doesYourEmployerOfferChildcareVouchers map {
-    x => AnswerRow("doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel", s"doesYourEmployerOfferChildcareVouchers.$x", true, routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(CheckMode).url)
   }
 
   def partnerWorkHours: Option[AnswerRow] = userAnswers.partnerWorkHours map {

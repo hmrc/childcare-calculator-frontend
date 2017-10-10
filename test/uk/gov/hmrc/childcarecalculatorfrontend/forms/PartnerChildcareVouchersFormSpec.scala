@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-case object DoEitherOfYourEmployersOfferChildcareVouchersId extends Identifier {
-  override def toString: String = "doEitherOfYourEmployersOfferChildcareVouchers"
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+
+class PartnerChildcareVouchersFormSpec extends FormBehaviours {
+
+  val validData: Map[String, String] = Map(
+    "value" -> PartnerChildcareVouchersForm.options.head.value
+  )
+
+  val form = PartnerChildcareVouchersForm()
+
+  "PartnerChildcareVouchers form" must {
+    behave like questionForm[String](PartnerChildcareVouchersForm.options.head.value)
+
+    behave like formWithOptionField("value", PartnerChildcareVouchersForm.options.map{x => x.value}:_*)
+  }
 }
