@@ -67,6 +67,53 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def normalPageWithTitleAsString(view: () => HtmlFormat.Appendable,
+                 messageKeyPrefix: String,
+                 title: String,
+                 expectedGuidanceKeys: Seq[String] = Seq()) = {
+
+    "behave like a normal page" when {
+      "rendered" must {
+        "have the correct banner title" in {
+          val doc = asDocument(view())
+          val nav = doc.getElementById("proposition-menu")
+          val span = nav.children.first
+          span.text mustBe messagesApi("site.service_name")
+        }
+
+        "display the correct browser title" in {
+          val doc = asDocument(view())
+          assertEqualsValue(doc, "title", title +" - "+messagesApi("site.service_name")+" - GOV.UK")
+        }
+
+        "display the correct page title" in {
+          val doc = asDocument(view())
+          assertPageTitleEqualsString(doc, title)
+        }
+
+        "display the correct guidance" in {
+          val doc = asDocument(view())
+          for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+        }
+
+        "display language toggles" in {
+          val doc = asDocument(view())
+          assertRenderedById(doc, "cymraeg-switch")
+        }
+
+        "display a beta banner" in {
+          val doc = asDocument(view())
+          assertRenderedByCssSelector(doc, ".beta-banner")
+        }
+
+        "not display HMRC branding" in {
+          val doc = asDocument(view())
+          assertNotRenderedByCssSelector(doc, ".organisation-logo")
+        }
+      }
+    }
+  }
+
   def pageWithBackLink(view: () => HtmlFormat.Appendable) = {
 
     "behave like a page with a back link" must {

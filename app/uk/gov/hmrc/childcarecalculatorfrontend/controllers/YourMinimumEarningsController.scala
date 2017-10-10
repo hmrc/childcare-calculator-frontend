@@ -46,17 +46,22 @@ class YourMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(yourMinimumEarnings(appConfig, preparedForm, mode))
+
+      Ok(yourMinimumEarnings(appConfig, preparedForm, mode, getEarningsForAge()))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm(yourMinimumEarningsErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(yourMinimumEarnings(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yourMinimumEarnings(appConfig, formWithErrors, mode, getEarningsForAge()))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, YourMinimumEarningsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourMinimumEarningsId, mode)(new UserAnswers(cacheMap))))
       )
+  }
+
+  private def getEarningsForAge() = {
+    0
   }
 }

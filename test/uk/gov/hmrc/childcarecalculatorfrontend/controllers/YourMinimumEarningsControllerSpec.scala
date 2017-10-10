@@ -36,7 +36,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase {
     new YourMinimumEarningsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = yourMinimumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = yourMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
 
   "YourMinimumEarnings Controller" must {
 

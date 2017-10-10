@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
@@ -27,16 +28,27 @@ class YourMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "yourMinimumEarnings"
 
-  def createView = () => yourMinimumEarnings(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => yourMinimumEarnings(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => yourMinimumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => yourMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages)
+
+  def createViewWithAmount = (amount: BigDecimal) => yourMinimumEarnings(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
 
   "YourMinimumEarnings view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messagesApi("yourMinimumEarnings.heading", 0))
 
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourMinimumEarningsController.onSubmit(NormalMode).url)
+
+    "show correct hint text and value of minimum earnings" in {
+
+      val amount = BigDecimal(40)
+      val doc = asDocument(createViewWithAmount(amount))
+
+      assertContainsText(doc, messagesApi("yourMinimumEarnings.hint"))
+      assertContainsText(doc, messagesApi("yourMinimumEarnings.heading", amount))
+    }
   }
 }
