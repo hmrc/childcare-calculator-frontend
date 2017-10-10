@@ -59,6 +59,7 @@ class Navigator @Inject() (schemes: Schemes) {
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
+    PartnerMinimumEarningsId -> partnerMinimumEarningsRoute,
     WhatsYourAgeId -> (_ => routes.YourMinimumEarningsController.onPageLoad(NormalMode)) //TODO: To be replaced by proper routing once done.
   )
 
@@ -293,6 +294,19 @@ class Navigator @Inject() (schemes: Schemes) {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
+  }
+
+  private def partnerMinimumEarningsRoute(answers: UserAnswers) = {
+    val yourMinEarnings = answers.yourMinimumEarnings
+    val partnerMinEarnings = answers.partnerMinimumEarnings
+
+    (yourMinEarnings, partnerMinEarnings) match {
+      case (Some(true), Some(true)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(true), Some(false)) => routes.WhatToTellTheCalculatorController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
