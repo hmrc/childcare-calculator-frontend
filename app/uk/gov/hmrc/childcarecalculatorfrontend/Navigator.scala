@@ -40,21 +40,19 @@ class Navigator @Inject() (schemes: Schemes) {
     ChildcareCostsId -> costRoute,
     ApprovedProviderId -> approvedChildCareRoute,
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     PaidEmploymentId -> paidEmploymentRoute,
     WhoIsInPaidEmploymentId -> workHoursRoute,
-    ParentWorkHoursId -> parentWorkHoursRoute,
+    ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
+    DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
+    WhatIsYourTaxCodeId -> whatIsYourTaxCodeRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
     DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
     WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
-    WhatIsYourTaxCodeId -> whatIsYourTaxCodeRoute,
     EitherGetsVouchersId -> vouchersRoute,
-    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
-    DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
     DoesYourEmployerOfferChildcareVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
   )
 
@@ -106,12 +104,6 @@ class Navigator @Inject() (schemes: Schemes) {
     } else {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
-  }
-
-  private def parentWorkHoursRoute(answers: UserAnswers) = answers.areYouInPaidWork match {
-    case Some(true) => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    case Some(false) => routes.FreeHoursResultController.onPageLoad()
-    case _ => routes.SessionExpiredController.onPageLoad()
   }
 
   private def DoYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers):Call = {

@@ -20,24 +20,25 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourPartnersTaxCodeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.StringViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourPartnersTaxCode
 
-class WhatIsYourPartnersTaxCodeViewSpec extends IntViewBehaviours {
+class WhatIsYourPartnersTaxCodeViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "whatIsYourPartnersTaxCode"
+  val whatIsYourPartnersTaxCodeForm = new WhatIsYourPartnersTaxCodeForm(frontendAppConfig).apply()
 
-  def createView = () => whatIsYourPartnersTaxCode(frontendAppConfig, WhatIsYourPartnersTaxCodeForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => whatIsYourPartnersTaxCode(frontendAppConfig, whatIsYourPartnersTaxCodeForm, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => whatIsYourPartnersTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => whatIsYourPartnersTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = WhatIsYourPartnersTaxCodeForm()
+  val form = whatIsYourPartnersTaxCodeForm
 
   "WhatIsYourPartnersTaxCode view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.WhatIsYourPartnersTaxCodeController.onSubmit(NormalMode).url)
+    behave like textPage(createViewUsingForm, messageKeyPrefix, routes.WhatIsYourPartnersTaxCodeController.onSubmit(NormalMode).url)
   }
 }

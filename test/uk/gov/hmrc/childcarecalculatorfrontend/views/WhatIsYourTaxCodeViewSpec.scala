@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourTaxCodeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{IntViewBehaviours, QuestionViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.StringViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourTaxCode
 
-class WhatIsYourTaxCodeViewSpec extends QuestionViewBehaviours[String] {
+class WhatIsYourTaxCodeViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "whatIsYourTaxCode"
   val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
@@ -39,6 +39,6 @@ class WhatIsYourTaxCodeViewSpec extends QuestionViewBehaviours[String] {
 
     behave like pageWithBackLink(createView)
 
-    //behave like intPage(createViewUsingForm, messageKeyPrefix, routes.WhatIsYourTaxCodeController.onSubmit(NormalMode).url)
+    behave like textPage(createViewUsingForm, messageKeyPrefix, routes.WhatIsYourTaxCodeController.onSubmit(NormalMode).url)
   }
 }

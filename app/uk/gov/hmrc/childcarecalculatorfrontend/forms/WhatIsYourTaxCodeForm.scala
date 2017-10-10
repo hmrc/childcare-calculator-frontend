@@ -33,7 +33,9 @@ class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends Form
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
+
         case Some("") => produceError(key, errorKeyBlank)
+
         case Some(s) if s.toUpperCase.matches(taxCodeRegex) =>
           val length = s.length
           val lastTwoChar = s.substring(length - two)
@@ -46,6 +48,7 @@ class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends Form
               case None => produceError(key, errorKeyInvalid)
             }
           }
+
         case _ => produceError(key, errorKeyInvalid)
       }
     }

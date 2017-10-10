@@ -38,24 +38,25 @@ class WhatIsYourPartnersTaxCodeController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        form: WhatIsYourPartnersTaxCodeForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.whatIsYourPartnersTaxCode match {
-        case None => WhatIsYourPartnersTaxCodeForm()
-        case Some(value) => WhatIsYourPartnersTaxCodeForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(whatIsYourPartnersTaxCode(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhatIsYourPartnersTaxCodeForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
+      form().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(whatIsYourPartnersTaxCode(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Int](request.sessionId, WhatIsYourPartnersTaxCodeId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[String](request.sessionId, WhatIsYourPartnersTaxCodeId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(WhatIsYourPartnersTaxCodeId, mode)(new UserAnswers(cacheMap))))
       )
   }

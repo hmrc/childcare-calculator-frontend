@@ -16,32 +16,46 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.Inject
+
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object WhatIsYourPartnersTaxCodeForm extends FormErrorHelper {
+class WhatIsYourPartnersTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def whatIsYourPartnersTaxCodeFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
+  def whatIsYourPartnersTaxCodeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
-    val intRegex = """^(\d+)$""".r
-    val decimalRegex = """^(\d*\.\d*)$""".r
+    val taxCodeRegex: String = """[1-9][0-9]{2,3}[L-NSTBDWX0][RT01]?""".r.toString()
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
+
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) => s.trim.replace(",", "") match {
-          case intRegex(str) => Right(str.toInt)
-          case decimalRegex(_) => produceError(key, errorKeyDecimal)
-          case _ => produceError(key, errorKeyNonNumeric)
-        }
+
+        case Some(s) if s.toUpperCase.matches(taxCodeRegex) =>
+          val length = s.length
+          val lastTwoChar = s.substring(length - two)
+
+          if (lastTwoChar.contains(taxCode0T) && length < taxCodeLength_five) {
+            produceError(key, errorKeyInvalid)
+          } else {
+            appConfig.getConfig(s"taxCodeLetter.${getTaxCodeLetter(s)}") match {
+              case Some(_) => Right(s)
+              case None => produceError(key, errorKeyInvalid)
+            }
+          }
+
+        case _ => produceError(key, errorKeyInvalid)
       }
     }
 
-    def unbind(key: String, value: Int) = Map(key -> value.toString)
+    def unbind(key: String, value: String) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
-    Form(single("value" -> of(whatIsYourPartnersTaxCodeFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
+  def apply(errorKeyBlank: String = "taxCode.blank", errorKeyInvalid: String = "taxCode.invalid"): Form[String] =
+    Form(single("value" -> of(whatIsYourPartnersTaxCodeFormatter(errorKeyBlank, errorKeyInvalid))))
 }
