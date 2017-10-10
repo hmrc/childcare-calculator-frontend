@@ -109,16 +109,6 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def DoYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers):Call = {
-    if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
-      routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
-    } else if (answers.hasPartnerInPaidWork && answers.doYouKnowYourAdjustedTaxCode.contains(false)) {
-      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if ((!answers.hasPartnerInPaidWork) && answers.doYouKnowYourAdjustedTaxCode.contains(false)) {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    } else routes.SessionExpiredController.onPageLoad()
-  }
-
   private def costRoute(answers: UserAnswers) = {
     val No = YesNoUnsureEnum.NO.toString
     answers.childcareCosts match {
@@ -149,36 +139,37 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def taxCodeAdjustedRoute(answers: UserAnswers): Call =
-    (answers.hasPartnerInPaidWork, answers.hasYourTaxCodeBeenAdjusted) match {
-      case (true, Some(false)) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-      case (_, Some(true)) => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
-      case (false, Some(false)) => routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+  private def taxCodeAdjustedRoute(answers: UserAnswers): Call = {
+    answers.hasYourTaxCodeBeenAdjusted match {
+      case Some(true) => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+      case Some(false) =>
+        if (answers.hasBothInPaidWork) {
+          routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        } else {
+          routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+        }
       case _ => routes.SessionExpiredController.onPageLoad()
-    }
-
-  private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
-    if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
-      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call =
-    answers.doYouKnowYourPartnersAdjustedTaxCode match {
-      case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
-      case Some(false) => routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-      case None => routes.SessionExpiredController.onPageLoad()
+  private def DoYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers): Call = {
+    answers.doYouKnowYourAdjustedTaxCode match {
+      case Some(true) => routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+      case Some(false) =>
+        if (answers.hasPartnerInPaidWork | answers.hasBothInPaidWork) {
+          routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        } else {
+          routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+        }
+      case _ => routes.SessionExpiredController.onPageLoad()
     }
+  }
 
   private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
     if (answers.doYouLiveWithPartner.contains(true)) {
       answers.whoIsInPaidEmployment match {
-        case Some("both") => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-        case Some("you") => routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+        case Some(Both) => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        case Some(You) => routes.YourChildcareVouchersController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     } else {
@@ -186,12 +177,37 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
+  private def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
+    answers.hasYourPartnersTaxCodeBeenAdjusted match {
+      case Some(true) => routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+      case Some(false) =>
+        if (answers.hasBothInPaidWork) {
+          routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+        } else {
+          routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+        }
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call =
+    answers.doYouKnowYourPartnersAdjustedTaxCode match {
+      case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+      case Some(false) => {
+        if(answers.hasPartnerInPaidWork) {
+          routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+        } else {
+          routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+        }
+      }
+      case None => routes.SessionExpiredController.onPageLoad()
+    }
+
   private def whatIsYourPartnersTaxCodeRoute(answers: UserAnswers): Call = {
     if (answers.hasBothInPaidWork) {
       routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     } else if (answers.hasPartnerInPaidWork) {
-      //TODO: Redirect to does your partners employer offer childcare vouchers
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
@@ -226,7 +242,7 @@ class Navigator @Inject() (schemes: Schemes) {
 
     answers.eitherGetsVouchers match {
       case Some(Yes) => if(answers.doYouLiveWithPartner.contains(true)) {
-        if(answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)) {
+        if(answers.whoIsInPaidEmployment.contains(Both)) {
           routes.WhoGetsVouchersController.onPageLoad(NormalMode)
         } else {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)

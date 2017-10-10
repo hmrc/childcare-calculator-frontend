@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def whatIsYourTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourTaxCodeId.toString)
@@ -71,10 +72,10 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
   def hasBothInPaidWork: Boolean = {
-    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains("both")
+    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)
   }
 
   def hasPartnerInPaidWork: Boolean = {
-    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains("partner")
+    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
   }
 }
