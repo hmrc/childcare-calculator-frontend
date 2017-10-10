@@ -193,13 +193,12 @@ class Navigator @Inject() (schemes: Schemes) {
   private def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call =
     answers.doYouKnowYourPartnersAdjustedTaxCode match {
       case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
-      case Some(false) => {
+      case Some(false) =>
         if(answers.hasPartnerInPaidWork) {
           routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
         } else {
           routes.EitherGetsVouchersController.onPageLoad(NormalMode)
         }
-      }
       case None => routes.SessionExpiredController.onPageLoad()
     }
 

@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -39,7 +40,7 @@ class DoYouKnowYourPartnersAdjustedTaxCodeController @Inject()(appConfig: Fronte
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.doYouKnowYourPartnersAdjustedTaxCode match {
         case None => BooleanForm()
@@ -48,7 +49,7 @@ class DoYouKnowYourPartnersAdjustedTaxCodeController @Inject()(appConfig: Fronte
       Ok(doYouKnowYourPartnersAdjustedTaxCode(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("doYouKnowYourPartnersAdjustedTaxCode.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
