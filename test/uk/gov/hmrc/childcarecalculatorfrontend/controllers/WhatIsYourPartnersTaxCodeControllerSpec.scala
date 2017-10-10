@@ -23,25 +23,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourTaxCodeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhatIsYourTaxCodeId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourPartnersTaxCodeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhatIsYourPartnersTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourTaxCode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourPartnersTaxCode
 
-class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
+class WhatIsYourPartnersTaxCodeControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
-  val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
+  val whatIsYourPartnersTaxCodeForm = new WhatIsYourPartnersTaxCodeForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhatIsYourTaxCodeController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new WhatIsYourTaxCodeForm(frontendAppConfig))
+    new WhatIsYourPartnersTaxCodeController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, new WhatIsYourPartnersTaxCodeForm(frontendAppConfig))
 
-  def viewAsString(form: Form[String] = whatIsYourTaxCodeForm) = whatIsYourTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = whatIsYourPartnersTaxCodeForm) = whatIsYourPartnersTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val taxCode = "1100L"
 
-  "WhatIsYourTaxCode Controller" must {
+  "WhatIsYourPartnersTaxCode Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -51,12 +51,12 @@ class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(WhatIsYourTaxCodeId.toString -> JsString(taxCode))
+      val validData = Map(WhatIsYourPartnersTaxCodeId.toString -> JsString(taxCode))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(whatIsYourTaxCodeForm.fill(taxCode))
+      contentAsString(result) mustBe viewAsString(whatIsYourPartnersTaxCodeForm.fill(taxCode))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -70,7 +70,7 @@ class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = whatIsYourTaxCodeForm.bind(Map("value" -> "invalid value"))
+      val boundForm = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

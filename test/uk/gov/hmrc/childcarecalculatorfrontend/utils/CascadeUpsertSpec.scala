@@ -66,9 +66,11 @@ class CascadeUpsertSpec extends SpecBase {
     }
 
     "saving the doYouLiveWithPartner" must {
-      "remove an existing paid employment and who is in paid employment when doYouLiveWithpartner is No" in {
+      "remove an existing paid employment, partners adjusted tax code and who is in paid employment when doYouLiveWithpartner is No" in {
         val originalCacheMap = new CacheMap("id", Map(PaidEmploymentId.toString -> JsBoolean(true),
-          WhoIsInPaidEmploymentId.toString -> JsString(you), PartnerWorkHoursId.toString -> JsString("12")))
+          WhoIsInPaidEmploymentId.toString -> JsString(you), PartnerWorkHoursId.toString -> JsString("12"),
+          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L")))
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)
         result.data mustBe Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false))
@@ -83,15 +85,19 @@ class CascadeUpsertSpec extends SpecBase {
     }
 
     "saving the whoIsInPaidEmployment" must {
-      "remove an existing partner work hours when whoIsInPaidEmployment is you" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12")))
+      "remove an existing partner work hours and partners adjusted tax code when whoIsInPaidEmployment is you" in {
+        val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12"),
+          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L")))
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
         result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(you))
       }
 
-      "remove an existing parent work hours when whoIsInPaidEmployment is partner" in {
-        val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12")))
+      "remove an existing parent work hours and parent adjusted tax code when whoIsInPaidEmployment is partner" in {
+        val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
+          HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourTaxCodeId.toString -> JsString("1100L")))
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, partner, originalCacheMap)
         result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(partner))

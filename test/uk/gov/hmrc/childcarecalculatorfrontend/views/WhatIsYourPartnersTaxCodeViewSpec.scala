@@ -18,27 +18,27 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourTaxCodeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatIsYourPartnersTaxCodeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.StringViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourTaxCode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourPartnersTaxCode
 
-class WhatIsYourTaxCodeViewSpec extends StringViewBehaviours {
+class WhatIsYourPartnersTaxCodeViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "whatIsYourTaxCode"
-  val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
+  val messageKeyPrefix = "whatIsYourPartnersTaxCode"
+  val whatIsYourPartnersTaxCodeForm = new WhatIsYourPartnersTaxCodeForm(frontendAppConfig).apply()
 
-  def createView = () => whatIsYourTaxCode(frontendAppConfig, whatIsYourTaxCodeForm, NormalMode)(fakeRequest, messages)
+  def createView = () => whatIsYourPartnersTaxCode(frontendAppConfig, whatIsYourPartnersTaxCodeForm, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => whatIsYourTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => whatIsYourPartnersTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
+  val form = whatIsYourPartnersTaxCodeForm
 
-  "WhatIsYourTaxCode view" must {
+  "WhatIsYourPartnersTaxCode view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like textPage(createViewUsingForm, messageKeyPrefix, routes.WhatIsYourTaxCodeController.onSubmit(NormalMode).url)
+    behave like textPage(createViewUsingForm, messageKeyPrefix, routes.WhatIsYourPartnersTaxCodeController.onSubmit(NormalMode).url)
   }
 }

@@ -24,9 +24,9 @@ import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+class WhatIsYourPartnersTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def whatIsYourTaxCodeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
+  def whatIsYourPartnersTaxCodeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
     val taxCodeRegex: String = """[1-9][0-9]{2,3}[L-NSTBDWX0][RT01]?""".r.toString()
 
@@ -57,5 +57,5 @@ class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends Form
   }
 
   def apply(errorKeyBlank: String = "taxCode.blank", errorKeyInvalid: String = "taxCode.invalid"): Form[String] =
-    Form(single("value" -> of(whatIsYourTaxCodeFormatter(errorKeyBlank, errorKeyInvalid))))
+    Form(single("value" -> of(whatIsYourPartnersTaxCodeFormatter(errorKeyBlank, errorKeyInvalid))))
 }
