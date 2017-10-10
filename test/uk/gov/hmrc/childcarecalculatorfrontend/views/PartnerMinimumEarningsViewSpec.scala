@@ -27,16 +27,27 @@ class PartnerMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "partnerMinimumEarnings"
 
-  def createView = () => partnerMinimumEarnings(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerMinimumEarnings(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => partnerMinimumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => partnerMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages)
+
+  def createViewWithAmount = (amount: BigDecimal) => partnerMinimumEarnings(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
 
   "PartnerMinimumEarnings view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messagesApi("partnerMinimumEarnings.heading", 0))
 
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerMinimumEarningsController.onSubmit(NormalMode).url)
+
+    "show correct hint text and value of minimum earnings" in {
+
+      val amount = BigDecimal(40)
+      val doc = asDocument(createViewWithAmount(amount))
+
+      assertContainsText(doc, messagesApi("partnerMinimumEarnings.hint"))
+      assertContainsText(doc, messagesApi("partnerMinimumEarnings.heading", amount))
+    }
   }
 }

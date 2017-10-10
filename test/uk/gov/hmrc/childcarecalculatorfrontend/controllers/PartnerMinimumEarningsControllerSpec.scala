@@ -36,7 +36,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase {
     new PartnerMinimumEarningsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerMinimumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
 
   "PartnerMinimumEarnings Controller" must {
 
@@ -67,7 +67,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("partnerMinimumEarnings.error").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

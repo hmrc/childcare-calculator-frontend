@@ -309,7 +309,10 @@ partnerMaximumEarnings.title = partnerMaximumEarnings
 partnerMaximumEarnings.heading = partnerMaximumEarnings
 partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
 
-partnerMinimumEarnings.title = partnerMinimumEarnings
-partnerMinimumEarnings.heading = partnerMinimumEarnings
+partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
+partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
+
 

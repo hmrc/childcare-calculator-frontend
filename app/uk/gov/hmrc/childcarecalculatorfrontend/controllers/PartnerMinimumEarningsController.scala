@@ -29,6 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerMinimumEarning
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
@@ -45,17 +46,21 @@ class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(partnerMinimumEarnings(appConfig, preparedForm, mode))
+      Ok(partnerMinimumEarnings(appConfig, preparedForm, mode, getEarningsForAge()))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm(partnerMinimumEarningsErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerMinimumEarnings(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerMinimumEarnings(appConfig, formWithErrors, mode, getEarningsForAge()))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, PartnerMinimumEarningsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerMinimumEarningsId, mode)(new UserAnswers(cacheMap))))
       )
+  }
+
+  private def getEarningsForAge() = {
+    0
   }
 }
