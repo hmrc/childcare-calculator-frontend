@@ -30,6 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouKnowYourPartners
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
@@ -51,7 +52,7 @@ class DoYouKnowYourPartnersAdjustedTaxCodeController @Inject()(appConfig: Fronte
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("doYouKnowYourPartnersAdjustedTaxCode.error").bindFromRequest().fold(
+      BooleanForm(doYouKnowYourPartnerAdjustedTaxCodeErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(doYouKnowYourPartnersAdjustedTaxCode(appConfig, formWithErrors, mode))),
         (value) =>
