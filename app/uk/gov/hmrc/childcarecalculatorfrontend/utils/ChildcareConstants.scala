@@ -30,6 +30,9 @@ object ChildcareConstants {
   val paidEmploymentErrorKey = "paidEmployment.error"
   val workHoursBlankErrorKey = "workHours.blank"
   val workHoursInvalidErrorKey = "workHours.invalid"
+  val doYouGetAnyBenefitsErrorKey = "doYouGetAnyBenefits.error"
+  val doYouOrYourPartnerGetAnyBenefitsErrorKey = "doYouOrYourPartnerGetAnyBenefits.error"
+  val whoGetsBenefitsErrorKey = "whoGetsBenefits.error"
   val whatIsYourTaxCodeErrorKey = "whatIsYourTaxCode.error"
   val taxCodeLength_six = 6
   val taxCodeLength_four = 4

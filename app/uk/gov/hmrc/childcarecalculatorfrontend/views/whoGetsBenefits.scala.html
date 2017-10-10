@@ -17,29 +17,31 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsBenefitsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("getBenefits.title"),
+    title = messages("whoGetsBenefits.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = GetBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = WhoGetsBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("getBenefits.heading")
+        @components.heading("whoGetsBenefits.heading", "heading-xlarge")
 
-        @components.input_yes_no(
-            InputViewModel[Boolean]("value", form),
-            label = messages("getBenefits.heading"),
-            labelClass = Some("visually-hidden")
+        @components.input_radio(
+            viewModel = InputViewModel[String]("value", form),
+            legend = messages("whoGetsBenefits.heading"),
+            legendClass = Some("visually-hidden"),
+            inputs = WhoGetsBenefitsForm.options
         )
 
         @components.submit_button()

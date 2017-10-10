@@ -44,16 +44,18 @@ class Navigator @Inject() (schemes: Schemes) {
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     PaidEmploymentId -> paidEmploymentRoute,
     WhoIsInPaidEmploymentId -> workHoursRoute,
-    ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
     PartnerWorkHoursId -> partnerWorkHoursRoute,
+    ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
     WhatIsYourTaxCodeId -> whatIsYourTaxCodeRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
     DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
-    WhoGetsVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode)),
+    DoesYourEmployerOfferChildcareVouchersId -> parentsVouchersRoute,
     EitherGetsVouchersId -> vouchersRoute,
-    DoesYourEmployerOfferChildcareVouchersId -> (_ => routes.GetBenefitsController.onPageLoad(NormalMode))
+    WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
+    DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
+    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -183,10 +185,58 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def vouchersRoute(answers: UserAnswers) = answers.eitherGetsVouchers match {
-    case Some(ChildcareConstants.yes) => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    case Some(_) => routes.GetBenefitsController.onPageLoad(NormalMode)
-    case _ => routes.SessionExpiredController.onPageLoad()
+  private def parentsVouchersRoute(answers: UserAnswers) = {
+    answers.doesYourEmployerOfferChildcareVouchers match {
+      case Some(_) => {
+        if(answers.doYouLiveWithPartner.contains(true)) {
+          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        } else {
+          routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def vouchersRoute(answers: UserAnswers) = {
+    val Yes = YesNoUnsureEnum.YES.toString
+
+    answers.eitherGetsVouchers match {
+      case Some(Yes) => if(answers.doYouLiveWithPartner.contains(true)) {
+        if(answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)) {
+          routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+        } else {
+          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+      } else {
+        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+      }
+      case Some(_) => {
+        if(answers.doYouLiveWithPartner.contains(true)) {
+          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        } else {
+          routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def doYouGetAnyBenefitsRoute(answers: UserAnswers) = {
+    if(answers.doYouGetAnyBenefits.contains(false)){
+      routes.WhatsYourAgeController.onPageLoad(NormalMode)
+    } else {
+      //TODO: Go to new Which benefits do you get checkbox page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    }
+  }
+
+  private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers) = {
+    if(answers.doYouOrYourPartnerGetAnyBenefits.contains(false)){
+      routes.WhatsYourAgeController.onPageLoad(NormalMode)
+    } else {
+      routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+    }
   }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
