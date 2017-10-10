@@ -22,16 +22,15 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Schemes}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @Singleton
 class Navigator @Inject() (schemes: Schemes) {
 
-  val You = YouPartnerBothEnum.YOU.toString
-  val Partner = YouPartnerBothEnum.PARTNER.toString
-  val Both = YouPartnerBothEnum.BOTH.toString
+  val You: String = YouPartnerBothEnum.YOU.toString
+  val Partner: String = YouPartnerBothEnum.PARTNER.toString
+  val Both: String = YouPartnerBothEnum.BOTH.toString
 
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
@@ -51,6 +50,7 @@ class Navigator @Inject() (schemes: Schemes) {
     WhatIsYourTaxCodeId -> whatIsYourTaxCodeRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
     DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
+    WhatIsYourPartnersTaxCodeId -> whatIsYourPartnersTaxCodeRoute,
     DoesYourEmployerOfferChildcareVouchersId -> parentsVouchersRoute,
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
@@ -136,13 +136,12 @@ class Navigator @Inject() (schemes: Schemes) {
     val No = YesNoUnsureEnum.NO.toString
 
     answers.approvedProvider match {
-      case Some(No) => {
+      case Some(No) =>
         if(answers.isEligibleForMaxFreeHours == Eligible){
           routes.FreeHoursInfoController.onPageLoad()
         } else {
           routes.FreeHoursResultController.onPageLoad()
         }
-      }
       case Some(_) => if(answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
       else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
@@ -176,19 +175,23 @@ class Navigator @Inject() (schemes: Schemes) {
     }
 
   private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.hasPartnerInPaidWork) {
-      routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
-    } else if (!answers.hasPartnerInPaidWork) {
+    if (answers.hasBothInPaidWork) {
+      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+    } else if (answers.onlyYouInPaidWork) {
       routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def parentsVouchersRoute(answers: UserAnswers) = {
+  private def whatIsYourPartnersTaxCodeRoute(answers: UserAnswers): Call = {
+    routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+  }
+
+  private def parentsVouchersRoute(answers: UserAnswers): Call = {
     answers.doesYourEmployerOfferChildcareVouchers match {
       case Some(_) => {
-        if(answers.doYouLiveWithPartner.contains(true)) {
+        if (answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         } else {
           routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -198,7 +201,7 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def vouchersRoute(answers: UserAnswers) = {
+  private def vouchersRoute(answers: UserAnswers): Call = {
     val Yes = YesNoUnsureEnum.YES.toString
 
     answers.eitherGetsVouchers match {
@@ -211,13 +214,12 @@ class Navigator @Inject() (schemes: Schemes) {
       } else {
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
       }
-      case Some(_) => {
+      case Some(_) =>
         if(answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         } else {
           routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
         }
-      }
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

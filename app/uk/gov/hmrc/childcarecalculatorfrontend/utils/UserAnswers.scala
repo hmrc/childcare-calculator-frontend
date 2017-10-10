@@ -69,7 +69,15 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
+  def onlyYouInPaidWork: Boolean = {
+    doYouLiveWithPartner.contains(true) && (whoIsInPaidEmployment.contains("you"))
+  }
+
+  def hasBothInPaidWork: Boolean = {
+    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains("both")
+  }
+
   def hasPartnerInPaidWork: Boolean = {
-    doYouLiveWithPartner.contains(true) && (whoIsInPaidEmployment.contains("partner") || whoIsInPaidEmployment.contains("both"))
+    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains("partner")
   }
 }

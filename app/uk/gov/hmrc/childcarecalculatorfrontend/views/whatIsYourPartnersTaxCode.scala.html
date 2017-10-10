@@ -33,9 +33,9 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("whatIsYourPartnersTaxCode.heading")
+        @components.heading("whatIsYourPartnersTaxCode.heading", "heading-xlarge")
 
-        @components.input_number(InputViewModel[String]("value", form), label = messages("whatIsYourPartnersTaxCode.heading"), labelClass=Some("visually-hidden"))
+        @components.input_text(InputViewModel[String]("value", form), label = messages("whatIsYourPartnersTaxCode.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }
