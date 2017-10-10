@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, WhoIsInPaidEmploymentId}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouLiveWithPartner
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswersSpec extends WordSpec with MustMatchers {
@@ -40,17 +39,25 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
       helper(answers).hasPartnerInPaidWork mustEqual true
     }
 
-    "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
+    "return false when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
       val answers: CacheMap = cacheMap(
         WhoIsInPaidEmploymentId.toString -> JsString("both"),
         DoYouLiveWithPartnerId.toString -> JsBoolean(true)
       )
-      helper(answers).hasPartnerInPaidWork mustEqual true
+      helper(answers).hasPartnerInPaidWork mustEqual false
     }
 
     "return false when the answer to whoIsInPaidEmployment returns 'you'" in {
       val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("you")
+        WhoIsInPaidEmploymentId.toString -> JsString("you"),
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
+      )
+      helper(answers).hasPartnerInPaidWork mustEqual false
+    }
+
+    "return false when user does not live with partner" in {
+      val answers: CacheMap = cacheMap(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(false)
       )
       helper(answers).hasPartnerInPaidWork mustEqual false
     }
@@ -58,6 +65,43 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
     "return false when the answer to whoIsInPaidEmployment returns None" in {
       val answers: CacheMap = cacheMap()
       helper(answers).hasPartnerInPaidWork mustEqual false
+    }
+  }
+
+  "hasBothInPaidWork" must {
+    "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
+      val answers: CacheMap = cacheMap(
+        WhoIsInPaidEmploymentId.toString -> JsString("both"),
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
+      )
+      helper(answers).hasBothInPaidWork mustEqual true
+    }
+
+    "return false when the answer to whoIsInPaidEmployment returns 'you'" in {
+      val answers: CacheMap = cacheMap(
+        WhoIsInPaidEmploymentId.toString -> JsString("you"),
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
+      )
+      helper(answers).hasBothInPaidWork mustEqual false
+    }
+
+    "return false when the answer to whoIsInPaidEmployment returns 'partner'" in {
+      val answers: CacheMap = cacheMap(
+        WhoIsInPaidEmploymentId.toString -> JsString("partner")
+      )
+      helper(answers).hasBothInPaidWork mustEqual false
+    }
+
+    "return false when user does not live with partner" in {
+      val answers: CacheMap = cacheMap(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(false)
+      )
+      helper(answers).hasBothInPaidWork mustEqual false
+    }
+
+    "return false when the answer to whoIsInPaidEmployment returns None" in {
+      val answers: CacheMap = cacheMap()
+      helper(answers).hasBothInPaidWork mustEqual false
     }
   }
 }

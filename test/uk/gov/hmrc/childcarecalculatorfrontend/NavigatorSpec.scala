@@ -231,6 +231,50 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Do you know your adjusted tax code" when {
+        "when users answer yes they are taken to WhatIsYourAdjustedTaxCode screen from DoYouKnowYourAdjustedTaxCode when yes is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(true)
+          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "user with partner will be taken to DoYouKnowYourPartnersAdjustedTaxCode screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
+          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+        }
+
+        "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn false
+          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
+          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+      }
+
+      "What is your Tax Code" when {
+        "partner user with only you in paid work goes to DoesYourEmployerOfferChildcareVouchers screen from  WhatIsYourTaxCode after entering tax code" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("you")
+          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+
+        "user with both are in paid work goes to Has your partners tax code been adjusted screen from  WhatIsYourTaxCode after entering tax code" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        }
+
+        "single user goes to does your employer offer childcare vouchers page from WhatIsYourTaxCode after entering tax code" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        }
+      }
+
       "Has Your Partners Tax Code Been Adjusted" when {
         "user with partner will be taken to DoYouKnowYourPartnersAdjustedTaxCode screen from HasYourPartnersTaxCodeBeenAdjusted when yes is selected" in {
           val answers = spy(userAnswers())
@@ -263,39 +307,18 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Do you know your adjusted tax code" when {
-        "when users answer yes they are taken to WhatIsYourAdjustedTaxCode screen from DoYouKnowYourAdjustedTaxCode when yes is selected" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(true)
-          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
-        }
-
-        "user with partner will be taken to DoYouKnowYourPartnersAdjustedTaxCode screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+      "What is your Partners Tax Code" when {
+        "partner user with only partner in paid work goes to DoesYourEmployerOfferChildcareVouchers screen from  WhatIsYourPartnersTaxCode after entering tax code" in {
           val answers = spy(userAnswers())
           when(answers.hasPartnerInPaidWork) thenReturn true
-          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
-          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+          //TODO: Redirect to does your partners employer offer childcare vouchers
+          navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
         }
 
-        "single user will be taken to DoesYourEmployerOfferChildcareVouchers screen from DoYouKnowYourAdjustedTaxCode when no is selected" in {
+        "user with both are in paid work goes to Has your partners tax code been adjusted screen from  WhatIsYourPartnersTaxCode after entering tax code" in {
           val answers = spy(userAnswers())
-          when(answers.hasPartnerInPaidWork) thenReturn false
-          when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
-          navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
-        }
-      }
-
-      "What is your Tax Code" when {
-        "single user goes to DoesYourEmployerOfferChildcareVouchers screen from  WhatIsYourTaxCode after entering tax code" in {
-          val answers = spy(userAnswers())
-          when(answers.hasPartnerInPaidWork) thenReturn false
-          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
-        }
-
-        "user with partner goes to WhatIsYourPartnersTaxCodeController screen from  WhatIsYourTaxCode after entering tax code" in {
-          val answers = spy(userAnswers())
-          when(answers.hasPartnerInPaidWork) thenReturn true
-          navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+          when(answers.hasBothInPaidWork) thenReturn true
+          navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
         }
       }
 

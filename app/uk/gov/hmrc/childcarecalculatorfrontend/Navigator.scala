@@ -166,8 +166,8 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def doYouKnowPartnersTaxCodeRoute (answers: UserAnswers): Call =
-    answers.doYouKnowYourPartnersAdjustedTaxCode match{
+  private def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call =
+    answers.doYouKnowYourPartnersAdjustedTaxCode match {
       case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
       case Some(false) => routes.EitherGetsVouchersController.onPageLoad(NormalMode)
       case None => routes.SessionExpiredController.onPageLoad()
@@ -175,17 +175,26 @@ class Navigator @Inject() (schemes: Schemes) {
     }
 
   private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.hasBothInPaidWork) {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    } else if (answers.onlyYouInPaidWork) {
-      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+    if (answers.doYouLiveWithPartner.contains(true)) {
+      answers.whoIsInPaidEmployment match {
+        case Some("both") => routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+        case Some("you") => routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
     } else {
-      routes.SessionExpiredController.onPageLoad()
+      routes.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 
   private def whatIsYourPartnersTaxCodeRoute(answers: UserAnswers): Call = {
-    routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+    if (answers.hasBothInPaidWork) {
+      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+    } else if (answers.hasPartnerInPaidWork) {
+      //TODO: Redirect to does your partners employer offer childcare vouchers
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private def parentsVouchersRoute(answers: UserAnswers): Call = {
