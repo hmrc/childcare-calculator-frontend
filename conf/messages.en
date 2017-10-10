@@ -237,7 +237,6 @@ doYouGetAnyBenefits.title = Do you get any of these benefits?
 doYouGetAnyBenefits.heading = Do you get any of these benefits?
 doYouGetAnyBenefits.checkYourAnswersLabel = Do you get any of these benefits?
 doYouGetAnyBenefits.error = You must answer yes if you get any benefits
-
 doYouGetAnyBenefits.li.incomeSupport = Income support
 doYouGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
 doYouGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
@@ -251,7 +250,6 @@ doYouOrYourPartnerGetAnyBenefits.title = Do you or your partner get any of these
 doYouOrYourPartnerGetAnyBenefits.heading = Do you or your partner get any of these benefits?
 doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel = Do you or your partner get any of these benefits?
 doYouOrYourPartnerGetAnyBenefits.error = You must answer yes if you or your partner get any benefits
-
 doYouOrYourPartnerGetAnyBenefits.li.incomeSupport = Income support
 doYouOrYourPartnerGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
 doYouOrYourPartnerGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
@@ -261,12 +259,6 @@ doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance = Attendance allowance
 doYouOrYourPartnerGetAnyBenefits.li.independencePayment = Personal Independence Payment
 doYouOrYourPartnerGetAnyBenefits.li.carersAllowance = Carer’s Allowance
 
-whatsYourAge.title = whatsYourAge
-whatsYourAge.heading = whatsYourAge
-whatsYourAge.option1 = whatsYourAge Option 1
-whatsYourAge.option2 = whatsYourAge Option 2
-whatsYourAge.checkYourAnswersLabel = whatsYourAge
-
 whoGetsBenefits.title = Who gets benefits?
 whoGetsBenefits.heading = Who gets benefits?
 whoGetsBenefits.you = You
@@ -274,3 +266,9 @@ whoGetsBenefits.partner = Partner
 whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
 whoGetsBenefits.error = You must tell the calculator who gets benefits
+
+whatsYourAge.title = whatsYourAge
+whatsYourAge.heading = whatsYourAge
+whatsYourAge.option1 = whatsYourAge Option 1
+whatsYourAge.option2 = whatsYourAge Option 2
+whatsYourAge.checkYourAnswersLabel = whatsYourAge
