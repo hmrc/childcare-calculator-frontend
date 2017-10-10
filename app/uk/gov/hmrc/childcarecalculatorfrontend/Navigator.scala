@@ -44,13 +44,13 @@ class Navigator @Inject() (schemes: Schemes) {
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     PaidEmploymentId -> paidEmploymentRoute,
     WhoIsInPaidEmploymentId -> workHoursRoute,
-    PartnerWorkHoursId -> partnerWorkHoursRoute,
     ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
+    PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> taxCodeAdjustedRoute,
     HasYourPartnersTaxCodeBeenAdjustedId -> partnerTaxCodeAdjustedRoute,
     DoYouKnowYourAdjustedTaxCodeId -> DoYouKnowYourAdjustedTaxCodeRoute,
-    YourChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
-    PartnerChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    YourChildcareVouchersId -> parentsVouchersRoute,
+    PartnerChildcareVouchersId -> partnersVouchersRoute,
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
@@ -160,7 +160,7 @@ class Navigator @Inject() (schemes: Schemes) {
     if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
       routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
     } else if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(false)) {
-      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
@@ -168,6 +168,19 @@ class Navigator @Inject() (schemes: Schemes) {
 
   private def parentsVouchersRoute(answers: UserAnswers) = {
     answers.yourChildcareVouchers match {
+      case Some(_) => {
+        if(answers.doYouLiveWithPartner.contains(true)) {
+          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        } else {
+          routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def partnersVouchersRoute(answers: UserAnswers) = {
+    answers.partnerChildcareVouchers match {
       case Some(_) => {
         if(answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)

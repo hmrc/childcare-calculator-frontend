@@ -177,15 +177,6 @@ partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
 partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
 
-<<<<<<< HEAD
-doEitherOfYourEmployersOfferChildcareVouchers.title = doEitherOfYourEmployersOfferChildcareVouchers
-doEitherOfYourEmployersOfferChildcareVouchers.heading = doEitherOfYourEmployersOfferChildcareVouchers
-doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersOfferChildcareVouchers Option 1
-doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
-doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
-
-=======
->>>>>>> master
 doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
@@ -212,13 +203,19 @@ hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if their tax code has been adjusted
 
-doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
-doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
-doesYourEmployerOfferChildcareVouchers.yes = Yes
-doesYourEmployerOfferChildcareVouchers.no = No
-doesYourEmployerOfferChildcareVouchers.notSure = Not sure
-doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
+yourChildcareVouchers.title = Does your employer offer childcare vouchers?
+yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
+yourChildcareVouchers.yes = Yes
+yourChildcareVouchers.no = No
+yourChildcareVouchers.notSure = Not Sure
+yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
+yourChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
+
+partnerChildcareVouchers.title = partnerChildcareVouchers
+partnerChildcareVouchers.heading = partnerChildcareVouchers
+partnerChildcareVouchers.option1 = partnerChildcareVouchers Option 1
+partnerChildcareVouchers.option2 = partnerChildcareVouchers Option 2
+partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -227,21 +224,6 @@ eitherGetsVouchers.no = No
 eitherGetsVouchers.notSure = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
-
-partnerChildcareVouchers.title = partnerChildcareVouchers
-partnerChildcareVouchers.heading = partnerChildcareVouchers
-partnerChildcareVouchers.option1 = partnerChildcareVouchers Option 1
-partnerChildcareVouchers.option2 = partnerChildcareVouchers Option 2
-partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
-
-
-yourChildcareVouchers.title = Does your employer offer childcare vouchers?
-yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
-yourChildcareVouchers.yes = Yes
-yourChildcareVouchers.no = No
-yourChildcareVouchers.notSure = Not Sure
-yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
-yourChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
 whoGetsVouchers.title = Which of you is offered childcare vouchers?
 whoGetsVouchers.heading = Which of you is offered childcare vouchers?
@@ -290,11 +272,3 @@ whatsYourAge.heading = whatsYourAge
 whatsYourAge.option1 = whatsYourAge Option 1
 whatsYourAge.option2 = whatsYourAge Option 2
 whatsYourAge.checkYourAnswersLabel = whatsYourAge
-
-
-whoGetsBenefits.title = whoGetsBenefits
-whoGetsBenefits.heading = whoGetsBenefits
-whoGetsBenefits.option1 = whoGetsBenefits Option 1
-whoGetsBenefits.option2 = whoGetsBenefits Option 2
-whoGetsBenefits.checkYourAnswersLabel = whoGetsBenefits
-
