@@ -239,20 +239,12 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
         }
 
-//        "user with partner will be taken to PartnerChildcareVouchersController screen from HasYourPartnerTaxCodeBeenAdjusted when no is selected and partner in paid work" in {
-//          val answers = spy(userAnswers())
-//          when(answers.areYouInPaidWork) thenReturn Some(false)
-//          when(answers.hasPartnerInPaidWork) thenReturn true
-//          when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
-//          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-//        }
-
         "user with partner will be taken to EitherGetsVouchers screen from HasYourPartnersTaxCodeBeenAdjusted when no is selected and both in pain work" in {
           val answers = spy(userAnswers())
           when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.hasPartnerInPaidWork) thenReturn true
           when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
-          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+          navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
         }
       }
 
