@@ -26,6 +26,22 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whatIsYourTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourTaxCodeController.onPageLoad(CheckMode).url)
   }
 
+  def whoGetsBenefits: Option[AnswerRow] = userAnswers.whoGetsBenefits map {
+    x => AnswerRow("whoGetsBenefits.checkYourAnswersLabel", s"whoGetsBenefits.$x", true, routes.WhoGetsBenefitsController.onPageLoad(CheckMode).url)
+  }
+
+  def doYouOrYourPartnerGetAnyBenefits: Option[AnswerRow] = userAnswers.doYouOrYourPartnerGetAnyBenefits map {
+    x => AnswerRow("doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(CheckMode).url)
+  }
+
+  def whatsYourAge: Option[AnswerRow] = userAnswers.whatsYourAge map {
+    x => AnswerRow("whatsYourAge.checkYourAnswersLabel", s"whatsYourAge.$x", true, routes.WhatsYourAgeController.onPageLoad(CheckMode).url)
+  }
+
+  def doYouGetAnyBenefits: Option[AnswerRow] = userAnswers.doYouGetAnyBenefits map {
+    x => AnswerRow("doYouGetAnyBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouGetAnyBenefitsController.onPageLoad(CheckMode).url)
+  }
+
   def doYouKnowYourPartnersAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourPartnersAdjustedTaxCode map {
     x => AnswerRow("doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(CheckMode).url)
   }
@@ -40,10 +56,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def eitherGetsVouchers: Option[AnswerRow] = userAnswers.eitherGetsVouchers map {
     x => AnswerRow("eitherGetsVouchers.checkYourAnswersLabel", s"vouchers.$x", true, routes.EitherGetsVouchersController.onPageLoad(CheckMode).url)
-  }
-
-  def getBenefits: Option[AnswerRow] = userAnswers.getBenefits map {
-    x => AnswerRow("getBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.GetBenefitsController.onPageLoad(CheckMode).url)
   }
 
   def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
