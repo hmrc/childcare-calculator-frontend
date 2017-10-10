@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
+import play.api.libs.json.JsString
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -31,14 +31,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatIsYourTaxCode
 class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhatIsYourTaxCodeController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new WhatIsYourTaxCodeForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = WhatIsYourTaxCodeForm()) = whatIsYourTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = whatIsYourTaxCodeForm) = whatIsYourTaxCode(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val taxCode = "1100L"
 
   "WhatIsYourTaxCode Controller" must {
 
@@ -50,16 +51,16 @@ class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(WhatIsYourTaxCodeId.toString -> JsNumber(testNumber))
+      val validData = Map(WhatIsYourTaxCodeId.toString -> JsString(taxCode))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhatIsYourTaxCodeForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(whatIsYourTaxCodeForm.fill(taxCode))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", taxCode))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -69,7 +70,7 @@ class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = WhatIsYourTaxCodeForm().bind(Map("value" -> "invalid value"))
+      val boundForm = whatIsYourTaxCodeForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -85,7 +86,7 @@ class WhatIsYourTaxCodeControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", taxCode))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

@@ -35,6 +35,10 @@ site.textarea.char_limit = (Limit is {0} characters)
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
+checkYourAnswers.title = Check Your Answers
+checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.guidance = Guidance for check your answers
+
 whatToTellTheCalculator.title = What to tell the calculator
 whatToTellTheCalculator.heading = What to tell the calculator
 whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
@@ -138,14 +142,15 @@ freeHoursResult.summary.table.child.age2 = Child aged 2
 freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
 freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs
 
-checkYourAnswers.title = Check Your Answers
-checkYourAnswers.heading = Check Your Answers
-checkYourAnswers.guidance = Guidance for check your answers
-
 doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+
+areYouInPaidWork.title = Are you in paid work?
+areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
+areYouInPaidWork.error = You must answer yes if you are in paid work
 
 paidEmployment.title = Are you, your partner, or both of you in paid work?
 paidEmployment.heading = Are you, your partner, or both of you in paid work?
@@ -160,23 +165,51 @@ whoIsInPaidEmployment.both = Both
 whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
 whoIsInPaidEmployment.error = You must tell the calculator if you or your partner is in paid work
 
+workHours.blank = You must enter a number between 1 and 99.5
+workHours.invalid = You must enter a number with no more than 2 digits and 1 decimal place
 parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
 parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
 parentWorkHours.hint = This is the hours worked in all your paid jobs, 'zero hours' contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work.
-workHours.blank = You must enter a number between 1 and 99.5
-workHours.invalid = You must enter a number with no more than 2 digits and 1 decimal place
 
 partnerWorkHours.title = How many hours a week does your partner usually work?
 partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
 partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
 
-doEitherOfYourEmployersOfferChildcareVouchers.title = doEitherOfYourEmployersOfferChildcareVouchers
-doEitherOfYourEmployersOfferChildcareVouchers.heading = doEitherOfYourEmployersOfferChildcareVouchers
-doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersOfferChildcareVouchers Option 1
-doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
-doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
+hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
+
+doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
+
+whatIsYourTaxCode.title = What’s your tax code?
+whatIsYourTaxCode.heading = What’s your tax code?
+whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
+taxCode.blank = You must tell the calculator what your tax code is
+taxCode.invalid = You must enter a valid tax code
+
+hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if their tax code has been adjusted
+
+doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.heading = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+doYouKnowYourPartnersAdjustedTaxCode.error = You must tell the calculator if you know your partner's tax code
+
+whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
+whatIsYourPartnersTaxCode.heading = What’s your partner’s tax code?
+whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax code?
 
 doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
 doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
@@ -186,32 +219,19 @@ doesYourEmployerOfferChildcareVouchers.notSure = Not sure
 doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
 doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
-doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
-doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
+yourChildcareVouchers.title = Does your employer offer childcare vouchers?
+yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
+yourChildcareVouchers.yes = Yes
+yourChildcareVouchers.no = No
+yourChildcareVouchers.notSure = Not Sure
+yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
+yourChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
-hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
-hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if their tax code has been adjusted
-
-hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
-hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
-
-areYouInPaidWork.title = Are you in paid work?
-areYouInPaidWork.heading = Are you in paid work?
-areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
-areYouInPaidWork.error = You must answer yes if you are in paid work
-
-getBenefits.title = getBenefits
-getBenefits.heading = getBenefits
-getBenefits.checkYourAnswersLabel = getBenefits
+partnerChildcareVouchers.title = partnerChildcareVouchers
+partnerChildcareVouchers.heading = partnerChildcareVouchers
+partnerChildcareVouchers.option1 = partnerChildcareVouchers Option 1
+partnerChildcareVouchers.option2 = partnerChildcareVouchers Option 2
+partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -229,13 +249,45 @@ whoGetsVouchers.both = Both
 whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
-doYouKnowYourPartnersAdjustedTaxCode.title = doYouKnowYourPartnersAdjustedTaxCode
-doYouKnowYourPartnersAdjustedTaxCode.heading = doYouKnowYourPartnersAdjustedTaxCode
-doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = doYouKnowYourPartnersAdjustedTaxCode
+doYouGetAnyBenefits.title = Do you get any of these benefits?
+doYouGetAnyBenefits.heading = Do you get any of these benefits?
+doYouGetAnyBenefits.checkYourAnswersLabel = Do you get any of these benefits?
+doYouGetAnyBenefits.error = You must answer yes if you get any benefits
+doYouGetAnyBenefits.li.incomeSupport = Income support
+doYouGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
+doYouGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
+doYouGetAnyBenefits.li.pensionCredit = Pension Credit
+doYouGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
+doYouGetAnyBenefits.li.attendanceAllowance = Attendance allowance
+doYouGetAnyBenefits.li.independencePayment = Personal Independence Payment
+doYouGetAnyBenefits.li.carersAllowance = Carer’s Allowance
 
-whatIsYourTaxCode.title = whatIsYourTaxCode
-whatIsYourTaxCode.heading = whatIsYourTaxCode
-whatIsYourTaxCode.checkYourAnswersLabel = whatIsYourTaxCode
+doYouOrYourPartnerGetAnyBenefits.title = Do you or your partner get any of these benefits?
+doYouOrYourPartnerGetAnyBenefits.heading = Do you or your partner get any of these benefits?
+doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel = Do you or your partner get any of these benefits?
+doYouOrYourPartnerGetAnyBenefits.error = You must answer yes if you or your partner get any benefits
+doYouOrYourPartnerGetAnyBenefits.li.incomeSupport = Income support
+doYouOrYourPartnerGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
+doYouOrYourPartnerGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
+doYouOrYourPartnerGetAnyBenefits.li.pensionCredit = Pension Credit
+doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
+doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance = Attendance allowance
+doYouOrYourPartnerGetAnyBenefits.li.independencePayment = Personal Independence Payment
+doYouOrYourPartnerGetAnyBenefits.li.carersAllowance = Carer’s Allowance
+
+whoGetsBenefits.title = Who gets benefits?
+whoGetsBenefits.heading = Who gets benefits?
+whoGetsBenefits.you = You
+whoGetsBenefits.partner = Partner
+whoGetsBenefits.both = Both
+whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
+whoGetsBenefits.error = You must tell the calculator who gets benefits
+
+whatsYourAge.title = whatsYourAge
+whatsYourAge.heading = whatsYourAge
+whatsYourAge.option1 = whatsYourAge Option 1
+whatsYourAge.option2 = whatsYourAge Option 2
+whatsYourAge.checkYourAnswersLabel = whatsYourAge
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
@@ -260,3 +312,4 @@ partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
 partnerMinimumEarnings.title = partnerMinimumEarnings
 partnerMinimumEarnings.heading = partnerMinimumEarnings
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
+

@@ -19,15 +19,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 
-object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
+object WhatsYourAgeForm extends FormErrorHelper {
 
-  def DoesYourEmployerOfferChildcareVouchersFormatter = new Formatter[String] {
+  def WhatsYourAgeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "doesYourEmployerOfferChildcareVouchers.error")
+      case None => produceError(key, "error.required")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -35,12 +34,11 @@ object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(DoesYourEmployerOfferChildcareVouchersFormatter)))
+    Form(single("value" -> of(WhatsYourAgeFormatter)))
 
   def options = Seq(
-    RadioOption("doesYourEmployerOfferChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    RadioOption("doesYourEmployerOfferChildcareVouchers",  YesNoUnsureEnum.NO.toString),
-    RadioOption("doesYourEmployerOfferChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+    RadioOption("whatsYourAge", "option1"),
+    RadioOption("whatsYourAge", "option2")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

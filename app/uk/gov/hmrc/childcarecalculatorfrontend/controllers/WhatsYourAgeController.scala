@@ -24,38 +24,39 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.GetBenefitsId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatsYourAgeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhatsYourAgeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.getBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatsYourAge
 
 import scala.concurrent.Future
 
-class GetBenefitsController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+class WhatsYourAgeController @Inject()(
+                                        appConfig: FrontendAppConfig,
+                                        override val messagesApi: MessagesApi,
+                                        dataCacheConnector: DataCacheConnector,
+                                        navigator: Navigator,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.getBenefits match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+      val preparedForm = request.userAnswers.whatsYourAge match {
+        case None => WhatsYourAgeForm()
+        case Some(value) => WhatsYourAgeForm().fill(value)
       }
-      Ok(getBenefits(appConfig, preparedForm, mode))
+      Ok(whatsYourAge(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(getBenefits(appConfig, formWithErrors, mode))),
+      WhatsYourAgeForm().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
+          Future.successful(BadRequest(whatsYourAge(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, GetBenefitsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(GetBenefitsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[String](request.sessionId, WhatsYourAgeId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(WhatsYourAgeId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
