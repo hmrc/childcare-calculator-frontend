@@ -177,15 +177,12 @@ partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
 partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
 
-<<<<<<< HEAD
 doEitherOfYourEmployersOfferChildcareVouchers.title = doEitherOfYourEmployersOfferChildcareVouchers
 doEitherOfYourEmployersOfferChildcareVouchers.heading = doEitherOfYourEmployersOfferChildcareVouchers
 doEitherOfYourEmployersOfferChildcareVouchers.option1 = doEitherOfYourEmployersOfferChildcareVouchers Option 1
 doEitherOfYourEmployersOfferChildcareVouchers.option2 = doEitherOfYourEmployersOfferChildcareVouchers Option 2
 doEitherOfYourEmployersOfferChildcareVouchers.checkYourAnswersLabel = doEitherOfYourEmployersOfferChildcareVouchers
 
-=======
->>>>>>> master
 doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
@@ -228,11 +225,13 @@ eitherGetsVouchers.notSure = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-partnerChildcareVouchers.title = partnerChildcareVouchers
-partnerChildcareVouchers.heading = partnerChildcareVouchers
-partnerChildcareVouchers.option1 = partnerChildcareVouchers Option 1
-partnerChildcareVouchers.option2 = partnerChildcareVouchers Option 2
+partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.yes = Yes
+partnerChildcareVouchers.no = No
+partnerChildcareVouchers.notSure = Not Sure
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
+partnerChildcareVouchers.error = You must tell the calculator if your partner's employer offers childcare vouchers
 
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
