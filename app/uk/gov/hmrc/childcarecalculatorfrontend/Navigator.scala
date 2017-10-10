@@ -212,10 +212,10 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def parentsVouchersRoute(answers: UserAnswers): Call = {
+  private def parentsVouchersRoute(answers: UserAnswers) = {
     answers.yourChildcareVouchers match {
       case Some(_) =>
-        if (answers.doYouLiveWithPartner.contains(true)) {
+        if(answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         } else {
           routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
