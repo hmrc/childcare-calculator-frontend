@@ -114,3 +114,18 @@ GET        /yourMinimumEarnings                       uk.gov.hmrc.childcarecalcu
 POST       /yourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYourMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /areYouSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onPageLoad(mode: Mode = NormalMode)
+POST       /areYouSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAreYouSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAreYouSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit(mode: Mode = CheckMode)

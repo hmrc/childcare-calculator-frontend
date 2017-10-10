@@ -242,3 +242,17 @@ yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
 yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
+
+areYouSelfEmployedOrApprentice.title = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.heading = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
+areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
+areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
+
+yourMaximumEarnings.title = yourMaximumEarnings
+yourMaximumEarnings.heading = yourMaximumEarnings
+yourMaximumEarnings.checkYourAnswersLabel = yourMaximumEarnings
+
+partnerMaximumEarnings.title = partnerMaximumEarnings
+partnerMaximumEarnings.heading = partnerMaximumEarnings
+partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
