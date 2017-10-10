@@ -31,6 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsBenefits
 
 import scala.concurrent.Future
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class WhoGetsBenefitsController @Inject()(
                                         appConfig: FrontendAppConfig,

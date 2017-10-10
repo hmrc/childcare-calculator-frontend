@@ -359,24 +359,41 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "WHO GETS VOUCHERS" when {
-        "user select any option go to Get Benefits page" in {
-          navigator.nextPage(WhoGetsVouchersId, NormalMode)(spy(userAnswers())) mustBe routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+      "Vouchers pages" when {
+        "go to you or your partner benefits page from which of you gets vouchers page" in {
+          navigator.nextPage(WhoGetsVouchersId, NormalMode)(spy(userAnswers())) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         }
-        "DO EITHER OF YOU GET VOUCHERS" when {
-          "go to who gets vouchers page from do either of you get vouchers page when user selects 'yes'" in {
-            val answers = spy(userAnswers())
-            when(answers.eitherGetsVouchers) thenReturn Some("yes")
-            navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-            navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-          }
 
-          "go to do you get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure'" in {
-            val answers = spy(userAnswers())
-            when(answers.eitherGetsVouchers) thenReturn Some("no") thenReturn Some("notSure")
-            navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-            navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-          }
+        "go to who gets vouchers or you or your partner benefits page from do either of you get vouchers page when user selects 'yes' and lives with partner" in {
+          val answers = spy(userAnswers())
+          when(answers.eitherGetsVouchers) thenReturn Some("yes")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both") thenReturn Some("you")
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+
+        "go to who gets vouchers or you or your partner benefits page from do either of you get vouchers page when user selects 'yes' as a single parent" in {
+          val answers = spy(userAnswers())
+          when(answers.eitherGetsVouchers) thenReturn Some("yes")
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+
+        "go to do you get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure' and lives with partner" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.eitherGetsVouchers) thenReturn Some("no") thenReturn Some("notSure")
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+
+        "go to do you get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure' as single parent" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.eitherGetsVouchers) thenReturn Some("no") thenReturn Some("notSure")
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+          navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
         }
       }
 
