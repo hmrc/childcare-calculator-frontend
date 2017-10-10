@@ -58,7 +58,8 @@ class Navigator @Inject() (schemes: Schemes) {
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
-    YourMinimumEarningsId -> yourMinimumEarningsRoute
+    YourMinimumEarningsId -> yourMinimumEarningsRoute,
+    WhatsYourAgeId -> (_ => routes.YourMinimumEarningsController.onPageLoad(NormalMode)) //TODO: To be replaced by proper routing once done.
   )
 
   private def locationRoute(answers: UserAnswers) = {
