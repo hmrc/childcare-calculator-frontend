@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class WhoGetsBenefitsFormSpec extends FormBehaviours {
 
@@ -29,6 +30,6 @@ class WhoGetsBenefitsFormSpec extends FormBehaviours {
   "WhoGetsBenefits form" must {
     behave like questionForm[String](WhoGetsBenefitsForm.options.head.value)
 
-    behave like formWithOptionField("value", WhoGetsBenefitsForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", whoGetsBenefitsErrorKey , WhoGetsBenefitsForm.options.map{x => x.value}:_*)
   }
 }

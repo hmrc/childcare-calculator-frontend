@@ -32,4 +32,5 @@ object ChildcareConstants {
   val workHoursInvalidErrorKey = "workHours.invalid"
   val doYouGetAnyBenefitsErrorKey = "doYouGetAnyBenefits.error"
   val doYouOrYourPartnerGetAnyBenefitsErrorKey = "doYouOrYourPartnerGetAnyBenefits.error"
+  val whoGetsBenefitsErrorKey = "whoGetsBenefits.error"
 }
