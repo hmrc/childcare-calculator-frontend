@@ -203,13 +203,19 @@ hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if their tax code has been adjusted
 
-doesYourEmployerOfferChildcareVouchers.title = Does your employer offer childcare vouchers?
-doesYourEmployerOfferChildcareVouchers.heading = Does your employer offer childcare vouchers?
-doesYourEmployerOfferChildcareVouchers.yes = Yes
-doesYourEmployerOfferChildcareVouchers.no = No
-doesYourEmployerOfferChildcareVouchers.notSure = Not sure
-doesYourEmployerOfferChildcareVouchers.checkYourAnswersLabel = doesYourEmployerOfferChildcareVouchers
-doesYourEmployerOfferChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
+yourChildcareVouchers.title = Does your employer offer childcare vouchers?
+yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
+yourChildcareVouchers.yes = Yes
+yourChildcareVouchers.no = No
+yourChildcareVouchers.notSure = Not Sure
+yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
+yourChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
+
+partnerChildcareVouchers.title = partnerChildcareVouchers
+partnerChildcareVouchers.heading = partnerChildcareVouchers
+partnerChildcareVouchers.option1 = partnerChildcareVouchers Option 1
+partnerChildcareVouchers.option2 = partnerChildcareVouchers Option 2
+partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
