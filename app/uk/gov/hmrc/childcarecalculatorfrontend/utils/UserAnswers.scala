@@ -20,6 +20,8 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def partnerMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMinimumEarningsId.toString)
+
   def partnerMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMaximumEarningsId.toString)
 
   def yourMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](YourMaximumEarningsId.toString)

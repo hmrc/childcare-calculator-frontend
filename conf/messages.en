@@ -256,3 +256,7 @@ yourMaximumEarnings.checkYourAnswersLabel = yourMaximumEarnings
 partnerMaximumEarnings.title = partnerMaximumEarnings
 partnerMaximumEarnings.heading = partnerMaximumEarnings
 partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
+
+partnerMinimumEarnings.title = partnerMinimumEarnings
+partnerMinimumEarnings.heading = partnerMinimumEarnings
+partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings

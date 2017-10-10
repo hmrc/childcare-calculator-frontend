@@ -186,9 +186,9 @@ class Navigator @Inject() (schemes: Schemes) {
 
     (hasMinimumEarnings, hasPartner, areYouInPaidWork, whoIsInPaiEmp) match {
       case (Some(true), false, true, _) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
-      case (Some(true), true, _, Some(Both)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), true, _, Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case (Some(false), false, true, _) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-      case (Some(false), true, _ , Some(Both)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
