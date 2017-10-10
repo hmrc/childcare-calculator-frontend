@@ -409,7 +409,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourMinimumEarnings) thenReturn Some(true)
 
           navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
-            routes.WhatToTellTheCalculatorController.onPageLoad()
+            routes.YourMaximumEarningsController.onPageLoad(NormalMode)
 
         }
 
@@ -420,7 +420,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourMinimumEarnings) thenReturn Some(false)
 
           navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
-            routes.WhatToTellTheCalculatorController.onPageLoad()
+            routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
         }
 
 
@@ -431,7 +431,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourMinimumEarnings) thenReturn Some(true)
 
           navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
-            routes.WhatToTellTheCalculatorController.onPageLoad()
+            routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
         }
 
         "parent with partner, both in paid work and parent does not earn more than NMW, will be redirected to partner maximum earnings page" in {
@@ -441,9 +441,18 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourMinimumEarnings) thenReturn Some(false)
 
           navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
-            routes.WhatToTellTheCalculatorController.onPageLoad()
+            routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
         }
 
+        "no value for minimum earnings will be redirected to Session Expire page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+          when(answers.yourMinimumEarnings) thenReturn None
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
       }
 
     }
