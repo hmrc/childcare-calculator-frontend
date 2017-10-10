@@ -43,14 +43,19 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   lazy val loginContinueUrl = loadConfig("urls.loginContinue")
 
   lazy val languageTranslationEnabled = configuration.getBoolean("microservice.services.features.welsh-translation").getOrElse(true)
+
   def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
     "cymraeg" -> Lang("cy"))
+
   def routeToSwitchLanguage = (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
+
+  def getConfig(key: String): Option[String] = configuration.getString(key)
 
   lazy val minWorkingHours: Double = configuration.getDouble("workingHours.min").
     getOrElse(throw new ConfigException.Missing("Missing configuration workingHours.min"))
 
   lazy val maxWorkingHours: Double = configuration.getDouble("workingHours.max").
     getOrElse(throw new ConfigException.Missing("Missing configuration workingHours.max"))
+
 }

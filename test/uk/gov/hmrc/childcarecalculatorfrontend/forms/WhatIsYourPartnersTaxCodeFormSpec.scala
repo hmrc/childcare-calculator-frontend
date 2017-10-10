@@ -16,68 +16,67 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-class WhatIsYourTaxCodeFormSpec extends FormSpec {
+class WhatIsYourPartnersTaxCodeFormSpec extends FormSpec {
 
-  val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
-
+  val whatIsYourPartnersTaxCodeForm = new WhatIsYourPartnersTaxCodeForm(frontendAppConfig).apply()
   val errorKeyBlank = "taxCode.blank"
   val errorKeyInvalid = "taxCode.invalid"
 
-  "WhatIsYourTaxCode Form" must {
+  "WhatIsYourPartnersTaxCode Form" must {
 
-    Seq("L", "M", "N", "S", "T", "X").foreach{ taxCodeChar =>
+    Seq("L", "M", "N", "S", "T", "X").foreach { taxCodeChar =>
       s"bind 3 numbers and one leading character $taxCodeChar" in {
-        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"101$taxCodeChar"))
+        val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"101$taxCodeChar"))
         form.get shouldBe s"101$taxCodeChar"
       }
     }
 
-    Seq("L", "M", "N", "S", "T", "X").foreach{ taxCodeChar =>
+    Seq("L", "M", "N", "S", "T", "X").foreach { taxCodeChar =>
       s"bind 4 numbers and one leading character $taxCodeChar" in {
-        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
+        val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
         form.get shouldBe s"1000$taxCodeChar"
       }
     }
 
-    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach{ taxCodeChar =>
+    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach { taxCodeChar =>
       s"bind 4 numbers and 2 alphanumeric character $taxCodeChar" in {
-        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
+        val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
         form.get shouldBe s"1000$taxCodeChar"
       }
     }
 
-    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach{ taxCodeChar =>
+    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach { taxCodeChar =>
       s"bind 3 numbers and 2 alphanumeric character $taxCodeChar" in {
-        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"100$taxCodeChar"))
+        val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"100$taxCodeChar"))
         form.get shouldBe s"100$taxCodeChar"
       }
     }
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(whatIsYourTaxCodeForm, Map("value" -> "-1"), expectedError)
+      checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> "-1"), expectedError)
     }
 
     Seq("011L", "120T", "11111L", "12L", "AAAAA", "11111").foreach { taxCode =>
       s"fail to bind tax code $taxCode" in {
         val expectedError = error("value", errorKeyInvalid)
-        checkForError(whatIsYourTaxCodeForm, Map("value" -> taxCode), expectedError)
+        checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> taxCode), expectedError)
       }
     }
 
     "fail to bind a blank value" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(whatIsYourTaxCodeForm, Map("value" -> ""), expectedError)
+      checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(whatIsYourTaxCodeForm, emptyForm, expectedError)
+      checkForError(whatIsYourPartnersTaxCodeForm, emptyForm, expectedError)
     }
 
     "fail to bind decimal numbers" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(whatIsYourTaxCodeForm, Map("value" -> "123.45"), expectedError)
+      checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> "123.45"), expectedError)
     }
   }
 }

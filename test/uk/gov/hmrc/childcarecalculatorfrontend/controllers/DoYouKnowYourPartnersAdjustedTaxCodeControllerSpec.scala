@@ -27,6 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouKnowYourPartnersAdjustedTaxCodeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouKnowYourPartnersAdjustedTaxCode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class DoYouKnowYourPartnersAdjustedTaxCodeControllerSpec extends ControllerSpecBase {
 
@@ -67,7 +68,7 @@ class DoYouKnowYourPartnersAdjustedTaxCodeControllerSpec extends ControllerSpecB
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm(doYouKnowYourPartnerAdjustedTaxCodeErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
