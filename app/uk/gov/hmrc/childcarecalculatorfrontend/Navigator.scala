@@ -304,7 +304,7 @@ class Navigator @Inject() (schemes: Schemes) {
       case (Some(true), Some(true)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-      case (Some(true), Some(false)) => routes.WhatToTellTheCalculatorController.onPageLoad()
+      case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

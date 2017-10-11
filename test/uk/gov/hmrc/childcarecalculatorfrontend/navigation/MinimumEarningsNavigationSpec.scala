@@ -74,7 +74,7 @@ class MinimumEarningsNavigationSpec extends SpecBase with MockitoSugar{
         when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
         navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
-          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode) //TODO: To be replaced by partner self employed
+          routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode) //TODO: To be replaced by partner self employed
       }
 
 

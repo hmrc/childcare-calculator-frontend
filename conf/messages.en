@@ -316,3 +316,9 @@ partnerMinimumEarnings.error = You must answer yes if your partner will earn an 
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
 
+
+partnerSelfEmployedOrApprentice.title = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.heading = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option 1
+partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
+partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice

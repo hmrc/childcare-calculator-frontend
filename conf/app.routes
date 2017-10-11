@@ -161,3 +161,8 @@ GET        /partnerMinimumEarnings                       uk.gov.hmrc.childcareca
 POST       /partnerMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerMinimumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onSubmit(mode: Mode = CheckMode)
