@@ -50,10 +50,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(CheckMode).url)
   }
 
-  def whatsYourAge: Option[AnswerRow] = userAnswers.whatsYourAge map {
-    x => AnswerRow("whatsYourAge.checkYourAnswersLabel", s"whatsYourAge.$x", true, routes.WhatsYourAgeController.onPageLoad(CheckMode).url)
-  }
-
   def doYouGetAnyBenefits: Option[AnswerRow] = userAnswers.doYouGetAnyBenefits map {
     x => AnswerRow("doYouGetAnyBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouGetAnyBenefitsController.onPageLoad(CheckMode).url)
   }
@@ -125,5 +121,4 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   def location: Option[AnswerRow] = userAnswers.location map {
     x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
   }
-
 }

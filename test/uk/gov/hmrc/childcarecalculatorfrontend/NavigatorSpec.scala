@@ -491,13 +491,13 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "user selects 'No' from Do you get any benefits" in {
           val answers = spy(userAnswers())
           when(answers.doYouGetAnyBenefits) thenReturn Some(false)
-          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
         }
 
         "user selects 'No' from Do you or your partner get any benefits" in {
           val answers = spy(userAnswers())
           when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
         }
       }
 

@@ -286,12 +286,6 @@ whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
 whoGetsBenefits.error = You must tell the calculator who gets benefits
 
-whatsYourAge.title = whatsYourAge
-whatsYourAge.heading = whatsYourAge
-whatsYourAge.option1 = whatsYourAge Option 1
-whatsYourAge.option2 = whatsYourAge Option 2
-whatsYourAge.checkYourAnswersLabel = whatsYourAge
-
 yourPartnersAge.title = yourPartnersAge
 yourPartnersAge.heading = yourPartnersAge
 yourPartnersAge.option1 = yourPartnersAge Option 1
