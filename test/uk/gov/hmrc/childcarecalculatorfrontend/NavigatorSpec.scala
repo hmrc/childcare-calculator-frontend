@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend
 
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
-import play.api.libs.json.{JsString, JsValue}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -491,13 +491,13 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "user selects 'No' from Do you get any benefits" in {
           val answers = spy(userAnswers())
           when(answers.doYouGetAnyBenefits) thenReturn Some(false)
-          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
         }
 
         "user selects 'No' from Do you or your partner get any benefits" in {
           val answers = spy(userAnswers())
           when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
         }
       }
 

@@ -291,3 +291,9 @@ yourPartnersAge.heading = yourPartnersAge
 yourPartnersAge.option1 = yourPartnersAge Option 1
 yourPartnersAge.option2 = yourPartnersAge Option 2
 yourPartnersAge.checkYourAnswersLabel = yourPartnersAge
+
+yourAge.title = yourAge
+yourAge.heading = yourAge
+yourAge.option1 = yourAge Option 1
+yourAge.option2 = yourAge Option 2
+yourAge.checkYourAnswersLabel = yourAge
