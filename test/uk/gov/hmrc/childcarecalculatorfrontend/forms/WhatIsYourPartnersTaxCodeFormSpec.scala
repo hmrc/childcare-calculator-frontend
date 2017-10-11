@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 class WhatIsYourPartnersTaxCodeFormSpec extends FormSpec {
 
   val whatIsYourPartnersTaxCodeForm = new WhatIsYourPartnersTaxCodeForm(frontendAppConfig).apply()
-  val errorKeyBlank = "taxCode.blank"
+  val errorKeyBlank = "whatIsYourPartnersTaxCode.blank"
   val errorKeyInvalid = "taxCode.invalid"
 
   "WhatIsYourPartnersTaxCode Form" must {
