@@ -56,7 +56,9 @@ class Navigator @Inject() (schemes: Schemes) {
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
-    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute
+    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
+    YourAgeId -> yourAgeRoute,
+    YourPartnersAgeId -> (_ => routes.WhatToTellTheCalculatorController.onPageLoad())//TODO redirect to minimum earnings page
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -273,6 +275,20 @@ class Navigator @Inject() (schemes: Schemes) {
       routes.YourAgeController.onPageLoad(NormalMode)
     } else {
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+    }
+  }
+
+  private def yourAgeRoute(answers: UserAnswers) = {
+    if (answers.doYouLiveWithPartner.contains(true)) {
+      answers.whoIsInPaidEmployment match {
+        case Some(Both) | Some(Partner) => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+          //TODO redirect to minimum earnings page
+        case Some(You) => routes.WhatToTellTheCalculatorController.onPageLoad()
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
+    } else {
+      //TODO redirect to minimum earnings page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
     }
   }
 

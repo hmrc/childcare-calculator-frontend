@@ -508,6 +508,31 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
         }
       }
+
+      "Whats Your age" when {
+        "single user will be taken to minimum earnings page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          //TODO-Should redirect to minimum earnings page
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+        }
+
+        "partner user will be taken to whats your partners age page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("partner") thenReturn Some("both")
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Whats your partners age" when {
+        "user will be taken to minimum earnings page when user selects any age option" in {
+          val answers = spy(userAnswers())
+          //TODO-Should redirect to minimum earnings page
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+        }
+      }
     }
 
     "in Check mode" must {

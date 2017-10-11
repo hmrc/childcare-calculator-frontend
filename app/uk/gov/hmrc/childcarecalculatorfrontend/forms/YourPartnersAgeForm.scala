@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 object YourPartnersAgeForm extends FormErrorHelper {
 
   def YourPartnersAgeFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, yourPartnersAgeErrorKey)
       case _ => produceError(key, "error.unknown")
@@ -45,5 +45,5 @@ object YourPartnersAgeForm extends FormErrorHelper {
     RadioOption("yourPartnersAge", AgeEnum.OVER25.toString)
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }
