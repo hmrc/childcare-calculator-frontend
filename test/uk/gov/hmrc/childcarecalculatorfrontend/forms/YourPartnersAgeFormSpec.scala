@@ -30,6 +30,6 @@ class YourPartnersAgeFormSpec extends FormBehaviours {
   "YourPartnersAge form" must {
     behave like questionForm[String](YourPartnersAgeForm.options.head.value)
 
-    behave like formWithOptionFieldError("value", yourPartnersAgeErrorKey, YourAgeForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", yourPartnersAgeErrorKey, YourPartnersAgeForm.options.map{x => x.value}:_*)
   }
 }
