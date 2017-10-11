@@ -286,8 +286,14 @@ whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
 whoGetsBenefits.error = You must tell the calculator who gets benefits
 
-whatsYourAge.title = whatsYourAge
-whatsYourAge.heading = whatsYourAge
-whatsYourAge.option1 = whatsYourAge Option 1
-whatsYourAge.option2 = whatsYourAge Option 2
-whatsYourAge.checkYourAnswersLabel = whatsYourAge
+yourPartnersAge.title = yourPartnersAge
+yourPartnersAge.heading = yourPartnersAge
+yourPartnersAge.option1 = yourPartnersAge Option 1
+yourPartnersAge.option2 = yourPartnersAge Option 2
+yourPartnersAge.checkYourAnswersLabel = yourPartnersAge
+
+yourAge.title = yourAge
+yourAge.heading = yourAge
+yourAge.option1 = yourAge Option 1
+yourAge.option2 = yourAge Option 2
+yourAge.checkYourAnswersLabel = yourAge

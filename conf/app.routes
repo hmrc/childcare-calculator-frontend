@@ -131,7 +131,12 @@ POST       /whoGetsBenefits               uk.gov.hmrc.childcarecalculatorfronten
 GET        /changeWhoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /whatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(mode: Mode = NormalMode)
-POST       /whatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeWhatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeWhatsYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatsYourAgeController.onSubmit(mode: Mode = CheckMode)
+GET        /yourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode = CheckMode)

@@ -16,6 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object WhatsYourAgeId extends Identifier {
-  override def toString: String = "whatsYourAge"
+case object YourAgeId extends Identifier {
+  override def toString: String = "yourAge"
 }

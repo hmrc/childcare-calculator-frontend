@@ -261,7 +261,7 @@ class Navigator @Inject() (schemes: Schemes) {
 
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers) = {
     if(answers.doYouGetAnyBenefits.contains(false)){
-      routes.WhatsYourAgeController.onPageLoad(NormalMode)
+      routes.YourAgeController.onPageLoad(NormalMode)
     } else {
       //TODO: Go to new Which benefits do you get checkbox page
       routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -270,7 +270,7 @@ class Navigator @Inject() (schemes: Schemes) {
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers) = {
     if(answers.doYouOrYourPartnerGetAnyBenefits.contains(false)){
-      routes.WhatsYourAgeController.onPageLoad(NormalMode)
+      routes.YourAgeController.onPageLoad(NormalMode)
     } else {
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
     }

@@ -21,9 +21,9 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 
-object WhatsYourAgeForm extends FormErrorHelper {
+object YourAgeForm extends FormErrorHelper {
 
-  def WhatsYourAgeFormatter = new Formatter[String] {
+  def YourAgeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, "error.required")
@@ -34,11 +34,11 @@ object WhatsYourAgeForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(WhatsYourAgeFormatter)))
+    Form(single("value" -> of(YourAgeFormatter)))
 
   def options = Seq(
-    RadioOption("whatsYourAge", "option1"),
-    RadioOption("whatsYourAge", "option2")
+    RadioOption("yourAge", "option1"),
+    RadioOption("yourAge", "option2")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
