@@ -39,10 +39,10 @@ object YourPartnersAgeForm extends FormErrorHelper {
     Form(single("value" -> of(YourPartnersAgeFormatter)))
 
   def options = Seq(
-    RadioOption("whatsYourPartnersAge", AgeEnum.UNDER18.toString),
-    RadioOption("whatsYourPartnersAge", AgeEnum.BETWEEN18AND24.toString),
-    RadioOption("whatsYourPartnersAge", AgeEnum.BETWEEN21AND24.toString),
-    RadioOption("whatsYourPartnersAge", AgeEnum.OVER25.toString)
+    RadioOption("yourPartnersAge", AgeEnum.UNDER18.toString),
+    RadioOption("yourPartnersAge", AgeEnum.BETWEEN18AND24.toString),
+    RadioOption("yourPartnersAge", AgeEnum.BETWEEN21AND24.toString),
+    RadioOption("yourPartnersAge", AgeEnum.OVER25.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
