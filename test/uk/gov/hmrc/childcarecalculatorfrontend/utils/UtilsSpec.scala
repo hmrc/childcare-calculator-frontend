@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 /**
   * Created by vineet on 02/10/17.
   */
-class UtilsSpec extends SpecBase{
+class UtilsSpec extends SpecBase {
 
   "Utils" when {
     "getOrException is called" should {
@@ -59,7 +59,7 @@ class UtilsSpec extends SpecBase{
         s"no element found in ${controllerId.getOrElse("")} while fetching ${objectName.getOrElse("")}"
 
       }
-
     }
+
   }
 }

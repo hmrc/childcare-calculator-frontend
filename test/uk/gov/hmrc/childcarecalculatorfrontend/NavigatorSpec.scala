@@ -581,7 +581,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-"Your Minimum Earnings" when {
+    "Your Minimum Earnings" when {
         "single parent in paid work earns more than NMW, will be redirected to parent maximum earnings page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)

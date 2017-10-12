@@ -41,9 +41,9 @@ object YourAgeForm extends FormErrorHelper {
 
   def options = Seq(
     RadioOption("yourAge", AgeEnum.UNDER18.toString),
-    RadioOption("yourAge", AgeEnum.BETWEEN18AND24.toString),
-    RadioOption("yourAge", AgeEnum.BETWEEN21AND24.toString),
-    RadioOption("yourAge", AgeEnum.OVER25.toString)
+    RadioOption("yourAge", AgeEnum.EIGHTEENTOTWENTY.toString),
+    RadioOption("yourAge", AgeEnum.TWENTYONETOTWENTYFOUR.toString),
+    RadioOption("yourAge", AgeEnum.OVERTWENTYFOUR.toString)
   )
 
 

@@ -17,13 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import java.text.SimpleDateFormat
+import javax.inject.Singleton
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import play.api.Play.current
 import play.api.{Configuration, Play}
 
-object Utils {
+@Singleton
+class Utils {
 
   /**
     * Throws exception with appropriate error message if optional element value is None otherwise returns the value
@@ -54,7 +56,11 @@ object Utils {
 
   }
 
-  def getEarningsForAge() = ???
+  def getEarningsForAgeRange(configuration: Configuration,
+                        currentDate: LocalDate,
+                        ageRange: Option[String]) = {
+    getOrException(getNMWConfig(configuration, currentDate).getInt(ageRange.getOrElse("non-existent-age")))
+  }
 
  /**
     *
@@ -74,8 +80,11 @@ object Utils {
     * @return
     */
   def getLatestConfig(configuration: Configuration, configType: String, currentDate: LocalDate): Configuration = {
+    println("******************* Inside method ***********************8"+configType+ " :::: "+currentDate)
     val dateFormat = new SimpleDateFormat(ccDateFormat)
     val configs: Seq[Configuration] = configuration.getConfigSeq(configType).getOrElse(Seq())
+
+    println("********************* configs :: "+configs.size)
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.getString(ruleDateConfigParam).contains("default")
@@ -97,3 +106,5 @@ object Utils {
   }
 
 }
+
+object Utils extends Utils
