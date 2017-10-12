@@ -48,4 +48,5 @@ object ChildcareConstants {
   val ruleDateConfigParam = "rule-date"
   val ccDateFormat = "dd-MM-yyyy"
   val nmwConfigFileAbbreviation = "nmw"
+  val partnerSelfEmployedErrorKey = "partnerSelfEmployed.error"
 }

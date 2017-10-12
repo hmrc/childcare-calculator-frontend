@@ -336,9 +336,10 @@ partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option
 partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
 
-partnerSelfEmployed.title = partnerSelfEmployed
-partnerSelfEmployed.heading = partnerSelfEmployed
-partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
+partnerSelfEmployed.title = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.heading = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.checkYourAnswersLabel = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.error = You must select yes if your partner has been self-employed less than 12 months
 
 yourSelfEmployed.title = Have you been self-employed less than 12 months?
 yourSelfEmployed.heading = Have you been self-employed less than 12 months?

@@ -660,7 +660,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoIsInPaidEmployment) thenReturn Some("both")
           when(answers.yourMinimumEarnings) thenReturn Some(true)
           when(answers.partnerMinimumEarnings) thenReturn Some(false)
-          when(answers.yourSelfEmployed) thenReturn Some(true) thenReturn Some(false)
+          when(answers.yourSelfEmployed) thenReturn Some(true)
 
           navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
             routes.YourMaximumEarningsController.onPageLoad(NormalMode)
@@ -672,10 +672,44 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoIsInPaidEmployment) thenReturn Some("both")
           when(answers.yourMinimumEarnings) thenReturn Some(false)
           when(answers.partnerMinimumEarnings) thenReturn Some(true)
-          when(answers.yourSelfEmployed) thenReturn Some(true) thenReturn Some(false)
+          when(answers.yourSelfEmployed) thenReturn Some(true)
 
           navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
             routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Your partner self employed" must {
+
+        "parent with partner, both in paid work, no minimum earnings will be redirected to Is your partner self employed or apprentice" in {
+          val answers = spy(userAnswers())
+          when(answers.hasBothInPaidWork) thenReturn true
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(PartnerSelfEmployedId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+
+        "parent with partner, both in paid work, parent is satisfying minimum earnings will be redirected to parent max earnings" in {
+          val answers = spy(userAnswers())
+          when(answers.hasBothInPaidWork) thenReturn true
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerSelfEmployed) thenReturn Some(true)
+
+          navigator.nextPage(PartnerSelfEmployedId, NormalMode)(answers) mustBe
+            routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "Parent with partner, partner in paid work, partner min earnings is not satisfied will be redirected to Tax or Universal Credits" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerSelfEmployed) thenReturn Some(true)
+
+          navigator.nextPage(PartnerSelfEmployedId, NormalMode)  (answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
       }
     }
