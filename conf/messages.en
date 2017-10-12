@@ -336,3 +336,11 @@ partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option
 partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
 
+
+partnerSelfEmployed.title = partnerSelfEmployed
+partnerSelfEmployed.heading = partnerSelfEmployed
+partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
+
+yourSelfEmployed.title = yourSelfEmployed
+yourSelfEmployed.heading = yourSelfEmployed
+yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
