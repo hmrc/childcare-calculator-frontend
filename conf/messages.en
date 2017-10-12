@@ -336,14 +336,14 @@ partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option
 partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
 
-
 partnerSelfEmployed.title = partnerSelfEmployed
 partnerSelfEmployed.heading = partnerSelfEmployed
 partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
 
-yourSelfEmployed.title = yourSelfEmployed
-yourSelfEmployed.heading = yourSelfEmployed
-yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
+yourSelfEmployed.title = Have you been self-employed less than 12 months?
+yourSelfEmployed.heading = Have you been self-employed less than 12 months?
+yourSelfEmployed.checkYourAnswersLabel = Have you been self-employed less than 12 months?
+yourSelfEmployed.error = You must select yes if you’ve been self-employed less than 12 months
 
 taxOrUniversalCredits.title = taxOrUniversalCredits
 taxOrUniversalCredits.heading = taxOrUniversalCredits

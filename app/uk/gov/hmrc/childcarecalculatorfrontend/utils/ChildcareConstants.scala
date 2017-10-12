@@ -44,7 +44,7 @@ object ChildcareConstants {
   val yourPartnersAgeErrorKey = "yourPartnersAge.error"
   val yourMinimumEarningsErrorKey = "yourMinimumEarnings.error"
   val partnerMinimumEarningsErrorKey = "partnerMinimumEarnings.error"
-
+  val yourSelfEmployedErrorKey = "yourSelfEmployed.error"
   val ruleDateConfigParam = "rule-date"
   val ccDateFormat = "dd-MM-yyyy"
   val nmwConfigFileAbbreviation = "nmw"
