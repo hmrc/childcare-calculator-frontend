@@ -21,22 +21,23 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.getBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouOrYourPartnerGetAnyBenefits
 
-class GetBenefitsViewSpec extends YesNoViewBehaviours {
+class DoYouOrYourPartnerGetAnyBenefitsViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "getBenefits"
+  val messageKeyPrefix = "doYouOrYourPartnerGetAnyBenefits"
 
-  def createView = () => getBenefits(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => doYouOrYourPartnerGetAnyBenefits(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => getBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => doYouOrYourPartnerGetAnyBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  "GetBenefits view" must {
+  "DoYouOrYourPartnerGetAnyBenefits view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "li.incomeSupport", "li.jsa", "li.esa", "li.pensionCredit",
+      "li.disabilityAllowance", "li.attendanceAllowance", "li.independencePayment", "li.carersAllowance")
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.GetBenefitsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(NormalMode).url)
   }
 }

@@ -33,18 +33,30 @@ POST       /approvedProvider                uk.gov.hmrc.childcarecalculatorfront
 GET        /changeApprovedProvider          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeApprovedProvider          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode = CheckMode)
 
+<<<<<<< HEAD
 GET        /freeHoursInfo                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
 GET        /freeHoursResult                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+=======
+GET        /freeHoursInfo                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
+GET        /freeHoursResult                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+>>>>>>> master
 
 GET        /doYouLiveWithPartner            uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = NormalMode)
 POST       /doYouLiveWithPartner            uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = NormalMode)
 GET        /changeDoYouLiveWithPartner      uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeDoYouLiveWithPartner      uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode = CheckMode)
 
+<<<<<<< HEAD
 GET        /areYouInPaidWork                uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = NormalMode)
 POST       /areYouInPaidWork                uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAreYouInPaidWork          uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAreYouInPaidWork          uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = CheckMode)
+=======
+GET        /areYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = NormalMode)
+POST       /areYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAreYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAreYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = CheckMode)
+>>>>>>> master
 
 GET        /paidEmployment                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad(mode: Mode = NormalMode)
 POST       /paidEmployment                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit(mode: Mode = NormalMode)
@@ -61,26 +73,51 @@ POST       /parentWorkHours                 uk.gov.hmrc.childcarecalculatorfront
 GET        /changeParentWorkHours           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeParentWorkHours           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode = CheckMode)
 
+<<<<<<< HEAD
 GET        /partnerWorkHours                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = NormalMode)
 POST       /partnerWorkHours                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerWorkHours          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerWorkHours          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = CheckMode)
+=======
+GET        /partnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerWorkHours               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode = CheckMode)
+>>>>>>> master
 
 GET        /doYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(mode: Mode = NormalMode)
 POST       /doYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeDoYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeDoYouKnowYourAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onSubmit(mode: Mode = CheckMode)
 
+<<<<<<< HEAD
 GET        /doYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode = NormalMode)
 POST       /doYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeDoYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeDoYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode = CheckMode)
-
+=======
 GET        /hasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = NormalMode)
 POST       /hasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode = NormalMode)
 GET        /changeHasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeHasYourTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode = CheckMode)
 
+GET        /whatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsYourTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /hasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = NormalMode)
+POST       /hasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode: Mode = CheckMode)
+>>>>>>> master
+
+GET        /doYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouKnowYourPartnersAdjustedTaxCode                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode = CheckMode)
+
+<<<<<<< HEAD
 GET        /hasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = NormalMode)
 POST       /hasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode: Mode = NormalMode)
 GET        /changeHasYourPartnersTaxCodeBeenAdjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = CheckMode)
@@ -95,9 +132,25 @@ GET        /doesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.chi
 POST       /doesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onSubmit(mode: Mode = NormalMode)
 GET        /changeDoesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeDoesYourEmployerOfferChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourEmployerOfferChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
+=======
+GET        /whatIsYourPartnersTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourPartnersTaxCodeController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatIsYourPartnersTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourPartnersTaxCodeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatIsYourPartnersTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourPartnersTaxCodeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatIsYourPartnersTaxCode               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourPartnersTaxCodeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /eitherGetsvouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onPageLoad(mode: Mode = NormalMode)
-POST       /eitherGetsvouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /yourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
+>>>>>>> master
+
+GET        /eitherGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onPageLoad(mode: Mode = NormalMode)
+POST       /eitherGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEitherGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEitherGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = CheckMode)
 
@@ -106,6 +159,7 @@ POST       /whoGetsVouchers               uk.gov.hmrc.childcarecalculatorfronten
 GET        /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoGetsVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = CheckMode)
 
+<<<<<<< HEAD
 GET        /getBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad(mode: Mode = NormalMode)
 POST       /getBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeGetBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.GetBenefitsController.onPageLoad(mode: Mode = CheckMode)
@@ -116,3 +170,29 @@ POST       /whichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorf
 GET        /changeWhichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(mode: Mode = CheckMode)
 
+=======
+GET        /doYouGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /doYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /doYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDoYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDoYouOrYourPartnerGetAnyBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourPartnersAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode = CheckMode)
+>>>>>>> master

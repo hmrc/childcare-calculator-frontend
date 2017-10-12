@@ -22,18 +22,19 @@ import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 
-object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
+object PartnerChildcareVouchersForm extends FormErrorHelper {
 
-  def DoesYourEmployerOfferChildcareVouchersFormatter = new Formatter[String] {
+  def PartnerChildcareVouchersFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "doesYourEmployerOfferChildcareVouchers.error")
+      case None => produceError(key, "partnerChildcareVouchers.error")
       case _ => produceError(key, "error.unknown")
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
+<<<<<<< HEAD:app/uk/gov/hmrc/childcarecalculatorfrontend/forms/DoesYourEmployerOfferChildcareVouchersForm.scala
   def apply(): Form[String] =
     Form(single("value" -> of(DoesYourEmployerOfferChildcareVouchersFormatter)))
 
@@ -41,6 +42,15 @@ object DoesYourEmployerOfferChildcareVouchersForm extends FormErrorHelper {
     InputOption("doesYourEmployerOfferChildcareVouchers", YesNoUnsureEnum.YES.toString),
     InputOption("doesYourEmployerOfferChildcareVouchers",  YesNoUnsureEnum.NO.toString),
     InputOption("doesYourEmployerOfferChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+=======
+  def apply(): Form[String] = 
+    Form(single("value" -> of(PartnerChildcareVouchersFormatter)))
+
+  def options = Seq(
+    RadioOption("partnerChildcareVouchers", YesNoUnsureEnum.YES.toString),
+    RadioOption("partnerChildcareVouchers",  YesNoUnsureEnum.NO.toString),
+    RadioOption("partnerChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+>>>>>>> master:app/uk/gov/hmrc/childcarecalculatorfrontend/forms/PartnerChildcareVouchersForm.scala
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

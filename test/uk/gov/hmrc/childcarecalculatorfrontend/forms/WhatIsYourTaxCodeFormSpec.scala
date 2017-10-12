@@ -18,50 +18,66 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 class WhatIsYourTaxCodeFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "non numeric"
+  val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
+
+  val errorKeyBlank = "whatIsYourTaxCode.blank"
+  val errorKeyInvalid = "taxCode.invalid"
 
   "WhatIsYourTaxCode Form" must {
 
-    "bind zero" in {
-      val form = WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "0"))
-      form.get shouldBe 0
+    Seq("L", "M", "N", "S", "T", "X").foreach{ taxCodeChar =>
+      s"bind 3 numbers and one leading character $taxCodeChar" in {
+        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"101$taxCodeChar"))
+        form.get shouldBe s"101$taxCodeChar"
+      }
     }
 
-    "bind positive numbers" in {
-      val form = WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "1"))
-      form.get shouldBe 1
+    Seq("L", "M", "N", "S", "T", "X").foreach{ taxCodeChar =>
+      s"bind 4 numbers and one leading character $taxCodeChar" in {
+        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
+        form.get shouldBe s"1000$taxCodeChar"
+      }
     }
 
-    "bind positive, comma separated numbers" in {
-      val form = WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "10,000"))
-      form.get shouldBe 10000
+    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach{ taxCodeChar =>
+      s"bind 4 numbers and 2 alphanumeric character $taxCodeChar" in {
+        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
+        form.get shouldBe s"1000$taxCodeChar"
+      }
+    }
+
+    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach{ taxCodeChar =>
+      s"bind 3 numbers and 2 alphanumeric character $taxCodeChar" in {
+        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"100$taxCodeChar"))
+        form.get shouldBe s"100$taxCodeChar"
+      }
     }
 
     "fail to bind negative numbers" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "-1"), expectedError)
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(whatIsYourTaxCodeForm, Map("value" -> "-1"), expectedError)
     }
 
-    "fail to bind non-numerics" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "not a number"), expectedError)
+    Seq("011L", "120T", "11111L", "12L", "AAAAA", "11111").foreach { taxCode =>
+      s"fail to bind tax code $taxCode" in {
+        val expectedError = error("value", errorKeyInvalid)
+        checkForError(whatIsYourTaxCodeForm, Map("value" -> taxCode), expectedError)
+      }
     }
 
     "fail to bind a blank value" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> ""), expectedError)
+      checkForError(whatIsYourTaxCodeForm, Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), emptyForm, expectedError)
+      checkForError(whatIsYourTaxCodeForm, emptyForm, expectedError)
     }
 
     "fail to bind decimal numbers" in {
-      val expectedError = error("value", errorKeyDecimal)
-      checkForError(WhatIsYourTaxCodeForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "123.45"), expectedError)
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(whatIsYourTaxCodeForm, Map("value" -> "123.45"), expectedError)
     }
   }
 }
