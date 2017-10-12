@@ -103,5 +103,3 @@ class Utils {
   }
 
 }
-
-object Utils extends Utils

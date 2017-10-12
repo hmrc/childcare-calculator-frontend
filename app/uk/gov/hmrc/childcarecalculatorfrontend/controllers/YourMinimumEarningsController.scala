@@ -31,7 +31,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils._
 
 import scala.concurrent.Future
 

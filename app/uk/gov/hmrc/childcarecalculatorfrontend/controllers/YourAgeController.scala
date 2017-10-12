@@ -55,11 +55,9 @@ class YourAgeController @Inject()(
       YourAgeForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(yourAge(appConfig, formWithErrors, mode))),
-        (value) => {
-          println("************************** Value of agerange is **************"+value)
+        (value) =>
           dataCacheConnector.save[String](request.sessionId, YourAgeId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourAgeId, mode)(new UserAnswers(cacheMap))))
-        }
       )
   }
 }
