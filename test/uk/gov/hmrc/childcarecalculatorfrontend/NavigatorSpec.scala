@@ -510,26 +510,41 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "Whats Your age" when {
-        "single user will be taken to minimum earnings page when user selects any age option " in {
+        "single user will be taken to parent minimum earnings page when user selects any age option " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          //TODO-Should redirect to minimum earnings page
+          //TODO-Should redirect to parent minimum earnings page
           navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
         }
 
-        "partner user will be taken to whats your partners age page when user selects any age option " in {
+        "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some("partner") thenReturn Some("both")
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
           navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
-          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        }
+
+        "partner user with only user(You) in paid work will be taken to parent minimum earnings page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("you")
+          //TODO-Should redirect to parent minimum earnings page
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
         }
       }
 
       "Whats your partners age" when {
-        "user will be taken to minimum earnings page when user selects any age option" in {
+        "user will be taken to partners minimum earnings page when user selects any age option" in {
           val answers = spy(userAnswers())
-          //TODO-Should redirect to minimum earnings page
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          //TODO-Should redirect to partner minimum earnings page
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+        }
+
+        "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.hasBothInPaidWork) thenReturn true
+          //TODO-Should redirect to parent minimum earnings page
           navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
         }
       }
