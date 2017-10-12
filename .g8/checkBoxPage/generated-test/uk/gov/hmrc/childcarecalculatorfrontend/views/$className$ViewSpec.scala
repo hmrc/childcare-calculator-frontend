@@ -22,7 +22,7 @@ class $className$ViewSpec extends ViewBehaviours {
 
   "$className$ view" when {
     "rendered" must {
-      "contain radio buttons for the value" in {
+      "contain check boxes for the value" in {
         val doc = asDocument(createViewUsingForm($className$Form()))
         for (option <- $className$Form.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)

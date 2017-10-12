@@ -278,11 +278,14 @@ whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
 whoGetsBenefits.error = You must tell the calculator who gets benefits
 
-whichBenefitsDoYouGet.title = whichBenefitsDoYouGet
-whichBenefitsDoYouGet.heading = whichBenefitsDoYouGet
-whichBenefitsDoYouGet.option1 = whichBenefitsDoYouGet Option 1
-whichBenefitsDoYouGet.option2 = whichBenefitsDoYouGet Option 2
-whichBenefitsDoYouGet.checkYourAnswersLabel = whichBenefitsDoYouGet
+whichBenefitsDoYouGet.title = Which benefits do you get?
+whichBenefitsDoYouGet.heading = Which benefits do you get?
+whichBenefitsDoYouGet.incomeBenefits = Income benefits
+whichBenefitsDoYouGet.disabilityBenefits = Disability benefits
+whichBenefitsDoYouGet.highRateDisabilityBenefits = High rate disability benefits
+whichBenefitsDoYouGet.carersAllowance = Carer’s Allowance
+whichBenefitsDoYouGet.checkYourAnswersLabel = Which benefits do you get?
+whichBenefitsDoYouGet.error = You must tell the calculator which benefits you get
 
 yourAge.title = What’s your age?
 yourAge.heading = What’s your age?

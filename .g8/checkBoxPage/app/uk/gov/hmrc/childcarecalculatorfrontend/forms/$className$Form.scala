@@ -18,7 +18,7 @@ object $className$Form extends FormErrorHelper {
   }
 
   def apply(): Form[Set[String]] =
-    Form("value" -> set(of($className$Formatter)))
+    Form(single("value" -> set(of($className$Formatter))))
 
   def options = Seq(
     InputOption("$className;format="decap"$", "option1"),

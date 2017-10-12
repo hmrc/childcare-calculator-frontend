@@ -43,7 +43,7 @@ class WhichBenefitsDoYouGetController @Inject()(
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val answer = request.userAnswers.whichBenefitsDoYouGet
-      val preparedForm = request.userAnswers.whichBenefitsDoYouGet match {
+      val preparedForm = answer match {
         case None => WhichBenefitsDoYouGetForm()
         case Some(value) => WhichBenefitsDoYouGetForm().fill(value)
       }

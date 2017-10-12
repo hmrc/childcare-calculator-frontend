@@ -21,7 +21,7 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object YourPartnersAgeForm extends FormErrorHelper {
 
@@ -39,10 +39,10 @@ object YourPartnersAgeForm extends FormErrorHelper {
     Form(single("value" -> of(YourPartnersAgeFormatter)))
 
   def options = Seq(
-    RadioOption("yourPartnersAge", AgeEnum.UNDER18.toString),
-    RadioOption("yourPartnersAge", AgeEnum.BETWEEN18AND24.toString),
-    RadioOption("yourPartnersAge", AgeEnum.BETWEEN21AND24.toString),
-    RadioOption("yourPartnersAge", AgeEnum.OVER25.toString)
+    InputOption("yourPartnersAge", AgeEnum.UNDER18.toString),
+    InputOption("yourPartnersAge", AgeEnum.BETWEEN18AND24.toString),
+    InputOption("yourPartnersAge", AgeEnum.BETWEEN21AND24.toString),
+    InputOption("yourPartnersAge", AgeEnum.OVER25.toString)
   )
 
   def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)

@@ -34,23 +34,13 @@ object PartnerChildcareVouchersForm extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-<<<<<<< HEAD:app/uk/gov/hmrc/childcarecalculatorfrontend/forms/DoesYourEmployerOfferChildcareVouchersForm.scala
   def apply(): Form[String] =
-    Form(single("value" -> of(DoesYourEmployerOfferChildcareVouchersFormatter)))
-
-  def options = Seq(
-    InputOption("doesYourEmployerOfferChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    InputOption("doesYourEmployerOfferChildcareVouchers",  YesNoUnsureEnum.NO.toString),
-    InputOption("doesYourEmployerOfferChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
-=======
-  def apply(): Form[String] = 
     Form(single("value" -> of(PartnerChildcareVouchersFormatter)))
 
   def options = Seq(
-    RadioOption("partnerChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    RadioOption("partnerChildcareVouchers",  YesNoUnsureEnum.NO.toString),
-    RadioOption("partnerChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
->>>>>>> master:app/uk/gov/hmrc/childcarecalculatorfrontend/forms/PartnerChildcareVouchersForm.scala
+    InputOption("partnerChildcareVouchers", YesNoUnsureEnum.YES.toString),
+    InputOption("partnerChildcareVouchers",  YesNoUnsureEnum.NO.toString),
+    InputOption("partnerChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

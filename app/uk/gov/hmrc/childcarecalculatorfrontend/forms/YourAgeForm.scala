@@ -20,7 +20,7 @@ import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object YourAgeForm extends FormErrorHelper {
@@ -40,10 +40,10 @@ object YourAgeForm extends FormErrorHelper {
 
 
   def options = Seq(
-    RadioOption("yourAge", AgeEnum.UNDER18.toString),
-    RadioOption("yourAge", AgeEnum.BETWEEN18AND24.toString),
-    RadioOption("yourAge", AgeEnum.BETWEEN21AND24.toString),
-    RadioOption("yourAge", AgeEnum.OVER25.toString)
+    InputOption("yourAge", AgeEnum.UNDER18.toString),
+    InputOption("yourAge", AgeEnum.BETWEEN18AND24.toString),
+    InputOption("yourAge", AgeEnum.BETWEEN21AND24.toString),
+    InputOption("yourAge", AgeEnum.OVER25.toString)
   )
 
 
