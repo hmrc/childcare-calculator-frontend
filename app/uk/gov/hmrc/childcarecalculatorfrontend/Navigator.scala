@@ -57,6 +57,7 @@ class Navigator @Inject() (schemes: Schemes) {
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
+    WhoGetsBenefitsId -> whoGetsBenefitsRoute,
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute
   )
@@ -271,10 +272,23 @@ class Navigator @Inject() (schemes: Schemes) {
   }
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers) = {
-    if(answers.doYouOrYourPartnerGetAnyBenefits.contains(false)){
-      routes.YourAgeController.onPageLoad(NormalMode)
-    } else {
-      routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+    answers.doYouOrYourPartnerGetAnyBenefits match {
+      case Some(false) =>
+        if(answers.hasPartnerInPaidWork) {
+          routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        }else{
+          routes.YourAgeController.onPageLoad(NormalMode)
+        }
+      case Some(true) => routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def whoGetsBenefitsRoute(answers: UserAnswers) = {
+    answers.whoGetsBenefits match {
+      case Some(You) | Some(Both) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
+      case Some(Partner) => routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+      case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
