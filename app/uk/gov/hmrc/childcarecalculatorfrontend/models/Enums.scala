@@ -58,4 +58,18 @@ object YesNoUnsureEnum extends Enumeration {
   implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
 }
 
+object AgeEnum extends Enumeration {
+  type AgeEnum = Value
+
+  val UNDER18 = Value("under18")
+  val BETWEEN18AND24 = Value("18to24")
+  val BETWEEN21AND24 = Value("21to24")
+  val OVER25 = Value("25OrOver")
+
+  val enumReads: Reads[AgeEnum] = EnumUtils.enumReads(AgeEnum)
+  val enumWrites: Writes[AgeEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[AgeEnum] = EnumUtils.enumFormat(AgeEnum)
+}
+
 

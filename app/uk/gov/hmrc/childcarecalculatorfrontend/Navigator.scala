@@ -56,7 +56,10 @@ class Navigator @Inject() (schemes: Schemes) {
     EitherGetsVouchersId -> vouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
-    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute
+    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
+    WhoGetsBenefitsId -> whoGetsBenefitsRoute,
+    YourAgeId -> yourAgeRoute,
+    YourPartnersAgeId -> yourPartnerAgeRoute
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -269,10 +272,49 @@ class Navigator @Inject() (schemes: Schemes) {
   }
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers) = {
-    if(answers.doYouOrYourPartnerGetAnyBenefits.contains(false)){
-      routes.YourAgeController.onPageLoad(NormalMode)
+    answers.doYouOrYourPartnerGetAnyBenefits match {
+      case Some(false) =>
+        if(answers.hasPartnerInPaidWork) {
+          routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        }else{
+          routes.YourAgeController.onPageLoad(NormalMode)
+        }
+      case Some(true) => routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def whoGetsBenefitsRoute(answers: UserAnswers) = {
+    answers.whoGetsBenefits match {
+      case Some(You) | Some(Both) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
+      case Some(Partner) => routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def yourAgeRoute(answers: UserAnswers) = {
+    if (answers.doYouLiveWithPartner.contains(true)) {
+      answers.whoIsInPaidEmployment match {
+        case Some(Both) => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+          //TODO redirect to parents minimum earnings page
+        case Some(You) => routes.WhatToTellTheCalculatorController.onPageLoad()
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
     } else {
-      routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+      //TODO redirect to parents minimum earnings page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    }
+  }
+
+  private def yourPartnerAgeRoute(answers: UserAnswers) = {
+    if(answers.hasBothInPaidWork){
+      //TODO:redirect to Parent minimum earning page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    } else if(answers.hasPartnerInPaidWork){
+      //TODO:redirect to Partner's minimum earning page
+      routes.WhatToTellTheCalculatorController.onPageLoad()
+    } else {
+      routes.SessionExpiredController.onPageLoad()
     }
   }
 

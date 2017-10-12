@@ -40,4 +40,7 @@ object ChildcareConstants {
   val two = 2
   val one = 1
   val taxCode0T = "0T"
+  val yourAgeErrorKey = "yourAge.error"
+  val yourPartnersAgeErrorKey = "yourPartnersAge.error"
+
 }
