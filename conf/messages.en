@@ -310,11 +310,13 @@ yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wa
 yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
-areYouSelfEmployedOrApprentice.title = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.heading = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
-areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
+areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.heading = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.selfEmployed = Self-employed
+areYouSelfEmployedOrApprentice.apprentice = Apprentice
+areYouSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.error = You must tell the calculator if you are self-employed or an apprentice
 
 yourMaximumEarnings.title = yourMaximumEarnings
 yourMaximumEarnings.heading = yourMaximumEarnings

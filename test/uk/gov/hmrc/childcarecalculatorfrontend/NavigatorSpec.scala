@@ -634,6 +634,28 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
     }
 
+    "Are you self employed or apprentice" when {
+      "navigate to have you been self employed less than 12 months when user select self employed" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn(Some(true))
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn(Some("selfEmployed"))
+
+        navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+          routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      }
+
+      "navigate to tc/uc page when user select apprentice or neither" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn(Some(true))
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn(Some("apprentice")) thenReturn(Some("neither"))
+
+//        navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+//          routes..onPageLoad(NormalMode)
+      }
+    }
+
     "in Check mode" must {
 
       "go to CheckYourAnswers from an identifier that doesn't exist in the edit route map" in {
