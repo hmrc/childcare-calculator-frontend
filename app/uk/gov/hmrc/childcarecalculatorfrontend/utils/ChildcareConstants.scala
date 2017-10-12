@@ -42,5 +42,10 @@ object ChildcareConstants {
   val taxCode0T = "0T"
   val yourAgeErrorKey = "yourAge.error"
   val yourPartnersAgeErrorKey = "yourPartnersAge.error"
+  val yourMinimumEarningsErrorKey = "yourMinimumEarnings.error"
+  val partnerMinimumEarningsErrorKey = "partnerMinimumEarnings.error"
 
+  val ruleDateConfigParam = "rule-date"
+  val ccDateFormat = "dd-MM-yyyy"
+  val nmwConfigFileAbbreviation = "nmw"
 }

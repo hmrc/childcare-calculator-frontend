@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @Singleton
 class Navigator @Inject() (schemes: Schemes) {
@@ -59,7 +60,9 @@ class Navigator @Inject() (schemes: Schemes) {
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
     YourAgeId -> yourAgeRoute,
-    YourPartnersAgeId -> yourPartnerAgeRoute
+    YourPartnersAgeId -> yourPartnerAgeRoute,
+    YourMinimumEarningsId -> yourMinimumEarningsRoute,
+    PartnerMinimumEarningsId -> partnerMinimumEarningsRoute
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -296,27 +299,53 @@ class Navigator @Inject() (schemes: Schemes) {
     if (answers.doYouLiveWithPartner.contains(true)) {
       answers.whoIsInPaidEmployment match {
         case Some(Both) => routes.YourPartnersAgeController.onPageLoad(NormalMode)
-          //TODO redirect to parents minimum earnings page
-        case Some(You) => routes.WhatToTellTheCalculatorController.onPageLoad()
+        case Some(You) => routes.YourMinimumEarningsController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     } else {
-      //TODO redirect to parents minimum earnings page
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
     }
   }
 
   private def yourPartnerAgeRoute(answers: UserAnswers) = {
     if(answers.hasBothInPaidWork){
-      //TODO:redirect to Parent minimum earning page
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
     } else if(answers.hasPartnerInPaidWork){
-      //TODO:redirect to Partner's minimum earning page
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
   }
+
+private def yourMinimumEarningsRoute(answers: UserAnswers) = {
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(true)
+    val whoIsInPaiEmp = answers.whoIsInPaidEmployment
+    val hasMinimumEarnings = answers.yourMinimumEarnings
+
+    (hasMinimumEarnings, hasPartner, areYouInPaidWork, whoIsInPaiEmp) match {
+      case (Some(true), false, true, _) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), true, _, Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+      case (Some(false), false, true, _) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+
+  }
+
+  private def partnerMinimumEarningsRoute(answers: UserAnswers) = {
+    val yourMinEarnings = answers.yourMinimumEarnings
+    val partnerMinEarnings = answers.partnerMinimumEarnings
+
+    (yourMinEarnings, partnerMinEarnings) match {
+      case (Some(true), Some(true)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
   )

@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend
 
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -501,6 +501,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.hasPartnerInPaidWork) thenReturn true
           navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
         }
+      }
 
         "partner user with you/both in paid work will be taken to whats your age page when user selects no " in {
           val answers = spy(userAnswers())
@@ -548,8 +549,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "single user will be taken to parent minimum earnings page when user selects any age option " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          //TODO-Should redirect to parent minimum earnings page
-          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
         }
 
         "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
@@ -563,8 +563,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-          //TODO-Should redirect to parent minimum earnings page
-          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
         }
       }
 
@@ -572,17 +571,67 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "user will be taken to partners minimum earnings page when user selects any age option" in {
           val answers = spy(userAnswers())
           when(answers.hasPartnerInPaidWork) thenReturn true
-          //TODO-Should redirect to partner minimum earnings page
-          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+          navigator.nextPage(YourPartnersAgeId, NormalMode)(answers) mustBe routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
         }
 
         "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
           val answers = spy(userAnswers())
           when(answers.hasBothInPaidWork) thenReturn true
-          //TODO-Should redirect to parent minimum earnings page
-          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()
+          navigator.nextPage(YourPartnersAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
         }
       }
+
+"Your Minimum Earnings" when {
+        "single parent in paid work earns more than NMW, will be redirected to parent maximum earnings page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+
+        }
+
+        "single parent in paid work and does not earns more than NMW, will be redirected to parent self employed and apprentice page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        }
+
+
+        "parent with partner, both in paid work and parent earns more than NMW, will be redirected to partner minimum earnings page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "parent with partner, both in paid work and parent does not earn more than NMW, will be redirected to partner minimum earnings page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "no value for minimum earnings will be redirected to Session Expire page" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+          when(answers.yourMinimumEarnings) thenReturn None
+
+          navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
     }
 
     "in Check mode" must {

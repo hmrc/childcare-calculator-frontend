@@ -109,7 +109,7 @@ freeHoursInfo.li.tax_credits = Tax credits
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.heading = Your eligibility for childcare support
-freeHoursResult.notEligibleInfo = Based on the information you’ve given, you're not eligible for:
+freeHoursResult.notEligibleInfo = Based on the information you’ve given, you’re not eligible for:
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.entitled.england = 15 free hours
 freeHoursResult.info.entitled.scotland = 16 Free hours
@@ -234,7 +234,7 @@ partnerChildcareVouchers.yes = Yes
 partnerChildcareVouchers.no = No
 partnerChildcareVouchers.notSure = Not Sure
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
-partnerChildcareVouchers.error = You must tell the calculator if your partner's employer offers childcare vouchers
+partnerChildcareVouchers.error = You must tell the calculator if your partner’s employer offers childcare vouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -303,3 +303,44 @@ yourAge.21to24 = 21 to 24
 yourAge.25OrOver = 25 or over
 yourAge.error = You must tell the calculator what your age is
 yourAge.checkYourAnswersLabel = What’s your age?
+
+yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
+yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
+yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
+
+areYouSelfEmployedOrApprentice.title = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.heading = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
+areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
+areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
+
+yourMaximumEarnings.title = yourMaximumEarnings
+yourMaximumEarnings.heading = yourMaximumEarnings
+yourMaximumEarnings.checkYourAnswersLabel = yourMaximumEarnings
+
+partnerMaximumEarnings.title = partnerMaximumEarnings
+partnerMaximumEarnings.heading = partnerMaximumEarnings
+partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
+
+partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
+partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
+partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
+
+partnerSelfEmployedOrApprentice.title = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.heading = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option 1
+partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
+partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
+
+
+partnerSelfEmployed.title = partnerSelfEmployed
+partnerSelfEmployed.heading = partnerSelfEmployed
+partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
+
+yourSelfEmployed.title = yourSelfEmployed
+yourSelfEmployed.heading = yourSelfEmployed
+yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
