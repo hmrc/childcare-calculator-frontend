@@ -109,7 +109,7 @@ freeHoursInfo.li.tax_credits = Tax credits
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.heading = Your eligibility for childcare support
-freeHoursResult.notEligibleInfo = Based on the information you’ve given, you're not eligible for:
+freeHoursResult.notEligibleInfo = Based on the information you’ve given, you’re not eligible for:
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.entitled.england = 15 free hours
 freeHoursResult.info.entitled.scotland = 16 Free hours
@@ -234,7 +234,7 @@ partnerChildcareVouchers.yes = Yes
 partnerChildcareVouchers.no = No
 partnerChildcareVouchers.notSure = Not Sure
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
-partnerChildcareVouchers.error = You must tell the calculator if your partner's employer offers childcare vouchers
+partnerChildcareVouchers.error = You must tell the calculator if your partner’s employer offers childcare vouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -336,3 +336,11 @@ partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option
 partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
 
+
+partnerSelfEmployed.title = partnerSelfEmployed
+partnerSelfEmployed.heading = partnerSelfEmployed
+partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
+
+yourSelfEmployed.title = yourSelfEmployed
+yourSelfEmployed.heading = yourSelfEmployed
+yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
