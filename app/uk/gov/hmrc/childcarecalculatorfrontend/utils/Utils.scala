@@ -54,12 +54,17 @@ object Utils {
 
   }
 
- /*/**
+  def getEarningsForAge() = ???
+
+ /**
     *
     * @param currentDate
     * @return
     */
-  def getNMWConfig(currentDate: LocalDate): Configuration = getLatestConfig(nmwConfigFileAbbreviation, currentDate)
+  def getNMWConfig(configuration: Configuration,
+                   currentDate: LocalDate): Configuration = getLatestConfig(configuration,
+                                                                            nmwConfigFileAbbreviation,
+                                                                            currentDate)
 
   /**
     * Gets the latest configuration for the input config type
@@ -68,9 +73,9 @@ object Utils {
     * @param currentDate
     * @return
     */
-  def getLatestConfig(configType: String, currentDate: LocalDate): Configuration = {
+  def getLatestConfig(configuration: Configuration, configType: String, currentDate: LocalDate): Configuration = {
     val dateFormat = new SimpleDateFormat(ccDateFormat)
-    val configs: Seq[Configuration] = Play.application.configuration.getConfigSeq(configType).getOrElse(Seq())
+    val configs: Seq[Configuration] = configuration.getConfigSeq(configType).getOrElse(Seq())
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.getString(ruleDateConfigParam).contains("default")
@@ -90,5 +95,5 @@ object Utils {
         configs.filter(_.getString(ruleDateConfigParam).contains("default")).head
     }
   }
-*/
+
 }
