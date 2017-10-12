@@ -317,7 +317,7 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-private def yourMinimumEarningsRoute(answers: UserAnswers) = {
+  private def yourMinimumEarningsRoute(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(true)
     val whoIsInPaiEmp = answers.whoIsInPaidEmployment
@@ -325,8 +325,10 @@ private def yourMinimumEarningsRoute(answers: UserAnswers) = {
 
     (hasMinimumEarnings, hasPartner, areYouInPaidWork, whoIsInPaiEmp) match {
       case (Some(true), false, true, _) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), true, _, Some(You)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(true), true, _, Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case (Some(false), false, true, _) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(false), true, _ , Some(You)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
@@ -342,6 +344,8 @@ private def yourMinimumEarningsRoute(answers: UserAnswers) = {
       case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (_, Some(true)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      case (_, Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

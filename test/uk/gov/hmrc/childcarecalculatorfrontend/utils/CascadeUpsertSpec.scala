@@ -85,7 +85,7 @@ class CascadeUpsertSpec extends SpecBase {
     }
 
     "saving the whoIsInPaidEmployment" must {
-      "remove an existing partner work hours and partners adjusted tax code when whoIsInPaidEmployment is you" in {
+      "remove an existing partner work hours, partners adjusted tax code and partner min earnings when whoIsInPaidEmployment is you" in {
         val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12"),
           HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), PartnerMinimumEarningsId.toString -> JsBoolean(true)))
@@ -94,7 +94,7 @@ class CascadeUpsertSpec extends SpecBase {
         result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(you))
       }
 
-      "remove an existing parent work hours and parent adjusted tax code when whoIsInPaidEmployment is partner" in {
+      "remove an existing parent work hours, parent adjusted tax code and your min earnings when whoIsInPaidEmployment is partner" in {
         val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
           HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourTaxCodeId.toString -> JsString("1100L"), YourMinimumEarningsId.toString -> JsBoolean(true)))

@@ -80,11 +80,8 @@ class Utils {
     * @return
     */
   def getLatestConfig(configuration: Configuration, configType: String, currentDate: LocalDate): Configuration = {
-    println("******************* Inside method ***********************8"+configType+ " :::: "+currentDate)
     val dateFormat = new SimpleDateFormat(ccDateFormat)
     val configs: Seq[Configuration] = configuration.getConfigSeq(configType).getOrElse(Seq())
-
-    println("********************* configs :: "+configs.size)
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.getString(ruleDateConfigParam).contains("default")
