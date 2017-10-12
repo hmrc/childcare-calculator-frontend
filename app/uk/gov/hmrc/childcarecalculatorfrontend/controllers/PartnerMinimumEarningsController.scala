@@ -18,6 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
+import org.joda.time.LocalDate
+import play.api.Configuration
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -61,6 +63,9 @@ class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
   }
 
   private def getEarningsForAge() = {
+ /*   val nmwConfig: Configuration = getNMWConfig(LocalDate.now)
+
+    nmwConfig.getInt(ageRange.getOrElse("non-existing-age")).get*/
     0
   }
 }
