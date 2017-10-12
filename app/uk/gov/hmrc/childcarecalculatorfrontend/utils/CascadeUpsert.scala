@@ -21,10 +21,15 @@ import javax.inject.Singleton
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{partner, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
 class CascadeUpsert {
+
+  val You: String = YouPartnerBothEnum.YOU.toString
+  val Partner: String = YouPartnerBothEnum.PARTNER.toString
+  val Both: String = YouPartnerBothEnum.BOTH.toString
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
@@ -63,17 +68,17 @@ class CascadeUpsert {
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore =
       value match {
-        case JsString("you") =>
+        case JsString(You) =>
           cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - EitherGetsVouchersId.toString -
             WhoGetsVouchersId.toString - YourPartnersAgeId.toString)
 
-        case JsString("partner") =>
+        case JsString(Partner) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
             YourAgeId.toString)
 
-        case JsString("both") => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
+        case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
 
         case _ => cacheMap
       }
@@ -100,7 +105,9 @@ class CascadeUpsert {
   }
 
   private def storeEitherGetsVoucher(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if(value == JsString("no")){
+    val No = YesNoUnsureEnum.NO.toString
+
+    val mapToStore = if(value == JsString(No)){
       cacheMap copy (data = cacheMap.data - WhoGetsVouchersId.toString)
     } else {
       cacheMap
