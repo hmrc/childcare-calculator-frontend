@@ -181,3 +181,8 @@ GET        /yourSelfEmployed                       uk.gov.hmrc.childcarecalculat
 POST       /yourSelfEmployed                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYourSelfEmployed                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYourSelfEmployed                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /taxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onPageLoad(mode: Mode = NormalMode)
+POST       /taxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTaxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTaxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onSubmit(mode: Mode = CheckMode)
