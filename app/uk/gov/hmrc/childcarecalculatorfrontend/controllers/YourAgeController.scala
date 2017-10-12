@@ -20,19 +20,20 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhatsYourAgeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhatsYourAgeId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourAgeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourAgeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatsYourAge
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAge
 
 import scala.concurrent.Future
 
-class WhatsYourAgeController @Inject()(
+class YourAgeController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
                                         dataCacheConnector: DataCacheConnector,
@@ -40,23 +41,23 @@ class WhatsYourAgeController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.whatsYourAge match {
-        case None => WhatsYourAgeForm()
-        case Some(value) => WhatsYourAgeForm().fill(value)
+      val preparedForm = request.userAnswers.yourAge match {
+        case None => YourAgeForm()
+        case Some(value) => YourAgeForm().fill(value)
       }
-      Ok(whatsYourAge(appConfig, preparedForm, mode))
+      Ok(yourAge(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      WhatsYourAgeForm().bindFromRequest().fold(
+      YourAgeForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(whatsYourAge(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yourAge(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, WhatsYourAgeId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhatsYourAgeId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[String](request.sessionId, YourAgeId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(YourAgeId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

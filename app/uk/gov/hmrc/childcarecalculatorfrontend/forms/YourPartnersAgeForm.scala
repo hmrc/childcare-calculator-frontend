@@ -16,18 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 
-object YourChildcareVouchersForm extends FormErrorHelper {
+object YourPartnersAgeForm extends FormErrorHelper {
 
-  def YourChildcareVouchersFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
+  def YourPartnersAgeFormatter = new Formatter[String] {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "yourChildcareVouchers.error")
+      case None => produceError(key, yourPartnersAgeErrorKey)
       case _ => produceError(key, "error.unknown")
     }
 
@@ -35,13 +36,14 @@ object YourChildcareVouchersForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(YourChildcareVouchersFormatter)))
+    Form(single("value" -> of(YourPartnersAgeFormatter)))
 
   def options = Seq(
-    RadioOption("yourChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    RadioOption("yourChildcareVouchers",  YesNoUnsureEnum.NO.toString),
-    RadioOption("yourChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+    RadioOption("yourPartnersAge", AgeEnum.UNDER18.toString),
+    RadioOption("yourPartnersAge", AgeEnum.BETWEEN18AND24.toString),
+    RadioOption("yourPartnersAge", AgeEnum.BETWEEN21AND24.toString),
+    RadioOption("yourPartnersAge", AgeEnum.OVER25.toString)
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }

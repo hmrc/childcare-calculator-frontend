@@ -20,7 +20,7 @@ class WhatIsYourTaxCodeFormSpec extends FormSpec {
 
   val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
 
-  val errorKeyBlank = "taxCode.blank"
+  val errorKeyBlank = "whatIsYourTaxCode.blank"
   val errorKeyInvalid = "taxCode.invalid"
 
   "WhatIsYourTaxCode Form" must {

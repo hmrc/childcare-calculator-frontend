@@ -487,29 +487,101 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Go to Whats your age" when {
-        "user selects 'No' from Do you get any benefits" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouGetAnyBenefits) thenReturn Some(false)
-          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
-        }
-
-        "user selects 'No' from Do you or your partner get any benefits" in {
+      "Do you or your partner get any benefits" when {
+        "single user will be taken to whats your age page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatsYourAgeController.onPageLoad(NormalMode)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+        }
+
+        "partner user with partner in paid work will be taken to whats your partners age page when user selects no " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
         }
       }
 
-      "Go to Who Gets Benefit" when {
-        "user selects 'Yes' from Do you or your partner get any benefits" in {
+        "partner user with you/both in paid work will be taken to whats your age page when user selects no " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+          when(answers.hasPartnerInPaidWork) thenReturn false
+          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+        }
+
+        "partner user will be taken to Who Gets Benefit page when user selects yes " in {
           val answers = spy(userAnswers())
           when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
           navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
         }
       }
 
-      "Your Minimum Earnings" when {
+      "Do You get any benefits" when {
+        "single user will be taken to whats your age page when user selects 'No'" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+        }
+
+        "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouGetAnyBenefits) thenReturn Some(true)
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits do you get
+        }
+      }
+
+      "Who gets benefits" when {
+        "partner user will be taken to which benefits do you get page when user selects You/both" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGetsBenefits) thenReturn Some("you") thenReturn Some("both")
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits do you get
+        }
+
+        "partner user will be taken to which benefits does your partner get page when user selects Partner" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGetsBenefits) thenReturn Some("partner")
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+        }
+      }
+
+      "Whats Your age" when {
+        "single user will be taken to parent minimum earnings page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        }
+
+        "partner user with only user(You) in paid work will be taken to parent minimum earnings page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("you")
+          navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Whats your partners age" when {
+        "user will be taken to partners minimum earnings page when user selects any age option" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          navigator.nextPage(YourPartnersAgeId, NormalMode)(answers) mustBe routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
+          val answers = spy(userAnswers())
+          when(answers.hasBothInPaidWork) thenReturn true
+          navigator.nextPage(YourPartnersAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+        }
+      }
+
+"Your Minimum Earnings" when {
         "single parent in paid work earns more than NMW, will be redirected to parent maximum earnings page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -560,8 +632,6 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-      }
-
     }
 
     "in Check mode" must {

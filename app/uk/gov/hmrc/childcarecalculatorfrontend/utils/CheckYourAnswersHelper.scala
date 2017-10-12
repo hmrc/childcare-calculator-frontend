@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
-  def partnerSelfEmployedOrApprentice: Option[AnswerRow] = userAnswers.partnerSelfEmployedOrApprentice map {
+def partnerSelfEmployedOrApprentice: Option[AnswerRow] = userAnswers.partnerSelfEmployedOrApprentice map {
     x => AnswerRow("partnerSelfEmployedOrApprentice.checkYourAnswersLabel", s"partnerSelfEmployedOrApprentice.$x", true, routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(CheckMode).url)
   }
 
@@ -47,6 +47,14 @@ def partnerMinimumEarnings: Option[AnswerRow] = userAnswers.partnerMinimumEarnin
   }
 
 
+  def yourAge: Option[AnswerRow] = userAnswers.yourAge map {
+    x => AnswerRow("yourAge.checkYourAnswersLabel", s"yourAge.$x", true, routes.YourAgeController.onPageLoad(CheckMode).url)
+  }
+
+  def yourPartnersAge: Option[AnswerRow] = userAnswers.yourPartnersAge map {
+    x => AnswerRow("yourPartnersAge.checkYourAnswersLabel", s"yourPartnersAge.$x", true, routes.YourPartnersAgeController.onPageLoad(CheckMode).url)
+  }
+
   def yourChildcareVouchers: Option[AnswerRow] = userAnswers.yourChildcareVouchers map {
     x => AnswerRow("yourChildcareVouchers.checkYourAnswersLabel", s"yourChildcareVouchers.$x", true, routes.YourChildcareVouchersController.onPageLoad(CheckMode).url)
   }
@@ -69,10 +77,6 @@ def partnerMinimumEarnings: Option[AnswerRow] = userAnswers.partnerMinimumEarnin
 
   def doYouOrYourPartnerGetAnyBenefits: Option[AnswerRow] = userAnswers.doYouOrYourPartnerGetAnyBenefits map {
     x => AnswerRow("doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(CheckMode).url)
-  }
-
-  def whatsYourAge: Option[AnswerRow] = userAnswers.whatsYourAge map {
-    x => AnswerRow("whatsYourAge.checkYourAnswersLabel", s"whatsYourAge.$x", true, routes.WhatsYourAgeController.onPageLoad(CheckMode).url)
   }
 
   def doYouGetAnyBenefits: Option[AnswerRow] = userAnswers.doYouGetAnyBenefits map {
@@ -146,5 +150,4 @@ def partnerMinimumEarnings: Option[AnswerRow] = userAnswers.partnerMinimumEarnin
   def location: Option[AnswerRow] = userAnswers.location map {
     x => AnswerRow("location.checkYourAnswersLabel", s"location.$x", true, routes.LocationController.onPageLoad(CheckMode).url)
   }
-
 }

@@ -21,8 +21,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  
   def partnerSelfEmployedOrApprentice: Option[String] = cacheMap.getEntry[String](PartnerSelfEmployedOrApprenticeId.toString)
-
   
   def partnerMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMinimumEarningsId.toString)
 
@@ -34,6 +34,10 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def yourMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](YourMinimumEarningsId.toString)
     
+  def yourAge: Option[String] = cacheMap.getEntry[String](YourAgeId.toString)
+
+  def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
+
   def yourChildcareVouchers: Option[String] = cacheMap.getEntry[String](YourChildcareVouchersId.toString)
 
   def partnerChildcareVouchers: Option[String] = cacheMap.getEntry[String](PartnerChildcareVouchersId.toString)
@@ -45,8 +49,6 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def whoGetsBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsBenefitsId.toString)
 
   def doYouOrYourPartnerGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouOrYourPartnerGetAnyBenefitsId.toString)
-
-  def whatsYourAge: Option[String] = cacheMap.getEntry[String](WhatsYourAgeId.toString)
 
   def doYouGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetAnyBenefitsId.toString)
 

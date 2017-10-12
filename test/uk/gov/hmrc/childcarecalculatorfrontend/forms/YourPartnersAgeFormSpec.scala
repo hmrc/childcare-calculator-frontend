@@ -17,18 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class WhatsYourAgeFormSpec extends FormBehaviours {
+class YourPartnersAgeFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "value" -> WhatsYourAgeForm.options.head.value
+    "value" -> YourPartnersAgeForm.options.head.value
   )
 
-  val form = WhatsYourAgeForm()
+  val form = YourPartnersAgeForm()
 
-  "WhatsYourAge form" must {
-    behave like questionForm[String](WhatsYourAgeForm.options.head.value)
+  "YourPartnersAge form" must {
+    behave like questionForm[String](YourPartnersAgeForm.options.head.value)
 
-    behave like formWithOptionField("value", WhatsYourAgeForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", yourPartnersAgeErrorKey, YourPartnersAgeForm.options.map{x => x.value}:_*)
   }
 }

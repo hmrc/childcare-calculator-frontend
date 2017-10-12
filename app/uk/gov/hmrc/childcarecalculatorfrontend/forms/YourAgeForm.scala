@@ -16,17 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object WhatsYourAgeForm extends FormErrorHelper {
+object YourAgeForm extends FormErrorHelper {
 
-  def WhatsYourAgeFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
+  def YourAgeFormatter = new Formatter[String] {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, yourAgeErrorKey)
       case _ => produceError(key, "error.unknown")
     }
 
@@ -34,12 +36,16 @@ object WhatsYourAgeForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(WhatsYourAgeFormatter)))
+    Form(single("value" -> of(YourAgeFormatter)))
+
 
   def options = Seq(
-    RadioOption("whatsYourAge", "option1"),
-    RadioOption("whatsYourAge", "option2")
+    RadioOption("yourAge", AgeEnum.UNDER18.toString),
+    RadioOption("yourAge", AgeEnum.BETWEEN18AND24.toString),
+    RadioOption("yourAge", AgeEnum.BETWEEN21AND24.toString),
+    RadioOption("yourAge", AgeEnum.OVER25.toString)
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+
+  def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }
