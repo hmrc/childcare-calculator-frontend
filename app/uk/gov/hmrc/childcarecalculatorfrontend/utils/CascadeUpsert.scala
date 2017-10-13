@@ -43,7 +43,9 @@ class CascadeUpsert {
       HasYourPartnersTaxCodeBeenAdjustedId.toString-> ((v,cm) => storeHasYourPartnersTaxCodeBeenAdjusted(v, cm)),
       DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> ((v,cm) => storeDoYouKnowYourPartnersAdjustedTaxCode(v, cm)),
       EitherGetsVouchersId.toString -> ((v,cm) => storeEitherGetsVoucher(v, cm)),
-      DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v,cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm))
+      DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v,cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
+      YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
+      PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm))
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -99,12 +101,12 @@ class CascadeUpsert {
         case JsString(You) =>
           cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - EitherGetsVouchersId.toString -
-            WhoGetsVouchersId.toString - YourPartnersAgeId.toString)
+            WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString)
 
         case JsString(Partner) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
-            YourAgeId.toString)
+            YourAgeId.toString - YourMinimumEarningsId.toString)
 
         case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
 
@@ -169,6 +171,27 @@ class CascadeUpsert {
     }
     store(DoYouOrYourPartnerGetAnyBenefitsId.toString, value, mapToStore)
   }
+
+private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if (value == JsBoolean(true)){
+      cacheMap copy (data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString)
+    } else if (value == JsBoolean(false))
+      cacheMap copy (data = cacheMap.data - YourMaximumEarningsId.toString)
+      else cacheMap
+
+      store(YourMinimumEarningsId.toString, value, mapToStore)
+  }
+
+  private def storePartnerMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if (value == JsBoolean(true)){
+      cacheMap copy (data = cacheMap.data - PartnerSelfEmployedOrApprenticeId.toString)
+    } else if (value == JsBoolean(false))
+      cacheMap copy (data = cacheMap.data - PartnerMaximumEarningsId.toString)
+    else cacheMap
+
+    store(PartnerMinimumEarningsId.toString, value, mapToStore)
+  }
+
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
     funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}

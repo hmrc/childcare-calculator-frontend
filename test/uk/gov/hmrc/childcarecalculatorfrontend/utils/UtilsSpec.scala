@@ -18,18 +18,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 
-/**
-  * Created by vineet on 02/10/17.
-  */
-class UtilsSpec extends SpecBase{
+class UtilsSpec extends SpecBase {
 
   "Utils" when {
     "getOrException is called" should {
       "throw exception and return the default error when only None value is given" in {
 
+        val utils = new Utils
+
         val testString = None
         intercept[RuntimeException] {
-          Utils.getOrException(testString)
+          utils.getOrException(testString)
         }.getMessage mustBe "no element found"
 
       }
@@ -38,9 +37,10 @@ class UtilsSpec extends SpecBase{
 
         val testString = None
         val customMessage = "error occured while fetching the object"
+        val utils = new Utils
 
         intercept[RuntimeException] {
-          Utils.getOrException(testString, errorMessage = customMessage)
+          utils.getOrException(testString, errorMessage = customMessage)
         }.getMessage mustBe customMessage
 
       }
@@ -50,16 +50,17 @@ class UtilsSpec extends SpecBase{
         val testString = None
         val controllerId = Some("testController")
         val objectName = Some("testObject")
+        val utils = new Utils
 
         intercept[RuntimeException] {
-          Utils.getOrException(optionalElement = testString,
+          utils.getOrException(optionalElement = testString,
             controllerId = controllerId,
             objectName = objectName)
         }.getMessage mustBe
         s"no element found in ${controllerId.getOrElse("")} while fetching ${objectName.getOrElse("")}"
 
       }
-
     }
+
   }
 }

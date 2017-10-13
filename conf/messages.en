@@ -288,19 +288,19 @@ whoGetsBenefits.error = You must tell the calculator who gets benefits
 
 yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?
-yourPartnersAge.under18 = Under 18
-yourPartnersAge.18to24 = 18 to 20
-yourPartnersAge.21to24 = 21 to 24
-yourPartnersAge.25OrOver = 25 or over
+yourPartnersAge.UNDER18 = Under 18
+yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
+yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourPartnersAge.OVERTWENTYFOUR = 25 or over
 yourPartnersAge.error = You must tell the calculator what your partner’s age is
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
 
 yourAge.title = What’s your age?
 yourAge.heading = What’s your age?
-yourAge.under18 = Under 18
-yourAge.18to24 = 18 to 20
-yourAge.21to24 = 21 to 24
-yourAge.25OrOver = 25 or over
+yourAge.UNDER18 = Under 18
+yourAge.EIGHTEENTOTWENTY = 18 to 20
+yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourAge.OVERTWENTYFOUR = 25 or over
 yourAge.error = You must tell the calculator what your age is
 yourAge.checkYourAnswersLabel = What’s your age?
 
