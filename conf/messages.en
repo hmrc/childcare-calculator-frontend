@@ -363,3 +363,7 @@ maxFreeHoursInfo.heading = maxFreeHoursInfo
 
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
+
+eitherOfYouMaximumEarnings.title = eitherOfYouMaximumEarnings
+eitherOfYouMaximumEarnings.heading = eitherOfYouMaximumEarnings
+eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
