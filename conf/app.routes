@@ -194,3 +194,8 @@ POST       /changeNoOfChildren               uk.gov.hmrc.childcarecalculatorfron
 GET        /maxFreeHoursInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad()
 
 GET        /maxFreeHoursResult               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursResultController.onPageLoad()
+
+GET        /eitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode = NormalMode)
+POST       /eitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode = CheckMode)
