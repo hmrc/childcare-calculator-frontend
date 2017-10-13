@@ -21,8 +21,7 @@ import javax.inject.Singleton
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import play.api.Play.current
-import play.api.{Configuration, Play}
+import play.api.Configuration
 
 @Singleton
 class Utils {
@@ -56,6 +55,13 @@ class Utils {
 
   }
 
+  /**
+    * Gets the NMW for the given age range
+    * @param configuration
+    * @param currentDate
+    * @param ageRange
+    * @return
+    */
   def getEarningsForAgeRange(configuration: Configuration,
                         currentDate: LocalDate,
                         ageRange: Option[String]) = {
