@@ -62,7 +62,8 @@ class Navigator @Inject() (schemes: Schemes) {
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
-    PartnerMinimumEarningsId -> partnerMinimumEarningsRoute
+    PartnerMinimumEarningsId -> partnerMinimumEarningsRoute,
+    YourMaximumEarningsId -> yourMaximumEarningsRoute
   )
 
   private def locationRoute(answers: UserAnswers) = {
@@ -330,7 +331,6 @@ private def yourMinimumEarningsRoute(answers: UserAnswers) = {
       case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-
   }
 
   private def partnerMinimumEarningsRoute(answers: UserAnswers) = {
@@ -342,6 +342,20 @@ private def yourMinimumEarningsRoute(answers: UserAnswers) = {
       case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def yourMaximumEarningsRoute(answers: UserAnswers) = {
+    val hasPartner = answers.doYouLiveWithPartner
+    val partnerMinEarnings = answers.partnerMinimumEarnings
+    val yourMaxEarnings = answers.yourMaximumEarnings
+
+
+    (hasPartner, partnerMinEarnings, yourMaxEarnings) match {
+      case (Some(false), _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      case (Some(true), Some(true), Some(_)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), Some (false), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
