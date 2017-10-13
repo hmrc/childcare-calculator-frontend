@@ -47,7 +47,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
   "PartnerMinimumEarnings Controller" must {
 
     "return OK and the correct view for a GET" in {
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+      setUpMock()
+
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
@@ -59,7 +60,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
       val validData = Map(PartnerMinimumEarningsId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+      setUpMock()
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
@@ -68,7 +69,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+      setUpMock()
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -79,7 +80,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = BooleanForm("partnerMinimumEarnings.error").bind(Map("value" -> "invalid value"))
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+      setUpMock()
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -89,7 +90,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+      setUpMock()
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
@@ -97,13 +98,17 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+      setUpMock()
 
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
+  }
+
+  private def setUpMock() = {
+    when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
   }
 }
 
