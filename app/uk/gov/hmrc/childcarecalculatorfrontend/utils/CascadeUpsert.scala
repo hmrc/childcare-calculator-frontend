@@ -21,16 +21,25 @@ import javax.inject.Singleton
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
 class CascadeUpsert {
 
+  val You: String = YouPartnerBothEnum.YOU.toString
+  val Partner: String = YouPartnerBothEnum.PARTNER.toString
+  val Both: String = YouPartnerBothEnum.BOTH.toString
+
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
       LocationId.toString -> ((v, cm) => storeLocation(v, cm)),
       DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
-      WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
+      WhoIsInPaidEmploymentId.toString -> ((v,cm) => storeWhoIsInPaidEmployment(v, cm)),
+      HasYourTaxCodeBeenAdjustedId.toString-> ((v,cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
+      HasYourPartnersTaxCodeBeenAdjustedId.toString-> ((v,cm) => storeHasYourPartnersTaxCodeBeenAdjusted(v, cm)),
+      EitherGetsVouchersId.toString -> ((v,cm) => storeEitherGetsVoucher(v, cm)),
+      DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v,cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
       PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm))
     )
@@ -47,27 +56,77 @@ class CascadeUpsert {
   private def storeDoYouLiveWithPartner(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if(value == JsBoolean(false)){
       cacheMap copy (data = cacheMap.data - PaidEmploymentId.toString - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString -
-        HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString)
+        HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
+        EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
+        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString)
+
     } else if(value == JsBoolean(true))
-      cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString)
+      cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
     else cacheMap
 
     store(DoYouLiveWithPartnerId.toString, value, mapToStore)
   }
 
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if(value == JsString(you)){
-      cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
-        DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - PartnerMinimumEarningsId.toString)
-    } else if(value == JsString(partner))
-      cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
-        DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - YourMinimumEarningsId.toString)
-    else cacheMap
+    val mapToStore =
+      value match {
+        case JsString(You) =>
+          cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
+            DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - EitherGetsVouchersId.toString -
+            WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString)
+
+        case JsString(Partner) =>
+          cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
+            DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
+            YourAgeId.toString - YourMinimumEarningsId.toString)
+
+        case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
+
+        case _ => cacheMap
+      }
 
     store(WhoIsInPaidEmploymentId.toString, value, mapToStore)
   }
 
-  private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
+  private def storeHasYourTaxCodeBeenAdjusted(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString)
+    } else {
+      cacheMap
+    }
+    store(HasYourTaxCodeBeenAdjustedId.toString, value, mapToStore)
+  }
+
+  private def storeHasYourPartnersTaxCodeBeenAdjusted(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString)
+    } else {
+      cacheMap
+    }
+    store(HasYourPartnersTaxCodeBeenAdjustedId.toString, value, mapToStore)
+  }
+
+  private def storeEitherGetsVoucher(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val No = YesNoUnsureEnum.NO.toString
+
+    val mapToStore = if(value == JsString(No)){
+      cacheMap copy (data = cacheMap.data - WhoGetsVouchersId.toString)
+    } else {
+      cacheMap
+    }
+    store(EitherGetsVouchersId.toString, value, mapToStore)
+  }
+
+  private def storeYouOrYourPartnerGetAnyBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - WhoGetsBenefitsId.toString)
+    } else {
+      cacheMap
+    }
+    store(DoYouOrYourPartnerGetAnyBenefitsId.toString, value, mapToStore)
+  }
+
+private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsBoolean(true)){
       cacheMap copy (data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString)
     } else if (value == JsBoolean(false))

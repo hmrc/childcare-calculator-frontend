@@ -22,6 +22,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def taxOrUniversalCredits: Option[AnswerRow] = userAnswers.taxOrUniversalCredits map {
+    x => AnswerRow("taxOrUniversalCredits.checkYourAnswersLabel", s"taxOrUniversalCredits.$x", true, routes.TaxOrUniversalCreditsController.onPageLoad(CheckMode).url)
+  }
+
+  def yourSelfEmployed: Option[AnswerRow] = userAnswers.yourSelfEmployed map {
+    x => AnswerRow("yourSelfEmployed.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourSelfEmployedController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerSelfEmployed: Option[AnswerRow] = userAnswers.partnerSelfEmployed map {
+    x => AnswerRow("partnerSelfEmployed.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerSelfEmployedController.onPageLoad(CheckMode).url)
+  }
+
 def partnerSelfEmployedOrApprentice: Option[AnswerRow] = userAnswers.partnerSelfEmployedOrApprentice map {
     x => AnswerRow("partnerSelfEmployedOrApprentice.checkYourAnswersLabel", s"partnerSelfEmployedOrApprentice.$x", true, routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(CheckMode).url)
   }
