@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerMaximumEarningsId, PartnerMinimumEarningsId, YourMaximumEarningsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{EitherOfYouMaximumEarningsId, PartnerMaximumEarningsId, PartnerMinimumEarningsId, YourMaximumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -94,7 +94,19 @@ class MaximumEarningsNavigationSpec extends SpecBase with MockitoSugar{
         }
       }
 
+      "Either Of You Maximum earnings" must {
+        "redirect to Tax or Universal Credits page when user makes any selection" in {
+          val answers = spy(userAnswers())
+          when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
+          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+        }
+      }
 
 
 
