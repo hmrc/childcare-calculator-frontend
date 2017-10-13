@@ -344,7 +344,7 @@ class Navigator @Inject() (schemes: Schemes) {
     val partnerMinEarnings = answers.partnerMinimumEarnings
 
     (yourMinEarnings, partnerMinEarnings) match {
-      case (Some(true), Some(true)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), Some(true)) => routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
