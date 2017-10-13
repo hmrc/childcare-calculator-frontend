@@ -72,4 +72,16 @@ object AgeEnum extends Enumeration {
   implicit def enumFormats: Format[AgeEnum] = EnumUtils.enumFormat(AgeEnum)
 }
 
+object SelfEmployedOrApprenticeOrNeitherEnum extends Enumeration {
+  type SelfEmployedOrApprenticeOrNeitherEnum = Value
+
+  val SELFEMPLOYED = Value("selfEmployed")
+  val APPRENTICE = Value("apprentice")
+  val NEITHER = Value("neither")
+
+  val enumReads: Reads[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumReads(SelfEmployedOrApprenticeOrNeitherEnum)
+  val enumWrites: Writes[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumFormat(SelfEmployedOrApprenticeOrNeitherEnum)
+}
 
