@@ -30,12 +30,13 @@ import scala.concurrent.Future
 class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
                                           override val messagesApi: MessagesApi,
                                           getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                          requireData: DataRequiredAction,
+                                          utils: Utils) extends FrontendController with I18nSupport {
 
   def onPageLoad() = (getData andThen requireData) {
     implicit request =>
 
-      val location = Utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
+      val location = utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
       val eligibility = request.userAnswers.isEligibleForFreeHours
 
