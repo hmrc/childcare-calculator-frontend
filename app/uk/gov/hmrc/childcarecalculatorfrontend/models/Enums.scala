@@ -61,10 +61,10 @@ object YesNoUnsureEnum extends Enumeration {
 object AgeEnum extends Enumeration {
   type AgeEnum = Value
 
-  val UNDER18 = Value("under18")
-  val BETWEEN18AND24 = Value("18to24")
-  val BETWEEN21AND24 = Value("21to24")
-  val OVER25 = Value("25OrOver")
+  val UNDER18 = Value("UNDER18")
+  val EIGHTEENTOTWENTY = Value("EIGHTEENTOTWENTY")
+  val TWENTYONETOTWENTYFOUR = Value("TWENTYONETOTWENTYFOUR")
+  val OVERTWENTYFOUR = Value("OVERTWENTYFOUR")
 
   val enumReads: Reads[AgeEnum] = EnumUtils.enumReads(AgeEnum)
   val enumWrites: Writes[AgeEnum] = EnumUtils.enumWrites

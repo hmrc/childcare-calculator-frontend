@@ -171,7 +171,6 @@ POST       /partnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarec
 GET        /changePartnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerSelfEmployedOrApprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onSubmit(mode: Mode = CheckMode)
 
-
 GET        /partnerSelfEmployed                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onPageLoad(mode: Mode = NormalMode)
 POST       /partnerSelfEmployed                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerSelfEmployed                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onPageLoad(mode: Mode = CheckMode)
@@ -186,3 +185,17 @@ GET        /taxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorf
 POST       /taxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeTaxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeTaxOrUniversalCredits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /noOfChildren               uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onPageLoad(mode: Mode = NormalMode)
+POST       /noOfChildren               uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNoOfChildren               uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNoOfChildren               uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onSubmit(mode: Mode = CheckMode)
+
+GET        /maxFreeHoursInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad()
+
+GET        /maxFreeHoursResult               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursResultController.onPageLoad()
+
+GET        /eitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode = NormalMode)
+POST       /eitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode = CheckMode)

@@ -288,19 +288,19 @@ whoGetsBenefits.error = You must tell the calculator who gets benefits
 
 yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?
-yourPartnersAge.under18 = Under 18
-yourPartnersAge.18to24 = 18 to 20
-yourPartnersAge.21to24 = 21 to 24
-yourPartnersAge.25OrOver = 25 or over
+yourPartnersAge.UNDER18 = Under 18
+yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
+yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourPartnersAge.OVERTWENTYFOUR = 25 or over
 yourPartnersAge.error = You must tell the calculator what your partner’s age is
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
 
 yourAge.title = What’s your age?
 yourAge.heading = What’s your age?
-yourAge.under18 = Under 18
-yourAge.18to24 = 18 to 20
-yourAge.21to24 = 21 to 24
-yourAge.25OrOver = 25 or over
+yourAge.UNDER18 = Under 18
+yourAge.EIGHTEENTOTWENTY = 18 to 20
+yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourAge.OVERTWENTYFOUR = 25 or over
 yourAge.error = You must tell the calculator what your age is
 yourAge.checkYourAnswersLabel = What’s your age?
 
@@ -332,23 +332,40 @@ partnerMinimumEarnings.hint = This is the National Minimum Wage or National Livi
 partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
-partnerSelfEmployedOrApprentice.title = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.heading = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option 1
-partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
+partnerSelfEmployedOrApprentice.title = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.heading = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.selfEmployed = Self-employed
+partnerSelfEmployedOrApprentice.apprentice = Apprentice
+partnerSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.error = You must tell the calculator if your partner is an apprentice or self-employed
 
+partnerSelfEmployed.title = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.heading = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.checkYourAnswersLabel = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.error = You must select yes if your partner has been self-employed less than 12 months
 
-partnerSelfEmployed.title = partnerSelfEmployed
-partnerSelfEmployed.heading = partnerSelfEmployed
-partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
-
-yourSelfEmployed.title = yourSelfEmployed
-yourSelfEmployed.heading = yourSelfEmployed
-yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
+yourSelfEmployed.title = Have you been self-employed less than 12 months?
+yourSelfEmployed.heading = Have you been self-employed less than 12 months?
+yourSelfEmployed.checkYourAnswersLabel = Have you been self-employed less than 12 months?
+yourSelfEmployed.error = You must select yes if you’ve been self-employed less than 12 months
 
 taxOrUniversalCredits.title = taxOrUniversalCredits
 taxOrUniversalCredits.heading = taxOrUniversalCredits
 taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
 taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
+
+noOfChildren.title = noOfChildren
+noOfChildren.heading = noOfChildren
+noOfChildren.checkYourAnswersLabel = noOfChildren
+
+maxFreeHoursInfo.title = maxFreeHoursInfo
+maxFreeHoursInfo.heading = maxFreeHoursInfo
+
+maxFreeHoursResult.title = maxFreeHoursResult
+maxFreeHoursResult.heading = maxFreeHoursResult
+
+eitherOfYouMaximumEarnings.title = eitherOfYouMaximumEarnings
+eitherOfYouMaximumEarnings.heading = eitherOfYouMaximumEarnings
+eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings

@@ -82,6 +82,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
@@ -95,25 +96,26 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
     }
 
-    "navigate to partner max earnings page when user have partner and partner satisfy minimum earning and parent select apprentice or neither" in {
+    "navigate to partner self employed or apprentice page when user have partner and parent select apprentice or neither" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some("apprentice")) thenReturn(Some("neither"))
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("apprentice") thenReturn Some("neither")
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
     }
+
   }
 
   "Is your partner self employed or apprentice" when {

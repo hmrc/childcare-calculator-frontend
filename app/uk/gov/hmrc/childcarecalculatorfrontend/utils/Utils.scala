@@ -17,13 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import java.text.SimpleDateFormat
+import javax.inject.Singleton
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import play.api.Play.current
-import play.api.{Configuration, Play}
+import play.api.Configuration
 
-object Utils {
+@Singleton
+class Utils {
 
   /**
     * Throws exception with appropriate error message if optional element value is None otherwise returns the value
@@ -54,12 +55,28 @@ object Utils {
 
   }
 
- /*/**
+  /**
+    * Gets the NMW for the given age range
+    * @param configuration
+    * @param currentDate
+    * @param ageRange
+    * @return
+    */
+  def getEarningsForAgeRange(configuration: Configuration,
+                        currentDate: LocalDate,
+                        ageRange: Option[String]) = {
+    getOrException(getNMWConfig(configuration, currentDate).getInt(ageRange.getOrElse("non-existent-age")))
+  }
+
+ /**
     *
     * @param currentDate
     * @return
     */
-  def getNMWConfig(currentDate: LocalDate): Configuration = getLatestConfig(nmwConfigFileAbbreviation, currentDate)
+  def getNMWConfig(configuration: Configuration,
+                   currentDate: LocalDate): Configuration = getLatestConfig(configuration,
+                                                                            nmwConfigFileAbbreviation,
+                                                                            currentDate)
 
   /**
     * Gets the latest configuration for the input config type
@@ -68,9 +85,9 @@ object Utils {
     * @param currentDate
     * @return
     */
-  def getLatestConfig(configType: String, currentDate: LocalDate): Configuration = {
+  def getLatestConfig(configuration: Configuration, configType: String, currentDate: LocalDate): Configuration = {
     val dateFormat = new SimpleDateFormat(ccDateFormat)
-    val configs: Seq[Configuration] = Play.application.configuration.getConfigSeq(configType).getOrElse(Seq())
+    val configs: Seq[Configuration] = configuration.getConfigSeq(configType).getOrElse(Seq())
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.getString(ruleDateConfigParam).contains("default")
@@ -90,5 +107,5 @@ object Utils {
         configs.filter(_.getString(ruleDateConfigParam).contains("default")).head
     }
   }
-*/
+
 }
