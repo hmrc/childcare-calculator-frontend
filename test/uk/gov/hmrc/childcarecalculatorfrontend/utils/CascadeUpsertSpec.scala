@@ -165,6 +165,16 @@ class CascadeUpsertSpec extends SpecBase {
       }
     }
 
+    "saving do you know your adjusted tax code" must {
+      "remove an existing your tax code when do you know adjusted tax code is no" in {
+        val originalCacheMap = new CacheMap("id", Map(WhatIsYourTaxCodeId.toString -> JsString("1100L")))
+
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(DoYouKnowYourAdjustedTaxCodeId.toString, false, originalCacheMap)
+        result.data mustBe Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(false))
+      }
+    }
+
     "saving has your partner's tax code been adjusted" must {
       "remove an existing do you know your partner's adjusted tax code and your partner's tax code when has your partner's tax code been adjusted is no" in {
         val originalCacheMap = new CacheMap("id", Map(DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L")))
@@ -172,6 +182,16 @@ class CascadeUpsertSpec extends SpecBase {
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(HasYourPartnersTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
         result.data mustBe Map(HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(false))
+      }
+    }
+
+    "saving do you know your partners adjusted tax code" must {
+      "remove an existing your partners tax code when do you know your partners adjusted tax code is no" in {
+        val originalCacheMap = new CacheMap("id", Map(WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L")))
+
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(DoYouKnowYourPartnersAdjustedTaxCodeId.toString, false, originalCacheMap)
+        result.data mustBe Map(DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(false))
       }
     }
 
