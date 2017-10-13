@@ -351,3 +351,13 @@ taxOrUniversalCredits.heading = taxOrUniversalCredits
 taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
 taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
+
+noOfChildren.title = noOfChildren
+noOfChildren.heading = noOfChildren
+noOfChildren.checkYourAnswersLabel = noOfChildren
+
+maxFreeHoursInfo.title = maxFreeHoursInfo
+maxFreeHoursInfo.heading = maxFreeHoursInfo
+
+maxFreeHoursResult.title = maxFreeHoursResult
+maxFreeHoursResult.heading = maxFreeHoursResult
