@@ -322,9 +322,11 @@ yourMaximumEarnings.hint = This is with any pension and gift aid contributions t
 yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
 yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
-partnerMaximumEarnings.title = partnerMaximumEarnings
-partnerMaximumEarnings.heading = partnerMaximumEarnings
-partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
+partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+partnerMaximumEarnings.error = You must select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
