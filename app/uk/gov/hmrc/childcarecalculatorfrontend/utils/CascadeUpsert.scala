@@ -35,9 +35,13 @@ class CascadeUpsert {
     Map(
       LocationId.toString -> ((v, cm) => storeLocation(v, cm)),
       DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
+      PaidEmploymentId.toString -> ((v,cm) => storePaidEmployment(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v,cm) => storeWhoIsInPaidEmployment(v, cm)),
-      HasYourTaxCodeBeenAdjustedId.toString-> ((v,cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
+      AreYouInPaidWorkId.toString -> ((v,cm) => storeAreYouInPaidWork(v, cm)),
+      HasYourTaxCodeBeenAdjustedId.toString -> ((v,cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
+      DoYouKnowYourAdjustedTaxCodeId.toString -> ((v,cm) => storeDoYouKnowYourAdjustedTaxCode(v, cm)),
       HasYourPartnersTaxCodeBeenAdjustedId.toString-> ((v,cm) => storeHasYourPartnersTaxCodeBeenAdjusted(v, cm)),
+      DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> ((v,cm) => storeDoYouKnowYourPartnersAdjustedTaxCode(v, cm)),
       EitherGetsVouchersId.toString -> ((v,cm) => storeEitherGetsVoucher(v, cm)),
       DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v,cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
@@ -65,6 +69,30 @@ class CascadeUpsert {
     else cacheMap
 
     store(DoYouLiveWithPartnerId.toString, value, mapToStore)
+  }
+
+  private def storeAreYouInPaidWork(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString -
+        HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
+        YourChildcareVouchersId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString)
+
+    } else cacheMap
+
+    store(AreYouInPaidWorkId.toString, value, mapToStore)
+  }
+
+  private def storePaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - WhoIsInPaidEmploymentId.toString - ParentWorkHoursId.toString - PartnerWorkHoursId.toString -
+        HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
+        HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
+        EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
+        DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString - YourPartnersAgeId.toString)
+
+    } else cacheMap
+
+    store(PaidEmploymentId.toString, value, mapToStore)
   }
 
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -95,6 +123,24 @@ class CascadeUpsert {
       cacheMap
     }
     store(HasYourTaxCodeBeenAdjustedId.toString, value, mapToStore)
+  }
+
+  private def storeDoYouKnowYourAdjustedTaxCode(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - WhatIsYourTaxCodeId.toString)
+    } else {
+      cacheMap
+    }
+    store(DoYouKnowYourAdjustedTaxCodeId.toString, value, mapToStore)
+  }
+
+  private def storeDoYouKnowYourPartnersAdjustedTaxCode(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsBoolean(false)){
+      cacheMap copy (data = cacheMap.data - WhatIsYourPartnersTaxCodeId.toString)
+    } else {
+      cacheMap
+    }
+    store(DoYouKnowYourPartnersAdjustedTaxCodeId.toString, value, mapToStore)
   }
 
   private def storeHasYourPartnersTaxCodeBeenAdjusted(value: JsValue, cacheMap: CacheMap): CacheMap = {

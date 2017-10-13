@@ -91,6 +91,38 @@ class CascadeUpsertSpec extends SpecBase {
       }
     }
 
+    "saving the areYouInPaidWork" must {
+      "remove an existing parent work hours, parents adjusted tax code, your childcare vouchers, do you get benefits, " +
+        "your age when are you in paid work is no" in {
+        val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
+          HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourTaxCodeId.toString -> JsString("1100L"), YourChildcareVouchersId.toString -> JsString("yes"),
+          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18")))
+
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(AreYouInPaidWorkId.toString, false, originalCacheMap)
+        result.data mustBe Map(AreYouInPaidWorkId.toString -> JsBoolean(false))
+      }
+    }
+
+    "saving the are you your partner, or both of you in paid work" must {
+      "remove an existing who's in paid work, parent work hours, partner work hours, parents adjusted tax code, partners adjusted tax code," +
+        "either child care vouchers, who gets childcare vouchers, your childcare vouchers, partner childcare couchers, do you get benefits, " +
+        "your age, partners age when paid employment is no" in {
+        val originalCacheMap = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("both"), ParentWorkHoursId.toString -> JsString("12"),
+          PartnerWorkHoursId.toString -> JsString("12"), HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true),
+          DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourTaxCodeId.toString -> JsString("1100L"), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
+          WhoGetsVouchersId.toString -> JsString("both"), YourChildcareVouchersId.toString -> JsString("yes"), PartnerChildcareVouchersId.toString -> JsString("yes"),
+          DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
+          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"), YourPartnersAgeId.toString -> JsString("under18")))
+
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap)
+        result.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+      }
+    }
+
     "saving the whoIsInPaidEmployment" must {
       "remove an existing partner work hours, partners adjusted tax code and partner min earnings when whoIsInPaidEmployment is you" in {
         val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12"),
@@ -133,6 +165,16 @@ class CascadeUpsertSpec extends SpecBase {
       }
     }
 
+    "saving do you know your adjusted tax code" must {
+      "remove an existing your tax code when do you know adjusted tax code is no" in {
+        val originalCacheMap = new CacheMap("id", Map(WhatIsYourTaxCodeId.toString -> JsString("1100L")))
+
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(DoYouKnowYourAdjustedTaxCodeId.toString, false, originalCacheMap)
+        result.data mustBe Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(false))
+      }
+    }
+
     "saving has your partner's tax code been adjusted" must {
       "remove an existing do you know your partner's adjusted tax code and your partner's tax code when has your partner's tax code been adjusted is no" in {
         val originalCacheMap = new CacheMap("id", Map(DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L")))
@@ -140,6 +182,16 @@ class CascadeUpsertSpec extends SpecBase {
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(HasYourPartnersTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
         result.data mustBe Map(HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(false))
+      }
+    }
+
+    "saving do you know your partners adjusted tax code" must {
+      "remove an existing your partners tax code when do you know your partners adjusted tax code is no" in {
+        val originalCacheMap = new CacheMap("id", Map(WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L")))
+
+        val cascadeUpsert = new CascadeUpsert
+        val result = cascadeUpsert(DoYouKnowYourPartnersAdjustedTaxCodeId.toString, false, originalCacheMap)
+        result.data mustBe Map(DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(false))
       }
     }
 

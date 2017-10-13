@@ -113,7 +113,7 @@ class MinimumEarningsNavigationSpec extends SpecBase with MockitoSugar{
     }
   }
 
-  "Partner Minimum Earnings Navigation" when {
+  "Partner Minimum Earnings " when {
 
     "in Normal mode" must {
 
