@@ -18,9 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 
-/**
-  * Created by vineet on 02/10/17.
-  */
 class UtilsSpec extends SpecBase {
 
   "Utils" when {
