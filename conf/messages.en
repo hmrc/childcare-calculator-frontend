@@ -362,6 +362,8 @@ maxFreeHoursInfo.heading = maxFreeHoursInfo
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
 
-eitherOfYouMaximumEarnings.title = eitherOfYouMaximumEarnings
-eitherOfYouMaximumEarnings.heading = eitherOfYouMaximumEarnings
+eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
