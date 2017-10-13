@@ -503,18 +503,17 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-        "partner user with you/both in paid work will be taken to whats your age page when user selects no " in {
-          val answers = spy(userAnswers())
-          when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-          when(answers.hasPartnerInPaidWork) thenReturn false
-          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
-        }
+      "partner user with you/both in paid work will be taken to whats your age page when user selects no " in {
+        val answers = spy(userAnswers())
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+        when(answers.hasPartnerInPaidWork) thenReturn false
+        navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      }
 
-        "partner user will be taken to Who Gets Benefit page when user selects yes " in {
-          val answers = spy(userAnswers())
-          when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-          navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
-        }
+      "partner user will be taken to Who Gets Benefit page when user selects yes " in {
+        val answers = spy(userAnswers())
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
       }
 
       "Do You get any benefits" when {
@@ -527,7 +526,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
           val answers = spy(userAnswers())
           when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits do you get
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
         }
       }
 
@@ -535,13 +534,13 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "partner user will be taken to which benefits do you get page when user selects You/both" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsBenefits) thenReturn Some("you") thenReturn Some("both")
-          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits do you get
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
         }
 
         "partner user will be taken to which benefits does your partner get page when user selects Partner" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsBenefits) thenReturn Some("partner")
-          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits does your partner get
         }
       }
 
@@ -581,7 +580,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-"Your Minimum Earnings" when {
+      "Your Minimum Earnings" when {
         "single parent in paid work earns more than NMW, will be redirected to parent maximum earnings page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -632,6 +631,87 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
+      }
+
+      "Your self employed" must {
+        "single parent will be redirected to tax or universal credits page when user selects yes/No" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourSelfEmployed) thenReturn Some(true) thenReturn Some(false)
+
+          navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+
+        "parent with partner, both in paid work, no minimum earnings will be redirected to Is your partner self employed or apprentice" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+            routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        }
+
+        "parent with partner, both in paid work, parent is satisfying minimum earnings will be redirected to parent max earnings" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(answers.yourSelfEmployed) thenReturn Some(true)
+
+          navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+            routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "parent with partner, both in paid work, partner is satisfying minimum earnings will be redirected to partner max earnings" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some("both")
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerMinimumEarnings) thenReturn Some(true)
+          when(answers.yourSelfEmployed) thenReturn Some(true)
+
+          navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+            routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Your partner self employed" must {
+
+        "parent with partner, both in paid work, no minimum earnings will be redirected to Is your partner self employed or apprentice" in {
+          val answers = spy(userAnswers())
+          when(answers.hasBothInPaidWork) thenReturn true
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(PartnerSelfEmployedId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+
+        "parent with partner, both in paid work, parent is satisfying minimum earnings will be redirected to parent max earnings" in {
+          val answers = spy(userAnswers())
+          when(answers.hasBothInPaidWork) thenReturn true
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerSelfEmployed) thenReturn Some(true)
+
+          navigator.nextPage(PartnerSelfEmployedId, NormalMode)(answers) mustBe
+            routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+        }
+
+        "Parent with partner, partner in paid work, partner min earnings is not satisfied will be redirected to Tax or Universal Credits" in {
+          val answers = spy(userAnswers())
+          when(answers.hasPartnerInPaidWork) thenReturn true
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerSelfEmployed) thenReturn Some(true)
+
+          navigator.nextPage(PartnerSelfEmployedId, NormalMode)  (answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
     }
 
     "in Check mode" must {
