@@ -316,9 +316,11 @@ areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
 areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
 areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
 
-yourMaximumEarnings.title = yourMaximumEarnings
-yourMaximumEarnings.heading = yourMaximumEarnings
-yourMaximumEarnings.checkYourAnswersLabel = yourMaximumEarnings
+yourMaximumEarnings.title = Will you earn more than £100,000 a year?
+yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
+yourMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
+yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
 partnerMaximumEarnings.title = partnerMaximumEarnings
 partnerMaximumEarnings.heading = partnerMaximumEarnings

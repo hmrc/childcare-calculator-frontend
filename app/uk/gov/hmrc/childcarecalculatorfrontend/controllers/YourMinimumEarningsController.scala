@@ -46,7 +46,6 @@ class YourMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-
       Ok(yourMinimumEarnings(appConfig, preparedForm, mode, getEarningsForAge()))
   }
 
