@@ -364,6 +364,7 @@ class Navigator @Inject() (schemes: Schemes) {
       case (Some(false), _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       case (Some(true), Some(true), Some(_)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(true), Some (false), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      case (Some(true), _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

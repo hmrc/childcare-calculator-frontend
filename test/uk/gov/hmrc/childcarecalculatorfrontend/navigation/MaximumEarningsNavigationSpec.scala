@@ -78,6 +78,18 @@ class MaximumEarningsNavigationSpec extends SpecBase with MockitoSugar{
           navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
+
+        "user with partner redirects to Do you get tax credits or universal credit page when only parent is in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
+
+          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
       }
 
       "Partner Maximum earnings" must {
