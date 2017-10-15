@@ -27,9 +27,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @Singleton
 class MaximumEarningsNavigation {
 
-  val taxOUniversalCreditPage: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-  val partnerMaxEarningsPage: Call = routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-  val sessionExpiredPage: Call = routes.SessionExpiredController.onPageLoad()
+  lazy val taxOrUniversalCreditPageNormalMode: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+  lazy val partnerMaxEarningsPageNormalMode: Call = routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+  lazy val sessionExpiredPage: Call = routes.SessionExpiredController.onPageLoad()
 
   def yourMaximumEarningsRoute(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner
@@ -38,11 +38,11 @@ class MaximumEarningsNavigation {
 
 
     (hasPartner, partnerMinEarnings, yourMaxEarnings) match {
-      case (Some(false), _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (Some(true), Some(true), Some(_)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-      case (Some(true), Some (false), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (Some(true), _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case (Some(false), _, Some(_)) => taxOrUniversalCreditPageNormalMode
+      case (Some(true), Some(true), Some(_)) => partnerMaxEarningsPageNormalMode
+      case (Some(true), Some (false), Some(_)) => taxOrUniversalCreditPageNormalMode
+      case (Some(true), _, Some(_)) => taxOrUniversalCreditPageNormalMode
+      case _ => sessionExpiredPage
     }
   }
 
@@ -52,8 +52,8 @@ class MaximumEarningsNavigation {
 
 
     (hasPartner,partnerMaxEarnings) match {
-      case (Some(true), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case (Some(true), Some(_)) => taxOrUniversalCreditPageNormalMode
+      case _ => sessionExpiredPage
     }
   }
 }
