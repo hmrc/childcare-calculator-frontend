@@ -23,6 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{Scheme, Schemes}
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.MaximumEarningsNavigation
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._

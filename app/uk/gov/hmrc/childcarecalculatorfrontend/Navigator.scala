@@ -23,11 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.MaximumEarningsNavigation
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @Singleton
-class Navigator @Inject() (schemes: Schemes) {
+class Navigator @Inject() (schemes: Schemes,
+                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -63,9 +65,9 @@ class Navigator @Inject() (schemes: Schemes) {
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
     PartnerMinimumEarningsId -> partnerMinimumEarningsRoute,
-    YourMaximumEarningsId -> yourMaximumEarningsRoute,
+    YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    PartnerMaximumEarningsId -> partnerMaximumEarningsRoute,
+    PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
     YourSelfEmployedId -> yourSelfEmployedRoute,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute
   )
@@ -354,7 +356,7 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def yourMaximumEarningsRoute(answers: UserAnswers) = {
+  /*private def yourMaximumEarningsRoute(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner
     val partnerMinEarnings = answers.partnerMinimumEarnings
     val yourMaxEarnings = answers.yourMaximumEarnings
@@ -378,7 +380,7 @@ class Navigator @Inject() (schemes: Schemes) {
       case (Some(true), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-  }
+  }*/
 
   private def yourSelfEmployedRoute(answers: UserAnswers) = {
     val yourMinEarnings = answers.yourMinimumEarnings

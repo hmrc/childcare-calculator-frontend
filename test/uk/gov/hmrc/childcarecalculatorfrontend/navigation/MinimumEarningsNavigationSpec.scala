@@ -33,7 +33,7 @@ class MinimumEarningsNavigationSpec extends SpecBase with MockitoSugar{
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  val navigator = new Navigator(new Schemes())
+  val navigator = new Navigator(new Schemes(), new MaximumEarningsNavigation())
 
   "Your Minimum Earnings" when {
 
