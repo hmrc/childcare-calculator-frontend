@@ -101,12 +101,13 @@ class CascadeUpsert {
         case JsString(You) =>
           cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - EitherGetsVouchersId.toString -
-            WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString)
+            WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
+            EitherOfYouMaximumEarningsId.toString)
 
         case JsString(Partner) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
-            YourAgeId.toString - YourMinimumEarningsId.toString)
+            YourAgeId.toString - YourMinimumEarningsId.toString - YourMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
 
         case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
 
@@ -176,7 +177,7 @@ private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap =
     val mapToStore = if (value == JsBoolean(true)){
       cacheMap copy (data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString)
     } else if (value == JsBoolean(false))
-      cacheMap copy (data = cacheMap.data - YourMaximumEarningsId.toString)
+      cacheMap copy (data = cacheMap.data - YourMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
       else cacheMap
 
       store(YourMinimumEarningsId.toString, value, mapToStore)
@@ -186,7 +187,7 @@ private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap =
     val mapToStore = if (value == JsBoolean(true)){
       cacheMap copy (data = cacheMap.data - PartnerSelfEmployedOrApprenticeId.toString)
     } else if (value == JsBoolean(false))
-      cacheMap copy (data = cacheMap.data - PartnerMaximumEarningsId.toString)
+      cacheMap copy (data = cacheMap.data - PartnerMaximumEarningsId.toString  - EitherOfYouMaximumEarningsId.toString)
     else cacheMap
 
     store(PartnerMinimumEarningsId.toString, value, mapToStore)

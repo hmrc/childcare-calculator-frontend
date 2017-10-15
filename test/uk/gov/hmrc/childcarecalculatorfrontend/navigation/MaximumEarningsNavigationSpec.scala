@@ -108,9 +108,6 @@ class MaximumEarningsNavigationSpec extends SpecBase with MockitoSugar{
         }
       }
 
-
-
-
     }
   }
 
