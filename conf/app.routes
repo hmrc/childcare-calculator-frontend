@@ -185,3 +185,8 @@ GET        /partnerMaximumEarnings                       uk.gov.hmrc.childcareca
 POST       /partnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onPageLoad(mode: Mode = NormalMode)
+POST       /whichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onSubmit(mode: Mode = CheckMode)

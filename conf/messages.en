@@ -345,3 +345,9 @@ partnerSelfEmployed.title = partnerSelfEmployed
 partnerSelfEmployed.heading = partnerSelfEmployed
 partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
 
+
+whichBenefitsYouGet.title = whichBenefitsYouGet
+whichBenefitsYouGet.heading = whichBenefitsYouGet
+whichBenefitsYouGet.option1 = whichBenefitsYouGet Option 1
+whichBenefitsYouGet.option2 = whichBenefitsYouGet Option 2
+whichBenefitsYouGet.checkYourAnswersLabel = whichBenefitsYouGet
