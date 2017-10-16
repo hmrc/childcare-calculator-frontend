@@ -310,11 +310,13 @@ yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wa
 yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
-areYouSelfEmployedOrApprentice.title = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.heading = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
-areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
+areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.heading = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.selfEmployed = Self-employed
+areYouSelfEmployedOrApprentice.apprentice = Apprentice
+areYouSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.error = You must tell the calculator if you are self-employed or an apprentice
 
 yourMaximumEarnings.title = Will you earn more than £100,000 a year?
 yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
@@ -334,11 +336,13 @@ partnerMinimumEarnings.hint = This is the National Minimum Wage or National Livi
 partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
-partnerSelfEmployedOrApprentice.title = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.heading = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option 1
-partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
+partnerSelfEmployedOrApprentice.title = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.heading = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.selfEmployed = Self-employed
+partnerSelfEmployedOrApprentice.apprentice = Apprentice
+partnerSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.error = You must tell the calculator if your partner is an apprentice or self-employed
 
 partnerSelfEmployed.title = Has your partner been self-employed less than 12 months?
 partnerSelfEmployed.heading = Has your partner been self-employed less than 12 months?

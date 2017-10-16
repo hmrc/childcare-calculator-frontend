@@ -21,7 +21,7 @@ import javax.inject.Singleton
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
@@ -45,7 +45,9 @@ class CascadeUpsert {
       EitherGetsVouchersId.toString -> ((v,cm) => storeEitherGetsVoucher(v, cm)),
       DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v,cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
-      PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm))
+      PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
+      AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
+      PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm))
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -62,8 +64,8 @@ class CascadeUpsert {
       cacheMap copy (data = cacheMap.data - PaidEmploymentId.toString - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString -
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
-        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
-        EitherOfYouMaximumEarningsId.toString)
+        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString  - AreYouSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedOrApprenticeId.toString -
+        PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
 
     } else if(value == JsBoolean(true))
       cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
@@ -91,9 +93,8 @@ class CascadeUpsert {
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
         DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
-        YourPartnersAgeId.toString - YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourMaximumEarningsId.toString -
-        PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString
-        )
+        YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
+        PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
 
     } else cacheMap
 
@@ -106,13 +107,14 @@ class CascadeUpsert {
         case JsString(You) =>
           cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - EitherGetsVouchersId.toString -
-            WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
-            EitherOfYouMaximumEarningsId.toString)
+            WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerSelfEmployedOrApprenticeId.toString -
+            PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
 
         case JsString(Partner) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
-            YourAgeId.toString - YourMinimumEarningsId.toString - YourMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
+            YourAgeId.toString - YourMinimumEarningsId.toString - AreYouSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString -
+            EitherOfYouMaximumEarningsId.toString)
 
         case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
 
@@ -196,6 +198,24 @@ private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap =
     else cacheMap
 
     store(PartnerMinimumEarningsId.toString, value, mapToStore)
+  }
+
+  private def AreYouSelfEmployedOrApprentice(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if (value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
+                        || (value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString))){
+      cacheMap copy (data = cacheMap.data - YourSelfEmployedId.toString)
+    } else cacheMap
+
+    store(AreYouSelfEmployedOrApprenticeId.toString, value, mapToStore)
+  }
+
+  private def PartnerSelfEmployedOrApprentice(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if (value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
+      || (value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString))){
+      cacheMap copy (data = cacheMap.data - PartnerSelfEmployedId.toString)
+    } else cacheMap
+
+    store(PartnerSelfEmployedOrApprenticeId.toString, value, mapToStore)
   }
 
 
