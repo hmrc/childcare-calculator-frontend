@@ -36,6 +36,8 @@
 
         @components.heading("eitherOfYouMaximumEarnings.heading", "heading-xlarge")
 
+        <p>@messages("eitherOfYouMaximumEarnings.hint")</p>
+
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
             label = messages("eitherOfYouMaximumEarnings.heading"),

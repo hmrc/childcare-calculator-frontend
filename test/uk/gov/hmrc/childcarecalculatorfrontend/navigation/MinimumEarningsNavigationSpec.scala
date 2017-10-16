@@ -33,7 +33,7 @@ class MinimumEarningsNavigationSpec extends SpecBase with MockitoSugar{
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  val navigator = new Navigator(new Schemes())
+  val navigator = new Navigator(new Schemes(), new MaximumEarningsNavigation())
 
   "Your Minimum Earnings" when {
 
@@ -123,7 +123,7 @@ class MinimumEarningsNavigationSpec extends SpecBase with MockitoSugar{
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
 
         navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
-          routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+          routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
       }
 
       "redirect to your self employed or apprentice page if partner earns more than NMW but parent doesn't" in {
