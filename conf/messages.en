@@ -316,13 +316,17 @@ areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
 areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
 areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
 
-yourMaximumEarnings.title = yourMaximumEarnings
-yourMaximumEarnings.heading = yourMaximumEarnings
-yourMaximumEarnings.checkYourAnswersLabel = yourMaximumEarnings
+yourMaximumEarnings.title = Will you earn more than £100,000 a year?
+yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
+yourMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
+yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
-partnerMaximumEarnings.title = partnerMaximumEarnings
-partnerMaximumEarnings.heading = partnerMaximumEarnings
-partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
+partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+partnerMaximumEarnings.error = You must select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
@@ -362,6 +366,8 @@ maxFreeHoursInfo.heading = maxFreeHoursInfo
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
 
-eitherOfYouMaximumEarnings.title = eitherOfYouMaximumEarnings
-eitherOfYouMaximumEarnings.heading = eitherOfYouMaximumEarnings
+eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
