@@ -33,70 +33,47 @@ class SelfEmployedOrApprenticeNavigation {
   val Apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
   val Neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
 
-  def areYouSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
+  def defineInPaidEmployment(whoIsInPaidEmp: Option[String]): String = {
+    whoIsInPaidEmp match {
+      case Some(You) => You
+      case Some(Partner) => Partner
+      case Some(Both) => Both
+      case _ => You
+    }
+  }
 
+  def areYouSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-    val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(true)
-    val paidEmployment = answers.paidEmployment
     val whoIsInPaidEmp = answers.whoIsInPaidEmployment
-    val parentMinEarning = answers.yourMinimumEarnings
     val partnerMinEarnings = answers.partnerMinimumEarnings
     val areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
 
-    (hasPartner, areYouInPaidWork, paidEmployment, whoIsInPaidEmp, parentMinEarning, partnerMinEarnings, areYouSelfEmployedOrApprentice) match {
-      case (false, true, _, _, Some(false), _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (false, true, _, _, Some(false), _, _) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (true, _, Some(true), Some(You), Some(false), _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (true, _, Some(true), Some(You), Some(false), _, _) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (true, _, Some(true), Some(Both), Some(false), Some(true), Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (true, _, Some(true), Some(Both), Some(false), Some(true), _) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-      case (true, _, Some(true), Some(Both), Some(false), Some(false), Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (true, _, Some(true), Some(Both), Some(false), Some(false), _) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+    (hasPartner, defineInPaidEmployment(whoIsInPaidEmp), partnerMinEarnings, areYouSelfEmployedOrApprentice) match {
+      case (false, You, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      case (false, You, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      case (true, You, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      case (true, You, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      case (true, Both, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      case (true, Both, Some(false), Some(_)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (true, Both, Some(true), Some(_)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 
   }
 
   def partnerSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
-
-    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-    val paidEmployment = answers.paidEmployment
     val whoIsInPaidEmp: Option[String] = answers.whoIsInPaidEmployment
-
-    (hasPartner, paidEmployment, whoIsInPaidEmp) match {
-      case (true, Some(true), Some(Partner)) => partnerSelfEmpOrAppRouteAsPerPaidEmp(Some(Partner), answers)
-      case (true, Some(true), Some(Both)) => partnerSelfEmpOrAppRouteAsPerPaidEmp(Some(Both), answers)
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
-
-  }
-
-  def partnerSelfEmpOrAppRouteAsPerPaidEmp(whoIsInPaidEmp: Option[String], answers: UserAnswers) = {
     val parentMinEarning = answers.yourMinimumEarnings
-    val partnerMinEarnings = answers.partnerMinimumEarnings
-    val areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val partnerSelfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
 
-    if (whoIsInPaidEmp.contains(Partner)) {
-
-      (parentMinEarning, partnerMinEarnings, areYouSelfEmployedOrApprentice, partnerSelfEmployedOrApprentice) match {
-        case (_, Some(false), _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
-        case (_, Some(false), _, _) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    } else {
-      (parentMinEarning, partnerMinEarnings, areYouSelfEmployedOrApprentice, partnerSelfEmployedOrApprentice) match {
-        case (Some(false), Some(true), _, _) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-        case (Some(true), Some(false), _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
-        case (Some(true), Some(false), _, _) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
-        case (Some(false), Some(false), _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
-        case (Some(false), Some(false), Some(SelfEmployed), _) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        case (Some(false), Some(false), Some(Apprentice), Some(Apprentice)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        case (Some(false), Some(false), Some(Neither), Some(Neither)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        case (Some(false), Some(false), Some(Neither), Some(Apprentice)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        case (Some(false), Some(false), Some(Apprentice), Some(Neither)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
+    (defineInPaidEmployment(whoIsInPaidEmp), parentMinEarning, partnerSelfEmployedOrApprentice) match {
+      case (Partner, _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+      case (Partner, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      case (Both, _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+      case (Both, Some(false), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      case (Both, Some(true), Some(_)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
+
 }
