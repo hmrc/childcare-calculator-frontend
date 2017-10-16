@@ -21,10 +21,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
 class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
+  val messageKeyPrefix = "maxFreeHoursInfo"
+
   def view = () => maxFreeHoursInfo(frontendAppConfig)(fakeRequest, messages)
 
   "MaxFreeHoursInfo view" must {
 
-    behave like normalPage(view, "maxFreeHoursInfo")
+
+    behave like normalPage(view, messageKeyPrefix, "what.else.you.could.get", "still.to.check")
   }
+
+
+  "MaxFreeHoursInfo view " must {
+      s"display correct content when loaded" in {
+        val view = maxFreeHoursInfo(frontendAppConfig)(fakeRequest, messages)
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.could.get.max.hours"))
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.could.get.tfc"))
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.could.get.esc"))
+        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
+      }
+  }
+
 }
