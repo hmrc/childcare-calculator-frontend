@@ -413,9 +413,12 @@ class Navigator @Inject() (schemes: Schemes) {
         case (Some(true), Some(false), _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
         case (Some(true), Some(false), _, _) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
         case (Some(false), Some(false), _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+        case (Some(false), Some(false), Some(SelfEmployed), _) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         case (Some(false), Some(false), Some(Apprentice), Some(Apprentice)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         case (Some(false), Some(false), Some(Neither), Some(Neither)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-//        case (Some(false), Some(false), Some(SelfEmployed), Some(SelfEmployed)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode) TO DO
+
+        case (Some(false), Some(false), Some(Neither), Some(Apprentice)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        case (Some(false), Some(false), Some(Apprentice), Some(Neither)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

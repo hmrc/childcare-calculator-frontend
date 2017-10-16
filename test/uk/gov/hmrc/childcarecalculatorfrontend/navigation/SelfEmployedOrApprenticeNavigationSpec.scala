@@ -20,9 +20,9 @@ import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AreYouSelfEmployedOrApprenticeId, PartnerMinimumEarningsId, PartnerSelfEmployedOrApprenticeId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AreYouSelfEmployedOrApprenticeId, PartnerSelfEmployedOrApprenticeId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -34,6 +34,9 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
   val navigator = new Navigator(new Schemes())
+  lazy val selfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
+  lazy val apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
+  lazy val neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
 
   "Are you self employed or apprentice" when {
     "navigate to have you been self employed less than 12 months when user select self employed" in {
@@ -41,7 +44,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.areYouInPaidWork) thenReturn Some(true)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
@@ -52,7 +55,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.areYouInPaidWork) thenReturn Some(true)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("apprentice") thenReturn Some("neither")
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
@@ -66,7 +69,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
@@ -78,7 +81,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("apprentice") thenReturn Some("neither")
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
@@ -94,7 +97,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
@@ -107,7 +110,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("apprentice") thenReturn Some("neither")
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
 
       navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
@@ -125,7 +128,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
@@ -137,7 +140,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn(Some("apprentice")) thenReturn(Some("neither"))
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn(Some(apprentice)) thenReturn(Some(neither))
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
@@ -153,7 +156,7 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(true)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
@@ -166,26 +169,13 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(true)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some("apprentice")) thenReturn(Some("neither"))
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some(apprentice)) thenReturn(Some(neither))
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.YourMaximumEarningsController.onPageLoad(NormalMode)
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.YourMaximumEarningsController.onPageLoad(NormalMode)
-    }
-
-    "navigate to parent self employed page when user have partner and both doesn't satisfy minimum earning and parent select self employed" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-      when(answers.yourMinimumEarnings) thenReturn Some(false)
-      when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some("selfEmployed")
-
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
-        routes.YourSelfEmployedController.onPageLoad(NormalMode)
     }
 
     "navigate to tc/uc page when user have partner and both doesn't satisfy minimum earning and both select apprentice" in {
@@ -195,8 +185,8 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn (Some("apprentice"))
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some("apprentice"))
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice)
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(apprentice)
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
@@ -210,13 +200,57 @@ class SelfEmployedOrApprenticeNavigationSpec extends SpecBase with MockitoSugar{
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
-      when(answers.areYouSelfEmployedOrApprentice) thenReturn (Some("neither"))
-      when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some("neither"))
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(neither)
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(neither)
 
       navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
     }
+
+    "navigate to tc/uc page when user have partner, parent select self employment and partner select apprentice" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.paidEmployment) thenReturn Some(true)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(answers.partnerMinimumEarnings) thenReturn Some(false)
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(apprentice)
+
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+    }
+
+    "navigate to tc/uc page when user have partner, parent select apprentice and partner select neither" in{
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.paidEmployment) thenReturn Some(true)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(answers.partnerMinimumEarnings) thenReturn Some(false)
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice)
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(neither)
+
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    }
+
+    "navigate to tc/uc page when user have partner, parent select neither and partner select apprentice" in{
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.paidEmployment) thenReturn Some(true)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(answers.partnerMinimumEarnings) thenReturn Some(false)
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(neither)
+      when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(apprentice)
+
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    }
+
 
   }
 
