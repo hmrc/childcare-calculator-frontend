@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EitherOfYouMaximumEar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherOfYouMaximumEarnings
-
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import scala.concurrent.Future
 
 class EitherOfYouMaximumEarningsController @Inject()(appConfig: FrontendAppConfig,
@@ -50,7 +50,7 @@ class EitherOfYouMaximumEarningsController @Inject()(appConfig: FrontendAppConfi
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm(eitherOfYouMaximumEarningsErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(eitherOfYouMaximumEarnings(appConfig, formWithErrors, mode))),
         (value) =>

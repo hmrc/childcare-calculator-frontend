@@ -23,11 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.MaximumEarningsNavigation
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @Singleton
-class Navigator @Inject() (schemes: Schemes) {
+class Navigator @Inject() (schemes: Schemes,
+                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -63,6 +65,9 @@ class Navigator @Inject() (schemes: Schemes) {
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
     PartnerMinimumEarningsId -> partnerMinimumEarningsRoute,
+    YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
     YourSelfEmployedId -> yourSelfEmployedRoute,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute
   )
@@ -334,7 +339,6 @@ class Navigator @Inject() (schemes: Schemes) {
       case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-
   }
 
   private def partnerMinimumEarningsRoute(answers: UserAnswers) = {
@@ -342,7 +346,7 @@ class Navigator @Inject() (schemes: Schemes) {
     val partnerMinEarnings = answers.partnerMinimumEarnings
 
     (yourMinEarnings, partnerMinEarnings) match {
-      case (Some(true), Some(true)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), Some(true)) => routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
@@ -352,7 +356,7 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-  private def yourSelfEmployedRoute(answers: UserAnswers) = {
+ private def yourSelfEmployedRoute(answers: UserAnswers) = {
     val yourMinEarnings = answers.yourMinimumEarnings
     val partnerMinEarnings = answers.partnerMinimumEarnings
 
