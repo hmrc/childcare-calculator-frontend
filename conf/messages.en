@@ -356,8 +356,14 @@ noOfChildren.title = noOfChildren
 noOfChildren.heading = noOfChildren
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
-maxFreeHoursInfo.title = maxFreeHoursInfo
-maxFreeHoursInfo.heading = maxFreeHoursInfo
+maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
+maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
+maxFreeHoursInfo.could.get.max.hours = Based on the information you’ve given so far, you’d be eligible for a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
+maxFreeHoursInfo.what.else.you.could.get = What else you could get
+maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
+maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
+maxFreeHoursInfo.still.to.check = Still to check
+maxFreeHoursInfo.give.more.info = Give the calculator more information to see if you’re eligible for help from tax credits.
 
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult

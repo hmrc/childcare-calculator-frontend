@@ -15,6 +15,8 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
 @(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
@@ -23,5 +25,23 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
-    <h1 class="heading-xlarge">@messages("maxFreeHoursInfo.heading")</h1>
+    @components.back_link()
+
+    @components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
+
+    <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
+
+    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.what.else.you.could.get")</h2>
+
+    <p>@messages("maxFreeHoursInfo.could.get.tfc")</p>
+
+    <p>@messages("maxFreeHoursInfo.could.get.esc")</p>
+
+    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
+
+    <p>@messages("maxFreeHoursInfo.give.more.info")</p>
+
+    @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+
+
 }

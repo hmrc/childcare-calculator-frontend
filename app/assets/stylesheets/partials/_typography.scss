@@ -20,12 +20,15 @@ font-weight:300;
 text-transform:none
 }
 @media (max-width: 640px){
-p.font-xsmall{
-  font-size:14px;
-  line-height:1.14286
+  p.font-xsmall{
+    font-size:14px;
+    line-height:1.14286
   }
 }
 
+h2.pageHeading2 {
+    margin-top: 1.25em !important;
+}
 
 /*give some space to the hero*/
 .hero {
