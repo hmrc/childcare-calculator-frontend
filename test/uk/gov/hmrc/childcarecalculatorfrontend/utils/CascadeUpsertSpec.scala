@@ -18,7 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AreYouSelfEmployedOrApprenticeId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
@@ -67,14 +68,16 @@ class CascadeUpsertSpec extends SpecBase {
 
     "saving the doYouLiveWithPartner" must {
       "remove an existing paid employment, partners adjusted tax code and who is in paid employment, you or partner get benefits, " +
-        "vouchers, partners age when doYouLiveWithPartner is No" in {
+        "vouchers, partners age, parent and partner self employed or apprentice when doYouLiveWithPartner is No" in {
         val originalCacheMap = new CacheMap("id", Map(PaidEmploymentId.toString -> JsBoolean(true),
           WhoIsInPaidEmploymentId.toString -> JsString(you), PartnerWorkHoursId.toString -> JsString("12"),
           HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
           WhoGetsVouchersId.toString -> JsString("you"), PartnerChildcareVouchersId.toString -> JsString("yes"),
           DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
-          YourPartnersAgeId.toString -> JsString("under18")))
+          YourPartnersAgeId.toString -> JsString("under18"),
+          AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
+          PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)
@@ -115,7 +118,9 @@ class CascadeUpsertSpec extends SpecBase {
           WhatIsYourTaxCodeId.toString -> JsString("1100L"), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
           WhoGetsVouchersId.toString -> JsString("both"), YourChildcareVouchersId.toString -> JsString("yes"), PartnerChildcareVouchersId.toString -> JsString("yes"),
           DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
-          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"), YourPartnersAgeId.toString -> JsString("under18")))
+          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"), YourPartnersAgeId.toString -> JsString("under18"),
+          AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
+          PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap)
@@ -128,7 +133,8 @@ class CascadeUpsertSpec extends SpecBase {
         val originalCacheMap = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12"),
           HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
-          WhoGetsVouchersId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"), PartnerMinimumEarningsId.toString -> JsBoolean(true)))
+          WhoGetsVouchersId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"), PartnerMinimumEarningsId.toString -> JsBoolean(true),
+          PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
@@ -139,7 +145,8 @@ class CascadeUpsertSpec extends SpecBase {
         val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
           HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
-          WhoGetsVouchersId.toString -> JsString("you"), YourAgeId.toString -> JsString("under18"), YourMinimumEarningsId.toString -> JsBoolean(true)))
+          WhoGetsVouchersId.toString -> JsString("you"), YourAgeId.toString -> JsString("under18"), YourMinimumEarningsId.toString -> JsBoolean(true),
+          AreYouSelfEmployedOrApprenticeId.toString -> JsString (SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, partner, originalCacheMap)
@@ -247,6 +254,38 @@ class CascadeUpsertSpec extends SpecBase {
         result.data mustBe Map(PartnerMinimumEarningsId.toString -> JsBoolean(true))
       }
     }
+
+  "saving are you self employed or apprentice" must {
+    "remove your self employed selection when parent select apprentice" in {
+      val originalCacheMap = new CacheMap("id", Map(YourSelfEmployedId.toString -> JsBoolean(false)))
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(AreYouSelfEmployedOrApprenticeId.toString, SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString, originalCacheMap)
+      result.data mustBe Map(AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString))
+    }
+
+    "remove your self employed selection when parent select neither" in {
+      val originalCacheMap = new CacheMap("id", Map(YourSelfEmployedId.toString -> JsBoolean(false)))
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(AreYouSelfEmployedOrApprenticeId.toString, SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString, originalCacheMap)
+      result.data mustBe Map(AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString))
+    }
+  }
+
+  "saving partner self employed or apprentice" must {
+    "remove partner self employed selection when partner select apprentice" in {
+      val originalCacheMap = new CacheMap("id", Map(PartnerSelfEmployedId.toString -> JsBoolean(false)))
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(PartnerSelfEmployedOrApprenticeId.toString, SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString, originalCacheMap)
+      result.data mustBe Map(PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString))
+    }
+
+    "remove partner self employed selection when partner select neither" in {
+      val originalCacheMap = new CacheMap("id", Map(PartnerSelfEmployedId.toString -> JsBoolean(false)))
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(PartnerSelfEmployedOrApprenticeId.toString, SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString, originalCacheMap)
+      result.data mustBe Map(PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString))
+    }
+  }
 
   "addRepeatedValue" when {
     "the key doesn't already exist" must {
