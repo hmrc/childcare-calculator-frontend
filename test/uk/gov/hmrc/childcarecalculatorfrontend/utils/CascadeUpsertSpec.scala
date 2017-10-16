@@ -67,14 +67,15 @@ class CascadeUpsertSpec extends SpecBase {
 
     "saving the doYouLiveWithPartner" must {
       "remove an existing paid employment, partners adjusted tax code and who is in paid employment, you or partner get benefits, " +
-        "vouchers, partners age when doYouLiveWithPartner is No" in {
+        "vouchers, partners age, partner's max and min earnings when doYouLiveWithPartner is No" in {
         val originalCacheMap = new CacheMap("id", Map(PaidEmploymentId.toString -> JsBoolean(true),
           WhoIsInPaidEmploymentId.toString -> JsString(you), PartnerWorkHoursId.toString -> JsString("12"),
           HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
           WhoGetsVouchersId.toString -> JsString("you"), PartnerChildcareVouchersId.toString -> JsString("yes"),
           DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
-          YourPartnersAgeId.toString -> JsString("under18")))
+          YourPartnersAgeId.toString -> JsString("under18"), PartnerMinimumEarningsId.toString -> JsBoolean(true),
+          PartnerMaximumEarningsId.toString -> JsBoolean(true), EitherOfYouMaximumEarningsId.toString -> JsBoolean(true)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)
@@ -93,11 +94,12 @@ class CascadeUpsertSpec extends SpecBase {
 
     "saving the areYouInPaidWork" must {
       "remove an existing parent work hours, parents adjusted tax code, your childcare vouchers, do you get benefits, " +
-        "your age when are you in paid work is no" in {
+        "your age, your min and max earnings when are you in paid work is no" in {
         val originalCacheMap = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
           HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
           WhatIsYourTaxCodeId.toString -> JsString("1100L"), YourChildcareVouchersId.toString -> JsString("yes"),
-          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18")))
+          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"),
+          YourMinimumEarningsId.toString -> JsBoolean(true), YourMaximumEarningsId.toString -> JsBoolean(true)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(AreYouInPaidWorkId.toString, false, originalCacheMap)
@@ -115,7 +117,10 @@ class CascadeUpsertSpec extends SpecBase {
           WhatIsYourTaxCodeId.toString -> JsString("1100L"), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
           WhoGetsVouchersId.toString -> JsString("both"), YourChildcareVouchersId.toString -> JsString("yes"), PartnerChildcareVouchersId.toString -> JsString("yes"),
           DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
-          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"), YourPartnersAgeId.toString -> JsString("under18")))
+          DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"), YourPartnersAgeId.toString -> JsString("under18"),
+          YourMinimumEarningsId.toString -> JsBoolean(true), PartnerMinimumEarningsId.toString -> JsBoolean(true),
+          YourMaximumEarningsId.toString -> JsBoolean(true), PartnerMaximumEarningsId.toString -> JsBoolean(true),
+          EitherOfYouMaximumEarningsId.toString -> JsBoolean(true)))
 
         val cascadeUpsert = new CascadeUpsert
         val result = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap)

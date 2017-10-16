@@ -62,7 +62,8 @@ class CascadeUpsert {
       cacheMap copy (data = cacheMap.data - PaidEmploymentId.toString - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString -
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
-        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString)
+        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
+        EitherOfYouMaximumEarningsId.toString)
 
     } else if(value == JsBoolean(true))
       cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
@@ -75,7 +76,8 @@ class CascadeUpsert {
     val mapToStore = if(value == JsBoolean(false)){
       cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString -
         HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
-        YourChildcareVouchersId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString)
+        YourChildcareVouchersId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
+        YourMinimumEarningsId.toString - YourMaximumEarningsId.toString)
 
     } else cacheMap
 
@@ -88,7 +90,10 @@ class CascadeUpsert {
         HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
-        DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString - YourPartnersAgeId.toString)
+        DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
+        YourPartnersAgeId.toString - YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourMaximumEarningsId.toString -
+        PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString
+        )
 
     } else cacheMap
 
