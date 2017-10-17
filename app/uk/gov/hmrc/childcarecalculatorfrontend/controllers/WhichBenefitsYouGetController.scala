@@ -42,21 +42,27 @@ class WhichBenefitsYouGetController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+      val answer = request.userAnswers.whichBenefitsYouGet
+      println(s"********************************answer>>>$answer")
       val preparedForm = request.userAnswers.whichBenefitsYouGet match {
         case None => WhichBenefitsYouGetForm()
         case Some(value) => WhichBenefitsYouGetForm().fill(value)
       }
-      Ok(whichBenefitsYouGet(appConfig, preparedForm, mode))
+      Ok(whichBenefitsYouGet(appConfig, answer, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       WhichBenefitsYouGetForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(whichBenefitsYouGet(appConfig, formWithErrors, mode))),
-        (value) =>
-          dataCacheConnector.save[String](request.sessionId, WhichBenefitsYouGetId.toString, value).map(cacheMap =>
+        (formWithErrors: Form[Set[String]]) => {
+          val answer = request.userAnswers.whichBenefitsYouGet
+          Future.successful(BadRequest(whichBenefitsYouGet(appConfig, answer, formWithErrors, mode)))
+        },
+        (value) => {
+          println(s"**************************VALUE>>>$value")
+          dataCacheConnector.save[Set[String]](request.sessionId, WhichBenefitsYouGetId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(WhichBenefitsYouGetId, mode)(new UserAnswers(cacheMap))))
+        }
       )
   }
 }

@@ -287,6 +287,15 @@ whichBenefitsDoYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsDoYouGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsDoYouGet.error = You must tell the calculator which benefits you get
 
+whichBenefitsYouGet.title = Which benefits do you get?
+whichBenefitsYouGet.heading = Which benefits do you get?
+whichBenefitsYouGet.incomeBenefits = Income benefits
+whichBenefitsYouGet.disabilityBenefits = Disability benefits
+whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
+whichBenefitsYouGet.carersAllowance = Carer’s Allowance
+whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
+whichBenefitsYouGet.error = You must tell the calculator which benefits you get
+
 yourAge.title = What’s your age?
 yourAge.heading = What’s your age?
 yourAge.under18 = Under 18
@@ -345,9 +354,3 @@ partnerSelfEmployed.title = partnerSelfEmployed
 partnerSelfEmployed.heading = partnerSelfEmployed
 partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
 
-
-whichBenefitsYouGet.title = whichBenefitsYouGet
-whichBenefitsYouGet.heading = whichBenefitsYouGet
-whichBenefitsYouGet.option1 = whichBenefitsYouGet Option 1
-whichBenefitsYouGet.option2 = whichBenefitsYouGet Option 2
-whichBenefitsYouGet.checkYourAnswersLabel = whichBenefitsYouGet

@@ -527,7 +527,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
           val answers = spy(userAnswers())
           when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits do you get
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
         }
       }
 
@@ -535,7 +535,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "partner user will be taken to which benefits do you get page when user selects You/both" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsBenefits) thenReturn Some("you") thenReturn Some("both")
-          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits do you get
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
         }
 
         "partner user will be taken to which benefits does your partner get page when user selects Partner" in {

@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsDoYouGetErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichBenefitsYouGetForm extends FormErrorHelper {
@@ -26,8 +27,8 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
   def WhichBenefitsYouGetFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
-      case _ => produceError(key, "error.unknown")
+      case None => produceError(key, whichBenefitsDoYouGetErrorKey)
+      case _ => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
@@ -37,8 +38,10 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
     Form(single("value" -> set(of(WhichBenefitsYouGetFormatter))))
 
   def options = Seq(
-    InputOption("whichBenefitsYouGet", "option1"),
-    InputOption("whichBenefitsYouGet", "option2")
+    InputOption("whichBenefitsDoYouGet", "incomeBenefits"),
+    InputOption("whichBenefitsDoYouGet", "disabilityBenefits"),
+    InputOption("whichBenefitsDoYouGet", "highRateDisabilityBenefits"),
+    InputOption("whichBenefitsDoYouGet", "carersAllowance")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

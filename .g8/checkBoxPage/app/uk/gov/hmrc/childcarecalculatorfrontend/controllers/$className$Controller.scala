@@ -26,21 +26,25 @@ class $className;format="cap"$Controller @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.$className;format="decap"$ match {
+      val answer = request.userAnswers.$className;format="decap"$
+      val preparedForm = answer match {
         case None => $className$Form()
         case Some(value) => $className$Form().fill(value)
       }
-      Ok($className;format="decap"$(appConfig, preparedForm, mode))
+      Ok($className;format="decap"$(appConfig, answer, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       $className$Form().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest($className;format="decap"$(appConfig, formWithErrors, mode))),
-        (value) =>
-          dataCacheConnector.save[String](request.sessionId, $className$Id.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage($className$Id, mode)(new UserAnswers(cacheMap))))
+        (formWithErrors: Form[Set[String]]) => {
+          val answer = request.userAnswers.$className;format="decap"$
+          Future.successful (BadRequest ($className; format = "decap"$ (appConfig, formWithErrors, mode)))
+        },
+        (value) => {
+          dataCacheConnector.save[Set[String]] (request.sessionId, $className$Id.toString, value).map (cacheMap =>
+            Redirect (navigator.nextPage ($className$Id, mode) (new UserAnswers (cacheMap))))
+        }
       )
   }
 }

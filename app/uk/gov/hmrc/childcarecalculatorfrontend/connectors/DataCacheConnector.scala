@@ -29,6 +29,9 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
 
   def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] = {
     sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
+      println(s"*********value>>>>>>$value")
+      println(s"*********key>>>>>>$key")
+      println(s"*********optionalCacheMap>>>>>>$optionalCacheMap")
       val updatedCacheMap = cascadeUpsert(key, value, optionalCacheMap.getOrElse(new CacheMap(cacheId, Map())))
       sessionRepository().upsert(updatedCacheMap).map {_ => updatedCacheMap}
     }
@@ -68,7 +71,6 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
         } else {
           cacheMap copy (data = cacheMap.data + (collectionKey -> Json.toJson(newSeq)))
         }
-
         sessionRepository().upsert(newCacheMap).map {_ => newCacheMap}
       }
     }

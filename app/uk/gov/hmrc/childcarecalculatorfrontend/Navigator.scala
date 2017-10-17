@@ -24,7 +24,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @Singleton
 class Navigator @Inject() (schemes: Schemes) {
@@ -59,11 +58,29 @@ class Navigator @Inject() (schemes: Schemes) {
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
+    WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
     PartnerMinimumEarningsId -> partnerMinimumEarningsRoute
   )
+
+  def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
+    whoGetsBenefits match {
+      case Some(You) => You
+      case Some(Partner) => Partner
+      case Some(Both) => Both
+      case _ => You
+    }
+  }
+
+  private def whichBenefitsYouGetRoute(answers: UserAnswers) = {
+    defineWhoGetsBenefits(answers.whoGetsBenefits) match {
+      case You => routes.YourAgeController.onPageLoad(NormalMode)
+      case Both => routes.YourPartnersAgeController.onPageLoad(NormalMode) //TODO - partner's which benefits page
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def locationRoute(answers: UserAnswers) = {
     val Ni = LocationEnum.NORTHERNIRELAND.toString
@@ -269,8 +286,7 @@ class Navigator @Inject() (schemes: Schemes) {
     if(answers.doYouGetAnyBenefits.contains(false)){
       routes.YourAgeController.onPageLoad(NormalMode)
     } else {
-      //TODO: Go to new Which benefits do you get checkbox page
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
     }
   }
 
@@ -289,7 +305,7 @@ class Navigator @Inject() (schemes: Schemes) {
 
   private def whoGetsBenefitsRoute(answers: UserAnswers) = {
     answers.whoGetsBenefits match {
-      case Some(You) | Some(Both) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
+      case Some(You) | Some(Both) => routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
       case Some(Partner) => routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
       case _ => routes.SessionExpiredController.onPageLoad()
     }

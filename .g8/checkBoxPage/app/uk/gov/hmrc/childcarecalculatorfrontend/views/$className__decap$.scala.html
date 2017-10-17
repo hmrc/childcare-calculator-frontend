@@ -6,7 +6,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, answer: Option[Set[String]], form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("$className;format="decap"$.title"),
@@ -22,6 +22,7 @@
         @components.heading("$className;format="decap"$.heading")
 
         @components.input_check_box(
+            answer = answer,
             viewModel = InputViewModel[Set[String]]("value", form),
             legend = messages("$className;format="decap"$.heading"),
             legendClass = Some("visually-hidden"),

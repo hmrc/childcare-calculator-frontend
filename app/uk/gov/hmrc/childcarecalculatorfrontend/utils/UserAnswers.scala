@@ -22,6 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def whichBenefitsYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsYouGetId.toString)
+  def whichBenefitsDoYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsDoYouGetId.toString)
 
 
   def partnerMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMaximumEarningsId.toString)
@@ -43,8 +44,6 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def yourAge: Option[String] = cacheMap.getEntry[String](YourAgeId.toString)
 
   def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
-
-  def whichBenefitsDoYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsDoYouGetId.toString)
 
   def whoGetsBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsBenefitsId.toString)
 
