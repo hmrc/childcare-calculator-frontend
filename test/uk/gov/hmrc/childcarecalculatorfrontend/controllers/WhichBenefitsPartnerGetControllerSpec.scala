@@ -23,24 +23,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsDoYouGetId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsPartnerGetId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsDoYouGet
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGet
 
-class WhichBenefitsDoYouGetControllerSpec extends ControllerSpecBase {
+class WhichBenefitsPartnerGetControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val answer = Some(Set("option1", "option2"))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichBenefitsDoYouGetController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new WhichBenefitsPartnerGetController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsDoYouGetForm()) = whichBenefitsDoYouGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsPartnerGetForm()) = whichBenefitsPartnerGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages).toString
 
-  "WhichBenefitsDoYouGet Controller" must {
+  "WhichBenefitsPartnerGet Controller" must {
 
 //    "return OK and the correct view for a GET" in {
 //      val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -50,16 +50,16 @@ class WhichBenefitsDoYouGetControllerSpec extends ControllerSpecBase {
 //    }
 
 //    "populate the view correctly on a GET when the question has previously been answered" in {
-//      val validData = Map(WhichBenefitsDoYouGetId.toString -> JsString(WhichBenefitsDoYouGetForm.options.head.value))
+//      val validData = Map(WhichBenefitsPartnerGetId.toString -> JsString(WhichBenefitsPartnerGetForm.options.head.value))
 //      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 //
 //      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 //
-//      contentAsString(result) mustBe viewAsString(WhichBenefitsDoYouGetForm().fill(WhichBenefitsDoYouGetForm.options.head.value))
+//      contentAsString(result) mustBe viewAsString(WhichBenefitsPartnerGetForm().fill(Set(WhichBenefitsPartnerGetForm.options.head.value)))
 //    }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsDoYouGetForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsPartnerGetForm.options.head.value))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -69,7 +69,7 @@ class WhichBenefitsDoYouGetControllerSpec extends ControllerSpecBase {
 
 //    "return a Bad Request and errors when invalid data is submitted" in {
 //      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-//      val boundForm = WhichBenefitsDoYouGetForm().bind(Map("value" -> "invalid value"))
+//      val boundForm = WhichBenefitsPartnerGetForm().bind(Map("value" -> "invalid value"))
 //
 //      val result = controller().onSubmit(NormalMode)(postRequest)
 //
@@ -85,7 +85,7 @@ class WhichBenefitsDoYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsDoYouGetForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsPartnerGetForm.options.head.value))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

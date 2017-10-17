@@ -24,15 +24,15 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsDoYouGetId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsPartnerGetId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsDoYouGet
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGet
 
 import scala.concurrent.Future
 
-class WhichBenefitsDoYouGetController @Inject()(
+class WhichBenefitsPartnerGetController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
                                         dataCacheConnector: DataCacheConnector,
@@ -42,24 +42,24 @@ class WhichBenefitsDoYouGetController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val answer = request.userAnswers.whichBenefitsDoYouGet
+      val answer = request.userAnswers.whichBenefitsPartnerGet
       val preparedForm = answer match {
-        case None => WhichBenefitsDoYouGetForm()
-        case Some(value) => WhichBenefitsDoYouGetForm().fill(value)
+        case None => WhichBenefitsPartnerGetForm()
+        case Some(value) => WhichBenefitsPartnerGetForm().fill(value)
       }
-      Ok(whichBenefitsDoYouGet(appConfig, answer, preparedForm, mode))
+      Ok(whichBenefitsPartnerGet(appConfig, answer, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhichBenefitsDoYouGetForm().bindFromRequest().fold(
+      WhichBenefitsPartnerGetForm().bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
-          val answer = request.userAnswers.whichBenefitsDoYouGet
-          Future.successful(BadRequest(whichBenefitsDoYouGet(appConfig, answer, formWithErrors, mode)))
+          val answer = request.userAnswers.whichBenefitsPartnerGet
+          Future.successful (BadRequest (whichBenefitsPartnerGet (appConfig, answer, formWithErrors, mode)))
         },
         (value) => {
-          dataCacheConnector.save[Set[String]](request.sessionId, WhichBenefitsDoYouGetId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhichBenefitsDoYouGetId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Set[String]] (request.sessionId, WhichBenefitsPartnerGetId.toString, value).map (cacheMap =>
+            Redirect (navigator.nextPage (WhichBenefitsPartnerGetId, mode) (new UserAnswers (cacheMap))))
         }
       )
   }

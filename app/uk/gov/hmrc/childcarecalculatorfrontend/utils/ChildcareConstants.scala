@@ -34,7 +34,8 @@ object ChildcareConstants {
   val doYouGetAnyBenefitsErrorKey = "doYouGetAnyBenefits.error"
   val doYouOrYourPartnerGetAnyBenefitsErrorKey = "doYouOrYourPartnerGetAnyBenefits.error"
   val whoGetsBenefitsErrorKey = "whoGetsBenefits.error"
-  val whichBenefitsDoYouGetErrorKey = "whichBenefitsDoYouGet.error"
+  val whichBenefitsYouGetErrorKey = "whichBenefitsYouGet.error"
+  val whichBenefitsPartnerGetErrorKey = "whichBenefitsPartnerGet.error"
   val doYouKnowYourPartnerAdjustedTaxCodeErrorKey = "doYouKnowYourPartnersAdjustedTaxCode.error"
   val taxCodeLength_six = 6
   val taxCodeLength_four = 4

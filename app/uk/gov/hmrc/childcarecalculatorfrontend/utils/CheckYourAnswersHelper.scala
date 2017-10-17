@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def whichBenefitsPartnerGet: Option[AnswerRow] = userAnswers.whichBenefitsPartnerGet map {
+    x => AnswerRow("whichBenefitsPartnerGet.checkYourAnswersLabel", s"whichBenefitsPartnerGet.$x", true, routes.WhichBenefitsPartnerGetController.onPageLoad(CheckMode).url)
+  }
+
   def whichBenefitsYouGet: Option[AnswerRow] = userAnswers.whichBenefitsYouGet map {
     x => AnswerRow("whichBenefitsYouGet.checkYourAnswersLabel", s"whichBenefitsYouGet.$x", true, routes.WhichBenefitsYouGetController.onPageLoad(CheckMode).url)
   }
@@ -80,10 +84,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def whatIsYourTaxCode: Option[AnswerRow] = userAnswers.whatIsYourTaxCode map {
     x => AnswerRow("whatIsYourTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourTaxCodeController.onPageLoad(CheckMode).url)
-  }
-
-  def whichBenefitsDoYouGet: Option[AnswerRow] = userAnswers.whichBenefitsDoYouGet map {
-    x => AnswerRow("whichBenefitsDoYouGet.checkYourAnswersLabel", s"whichBenefitsDoYouGet.$x", true, routes.WhichBenefitsDoYouGetController.onPageLoad(CheckMode).url)
   }
 
   def whoGetsBenefits: Option[AnswerRow] = userAnswers.whoGetsBenefits map {

@@ -26,6 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{Scheme, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
 
 class NavigatorSpec extends SpecBase with MockitoSugar {
 
@@ -541,9 +542,20 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "partner user will be taken to which benefits does your partner get page when user selects Partner" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsBenefits) thenReturn Some("partner")
-          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
         }
       }
+
+    "Which benefits do you get" when {
+      "redirect to your age page for single user as parent" in {
+        val answers = spy(userAnswers())
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
+        navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      }
+    }
+
+    "Which benefits your partner get" when {
+    }
 
       "Whats Your age" when {
         "single user will be taken to parent minimum earnings page when user selects any age option " in {

@@ -16,35 +16,32 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
+import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import play.api.data.format.Formats._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object WhichBenefitsDoYouGetForm extends FormErrorHelper {
+object WhichBenefitsPartnerGetForm extends FormErrorHelper {
 
-  def WhichBenefitsDoYouGetFormatter = new Formatter[String] {
-
-    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
-      data.get(key) match {
-        case Some(s) if optionIsValid(s) => Right(s)
-        case None => produceError(key, whichBenefitsDoYouGetErrorKey)
-        case _ => produceError(key, unknownErrorKey)
-      }
+  def WhichBenefitsPartnerGetFormatter = new Formatter[String] {
+    def bind(key: String, data: Map[String, String]) = data.get(key) match {
+      case Some(s) if optionIsValid(s) => Right(s)
+      case None => produceError(key, whichBenefitsPartnerGetErrorKey)
+      case _ => produceError(key, unknownErrorKey)
+    }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
   def apply(): Form[Set[String]] =
-    Form(single("value" -> set(of(WhichBenefitsDoYouGetFormatter))))
+    Form(single("value" -> set(of(WhichBenefitsPartnerGetFormatter))))
 
   def options = Seq(
-    InputOption("whichBenefitsDoYouGet", "incomeBenefits"),
-    InputOption("whichBenefitsDoYouGet", "disabilityBenefits"),
-    InputOption("whichBenefitsDoYouGet", "highRateDisabilityBenefits"),
-    InputOption("whichBenefitsDoYouGet", "carersAllowance")
+    InputOption("whichBenefitsPartnerGet", "incomeBenefits"),
+    InputOption("whichBenefitsPartnerGet", "disabilityBenefits"),
+    InputOption("whichBenefitsPartnerGet", "highRateDisabilityBenefits"),
+    InputOption("whichBenefitsPartnerGet", "carersAllowance")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

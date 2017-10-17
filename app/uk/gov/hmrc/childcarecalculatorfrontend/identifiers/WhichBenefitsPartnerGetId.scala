@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-
-class WhichBenefitsDoYouGetFormSpec extends FormBehaviours {
-
-  val validData: Map[String, String] = Map(
-    "value" -> WhichBenefitsDoYouGetForm.options.head.value
-  )
-
-  val form = WhichBenefitsDoYouGetForm()
-
-  "WhichBenefitsDoYouGet form" must {
-//    behave like questionForm[String](WhichBenefitsDoYouGetForm.options.head.value)
-
-//    behave like formWithOptionField("value", WhichBenefitsDoYouGetForm.options.map{x => x.value}:_*)
-  }
+case object WhichBenefitsPartnerGetId extends Identifier {
+  override def toString: String = "whichBenefitsPartnerGet"
 }

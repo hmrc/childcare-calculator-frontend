@@ -17,48 +17,48 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsDoYouGet
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGet
 
-class WhichBenefitsDoYouGetViewSpec extends ViewBehaviours {
+class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "whichBenefitsDoYouGet"
+  val messageKeyPrefix = "whichBenefitsPartnerGet"
 
-  val answer = Some(Set("option1", "option2"))
+  val answer = Some(Set("options1", "option2"))
 
-  def createView = () => whichBenefitsDoYouGet(frontendAppConfig, answer, WhichBenefitsDoYouGetForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => whichBenefitsPartnerGet(frontendAppConfig, answer, WhichBenefitsPartnerGetForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Set[String]]) => whichBenefitsDoYouGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Set[String]]) => whichBenefitsPartnerGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages)
 
-  "WhichBenefitsDoYouGet view" must {
+  "WhichBenefitsPartnerGet view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
   }
 
-  "WhichBenefitsDoYouGet view" when {
-    "rendered" must {
-//      "contain radio buttons for the value" in {
-//        val doc = asDocument(createViewUsingForm(WhichBenefitsDoYouGetForm()))
-//        for (option <- WhichBenefitsDoYouGetForm.options) {
+//  "WhichBenefitsPartnerGet view" when {
+//    "rendered" must {
+//      "contain check boxes for the value" in {
+//        val doc = asDocument(createViewUsingForm(WhichBenefitsPartnerGetForm()))
+//        for (option <- WhichBenefitsPartnerGetForm.options) {
 //          assertContainsRadioButton(doc, option.id, "value", option.value, false)
 //        }
 //      }
-    }
+//    }
 
-    for(option <- WhichBenefitsDoYouGetForm.options) {
+//    for(option <- WhichBenefitsPartnerGetForm.options) {
 //      s"rendered with a value of '${option.value}'" must {
 //        s"have the '${option.value}' radio button selected" in {
-//          val doc = asDocument(createViewUsingForm(WhichBenefitsDoYouGetForm().bind(Map("value" -> s"${option.value}"))))
+//          val doc = asDocument(createViewUsingForm(WhichBenefitsPartnerGetForm().bind(Map("value" -> s"${option.value}"))))
 //          assertContainsRadioButton(doc, option.id, "value", option.value, true)
 //
-//          for(unselectedOption <- WhichBenefitsDoYouGetForm.options.filterNot(o => o == option)) {
+//          for(unselectedOption <- WhichBenefitsPartnerGetForm.options.filterNot(o => o == option)) {
 //            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
 //          }
 //        }
 //      }
-    }
-  }
+//    }
+//  }
 }

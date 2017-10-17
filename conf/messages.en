@@ -278,15 +278,6 @@ whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
 whoGetsBenefits.error = You must tell the calculator who gets benefits
 
-whichBenefitsDoYouGet.title = Which benefits do you get?
-whichBenefitsDoYouGet.heading = Which benefits do you get?
-whichBenefitsDoYouGet.incomeBenefits = Income benefits
-whichBenefitsDoYouGet.disabilityBenefits = Disability benefits
-whichBenefitsDoYouGet.highRateDisabilityBenefits = High rate disability benefits
-whichBenefitsDoYouGet.carersAllowance = Carer’s Allowance
-whichBenefitsDoYouGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsDoYouGet.error = You must tell the calculator which benefits you get
-
 whichBenefitsYouGet.title = Which benefits do you get?
 whichBenefitsYouGet.heading = Which benefits do you get?
 whichBenefitsYouGet.incomeBenefits = Income benefits
@@ -295,6 +286,15 @@ whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsYouGet.error = You must tell the calculator which benefits you get
+
+whichBenefitsPartnerGet.title = Which benefits does your partner get?
+whichBenefitsPartnerGet.heading = Which benefits does your partner get?
+whichBenefitsPartnerGet.incomeBenefits = Income benefits
+whichBenefitsPartnerGet.disabilityBenefits = Disability benefits
+whichBenefitsPartnerGet.highRateDisabilityBenefits = High rate disability benefits
+whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
+whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
+whichBenefitsPartnerGet.error = You must tell the calculator which benefits your partner gets
 
 yourAge.title = What’s your age?
 yourAge.heading = What’s your age?
@@ -353,4 +353,3 @@ yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
 partnerSelfEmployed.title = partnerSelfEmployed
 partnerSelfEmployed.heading = partnerSelfEmployed
 partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
-

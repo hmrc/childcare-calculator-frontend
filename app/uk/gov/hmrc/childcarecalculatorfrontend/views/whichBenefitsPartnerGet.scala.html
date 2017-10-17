@@ -17,7 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsDoYouGetForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
@@ -25,24 +25,26 @@
 @(appConfig: FrontendAppConfig, answer: Option[Set[String]], form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("whichBenefitsDoYouGet.title"),
+    title = messages("whichBenefitsPartnerGet.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = WhichBenefitsDoYouGetController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = WhichBenefitsPartnerGetController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("whichBenefitsDoYouGet.heading")
+        @components.heading("whichBenefitsPartnerGet.heading", "heading-xlarge")
+
+        <p>Select all that apply.</p>
 
         @components.input_check_box(
             answer = answer,
             viewModel = InputViewModel[Set[String]]("value", form),
-            legend = messages("whichBenefitsDoYouGet.heading"),
+            legend = messages("whichBenefitsPartnerGet.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhichBenefitsDoYouGetForm.options
+            inputs = WhichBenefitsPartnerGetForm.options
         )
 
         @components.submit_button()

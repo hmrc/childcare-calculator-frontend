@@ -131,11 +131,6 @@ POST       /whoGetsBenefits               uk.gov.hmrc.childcarecalculatorfronten
 GET        /changeWhoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoGetsBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsBenefitsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /whichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(mode: Mode = NormalMode)
-POST       /whichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(mode: Mode = NormalMode)
-GET        /changeWhichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeWhichBenefitsDoYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsDoYouGetController.onSubmit(mode: Mode = CheckMode)
-
 GET        /yourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode = NormalMode)
 POST       /yourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYourAge               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode = CheckMode)
@@ -190,3 +185,8 @@ GET        /whichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfro
 POST       /whichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhichBenefitsYouGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whichBenefitsPartnerGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsPartnerGetController.onPageLoad(mode: Mode = NormalMode)
+POST       /whichBenefitsPartnerGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsPartnerGetController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhichBenefitsPartnerGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsPartnerGetController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhichBenefitsPartnerGet               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsPartnerGetController.onSubmit(mode: Mode = CheckMode)

@@ -59,13 +59,14 @@ class Navigator @Inject() (schemes: Schemes) {
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
     WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
+    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
     PartnerMinimumEarningsId -> partnerMinimumEarningsRoute
   )
 
-  def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
+  private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
     whoGetsBenefits match {
       case Some(You) => You
       case Some(Partner) => Partner
@@ -77,7 +78,15 @@ class Navigator @Inject() (schemes: Schemes) {
   private def whichBenefitsYouGetRoute(answers: UserAnswers) = {
     defineWhoGetsBenefits(answers.whoGetsBenefits) match {
       case You => routes.YourAgeController.onPageLoad(NormalMode)
-      case Both => routes.YourPartnersAgeController.onPageLoad(NormalMode) //TODO - partner's which benefits page
+      case Both => routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def whichBenefitsPartnerGetRoute(answers: UserAnswers) = {
+    defineWhoGetsBenefits(answers.whoGetsBenefits) match {
+      case Partner => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      case Both => routes.YourAgeController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -306,7 +315,7 @@ class Navigator @Inject() (schemes: Schemes) {
   private def whoGetsBenefitsRoute(answers: UserAnswers) = {
     answers.whoGetsBenefits match {
       case Some(You) | Some(Both) => routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+      case Some(Partner) => routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

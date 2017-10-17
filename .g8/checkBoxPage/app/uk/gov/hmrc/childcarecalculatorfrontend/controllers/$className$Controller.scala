@@ -39,7 +39,7 @@ class $className;format="cap"$Controller @Inject()(
       $className$Form().bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
           val answer = request.userAnswers.$className;format="decap"$
-          Future.successful (BadRequest ($className; format = "decap"$ (appConfig, formWithErrors, mode)))
+          Future.successful (BadRequest ($className; format = "decap"$ (appConfig, answer, formWithErrors, mode)))
         },
         (value) => {
           dataCacheConnector.save[Set[String]] (request.sessionId, $className$Id.toString, value).map (cacheMap =>

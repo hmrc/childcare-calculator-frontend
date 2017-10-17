@@ -37,6 +37,8 @@
 
         @components.heading("whichBenefitsYouGet.heading", "heading-xlarge")
 
+        <p>Select all that apply.</p>
+
         @components.input_check_box(
             answer = answer,
             viewModel = InputViewModel[Set[String]]("value", form),
