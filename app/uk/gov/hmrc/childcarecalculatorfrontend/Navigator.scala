@@ -72,7 +72,8 @@ class Navigator @Inject() (schemes: Schemes,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    NoOfChildrenId -> (_ => routes.CheckYourAnswersController.onPageLoad)
   )
 
   private def locationRoute(answers: UserAnswers) = {

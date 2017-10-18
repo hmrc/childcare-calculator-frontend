@@ -1,37 +1,31 @@
-import sbt.Keys._
-import sbt.Tests.{Group, SubProcess}
-import sbt._
-import scoverage.ScoverageKeys
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
-
+import com.typesafe.sbt.digest.Import._
+import com.typesafe.sbt.uglify.Import._
 import com.typesafe.sbt.web.Import._
 import net.ground5hark.sbt.concat.Import._
-import com.typesafe.sbt.uglify.Import._
-import com.typesafe.sbt.digest.Import._
+import play.sbt.routes.RoutesKeys
+import sbt.Keys._
+import sbt.Tests.{Group, SubProcess}
+import sbt.{Def, _}
+import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 
 trait MicroService {
 
   import uk.gov.hmrc._
   import DefaultBuildSettings._
-  import uk.gov.hmrc.{SbtBuildInfo, ShellPrompt, SbtAutoBuildPlugin}
-  import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
-  import uk.gov.hmrc.versioning.SbtGitVersioning
-  import play.sbt.routes.RoutesKeys.routesGenerator
-  import play.sbt.routes.RoutesKeys
-
   import TestPhases._
+  import uk.gov.hmrc.SbtAutoBuildPlugin
+  import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 
   val appName: String
+  val appVersion: String
 
   lazy val appDependencies : Seq[ModuleID] = ???
   lazy val plugins : Seq[Plugins] = Seq.empty
   lazy val playSettings : Seq[Setting[_]] = Seq.empty
 
-  lazy val microservice = Project(appName, file("."))
-    .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin) ++ plugins : _*)
-    .settings(playSettings : _*)
-    .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.childcarecalculatorfrontend.models._"))
-    .settings(
+  lazy val scoverageSettings: Seq[Def.Setting[_]] = {
+    import scoverage.ScoverageSbtPlugin.ScoverageKeys
+    Seq(
       ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*models.*;" +
         ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;.*DataCacheConnector;" +
         ".*ControllerConfiguration;.*LanguageSwitchController;.*repositories.*",
@@ -40,10 +34,19 @@ trait MicroService {
       ScoverageKeys.coverageHighlighting := true,
       parallelExecution in Test := false
     )
+  }
+
+  lazy val microservice = Project(appName, file("."))
+    .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin) ++ plugins : _*)
+    .settings(playSettings : _*)
+    .settings(version := appVersion)
+    .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.childcarecalculatorfrontend.models._"))
     .settings(scalaSettings: _*)
     .settings(publishingSettings: _*)
     .settings(defaultSettings(): _*)
+    .settings(scoverageSettings)
     .settings(
+      shellPrompt := ShellPrompt(appVersion),
       scalacOptions ++= Seq("-Xfatal-warnings", "-feature"),
       libraryDependencies ++= appDependencies,
       retrieveManaged := true,

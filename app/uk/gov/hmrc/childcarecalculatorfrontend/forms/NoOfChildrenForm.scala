@@ -16,32 +16,35 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import play.api.data.{Form, FormError}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object NoOfChildrenForm extends FormErrorHelper {
 
-  def noOfChildrenFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
+object NoOfChildrenForm  extends FormErrorHelper {
 
-    val intRegex = """^(\d+)$""".r
-    val decimalRegex = """^(\d*\.\d*)$""".r
+  def noOfChildrenFormatter(errorKeyBlank: String, errorKeyNonNumeric: String) = new Formatter[Int] {
 
-    def bind(key: String, data: Map[String, String]) = {
+    val intRegex: String = "([1-9]|1[019])".r.toString()
+
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
       data.get(key) match {
+
         case None => produceError(key, errorKeyBlank)
+
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) => s.trim.replace(",", "") match {
-          case intRegex(str) => Right(str.toInt)
-          case decimalRegex(_) => produceError(key, errorKeyDecimal)
-          case _ => produceError(key, errorKeyNonNumeric)
+
+        case Some(s) if s.matches(intRegex) => {
+          Right(s.toInt)
         }
+        case _ => produceError(key, errorKeyNonNumeric)
       }
     }
 
     def unbind(key: String, value: Int) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
-    Form(single("value" -> of(noOfChildrenFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
+  def apply(errorKeyBlank: String = noOfChildrenBlankErrorKey, errorKeyNonNumeric: String = noOfChildrenInvalidErrorKey): Form[Int] =
+    Form(single("value" -> of(noOfChildrenFormatter(errorKeyBlank, errorKeyNonNumeric))))
 }
