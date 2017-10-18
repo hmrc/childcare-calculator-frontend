@@ -24,8 +24,8 @@ object OtherIncomeAmountCYForm {
 
   def apply(): Form[OtherIncomeAmountCY] = Form(
     mapping(
-      "field1" -> nonEmptyText,
-      "field2" -> nonEmptyText
+      "parentOtherIncome" -> nonEmptyText,
+      "partnerOtherIncome" -> nonEmptyText
     )(OtherIncomeAmountCY.apply)(OtherIncomeAmountCY.unapply)
   )
 }

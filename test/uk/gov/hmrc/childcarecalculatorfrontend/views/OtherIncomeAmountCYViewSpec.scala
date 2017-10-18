@@ -39,6 +39,6 @@ class OtherIncomeAmountCYViewSpec extends QuestionViewBehaviours[OtherIncomeAmou
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.OtherIncomeAmountCYController.onSubmit(NormalMode).url, "field1", "field2")
+    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.OtherIncomeAmountCYController.onSubmit(NormalMode).url, "parentOtherIncome", "partnerOtherIncome")
   }
 }

@@ -22,8 +22,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 class OtherIncomeAmountCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "field1" -> "value 1",
-    "field2" -> "value 2"
+    "parentOtherIncome" -> "value 1",
+    "partnerOtherIncome" -> "value 2"
   )
 
   val form = OtherIncomeAmountCYForm()
@@ -31,6 +31,6 @@ class OtherIncomeAmountCYFormSpec extends FormBehaviours {
   "OtherIncomeAmountCY form" must {
     behave like questionForm(OtherIncomeAmountCY("value 1", "value 2"))
 
-    behave like formWithMandatoryTextFields("field1", "field2")
+    behave like formWithMandatoryTextFields("parentOtherIncome", "partnerOtherIncome")
   }
 }

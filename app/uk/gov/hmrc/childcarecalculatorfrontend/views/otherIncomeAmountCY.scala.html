@@ -36,9 +36,9 @@
 
         @components.heading("otherIncomeAmountCY.heading", "heading-xlarge")
 
-        @components.input_text(InputViewModel[OtherIncomeAmountCY]("field1", form), label = messages("otherIncomeAmountCY.field1"))
+        @components.input_text(InputViewModel[OtherIncomeAmountCY]("parentOtherIncome", form), label = messages("otherIncomeAmountCY.parentOtherIncome"))
 
-        @components.input_text(InputViewModel[OtherIncomeAmountCY]("field2", form), label = messages("otherIncomeAmountCY.field2"))
+        @components.input_text(InputViewModel[OtherIncomeAmountCY]("partnerOtherIncome", form), label = messages("otherIncomeAmountCY.partnerOtherIncome"))
 
         @components.submit_button()
     }
