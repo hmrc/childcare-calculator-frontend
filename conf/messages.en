@@ -533,3 +533,11 @@ whosHadBenefits.partner = Partner
 whosHadBenefits.both = Both
 whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
 whosHadBenefits.error = You must tell the calculator who has had benefits
+
+whoGetsStatutoryCY.title = Who will get statutory pay?
+whoGetsStatutoryCY.heading = Who will get statutory pay?
+whoGetsStatutoryCY.you = You
+whoGetsStatutoryCY.partner = Partner
+whoGetsStatutoryCY.both = Both
+whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
+whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.

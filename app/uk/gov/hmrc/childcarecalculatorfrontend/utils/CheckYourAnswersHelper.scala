@@ -34,6 +34,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whosHadBenefits.checkYourAnswersLabel", s"whosHadBenefits.$x", true, routes.WhosHadBenefitsController.onPageLoad(CheckMode).url)
   }
 
+  def whoGetsStatutoryCY: Option[AnswerRow] = userAnswers.whoGetsStatutoryCY map {
+    x => AnswerRow("whoGetsStatutoryCY.checkYourAnswersLabel", s"whoGetsStatutoryCY.$x", true, routes.WhoGetsStatutoryCYController.onPageLoad(CheckMode).url)
+  }
+
   def whichBenefitsPartnerGet: Option[AnswerRow] = userAnswers.whichBenefitsPartnerGet map {
     x => AnswerRow("whichBenefitsPartnerGet.checkYourAnswersLabel", s"whichBenefitsPartnerGet.$x", true, routes.WhichBenefitsPartnerGetController.onPageLoad(CheckMode).url)
   }
