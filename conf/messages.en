@@ -469,3 +469,18 @@ partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.error = You must tell the calculator if your partner had any of these benefits this year
 
+
+bothAnyTheseBenefitsCY.title = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.heading = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+bothAnyTheseBenefitsCY.li.income_support = Income support
+bothAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsCY.li.pensions = Pension Credit
+bothAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsCY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
+
