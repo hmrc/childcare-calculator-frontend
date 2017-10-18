@@ -544,6 +544,11 @@ whoGetsStatutoryCY.both = Both
 whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
 whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
 
+
+statutoryPayAWeek.title = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.heading = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.checkYourAnswersLabel = statutoryPayAWeek
+
 yourStatutoryPayCY.title = Will you get statutory pay while on leave for a birth or adoption this year?
 yourStatutoryPayCY.heading = Will you get statutory pay while on leave for a birth or adoption this year?
 yourStatutoryPayCY.checkYourAnswersLabel = Will you get statutory pay while on leave for a birth or adoption this year?
