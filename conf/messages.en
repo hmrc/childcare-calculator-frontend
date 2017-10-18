@@ -360,9 +360,11 @@ taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
 taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
-noOfChildren.title = noOfChildren
-noOfChildren.heading = noOfChildren
-noOfChildren.checkYourAnswersLabel = noOfChildren
+noOfChildren.title = How many children do you have?
+noOfChildren.heading = How many children do you have?
+noOfChildren.checkYourAnswersLabel = How many children do you have?
+noOfChildren.blank = You must enter a number that's not below 1 or above 19
+noOfChildren.invalid = You must enter a number that's not below 1 or above 19
 
 maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
 maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
