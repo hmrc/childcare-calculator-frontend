@@ -248,3 +248,13 @@ GET        /otherIncomeAmountCY                       uk.gov.hmrc.childcarecalcu
 POST       /otherIncomeAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeOtherIncomeAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeOtherIncomeAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onSubmit(mode: Mode = CheckMode)

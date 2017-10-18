@@ -58,4 +58,9 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   lazy val maxWorkingHours: Double = configuration.getDouble("workingHours.max").
     getOrElse(throw new ConfigException.Missing("Missing configuration workingHours.max"))
 
+  lazy val maxOtherIncome: Double = configuration.getDouble("otherIncome.max").
+    getOrElse(throw new ConfigException.Missing("Missing configuration otherIncome.max"))
+
+  lazy val minOtherIncome: Double = configuration.getDouble("otherIncome.min").
+    getOrElse(throw new ConfigException.Missing("Missing configuration otherIncome.min"))
 }

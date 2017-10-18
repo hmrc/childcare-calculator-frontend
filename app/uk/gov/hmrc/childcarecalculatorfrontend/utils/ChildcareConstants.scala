@@ -60,4 +60,6 @@ object ChildcareConstants {
   val bothPaidWorkCYErrorKey = "bothPaidWorkCY.error"
   val whoPaysIntoPensionErrorKey = "whoPaysIntoPension.error"
   val whoGetsOtherIncomeCYErrorKey = "whoGetsOtherIncomeCY.error"
+  val otherIncomeAmountCYBlankErrorKey = "otherIncomeAmountCY.blank"
+  val otherIncomeAmountCYInvalidErrorKey = "otherIncomeAmountCY.invalid"
 }
