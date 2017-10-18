@@ -26,7 +26,7 @@ object NoOfChildrenForm  extends FormErrorHelper {
 
   def noOfChildrenFormatter(errorKeyBlank: String, errorKeyNonNumeric: String) = new Formatter[Int] {
 
-    val intRegex: String = "([1-9]|1[019])".r.toString()
+    val intRegex: String = "([1-9]{1,2})".r.toString()
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
       data.get(key) match {
@@ -35,7 +35,14 @@ object NoOfChildrenForm  extends FormErrorHelper {
 
         case Some("") => produceError(key, errorKeyBlank)
 
-        case Some(s) if s.matches(intRegex) => {
+        case Some(s) if(s.matches(intRegex)) => {
+          val value = s.toInt
+          if (value >= 1 && value <= 19) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyBlank)
+          }
+
           Right(s.toInt)
         }
         case _ => produceError(key, errorKeyNonNumeric)
