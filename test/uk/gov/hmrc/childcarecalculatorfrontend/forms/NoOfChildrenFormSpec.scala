@@ -34,9 +34,14 @@ class NoOfChildrenFormSpec extends FormSpec {
       form.get shouldBe 1
     }
 
+    "bind positive, max number" in {
+      val expectedError = error("value", errorKeyNonNumeric)
+      val form = NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), (Map("value" -> "20"), expectedError)
+    }
+
     "bind positive, comma separated numbers" in {
-      val form = NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric).bind(Map("value" -> "10,000"))
-      form.get shouldBe 10000
+      val expectedError = error("value", errorKeyNonNumeric)
+      val form = NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), (Map("value" -> "1,0"), expectedError)
     }
 
     "fail to bind negative numbers" in {
@@ -61,7 +66,7 @@ class NoOfChildrenFormSpec extends FormSpec {
 
     "fail to bind decimal numbers" in {
       val expectedError = error("value", errorKeyDecimal)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "123.45"), expectedError)
+      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "1.2"), expectedError)
     }
   }
 }
