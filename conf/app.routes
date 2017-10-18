@@ -264,6 +264,11 @@ POST       /partnerAnyOtherIncomeThisYear                       uk.gov.hmrc.chil
 GET        /changePartnerAnyOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerAnyOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onSubmit(mode: Mode = CheckMode)
 
+GET        /bothOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onSubmit(mode: Mode = CheckMode)
+
 GET        /youAnyTheseBenefitsCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onPageLoad(mode: Mode = NormalMode)
 POST       /youAnyTheseBenefitsCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYouAnyTheseBenefitsCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onPageLoad(mode: Mode = CheckMode)
