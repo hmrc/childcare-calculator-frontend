@@ -3,7 +3,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object $className$Form extends FormErrorHelper {
 
@@ -21,8 +21,8 @@ object $className$Form extends FormErrorHelper {
     Form(single("value" -> of($className$Formatter)))
 
   def options = Seq(
-    RadioOption("$className;format="decap"$", "option1"),
-    RadioOption("$className;format="decap"$", "option2")
+    InputOption("$className;format="decap"$", "option1"),
+    InputOption("$className;format="decap"$", "option2")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
