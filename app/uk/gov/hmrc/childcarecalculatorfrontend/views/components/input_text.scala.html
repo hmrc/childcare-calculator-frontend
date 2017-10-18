@@ -25,7 +25,7 @@ labelClass: Option[String] = None
 )(implicit messages: Messages)
 
 <div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
-    <label class="form-label@if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">
+    <label class="form-label @if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">
         <span class="bold">@label</span>
     </label>
 
