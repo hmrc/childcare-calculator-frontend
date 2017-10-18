@@ -33,7 +33,7 @@ class YourMaximumEarningsViewSpec extends YesNoViewBehaviours {
 
   "YourMaximumEarnings view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 

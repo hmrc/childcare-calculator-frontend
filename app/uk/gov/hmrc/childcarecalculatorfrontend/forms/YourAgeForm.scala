@@ -41,9 +41,9 @@ object YourAgeForm extends FormErrorHelper {
 
   def options = Seq(
     InputOption("yourAge", AgeEnum.UNDER18.toString),
-    InputOption("yourAge", AgeEnum.BETWEEN18AND24.toString),
-    InputOption("yourAge", AgeEnum.BETWEEN21AND24.toString),
-    InputOption("yourAge", AgeEnum.OVER25.toString)
+    InputOption("yourAge", AgeEnum.EIGHTEENTOTWENTY.toString),
+    InputOption("yourAge", AgeEnum.TWENTYONETOTWENTYFOUR.toString),
+    InputOption("yourAge", AgeEnum.OVERTWENTYFOUR.toString)
   )
 
 

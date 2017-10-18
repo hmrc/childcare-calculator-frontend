@@ -23,14 +23,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.{MaximumEarningsNavigation, SelfEmployedOrApprenticeNavigation}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
-class Navigator @Inject() (schemes: Schemes) {
+class Navigator @Inject() (schemes: Schemes,
+                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
+                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
   val Both: String = YouPartnerBothEnum.BOTH.toString
+
 
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
@@ -63,7 +67,14 @@ class Navigator @Inject() (schemes: Schemes) {
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
-    PartnerMinimumEarningsId -> partnerMinimumEarningsRoute
+    PartnerMinimumEarningsId -> partnerMinimumEarningsRoute,
+    AreYouSelfEmployedOrApprenticeId -> selfEmpOrApprNav.areYouSelfEmployedOrApprenticeRoute,
+    PartnerSelfEmployedOrApprenticeId -> selfEmpOrApprNav.partnerSelfEmployedOrApprenticeRoute,
+    YourSelfEmployedId -> yourSelfEmployedRoute,
+    PartnerSelfEmployedId -> partnerSelfEmployedRoute,
+    YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
+    PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
@@ -342,20 +353,21 @@ class Navigator @Inject() (schemes: Schemes) {
     }
   }
 
-private def yourMinimumEarningsRoute(answers: UserAnswers) = {
+  private def yourMinimumEarningsRoute(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(true)
-    val whoIsInPaiEmp = answers.whoIsInPaidEmployment
+    val whoIsInPaidEmp = answers.whoIsInPaidEmployment
     val hasMinimumEarnings = answers.yourMinimumEarnings
 
-    (hasMinimumEarnings, hasPartner, areYouInPaidWork, whoIsInPaiEmp) match {
+    (hasMinimumEarnings, hasPartner, areYouInPaidWork, whoIsInPaidEmp) match {
       case (Some(true), false, true, _) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), true, _, Some(You)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(true), true, _, Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case (Some(false), false, true, _) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(false), true, _ , Some(You)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-
   }
 
   private def partnerMinimumEarningsRoute(answers: UserAnswers) = {
@@ -363,14 +375,52 @@ private def yourMinimumEarningsRoute(answers: UserAnswers) = {
     val partnerMinEarnings = answers.partnerMinimumEarnings
 
     (yourMinEarnings, partnerMinEarnings) match {
-      case (Some(true), Some(true)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      case (Some(true), Some(true)) => routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(false), Some(true)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(false), Some(false)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case (Some(true), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (_, Some(true)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      case (_, Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
+ private def yourSelfEmployedRoute(answers: UserAnswers) = {
+    val yourMinEarnings = answers.yourMinimumEarnings
+    val partnerMinEarnings = answers.partnerMinimumEarnings
+
+    if (answers.doYouLiveWithPartner.contains(true)) {
+      if (answers.whoIsInPaidEmployment.contains(You) | answers.whoIsInPaidEmployment.contains(Partner)) {
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      } else {
+        (yourMinEarnings, partnerMinEarnings) match {
+          case (Some(false), Some(false)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+          case (Some(true), Some(false)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+          case (Some(false), Some(true)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+          case _ => routes.SessionExpiredController.onPageLoad()
+        }
+      }
+    } else {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    }
+  }
+
+  private def partnerSelfEmployedRoute(answers: UserAnswers) = {
+    val yourMinEarnings = answers.yourMinimumEarnings
+    val partnerMinEarnings = answers.partnerMinimumEarnings
+
+    if (answers.hasPartnerInPaidWork) {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    } else if (answers.hasBothInPaidWork) {
+      (yourMinEarnings, partnerMinEarnings) match {
+        case (Some(false), Some(false)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        case (Some(true), Some(false)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map(
   )

@@ -297,23 +297,23 @@ whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
 whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsPartnerGet.error = You must tell the calculator which benefits your partner gets
 
-yourAge.title = What’s your age?
-yourAge.heading = What’s your age?
-yourAge.under18 = Under 18
-yourAge.18to24 = 18 to 20
-yourAge.21to24 = 21 to 24
-yourAge.25OrOver = 25 or over
-yourAge.error = You must tell the calculator what your age is
-yourAge.checkYourAnswersLabel = What’s your age?
-
 yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?
-yourPartnersAge.under18 = Under 18
-yourPartnersAge.18to24 = 18 to 20
-yourPartnersAge.21to24 = 21 to 24
-yourPartnersAge.25OrOver = 25 or over
+yourPartnersAge.UNDER18 = Under 18
+yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
+yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourPartnersAge.OVERTWENTYFOUR = 25 or over
 yourPartnersAge.error = You must tell the calculator what your partner’s age is
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
+
+yourAge.title = What’s your age?
+yourAge.heading = What’s your age?
+yourAge.UNDER18 = Under 18
+yourAge.EIGHTEENTOTWENTY = 18 to 20
+yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourAge.OVERTWENTYFOUR = 25 or over
+yourAge.error = You must tell the calculator what your age is
+yourAge.checkYourAnswersLabel = What’s your age?
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
@@ -327,30 +327,68 @@ partnerMinimumEarnings.hint = This is the National Minimum Wage or National Livi
 partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
-areYouSelfEmployedOrApprentice.title = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.heading = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.option1 = areYouSelfEmployedOrApprentice Option 1
-areYouSelfEmployedOrApprentice.option2 = areYouSelfEmployedOrApprentice Option 2
+areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.heading = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.selfEmployed = Self-employed
+areYouSelfEmployedOrApprentice.apprentice = Apprentice
+areYouSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.error = You must tell the calculator if you are self-employed or an apprentice
 
-partnerSelfEmployedOrApprentice.title = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.heading = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.option1 = partnerSelfEmployedOrApprentice Option 1
-partnerSelfEmployedOrApprentice.option2 = partnerSelfEmployedOrApprentice Option 2
+partnerSelfEmployedOrApprentice.title = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.heading = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.selfEmployed = Self-employed
+partnerSelfEmployedOrApprentice.apprentice = Apprentice
+partnerSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.error = You must tell the calculator if your partner is an apprentice or self-employed
 
-yourMaximumEarnings.title = yourMaximumEarnings
-yourMaximumEarnings.heading = yourMaximumEarnings
-yourMaximumEarnings.checkYourAnswersLabel = yourMaximumEarnings
+partnerSelfEmployed.title = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.heading = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.checkYourAnswersLabel = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.error = You must select yes if your partner has been self-employed less than 12 months
 
-partnerMaximumEarnings.title = partnerMaximumEarnings
-partnerMaximumEarnings.heading = partnerMaximumEarnings
-partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings
+yourSelfEmployed.title = Have you been self-employed less than 12 months?
+yourSelfEmployed.heading = Have you been self-employed less than 12 months?
+yourSelfEmployed.checkYourAnswersLabel = Have you been self-employed less than 12 months?
+yourSelfEmployed.error = You must select yes if you’ve been self-employed less than 12 months
 
-yourSelfEmployed.title = yourSelfEmployed
-yourSelfEmployed.heading = yourSelfEmployed
-yourSelfEmployed.checkYourAnswersLabel = yourSelfEmployed
+yourMaximumEarnings.title = Will you earn more than £100,000 a year?
+yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
+yourMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
+yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
-partnerSelfEmployed.title = partnerSelfEmployed
-partnerSelfEmployed.heading = partnerSelfEmployed
-partnerSelfEmployed.checkYourAnswersLabel = partnerSelfEmployed
+partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+partnerMaximumEarnings.error = You must select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
+
+eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
+
+taxOrUniversalCredits.title = taxOrUniversalCredits
+taxOrUniversalCredits.heading = taxOrUniversalCredits
+taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
+taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
+taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
+
+noOfChildren.title = noOfChildren
+noOfChildren.heading = noOfChildren
+noOfChildren.checkYourAnswersLabel = noOfChildren
+
+maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
+maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
+maxFreeHoursInfo.could.get.max.hours = Based on the information you’ve given so far, you’d be eligible for a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
+maxFreeHoursInfo.what.else.you.could.get = What else you could get
+maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
+maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
+maxFreeHoursInfo.still.to.check = Still to check
+maxFreeHoursInfo.give.more.info = Give the calculator more information to see if you’re eligible for help from tax credits.
+
+maxFreeHoursResult.title = maxFreeHoursResult
+maxFreeHoursResult.heading = maxFreeHoursResult

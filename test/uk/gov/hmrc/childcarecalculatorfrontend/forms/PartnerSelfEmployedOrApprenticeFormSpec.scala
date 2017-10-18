@@ -29,6 +29,6 @@ class PartnerSelfEmployedOrApprenticeFormSpec extends FormBehaviours {
   "PartnerSelfEmployedOrApprentice form" must {
     behave like questionForm[String](PartnerSelfEmployedOrApprenticeForm.options.head.value)
 
-    behave like formWithOptionField("value", PartnerSelfEmployedOrApprenticeForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "partnerSelfEmployedOrApprentice.error", PartnerSelfEmployedOrApprenticeForm.options.map{x => x.value}:_*)
   }
 }

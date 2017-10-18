@@ -26,7 +26,7 @@ object PartnerSelfEmployedOrApprenticeForm extends FormErrorHelper {
   def PartnerSelfEmployedOrApprenticeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "partnerSelfEmployedOrApprentice.error")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,8 +37,9 @@ object PartnerSelfEmployedOrApprenticeForm extends FormErrorHelper {
     Form(single("value" -> of(PartnerSelfEmployedOrApprenticeFormatter)))
 
   def options = Seq(
-    InputOption("partnerSelfEmployedOrApprentice", "option1"),
-    InputOption("partnerSelfEmployedOrApprentice", "option2")
+    InputOption("partnerSelfEmployedOrApprentice", "selfEmployed"),
+    InputOption("partnerSelfEmployedOrApprentice", "apprentice"),
+    InputOption("partnerSelfEmployedOrApprentice", "neither")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
