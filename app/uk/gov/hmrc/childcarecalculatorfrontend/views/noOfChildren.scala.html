@@ -35,6 +35,8 @@
 
         @components.heading("noOfChildren.heading", "heading-xlarge")
 
+        <p>@messages("noOfChildren.hint.text")</p>
+
         @components.input_number(InputViewModel[Int]("value", form), label = messages("noOfChildren.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
