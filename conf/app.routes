@@ -294,6 +294,27 @@ POST       /whosHadBenefits               uk.gov.hmrc.childcarecalculatorfronten
 GET        /changeWhosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode = CheckMode)
 
+
+GET        /statutoryPayAWeek                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekController.onPageLoad(mode: Mode = NormalMode)
+POST       /statutoryPayAWeek                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekController.onSubmit(mode: Mode = NormalMode)
+GET        /changeStatutoryPayAWeek                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeStatutoryPayAWeek                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekController.onSubmit(mode: Mode = CheckMode)
+
+GET        /youPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /youPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYouPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYouPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bothPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onSubmit(mode: Mode = CheckMode)
+
 GET        /yourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onPageLoad(mode: Mode = NormalMode)
 POST       /yourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onPageLoad(mode: Mode = CheckMode)
@@ -323,3 +344,4 @@ GET        /bothPaidWorkPY                       uk.gov.hmrc.childcarecalculator
 POST       /bothPaidWorkPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeBothPaidWorkPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBothPaidWorkPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
+
