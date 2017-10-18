@@ -293,3 +293,18 @@ GET        /whosHadBenefits               uk.gov.hmrc.childcarecalculatorfronten
 POST       /whosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bothStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothStatutoryPayCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayCYController.onSubmit(mode: Mode = CheckMode)
