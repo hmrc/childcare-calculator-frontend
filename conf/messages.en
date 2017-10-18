@@ -398,6 +398,7 @@ yourOtherIncomeThisYear.heading = Will you get any other income this tax year?
 yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
+yourOtherIncomeThisYear.error = Select yes if you will get any other income this year
 
 yourIncomeInfo.title = Your income this tax year
 yourIncomeInfo.heading = Your income this tax year
@@ -453,3 +454,4 @@ partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income t
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
+partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year

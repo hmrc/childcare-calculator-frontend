@@ -50,7 +50,7 @@ class PartnerAnyOtherIncomeThisYearController @Inject()(appConfig: FrontendAppCo
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("partnerAnyOtherIncomeThisYear.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerAnyOtherIncomeThisYear(appConfig, formWithErrors, mode))),
         (value) =>
