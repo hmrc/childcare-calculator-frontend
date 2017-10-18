@@ -96,6 +96,7 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
+
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
   def hasBothInPaidWork: Boolean = {
