@@ -383,3 +383,23 @@ eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000
 eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
 eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
+
+yourIncomeInfo.title = Your income this tax year
+yourIncomeInfo.heading = Your income this tax year
+yourIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+yourIncomeInfo.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfo.li.income_paid_work = income from paid work
+yourIncomeInfo.li.pensions = pension contributions
+yourIncomeInfo.li.other_income = other income
+yourIncomeInfo.li.benefits_income = income from benefits
+yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+partnerIncomeInfo.title = Your partner’s income this tax year
+partnerIncomeInfo.heading = Your partner’s income this tax year
+partnerIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+partnerIncomeInfo.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfo.li.income_paid_work = income from paid work
+partnerIncomeInfo.li.pensions = pension contributions
+partnerIncomeInfo.li.other_income = other income
+partnerIncomeInfo.li.benefits_income = income from benefits
+partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
