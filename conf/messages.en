@@ -551,6 +551,7 @@ partnerPaidPensionPY.heading = Did your partner pay into a work pension last yea
 partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
 partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
 
-bothPaidPensionPY.title = bothPaidPensionPY
-bothPaidPensionPY.heading = bothPaidPensionPY
-bothPaidPensionPY.checkYourAnswersLabel = bothPaidPensionPY
+bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
