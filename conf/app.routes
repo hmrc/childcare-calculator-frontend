@@ -209,3 +209,37 @@ POST       /changeNoOfChildren               uk.gov.hmrc.childcarecalculatorfron
 GET        /maxFreeHoursInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad()
 
 GET        /maxFreeHoursResult               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursResultController.onPageLoad()
+
+GET        /yourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode = NormalMode)
+
+GET        /changeYourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoController.onPageLoad()
+GET        /partnerIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoController.onPageLoad()
+
+GET        /parentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /parentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeParentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeParentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoPaysIntoPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoPaysIntoPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoPaysIntoPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoPaysIntoPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoGetsOtherIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoGetsOtherIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoGetsOtherIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoGetsOtherIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onSubmit(mode: Mode = CheckMode)

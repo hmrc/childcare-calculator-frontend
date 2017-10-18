@@ -392,3 +392,58 @@ maxFreeHoursInfo.give.more.info = Give the calculator more information to see if
 
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
+
+yourOtherIncomeThisYear.title = Will you get any other income this tax year?
+yourOtherIncomeThisYear.heading = Will you get any other income this tax year?
+yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
+
+yourIncomeInfo.title = Your income this tax year
+yourIncomeInfo.heading = Your income this tax year
+yourIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+yourIncomeInfo.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfo.li.income_paid_work = income from paid work
+yourIncomeInfo.li.pensions = pension contributions
+yourIncomeInfo.li.other_income = other income
+yourIncomeInfo.li.benefits_income = income from benefits
+yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+partnerIncomeInfo.title = Your partner’s income this tax year
+partnerIncomeInfo.heading = Your partner’s income this tax year
+partnerIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+partnerIncomeInfo.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfo.li.income_paid_work = income from paid work
+partnerIncomeInfo.li.pensions = pension contributions
+partnerIncomeInfo.li.other_income = other income
+partnerIncomeInfo.li.benefits_income = income from benefits
+partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.error = You must tell the calculator if you had any paid work this year
+
+partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.error = You must tell the calculator if your partner had any paid work this year
+
+bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
+whoPaysIntoPension.title = Who pays into a pension?
+whoPaysIntoPension.heading = Who pays into a pension?
+whoPaysIntoPension.you = You
+whoPaysIntoPension.partner = Partner
+whoPaysIntoPension.both = Both
+whoPaysIntoPension.error = You must tell the calculator who pays into a pension
+
+whoGetsOtherIncomeCY.title = Who will get other income?
+whoGetsOtherIncomeCY.heading = Who will get other income?
+whoGetsOtherIncomeCY.you = You
+whoGetsOtherIncomeCY.partner = Partner
+whoGetsOtherIncomeCY.both = Both
+whoGetsOtherIncomeCY.checkYourAnswersLabel = Who will get other income?
+whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner will get other income
