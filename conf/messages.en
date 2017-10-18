@@ -407,3 +407,11 @@ partnerIncomeInfo.li.pensions = pension contributions
 partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+whoPaysIntoPension.title = Who pays into a pension?
+whoPaysIntoPension.heading = Who pays into a pension?
+whoPaysIntoPension.you = You
+whoPaysIntoPension.partner = Partner
+whoPaysIntoPension.both = Both
+whoPaysIntoPension.error = You must tell the calculator who pays into a pension
+

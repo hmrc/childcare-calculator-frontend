@@ -52,4 +52,5 @@ object ChildcareConstants {
   val ccDateFormat = "dd-MM-yyyy"
   val nmwConfigFileAbbreviation = "nmw"
   val partnerSelfEmployedErrorKey = "partnerSelfEmployed.error"
+  val whoPaysIntoPensionErrorKey = "whoPaysIntoPension.error"
 }
