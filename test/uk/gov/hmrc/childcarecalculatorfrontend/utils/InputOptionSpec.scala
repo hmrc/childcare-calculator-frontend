@@ -16,12 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-case class RadioOption(id: String, value: String, messageKey: String)
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 
-object RadioOption {
-  def apply(keyPrefix: String, option: String): RadioOption = RadioOption(
-    s"$keyPrefix.$option",
-    option,
-    s"$keyPrefix.$option"
-  )
+class InputOptionSpec extends SpecBase {
+
+  "Input Option" must {
+    "build correctly from a key prefix and option" in {
+      val inputOption = InputOption("prefix", "option")
+      inputOption.id mustBe "prefix.option"
+      inputOption.value mustBe "option"
+      inputOption.messageKey mustBe "prefix.option"
+    }
+  }
 }

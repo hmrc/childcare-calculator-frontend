@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.utils
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-
-class RadioOptionSpec extends SpecBase {
-
-  "Radio Option" must {
-    "build correctly from a key prefix and option" in {
-      val radioOption = RadioOption("prefix", "option")
-      radioOption.id mustBe "prefix.option"
-      radioOption.value mustBe "option"
-      radioOption.messageKey mustBe "prefix.option"
-    }
-  }
+case object WhoPaysIntoPensionId extends Identifier {
+  override def toString: String = "whoPaysIntoPension"
 }
