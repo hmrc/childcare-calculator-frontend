@@ -541,3 +541,7 @@ whoGetsStatutoryCY.partner = Partner
 whoGetsStatutoryCY.both = Both
 whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
 whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
+
+youPaidPensionPY.title = youPaidPensionPY
+youPaidPensionPY.heading = youPaidPensionPY
+youPaidPensionPY.checkYourAnswersLabel = youPaidPensionPY

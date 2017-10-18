@@ -293,3 +293,8 @@ GET        /whosHadBenefits               uk.gov.hmrc.childcarecalculatorfronten
 POST       /whosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhosHadBenefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /youPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /youPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYouPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYouPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onSubmit(mode: Mode = CheckMode)
