@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.utils
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-case class RadioOption(id: String, value: String, messageKey: String)
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 
-object RadioOption {
-  def apply(keyPrefix: String, option: String): RadioOption = RadioOption(
-    s"$keyPrefix.$option",
-    option,
-    s"$keyPrefix.$option"
+class WhichBenefitsPartnerGetFormSpec extends FormBehaviours {
+
+  val validData: Map[String, String] = Map(
+    "value" -> WhichBenefitsPartnerGetForm.options.head.value
   )
+
+  val form = WhichBenefitsPartnerGetForm()
+
+//  "WhichBenefitsPartnerGet form" must {
+//    behave like questionForm[String](WhichBenefitsPartnerGetForm.options.head.value)
+//
+//    behave like formWithOptionField("value", WhichBenefitsPartnerGetForm.options.map{x => x.value}:_*)
+//  }
 }

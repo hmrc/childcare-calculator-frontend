@@ -43,6 +43,7 @@ trait MicroService {
     .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.childcarecalculatorfrontend.models._"))
     .settings(scalaSettings: _*)
     .settings(publishingSettings: _*)
+    .settings(Repositories.playPublishingSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(scoverageSettings)
     .settings(
@@ -86,4 +87,18 @@ private object TestPhases {
     tests map {
       test => new Group(test.name, Seq(test), SubProcess(ForkOptions(runJVMOptions = Seq("-Dtest.name=" + test.name))))
     }
+}
+
+private object Repositories {
+
+  import uk.gov.hmrc._
+  import PublishingSettings._
+  import NexusPublishing._
+
+  lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
+    sbtrelease.ReleasePlugin.releaseSettings ++ Seq(
+      credentials += SbtCredentials,
+      publishArtifact in(Compile, packageDoc) := false,
+      publishArtifact in(Compile, packageSrc) := false
+    ) ++ publishAllArtefacts ++ nexusPublishingSettings
 }

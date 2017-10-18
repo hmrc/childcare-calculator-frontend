@@ -27,6 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.navigation.MaximumEarningsNavigat
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
 
 class NavigatorSpec extends SpecBase with MockitoSugar {
 
@@ -527,7 +528,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
           val answers = spy(userAnswers())
           when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
+          navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
         }
       }
 
@@ -535,15 +536,39 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         "partner user will be taken to which benefits do you get page when user selects You/both" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsBenefits) thenReturn Some("you") thenReturn Some("both")
-          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
         }
 
         "partner user will be taken to which benefits does your partner get page when user selects Partner" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsBenefits) thenReturn Some("partner")
-          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits does your partner get
+          navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
         }
       }
+
+    "Which benefits do you get" when {
+      "redirect to your age page as a single parent" in {
+        val answers = spy(userAnswers())
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
+        navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      }
+      "redirect to your age page as a single parent when both in paid employment" in {
+        val answers = spy(userAnswers())
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
+        when(answers.whoGetsBenefits) thenReturn Some("both")
+        navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+      }
+    }
+
+    "Which benefits your partner get" when {
+      "redirect to your age page as a single partner if both are in paid employment" in {
+        val answers = spy(userAnswers())
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("carersAllowance"))
+        when(answers.whoGetsBenefits) thenReturn Some("partner")
+        navigator.nextPage(WhichBenefitsPartnerGetId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      }
+
+    }
 
       "Whats Your age" when {
         "single user will be taken to parent minimum earnings page when user selects any age option " in {
