@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
 
 @(
@@ -23,7 +23,7 @@ legend: String,
 legendClass: Option[String] = None,
 hint: Option[String] = None,
 trackGa: Boolean = false,
-inputs: Seq[RadioOption]
+inputs: Seq[InputOption]
 )(implicit messages: Messages)
 
 <div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">

@@ -18,14 +18,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 
-class RadioOptionSpec extends SpecBase {
+class InputOptionSpec extends SpecBase {
 
-  "Radio Option" must {
+  "Input Option" must {
     "build correctly from a key prefix and option" in {
-      val radioOption = RadioOption("prefix", "option")
-      radioOption.id mustBe "prefix.option"
-      radioOption.value mustBe "option"
-      radioOption.messageKey mustBe "prefix.option"
+      val inputOption = InputOption("prefix", "option")
+      inputOption.id mustBe "prefix.option"
+      inputOption.value mustBe "option"
+      inputOption.messageKey mustBe "prefix.option"
     }
   }
 }
