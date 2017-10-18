@@ -456,3 +456,7 @@ PartnerPaidPensionCY.title = Has your partner paid into a work pension this year
 PartnerPaidPensionCY.heading = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.checkYourAnswersLabel = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.error = You must answer yes if your partner has paid into a pension through payroll this year
+
+bothPaidPensionCY.title = bothPaidPensionCY
+bothPaidPensionCY.heading = bothPaidPensionCY
+bothPaidPensionCY.checkYourAnswersLabel = bothPaidPensionCY
