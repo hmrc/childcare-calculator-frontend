@@ -22,8 +22,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+
   def statutoryPayAWeek: Option[AnswerRow] = userAnswers.statutoryPayAWeek map {
-    x => AnswerRow("statutoryPayAWeek.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekController.onPageLoad(CheckMode).url)
+    x => AnswerRow("statutoryPayAWeek.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekController.onPageLoad(CheckMode).url)
+  }
+
+  def bothStatutoryPayCY: Option[AnswerRow] = userAnswers.bothStatutoryPayCY map {
+    x => AnswerRow("bothStatutoryPayCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothStatutoryPayCYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerStatutoryPayCY: Option[AnswerRow] = userAnswers.partnerStatutoryPayCY map {
+    x => AnswerRow("partnerStatutoryPayCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerStatutoryPayCYController.onPageLoad(CheckMode).url)
+  }
+
+  def yourStatutoryPayCY: Option[AnswerRow] = userAnswers.yourStatutoryPayCY map {
+    x => AnswerRow("yourStatutoryPayCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayCYController.onPageLoad(CheckMode).url)
   }
 
   def bothOtherIncomeThisYear: Option[AnswerRow] = userAnswers.bothOtherIncomeThisYear map {
