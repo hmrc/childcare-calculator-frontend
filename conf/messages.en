@@ -549,6 +549,20 @@ statutoryPayAWeek.title = Will this pay be more than £100 a week before tax?
 statutoryPayAWeek.heading = Will this pay be more than £100 a week before tax?
 statutoryPayAWeek.checkYourAnswersLabel = statutoryPayAWeek
 
+youPaidPensionPY.title = Did you pay into your work pension last year?
+youPaidPensionPY.heading = Did you pay into your work pension last year?
+youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
+youPaidPensionPY.error = You must answer yes if you have paid into a pension through payroll this year
+partnerPaidPensionPY.title = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.heading = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
+
+bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
+
 yourStatutoryPayCY.title = Will you get statutory pay while on leave for a birth or adoption this year?
 yourStatutoryPayCY.heading = Will you get statutory pay while on leave for a birth or adoption this year?
 yourStatutoryPayCY.checkYourAnswersLabel = Will you get statutory pay while on leave for a birth or adoption this year?
