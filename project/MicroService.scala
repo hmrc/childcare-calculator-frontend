@@ -17,11 +17,11 @@ trait MicroService {
   import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 
   val appName: String
+  val appVersion: String
 
   lazy val appDependencies : Seq[ModuleID] = ???
   lazy val plugins : Seq[Plugins] = Seq.empty
   lazy val playSettings : Seq[Setting[_]] = Seq.empty
-
 
   lazy val scoverageSettings: Seq[Def.Setting[_]] = {
     import scoverage.ScoverageSbtPlugin.ScoverageKeys
@@ -39,12 +39,14 @@ trait MicroService {
   lazy val microservice = Project(appName, file("."))
     .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin) ++ plugins : _*)
     .settings(playSettings : _*)
+    .settings(version := appVersion)
     .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.childcarecalculatorfrontend.models._"))
     .settings(scalaSettings: _*)
     .settings(publishingSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(scoverageSettings)
     .settings(
+      shellPrompt := ShellPrompt(appVersion),
       scalacOptions ++= Seq("-Xfatal-warnings", "-feature"),
       libraryDependencies ++= appDependencies,
       retrieveManaged := true,
