@@ -63,4 +63,5 @@ object ChildcareConstants {
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"
   val partnerAnyTheseBenefitsCYErrorKey = "partnerAnyTheseBenefitsCY.error"
   val bothAnyTheseBenefitsCYErrorKey = "bothAnyTheseBenefitsCY.error"
+  val whoGetsStatutoryCYErrorKey = "whoGetsStatutoryCY.error"
 }

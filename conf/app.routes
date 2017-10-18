@@ -263,3 +263,8 @@ GET        /bothAnyTheseBenefitsCY                       uk.gov.hmrc.childcareca
 POST       /bothAnyTheseBenefitsCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeBothAnyTheseBenefitsCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBothAnyTheseBenefitsCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoGetsStatutoryCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoGetsStatutoryCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoGetsStatutoryCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoGetsStatutoryCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryCYController.onSubmit(mode: Mode = CheckMode)
