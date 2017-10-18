@@ -439,6 +439,8 @@ whoGetsOtherIncomeCY.both = Both
 whoGetsOtherIncomeCY.checkYourAnswersLabel = Who will get other income?
 whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner will get other income
 
-partnerAnyOtherIncomeThisYear.title = partnerAnyOtherIncomeThisYear
-partnerAnyOtherIncomeThisYear.heading = partnerAnyOtherIncomeThisYear
+partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this tax year?
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this tax year?
+partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
