@@ -50,7 +50,7 @@ class PartnerPaidPensionPYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("partnerPaidPensionPY.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerPaidPensionPY(appConfig, formWithErrors, mode))),
         (value) =>
