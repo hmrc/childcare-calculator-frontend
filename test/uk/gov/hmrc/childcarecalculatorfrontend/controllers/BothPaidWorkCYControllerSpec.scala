@@ -68,7 +68,7 @@ class BothPaidWorkCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm(bothPaidWorkErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm(bothPaidWorkCYErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
