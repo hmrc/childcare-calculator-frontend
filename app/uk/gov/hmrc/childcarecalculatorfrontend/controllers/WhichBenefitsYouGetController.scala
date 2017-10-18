@@ -43,7 +43,6 @@ class WhichBenefitsYouGetController @Inject()(
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val answer = request.userAnswers.whichBenefitsYouGet
-      println(s"********************************answer>>>$answer")
       val preparedForm = request.userAnswers.whichBenefitsYouGet match {
         case None => WhichBenefitsYouGetForm()
         case Some(value) => WhichBenefitsYouGetForm().fill(value)
@@ -59,7 +58,6 @@ class WhichBenefitsYouGetController @Inject()(
           Future.successful(BadRequest(whichBenefitsYouGet(appConfig, answer, formWithErrors, mode)))
         },
         (value) => {
-          println(s"**************************VALUE>>>$value")
           dataCacheConnector.save[Set[String]](request.sessionId, WhichBenefitsYouGetId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(WhichBenefitsYouGetId, mode)(new UserAnswers(cacheMap))))
         }
