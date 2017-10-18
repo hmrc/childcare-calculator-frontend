@@ -37,6 +37,8 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def whosHadBenefits: Option[String] = cacheMap.getEntry[String](WhosHadBenefitsId.toString)
 
+  def whoGetsStatutoryCY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryCYId.toString)
+
   def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsCYId.toString)
 
   def partnerAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyTheseBenefitsCYId.toString)
@@ -132,7 +134,6 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def childAgedThreeOrFour: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedThreeOrFourId.toString)
 
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
-
 
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
