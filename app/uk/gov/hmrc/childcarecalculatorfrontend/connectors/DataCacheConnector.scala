@@ -68,7 +68,6 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
         } else {
           cacheMap copy (data = cacheMap.data + (collectionKey -> Json.toJson(newSeq)))
         }
-
         sessionRepository().upsert(newCacheMap).map {_ => newCacheMap}
       }
     }

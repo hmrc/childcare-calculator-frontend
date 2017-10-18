@@ -16,6 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object YouPaidPensionId extends Identifier {
-  override def toString: String = "youPaidPension"
+case object YouPaidPensionCYId extends Identifier {
+  override def toString: String = "YouPaidPensionCY"
 }

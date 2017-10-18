@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.RadioOption
 
 object PartnerChildcareVouchersForm extends FormErrorHelper {
 
@@ -34,13 +34,13 @@ object PartnerChildcareVouchersForm extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(PartnerChildcareVouchersFormatter)))
 
   def options = Seq(
-    RadioOption("partnerChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    RadioOption("partnerChildcareVouchers",  YesNoUnsureEnum.NO.toString),
-    RadioOption("partnerChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+    InputOption("partnerChildcareVouchers", YesNoUnsureEnum.YES.toString),
+    InputOption("partnerChildcareVouchers",  YesNoUnsureEnum.NO.toString),
+    InputOption("partnerChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

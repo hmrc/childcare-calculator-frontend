@@ -25,14 +25,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouPaidPensionId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouPaidPensionCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youPaidPension
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youPaidPensionCY
 
 import scala.concurrent.Future
 
-class YouPaidPensionController @Inject()(appConfig: FrontendAppConfig,
+class YouPaidPensionCYController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
@@ -41,21 +41,21 @@ class YouPaidPensionController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.youPaidPension match {
+      val preparedForm = request.userAnswers.YouPaidPensionCY match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(youPaidPension(appConfig, preparedForm, mode))
+      Ok(youPaidPensionCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("youPaidPension.error").bindFromRequest().fold(
+      BooleanForm("YouPaidPensionCY.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(youPaidPension(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(youPaidPensionCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, YouPaidPensionId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YouPaidPensionId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, YouPaidPensionCYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(YouPaidPensionCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
