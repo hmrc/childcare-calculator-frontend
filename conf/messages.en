@@ -408,6 +408,20 @@ partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
+parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.error = You must tell the calculator if you had any paid work this year
+
+partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.error = You must tell the calculator if your partner had any paid work this year
+
+bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
 whoPaysIntoPension.title = Who pays into a pension?
 whoPaysIntoPension.heading = Who pays into a pension?
 whoPaysIntoPension.you = You
