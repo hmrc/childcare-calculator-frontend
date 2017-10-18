@@ -382,6 +382,8 @@ eitherOfYouMaximumEarnings.error = You must select yes if either you or your par
 eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
-yourOtherIncomeThisYear.title = yourOtherIncomeThisYear
-yourOtherIncomeThisYear.heading = yourOtherIncomeThisYear
+yourOtherIncomeThisYear.title = Will you get any other income this tax year?
+yourOtherIncomeThisYear.heading = Will you get any other income this tax year?
+yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
