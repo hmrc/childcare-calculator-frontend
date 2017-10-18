@@ -25,14 +25,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentPaidWorkCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentPaidWorkPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.parentPaidWorkErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkCY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkPY
+
 import scala.concurrent.Future
 
-class ParentPaidWorkCYController @Inject()(appConfig: FrontendAppConfig,
+class ParentPaidWorkPYController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
@@ -41,21 +42,21 @@ class ParentPaidWorkCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.parentPaidWorkCY match {
+      val preparedForm = request.userAnswers.parentPaidWorkPY match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(parentPaidWorkCY(appConfig, preparedForm, mode))
+      Ok(parentPaidWorkPY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm(parentPaidWorkErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(parentPaidWorkCY(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(parentPaidWorkPY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, ParentPaidWorkCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(ParentPaidWorkCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, ParentPaidWorkPYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(ParentPaidWorkPYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

@@ -33,7 +33,7 @@ class ParentPaidWorkCYViewSpec extends YesNoViewBehaviours {
 
   "ParentPaidWorkCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "currentYear.startEndDate")
 
     behave like pageWithBackLink(createView)
 

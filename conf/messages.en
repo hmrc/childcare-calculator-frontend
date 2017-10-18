@@ -2,8 +2,6 @@ date.day = Day
 date.month = Month
 date.year = Year
 
-currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
-
 error.boolean = Please give an answer
 error.invalid_date = Give a correct date
 error.date.day_blank = Enter a day
@@ -427,17 +425,20 @@ partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
-parentPaidWorkCY.error = You must tell the calculator if you had any paid work this year
+parentPaidWork.error = You must tell the calculator if you had any paid work this year
+parentPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
 
 partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
-partnerPaidWorkCY.error = You must tell the calculator if your partner had any paid work this year
+partnerPaidWork.error = You must tell the calculator if your partner had any paid work this year
+partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
 
 bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
-bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
+bothPaidWork.error = You must tell the calculator if you and your partner had any paid work this year
+bothPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
 
 whoPaysIntoPension.title = Who pays into a pension?
 whoPaysIntoPension.heading = Who pays into a pension?
@@ -580,3 +581,21 @@ bothStatutoryPayCY.heading = Will you, your partner or both get statutory pay wh
 bothStatutoryPayCY.checkYourAnswersLabel = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
 bothStatutoryPayCY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
 bothStatutoryPayCY.error = You must select yes if you, your partner or both get statutory pay this year
+
+parentPaidWorkPY.title = You are not working now, but have you had any paid work this year
+parentPaidWorkPY.heading = You are not working now, but have you had any paid work this year
+parentPaidWorkPY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
+parentPaidWorkPY.error = You must tell the calculator if you had any paid work this year
+parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work this year
+partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+bothPaidWorkPY.title = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkPY.heading = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work this year
+bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
