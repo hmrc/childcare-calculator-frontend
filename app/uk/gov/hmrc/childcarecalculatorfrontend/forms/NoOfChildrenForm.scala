@@ -29,14 +29,14 @@ object NoOfChildrenForm extends FormErrorHelper {
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
+        case Some("") => produceError(key, "noOfChildren.error")
 
         case Some(s) if(s.matches(intRegex)) => {
           val value = s.toInt
           if (value >= 1 && value <= 19) {
             Right(value)
           } else {
-            produceError(key, errorKeyBlank)
+            produceError(key, "noOfChildren.error")
           }
         }
         case _ => produceError(key, errorKeyNonNumeric)

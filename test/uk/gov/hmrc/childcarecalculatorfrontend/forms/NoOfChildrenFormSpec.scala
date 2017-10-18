@@ -54,7 +54,7 @@ class NoOfChildrenFormSpec extends FormSpec {
     }
 
     "fail to bind a blank value" in {
-      val expectedError = error("value", errorKeyBlank)
+      val expectedError = error("value", "noOfChildren.error")
       checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> ""), expectedError)
     }
 
