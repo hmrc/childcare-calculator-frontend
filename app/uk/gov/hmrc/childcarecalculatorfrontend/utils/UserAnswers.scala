@@ -27,6 +27,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def youPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionPYId.toString)
 
+  def bothStatutoryPayCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothStatutoryPayCYId.toString)
+
+  def partnerStatutoryPayCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayCYId.toString)
+
+  def yourStatutoryPayCY: Option[Boolean] = cacheMap.getEntry[Boolean](YourStatutoryPayCYId.toString)
+
   def bothOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothOtherIncomeThisYearId.toString)
 
   def bothPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidPensionCYId.toString)
