@@ -29,7 +29,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def parentEmploymentIncomeCY: Option[AnswerRow] = userAnswers.parentEmploymentIncomeCY map {
     x => AnswerRow("parentEmploymentIncomeCY.checkYourAnswersLabel", s"$x", false, routes.ParentEmploymentIncomeCYController.onPageLoad(CheckMode).url)
-
+  }
   def whichBenefitsPartnerGet: Option[AnswerRow] = userAnswers.whichBenefitsPartnerGet map {
     x => AnswerRow("whichBenefitsPartnerGet.checkYourAnswersLabel", s"whichBenefitsPartnerGet.$x", true, routes.WhichBenefitsPartnerGetController.onPageLoad(CheckMode).url)
   }
