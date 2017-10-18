@@ -21,22 +21,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidWorkCY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkPY
 
-class BothPaidWorkCYViewSpec extends YesNoViewBehaviours {
+class ParentPaidWorkPYViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "bothPaidWorkCY"
+  val messageKeyPrefix = "parentPaidWorkPY"
 
-  def createView = () => bothPaidWorkCY(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => parentPaidWorkPY(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => bothPaidWorkCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => parentPaidWorkPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  "BothPaidWorkCY view" must {
+  "ParentPaidWorkPY view" must {
 
     behave like normalPage(createView, messageKeyPrefix, "currentYear.startEndDate")
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothPaidWorkCYController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ParentPaidWorkPYController.onSubmit(NormalMode).url)
   }
 }

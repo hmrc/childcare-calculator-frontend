@@ -50,7 +50,7 @@ class PartnerPaidWorkCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(partnerPaidWorkCYErrorKey).bindFromRequest().fold(
+      BooleanForm(partnerPaidWorkErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerPaidWorkCY(appConfig, formWithErrors, mode))),
         (value) =>
