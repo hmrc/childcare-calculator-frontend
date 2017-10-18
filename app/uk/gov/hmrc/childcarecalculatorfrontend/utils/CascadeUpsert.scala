@@ -66,7 +66,6 @@ class CascadeUpsert {
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
         WhoGetsBenefitsId.toString - YourPartnersAgeId.toString  - AreYouSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedOrApprenticeId.toString -
         PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
-
     } else if(value == JsBoolean(true))
       cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
     else cacheMap
@@ -180,7 +179,7 @@ class CascadeUpsert {
     store(DoYouOrYourPartnerGetAnyBenefitsId.toString, value, mapToStore)
   }
 
-private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
+  private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsBoolean(true)){
       cacheMap copy (data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString)
     } else if (value == JsBoolean(false))

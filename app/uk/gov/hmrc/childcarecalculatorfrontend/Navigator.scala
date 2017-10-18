@@ -62,6 +62,8 @@ class Navigator @Inject() (schemes: Schemes,
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
+    WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
+    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
@@ -72,9 +74,33 @@ class Navigator @Inject() (schemes: Schemes,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    NoOfChildrenId -> (_ => routes.CheckYourAnswersController.onPageLoad)
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
   )
+
+  private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
+    whoGetsBenefits match {
+      case Some(You) => You
+      case Some(Partner) => Partner
+      case Some(Both) => Both
+      case _ => You
+    }
+  }
+
+  private def whichBenefitsYouGetRoute(answers: UserAnswers) = {
+    defineWhoGetsBenefits(answers.whoGetsBenefits) match {
+      case You => routes.YourAgeController.onPageLoad(NormalMode)
+      case Both => routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def whichBenefitsPartnerGetRoute(answers: UserAnswers) = {
+    defineWhoGetsBenefits(answers.whoGetsBenefits) match {
+      case Partner => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      case Both => routes.YourAgeController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def locationRoute(answers: UserAnswers) = {
     val Ni = LocationEnum.NORTHERNIRELAND.toString
@@ -280,8 +306,7 @@ class Navigator @Inject() (schemes: Schemes,
     if(answers.doYouGetAnyBenefits.contains(false)){
       routes.YourAgeController.onPageLoad(NormalMode)
     } else {
-      //TODO: Go to new Which benefits do you get checkbox page
-      routes.WhatToTellTheCalculatorController.onPageLoad()
+      routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
     }
   }
 
@@ -300,8 +325,8 @@ class Navigator @Inject() (schemes: Schemes,
 
   private def whoGetsBenefitsRoute(answers: UserAnswers) = {
     answers.whoGetsBenefits match {
-      case Some(You) | Some(Both) => routes.WhatToTellTheCalculatorController.onPageLoad() //TODO: Which benefits do you get
-      case Some(Partner) => routes.WhatToTellTheCalculatorController.onPageLoad()//TODO: Which benefits does your partner get
+      case Some(You) | Some(Both) => routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      case Some(Partner) => routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }

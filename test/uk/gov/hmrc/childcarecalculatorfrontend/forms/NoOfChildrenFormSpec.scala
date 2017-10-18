@@ -19,8 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 class NoOfChildrenFormSpec extends FormSpec {
 
   val errorKeyBlank = "blank"
-  val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "non numeric"
+  val errorKeyNonNumeric = "error.non_numeric"
 
   "NoOfChildren Form" must {
 
@@ -66,7 +65,7 @@ class NoOfChildrenFormSpec extends FormSpec {
 
     "fail to bind decimal numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "1.2"), expectedError)
+      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "1.234"), expectedError)
     }
   }
 }
