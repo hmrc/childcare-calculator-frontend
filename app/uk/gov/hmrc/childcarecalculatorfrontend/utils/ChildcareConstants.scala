@@ -52,6 +52,4 @@ object ChildcareConstants {
   val ccDateFormat = "dd-MM-yyyy"
   val nmwConfigFileAbbreviation = "nmw"
   val partnerSelfEmployedErrorKey = "partnerSelfEmployed.error"
-  val noOfChildrenBlankErrorKey = "noOfChildren.blank"
-  val noOfChildrenInvalidErrorKey = "noOfChildren.invalid"
 }
