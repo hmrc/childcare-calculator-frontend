@@ -38,7 +38,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
   def viewAsString(form: Form[Int] = NoOfChildrenForm()) = noOfChildren(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 19
 
   "NoOfChildren Controller" must {
 
@@ -59,7 +59,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> testNumber.toString)
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

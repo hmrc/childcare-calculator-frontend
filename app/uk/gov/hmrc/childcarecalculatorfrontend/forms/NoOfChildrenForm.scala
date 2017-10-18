@@ -24,18 +24,22 @@ object NoOfChildrenForm extends FormErrorHelper {
 
   def noOfChildrenFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
 
-    val intRegex = """^(\d+)$""".r
-    val decimalRegex = """^(\d*\.\d*)$""".r
+    val intRegex: String = "([1-9]{1,2})".r.toString()
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) => s.trim.replace(",", "") match {
-          case intRegex(str) => Right(str.toInt)
-          case decimalRegex(_) => produceError(key, errorKeyDecimal)
-          case _ => produceError(key, errorKeyNonNumeric)
+
+        case Some(s) if(s.matches(intRegex)) => {
+          val value = s.toInt
+          if (value >= 1 && value <= 19) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyBlank)
+          }
         }
+        case _ => produceError(key, errorKeyNonNumeric)
       }
     }
 

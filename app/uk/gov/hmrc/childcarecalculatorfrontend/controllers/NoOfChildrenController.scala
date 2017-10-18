@@ -50,13 +50,16 @@ class NoOfChildrenController @Inject()(
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
-    implicit request =>
+    implicit request => {
       NoOfChildrenForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode))),
-        (value) =>
+        (formWithErrors: Form[Int]) => {
+          Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode)))
+        },
+        (value) => {
           dataCacheConnector.save[Int](request.sessionId, NoOfChildrenId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(NoOfChildrenId, mode)(new UserAnswers(cacheMap))))
+        }
       )
+    }
   }
 }
