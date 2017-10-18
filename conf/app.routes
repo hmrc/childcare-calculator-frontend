@@ -208,3 +208,18 @@ POST       /changeYourOtherIncomeThisYear                       uk.gov.hmrc.chil
 
 GET        /yourIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoController.onPageLoad()
 GET        /partnerIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoController.onPageLoad()
+
+GET        /parentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /parentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeParentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeParentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit(mode: Mode = CheckMode)
