@@ -547,14 +547,27 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       }
 
     "Which benefits do you get" when {
-      "redirect to your age page for single user as parent" in {
+      "redirect to your age page as a single parent" in {
         val answers = spy(userAnswers())
         when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
         navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
       }
+      "redirect to your age page as a single parent when both in paid employment" in {
+        val answers = spy(userAnswers())
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
+        when(answers.whoGetsBenefits) thenReturn Some("both")
+        navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+      }
     }
 
     "Which benefits your partner get" when {
+      "redirect to your age page as a single partner if both are in paid employment" in {
+        val answers = spy(userAnswers())
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("carersAllowance"))
+        when(answers.whoGetsBenefits) thenReturn Some("partner")
+        navigator.nextPage(WhichBenefitsPartnerGetId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      }
+
     }
 
       "Whats Your age" when {
@@ -593,7 +606,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-"Your Minimum Earnings" when {
+      "Your Minimum Earnings" when {
         "single parent in paid work earns more than NMW, will be redirected to parent maximum earnings page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)

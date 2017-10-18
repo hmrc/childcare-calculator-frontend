@@ -286,6 +286,7 @@ whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsYouGet.error = You must tell the calculator which benefits you get
+whichBenefits.select.all = Select all that apply.
 
 whichBenefitsPartnerGet.title = Which benefits does your partner get?
 whichBenefitsPartnerGet.heading = Which benefits does your partner get?
