@@ -389,3 +389,23 @@ yourOtherIncomeThisYear.heading = Will you get any other income this tax year?
 yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
+
+yourIncomeInfo.title = Your income this tax year
+yourIncomeInfo.heading = Your income this tax year
+yourIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+yourIncomeInfo.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfo.li.income_paid_work = income from paid work
+yourIncomeInfo.li.pensions = pension contributions
+yourIncomeInfo.li.other_income = other income
+yourIncomeInfo.li.benefits_income = income from benefits
+yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+partnerIncomeInfo.title = Your partner’s income this tax year
+partnerIncomeInfo.heading = Your partner’s income this tax year
+partnerIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+partnerIncomeInfo.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfo.li.income_paid_work = income from paid work
+partnerIncomeInfo.li.pensions = pension contributions
+partnerIncomeInfo.li.other_income = other income
+partnerIncomeInfo.li.benefits_income = income from benefits
+partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption

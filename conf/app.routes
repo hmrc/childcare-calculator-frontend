@@ -202,5 +202,9 @@ POST       /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.c
 
 GET        /yourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode = NormalMode)
 POST       /yourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode = NormalMode)
+
 GET        /changeYourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYourOtherIncomeThisYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoController.onPageLoad()
+GET        /partnerIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoController.onPageLoad()
