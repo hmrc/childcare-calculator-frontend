@@ -453,3 +453,11 @@ partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income t
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
+
+whosHadBenefits.title = Who’s had benefits?
+whosHadBenefits.heading = Who’s had benefits?
+whosHadBenefits.you = You
+whosHadBenefits.partner = Partner
+whosHadBenefits.both = Both
+whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
+whosHadBenefits.error = You must tell the calculator who has had benefits
