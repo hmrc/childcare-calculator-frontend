@@ -567,16 +567,16 @@ parentPaidWorkPY.title = You are not working now, but have you had any paid work
 parentPaidWorkPY.heading = You are not working now, but have you had any paid work this year
 parentPaidWorkPY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
 parentPaidWorkPY.error = You must tell the calculator if you had any paid work this year
-parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
 partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work this year
-partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
 bothPaidWorkPY.title = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkPY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work this year
-bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
