@@ -407,3 +407,11 @@ partnerIncomeInfo.li.pensions = pension contributions
 partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+parentEmploymentIncomeCY.title = parentEmploymentIncomeCY
+parentEmploymentIncomeCY.heading = parentEmploymentIncomeCY
+parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
+
+partnerEmploymentIncomeCY.title = partnerEmploymentIncomeCY
+partnerEmploymentIncomeCY.heading = partnerEmploymentIncomeCY
+partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
