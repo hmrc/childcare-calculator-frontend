@@ -422,6 +422,14 @@ bothPaidWorkCY.title = You and your partner isn’t working now, but have they h
 bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
+whoPaysIntoPension.title = Who pays into a pension?
+whoPaysIntoPension.heading = Who pays into a pension?
+whoPaysIntoPension.you = You
+whoPaysIntoPension.partner = Partner
+whoPaysIntoPension.both = Both
+whoPaysIntoPension.error = You must tell the calculator who pays into a pension
+
+
 
 whoGetsOtherIncomeCY.title = Who will get other income?
 whoGetsOtherIncomeCY.heading = Who will get other income?
