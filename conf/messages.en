@@ -542,6 +542,7 @@ whoGetsStatutoryCY.both = Both
 whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
 whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
 
-youPaidPensionPY.title = youPaidPensionPY
-youPaidPensionPY.heading = youPaidPensionPY
-youPaidPensionPY.checkYourAnswersLabel = youPaidPensionPY
+youPaidPensionPY.title = Did you pay into your work pension last year?
+youPaidPensionPY.heading = Did you pay into your work pension last year?
+youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
+youPaidPensionPY.error = You must answer yes if you have paid into a pension through payroll this year
