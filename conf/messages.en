@@ -537,3 +537,7 @@ whosHadBenefits.error = You must tell the calculator who has had benefits
 yourStatutoryPayCY.title = yourStatutoryPayCY
 yourStatutoryPayCY.heading = yourStatutoryPayCY
 yourStatutoryPayCY.checkYourAnswersLabel = yourStatutoryPayCY
+
+partnerStatutoryPayCY.title = partnerStatutoryPayCY
+partnerStatutoryPayCY.heading = partnerStatutoryPayCY
+partnerStatutoryPayCY.checkYourAnswersLabel = partnerStatutoryPayCY
