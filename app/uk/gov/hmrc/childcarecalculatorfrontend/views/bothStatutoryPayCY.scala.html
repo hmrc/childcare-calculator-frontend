@@ -24,24 +24,24 @@
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("yourStatutoryPayCY.title"),
+    title = messages("bothStatutoryPayCY.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = YourStatutoryPayCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = BothStatutoryPayCYController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("yourStatutoryPayCY.heading", "heading-xlarge")
+        @components.heading("bothStatutoryPayCY.heading", "heading-xlarge")
 
         <p>@messages("currentYear.startEndDate")</p>
-        <p>@messages("yourStatutoryPayCY.hint")</p>
+        <p>@messages("bothStatutoryPayCY.hint")</p>
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
-            label = messages("yourStatutoryPayCY.heading"),
+            label = messages("bothStatutoryPayCY.heading"),
             labelClass = Some("visually-hidden")
         )
 

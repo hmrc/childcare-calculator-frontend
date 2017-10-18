@@ -25,15 +25,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryPayCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothStatutoryPayCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayCY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothStatutoryPayCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
-class YourStatutoryPayCYController @Inject()(appConfig: FrontendAppConfig,
+class BothStatutoryPayCYController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
@@ -42,21 +42,21 @@ class YourStatutoryPayCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.yourStatutoryPayCY match {
+      val preparedForm = request.userAnswers.bothStatutoryPayCY match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(yourStatutoryPayCY(appConfig, preparedForm, mode))
+      Ok(bothStatutoryPayCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(yourStatutoryPayCYErrorKey).bindFromRequest().fold(
+      BooleanForm(bothStatutoryPayCYErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(yourStatutoryPayCY(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(bothStatutoryPayCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, YourStatutoryPayCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YourStatutoryPayCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, BothStatutoryPayCYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(BothStatutoryPayCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
