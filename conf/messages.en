@@ -386,3 +386,6 @@ youPaidPension.title = Have you paid into a work pension this year?
 youPaidPension.heading = Have you paid into a work pension this year?
 youPaidPension.checkYourAnswersLabel = youPaidPension
 youPaidPension.error = You must answer yes if you have paid into a pension through payroll this year
+partnerPaidPension.title = partnerPaidPension
+partnerPaidPension.heading = partnerPaidPension
+partnerPaidPension.checkYourAnswersLabel = partnerPaidPension
