@@ -397,6 +397,7 @@ yourIncomeInfo.li.pensions = pension contributions
 yourIncomeInfo.li.other_income = other income
 yourIncomeInfo.li.benefits_income = income from benefits
 yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfo.checkYourAnswersLabel = Your income this tax year
 
 partnerIncomeInfo.title = Your partner’s income this tax year
 partnerIncomeInfo.heading = Your partner’s income this tax year
@@ -406,6 +407,7 @@ partnerIncomeInfo.li.income_paid_work = income from paid work
 partnerIncomeInfo.li.pensions = pension contributions
 partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
+partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
@@ -422,14 +424,14 @@ bothPaidWorkCY.title = You and your partner isn’t working now, but have they h
 bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
+
 whoPaysIntoPension.title = Who pays into a pension?
 whoPaysIntoPension.heading = Who pays into a pension?
 whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
 whoPaysIntoPension.error = You must tell the calculator who pays into a pension
-
-
+whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
 whoGetsOtherIncomeCY.heading = Who will get other income?
@@ -438,3 +440,17 @@ whoGetsOtherIncomeCY.partner = Partner
 whoGetsOtherIncomeCY.both = Both
 whoGetsOtherIncomeCY.checkYourAnswersLabel = Who will get other income?
 whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner will get other income
+
+youAnyTheseBenefitsCY.title = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.heading = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+youAnyTheseBenefitsCY.li.income_support = Income support
+youAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsCY.li.pensions = Pension Credit
+youAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsCY.li.attendance = Attendance allowance
+youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.error = You must tell the calculator if you had any of these benefits this year
