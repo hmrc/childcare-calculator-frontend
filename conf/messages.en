@@ -455,3 +455,7 @@ partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
 partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year
+
+bothOtherIncomeThisYear.title = bothOtherIncomeThisYear
+bothOtherIncomeThisYear.heading = bothOtherIncomeThisYear
+bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
