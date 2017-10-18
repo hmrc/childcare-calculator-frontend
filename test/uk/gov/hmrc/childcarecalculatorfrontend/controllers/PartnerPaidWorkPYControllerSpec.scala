@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerPaidWorkPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerPaidWorkErrorKey
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerPaidWorkPY
 
 class PartnerPaidWorkPYControllerSpec extends ControllerSpecBase {
@@ -68,7 +68,7 @@ class PartnerPaidWorkPYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm(partnerPaidWorkErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm(partnerPaidWorkPYErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

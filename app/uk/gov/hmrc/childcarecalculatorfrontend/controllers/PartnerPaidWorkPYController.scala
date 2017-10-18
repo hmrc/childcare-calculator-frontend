@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerPaidWorkPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerPaidWorkErrorKey
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerPaidWorkPY
 
@@ -51,7 +51,7 @@ class PartnerPaidWorkPYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(partnerPaidWorkErrorKey).bindFromRequest().fold(
+      BooleanForm(partnerPaidWorkPYErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerPaidWorkPY(appConfig, formWithErrors, mode))),
         (value) =>
