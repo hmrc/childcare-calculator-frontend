@@ -2,6 +2,8 @@ date.day = Day
 date.month = Month
 date.year = Year
 
+currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+
 error.boolean = Please give an answer
 error.invalid_date = Give a correct date
 error.date.day_blank = Enter a day
@@ -541,3 +543,40 @@ whoGetsStatutoryCY.partner = Partner
 whoGetsStatutoryCY.both = Both
 whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
 whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
+
+
+statutoryPayAWeek.title = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.heading = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.checkYourAnswersLabel = statutoryPayAWeek
+
+youPaidPensionPY.title = Did you pay into your work pension last year?
+youPaidPensionPY.heading = Did you pay into your work pension last year?
+youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
+youPaidPensionPY.error = You must answer yes if you have paid into a pension through payroll this year
+partnerPaidPensionPY.title = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.heading = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
+
+bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
+
+yourStatutoryPayCY.title = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.heading = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.checkYourAnswersLabel = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+yourStatutoryPayCY.error = You must select yes if you will get statutory pay this year
+
+partnerStatutoryPayCY.title = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.heading = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.checkYourAnswersLabel = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.hint = This is pay from your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+partnerStatutoryPayCY.error = You must select yes if your partner will get statutory pay this year
+
+bothStatutoryPayCY.title = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.heading = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.checkYourAnswersLabel = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+bothStatutoryPayCY.error = You must select yes if you, your partner or both get statutory pay this year
