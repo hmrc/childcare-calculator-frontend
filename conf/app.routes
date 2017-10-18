@@ -199,3 +199,8 @@ GET        /eitherOfYouMaximumEarnings                       uk.gov.hmrc.childca
 POST       /eitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEitherOfYouMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /youPaidPension                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionController.onPageLoad(mode: Mode = NormalMode)
+POST       /youPaidPension                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYouPaidPension                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYouPaidPension                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionController.onSubmit(mode: Mode = CheckMode)
