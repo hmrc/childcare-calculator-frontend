@@ -18,25 +18,24 @@
 
 @(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
-
 @main_template(
-        title = messages("yourIncomeInfo.title"),
+        title = messages("partnerIncomeInfo.title"),
         appConfig = appConfig,
         bodyClasses = None) {
 
         @components.back_link()
 
-        @components.heading("yourIncomeInfo.heading", "heading-xlarge")
+        @components.heading("partnerIncomeInfo.heading", "heading-xlarge")
 
-        <p>@messages("yourIncomeInfo.tax_year")</p>
-        <p>@messages("yourIncomeInfo.guidance")</p>
+        <p>@messages("partnerIncomeInfo.tax_year")</p>
+        <p>@messages("partnerIncomeInfo.guidance")</p>
 
         <ul class="bullets">
-           <li>@messages("yourIncomeInfo.li.income_paid_work")</li>
-           <li>@messages("yourIncomeInfo.li.pensions")</li>
-           <li>@messages("yourIncomeInfo.li.other_income")</li>
-           <li>@messages("yourIncomeInfo.li.benefits_income")</li>
-           <li>@messages("yourIncomeInfo.li.birth_or_adoption")</li>
+           <li>@messages("partnerIncomeInfo.li.income_paid_work")</li>
+           <li>@messages("partnerIncomeInfo.li.pensions")</li>
+           <li>@messages("partnerIncomeInfo.li.other_income")</li>
+           <li>@messages("partnerIncomeInfo.li.benefits_income")</li>
+           <li>@messages("partnerIncomeInfo.li.birth_or_adoption")</li>
         </ul>
 
         @components.submit_button()
