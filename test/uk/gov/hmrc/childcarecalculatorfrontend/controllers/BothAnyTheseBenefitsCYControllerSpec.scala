@@ -24,21 +24,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerAnyOtherIncomeThisYearId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothAnyTheseBenefitsCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyOtherIncomeThisYear
-
-class PartnerAnyOtherIncomeThisYearControllerSpec extends ControllerSpecBase {
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothAnyTheseBenefitsCY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerAnyOtherIncomeThisYearController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new BothAnyTheseBenefitsCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerAnyOtherIncomeThisYear(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = bothAnyTheseBenefitsCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "PartnerAnyOtherIncomeThisYear Controller" must {
+  "BothAnyTheseBenefitsCY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -48,7 +48,7 @@ class PartnerAnyOtherIncomeThisYearControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true))
+      val validData = Map(BothAnyTheseBenefitsCYId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -67,7 +67,7 @@ class PartnerAnyOtherIncomeThisYearControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("partnerAnyOtherIncomeThisYear.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

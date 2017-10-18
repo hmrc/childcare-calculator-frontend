@@ -25,14 +25,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerAnyOtherIncomeThisYearId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerAnyTheseBenefitsCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyOtherIncomeThisYear
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyTheseBenefitsCY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
-class PartnerAnyOtherIncomeThisYearController @Inject()(appConfig: FrontendAppConfig,
+class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
@@ -41,21 +42,21 @@ class PartnerAnyOtherIncomeThisYearController @Inject()(appConfig: FrontendAppCo
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.partnerAnyOtherIncomeThisYear match {
+      val preparedForm = request.userAnswers.partnerAnyTheseBenefitsCY match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(partnerAnyOtherIncomeThisYear(appConfig, preparedForm, mode))
+      Ok(partnerAnyTheseBenefitsCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("partnerAnyOtherIncomeThisYear.error").bindFromRequest().fold(
+      BooleanForm(partnerAnyTheseBenefitsCYErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerAnyOtherIncomeThisYear(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerAnyTheseBenefitsCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, PartnerAnyOtherIncomeThisYearId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerAnyOtherIncomeThisYearId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, PartnerAnyTheseBenefitsCYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(PartnerAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
