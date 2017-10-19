@@ -650,7 +650,10 @@ partnerIncomeInfoPY.li.benefits_income = income from benefits
 partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
-
-bothOtherIncomeLY.title = bothOtherIncomeLY
-bothOtherIncomeLY.heading = bothOtherIncomeLY
+bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income last year?
+bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income last year?
+bothOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+bothOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
+bothOtherIncomeLY.error = Select yes if you, your partner, or both of you got any other income last year
+
