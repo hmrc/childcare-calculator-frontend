@@ -22,15 +22,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 class HowMuchBothPayPensionFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "field1" -> "value 1",
-    "field2" -> "value 2"
+    "howMuchYouPayPension" -> "1",
+    "howMuchPartnerPayPension" -> "2"
   )
 
   val form = HowMuchBothPayPensionForm()
 
   "HowMuchBothPayPension form" must {
-    behave like questionForm(HowMuchBothPayPension("value 1", "value 2"))
+    behave like questionForm(HowMuchBothPayPension("1", "2"))
 
-    behave like formWithMandatoryTextFields("field1", "field2")
+    behave like formWithMandatoryTextFields("howMuchYouPayPension", "howMuchPartnerPayPension")
   }
 }

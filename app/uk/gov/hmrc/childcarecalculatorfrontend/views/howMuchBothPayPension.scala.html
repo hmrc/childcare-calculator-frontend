@@ -36,9 +36,9 @@
 
         @components.heading("howMuchBothPayPension.heading", "heading-xlarge")
 
-        @components.input_text(InputViewModel[HowMuchBothPayPension]("field1", form), label = messages("howMuchBothPayPension.field1"))
+        @components.input_text(InputViewModel[HowMuchBothPayPension]("howMuchYouPayPension", form), label = messages("howMuchBothPayPension.yourPension"))
 
-        @components.input_text(InputViewModel[HowMuchBothPayPension]("field2", form), label = messages("howMuchBothPayPension.field2"))
+        @components.input_text(InputViewModel[HowMuchBothPayPension]("howMuchPartnerPayPension", form), label = messages("howMuchBothPayPension.partnerPension"))
 
         @components.submit_button()
     }

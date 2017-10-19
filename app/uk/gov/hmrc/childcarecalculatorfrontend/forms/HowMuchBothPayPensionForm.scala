@@ -24,12 +24,12 @@ object HowMuchBothPayPensionForm extends FormErrorHelper{
 
   def apply(): Form[HowMuchBothPayPension] = Form(
     mapping(
-      "field1" -> text.verifying(returnOnFirstFailure(
-      valueNonEmpty("howMuchBothPayPension.required"),
-      validateDecimal("howMuchBothPayPension.invalid"))),
-      "field2" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("howMuchBothPayPension.required"),
-        validateDecimal("howMuchBothPayPension.invalid")))
+      "howMuchYouPayPension" -> text.verifying(returnOnFirstFailure(
+      valueNonEmpty("howMuchYouPayPension.required"),
+      validateDecimal("howMuchYouPayPension.invalid"))),
+      "howMuchPartnerPayPension" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("howMuchPartnerPayPension.required"),
+        validateDecimal("howMuchPartnerPayPension.invalid")))
     )(HowMuchBothPayPension.apply)(HowMuchBothPayPension.unapply)
   )
 }

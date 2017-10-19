@@ -39,6 +39,6 @@ class HowMuchBothPayPensionViewSpec extends QuestionViewBehaviours[HowMuchBothPa
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.HowMuchBothPayPensionController.onSubmit(NormalMode).url, "field1", "field2")
+    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.HowMuchBothPayPensionController.onSubmit(NormalMode).url, "howMuchYouPayPension", "howMuchPartnerPayPension")
   }
 }
