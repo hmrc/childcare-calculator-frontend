@@ -636,3 +636,25 @@ youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
 
+yourIncomeInfoPY.title = Your income last tax year
+yourIncomeInfoPY.heading = Your income last tax year
+yourIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfoPY.li.income_paid_work = income from paid work
+yourIncomeInfoPY.li.pensions = pension contributions
+yourIncomeInfoPY.li.other_income = other income
+yourIncomeInfoPY.li.benefits_income = income from benefits
+yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfoPY.checkYourAnswersLabel = Your income last tax year
+
+partnerIncomeInfoPY.title = Your partner’s income last tax year
+partnerIncomeInfoPY.heading = Your partner’s income last tax year
+partnerIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+partnerIncomeInfoPY.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfoPY.li.income_paid_work = income from paid work
+partnerIncomeInfoPY.li.pensions = pension contributions
+partnerIncomeInfoPY.li.other_income = other income
+partnerIncomeInfoPY.li.benefits_income = income from benefits
+partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
+partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
