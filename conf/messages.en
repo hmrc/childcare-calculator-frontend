@@ -681,3 +681,10 @@ whoPaidIntoPensionPY.both = Both
 whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
 whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
+whosHadBenefitsPY.title = Who’s had benefits last year?
+whosHadBenefitsPY.heading = Who’s had benefits last year?
+whosHadBenefitsPY.you = You
+whosHadBenefitsPY.partner = Partner
+whosHadBenefitsPY.both = Both
+whosHadBenefitsPY.checkYourAnswersLabel = Who’s had benefits last year?
+whosHadBenefitsPY.error = You must tell the calculator who had benefits last year

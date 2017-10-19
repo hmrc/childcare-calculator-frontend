@@ -21,6 +21,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def whosHadBenefitsPY: Option[String] = cacheMap.getEntry[String](WhosHadBenefitsPYId.toString)
+
 
   def partnerAnyOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeLYId.toString)
 
