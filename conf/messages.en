@@ -448,7 +448,6 @@ whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
 whoPaysIntoPension.error = You must tell the calculator who pays into a pension
-
 whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
@@ -657,6 +656,7 @@ whoOtherIncomePY.partner = Partner
 whoOtherIncomePY.both = Both
 whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
 whoOtherIncomePY.error = You must tell the calculator if you or your partner got other income
+
 whoGetsStatutoryPY.title = Who got statutory pay last year?
 whoGetsStatutoryPY.heading = Who got statutory pay last year?
 whoGetsStatutoryPY.you = You
@@ -664,3 +664,12 @@ whoGetsStatutoryPY.partner = Partner
 whoGetsStatutoryPY.both = Both
 whoGetsStatutoryPY.checkYourAnswersLabel = Who got statutory pay last year?
 whoGetsStatutoryPY.error = You must tell the calculator who got statutory pay last year.
+
+whoPaidIntoPensionPY.title = Who paid into a pension?
+whoPaidIntoPensionPY.heading = Who paid into a pension?
+whoPaidIntoPensionPY.you = You
+whoPaidIntoPensionPY.partner = Partner
+whoPaidIntoPensionPY.both = Both
+whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
+whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
+
