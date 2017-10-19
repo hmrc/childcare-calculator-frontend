@@ -26,6 +26,59 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("youNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.YouNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
+  def statutoryPayAWeekLY: Option[AnswerRow] = userAnswers.statutoryPayAWeekLY map {
+    x => AnswerRow("statutoryPayAWeekLY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekLYController.onPageLoad(CheckMode).url)
+  }
+
+  def whosHadBenefitsPY: Option[AnswerRow] = userAnswers.whosHadBenefitsPY map {
+    x => AnswerRow("whosHadBenefitsPY.checkYourAnswersLabel", s"whosHadBenefitsPY.$x", true, routes.WhosHadBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
+  def benefitsIncomeCY: Option[AnswerRow] = userAnswers.benefitsIncomeCY map {
+    x => AnswerRow("benefitsIncomeCY.checkYourAnswersLabel", s"${x.parentBenefitsIncome} ${x.partnerBenefitsIncome}", false, routes.BenefitsIncomeCYController.onPageLoad(CheckMode).url)
+  }
+
+  def bothOtherIncomeLY: Option[AnswerRow] = userAnswers.bothOtherIncomeLY map {
+    x => AnswerRow("bothOtherIncomeLY.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.BothOtherIncomeLYController.onPageLoad(CheckMode).url)
+  }
+  def partnerAnyOtherIncomeLY: Option[AnswerRow] = userAnswers.partnerAnyOtherIncomeLY map {
+    x => AnswerRow("partnerAnyOtherIncomeLY.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.PartnerAnyOtherIncomeLYController.onPageLoad(CheckMode).url)
+  }
+
+  def bothAnyTheseBenefitsPY: Option[AnswerRow] = userAnswers.bothAnyTheseBenefitsPY map {
+    x => AnswerRow("bothAnyTheseBenefitsPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothAnyTheseBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerAnyTheseBenefitsPY: Option[AnswerRow] = userAnswers.partnerAnyTheseBenefitsPY map {
+    x => AnswerRow("partnerAnyTheseBenefitsPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerAnyTheseBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
+  def youAnyTheseBenefitsPY: Option[AnswerRow] = userAnswers.youAnyTheseBenefitsPY map {
+    x => AnswerRow("youAnyTheseBenefitsPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YouAnyTheseBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
+  def whoPaidIntoPensionPY: Option[AnswerRow] = userAnswers.whoPaidIntoPensionPY map {
+    x => AnswerRow("whoPaidIntoPensionPY.checkYourAnswersLabel", s"whoPaidIntoPensionPY.$x", true, routes.WhoPaidIntoPensionPYController.onPageLoad(CheckMode).url)
+  }
+
+  def whoOtherIncomePY: Option[AnswerRow] = userAnswers.whoOtherIncomePY map {
+    x => AnswerRow("whoOtherIncomePY.checkYourAnswersLabel", s"whoOtherIncomePY.$x", true, routes.WhoOtherIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def whoGetsStatutoryPY: Option[AnswerRow] = userAnswers.whoGetsStatutoryPY map {
+    x => AnswerRow("whoGetsStatutoryPY.checkYourAnswersLabel", s"whoGetsStatutoryPY.$x", true, routes.WhoGetsStatutoryPYController.onPageLoad(CheckMode).url)
+  }
+
+  def youBenefitsIncomeCY: Option[AnswerRow] = userAnswers.youBenefitsIncomeCY map {
+    x => AnswerRow("youBenefitsIncomeCY.checkYourAnswersLabel", s"$x", false, routes.YouBenefitsIncomeCYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerBenefitsIncomeCY: Option[AnswerRow] = userAnswers.partnerBenefitsIncomeCY map {
+    x => AnswerRow("partnerBenefitsIncomeCY.checkYourAnswersLabel", s"$x", false, routes.PartnerBenefitsIncomeCYController.onPageLoad(CheckMode).url)
+  }
+  def yourOtherIncomeLY: Option[AnswerRow] = userAnswers.yourOtherIncomeLY map {
+    x => AnswerRow("yourOtherIncomeLY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourOtherIncomeLYController.onPageLoad(CheckMode).url)
+  }
 
   def statutoryPayAWeek: Option[AnswerRow] = userAnswers.statutoryPayAWeek map {
     x => AnswerRow("statutoryPayAWeek.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekController.onPageLoad(CheckMode).url)
@@ -83,24 +136,28 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whoGetsStatutoryCY.checkYourAnswersLabel", s"whoGetsStatutoryCY.$x", true, routes.WhoGetsStatutoryCYController.onPageLoad(CheckMode).url)
   }
 
+  def employmentIncomeCY: Option[AnswerRow] = userAnswers.employmentIncomeCY map {
+    x => AnswerRow("employmentIncomeCY.checkYourAnswersLabel", s"${x.parentEmploymentIncome} ${x.partnerEmploymentIncome}", false, routes.EmploymentIncomeCYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerOtherIncomeAmountCY: Option[AnswerRow] = userAnswers.partnerOtherIncomeAmountCY map {
+    x => AnswerRow("partnerOtherIncomeAmountCY.checkYourAnswersLabel", s"$x", false, routes.PartnerOtherIncomeAmountCYController.onPageLoad(CheckMode).url)
+  }
+
+  def yourOtherIncomeAmountCY: Option[AnswerRow] = userAnswers.yourOtherIncomeAmountCY map {
+    x => AnswerRow("yourOtherIncomeAmountCY.checkYourAnswersLabel", s"$x", false, routes.YourOtherIncomeAmountCYController.onPageLoad(CheckMode).url)
+  }
+
+  def otherIncomeAmountCY: Option[AnswerRow] = userAnswers.otherIncomeAmountCY map {
+    x => AnswerRow("otherIncomeAmountCY.checkYourAnswersLabel", s"${x.partnerOtherIncome} ${x.partnerOtherIncome}", false, routes.OtherIncomeAmountCYController.onPageLoad(CheckMode).url)
+  }
+
   def whichBenefitsPartnerGet: Option[AnswerRow] = userAnswers.whichBenefitsPartnerGet map {
     x => AnswerRow("whichBenefitsPartnerGet.checkYourAnswersLabel", s"whichBenefitsPartnerGet.$x", true, routes.WhichBenefitsPartnerGetController.onPageLoad(CheckMode).url)
   }
 
   def whichBenefitsYouGet: Option[AnswerRow] = userAnswers.whichBenefitsYouGet map {
     x => AnswerRow("whichBenefitsYouGet.checkYourAnswersLabel", s"whichBenefitsYouGet.$x", true, routes.WhichBenefitsYouGetController.onPageLoad(CheckMode).url)
-  }
-
-  def bothAnyTheseBenefitsCY: Option[AnswerRow] = userAnswers.bothAnyTheseBenefitsCY map {
-    x => AnswerRow("bothAnyTheseBenefitsCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothAnyTheseBenefitsCYController.onPageLoad(CheckMode).url)
-  }
-
-  def partnerAnyTheseBenefitsCY: Option[AnswerRow] = userAnswers.partnerAnyTheseBenefitsCY map {
-    x => AnswerRow("partnerAnyTheseBenefitsCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerAnyTheseBenefitsCYController.onPageLoad(CheckMode).url)
-  }
-
-  def youAnyTheseBenefits: Option[AnswerRow] = userAnswers.youAnyTheseBenefits map {
-    x => AnswerRow("youAnyTheseBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YouAnyTheseBenefitsCYController.onPageLoad(CheckMode).url)
   }
 
   def whoGetsOtherIncomeCY: Option[AnswerRow] = userAnswers.whoGetsOtherIncomeCY map {
@@ -123,20 +180,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whoPaysIntoPension.checkYourAnswersLabel", s"whoPaysIntoPension.$x", true, routes.WhoPaysIntoPensionController.onPageLoad(CheckMode).url)
   }
 
-  def partnerAnyOtherIncomeThisYear: Option[AnswerRow] = userAnswers.partnerAnyOtherIncomeThisYear map {
-    x => AnswerRow("partnerAnyOtherIncomeThisYear.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(CheckMode).url)
-  }
-
   def yourOtherIncomeThisYear: Option[AnswerRow] = userAnswers.yourOtherIncomeThisYear map {
     x => AnswerRow("yourOtherIncomeThisYear.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourOtherIncomeThisYearController.onPageLoad(CheckMode).url)
-  }
-
-  def PartnerPaidPensionCY: Option[AnswerRow] = userAnswers.PartnerPaidPensionCY map {
-    x => AnswerRow("PartnerPaidPensionCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerPaidPensionCYController.onPageLoad(CheckMode).url)
-  }
-
-  def YouPaidPensionCY: Option[AnswerRow] = userAnswers.YouPaidPensionCY map {
-    x => AnswerRow("YouPaidPensionCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YouPaidPensionCYController.onPageLoad(CheckMode).url)
   }
 
   def eitherOfYouMaximumEarnings: Option[AnswerRow] = userAnswers.eitherOfYouMaximumEarnings map {

@@ -395,8 +395,8 @@ maxFreeHoursInfo.give.more.info = Give the calculator more information to see if
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
 
-yourOtherIncomeThisYear.title = Will you get any other income this tax year?
-yourOtherIncomeThisYear.heading = Will you get any other income this tax year?
+yourOtherIncomeThisYear.title = Will you get any other income this year?
+yourOtherIncomeThisYear.heading = Will you get any other income this year?
 yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
@@ -448,7 +448,6 @@ whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
 whoPaysIntoPension.error = You must tell the calculator who pays into a pension
-
 whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
@@ -503,15 +502,15 @@ bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any 
 bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
 
 
-partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this tax year?
-partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this tax year?
+partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
 partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year
 
-bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this tax year?
-bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this tax year?
+bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
+bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 bothOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
@@ -601,6 +600,183 @@ bothPaidWorkPY.heading = You and your partner isn’t working now, but have they
 bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work last year?
 bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work last year
 bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+partnerAnyOtherIncomeLY.title = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.heading = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
+partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income last year
+
+yourOtherIncomeLY.title = Did you get any other income last year?
+yourOtherIncomeLY.heading = Did you get any other income last year?
+yourOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+yourOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
+yourOtherIncomeLY.error = Select yes if you got any other income last year
+
+partnerBenefitsIncomeCY.title = How much will your partner get in benefits this year?
+partnerBenefitsIncomeCY.heading = How much will your partner get in benefits this year?
+partnerBenefitsIncomeCY.info = Partner’s benefits income
+partnerBenefitsIncomeCY.error = You must tell the calculator how much your partner got paid in benefits this year
+partnerBenefitsIncomeCY.checkYourAnswersLabel = How much will your partner get in benefits this year?
+
+youBenefitsIncomeCY.title = How much will you get in benefits this year?
+youBenefitsIncomeCY.heading = How much will you get in benefits this year?
+youBenefitsIncomeCY.info = Your benefits income
+youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
+youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
+
+benefitsIncomeCY.title = How much will you and your partner get in benefits this year?
+benefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
+benefitsIncomeCY.parentBenefitsIncome = Your benefits income
+benefitsIncomeCY.partnerBenefitsIncome = Partner’s benefits income
+benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get in benefits this year?
+
+parentBenefitsIncome.required = You must tell the calculator how much you got paid in benefits this year
+partnerBenefitsIncome.required = You must tell the calculator how much your partner got paid in benefits this year
+
+parentBenefitsIncome.invalid = Please enter a valid numerical value
+partnerBenefitsIncome.invalid = Please enter a valid numerical value
+
+yourIncomeInfoPY.title = Your income last tax year
+yourIncomeInfoPY.heading = Your income last tax year
+yourIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfoPY.li.income_paid_work = income from paid work
+yourIncomeInfoPY.li.pensions = pension contributions
+yourIncomeInfoPY.li.other_income = other income
+yourIncomeInfoPY.li.benefits_income = income from benefits
+yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfoPY.checkYourAnswersLabel = Your income last tax year
+
+partnerIncomeInfoPY.title = Your partner’s income last tax year
+partnerIncomeInfoPY.heading = Your partner’s income last tax year
+partnerIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+partnerIncomeInfoPY.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfoPY.li.income_paid_work = income from paid work
+partnerIncomeInfoPY.li.pensions = pension contributions
+partnerIncomeInfoPY.li.other_income = other income
+partnerIncomeInfoPY.li.benefits_income = income from benefits
+partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
+partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income last year?
+bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income last year?
+bothOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+bothOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
+bothOtherIncomeLY.error = Select yes if you, your partner, or both of you got any other income last year
+
+whoOtherIncomePY.title = Who got other income last year?
+whoOtherIncomePY.heading = Who got other income last year?
+whoOtherIncomePY.you = You
+whoOtherIncomePY.partner = Partner
+whoOtherIncomePY.both = Both
+whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
+whoOtherIncomePY.error = You must tell the calculator if you or your partner got other income
+
+whoGetsStatutoryPY.title = Who got statutory pay last year?
+whoGetsStatutoryPY.heading = Who got statutory pay last year?
+whoGetsStatutoryPY.you = You
+whoGetsStatutoryPY.partner = Partner
+whoGetsStatutoryPY.both = Both
+whoGetsStatutoryPY.checkYourAnswersLabel = Who got statutory pay last year?
+whoGetsStatutoryPY.error = You must tell the calculator who got statutory pay last year.
+
+whoPaidIntoPensionPY.title = Who paid into a pension?
+whoPaidIntoPensionPY.heading = Who paid into a pension?
+whoPaidIntoPensionPY.you = You
+whoPaidIntoPensionPY.partner = Partner
+whoPaidIntoPensionPY.both = Both
+whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
+whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
+
+whosHadBenefitsPY.title = Who’s had benefits last year?
+whosHadBenefitsPY.heading = Who’s had benefits last year?
+whosHadBenefitsPY.you = You
+whosHadBenefitsPY.partner = Partner
+whosHadBenefitsPY.both = Both
+whosHadBenefitsPY.checkYourAnswersLabel = Who’s had benefits last year?
+whosHadBenefitsPY.error = You must tell the calculator who had benefits last year
+
+otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
+otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?
+otherIncomeAmountCY.parentOtherIncome = Your other income
+otherIncomeAmountCY.partnerOtherIncome = Partner’s other income
+otherIncomeAmountCY.checkYourAnswersLabel = How much will you and your partner’s other income be this year?
+
+yourOtherIncomeAmountCY.title = How much will your other income be this year?
+yourOtherIncomeAmountCY.heading = How much will your other income be this year?
+yourOtherIncomeAmountCY.checkYourAnswersLabel = How much will your other income be this year?
+parentOtherIncome.required = You must tell the calculator how much your other income will be
+parentOtherIncome.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountCY.title = How much will your partner other income be this year?
+partnerOtherIncomeAmountCY.heading = How much will your partner other income be this year?
+partnerOtherIncomeAmountCY.checkYourAnswersLabel = How much will your partner other income be this year?
+partnerOtherIncome.required = You must tell the calculator how much your partner’s other income will be
+partnerOtherIncome.invalid = You must enter a number between 0 and 999999.9
+
+employmentIncomeCY.title = How much will you and your partner get paid this year?
+employmentIncomeCY.heading = How much will you and your partner get paid this year?
+employmentIncomeCY.parentEmploymentIncome = Your income
+employmentIncomeCY.partnerEmploymentIncome = Partner’s income
+employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
+employmentIncomeCY.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+employmentIncomeCY.hint = This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+
+parentEmploymentIncome.required = You must tell the calculator what you will get paid this year
+parentEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
+
+partnerEmploymentIncome.required = You must tell the calculator what your partner will get paid this year
+partnerEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
+youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.heading = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+youAnyTheseBenefitsPY.li.income_support = Income support
+youAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsPY.li.pensions = Pension Credit
+youAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsPY.li.attendance = Attendance allowance
+youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.error = You must tell the calculator if you had any of these benefits last year
+
+partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerAnyTheseBenefitsPY.li.income_support = Income support
+partnerAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+partnerAnyTheseBenefitsPY.li.pensions = Pension Credit
+partnerAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
+
+
+bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+bothAnyTheseBenefitsPY.li.income_support = Income support
+bothAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsPY.li.pensions = Pension Credit
+bothAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
+
+statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
+statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
+statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
 
 youNoWeeksStatPayCY.title = How many weeks will you take this year?
 youNoWeeksStatPayCY.heading = How many weeks will you take this year?

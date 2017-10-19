@@ -25,7 +25,7 @@ class YourIncomeInfoViewSpec extends ViewBehaviours {
   val messageKeyPrefix = "yourIncomeInfo"
 
 
-  "FreeHoursInfo view" must {
+  "Your Income Info view" must {
     behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
       "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
   }
