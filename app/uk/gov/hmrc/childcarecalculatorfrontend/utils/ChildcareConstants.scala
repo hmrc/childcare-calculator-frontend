@@ -71,4 +71,6 @@ object ChildcareConstants {
   val parentPaidWorkPYErrorKey = "parentPaidWorkPY.error"
   val partnerPaidWorkPYErrorKey = "partnerPaidWorkPY.error"
   val bothPaidWorkPYErrorKey = "bothPaidWorkPY.error"
+  val youNoWeeksStatPayCYErrorKey = "youNoWeeksStatPayCY.error"
+  val youNoWeeksStatPayCYInvalidErrorKey = "youNoWeeksStatPayCY.invalid"
 }

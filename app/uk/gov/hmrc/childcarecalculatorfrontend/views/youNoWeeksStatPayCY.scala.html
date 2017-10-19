@@ -35,7 +35,10 @@
 
         @components.heading("youNoWeeksStatPayCY.heading", "heading-xlarge")
 
-        @components.input_number(InputViewModel[Int]("value", form), label = messages("youNoWeeksStatPayCY.heading"), labelClass=Some("visually-hidden"))
+        <p>@messages("youNoWeeksStatPayCY.year.start.end.date")</p>
+
+
+        @components.input_number(InputViewModel[Int]("value", form), label = messages("youNoWeeksStatPayCY.heading"), labelClass=Some("visually-hidden"), hint = Some(messages("youNoWeeksStatPayCY.hint")))
 
         @components.submit_button()
     }

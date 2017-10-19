@@ -19,6 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 
 object YouNoWeeksStatPayCYForm extends FormErrorHelper {
 
@@ -42,6 +44,6 @@ object YouNoWeeksStatPayCYForm extends FormErrorHelper {
     def unbind(key: String, value: Int) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
+  def apply(errorKeyBlank: String = youNoWeeksStatPayCYErrorKey, errorKeyDecimal: String = youNoWeeksStatPayCYInvalidErrorKey, errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
     Form(single("value" -> of(youNoWeeksStatPayCYFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
 }

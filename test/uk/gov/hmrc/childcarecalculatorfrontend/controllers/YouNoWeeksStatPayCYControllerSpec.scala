@@ -69,7 +69,8 @@ class YouNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = YouNoWeeksStatPayCYForm().bind(Map("value" -> "invalid value"))
+
+      val boundForm = YouNoWeeksStatPayCYForm.apply().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
