@@ -50,7 +50,7 @@ class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("registeredBlind.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(registeredBlind(appConfig, formWithErrors, mode))),
         (value) =>
