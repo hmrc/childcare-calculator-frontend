@@ -369,3 +369,8 @@ GET        /howMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfr
 POST       /howMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit(mode: Mode = NormalMode)
 GET        /changeHowMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeHowMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit(mode: Mode = CheckMode)
+
+GET        /howMuchPartnerPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onPageLoad(mode: Mode = NormalMode)
+POST       /howMuchPartnerPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHowMuchPartnerPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHowMuchPartnerPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onSubmit(mode: Mode = CheckMode)
