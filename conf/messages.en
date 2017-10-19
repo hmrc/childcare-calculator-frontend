@@ -647,3 +647,8 @@ howMuchBothPayPension.field2 = Partner’s pension
 howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
 howMuchBothPayPension.invalid = Please only enter a numerical value of up to two decimal places
 howMuchBothPayPension.required = Please tell the calculator how much you both pay into your pensions a month
+
+registeredBlind.title = Are any of your children registered blind?
+registeredBlind.heading = Are any of your children registered blind?
+registeredBlind.error = You must tell the calculator if your children are registered blind
+registeredBlind.checkYourAnswersLabel = registeredBlind
