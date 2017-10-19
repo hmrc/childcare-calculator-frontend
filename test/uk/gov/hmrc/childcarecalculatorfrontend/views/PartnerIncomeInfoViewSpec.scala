@@ -24,7 +24,7 @@ class PartnerIncomeInfoViewSpec extends ViewBehaviours {
   def createView = () => partnerIncomeInfo(frontendAppConfig)(fakeRequest, messages)
   val messageKeyPrefix = "partnerIncomeInfo"
 
-  "FreeHoursInfo view" must {
+  "Partner Income Info view" must {
     behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
       "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
   }

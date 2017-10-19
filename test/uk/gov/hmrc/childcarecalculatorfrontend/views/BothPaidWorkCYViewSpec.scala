@@ -33,7 +33,7 @@ class BothPaidWorkCYViewSpec extends YesNoViewBehaviours {
 
   "BothPaidWorkCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "currentYear.startEndDate")
 
     behave like pageWithBackLink(createView)
 
