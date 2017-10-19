@@ -24,6 +24,8 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def partnerAnyOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeLYId.toString)
 
+  def whoPaidIntoPensionPY: Option[String] = cacheMap.getEntry[String](WhoPaidIntoPensionPYId.toString)
+
   def whoOtherIncomePY: Option[String] = cacheMap.getEntry[String](WhoOtherIncomePYId.toString)
 
   def whoGetsStatutoryPY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryPYId.toString)
