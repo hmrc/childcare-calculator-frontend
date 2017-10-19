@@ -34,6 +34,18 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("howMuchYouPayPension.checkYourAnswersLabel", s"$x", false, routes.HowMuchYouPayPensionController.onPageLoad(CheckMode).url)
   }
 
+  def youBenefitsIncomePY: Option[AnswerRow] = userAnswers.youBenefitsIncomePY map {
+    x => AnswerRow("youBenefitsIncomePY.checkYourAnswersLabel", s"$x", false, routes.YouBenefitsIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerBenefitsIncomePY: Option[AnswerRow] = userAnswers.partnerBenefitsIncomePY map {
+    x => AnswerRow("partnerBenefitsIncomePY.checkYourAnswersLabel", s"$x", false, routes.PartnerBenefitsIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def bothBenefitsIncomePY: Option[AnswerRow] = userAnswers.bothBenefitsIncomePY map {
+    x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
+  }
+
   def registeredBlind: Option[AnswerRow] = userAnswers.registeredBlind map {
     x => AnswerRow("registeredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.RegisteredBlindController.onPageLoad(CheckMode).url)
   }
