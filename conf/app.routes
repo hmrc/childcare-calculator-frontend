@@ -368,3 +368,18 @@ POST       /changeYourOtherIncomeLY                       uk.gov.hmrc.childcarec
 GET        /yourIncomeInfoPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoPYController.onPageLoad()
 
 GET        /partnerIncomeInfoPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoPYController.onPageLoad()
+
+GET        /youAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /youAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYouAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYouAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyTheseBenefitsPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyTheseBenefitsPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyTheseBenefitsPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyTheseBenefitsPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bothAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothAnyTheseBenefitsPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsPYController.onSubmit(mode: Mode = CheckMode)

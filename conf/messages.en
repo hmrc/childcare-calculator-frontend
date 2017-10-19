@@ -650,3 +650,45 @@ partnerIncomeInfoPY.li.benefits_income = income from benefits
 partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
+youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.heading = HDid you get any of these benefits last year?
+youAnyTheseBenefitsPY.tax_year = This year is 6 April 2016 to 5 April 2017.
+youAnyTheseBenefitsPY.li.income_support = Income support
+youAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsPY.li.pensions = Pension Credit
+youAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsPY.li.attendance = Attendance allowance
+youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.error = You must tell the calculator if you had any of these benefits last year
+
+partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.tax_year = This year is 6 April 2016 to 5 April 2017.
+partnerAnyTheseBenefitsPY.li.income_support = Income support
+partnerAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+partnerAnyTheseBenefitsPY.li.pensions = Pension Credit
+partnerAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
+
+
+bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.tax_year = This year is 6 April 2016 to 5 April 2017.
+bothAnyTheseBenefitsPY.li.income_support = Income support
+bothAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsPY.li.pensions = Pension Credit
+bothAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
