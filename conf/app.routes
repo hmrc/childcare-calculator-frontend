@@ -433,3 +433,13 @@ GET        /employmentIncomeCY                       uk.gov.hmrc.childcarecalcul
 POST       /employmentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayAmountCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayAmountCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayAmountCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayAmountCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerStatutoryPayAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountCYController.onSubmit(mode: Mode = CheckMode)

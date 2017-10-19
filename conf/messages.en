@@ -769,3 +769,15 @@ bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
+
+yourStatutoryPayAmountCY.title = How much statutory pay will you get paid a week?
+yourStatutoryPayAmountCY.heading = How much statutory pay will you get paid a week?
+yourStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you get paid a week?
+parentStatutoryPayAmount.required = You must tell the calculator what statutory pay will you get paid a week
+parentStatutoryPayAmount.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountCY.title = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmountCY.heading = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmount.required = You must tell the calculator what statutory pay will your partner get paid a week
+partnerStatutoryPayAmount.invalid = You must enter a number between 1 and 99
