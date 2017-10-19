@@ -453,3 +453,8 @@ GET        /youBenefitsIncomePY               uk.gov.hmrc.childcarecalculatorfro
 POST       /youBenefitsIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomePYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYouBenefitsIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomePYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYouBenefitsIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomePYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /registeredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode = NormalMode)
+POST       /registeredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode = NormalMode)
+GET        /changeRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode = CheckMode)

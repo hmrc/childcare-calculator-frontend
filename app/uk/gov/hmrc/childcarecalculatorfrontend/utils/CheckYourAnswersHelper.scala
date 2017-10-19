@@ -34,6 +34,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
   }
 
+  def registeredBlind: Option[AnswerRow] = userAnswers.registeredBlind map {
+    x => AnswerRow("registeredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.RegisteredBlindController.onPageLoad(CheckMode).url)
+  }
+
   def statutoryPayAWeekLY: Option[AnswerRow] = userAnswers.statutoryPayAWeekLY map {
     x => AnswerRow("statutoryPayAWeekLY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekLYController.onPageLoad(CheckMode).url)
   }
