@@ -650,3 +650,10 @@ partnerIncomeInfoPY.li.benefits_income = income from benefits
 partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
+whoGetsStatutoryPY.title = Who got statutory pay last year?
+whoGetsStatutoryPY.heading = Who got statutory pay last year?
+whoGetsStatutoryPY.you = You
+whoGetsStatutoryPY.partner = Partner
+whoGetsStatutoryPY.both = Both
+whoGetsStatutoryPY.checkYourAnswersLabel = Who got statutory pay last year?
+whoGetsStatutoryPY.error = You must tell the calculator who got statutory pay last year.
