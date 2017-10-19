@@ -632,3 +632,5 @@ howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
 howMuchYouPayPension.error = You must tell the calculator how much you pay into your pension a month
 howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
+howMuchYouPayPension.invalid = Please only enter a value of up to two decimal places
+

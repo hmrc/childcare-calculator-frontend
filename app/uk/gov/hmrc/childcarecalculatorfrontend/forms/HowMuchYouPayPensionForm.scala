@@ -16,21 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
+import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object HowMuchYouPayPensionForm extends FormErrorHelper {
 
   def howMuchYouPayPensionFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+    val decimalRegex = """\d+(\.\d{1,2})?"""
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
         case _ => produceError(key, errorKeyInvalid)
       }
     }
@@ -38,6 +39,6 @@ object HowMuchYouPayPensionForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = howMuchYouPayPensionInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(howMuchYouPayPensionFormatter(errorKeyBlank, errorKeyInvalid))))
 }
