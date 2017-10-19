@@ -692,6 +692,14 @@ whoPaidIntoPensionPY.both = Both
 whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
 whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
+whosHadBenefitsPY.title = Who’s had benefits last year?
+whosHadBenefitsPY.heading = Who’s had benefits last year?
+whosHadBenefitsPY.you = You
+whosHadBenefitsPY.partner = Partner
+whosHadBenefitsPY.both = Both
+whosHadBenefitsPY.checkYourAnswersLabel = Who’s had benefits last year?
+whosHadBenefitsPY.error = You must tell the calculator who had benefits last year
+
 otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.parentOtherIncome = Your other income
@@ -723,3 +731,45 @@ parentEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
 
 partnerEmploymentIncome.required = You must tell the calculator what your partner will get paid this year
 partnerEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
+youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.heading = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+youAnyTheseBenefitsPY.li.income_support = Income support
+youAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsPY.li.pensions = Pension Credit
+youAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsPY.li.attendance = Attendance allowance
+youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.error = You must tell the calculator if you had any of these benefits last year
+
+partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerAnyTheseBenefitsPY.li.income_support = Income support
+partnerAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+partnerAnyTheseBenefitsPY.li.pensions = Pension Credit
+partnerAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
+
+
+bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+bothAnyTheseBenefitsPY.li.income_support = Income support
+bothAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsPY.li.pensions = Pension Credit
+bothAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year

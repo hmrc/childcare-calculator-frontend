@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def whosHadBenefitsPY: Option[AnswerRow] = userAnswers.whosHadBenefitsPY map {
+    x => AnswerRow("whosHadBenefitsPY.checkYourAnswersLabel", s"whosHadBenefitsPY.$x", true, routes.WhosHadBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
   def benefitsIncomeCY: Option[AnswerRow] = userAnswers.benefitsIncomeCY map {
     x => AnswerRow("benefitsIncomeCY.checkYourAnswersLabel", s"${x.parentBenefitsIncome} ${x.partnerBenefitsIncome}", false, routes.BenefitsIncomeCYController.onPageLoad(CheckMode).url)
   }
@@ -31,6 +35,18 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
   def partnerAnyOtherIncomeLY: Option[AnswerRow] = userAnswers.partnerAnyOtherIncomeLY map {
     x => AnswerRow("partnerAnyOtherIncomeLY.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.PartnerAnyOtherIncomeLYController.onPageLoad(CheckMode).url)
+  }
+
+  def bothAnyTheseBenefitsPY: Option[AnswerRow] = userAnswers.bothAnyTheseBenefitsPY map {
+    x => AnswerRow("bothAnyTheseBenefitsPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothAnyTheseBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerAnyTheseBenefitsPY: Option[AnswerRow] = userAnswers.partnerAnyTheseBenefitsPY map {
+    x => AnswerRow("partnerAnyTheseBenefitsPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerAnyTheseBenefitsPYController.onPageLoad(CheckMode).url)
+  }
+
+  def youAnyTheseBenefitsPY: Option[AnswerRow] = userAnswers.youAnyTheseBenefitsPY map {
+    x => AnswerRow("youAnyTheseBenefitsPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YouAnyTheseBenefitsPYController.onPageLoad(CheckMode).url)
   }
 
   def whoPaidIntoPensionPY: Option[AnswerRow] = userAnswers.whoPaidIntoPensionPY map {
@@ -43,7 +59,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def whoGetsStatutoryPY: Option[AnswerRow] = userAnswers.whoGetsStatutoryPY map {
     x => AnswerRow("whoGetsStatutoryPY.checkYourAnswersLabel", s"whoGetsStatutoryPY.$x", true, routes.WhoGetsStatutoryPYController.onPageLoad(CheckMode).url)
-
   }
 
   def youBenefitsIncomeCY: Option[AnswerRow] = userAnswers.youBenefitsIncomeCY map {
