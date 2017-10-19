@@ -34,9 +34,9 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerEmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl,new PartnerEmploymentIncomeCYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[BigDecimal] = PartnerEmploymentIncomeCYForm()) = partnerEmploymentIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()) = partnerEmploymentIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 123
 
@@ -55,7 +55,7 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerEmploymentIncomeCYForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString( new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -69,7 +69,7 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerEmploymentIncomeCYForm().bind(Map("value" -> "invalid value"))
+      val boundForm = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

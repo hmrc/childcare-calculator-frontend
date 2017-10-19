@@ -33,7 +33,10 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("parentEmploymentIncomeCY.heading")
+        @components.heading("parentEmploymentIncomeCY.heading", "heading-xlarge")
+
+        <p>@messages("employmentIncomeCY.tax_year")</p>
+        <p>@messages("parentEmploymentIncomeCY.hint")</p>
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentEmploymentIncomeCY.heading"), labelClass=Some("visually-hidden"))
 

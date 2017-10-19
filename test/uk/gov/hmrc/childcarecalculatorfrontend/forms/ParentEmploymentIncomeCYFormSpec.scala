@@ -23,7 +23,7 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
   val parentEmploymentIncomeCYForm: Form[BigDecimal] = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
 
   val errorKeyBlank = parentEmploymentIncomeBlankErrorKey
-  val errorKeyInvalid = EmploymentIncomeInvalidErrorKey
+  val errorKeyInvalid = employmentIncomeInvalidErrorKey
 
 
   "ParentEmploymentIncomeCY Form" must {

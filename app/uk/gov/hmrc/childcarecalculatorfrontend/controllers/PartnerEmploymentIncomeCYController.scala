@@ -38,20 +38,21 @@ class PartnerEmploymentIncomeCYController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        form: PartnerEmploymentIncomeCYForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.partnerEmploymentIncomeCY match {
-        case None => PartnerEmploymentIncomeCYForm()
-        case Some(value) => PartnerEmploymentIncomeCYForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(partnerEmploymentIncomeCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      PartnerEmploymentIncomeCYForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode))),
         (value) =>

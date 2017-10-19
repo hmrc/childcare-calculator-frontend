@@ -16,13 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.{Inject, Singleton}
+
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object PartnerEmploymentIncomeCYForm extends FormErrorHelper {
+@Singleton
+class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   def partnerEmploymentIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+    val minValue: Double = appConfig.minEmploymentIncome
+    val maxValue: Double = appConfig.maxEmploymentIncome
 
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
@@ -30,7 +37,15 @@ object PartnerEmploymentIncomeCYForm extends FormErrorHelper {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+
+        case Some(strValue) if(strValue.matches(decimalRegex)) =>
+          val value = BigDecimal(strValue)
+
+          if (validateInRange(value, minValue, maxValue)) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyBlank)
+          }
         case _ => produceError(key, errorKeyInvalid)
       }
     }
@@ -38,6 +53,6 @@ object PartnerEmploymentIncomeCYForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey, errorKeyInvalid: String = employmentIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(partnerEmploymentIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
 }

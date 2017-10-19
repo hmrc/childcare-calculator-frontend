@@ -31,7 +31,7 @@ class ParentWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends FormE
 
     val minValue: Double = appConfig.minWorkingHours
     val maxValue: Double = appConfig.maxWorkingHours
-    val decimalRegex: String = "0*[0-9]{1,6}(\\.[0-9]{1,2})?".r.toString()
+    val decimalRegex: String = "0*[0-9]{1,2}(\\.[0-9])?".r.toString()
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
       data.get(key) match {
