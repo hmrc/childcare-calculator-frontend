@@ -640,3 +640,9 @@ howMuchPartnerPayPension.heading = How much does your partner pay into their pen
 howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.error = You must tell the calculator how much your partner pays into their pension a month
 howMuchPartnerPayPension.invalid = Please only enter a value of up to two decimal places
+
+howMuchBothPayPension.title = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.heading = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.field1 = Your pension
+howMuchBothPayPension.field2 = Partner’s pension
+howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
