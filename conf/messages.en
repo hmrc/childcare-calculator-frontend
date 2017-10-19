@@ -601,6 +601,14 @@ bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now,
 bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work last year
 bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
+partnerAnyOtherIncomeLY.title = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.heading = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
+partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income last year
+
+
 yourOtherIncomeLY.title = Did you get any other income last year?
 yourOtherIncomeLY.heading = Did you get any other income last year?
 yourOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
