@@ -377,8 +377,10 @@ taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
 taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
-noOfChildren.title = noOfChildren
-noOfChildren.heading = noOfChildren
+noOfChildren.title = How many children do you have?
+noOfChildren.heading = How many children do you have?
+noOfChildren.hint.text = Only include children under the age of 20 that you're responsible for.
+noOfChildren.error = You must enter a number that's not below 1 or above 19
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
 maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
@@ -393,11 +395,12 @@ maxFreeHoursInfo.give.more.info = Give the calculator more information to see if
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
 
-yourOtherIncomeThisYear.title = Will you get any other income this tax year?
-yourOtherIncomeThisYear.heading = Will you get any other income this tax year?
+yourOtherIncomeThisYear.title = Will you get any other income this year?
+yourOtherIncomeThisYear.heading = Will you get any other income this year?
 yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
+yourOtherIncomeThisYear.error = Select yes if you will get any other income this year
 
 yourIncomeInfo.title = Your income this tax year
 yourIncomeInfo.heading = Your income this tax year
@@ -408,6 +411,7 @@ yourIncomeInfo.li.pensions = pension contributions
 yourIncomeInfo.li.other_income = other income
 yourIncomeInfo.li.benefits_income = income from benefits
 yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfo.checkYourAnswersLabel = Your income this tax year
 
 partnerIncomeInfo.title = Your partner’s income this tax year
 partnerIncomeInfo.heading = Your partner’s income this tax year
@@ -417,28 +421,34 @@ partnerIncomeInfo.li.income_paid_work = income from paid work
 partnerIncomeInfo.li.pensions = pension contributions
 partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
+partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.error = You must tell the calculator if you had any paid work this year
+parentPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
 
 partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.error = You must tell the calculator if your partner had any paid work this year
+partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
 
 bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
+bothPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+
 whoPaysIntoPension.title = Who pays into a pension?
 whoPaysIntoPension.heading = Who pays into a pension?
 whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
 whoPaysIntoPension.error = You must tell the calculator who pays into a pension
+whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
 whoGetsOtherIncomeCY.heading = Who will get other income?
@@ -447,6 +457,230 @@ whoGetsOtherIncomeCY.partner = Partner
 whoGetsOtherIncomeCY.both = Both
 whoGetsOtherIncomeCY.checkYourAnswersLabel = Who will get other income?
 whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner will get other income
+
+youAnyTheseBenefitsCY.title = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.heading = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+youAnyTheseBenefitsCY.li.income_support = Income support
+youAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsCY.li.pensions = Pension Credit
+youAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsCY.li.attendance = Attendance allowance
+youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.error = You must tell the calculator if you had any of these benefits this year
+
+partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
+partnerAnyTheseBenefitsCY.heading = Has your partner had any of these benefits this year?
+partnerAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+partnerAnyTheseBenefitsCY.li.income_support = Income support
+partnerAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+partnerAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+partnerAnyTheseBenefitsCY.li.pensions = Pension Credit
+partnerAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+partnerAnyTheseBenefitsCY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
+partnerAnyTheseBenefitsCY.error = You must tell the calculator if your partner had any of these benefits this year
+
+
+bothAnyTheseBenefitsCY.title = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.heading = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+bothAnyTheseBenefitsCY.li.income_support = Income support
+bothAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsCY.li.pensions = Pension Credit
+bothAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsCY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
+
+
+partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
+partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year
+
+bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
+bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?
+bothOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+bothOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
+bothOtherIncomeThisYear.error = Select yes if you, your partner, or both of you will get any other income this year
+
+YouPaidPensionCY.title = Have you paid into a work pension this year?
+YouPaidPensionCY.heading = Have you paid into a work pension this year?
+YouPaidPensionCY.checkYourAnswersLabel = YouPaidPensionCY
+YouPaidPensionCY.error = You must answer yes if you have paid into a pension through payroll this year
+PartnerPaidPensionCY.title = Has your partner paid into a work pension this year?
+PartnerPaidPensionCY.heading = Has your partner paid into a work pension this year?
+PartnerPaidPensionCY.checkYourAnswersLabel = Has your partner paid into a work pension this year?
+PartnerPaidPensionCY.error = You must answer yes if your partner has paid into a pension through payroll this year
+
+bothPaidPensionCY.title = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.heading = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.error = You must answer yes if you, your partner, or both have paid into a pension through payroll this year
+
+whosHadBenefits.title = Who’s had benefits?
+whosHadBenefits.heading = Who’s had benefits?
+whosHadBenefits.you = You
+whosHadBenefits.partner = Partner
+whosHadBenefits.both = Both
+whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
+whosHadBenefits.error = You must tell the calculator who has had benefits
+
+whoGetsStatutoryCY.title = Who will get statutory pay?
+whoGetsStatutoryCY.heading = Who will get statutory pay?
+whoGetsStatutoryCY.you = You
+whoGetsStatutoryCY.partner = Partner
+whoGetsStatutoryCY.both = Both
+whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
+whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
+
+
+statutoryPayAWeek.title = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.heading = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.checkYourAnswersLabel = statutoryPayAWeek
+
+youPaidPensionPY.title = Did you pay into your work pension last year?
+youPaidPensionPY.heading = Did you pay into your work pension last year?
+youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
+youPaidPensionPY.error = You must answer yes if you have paid into a pension through payroll this year
+partnerPaidPensionPY.title = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.heading = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
+
+bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
+
+yourStatutoryPayCY.title = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.heading = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.checkYourAnswersLabel = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+yourStatutoryPayCY.error = You must select yes if you will get statutory pay this year
+
+partnerStatutoryPayCY.title = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.heading = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.checkYourAnswersLabel = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.hint = This is pay from your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+partnerStatutoryPayCY.error = You must select yes if your partner will get statutory pay this year
+
+bothStatutoryPayCY.title = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.heading = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.checkYourAnswersLabel = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+bothStatutoryPayCY.error = You must select yes if you, your partner or both get statutory pay this year
+
+parentPaidWorkPY.title = You are not working now, but have you had any paid work last year
+parentPaidWorkPY.heading = You are not working now, but have you had any paid work last year
+parentPaidWorkPY.checkYourAnswersLabel = You are not working now, but have you had any paid work last year
+parentPaidWorkPY.error = You must tell the calculator if you had any paid work last year
+parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work last year?
+partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work last year?
+partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work last year?
+partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work last year
+partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+bothPaidWorkPY.title = You and your partner isn’t working now, but have they had any paid work last year?
+bothPaidWorkPY.heading = You and your partner isn’t working now, but have they had any paid work last year?
+bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work last year?
+bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work last year
+bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+partnerAnyOtherIncomeLY.title = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.heading = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
+partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income last year
+
+
+yourOtherIncomeLY.title = Did you get any other income last year?
+yourOtherIncomeLY.heading = Did you get any other income last year?
+yourOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+yourOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
+yourOtherIncomeLY.error = Select yes if you got any other income last year
+
+partnerBenefitsIncomeCY.title = How much will your partner get in benefits this year?
+partnerBenefitsIncomeCY.heading = How much will your partner get in benefits this year?
+partnerBenefitsIncomeCY.info = Partner’s benefits income
+partnerBenefitsIncomeCY.error = You must tell the calculator how much your partner got paid in benefits this year
+partnerBenefitsIncomeCY.checkYourAnswersLabel = How much will your partner get in benefits this year?
+
+bothBenefitsIncomeCY.title = How much will you and your partner get in benefits this year?
+bothBenefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
+bothBenefitsIncomeCY.info_you = Your benefits income
+bothBenefitsIncomeCY.info_partner = Partner’s benefits income
+bothBenefitsIncomeCY.error = You must tell the calculator how much you and your partner got paid in benefits last year
+bothBenefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get in benefits this year?
+
+youBenefitsIncomeCY.title = How much will you get in benefits this year?
+youBenefitsIncomeCY.heading = How much will you get in benefits this year?
+youBenefitsIncomeCY.info = Your benefits income
+youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
+youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
+
+yourIncomeInfoPY.title = Your income last tax year
+yourIncomeInfoPY.heading = Your income last tax year
+yourIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfoPY.li.income_paid_work = income from paid work
+yourIncomeInfoPY.li.pensions = pension contributions
+yourIncomeInfoPY.li.other_income = other income
+yourIncomeInfoPY.li.benefits_income = income from benefits
+yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfoPY.checkYourAnswersLabel = Your income last tax year
+
+partnerIncomeInfoPY.title = Your partner’s income last tax year
+partnerIncomeInfoPY.heading = Your partner’s income last tax year
+partnerIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+partnerIncomeInfoPY.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfoPY.li.income_paid_work = income from paid work
+partnerIncomeInfoPY.li.pensions = pension contributions
+partnerIncomeInfoPY.li.other_income = other income
+partnerIncomeInfoPY.li.benefits_income = income from benefits
+partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
+partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+whoOtherIncomePY.title = Who got other income last year?
+whoOtherIncomePY.heading = Who got other income last year?
+whoOtherIncomePY.you = You
+whoOtherIncomePY.partner = Partner
+whoOtherIncomePY.both = Both
+whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
+whoOtherIncomePY.error = You must tell the calculator if you or your partner got other income
+
+whoGetsStatutoryPY.title = Who got statutory pay last year?
+whoGetsStatutoryPY.heading = Who got statutory pay last year?
+whoGetsStatutoryPY.you = You
+whoGetsStatutoryPY.partner = Partner
+whoGetsStatutoryPY.both = Both
+whoGetsStatutoryPY.checkYourAnswersLabel = Who got statutory pay last year?
+whoGetsStatutoryPY.error = You must tell the calculator who got statutory pay last year.
+
+whoPaidIntoPensionPY.title = Who paid into a pension?
+whoPaidIntoPensionPY.heading = Who paid into a pension?
+whoPaidIntoPensionPY.you = You
+whoPaidIntoPensionPY.partner = Partner
+whoPaidIntoPensionPY.both = Both
+whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
+whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
+
 
 otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?

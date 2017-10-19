@@ -36,6 +36,8 @@
 
         @components.heading("partnerPaidWorkCY.heading", "heading-xlarge")
 
+        <p>@messages("partnerPaidWorkCY.currentYear.startEndDate")</p>
+
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
             label = messages("partnerPaidWorkCY.heading"),
