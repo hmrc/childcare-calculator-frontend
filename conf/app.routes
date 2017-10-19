@@ -373,3 +373,13 @@ GET        /whoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfr
 POST       /whoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoGetsStatutoryPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoGetsStatutoryPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoGetsStatutoryPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoGetsStatutoryPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsStatutoryPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoOtherIncomePYController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoOtherIncomePYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoOtherIncomePYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoOtherIncomePYController.onSubmit(mode: Mode = CheckMode)
