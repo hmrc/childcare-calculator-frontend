@@ -38,20 +38,21 @@ class YouNoWeeksStatPayCYController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                          form: YouNoWeeksStatPayCYForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.youNoWeeksStatPayCY match {
-        case None => YouNoWeeksStatPayCYForm()
-        case Some(value) => YouNoWeeksStatPayCYForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(youNoWeeksStatPayCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      YouNoWeeksStatPayCYForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
           Future.successful(BadRequest(youNoWeeksStatPayCY(appConfig, formWithErrors, mode))),
         (value) =>

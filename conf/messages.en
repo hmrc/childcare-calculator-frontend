@@ -607,6 +607,8 @@ youNoWeeksStatPayCY.heading = How many weeks will you take this year?
 youNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will you take this year?
 youNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
 youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
+youNoWeeksStatPayCY.numeric.error = non numeric
+
 youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
-youNoWeeksStatPayCY.invalid = You must enter a number with no more than 2 digits
+youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
 

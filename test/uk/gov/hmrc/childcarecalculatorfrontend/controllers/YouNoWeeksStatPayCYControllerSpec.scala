@@ -32,13 +32,18 @@ class YouNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val youNoWeeksStatPayCYForm = new YouNoWeeksStatPayCYForm(frontendAppConfig).apply()
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YouNoWeeksStatPayCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new YouNoWeeksStatPayCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+     new DataRequiredActionImpl,
+     new YouNoWeeksStatPayCYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = YouNoWeeksStatPayCYForm()) = youNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = youNoWeeksStatPayCYForm) = youNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 12
 
   "YouNoWeeksStatPayCY Controller" must {
 
@@ -55,7 +60,7 @@ class YouNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YouNoWeeksStatPayCYForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(youNoWeeksStatPayCYForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -63,6 +68,7 @@ class YouNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
+      println("********************the result is "+result+"*********************")
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
@@ -70,7 +76,7 @@ class YouNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = YouNoWeeksStatPayCYForm.apply().bind(Map("value" -> "invalid value"))
+      val boundForm = youNoWeeksStatPayCYForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

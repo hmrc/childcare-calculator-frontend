@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.youNoWeeksStatPayCYInvalidErrorKey
+
 object ChildcareConstants {
   val you = "you"
   val partner = "partner"
@@ -73,4 +75,5 @@ object ChildcareConstants {
   val bothPaidWorkPYErrorKey = "bothPaidWorkPY.error"
   val youNoWeeksStatPayCYErrorKey = "youNoWeeksStatPayCY.error"
   val youNoWeeksStatPayCYInvalidErrorKey = "youNoWeeksStatPayCY.invalid"
+  val youNoWeeksStatPayCYNumericErrorKey = "youNoWeeksStatPayCY.numeric.error"
 }
