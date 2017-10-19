@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.FormError
+import play.api.data.validation.{Constraint, Valid}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelper {
@@ -25,6 +26,13 @@ class FormErrorHelper {
 
   def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
     value >= minValue && value <= maxValue
+  }
+
+  def nonEmpty(string: String): Boolean = string.nonEmpty
+
+  def validateDecimalInRange(value: String, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
+    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+    if (value.matches(decimalRegex)) validateInRange(BigDecimal(value), minValue, maxValue) else false
   }
 
   def getTaxCodeLetter(value: String): String = {
@@ -42,6 +50,13 @@ class FormErrorHelper {
           lastTwoChar
         }
       case `taxCodeLength_four` => lastOneChar
+    }
+  }
+
+  def stopOnFirstFail[T](constraints: Constraint[T]*) = Constraint { field: T =>
+    constraints.toList dropWhile (_(field) == Valid) match {
+      case Nil => Valid
+      case constraint :: _ => constraint(field)
     }
   }
 }

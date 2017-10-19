@@ -16,16 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.Inject
+
 import play.api.data.Form
 import play.api.data.Forms._
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 
-object OtherIncomeAmountCYForm {
+class OtherIncomeAmountCYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+
+  val minValue: Double = appConfig.minOtherIncome
+  val maxValue: Double = appConfig.maxOtherIncome
 
   def apply(): Form[OtherIncomeAmountCY] = Form(
     mapping(
-      "parentOtherIncome" -> nonEmptyText,
-      "partnerOtherIncome" -> nonEmptyText
+      "parentOtherIncome" -> text
+        .verifying("yourOtherIncomeAmountCY.blank", nonEmpty _)
+        .verifying("otherIncomeAmountCY.invalid", validateDecimalInRange(_, minValue, maxValue)),
+      "partnerOtherIncome" -> text
+        .verifying("partnerOtherIncomeAmountCY.blank", nonEmpty _)
+        .verifying("otherIncomeAmountCY.invalid", validateDecimalInRange(_, minValue, maxValue))
     )(OtherIncomeAmountCY.apply)(OtherIncomeAmountCY.unapply)
   )
+
 }

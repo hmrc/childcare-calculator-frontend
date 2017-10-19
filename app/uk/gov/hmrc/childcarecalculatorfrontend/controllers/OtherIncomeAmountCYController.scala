@@ -37,20 +37,21 @@ class OtherIncomeAmountCYController @Inject()(appConfig: FrontendAppConfig,
                                                   dataCacheConnector: DataCacheConnector,
                                                   navigator: Navigator,
                                                   getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                  requireData: DataRequiredAction,
+                                                  form : OtherIncomeAmountCYForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.otherIncomeAmountCY match {
-        case None => OtherIncomeAmountCYForm()
-        case Some(value) => OtherIncomeAmountCYForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(otherIncomeAmountCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      OtherIncomeAmountCYForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[OtherIncomeAmountCY]) =>
           Future.successful(BadRequest(otherIncomeAmountCY(appConfig, formWithErrors, mode))),
         (value) =>
