@@ -409,6 +409,11 @@ POST       /whoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfronte
 GET        /changeWhoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoOtherIncomePYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoOtherIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoOtherIncomePYController.onSubmit(mode: Mode = CheckMode)
 
+GET        /whosHadBenefitsPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /whosHadBenefitsPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhosHadBenefitsPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhosHadBenefitsPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsPYController.onSubmit(mode: Mode = CheckMode)
+
 GET        /otherIncomeAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad(mode: Mode = NormalMode)
 POST       /otherIncomeAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeOtherIncomeAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad(mode: Mode = CheckMode)
@@ -428,4 +433,3 @@ GET        /employmentIncomeCY                       uk.gov.hmrc.childcarecalcul
 POST       /employmentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = CheckMode)
-
