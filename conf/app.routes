@@ -258,3 +258,8 @@ GET        /partnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalcul
 POST       /partnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerOtherIncomeAmountCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /employmentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /employmentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = CheckMode)

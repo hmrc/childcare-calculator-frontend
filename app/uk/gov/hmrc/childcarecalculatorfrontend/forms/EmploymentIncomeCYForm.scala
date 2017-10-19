@@ -16,27 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 
-@Singleton
-class OtherIncomeAmountCYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+class EmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   val minValue: Double = appConfig.minIncome
   val maxValue: Double = appConfig.maxIncome
 
-  def apply(): Form[OtherIncomeAmountCY] = Form(
+  def apply(): Form[EmploymentIncomeCY] = Form(
     mapping(
-      "parentOtherIncome" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("parentOtherIncome.required"),
-        validateDecimalInRange("parentOtherIncome.invalid", minValue, maxValue))),
-      "partnerOtherIncome" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("partnerOtherIncome.required"),
-        validateDecimalInRange("partnerOtherIncome.invalid", minValue, maxValue)))
-    )(OtherIncomeAmountCY.apply)(OtherIncomeAmountCY.unapply)
+      "parentEmploymentIncome" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("parentEmploymentIncome.required"),
+        validateDecimalInRange("parentEmploymentIncome.invalid", minValue, maxValue))),
+      "partnerEmploymentIncome" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("partnerEmploymentIncome.required"),
+        validateDecimalInRange("partnerEmploymentIncome.invalid", minValue, maxValue)))
+    )(EmploymentIncomeCY.apply)(EmploymentIncomeCY.unapply)
   )
 }

@@ -29,8 +29,9 @@ class PartnerOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) ex
 
   def partnerOtherIncomeAmountCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val minValue: Double = appConfig.minOtherIncome
-    val maxValue: Double = appConfig.maxOtherIncome
+    val minValue: Double = appConfig.minIncome
+    val maxValue: Double = appConfig.maxIncome
+
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
     def bind(key: String, data: Map[String, String]) = {
@@ -52,6 +53,6 @@ class PartnerOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) ex
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = parentOtherIncomeAmountCYBlankErrorKey, errorKeyInvalid: String = parentOtherIncomeAmountCYInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = partnerOtherIncomeRequiredErrorKey, errorKeyInvalid: String = partnerOtherIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(partnerOtherIncomeAmountCYFormatter(errorKeyBlank, errorKeyInvalid))))
 }

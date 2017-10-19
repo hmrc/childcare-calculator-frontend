@@ -21,8 +21,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class PartnerOtherIncomeAmountCYFormSpec extends FormSpec {
   val partnerOtherIncomeAmountCYForm: Form[BigDecimal] = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
-  val errorKeyBlank = parentOtherIncomeAmountCYBlankErrorKey
-  val errorKeyInvalid = parentOtherIncomeAmountCYInvalidErrorKey
+  val errorKeyBlank = partnerOtherIncomeRequiredErrorKey
+  val errorKeyInvalid = partnerOtherIncomeInvalidErrorKey
 
   "PartnerOtherIncomeAmountCY Form" must {
 

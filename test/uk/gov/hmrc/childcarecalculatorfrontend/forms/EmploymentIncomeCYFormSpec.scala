@@ -17,27 +17,27 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 
-class OtherIncomeAmountCYFormSpec extends FormBehaviours {
+class EmploymentIncomeCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "parentOtherIncome" -> "1",
-    "partnerOtherIncome" -> "2"
+    "parentEmploymentIncome" -> "1",
+    "partnerEmploymentIncome" -> "2"
   )
 
   override val maxValue: BigDecimal = 999999.99
   override val minValue: BigDecimal = 0
 
-  val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
+  val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
-  "OtherIncomeAmountCY form" must {
-    behave like questionForm(OtherIncomeAmountCY("1", "2"))
+  "EmploymentIncomeCY form" must {
+    behave like questionForm(EmploymentIncomeCY("1", "2"))
 
-    behave like formWithMandatoryTextFields("parentOtherIncome", "partnerOtherIncome")
+    behave like formWithMandatoryTextFields("parentEmploymentIncome", "partnerEmploymentIncome")
 
-    behave like formWithDecimalField("parentOtherIncome", "partnerOtherIncome")
+    behave like formWithDecimalField("parentEmploymentIncome", "partnerEmploymentIncome")
 
-    behave like formWithInRange("parentOtherIncome", "partnerOtherIncome")
+    behave like formWithInRange("parentEmploymentIncome", "partnerEmploymentIncome")
   }
 }
