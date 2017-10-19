@@ -28,11 +28,11 @@ class ParentEmploymentIncomeCYViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "parentEmploymentIncomeCY"
 
-  def createView = () => parentEmploymentIncomeCY(frontendAppConfig, new ParentEmploymentIncomeCYForm(frontendAppConfig), NormalMode)(fakeRequest, messages)
+  def createView = () => parentEmploymentIncomeCY(frontendAppConfig, new ParentEmploymentIncomeCYForm(frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[BigDecimal]) => parentEmploymentIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = new ParentEmploymentIncomeCYForm(frontendAppConfig)
+  val form = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
 
   "ParentEmploymentIncomeCY view" must {
     behave like normalPage(createView, messageKeyPrefix)
