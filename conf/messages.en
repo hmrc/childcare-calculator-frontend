@@ -759,7 +759,6 @@ partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
 partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
 
-
 bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
@@ -774,6 +773,18 @@ bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
 
+bothBenefitsIncomePY.title = How much did you and your partner get in benefits last year?
+bothBenefitsIncomePY.heading = How much did you and your partner get in benefits last year?
+bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income last year
+bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income last year
+bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner get in benefits last year?
+
+parentBenefitsIncomePY.required = You must tell the calculator how much you got paid in benefits last year
+partnerBenefitsIncomePY.required = You must tell the calculator how much your partner got paid in benefits last year
+
+parentBenefitsIncomePY.invalid = Please enter a valid numerical value
+partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
+
 statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
@@ -782,3 +793,15 @@ registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error = You must tell the calculator if your children are registered blind
 registeredBlind.checkYourAnswersLabel = registeredBlind
+
+partnerBenefitsIncomePY.title = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.heading = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.info = Partner’s benefits income
+partnerBenefitsIncomePY.error = You must tell the calculator how much your partner got paid in benefits last year
+partnerBenefitsIncomePY.checkYourAnswersLabel = How much did your partner get in benefits last year?
+
+youBenefitsIncomePY.title = How much did you get in benefits last year?
+youBenefitsIncomePY.heading = How much did you get in benefits last year?
+youBenefitsIncomePY.info = Your benefits income
+youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
+youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
