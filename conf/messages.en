@@ -448,7 +448,6 @@ whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
 whoPaysIntoPension.error = You must tell the calculator who pays into a pension
-
 whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
@@ -602,6 +601,13 @@ bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now,
 bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work last year
 bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
+partnerAnyOtherIncomeLY.title = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.heading = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
+partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income last year
+
 yourOtherIncomeLY.title = Did you get any other income last year?
 yourOtherIncomeLY.heading = Did you get any other income last year?
 yourOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
@@ -614,13 +620,6 @@ partnerBenefitsIncomeCY.heading = How much will your partner get in benefits thi
 partnerBenefitsIncomeCY.info = Partner’s benefits income
 partnerBenefitsIncomeCY.error = You must tell the calculator how much your partner got paid in benefits this year
 partnerBenefitsIncomeCY.checkYourAnswersLabel = How much will your partner get in benefits this year?
-
-bothBenefitsIncomeCY.title = How much will you and your partner get in benefits this year?
-bothBenefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
-bothBenefitsIncomeCY.info_you = Your benefits income
-bothBenefitsIncomeCY.info_partner = Partner’s benefits income
-bothBenefitsIncomeCY.error = You must tell the calculator how much you and your partner got paid in benefits last year
-bothBenefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get in benefits this year?
 
 youBenefitsIncomeCY.title = How much will you get in benefits this year?
 youBenefitsIncomeCY.heading = How much will you get in benefits this year?
@@ -646,3 +645,5 @@ howMuchBothPayPension.heading = How much do you and your partner pay into your p
 howMuchBothPayPension.field1 = Your pension
 howMuchBothPayPension.field2 = Partner’s pension
 howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPension.required = Please tell the calculator how much you both pay into your pensions a month

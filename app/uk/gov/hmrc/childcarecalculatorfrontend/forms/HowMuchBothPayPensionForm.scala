@@ -17,15 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.{text, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 
-object HowMuchBothPayPensionForm {
+object HowMuchBothPayPensionForm extends FormErrorHelper{
 
   def apply(): Form[HowMuchBothPayPension] = Form(
     mapping(
-      "field1" -> nonEmptyText,
-      "field2" -> nonEmptyText
+      "field1" -> text.verifying(returnOnFirstFailure(
+      valueNonEmpty("howMuchBothPayPension.required"),
+      validateDecimal("howMuchBothPayPension.invalid"))),
+      "field2" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("howMuchBothPayPension.required"),
+        validateDecimal("howMuchBothPayPension.invalid")))
     )(HowMuchBothPayPension.apply)(HowMuchBothPayPension.unapply)
   )
 }

@@ -39,9 +39,9 @@ object WhosHadBenefitsForm extends FormErrorHelper {
     Form(single("value" -> of(WhosHadBenefitsFormatter)))
 
   def options = Seq(
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.BOTH.toString)
+    InputOption("whosHadBenefits", YouPartnerBothEnum.YOU.toString),
+    InputOption("whosHadBenefits", YouPartnerBothEnum.PARTNER.toString),
+    InputOption("whosHadBenefits", YouPartnerBothEnum.BOTH.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
