@@ -650,3 +650,10 @@ partnerIncomeInfoPY.li.benefits_income = income from benefits
 partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
+whoOtherIncomePY.title = Who got other income last year?
+whoOtherIncomePY.heading = Who got other income last year?
+whoOtherIncomePY.you = You
+whoOtherIncomePY.partner = Partner
+whoOtherIncomePY.both = Both
+whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
+whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner got other income
