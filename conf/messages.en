@@ -627,6 +627,30 @@ youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
 
+
+howMuchYouPayPension.title = How much do you pay into your pension a month?
+howMuchYouPayPension.heading = How much do you pay into your pension a month?
+howMuchYouPayPension.error = You must tell the calculator how much you pay into your pension a month
+howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
+howMuchYouPayPension.invalid = Please only enter a numerical value of up to two decimal places
+howMuchYouPayPension.required = Please tell the calculator how much you pay into your pension a month
+
+
+howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.heading = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.error = You must tell the calculator how much your partner pays into their pension a month
+howMuchPartnerPayPension.required = Please tell the calculator how much your partner pays into their pension a month
+howMuchPartnerPayPension.invalid = Please only enter a numerical value of up to two decimal places
+
+howMuchBothPayPension.title = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.heading = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.yourPension = Your pension
+howMuchBothPayPension.partnerPension = Partner’s pension
+howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPension.required = Please tell the calculator how much you both pay into your pensions a month
+
 benefitsIncomeCY.title = How much will you and your partner get in benefits this year?
 benefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
 benefitsIncomeCY.parentBenefitsIncome = Your benefits income
