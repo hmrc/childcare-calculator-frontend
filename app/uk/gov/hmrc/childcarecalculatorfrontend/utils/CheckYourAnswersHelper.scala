@@ -23,6 +23,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
 
+  def bothOtherIncomeLY: Option[AnswerRow] = userAnswers.bothOtherIncomeLY map {
+    x => AnswerRow("bothOtherIncomeLY.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.BothOtherIncomeLYController.onPageLoad(CheckMode).url)
+  }
   def partnerAnyOtherIncomeLY: Option[AnswerRow] = userAnswers.partnerAnyOtherIncomeLY map {
     x => AnswerRow("partnerAnyOtherIncomeLY.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.PartnerAnyOtherIncomeLYController.onPageLoad(CheckMode).url)
   }
@@ -38,6 +41,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def whoGetsStatutoryPY: Option[AnswerRow] = userAnswers.whoGetsStatutoryPY map {
     x => AnswerRow("whoGetsStatutoryPY.checkYourAnswersLabel", s"whoGetsStatutoryPY.$x", true, routes.WhoGetsStatutoryPYController.onPageLoad(CheckMode).url)
+
   }
 
   def youBenefitsIncomeCY: Option[AnswerRow] = userAnswers.youBenefitsIncomeCY map {
