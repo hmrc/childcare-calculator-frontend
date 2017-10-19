@@ -627,6 +627,18 @@ youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
 
+benefitsIncomeCY.title = How much will you and your partner get in benefits this year?
+benefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
+benefitsIncomeCY.parentBenefitsIncome = Your benefits income
+benefitsIncomeCY.partnerBenefitsIncome = Partner’s benefits income
+benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get in benefits this year?
+
+parentBenefitsIncome.required = You must tell the calculator how much you got paid in benefits this year
+partnerBenefitsIncome.required = You must tell the calculator how much your partner got paid in benefits this year
+
+parentBenefitsIncome.invalid = Please enter a valid numerical value
+partnerBenefitsIncome.invalid = Please enter a valid numerical value
+
 yourIncomeInfoPY.title = Your income last tax year
 yourIncomeInfoPY.heading = Your income last tax year
 yourIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.

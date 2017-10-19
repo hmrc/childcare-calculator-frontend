@@ -18,9 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, OtherIncomeAmountCY, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, EmploymentIncomeCY, OtherIncomeAmountCY, YouPartnerBothEnum}
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def benefitsIncomeCY: Option[BenefitsIncomeCY] = cacheMap.getEntry[BenefitsIncomeCY](BenefitsIncomeCYId.toString)
+
   def employmentIncomeCY: Option[EmploymentIncomeCY] = cacheMap.getEntry[EmploymentIncomeCY](EmploymentIncomeCYId.toString)
 
   def partnerOtherIncomeAmountCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerOtherIncomeAmountCYId.toString)

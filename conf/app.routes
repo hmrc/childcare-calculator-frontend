@@ -409,3 +409,8 @@ POST       /employmentIncomeCY                       uk.gov.hmrc.childcarecalcul
 GET        /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEmploymentIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode = CheckMode)
 
+
+GET        /benefitsIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /benefitsIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBenefitsIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBenefitsIncomeCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onSubmit(mode: Mode = CheckMode)
