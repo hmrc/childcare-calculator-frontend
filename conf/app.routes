@@ -368,3 +368,8 @@ POST       /changeYourOtherIncomeLY                       uk.gov.hmrc.childcarec
 GET        /yourIncomeInfoPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoPYController.onPageLoad()
 
 GET        /partnerIncomeInfoPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoPYController.onPageLoad()
+
+GET        /whoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoPaidIntoPensionPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onSubmit(mode: Mode = CheckMode)

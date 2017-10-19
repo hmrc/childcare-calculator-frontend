@@ -448,7 +448,6 @@ whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
 whoPaysIntoPension.error = You must tell the calculator who pays into a pension
-
 whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
@@ -649,4 +648,12 @@ partnerIncomeInfoPY.li.other_income = other income
 partnerIncomeInfoPY.li.benefits_income = income from benefits
 partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+whoPaidIntoPensionPY.title = Who paid into a pension?
+whoPaidIntoPensionPY.heading = Who paid into a pension?
+whoPaidIntoPensionPY.you = You
+whoPaidIntoPensionPY.partner = Partner
+whoPaidIntoPensionPY.both = Both
+whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
+whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
