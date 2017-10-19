@@ -53,7 +53,7 @@ class YouBenefitsIncomeCYController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      YouBenefitsIncomeCYForm(youBenefitsIncomeCYErrorKey).bindFromRequest().fold(
+      YouBenefitsIncomeCYForm(parentBenefitsIncomeCYRequiredErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(youBenefitsIncomeCY(appConfig, formWithErrors, mode))),
         (value) =>

@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-case object BothBenefitsIncomeCYId extends Identifier {
-  override def toString: String = "bothBenefitsIncomeCY"
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
+
+class BenefitsIncomeCYFormSpec extends FormBehaviours {
+
+  val validData: Map[String, String] = Map(
+    "parentBenefitsIncome" -> "1",
+    "partnerBenefitsIncome" -> "2"
+  )
+
+  val form = BenefitsIncomeCYForm()
+
+  "BenefitsIncomeCY form" must {
+    behave like questionForm(BenefitsIncomeCY("1", "2"))
+
+    behave like formWithMandatoryTextFields("parentBenefitsIncome", "partnerBenefitsIncome")
+  }
 }
