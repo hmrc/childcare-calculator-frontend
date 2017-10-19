@@ -777,3 +777,8 @@ bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partn
 statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
+
+registeredBlind.title = Are any of your children registered blind?
+registeredBlind.heading = Are any of your children registered blind?
+registeredBlind.error = You must tell the calculator if your children are registered blind
+registeredBlind.checkYourAnswersLabel = registeredBlind
