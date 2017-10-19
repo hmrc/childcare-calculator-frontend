@@ -43,7 +43,7 @@ class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) exte
           if (validateInRange(value, minValue, maxValue)) {
             Right(value)
           } else {
-            produceError(key, errorKeyBlank)
+            produceError(key, errorKeyInvalid)
           }
         case _ => produceError(key, errorKeyInvalid)
       }
