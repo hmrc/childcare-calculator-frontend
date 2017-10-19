@@ -37,6 +37,10 @@ class FormErrorHelper {
     if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid else Invalid(ValidationError(message))
   }
 
+  def validateDecimal(message: String): Constraint[String] = Constraint[String]("error.required") { o =>
+    if (o.matches(decimalRegex)) Valid else Invalid(ValidationError(message))
+  }
+
   def getTaxCodeLetter(value: String): String = {
     val intRegex = """[0-9]""".r.toString()
     val lastTwoChar = value.substring(value.length - two)
