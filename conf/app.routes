@@ -364,3 +364,8 @@ GET        /yourOtherIncomeLY                       uk.gov.hmrc.childcarecalcula
 POST       /yourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /howMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onPageLoad(mode: Mode = NormalMode)
+POST       /howMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHowMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHowMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit(mode: Mode = CheckMode)

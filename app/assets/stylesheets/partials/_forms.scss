@@ -108,6 +108,15 @@ Error styling to bring in line with GDS
     font-weight: bold;
     text-decoration: underline;
 }
+/*
+=====================================
+Input styles
+=====================================
+*/
+
+.form-control {
+    border: 2px solid #0b0c0c;
+}
 
 /*
 =====================================
@@ -168,4 +177,20 @@ IE8: Remove square border from around new style radio buttons
 .lte-ie8 input[type="checkbox"],
 .lte-ie8 input[type="radio"] {
     border: none!important;
+}
+
+/*
+=====================================
+Currency symbol alignment
+=====================================
+*/
+
+.currencySymbol {
+    line-height: 1.875em;
+    float: left;
+}
+
+.currencyInput {
+        margin-left: 0.8em;
+        float: none;
 }

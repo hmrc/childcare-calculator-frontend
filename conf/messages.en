@@ -627,3 +627,8 @@ youBenefitsIncomeCY.heading = How much will you get in benefits this year?
 youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
+
+howMuchYouPayPension.title = How much do you pay into your pension a month?
+howMuchYouPayPension.heading = How much do you pay into your pension a month?
+howMuchYouPayPension.error = You must tell the calculator how much you pay into your pension a month
+howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
