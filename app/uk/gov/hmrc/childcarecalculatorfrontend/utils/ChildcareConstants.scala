@@ -64,6 +64,9 @@ object ChildcareConstants {
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"
   val partnerAnyTheseBenefitsCYErrorKey = "partnerAnyTheseBenefitsCY.error"
   val bothAnyTheseBenefitsCYErrorKey = "bothAnyTheseBenefitsCY.error"
+  val youAnyTheseBenefitsPYErrorKey = "youAnyTheseBenefitsPY.error"
+  val partnerAnyTheseBenefitsPYErrorKey = "partnerAnyTheseBenefitsPY.error"
+  val bothAnyTheseBenefitsPYErrorKey = "bothAnyTheseBenefitsPY.error"
   val whosHadBenefitsErrorKey = "whosHadBenefits.error"
   val whosHadBenefitsPYErrorKey = "whosHadBenefitsPY.error"
   val whoGetsStatutoryCYErrorKey = "whoGetsStatutoryCY.error"
@@ -79,4 +82,8 @@ object ChildcareConstants {
   val bothBenefitsIncomeCYErrorKey = "bothBenefitsIncomeCY.error"
   val whoPaidIntoPensionErrorKey = "whoPaidIntoPensionPY.error"
 
+  val parentOtherIncomeRequiredErrorKey = "parentOtherIncome.required"
+  val parentOtherIncomeInvalidErrorKey = "parentOtherIncome.invalid"
+  val partnerOtherIncomeRequiredErrorKey = "partnerOtherIncome.required"
+  val partnerOtherIncomeInvalidErrorKey = "partnerOtherIncome.invalid"
 }

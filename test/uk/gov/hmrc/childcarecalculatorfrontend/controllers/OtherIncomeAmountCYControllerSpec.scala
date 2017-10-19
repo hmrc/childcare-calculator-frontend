@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
@@ -7,22 +23,23 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.$className$Form
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.$className$Id
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, $className$}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$className;format="decap"$
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.OtherIncomeAmountCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.OtherIncomeAmountCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, OtherIncomeAmountCY}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
-class $className$ControllerSpec extends ControllerSpecBase {
+class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
+  val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new $className$Controller(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new OtherIncomeAmountCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, new OtherIncomeAmountCYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[$className$] = $className$Form()) = $className;format="decap"$(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[OtherIncomeAmountCY] = form) = otherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "$className$ Controller" must {
+  "OtherIncomeAmountCY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -32,16 +49,16 @@ class $className$ControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map($className$Id.toString -> Json.toJson($className$("value 1", "value 2")))
+      val validData = Map(OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("value 1", "value 2")))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString($className$Form().fill($className$("1", "2")))
+      contentAsString(result) mustBe viewAsString(form.fill(OtherIncomeAmountCY("value 1", "value 2")))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "1"), ("field2", "2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "10"), ("partnerOtherIncome", "10"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -51,7 +68,7 @@ class $className$ControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = $className$Form().bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -67,7 +84,7 @@ class $className$ControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "value 1"), ("partnerOtherIncome", "value 2"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
