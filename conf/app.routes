@@ -359,3 +359,8 @@ GET        /youBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfro
 POST       /youBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYouBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYouBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeLYController.onSubmit(mode: Mode = CheckMode)
