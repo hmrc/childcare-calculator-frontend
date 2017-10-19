@@ -28,8 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   def partnerEmploymentIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
-    val minValue: Double = appConfig.minEmploymentIncome
-    val maxValue: Double = appConfig.maxEmploymentIncome
+    val minValue: Double = appConfig.minIncome
+    val maxValue: Double = appConfig.maxIncome
 
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
