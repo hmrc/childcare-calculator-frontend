@@ -805,3 +805,19 @@ youBenefitsIncomePY.heading = How much did you get in benefits last year?
 youBenefitsIncomePY.info = Your benefits income
 youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
+
+youStatutoryPayPY.title = youStatutoryPayPY
+youStatutoryPayPY.heading = youStatutoryPayPY
+youStatutoryPayPY.checkYourAnswersLabel = youStatutoryPayPY
+
+partnerStatutoryPayPY.title = partnerStatutoryPayPY
+partnerStatutoryPayPY.heading = partnerStatutoryPayPY
+partnerStatutoryPayPY.checkYourAnswersLabel = partnerStatutoryPayPY
+
+bothStatutoryPayPY.title = bothStatutoryPayPY
+bothStatutoryPayPY.heading = bothStatutoryPayPY
+bothStatutoryPayPY.checkYourAnswersLabel = bothStatutoryPayPY
+
+yourStatutoryPayPY.title = yourStatutoryPayPY
+yourStatutoryPayPY.heading = yourStatutoryPayPY
+yourStatutoryPayPY.checkYourAnswersLabel = yourStatutoryPayPY

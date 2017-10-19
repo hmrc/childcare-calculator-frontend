@@ -458,3 +458,18 @@ GET        /registeredBlind                       uk.gov.hmrc.childcarecalculato
 POST       /registeredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode = NormalMode)
 GET        /changeRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPYController.onSubmit(mode: Mode = CheckMode)
