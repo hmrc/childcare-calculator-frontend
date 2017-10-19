@@ -784,3 +784,7 @@ partnerBenefitsIncomePY.required = You must tell the calculator how much your pa
 
 parentBenefitsIncomePY.invalid = Please enter a valid numerical value
 partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
+
+statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
+statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
+statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY

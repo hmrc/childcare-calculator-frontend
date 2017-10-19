@@ -438,3 +438,8 @@ GET        /bothBenefitsIncomePY                       uk.gov.hmrc.childcarecalc
 POST       /bothBenefitsIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothBenefitsIncomePYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeBothBenefitsIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothBenefitsIncomePYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBothBenefitsIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothBenefitsIncomePYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /statutoryPayAWeekLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekLYController.onPageLoad(mode: Mode = NormalMode)
+POST       /statutoryPayAWeekLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekLYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeStatutoryPayAWeekLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekLYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeStatutoryPayAWeekLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAWeekLYController.onSubmit(mode: Mode = CheckMode)
