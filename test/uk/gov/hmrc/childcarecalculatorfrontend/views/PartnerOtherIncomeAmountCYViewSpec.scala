@@ -18,26 +18,25 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothBenefitsIncomeCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerOtherIncomeAmountCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothBenefitsIncomeCY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmountCY
 
-class BothBenefitsIncomeCYViewSpec extends BigDecimalViewBehaviours {
+class PartnerOtherIncomeAmountCYViewSpec extends BigDecimalViewBehaviours {
 
-  val messageKeyPrefix = "bothBenefitsIncomeCY"
+  val form = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
+  val messageKeyPrefix = "partnerOtherIncomeAmountCY"
 
-  def createView = () => bothBenefitsIncomeCY(frontendAppConfig, BothBenefitsIncomeCYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerOtherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => bothBenefitsIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => partnerOtherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = BothBenefitsIncomeCYForm()
-
-  "BothBenefitsIncomeCY view" must {
-    behave like normalPage(createView, messageKeyPrefix, "info_you", "info_partner")
+  "PartnerOtherIncomeAmountCY view" must {
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.BothBenefitsIncomeCYController.onSubmit(NormalMode).url)
+    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.PartnerOtherIncomeAmountCYController.onSubmit(NormalMode).url)
   }
 }

@@ -16,15 +16,29 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.FormError
+import play.api.data.{FormError, Mapping}
+import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelper {
 
+  val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
   def produceError(key: String, error: String) = Left(Seq(FormError(key, error)))
 
   def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
     value >= minValue && value <= maxValue
+  }
+
+  def valueNonEmpty(message :  String): Constraint[String] = Constraint[String]("error.required") { o =>
+    if (o != null && o.trim.nonEmpty) Valid else Invalid(ValidationError(message))
+  }
+
+  def validateDecimalInRange(message :  String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String]("error.required") { o =>
+    if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid else Invalid(ValidationError(message))
+  }
+
+  def validateDecimal(message: String): Constraint[String] = Constraint[String]("error.required") { o =>
+    if (o.matches(decimalRegex)) Valid else Invalid(ValidationError(message))
   }
 
   def getTaxCodeLetter(value: String): String = {
@@ -42,6 +56,13 @@ class FormErrorHelper {
           lastTwoChar
         }
       case `taxCodeLength_four` => lastOneChar
+    }
+  }
+
+  def returnOnFirstFailure[T](constraints: Constraint[T]*) = Constraint { field: T =>
+    constraints.toList dropWhile (_(field) == Valid) match {
+      case Nil => Valid
+      case constraint :: _ => constraint(field)
     }
   }
 }
