@@ -37,8 +37,9 @@
 
         <p>@messages("youNoWeeksStatPayCY.year.start.end.date")</p>
 
+        <p>@messages("youNoWeeksStatPayCY.hint")</p>
 
-        @components.input_number(InputViewModel[Int]("value", form), label = messages("youNoWeeksStatPayCY.heading"), labelClass=Some("visually-hidden"), hint = Some(messages("youNoWeeksStatPayCY.hint")))
+        @components.input_number(InputViewModel[Int]("value", form), label = messages("youNoWeeksStatPayCY.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }
