@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object YouBenefitsIncomePYForm extends FormErrorHelper {
 
@@ -38,6 +39,6 @@ object YouBenefitsIncomePYForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = parentBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(youBenefitsIncomePYFormatter(errorKeyBlank, errorKeyInvalid))))
 }
