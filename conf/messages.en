@@ -806,18 +806,26 @@ youBenefitsIncomePY.info = Your benefits income
 youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
 
-youStatutoryPayPY.title = youStatutoryPayPY
-youStatutoryPayPY.heading = youStatutoryPayPY
-youStatutoryPayPY.checkYourAnswersLabel = youStatutoryPayPY
+yourStatutoryPayPY.title = Did you get statutory pay while on leave for a birth or adoption last year?
+yourStatutoryPayPY.heading = Did you get statutory pay while on leave for a birth or adoption last year?
+yourStatutoryPayPY.checkYourAnswersLabel = Did you get statutory pay while on leave for a birth or adoption last year?
+yourStatutoryPayPY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+yourStatutoryPayPY.error = You must select yes if you got statutory pay last year
+yourStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
 
-partnerStatutoryPayPY.title = partnerStatutoryPayPY
-partnerStatutoryPayPY.heading = partnerStatutoryPayPY
-partnerStatutoryPayPY.checkYourAnswersLabel = partnerStatutoryPayPY
 
-bothStatutoryPayPY.title = bothStatutoryPayPY
-bothStatutoryPayPY.heading = bothStatutoryPayPY
-bothStatutoryPayPY.checkYourAnswersLabel = bothStatutoryPayPY
+partnerStatutoryPayPY.title = Did your partner get statutory pay while on leave for a birth or adoption last year?
+partnerStatutoryPayPY.heading = Did your partner get statutory pay while on leave for a birth or adoption last year?
+partnerStatutoryPayPY.checkYourAnswersLabel = Did your partner get statutory pay while on leave for a birth or adoption last year?
+partnerStatutoryPayPY.hint = This is pay from your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+partnerStatutoryPayPY.error = You must select yes if your partner got statutory pay last year
+partnerStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
 
-yourStatutoryPayPY.title = yourStatutoryPayPY
-yourStatutoryPayPY.heading = yourStatutoryPayPY
-yourStatutoryPayPY.checkYourAnswersLabel = yourStatutoryPayPY
+
+bothStatutoryPayPY.title = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
+bothStatutoryPayPY.heading = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
+bothStatutoryPayPY.checkYourAnswersLabel = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
+bothStatutoryPayPY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+bothStatutoryPayPY.error = You must select yes if you, your partner or both got statutory pay last year
+bothStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
+

@@ -29,6 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothStatutoryPayPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothStatutoryPayPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
@@ -50,7 +51,7 @@ class BothStatutoryPayPYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm(bothStatutoryPayPYErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothStatutoryPayPY(appConfig, formWithErrors, mode))),
         (value) =>

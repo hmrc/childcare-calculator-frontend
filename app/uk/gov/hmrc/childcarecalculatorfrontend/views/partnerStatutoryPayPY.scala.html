@@ -36,6 +36,9 @@
 
         @components.heading("partnerStatutoryPayPY.heading", "heading-xlarge")
 
+        <p>@messages("partnerStatutoryPayPY.startEndDate")</p>
+        <p>@messages("partnerStatutoryPayPY.hint")</p>
+
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
             label = messages("partnerStatutoryPayPY.heading"),

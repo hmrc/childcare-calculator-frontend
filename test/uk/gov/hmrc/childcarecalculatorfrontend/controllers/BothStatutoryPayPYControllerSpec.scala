@@ -27,6 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothStatutoryPayPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothStatutoryPayPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class BothStatutoryPayPYControllerSpec extends ControllerSpecBase {
 
@@ -67,7 +68,7 @@ class BothStatutoryPayPYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm(bothStatutoryPayPYErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
