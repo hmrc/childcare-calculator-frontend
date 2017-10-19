@@ -601,3 +601,7 @@ bothPaidWorkPY.heading = You and your partner isn’t working now, but have they
 bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work last year?
 bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work last year
 bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+yourOtherIncomeLY.title = yourOtherIncomeLY
+yourOtherIncomeLY.heading = yourOtherIncomeLY
+yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
