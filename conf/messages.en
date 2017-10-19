@@ -788,3 +788,15 @@ partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
 statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
+
+partnerBenefitsIncomePY.title = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.heading = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.info = Partner’s benefits income
+partnerBenefitsIncomePY.error = You must tell the calculator how much your partner got paid in benefits last year
+partnerBenefitsIncomePY.checkYourAnswersLabel = How much did your partner get in benefits last year?
+
+youBenefitsIncomePY.title = How much did you get in benefits last year?
+youBenefitsIncomePY.heading = How much did you get in benefits last year?
+youBenefitsIncomePY.info = Your benefits income
+youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
+youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
