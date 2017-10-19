@@ -43,8 +43,6 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def youBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YouBenefitsIncomeCYId.toString)
 
-  def bothBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](BothBenefitsIncomeCYId.toString)
-
   def partnerBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerBenefitsIncomeCYId.toString)
 
   def yourOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeLYId.toString)
