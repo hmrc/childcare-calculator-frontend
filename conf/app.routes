@@ -345,6 +345,11 @@ POST       /bothPaidWorkPY                       uk.gov.hmrc.childcarecalculator
 GET        /changeBothPaidWorkPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBothPaidWorkPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
 
+GET        /partnerAnyOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeLYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerAnyOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeLYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerAnyOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeLYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerAnyOtherIncomeLY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeLYController.onSubmit(mode: Mode = CheckMode)
+
 GET        /partnerBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onPageLoad(mode: Mode = NormalMode)
 POST       /partnerBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onPageLoad(mode: Mode = CheckMode)
