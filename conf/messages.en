@@ -656,4 +656,4 @@ whoOtherIncomePY.you = You
 whoOtherIncomePY.partner = Partner
 whoOtherIncomePY.both = Both
 whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
-whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner got other income
+whoOtherIncomePY.error = You must tell the calculator if you or your partner got other income
