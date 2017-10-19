@@ -17,29 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.JsString
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerAnyTheseBenefitsPYId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsStatutoryPYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsStatutoryPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyTheseBenefitsPY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsStatutoryPY
 
-class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
+class WhoGetsStatutoryPYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerAnyTheseBenefitsPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new WhoGetsStatutoryPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerAnyTheseBenefitsPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = WhoGetsStatutoryPYForm()) = whoGetsStatutoryPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "PartnerAnyTheseBenefitsPY Controller" must {
+  "WhoGetsStatutoryPY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -49,16 +48,16 @@ class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true))
+      val validData = Map(WhoGetsStatutoryPYId.toString -> JsString(WhoGetsStatutoryPYForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(WhoGetsStatutoryPYForm().fill(WhoGetsStatutoryPYForm.options.head.value))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhoGetsStatutoryPYForm.options.head.value))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -68,7 +67,7 @@ class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm(partnerAnyTheseBenefitsPYErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = WhoGetsStatutoryPYForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -84,7 +83,7 @@ class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhoGetsStatutoryPYForm.options.head.value))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -92,7 +91,3 @@ class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
     }
   }
 }
-
-
-
-

@@ -29,6 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouAnyTheseBenefitsPY
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
@@ -50,7 +51,7 @@ class YouAnyTheseBenefitsPYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm(youAnyTheseBenefitsPYErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(youAnyTheseBenefitsPY(appConfig, formWithErrors, mode))),
         (value) =>
