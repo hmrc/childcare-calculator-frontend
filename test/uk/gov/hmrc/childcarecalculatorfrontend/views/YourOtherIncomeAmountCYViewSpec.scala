@@ -27,7 +27,7 @@ class YourOtherIncomeAmountCYViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "yourOtherIncomeAmountCY"
 
-  def createView = () => yourOtherIncomeAmountCY(frontendAppConfig, new YourOtherIncomeAmountCYForm(frontendAppConfig), NormalMode)(fakeRequest, messages)
+  def createView = () => yourOtherIncomeAmountCY(frontendAppConfig, new YourOtherIncomeAmountCYForm(frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[BigDecimal]) => yourOtherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 

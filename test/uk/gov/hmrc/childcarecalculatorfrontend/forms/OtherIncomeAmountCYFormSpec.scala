@@ -22,15 +22,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 class OtherIncomeAmountCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "parentOtherIncome" -> "value 1",
-    "partnerOtherIncome" -> "value 2"
+    "parentOtherIncome" -> "10",
+    "partnerOtherIncome" -> "10"
   )
 
-  val form = OtherIncomeAmountCYForm()
+  override val maxValue: BigDecimal = 999999.99
+  override val minValue: BigDecimal = 0
+
+  val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
   "OtherIncomeAmountCY form" must {
-    behave like questionForm(OtherIncomeAmountCY("value 1", "value 2"))
+    behave like questionForm(OtherIncomeAmountCY("10", "10"))
 
     behave like formWithMandatoryTextFields("parentOtherIncome", "partnerOtherIncome")
+
+    behave like formWithDecimalField("parentOtherIncome", "partnerOtherIncome")
+
+    behave like formWithInRange("parentOtherIncome", "partnerOtherIncome")
   }
 }

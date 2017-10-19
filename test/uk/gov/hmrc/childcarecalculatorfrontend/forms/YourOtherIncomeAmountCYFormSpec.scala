@@ -17,12 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class YourOtherIncomeAmountCYFormSpec extends FormSpec {
 
   val yourOtherIncomeAmountCYForm: Form[BigDecimal] = new YourOtherIncomeAmountCYForm(frontendAppConfig).apply()
-  val errorKeyBlank = "blank"
-  val errorKeyInvalid = "invalid"
+  val errorKeyBlank = parentOtherIncomeAmountCYBlankErrorKey
+  val errorKeyInvalid = parentOtherIncomeAmountCYInvalidErrorKey
 
   "YourOtherIncomeAmountCY Form" must {
 

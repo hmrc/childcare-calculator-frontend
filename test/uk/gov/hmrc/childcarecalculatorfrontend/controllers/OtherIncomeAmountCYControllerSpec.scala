@@ -30,13 +30,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
 class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
+  val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new OtherIncomeAmountCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new OtherIncomeAmountCYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[OtherIncomeAmountCY] = OtherIncomeAmountCYForm()) = otherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[OtherIncomeAmountCY] = form) = otherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "OtherIncomeAmountCY Controller" must {
 
@@ -53,11 +54,11 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(OtherIncomeAmountCYForm().fill(OtherIncomeAmountCY("value 1", "value 2")))
+      contentAsString(result) mustBe viewAsString(form.fill(OtherIncomeAmountCY("value 1", "value 2")))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "value 1"), ("partnerOtherIncome", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "10"), ("partnerOtherIncome", "10"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -67,7 +68,7 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = OtherIncomeAmountCYForm().bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

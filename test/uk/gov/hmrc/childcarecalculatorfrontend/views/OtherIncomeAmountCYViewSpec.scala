@@ -27,11 +27,11 @@ class OtherIncomeAmountCYViewSpec extends QuestionViewBehaviours[OtherIncomeAmou
 
   val messageKeyPrefix = "otherIncomeAmountCY"
 
-  def createView = () => otherIncomeAmountCY(frontendAppConfig, OtherIncomeAmountCYForm(), NormalMode)(fakeRequest, messages)
+  override val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
+
+  def createView = () => otherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[OtherIncomeAmountCY]) => otherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
-
-  override val form = OtherIncomeAmountCYForm()
 
   "OtherIncomeAmountCY view" must {
 
