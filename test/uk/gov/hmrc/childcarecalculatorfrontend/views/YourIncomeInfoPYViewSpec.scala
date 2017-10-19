@@ -17,14 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
 
-class PartnerIncomeInfoViewSpec extends ViewBehaviours {
+class YourIncomeInfoPYViewSpec extends ViewBehaviours {
 
-  def createView = () => partnerIncomeInfo(frontendAppConfig)(fakeRequest, messages)
-  val messageKeyPrefix = "partnerIncomeInfo"
+  def createView = () => yourIncomeInfoPY(frontendAppConfig)(fakeRequest, messages)
+  val messageKeyPrefix = "yourIncomeInfoPY"
 
-  "Partner Income Info view" must {
+  "Your Income Info PY view" must {
     behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
       "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
   }
