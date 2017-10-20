@@ -35,17 +35,45 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
     behave like questionForm(AboutYourChild("Foo", new LocalDate(2017, 2, 1)))
 
-    behave like formWithMandatoryNumberFields("dob.day", "dob.month", "dob.year")
-
     "fail to bind when name is omitted" in {
       val data = validData - "name"
-      val expectedError = error("name", "error.required")
+      val expectedError = error("name", "aboutYourChild.error.name")
       checkForError(form, data, expectedError)
     }
 
     "fail to bind when name is blank" in {
       val data = validData + ("name" -> "")
-      val expectedError = error("name", "error.required")
+      val expectedError = error("name", "aboutYourChild.error.name")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when the date is omitted" in {
+      val data = Map("name" -> "Foo")
+      val expectedError = error("dob", "aboutYourChild.error.dob")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when the date is more than 20 years in the past" in {
+      val date = LocalDate.now.minusYears(20).minusDays(1)
+      val data = Map(
+        "name"      -> "Foo",
+        "dob.day"   -> date.getDayOfMonth.toString,
+        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.year"  -> date.getYear.toString
+      )
+      val expectedError = error("dob", "aboutYourChild.error.past")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when the date is more than 1 year in the future" in {
+      val date = LocalDate.now.plusYears(1).plusDays(1)
+      val data = Map(
+        "name"      -> "Foo",
+        "dob.day"   -> date.getDayOfMonth.toString,
+        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.year"  -> date.getYear.toString
+      )
+      val expectedError = error("dob", "aboutYourChild.error.future")
       checkForError(form, data, expectedError)
     }
   }

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import org.joda.time.LocalDate
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
@@ -25,12 +25,19 @@ object AboutYourChildForm {
 
   def apply(): Form[AboutYourChild] = Form(
     mapping(
-      "name" -> nonEmptyText,
+      "name" -> nonEmptyText
+        .replaceError("error.required", "aboutYourChild.error.name"),
       "dob" -> localDateMapping(
-        "day" -> number(min = 1, max = 31),
-        "month" -> number(min = 1, max = 12),
-        "year" -> number(min = 1900, max = LocalDate.now.getYear)
+        "day" -> number,
+        "month" -> number,
+        "year" -> number
       )
+        .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
+        .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
+        .replaceError("error.invalidDate", "aboutYourChild.error.dob")
+        .replaceError(FormError("day", "error.required"), FormError("", "aboutYourChild.error.dob"))
+        .replaceError(FormError("month", "error.required"), FormError("", "aboutYourChild.error.dob"))
+        .replaceError(FormError("year", "error.required"), FormError("", "aboutYourChild.error.dob"))
     )(AboutYourChild.apply)(AboutYourChild.unapply)
   )
 }
