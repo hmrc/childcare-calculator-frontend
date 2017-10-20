@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 
+
 class ParentWorkHoursFormSpec extends FormSpec {
 
   val parentWorkHoursForm: Form[BigDecimal] = new ParentWorkHoursForm(frontendAppConfig).apply()
