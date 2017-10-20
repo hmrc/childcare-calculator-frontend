@@ -917,3 +917,9 @@ yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a wee
 yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
 parentStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did you get paid a week
 parentStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountPY.title = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.heading = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did your partner get paid a week
+partnerStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
