@@ -893,3 +893,9 @@ childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowa
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if your children get disability benefits
+
+childcarePayFrequency.title = childcarePayFrequency
+childcarePayFrequency.heading = childcarePayFrequency
+childcarePayFrequency.option1 = childcarePayFrequency Option 1
+childcarePayFrequency.option2 = childcarePayFrequency Option 2
+childcarePayFrequency.checkYourAnswersLabel = childcarePayFrequency

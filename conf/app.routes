@@ -521,3 +521,8 @@ GET        /childDisabilityBenefits                       uk.gov.hmrc.childcarec
 POST       /childDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeChildDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeChildDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /childcarePayFrequency               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode = NormalMode)
+POST       /childcarePayFrequency               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildcarePayFrequency               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildcarePayFrequency               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(mode: Mode = CheckMode)

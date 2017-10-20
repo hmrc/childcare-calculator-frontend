@@ -23,6 +23,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, Employm
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def childcarePayFrequency: Option[String] = cacheMap.getEntry[String](ChildcarePayFrequencyId.toString)
+
   def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildDisabilityBenefitsId.toString)
 
   def statutoryPayAmountCY: Option[StatutoryPayAmountCY] = cacheMap.getEntry[StatutoryPayAmountCY](StatutoryPayAmountCYId.toString)
