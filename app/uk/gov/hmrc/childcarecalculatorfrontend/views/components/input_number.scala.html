@@ -19,6 +19,7 @@
 @(
 viewModel: InputViewModelBase,
 label: String,
+currencySymbol: Option[Boolean] = None,
 inputClass: Option[String] = None,
 hint: Option[String] = None,
 labelClass: Option[String] = None
@@ -38,8 +39,11 @@ labelClass: Option[String] = None
     }
 
     <div class="form-control-wrapper ">
+        @if(currencySymbol) {
+            <span class="currencySymbol">£</span>
+        }
         <input
-                class="form-control @inputClass input--no-spinner"
+                class="form-control @inputClass input--no-spinner @if(currencySymbol){currencyInput}"
                 type="number"
                 step="any"
                 id="@{viewModel.id}"
