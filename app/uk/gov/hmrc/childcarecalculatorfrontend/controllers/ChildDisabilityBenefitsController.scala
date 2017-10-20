@@ -50,7 +50,7 @@ class ChildDisabilityBenefitsController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("childDisabilityBenefits.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(childDisabilityBenefits(appConfig, formWithErrors, mode))),
         (value) =>

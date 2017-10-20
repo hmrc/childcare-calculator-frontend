@@ -887,6 +887,9 @@ statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
 
-childDisabilityBenefits.title = childDisabilityBenefits
-childDisabilityBenefits.heading = childDisabilityBenefits
+childDisabilityBenefits.title = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
+childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
+childDisabilityBenefits.error = You must answer yes if your children get disability benefits
