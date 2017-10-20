@@ -17,29 +17,28 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, StatutoryPayAmountCY}
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[StatutoryPayAmountCY], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("bothBenefitsIncomeCY.title"),
+    title = messages("statutoryPayAmountCY.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = BothBenefitsIncomeCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = StatutoryPayAmountCYController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("bothBenefitsIncomeCY.heading", "heading-xlarge")
+        @components.heading("statutoryPayAmountCY.heading", "heading-xlarge")
 
-        <p>@messages("bothBenefitsIncomeCY.info_you")</p>
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("bothBenefitsIncomeCY.heading"), labelClass=Some("visually-hidden"))
+        @components.input_text(InputViewModel[StatutoryPayAmountCY]("parentStatutoryPayAmount", form), label = messages("statutoryPayAmountCY.parentStatutoryPayAmount"))
 
-        <p>@messages("bothBenefitsIncomeCY.info_partner")</p>
-
+        @components.input_text(InputViewModel[StatutoryPayAmountCY]("partnerStatutoryPayAmount", form), label = messages("statutoryPayAmountCY.partnerStatutoryPayAmount"))
 
         @components.submit_button()
     }

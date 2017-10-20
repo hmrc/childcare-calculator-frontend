@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-case object BothBenefitsIncomeCYId extends Identifier {
-  override def toString: String = "bothBenefitsIncomeCY"
+import play.api.libs.json._
+
+case class StatutoryPayAmountCY (parentStatutoryPayAmount: String, partnerStatutoryPayAmount: String)
+
+object StatutoryPayAmountCY {
+  implicit val format = Json.format[StatutoryPayAmountCY]
 }

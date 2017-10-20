@@ -17,32 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
+import play.api.libs.json.JsBoolean
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothBenefitsIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothBenefitsIncomeCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.StatutoryPayAWeekLYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothBenefitsIncomeCY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.statutoryPayAWeekLY
 
-
-class BothBenefitsIncomeCYControllerSpec extends ControllerSpecBase {
+class StatutoryPayAWeekLYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BothBenefitsIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new StatutoryPayAWeekLYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[BigDecimal] = BothBenefitsIncomeCYForm()) = bothBenefitsIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = statutoryPayAWeekLY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
-
-  "BothBenefitsIncomeCY Controller" must {
+  "StatutoryPayAWeekLY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -52,16 +48,16 @@ class BothBenefitsIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(BothBenefitsIncomeCYId.toString -> JsNumber(testNumber))
+      val validData = Map(StatutoryPayAWeekLYId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BothBenefitsIncomeCYForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -71,7 +67,7 @@ class BothBenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BothBenefitsIncomeCYForm(bothBenefitsIncomeCYErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -87,7 +83,7 @@ class BothBenefitsIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -95,3 +91,7 @@ class BothBenefitsIncomeCYControllerSpec extends ControllerSpecBase {
     }
   }
 }
+
+
+
+
