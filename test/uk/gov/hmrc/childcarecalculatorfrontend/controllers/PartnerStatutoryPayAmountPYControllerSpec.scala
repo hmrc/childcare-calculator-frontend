@@ -23,25 +23,26 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchPartnerPayPensionForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HowMuchPartnerPayPensionId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayAmountPYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryPayAmountPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchPartnerPayPension
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayAmountPY
 
-class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
+class PartnerStatutoryPayAmountPYControllerSpec extends ControllerSpecBase {
+
+  val statutoryForm = new PartnerStatutoryPayAmountPYForm(frontendAppConfig).apply()
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new HowMuchPartnerPayPensionController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new PartnerStatutoryPayAmountPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, new PartnerStatutoryPayAmountPYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[BigDecimal] = HowMuchPartnerPayPensionForm()) = howMuchPartnerPayPension(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = statutoryForm) = partnerStatutoryPayAmountPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 60
 
-  "HowMuchPartnerPayPension Controller" must {
+  "PartnerStatutoryPayAmountPY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -51,12 +52,12 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(HowMuchPartnerPayPensionId.toString -> JsNumber(testNumber))
+      val validData = Map(PartnerStatutoryPayAmountPYId.toString -> JsNumber(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(HowMuchPartnerPayPensionForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(statutoryForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -70,7 +71,7 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = HowMuchPartnerPayPensionForm(howMuchPartnerPayPensionInvalidErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = statutoryForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

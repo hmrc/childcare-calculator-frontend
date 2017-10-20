@@ -17,31 +17,29 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchPartnerPayPensionForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HowMuchPartnerPayPensionId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchPartnerPayPension
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.StatutoryPayAmountPYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.StatutoryPayAmountPYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayAmountPY}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.statutoryPayAmountPY
 
-class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
+class StatutoryPayAmountPYControllerSpec extends ControllerSpecBase {
 
+  val statutoryForm = new StatutoryPayAmountPYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new HowMuchPartnerPayPensionController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new StatutoryPayAmountPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, new StatutoryPayAmountPYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[BigDecimal] = HowMuchPartnerPayPensionForm()) = howMuchPartnerPayPension(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[StatutoryPayAmountPY] = statutoryForm) = statutoryPayAmountPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
-
-  "HowMuchPartnerPayPension Controller" must {
+  "StatutoryPayAmountPY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -51,16 +49,16 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(HowMuchPartnerPayPensionId.toString -> JsNumber(testNumber))
+      val validData = Map(StatutoryPayAmountPYId.toString -> Json.toJson(StatutoryPayAmountPY("1", "2")))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(HowMuchPartnerPayPensionForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(statutoryForm.fill(StatutoryPayAmountPY("1", "2")))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentStatutoryPayAmountPY", "1"), ("partnerStatutoryPayAmountPY", "2"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +68,7 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = HowMuchPartnerPayPensionForm(howMuchPartnerPayPensionInvalidErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = statutoryForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -86,7 +84,7 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentStatutoryPayAmountPY", "value 1"), ("partnerStatutoryPayAmountPY", "value 2"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
