@@ -16,32 +16,45 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+
+import javax.inject.{Inject, Singleton}
+
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object PartnerNoWeeksStatPayCYForm extends FormErrorHelper {
+@Singleton
+class PartnerNoWeeksStatPayCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def partnerNoWeeksStatPayCYFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
+  def partnerNoWeeksStatPayCYFormatter(errorKeyBlank: String, errorKeyValue: String, errorKeyInvalid: String) = new Formatter[Int] {
 
-    val intRegex = """^(\d+)$""".r
-    val decimalRegex = """^(\d*\.\d*)$""".r
+    val intRegex = """^(\d+)$"""
+    val minValue: Double = appConfig.minNoWeeksStatPay
+    val maxValue: Double = appConfig.maxNoWeeksStatPay
 
     def bind(key: String, data: Map[String, String]) = {
-      data.get(key) match {
+      data.get(key).map(_.trim.replaceAll(",", "")) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) => s.trim.replace(",", "") match {
-          case intRegex(str) => Right(str.toInt)
-          case decimalRegex(_) => produceError(key, errorKeyDecimal)
-          case _ => produceError(key, errorKeyNonNumeric)
-        }
+        case Some(s) if s.matches(intRegex) =>
+          val value = s.toInt
+          if (validateInRange(value, minValue, maxValue)) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyValue)
+          }
+        case _ =>
+          produceError(key, errorKeyInvalid)
       }
     }
 
     def unbind(key: String, value: Int) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
-    Form(single("value" -> of(partnerNoWeeksStatPayCYFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
+  def apply(errorKeyBlank: String = partnerNoWeeksStatPayCYErrorKey,
+            errorKeyDecimal: String = partnerNoWeeksStatPayCYInvalidErrorKey,
+            errorKeyValue: String = partnerNoWeeksStatPayCYNumericErrorKey): Form[Int] =
+    Form(single("value" -> of(partnerNoWeeksStatPayCYFormatter(errorKeyBlank, errorKeyDecimal, errorKeyValue))))
 }

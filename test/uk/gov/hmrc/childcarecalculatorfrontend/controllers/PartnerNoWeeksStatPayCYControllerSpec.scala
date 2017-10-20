@@ -32,13 +32,19 @@ class PartnerNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val partnerNoWeeksStatPayCYForm = new PartnerNoWeeksStatPayCYForm(frontendAppConfig).apply()
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerNoWeeksStatPayCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new PartnerNoWeeksStatPayCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      new PartnerNoWeeksStatPayCYForm(frontendAppConfig)
+    )
 
-  def viewAsString(form: Form[Int] = PartnerNoWeeksStatPayCYForm()) = partnerNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = partnerNoWeeksStatPayCYForm) = partnerNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 12
 
   "PartnerNoWeeksStatPayCY Controller" must {
 
@@ -55,7 +61,7 @@ class PartnerNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerNoWeeksStatPayCYForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(partnerNoWeeksStatPayCYForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -69,7 +75,7 @@ class PartnerNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerNoWeeksStatPayCYForm().bind(Map("value" -> "invalid value"))
+      val boundForm = partnerNoWeeksStatPayCYForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

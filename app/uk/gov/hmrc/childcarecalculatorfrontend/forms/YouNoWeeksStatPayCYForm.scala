@@ -32,7 +32,6 @@ class YouNoWeeksStatPayCYForm @Inject() (appConfig: FrontendAppConfig) extends F
   def youNoWeeksStatPayCYFormatter(errorKeyBlank: String, errorKeyValue: String, errorKeyInvalid: String) = new Formatter[Int] {
 
     val intRegex = """^(\d+)$"""
-//    val decimalRegex = """^(\d*\.\d*)$""".r
     val minValue: Double = appConfig.minNoWeeksStatPay
     val maxValue: Double = appConfig.maxNoWeeksStatPay
 

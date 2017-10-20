@@ -112,4 +112,7 @@ object ChildcareConstants {
   val parentStatutoryPayAmountInvalidErrorKey = "parentStatutoryPayAmount.invalid"
   val partnerStatutoryPayAmountRequiredErrorKey = "partnerStatutoryPayAmount.required"
   val partnerStatutoryPayAmountInvalidErrorKey = "partnerStatutoryPayAmount.invalid"
+  val partnerNoWeeksStatPayCYErrorKey = "partnerNoWeeksStatPayCY.error"
+  val partnerNoWeeksStatPayCYInvalidErrorKey = "partnerNoWeeksStatPayCY.invalid"
+  val partnerNoWeeksStatPayCYNumericErrorKey = "partnerNoWeeksStatPayCY.numeric.error"
 }

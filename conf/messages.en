@@ -819,7 +819,6 @@ youNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will you take this ye
 youNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
 youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
 youNoWeeksStatPayCY.numeric.error = non numeric
-
 youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
 
@@ -884,3 +883,12 @@ statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or 
 partnerNoWeeksStatPayCY.title = partnerNoWeeksStatPayCY
 partnerNoWeeksStatPayCY.heading = partnerNoWeeksStatPayCY
 partnerNoWeeksStatPayCY.checkYourAnswersLabel = partnerNoWeeksStatPayCY
+
+partnerNoWeeksStatPayCY.title = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.heading = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
+partnerNoWeeksStatPayCY.error = You must tell the calculator how many weeks your partner will take this year
+partnerNoWeeksStatPayCY.numeric.error = non numeric
+partnerNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41

@@ -38,20 +38,21 @@ class PartnerNoWeeksStatPayCYController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        form: PartnerNoWeeksStatPayCYForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.partnerNoWeeksStatPayCY match {
-        case None => PartnerNoWeeksStatPayCYForm()
-        case Some(value) => PartnerNoWeeksStatPayCYForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(partnerNoWeeksStatPayCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      PartnerNoWeeksStatPayCYForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
           Future.successful(BadRequest(partnerNoWeeksStatPayCY(appConfig, formWithErrors, mode))),
         (value) =>

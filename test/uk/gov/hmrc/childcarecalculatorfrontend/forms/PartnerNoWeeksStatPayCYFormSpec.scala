@@ -16,52 +16,46 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
+
 class PartnerNoWeeksStatPayCYFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "non numeric"
+  val partnerNoStatWeeksForm: Form[Int] = new PartnerNoWeeksStatPayCYForm(frontendAppConfig).apply()
+
+  val errorKeyBlank = "partnerNoWeeksStatPayCY.error"
+  val errorKeyDecimal = "partnerNoWeeksStatPayCY.numeric.error"
+  val errorKeyValue = "partnerNoWeeksStatPayCY.numeric.error"
 
   "PartnerNoWeeksStatPayCY Form" must {
 
-    "bind zero" in {
-      val form = PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "0"))
-      form.get shouldBe 0
-    }
-
     "bind positive numbers" in {
-      val form = PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "1"))
+      val form = partnerNoStatWeeksForm.bind(Map("value" -> "1"))
       form.get shouldBe 1
     }
 
-    "bind positive, comma separated numbers" in {
-      val form = PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "10,000"))
-      form.get shouldBe 10000
-    }
-
     "fail to bind negative numbers" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "-1"), expectedError)
+      val expectedError = error("value", errorKeyValue)
+      checkForError (partnerNoStatWeeksForm, Map("value" -> "-1"), expectedError)
     }
 
     "fail to bind non-numerics" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "not a number"), expectedError)
+      val expectedError = error("value", errorKeyValue)
+      checkForError(partnerNoStatWeeksForm, Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> ""), expectedError)
+      checkForError(partnerNoStatWeeksForm, Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), emptyForm, expectedError)
+      checkForError(partnerNoStatWeeksForm, emptyForm, expectedError)
     }
 
     "fail to bind decimal numbers" in {
       val expectedError = error("value", errorKeyDecimal)
-      checkForError(PartnerNoWeeksStatPayCYForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "123.45"), expectedError)
+      checkForError(partnerNoStatWeeksForm, Map("value" -> "123.45"), expectedError)
     }
   }
 }
