@@ -31,32 +31,6 @@ class MaximumHoursNavigation {
   val Both: String = YouPartnerBothEnum.BOTH.toString
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
 
-  def yourMaximumEarningsRoute(answers: UserAnswers) = {
-    val partnerMinEarnings = answers.partnerMinimumEarnings
-
-    if(partnerMinEarnings.contains(true)) {
-      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-    } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-    }
-  }
-
-  def whichBenefitsYouGetRoute(answers: UserAnswers) = {
-    answers.isYouPartnerOrBoth(answers.whoGetsBenefits) match {
-      case You => routes.YourAgeController.onPageLoad(NormalMode)
-      case Both => routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
-  }
-
-  def whichBenefitsPartnerGetRoute(answers: UserAnswers) = {
-    answers.isYouPartnerOrBoth(answers.whoGetsBenefits) match {
-      case Partner => routes.YourPartnersAgeController.onPageLoad(NormalMode)
-      case Both => routes.YourAgeController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
-  }
-
   def doYouLiveRoute(answers: UserAnswers) = {
     if (answers.doYouLiveWithPartner.contains(true)) {
       routes.PaidEmploymentController.onPageLoad(NormalMode)
@@ -243,6 +217,24 @@ class MaximumHoursNavigation {
     }
   }
 
+  def whichBenefitsYouGetRoute(answers: UserAnswers) = {
+
+    if(answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(Both)) {
+      routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+    } else {
+      routes.YourAgeController.onPageLoad(NormalMode)
+    }
+  }
+
+  def whichBenefitsPartnerGetRoute(answers: UserAnswers) = {
+
+    if(answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(Both)) {
+      routes.YourAgeController.onPageLoad(NormalMode)
+    } else {
+      routes.YourPartnersAgeController.onPageLoad(NormalMode)
+    }
+  }
+
   def yourAgeRoute(answers: UserAnswers) = {
 
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
@@ -283,6 +275,30 @@ class MaximumHoursNavigation {
     }
   }
 
+  def areYouSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
+
+    if(answers.areYouSelfEmployedOrApprentice.contains(SelfEmployed)) {
+      routes.YourSelfEmployedController.onPageLoad(NormalMode)
+    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    } else if(answers.partnerMinimumEarnings.contains(false)) {
+      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+    } else {
+      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+    }
+  }
+
+  def partnerSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
+
+    if(answers.partnerSelfEmployedOrApprentice.contains(SelfEmployed)) {
+      routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+    } else if(answers.yourMinimumEarnings.contains(true)) {
+      routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+    } else {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    }
+  }
+
   def yourSelfEmployedRoute(answers: UserAnswers) = {
 
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
@@ -303,25 +319,10 @@ class MaximumHoursNavigation {
     }
   }
 
-  def areYouSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
+  def yourMaximumEarningsRoute(answers: UserAnswers) = {
 
-    if(answers.areYouSelfEmployedOrApprentice.contains(SelfEmployed)) {
-      routes.YourSelfEmployedController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-    } else if(answers.partnerMinimumEarnings.contains(false)) {
-      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-    } else {
+    if(answers.partnerMinimumEarnings.contains(true)) {
       routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-    }
-  }
-
-  def partnerSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
-
-    if(answers.partnerSelfEmployedOrApprentice.contains(SelfEmployed)) {
-      routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
-    } else if(answers.yourMinimumEarnings.contains(true)) {
-      routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     } else {
       routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
