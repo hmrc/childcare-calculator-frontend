@@ -508,3 +508,8 @@ GET        /youNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfro
 POST       /youNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouNoWeeksStatPayCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYouNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouNoWeeksStatPayCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYouNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouNoWeeksStatPayCYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerNoWeeksStatPayCYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerNoWeeksStatPayCYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerNoWeeksStatPayCYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerNoWeeksStatPayCYController.onSubmit(mode: Mode = CheckMode)
