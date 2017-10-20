@@ -444,6 +444,22 @@ partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
+
+parentEmploymentIncomeCY.title = How much will you get paid this year?
+parentEmploymentIncomeCY.heading = How much will you get paid this year?
+parentEmploymentIncomeCY.hint= This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
+
+partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
+partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
+partnerEmploymentIncomeCY.hint= This is your partner's total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
+
+employmentIncome.invalid=You must enter a number between 0 and 999999.99
+partnerEmploymentIncome.blank= You must tell the calculator what your partner will get paid this year
+parentEmploymentIncome.blank= You must tell the calculator what you will get paid this year
+employmentIncomeCY.tax_year= This tax year is 6 April 2017 to 5 April 2018.
+
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
@@ -833,6 +849,7 @@ statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
 
+
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error = You must tell the calculator if your children are registered blind
@@ -889,6 +906,71 @@ statutoryPayAmountCY.heading = How much statutory pay will you or your partner g
 statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
+
+howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.yourPension = You
+howMuchBothPayPensionPY.partnerPension = Partner
+howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
+
+howMuchYouPayPensionPY.title = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.yourPension = You
+howMuchYouPayPensionPY.required = Please tell the calculator how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.partnerPension = Partner
+howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+childDisabilityBenefits.title = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
+childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
+childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
+childDisabilityBenefits.error = You must answer yes if your children get disability benefits
+
+yourOtherIncomeAmountPY.title = How much was your other income?
+yourOtherIncomeAmountPY.heading = How much was your other income?
+yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
+parentOtherIncomeAmountPY.required = You must tell the calculator how much your other income was
+parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountPY.required = You must tell the calculator how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
+
+otherIncomeAmountPY.title = How much was you and your partner’s other income?
+otherIncomeAmountPY.heading = How much was you and your partner’s other income?
+otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
+otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
+otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
+
+yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
+parentStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did you get paid a week
+parentStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountPY.title = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.heading = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did your partner get paid a week
+partnerStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+statutoryPayAmountPY.title = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.heading = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
+statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
+statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
 
 aboutYourChild.title = About your child
 aboutYourChild.title.nth = About your {0} child
