@@ -22,6 +22,46 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def yourStatutoryPayPY: Option[AnswerRow] = userAnswers.yourStatutoryPayPY map {
+    x => AnswerRow("yourStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def bothStatutoryPayPY: Option[AnswerRow] = userAnswers.bothStatutoryPayPY map {
+    x => AnswerRow("bothStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothStatutoryPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerStatutoryPayPY: Option[AnswerRow] = userAnswers.partnerStatutoryPayPY map {
+    x => AnswerRow("partnerStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerStatutoryPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def howMuchBothPayPension: Option[AnswerRow] = userAnswers.howMuchBothPayPension map {
+    x => AnswerRow("howMuchBothPayPension.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.HowMuchBothPayPensionController.onPageLoad(CheckMode).url)
+  }
+
+  def howMuchPartnerPayPension: Option[AnswerRow] = userAnswers.howMuchPartnerPayPension map {
+    x => AnswerRow("howMuchPartnerPayPension.checkYourAnswersLabel", s"$x", false, routes.HowMuchPartnerPayPensionController.onPageLoad(CheckMode).url)
+  }
+
+  def howMuchYouPayPension: Option[AnswerRow] = userAnswers.howMuchYouPayPension map {
+    x => AnswerRow("howMuchYouPayPension.checkYourAnswersLabel", s"$x", false, routes.HowMuchYouPayPensionController.onPageLoad(CheckMode).url)
+  }
+
+  def youBenefitsIncomePY: Option[AnswerRow] = userAnswers.youBenefitsIncomePY map {
+    x => AnswerRow("youBenefitsIncomePY.checkYourAnswersLabel", s"$x", false, routes.YouBenefitsIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerBenefitsIncomePY: Option[AnswerRow] = userAnswers.partnerBenefitsIncomePY map {
+    x => AnswerRow("partnerBenefitsIncomePY.checkYourAnswersLabel", s"$x", false, routes.PartnerBenefitsIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def bothBenefitsIncomePY: Option[AnswerRow] = userAnswers.bothBenefitsIncomePY map {
+    x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def registeredBlind: Option[AnswerRow] = userAnswers.registeredBlind map {
+    x => AnswerRow("registeredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.RegisteredBlindController.onPageLoad(CheckMode).url)
+  }
+
   def statutoryPayAmountCY: Option[AnswerRow] = userAnswers.statutoryPayAmountCY map {
     x => AnswerRow("statutoryPayAmountCY.checkYourAnswersLabel", s"${x.parentStatutoryPayAmount} ${x.partnerStatutoryPayAmount}", false, routes.StatutoryPayAmountCYController.onPageLoad(CheckMode).url)
   }
