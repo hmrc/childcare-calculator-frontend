@@ -570,8 +570,15 @@ POST       /statutoryPayAmountPY                       uk.gov.hmrc.childcarecalc
 GET        /changeStatutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeStatutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onSubmit(mode: Mode = CheckMode)
 
+
+GET        /childrenDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /childrenDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildrenDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildrenDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onSubmit(mode: Mode = CheckMode)
+
 GET        /aboutYourChild                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode = NormalMode, id: Int = 0)
 GET        /aboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode = NormalMode, id: Int)
 POST       /aboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeAboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeAboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = CheckMode, id: Int)
+
