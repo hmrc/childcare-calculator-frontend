@@ -933,3 +933,21 @@ otherIncomeAmountPY.heading = How much was you and your partner’s other income
 otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
 otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
 otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
+
+yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
+parentStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did you get paid a week
+parentStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountPY.title = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.heading = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did your partner get paid a week
+partnerStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+statutoryPayAmountPY.title = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.heading = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
+statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
+statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
