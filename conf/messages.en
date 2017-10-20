@@ -17,6 +17,26 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.summary.text = Check you have answered the question correctly
 
+nth.0 = first
+nth.1 = second
+nth.2 = third
+nth.3 = fourth
+nth.4 = fifth
+nth.5 = sixth
+nth.6 = seventh
+nth.7 = eighth
+nth.8 = ninth
+nth.9 = tenth
+nth.10 = eleventh
+nth.11 = twelfth
+nth.12 = thirteenth
+nth.13 = fourteenth
+nth.14 = fifteenth
+nth.15 = sixteenth
+nth.16 = seventeenth
+nth.17 = eighteenth
+nth.18 = nineteenth
+
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
 session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
@@ -642,7 +662,6 @@ youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits th
 youBenefitsIncomeCY.invalid = Please only enter a numerical value of up to two decimal places
 youBenefitsIncomeCY.required = Please tell the calculator how much you got paid in benefits this year
 
-
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
 howMuchYouPayPension.error = You must tell the calculator how much you pay into your pension a month
@@ -673,7 +692,6 @@ benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get 
 
 parentBenefitsIncome.required = You must tell the calculator how much you got paid in benefits this year
 partnerBenefitsIncome.required = You must tell the calculator how much your partner got paid in benefits this year
-
 parentBenefitsIncome.invalid = Please enter a valid numerical value
 partnerBenefitsIncome.invalid = Please enter a valid numerical value
 
@@ -883,3 +901,88 @@ statutoryPayAmountCY.heading = How much statutory pay will you or your partner g
 statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
+
+howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.yourPension = You
+howMuchBothPayPensionPY.partnerPension = Partner
+howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
+
+howMuchYouPayPensionPY.title = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.yourPension = You
+howMuchYouPayPensionPY.required = Please tell the calculator how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.partnerPension = Partner
+howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+childDisabilityBenefits.title = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
+childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
+childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
+childDisabilityBenefits.error = You must answer yes if your children get disability benefits
+
+childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.weekly = Weekly
+childcarePayFrequency.monthly = Monthly
+childcarePayFrequency.checkYourAnswersLabel = childcarePayFrequency
+
+childcarePayFrequency.error = Select how often you pay or expect to pay for childcare
+yourOtherIncomeAmountPY.title = How much was your other income?
+yourOtherIncomeAmountPY.heading = How much was your other income?
+yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
+parentOtherIncomeAmountPY.required = You must tell the calculator how much your other income was
+parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountPY.required = You must tell the calculator how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
+
+otherIncomeAmountPY.title = How much was you and your partner’s other income?
+otherIncomeAmountPY.heading = How much was you and your partner’s other income?
+otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
+otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
+otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
+
+yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
+parentStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did you get paid a week
+parentStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountPY.title = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.heading = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did your partner get paid a week
+partnerStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+statutoryPayAmountPY.title = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.heading = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
+statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
+statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
+
+aboutYourChild.title = About your child
+aboutYourChild.title.nth = About your {0} child
+aboutYourChild.heading = About your child
+aboutYourChild.heading.nth = About your {0} child
+aboutYourChild.lede = Names are only used to make your questions and results clear. The calculator will not store or share them with anyone.
+aboutYourChild.name = What’s their first name?
+aboutYourChild.dob = What’s their date of birth?
+aboutYourChild.checkYourAnswersLabel = About your child
+aboutYourChild.error.name = You must enter your child’s name
+aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
+aboutYourChild.error.future = You must enter a date less than 12 months in the future
+aboutYourChild.error.past = You must enter a date less than 20 years in the past

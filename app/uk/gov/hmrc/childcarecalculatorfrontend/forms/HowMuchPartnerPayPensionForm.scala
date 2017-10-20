@@ -25,7 +25,7 @@ object HowMuchPartnerPayPensionForm extends FormErrorHelper {
 
   def howMuchPartnerPayPensionFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+    val decimalRegex = """\d+(\.\d{1,2})?"""
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {

@@ -42,6 +42,13 @@ class YourOtherIncomeAmountCYFormSpec extends FormSpec {
       form.get shouldBe 10.80
     }
 
+    Seq("9999999.99", "10000000").foreach { value =>
+      s"fail to bind number $value not within the range" in {
+        val expectedError = error("value", errorKeyInvalid)
+        checkForError(yourOtherIncomeAmountCYForm, Map("value" -> value), expectedError)
+      }
+    }
+
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
       checkForError(yourOtherIncomeAmountCYForm, Map("value" -> "-1"), expectedError)
