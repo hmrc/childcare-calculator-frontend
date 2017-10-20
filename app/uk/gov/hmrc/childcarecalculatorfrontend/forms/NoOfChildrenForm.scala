@@ -16,29 +16,35 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
+import javax.inject.Inject
+
+import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object NoOfChildrenForm extends FormErrorHelper {
+
+class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   def noOfChildrenFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
 
     val intRegex: String = "([1-9]{1,2})".r.toString()
+    val minAmountChildren: Double = appConfig.minAmountChildren
+    val maxAmountChildren: Double = appConfig.maxAmountChildren
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, "noOfChildren.error")
+        case Some("") => produceError(key, noOfChildrenErrorKey)
 
-        case Some(s) if(s.matches(intRegex)) => {
+        case Some(s) if s.matches(intRegex) =>
           val value = s.toInt
-          if (value >= 1 && value <= 19) {
+          if (value >= minAmountChildren && value <= maxAmountChildren) {
             Right(value)
           } else {
-            produceError(key, "noOfChildren.error")
+            produceError(key, noOfChildrenErrorKey)
           }
-        }
         case _ => produceError(key, errorKeyNonNumeric)
       }
     }

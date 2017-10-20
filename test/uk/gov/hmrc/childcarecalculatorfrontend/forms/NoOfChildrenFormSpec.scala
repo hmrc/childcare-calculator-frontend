@@ -16,56 +16,54 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 class NoOfChildrenFormSpec extends FormSpec {
 
   val errorKeyBlank = "blank"
   val errorKeyNonNumeric = "error.non_numeric"
+  val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
 
   "NoOfChildren Form" must {
 
     "bind positive numbers" in {
-      val form = NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric).bind(Map("value" -> "1"))
+      val form = NoOfChildrenForm.bind(Map("value" -> "1"))
       form.get shouldBe 1
     }
 
     "bind positive, max number" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "20"), expectedError)
+      checkForError(NoOfChildrenForm, Map("value" -> "20"), expectedError)
     }
 
     "bind positive, comma separated numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "1,0"), expectedError)
+      checkForError(NoOfChildrenForm, Map("value" -> "1,0"), expectedError)
     }
 
     "fail to bind zero number" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "0"), expectedError)
+      checkForError(NoOfChildrenForm, Map("value" -> "0"), expectedError)
     }
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "-1"), expectedError)
+      checkForError(NoOfChildrenForm, Map("value" -> "-1"), expectedError)
     }
 
     "fail to bind non-numerics" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "not a number"), expectedError)
+      checkForError(NoOfChildrenForm, Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
-      val expectedError = error("value", "noOfChildren.error")
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> ""), expectedError)
-    }
-
-    "fail to bind when value is omitted" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), emptyForm, expectedError)
+      val expectedError = error("value", noOfChildrenErrorKey)
+      checkForError(NoOfChildrenForm, Map("value" -> ""), expectedError)
     }
 
     "fail to bind decimal numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm(errorKeyBlank, errorKeyNonNumeric), Map("value" -> "1.234"), expectedError)
+      checkForError(NoOfChildrenForm, Map("value" -> "1.234"), expectedError)
     }
   }
 }

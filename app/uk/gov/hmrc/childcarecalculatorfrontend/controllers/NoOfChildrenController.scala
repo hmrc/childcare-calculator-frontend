@@ -38,20 +38,21 @@ class NoOfChildrenController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        form: NoOfChildrenForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.noOfChildren match {
-        case None => NoOfChildrenForm()
-        case Some(value) => NoOfChildrenForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(noOfChildren(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request => {
-      NoOfChildrenForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[Int]) => {
           Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode)))
         },

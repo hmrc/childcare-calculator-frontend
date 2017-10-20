@@ -424,7 +424,6 @@ partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
-
 parentEmploymentIncomeCY.title = How much will you get paid this year?
 parentEmploymentIncomeCY.heading = How much will you get paid this year?
 parentEmploymentIncomeCY.hint= This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
@@ -502,7 +501,6 @@ partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.error = You must tell the calculator if your partner had any of these benefits this year
 
-
 bothAnyTheseBenefitsCY.title = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.heading = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
@@ -516,7 +514,6 @@ bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
-
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
@@ -561,7 +558,6 @@ whoGetsStatutoryCY.partner = Partner
 whoGetsStatutoryCY.both = Both
 whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
 whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
-
 
 statutoryPayAWeek.title = Will this pay be more than £100 a week before tax?
 statutoryPayAWeek.heading = Will this pay be more than £100 a week before tax?
@@ -643,14 +639,12 @@ youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
 
-
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
 howMuchYouPayPension.error = You must tell the calculator how much you pay into your pension a month
 howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
 howMuchYouPayPension.invalid = Please only enter a numerical value of up to two decimal places
 howMuchYouPayPension.required = Please tell the calculator how much you pay into your pension a month
-
 
 howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.heading = How much does your partner pay into their pension a month?
@@ -821,14 +815,12 @@ bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner g
 
 parentBenefitsIncomePY.required = You must tell the calculator how much you got paid in benefits last year
 partnerBenefitsIncomePY.required = You must tell the calculator how much your partner got paid in benefits last year
-
 parentBenefitsIncomePY.invalid = Please enter a valid numerical value
 partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
 
 statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
-
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
@@ -853,7 +845,6 @@ yourStatutoryPayPY.checkYourAnswersLabel = Did you get statutory pay while on le
 yourStatutoryPayPY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
 yourStatutoryPayPY.error = You must select yes if you got statutory pay last year
 yourStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
-
 
 partnerStatutoryPayPY.title = Did your partner get statutory pay while on leave for a birth or adoption last year?
 partnerStatutoryPayPY.heading = Did your partner get statutory pay while on leave for a birth or adoption last year?
