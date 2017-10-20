@@ -869,3 +869,16 @@ statutoryPayAmountCY.heading = How much statutory pay will you or your partner g
 statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
+
+howMuchBothPayPensionPY.title = How much did you and your partner pay into your pension a month?
+howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pension a month?
+howMuchBothPayPensionPY.yourPension = You
+howMuchBothPayPensionPY.partnerPension = Partner
+howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pension a month?
+howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
+
+howMuchYouPayPensionPY.required = Please tell the calculator how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
