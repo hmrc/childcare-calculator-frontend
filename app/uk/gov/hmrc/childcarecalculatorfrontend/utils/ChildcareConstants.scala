@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+
+
 object ChildcareConstants {
   val you = "you"
   val partner = "partner"
@@ -60,6 +62,9 @@ object ChildcareConstants {
   val bothPaidWorkCYErrorKey = "bothPaidWorkCY.error"
   val whoPaysIntoPensionErrorKey = "whoPaysIntoPension.error"
   val whoGetsOtherIncomeCYErrorKey = "whoGetsOtherIncomeCY.error"
+  val employmentIncomeInvalidErrorKey = "employmentIncome.invalid"
+  val parentEmploymentIncomeBlankErrorKey = "parentEmploymentIncome.blank"
+  val partnerEmploymentIncomeBlankErrorKey = "partnerEmploymentIncome.blank"
   val whoOtherIncomePYErrorKey = "whoOtherIncomePY.error"
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"
   val partnerAnyTheseBenefitsCYErrorKey = "partnerAnyTheseBenefitsCY.error"
@@ -88,6 +93,10 @@ object ChildcareConstants {
   val howMuchPartnerPayPensionInvalidErrorKey = "howMuchPartnerPayPension.invalid"
   val howMuchBothPayPensionInvalidErrorKey = "howMuchBothPayPension.invalid"
   val howMuchBothPayPensionRequiredErrorKey = "howMuchBothPayPension.required"
+  val howMuchYouPayPensionPYInvalidErrorKey = "howMuchYouPayPensionPY.invalid"
+  val howMuchYouPayPensionPYRequiredErrorKey = "howMuchYouPayPensionPY.required"
+  val howMuchPartnerPayPensionPYInvalidErrorKey = "howMuchPartnerPayPensionPY.invalid"
+  val howMuchPartnerPayPensionPYRequiredErrorKey = "howMuchPartnerPayPensionPY.required"
   val parentBenefitsIncomeCYRequiredErrorKey = "parentBenefitsIncome.required"
   val partnerBenefitsIncomeCYRequiredErrorKey = "partnerBenefitsIncome.required"
   val parentBenefitsIncomePYRequiredErrorKey = "parentBenefitsIncomePY.required"
@@ -107,4 +116,12 @@ object ChildcareConstants {
   val parentStatutoryPayAmountInvalidErrorKey = "parentStatutoryPayAmount.invalid"
   val partnerStatutoryPayAmountRequiredErrorKey = "partnerStatutoryPayAmount.required"
   val partnerStatutoryPayAmountInvalidErrorKey = "partnerStatutoryPayAmount.invalid"
+  val parentOtherIncomeAmountPYRequiredErrorKey = "parentOtherIncomeAmountPY.required"
+  val parentOtherIncomeAmountPYInvalidErrorKey = "parentOtherIncomeAmountPY.invalid"
+  val partnerOtherIncomeAmountPYRequiredErrorKey = "partnerOtherIncomeAmountPY.required"
+  val partnerOtherIncomeAmountPYInvalidErrorKey = "partnerOtherIncomeAmountPY.invalid"
+  val parentStatutoryPayAmountPYRequiredErrorKey = "parentStatutoryPayAmountPY.required"
+  val parentStatutoryPayAmountPYInvalidErrorKey = "parentStatutoryPayAmountPY.invalid"
+  val partnerStatutoryPayAmountPYRequiredErrorKey = "partnerStatutoryPayAmountPY.required"
+  val partnerStatutoryPayAmountPYInvalidErrorKey = "partnerStatutoryPayAmountPY.invalid"
 }

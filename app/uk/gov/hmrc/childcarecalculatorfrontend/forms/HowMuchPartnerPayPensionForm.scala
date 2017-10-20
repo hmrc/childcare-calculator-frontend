@@ -25,13 +25,13 @@ object HowMuchPartnerPayPensionForm extends FormErrorHelper {
 
   def howMuchPartnerPayPensionFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+    val decimalRegex = """\d+(\.\d{1,2})?"""
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
         case _ => produceError(key, errorKeyInvalid)
       }
     }
