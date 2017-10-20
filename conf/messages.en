@@ -909,3 +909,7 @@ partnerNoWeeksStatPayCY.error = You must tell the calculator how many weeks your
 partnerNoWeeksStatPayCY.numeric.error = non numeric
 partnerNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
+
+youNoWeeksStatPayPY.title = youNoWeeksStatPayPY
+youNoWeeksStatPayPY.heading = youNoWeeksStatPayPY
+youNoWeeksStatPayPY.checkYourAnswersLabel = youNoWeeksStatPayPY

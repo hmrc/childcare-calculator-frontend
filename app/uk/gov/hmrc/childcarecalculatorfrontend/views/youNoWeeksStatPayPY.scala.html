@@ -1,0 +1,26 @@
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+
+@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("youNoWeeksStatPayPY.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
+
+    @helpers.form(action = YouNoWeeksStatPayPYController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("youNoWeeksStatPayPY.heading", "heading-xlarge")
+
+        @components.input_number(InputViewModel[Int]("value", form), label = messages("youNoWeeksStatPayPY.heading"), labelClass=Some("visually-hidden"))
+
+        @components.submit_button()
+    }
+}
