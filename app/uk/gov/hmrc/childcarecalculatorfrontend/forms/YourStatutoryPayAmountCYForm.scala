@@ -36,7 +36,7 @@ class YourStatutoryPayAmountCYForm @Inject() (appConfig: FrontendAppConfig) exte
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(strValue) if(strValue.matches(decimalRegex)) =>
+        case Some(strValue) if strValue.matches(decimalRegex) =>
           val value = BigDecimal(strValue)
 
           if (validateInRange(value, minValue, maxValue)) {

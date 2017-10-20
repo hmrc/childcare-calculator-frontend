@@ -40,7 +40,7 @@ class ParentWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends FormE
 
         case Some("") => produceError(key, errorKeyBlank)
 
-        case Some(strValue) if(strValue.matches(decimalRegex)) =>
+        case Some(strValue) if strValue.matches(decimalRegex) =>
           val value = BigDecimal(strValue)
 
           if (validateInRange(value, minValue, maxValue)) {

@@ -27,12 +27,13 @@ class NoOfChildrenViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "noOfChildren"
 
-  def createView = () => noOfChildren(frontendAppConfig, NoOfChildrenForm(), NormalMode)(fakeRequest, messages)
+  val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
+
+  def createView = () => noOfChildren(frontendAppConfig, NoOfChildrenForm, NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Int]) => noOfChildren(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = NoOfChildrenForm()
-
+  val form = NoOfChildrenForm
   "NoOfChildren view" must {
     behave like normalPage(createView, messageKeyPrefix)
 

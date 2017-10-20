@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
@@ -38,10 +39,10 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
     Form(single("value" -> set(of(WhichBenefitsPartnerGetFormatter))))
 
   def options = Seq(
-    InputOption("whichBenefitsPartnerGet", "incomeBenefits"),
-    InputOption("whichBenefitsPartnerGet", "disabilityBenefits"),
-    InputOption("whichBenefitsPartnerGet", "highRateDisabilityBenefits"),
-    InputOption("whichBenefitsPartnerGet", "carersAllowance")
+    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.INCOMEBENEFITS.toString),
+    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.DISABILITYBENEFITS.toString),
+    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString),
+    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.CARERSALLOWANCE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
