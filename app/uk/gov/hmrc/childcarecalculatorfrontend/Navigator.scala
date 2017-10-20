@@ -73,7 +73,8 @@ class Navigator @Inject() (schemes: Schemes,
     YourSelfEmployedId -> yourSelfEmployedRoute,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
-    PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
+    PartnerMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+//    PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
   )
 

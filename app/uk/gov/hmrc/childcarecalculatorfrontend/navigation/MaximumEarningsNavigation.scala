@@ -27,33 +27,38 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @Singleton
 class MaximumEarningsNavigation {
 
-  lazy val taxOrUniversalCreditPageNormalMode: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-  lazy val partnerMaxEarningsPageNormalMode: Call = routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-  lazy val sessionExpiredPage: Call = routes.SessionExpiredController.onPageLoad()
+//  lazy val taxOrUniversalCreditPageNormalMode: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+//  lazy val partnerMaxEarningsPageNormalMode: Call = routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+//  lazy val sessionExpiredPage: Call = routes.SessionExpiredController.onPageLoad()
 
   def yourMaximumEarningsRoute(answers: UserAnswers) = {
-    val hasPartner = answers.doYouLiveWithPartner
+//    val hasPartner = answers.doYouLiveWithPartner
     val partnerMinEarnings = answers.partnerMinimumEarnings
-    val yourMaxEarnings = answers.yourMaximumEarnings
+//    val yourMaxEarnings = answers.yourMaximumEarnings
 
+//    (hasPartner, partnerMinEarnings, yourMaxEarnings) match {
+//      case (Some(false), _, Some(_)) => taxOrUniversalCreditPageNormalMode
+//      case (Some(true), Some(true), Some(_)) => partnerMaxEarningsPageNormalMode
+//      case (Some(true), Some (false), Some(_)) => taxOrUniversalCreditPageNormalMode
+//      case (Some(true), _, Some(_)) => taxOrUniversalCreditPageNormalMode
+//      case _ => sessionExpiredPage
+//    }
 
-    (hasPartner, partnerMinEarnings, yourMaxEarnings) match {
-      case (Some(false), _, Some(_)) => taxOrUniversalCreditPageNormalMode
-      case (Some(true), Some(true), Some(_)) => partnerMaxEarningsPageNormalMode
-      case (Some(true), Some (false), Some(_)) => taxOrUniversalCreditPageNormalMode
-      case (Some(true), _, Some(_)) => taxOrUniversalCreditPageNormalMode
-      case _ => sessionExpiredPage
+    if(partnerMinEarnings.contains(true)) {
+      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+    } else {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
   }
 
-  def partnerMaximumEarningsRoute(answers: UserAnswers) = {
-    val hasPartner = answers.doYouLiveWithPartner
-    val partnerMaxEarnings = answers.partnerMaximumEarnings
+//  def partnerMaximumEarningsRoute(answers: UserAnswers) = {
+//    val hasPartner = answers.doYouLiveWithPartner
+//    val partnerMaxEarnings = answers.partnerMaximumEarnings
+//
+//    (hasPartner,partnerMaxEarnings) match {
+//      case (Some(true), Some(_)) => taxOrUniversalCreditPageNormalMode
+//      case _ => sessionExpiredPage
+//    }
+//  }
 
-
-    (hasPartner,partnerMaxEarnings) match {
-      case (Some(true), Some(_)) => taxOrUniversalCreditPageNormalMode
-      case _ => sessionExpiredPage
-    }
-  }
 }

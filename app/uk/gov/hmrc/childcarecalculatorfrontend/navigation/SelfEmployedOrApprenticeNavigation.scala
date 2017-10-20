@@ -21,6 +21,7 @@ import javax.inject.Singleton
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerSelfEmployedOrApprentice
 
 
 @Singleton
@@ -30,8 +31,8 @@ class SelfEmployedOrApprenticeNavigation {
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
   val Both: String = YouPartnerBothEnum.BOTH.toString
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
-  val Apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
-  val Neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
+//  val Apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
+//  val Neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
 
   def defineInPaidEmployment(whoIsInPaidEmp: Option[String]): String = {
     whoIsInPaidEmp match {
@@ -43,37 +44,56 @@ class SelfEmployedOrApprenticeNavigation {
   }
 
   def areYouSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
-    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+//    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val whoIsInPaidEmp = answers.whoIsInPaidEmployment
     val partnerMinEarnings = answers.partnerMinimumEarnings
     val areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
 
-    (hasPartner, defineInPaidEmployment(whoIsInPaidEmp), partnerMinEarnings, areYouSelfEmployedOrApprentice) match {
-      case (false, You, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (false, You, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (true, You, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (true, You, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (true, Both, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
-      case (true, Both, Some(false), Some(_)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-      case (true, Both, Some(true), Some(_)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+//    (hasPartner, defineInPaidEmployment(whoIsInPaidEmp), partnerMinEarnings, areYouSelfEmployedOrApprentice) match {
+//      case (false, You, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
+//      case (false, You, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+//      case (true, You, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
+//      case (true, You, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+//      case (true, Both, _, Some(SelfEmployed)) => routes.YourSelfEmployedController.onPageLoad(NormalMode)
+//      case (true, Both, Some(false), Some(_)) => routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+//      case (true, Both, Some(true), Some(_)) => routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+//      case _ => routes.SessionExpiredController.onPageLoad()
+//    }
+
+    if(areYouSelfEmployedOrApprentice.contains(SelfEmployed)) {
+      routes.YourSelfEmployedController.onPageLoad(NormalMode)
+    } else if(defineInPaidEmployment(whoIsInPaidEmp).contains(You)) {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    } else if(partnerMinEarnings.contains(false)) {
+      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+    } else {
+      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
     }
 
   }
 
   def partnerSelfEmployedOrApprenticeRoute(answers: UserAnswers) = {
-    val whoIsInPaidEmp: Option[String] = answers.whoIsInPaidEmployment
+//    val whoIsInPaidEmp: Option[String] = answers.whoIsInPaidEmployment
     val parentMinEarning = answers.yourMinimumEarnings
     val partnerSelfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
 
-    (defineInPaidEmployment(whoIsInPaidEmp), parentMinEarning, partnerSelfEmployedOrApprentice) match {
-      case (Partner, _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
-      case (Partner, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (Both, _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
-      case (Both, Some(false), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      case (Both, Some(true), Some(_)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+//    (defineInPaidEmployment(whoIsInPaidEmp), parentMinEarning, partnerSelfEmployedOrApprentice) match {
+//      case (Partner, _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+//      case (Partner, _, Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+//      case (Both, _, Some(SelfEmployed)) => routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+//      case (Both, Some(false), Some(_)) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+//      case (Both, Some(true), Some(_)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+//      case _ => routes.SessionExpiredController.onPageLoad()
+//    }
+
+    if(partnerSelfEmployedOrApprentice.contains(SelfEmployed)) {
+      routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+    } else if(parentMinEarning.contains(true)) {
+      routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+    } else {
+      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
+
   }
 
 }
