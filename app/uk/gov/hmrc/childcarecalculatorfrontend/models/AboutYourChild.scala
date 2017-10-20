@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
+import org.joda.time.LocalDate
 import play.api.libs.json._
 
-case class AboutYourChild (field1: String, field2: String)
+case class AboutYourChild (name: String, dob: LocalDate)
 
 object AboutYourChild {
   implicit val format = Json.format[AboutYourChild]

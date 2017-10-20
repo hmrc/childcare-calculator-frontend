@@ -12,6 +12,9 @@ The steps to add a new page are as follows:
     3. `questionPage` - a page with multiple questions on it backed by a case class
     4. `repeater` - a set of screens to allow multiple items to be added
     5. `yesNoPage` - a page with a pair of yes/no radio options
+    6. `bidDecimalPage`- a page with a single text field for a big decimal 
+    7. `checkboxPage` - a page with a set of check boxes
+    8. `contentPage` - a simple content page without a form
 2. It will ask for a name which should be CamelCased, e.g. `ChildAgedTwo`.  This will be used throughout, so for example you'll get a `ChildAgedTwoController`, `ChildAgedTwoForm` etc. as needed
 3. Exit sbt and run the script `./migrate.sh`
 4. Run `sbt test`

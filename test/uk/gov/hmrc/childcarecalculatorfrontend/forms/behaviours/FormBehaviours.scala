@@ -16,12 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours
 
+import org.scalatest.OptionValues
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
 
-trait FormBehaviours extends FormSpec {
+trait FormBehaviours extends FormSpec with OptionValues {
 
   val validData: Map[String, String]
+
+  val maxValue: BigDecimal = 999999
+
+  val minValue: BigDecimal = 1
 
   val form: Form[_]
 
@@ -52,7 +57,23 @@ trait FormBehaviours extends FormSpec {
 
       s"fail to bind when $field is blank" in {
         val data = validData + (field -> "")
+        val expectedError = error(field, s"$field.required")
+        checkForError(form, data, expectedError)
+      }
+    }
+  }
+
+  def formWithMandatoryNumberFields(fields: String*) = {
+    for (field <- fields) {
+      s"fail to bind when $field is omitted" in {
+        val data = validData - field
         val expectedError = error(field, "error.required")
+        checkForError(form, data, expectedError)
+      }
+
+      s"fail to bind when $field is blank" in {
+        val data = validData + (field -> "")
+        val expectedError = error(field, "error.number")
         checkForError(form, data, expectedError)
       }
     }
@@ -211,5 +232,31 @@ trait FormBehaviours extends FormSpec {
       checkForError(form, data, expectedError)
     }
 
+  }
+
+  def formWithDecimalField(fields: String*) = {
+    for (field <- fields) {
+      s"fail to bind when $field is not a decimal" in {
+        val data = validData + (field -> "invalid")
+        val expectedError = error(field, s"$field.invalid")
+        checkForError(form, data, expectedError)
+      }
+    }
+  }
+
+  def formWithInRange(fields: String*) = {
+    for (field <- fields) {
+      s"fail to bind when $field is less than minimum value" in {
+        val data = validData + (field -> (minValue-1).toString())
+        val expectedError = error(field, s"$field.invalid")
+        checkForError(form, data, expectedError)
+      }
+
+      s"fail to bind when $field is greater than maximum value" in {
+        val data = validData + (field -> (maxValue+1).toString())
+        val expectedError = error(field, s"$field.invalid")
+        checkForError(form, data, expectedError)
+      }
+    }
   }
 }

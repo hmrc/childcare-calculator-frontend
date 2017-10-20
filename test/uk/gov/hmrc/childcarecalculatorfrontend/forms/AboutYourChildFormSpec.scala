@@ -16,21 +16,37 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
 class AboutYourChildFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "field1" -> "value 1",
-    "field2" -> "value 2"
+    "name"      -> "Foo",
+    "dob.day"   -> "1",
+    "dob.month" -> "2",
+    "dob.year"  -> "2017"
   )
 
   val form = AboutYourChildForm()
 
   "AboutYourChild form" must {
-    behave like questionForm(AboutYourChild("value 1", "value 2"))
 
-    behave like formWithMandatoryTextFields("field1", "field2")
+    behave like questionForm(AboutYourChild("Foo", new LocalDate(2017, 2, 1)))
+
+    behave like formWithMandatoryNumberFields("dob.day", "dob.month", "dob.year")
+
+    "fail to bind when name is omitted" in {
+      val data = validData - "name"
+      val expectedError = error("name", "error.required")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when name is blank" in {
+      val data = validData + ("name" -> "")
+      val expectedError = error("name", "error.required")
+      checkForError(form, data, expectedError)
+    }
   }
 }

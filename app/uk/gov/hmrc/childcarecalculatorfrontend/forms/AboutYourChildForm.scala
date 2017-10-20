@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
@@ -24,8 +25,12 @@ object AboutYourChildForm {
 
   def apply(): Form[AboutYourChild] = Form(
     mapping(
-      "field1" -> nonEmptyText,
-      "field2" -> nonEmptyText
+      "name" -> nonEmptyText,
+      "dob" -> localDateMapping(
+        "day" -> number(min = 1, max = 31),
+        "month" -> number(min = 1, max = 12),
+        "year" -> number(min = 1900, max = LocalDate.now.getYear)
+      )
     )(AboutYourChild.apply)(AboutYourChild.unapply)
   )
 }

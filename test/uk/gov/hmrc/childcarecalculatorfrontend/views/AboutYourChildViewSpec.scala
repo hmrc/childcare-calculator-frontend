@@ -17,28 +17,39 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, AboutYourChild}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{DateViewBehaviours, QuestionViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 
-class AboutYourChildViewSpec extends QuestionViewBehaviours[AboutYourChild] {
+class AboutYourChildViewSpec extends QuestionViewBehaviours[AboutYourChild] with DateViewBehaviours[AboutYourChild] {
 
   val messageKeyPrefix = "aboutYourChild"
 
-  def createView = () => aboutYourChild(frontendAppConfig, AboutYourChildForm(), NormalMode)(fakeRequest, messages)
+  def createView: () => Html = () => createView(0, 1)
 
-  def createViewUsingForm = (form: Form[AboutYourChild]) => aboutYourChild(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[AboutYourChild]) => aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
+
+  def createView(index: Int, total: Int): Html =
+    aboutYourChild(frontendAppConfig, AboutYourChildForm(), NormalMode, index, total)(fakeRequest, messages)
 
   override val form = AboutYourChildForm()
 
   "AboutYourChild view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "title", "heading")
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode).url, "field1", "field2")
+    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "name")
+
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "dob")
+
+    "use the correct messages when there are multiple children" in {
+      val doc = asDocument(createView(0, 2))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.title.nth", messages("nth.0")))
+    }
   }
 }
