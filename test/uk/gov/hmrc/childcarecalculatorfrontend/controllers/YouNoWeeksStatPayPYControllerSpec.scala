@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
@@ -16,13 +32,19 @@ class YouNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val youNoWeeksStatPayPYForm = new YouNoWeeksStatPayPYForm(frontendAppConfig).apply()
+
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YouNoWeeksStatPayPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new YouNoWeeksStatPayPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      new YouNoWeeksStatPayPYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = YouNoWeeksStatPayPYForm()) = youNoWeeksStatPayPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = youNoWeeksStatPayPYForm) = youNoWeeksStatPayPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 12
 
   "YouNoWeeksStatPayPY Controller" must {
 
@@ -39,7 +61,7 @@ class YouNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YouNoWeeksStatPayPYForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(youNoWeeksStatPayPYForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -53,7 +75,7 @@ class YouNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = YouNoWeeksStatPayPYForm().bind(Map("value" -> "invalid value"))
+      val boundForm = youNoWeeksStatPayPYForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

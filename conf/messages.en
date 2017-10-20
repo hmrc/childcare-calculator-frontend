@@ -834,11 +834,9 @@ youNoWeeksStatPayCY.heading = How many weeks will you take this year?
 youNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will you take this year?
 youNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
 youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
-youNoWeeksStatPayCY.numeric.error = non numeric
+youNoWeeksStatPayCY.numeric.error = must be a whole number
 youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
-
-
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
@@ -897,19 +895,20 @@ statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
 
-partnerNoWeeksStatPayCY.title = partnerNoWeeksStatPayCY
-partnerNoWeeksStatPayCY.heading = partnerNoWeeksStatPayCY
-partnerNoWeeksStatPayCY.checkYourAnswersLabel = partnerNoWeeksStatPayCY
-
 partnerNoWeeksStatPayCY.title = How many weeks will your partner take this year?
 partnerNoWeeksStatPayCY.heading = How many weeks will your partner take this year?
 partnerNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will your partner take this year?
 partnerNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
 partnerNoWeeksStatPayCY.error = You must tell the calculator how many weeks your partner will take this year
-partnerNoWeeksStatPayCY.numeric.error = non numeric
+partnerNoWeeksStatPayCY.numeric.error = must be a whole number
 partnerNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
 
-youNoWeeksStatPayPY.title = youNoWeeksStatPayPY
-youNoWeeksStatPayPY.heading = youNoWeeksStatPayPY
-youNoWeeksStatPayPY.checkYourAnswersLabel = youNoWeeksStatPayPY
+youNoWeeksStatPayPY.title = How many weeks did you take last year?
+youNoWeeksStatPayPY.heading = How many weeks did you take last year?
+youNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did you take last year?
+youNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+youNoWeeksStatPayPY.error = You must tell the calculator how many weeks you took last year
+youNoWeeksStatPayPY.numeric.error = must be a whole number
+youNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
+youNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
