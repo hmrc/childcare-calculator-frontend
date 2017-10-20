@@ -252,4 +252,18 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def hasPartnerInPaidWork: Boolean = {
     doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
   }
+
+  def isYouPartnerOrBoth(who: Option[String]): String = {
+    val You: String = YouPartnerBothEnum.YOU.toString
+    val Partner: String = YouPartnerBothEnum.PARTNER.toString
+    val Both: String = YouPartnerBothEnum.BOTH.toString
+
+    who match {
+      case Some(You) => You
+      case Some(Partner) => Partner
+      case Some(Both) => Both
+      case _ => You
+    }
+  }
+
 }
