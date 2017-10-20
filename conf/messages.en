@@ -842,7 +842,6 @@ statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
 
-
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error = You must tell the calculator if your children are registered blind
@@ -899,16 +898,6 @@ statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
 
-aboutYourChild.title = About your child
-aboutYourChild.title.nth = About your {0} child
-aboutYourChild.heading = About your child
-aboutYourChild.heading.nth = About your {0} child
-aboutYourChild.lede = Names are only used to make your questions and results clear. The calculator will not store or share them with anyone.
-aboutYourChild.name = What's their first name?
-aboutYourChild.dob = What's their date of birth?
-aboutYourChild.dob.error = You must tell the calculator your child's date of birth
-aboutYourChild.checkYourAnswersLabel = About your child
-
 howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.yourPension = You
@@ -937,7 +926,6 @@ childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowa
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if your children get disability benefits
-
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.heading = How often do you pay or expect to pay for childcare?
@@ -981,3 +969,16 @@ statutoryPayAmountPY.heading = How much statutory pay did you or your partner ge
 statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
 statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
 statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
+
+aboutYourChild.title = About your child
+aboutYourChild.title.nth = About your {0} child
+aboutYourChild.heading = About your child
+aboutYourChild.heading.nth = About your {0} child
+aboutYourChild.lede = Names are only used to make your questions and results clear. The calculator will not store or share them with anyone.
+aboutYourChild.name = What’s their first name?
+aboutYourChild.dob = What’s their date of birth?
+aboutYourChild.checkYourAnswersLabel = About your child
+aboutYourChild.error.name = You must enter your child’s name
+aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
+aboutYourChild.error.future = You must enter a date less than 12 months in the future
+aboutYourChild.error.past = You must enter a date less than 20 years in the past

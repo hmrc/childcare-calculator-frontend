@@ -22,13 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
-  def aboutYourChild(index: Int): Option[AnswerRow] = userAnswers.aboutYourChild(index) map {
-    x => AnswerRow("aboutYourChild.checkYourAnswersLabel", s"${x.name} ${x.dob}", false, routes.AboutYourChildController.onPageLoad(CheckMode, index).url)
-  }
-
   def childcarePayFrequency: Option[AnswerRow] = userAnswers.childcarePayFrequency map {
     x => AnswerRow("childcarePayFrequency.checkYourAnswersLabel", s"childcarePayFrequency.$x", true, routes.ChildcarePayFrequencyController.onPageLoad(CheckMode).url)
   }
+
   def howMuchPartnerPayPensionPY: Option[AnswerRow] = userAnswers.howMuchPartnerPayPensionPY map {
     x => AnswerRow("howMuchPartnerPayPensionPY.checkYourAnswersLabel", s"$x", false, routes.HowMuchPartnerPayPensionPYController.onPageLoad(CheckMode).url)
   }
@@ -75,6 +72,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def yourOtherIncomeAmountPY: Option[AnswerRow] = userAnswers.yourOtherIncomeAmountPY map {
     x => AnswerRow("yourOtherIncomeAmountPY.checkYourAnswersLabel", s"$x", false, routes.YourOtherIncomeAmountPYController.onPageLoad(CheckMode).url)
+  }
+
+  def aboutYourChild(index: Int): Option[AnswerRow] = userAnswers.aboutYourChild(index) map {
+    x => AnswerRow("aboutYourChild.checkYourAnswersLabel", s"${x.name} ${x.dob}", false, routes.AboutYourChildController.onPageLoad(CheckMode, index).url)
   }
 
   def yourStatutoryPayPY: Option[AnswerRow] = userAnswers.yourStatutoryPayPY map {
