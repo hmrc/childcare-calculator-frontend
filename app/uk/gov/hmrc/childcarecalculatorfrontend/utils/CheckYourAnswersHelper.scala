@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def yourOtherIncomeAmountPY: Option[AnswerRow] = userAnswers.yourOtherIncomeAmountPY map {
+    x => AnswerRow("yourOtherIncomeAmountPY.checkYourAnswersLabel", s"$x", false, routes.YourOtherIncomeAmountPYController.onPageLoad(CheckMode).url)
+  }
+
   def yourStatutoryPayPY: Option[AnswerRow] = userAnswers.yourStatutoryPayPY map {
     x => AnswerRow("yourStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayPYController.onPageLoad(CheckMode).url)
   }

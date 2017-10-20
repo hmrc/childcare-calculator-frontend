@@ -869,3 +869,12 @@ statutoryPayAmountCY.heading = How much statutory pay will you or your partner g
 statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
+
+yourOtherIncomeAmountPY.title = How much was your other income?
+yourOtherIncomeAmountPY.heading = How much was your other income?
+yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
+parentOtherIncomeAmountPY.required = You must tell the calculator how much was your other income
+parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountPY.required = You must tell the calculator how much was your other income
+partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
