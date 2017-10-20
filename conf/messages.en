@@ -994,6 +994,9 @@ aboutYourChild.error.dob = You must enter your child’s date of birth in the co
 aboutYourChild.error.future = You must enter a date less than 12 months in the future
 aboutYourChild.error.past = You must enter a date less than 20 years in the past
 
-childRegisteredBlind.title = childRegisteredBlind
-childRegisteredBlind.heading = childRegisteredBlind
+childRegisteredBlind.title = Is {0} registered blind?
+childRegisteredBlind.heading = Is {0} registered blind?
+childRegisteredBlind.error = You must tell the calculator if your child is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
+
+
