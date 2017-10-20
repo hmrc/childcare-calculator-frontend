@@ -424,6 +424,22 @@ partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
+
+parentEmploymentIncomeCY.title = How much will you get paid this year?
+parentEmploymentIncomeCY.heading = How much will you get paid this year?
+parentEmploymentIncomeCY.hint= This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
+
+partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
+partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
+partnerEmploymentIncomeCY.hint= This is your partner's total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
+
+employmentIncome.invalid=You must enter a number between 0 and 999999.99
+partnerEmploymentIncome.blank= You must tell the calculator what your partner will get paid this year
+parentEmploymentIncome.blank= You must tell the calculator what you will get paid this year
+employmentIncomeCY.tax_year= This tax year is 6 April 2017 to 5 April 2018.
+
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
@@ -821,6 +837,7 @@ youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will
 youNoWeeksStatPayCY.numeric.error = non numeric
 youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
+
 
 
 registeredBlind.title = Are any of your children registered blind?

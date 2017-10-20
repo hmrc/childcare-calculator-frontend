@@ -26,6 +26,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
+
+
+  def partnerEmploymentIncomeCY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomeCY map {
+    x => AnswerRow("partnerEmploymentIncomeCY.checkYourAnswersLabel", s"$x", false, routes.PartnerEmploymentIncomeCYController.onPageLoad(CheckMode).url)
+  }
+
+  def parentEmploymentIncomeCY: Option[AnswerRow] = userAnswers.parentEmploymentIncomeCY map {
+    x => AnswerRow("parentEmploymentIncomeCY.checkYourAnswersLabel", s"$x", false, routes.ParentEmploymentIncomeCYController.onPageLoad(CheckMode).url)
+  }
+
   def yourStatutoryPayPY: Option[AnswerRow] = userAnswers.yourStatutoryPayPY map {
     x => AnswerRow("yourStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayPYController.onPageLoad(CheckMode).url)
   }
@@ -192,6 +202,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whoGetsStatutoryCY.checkYourAnswersLabel", s"whoGetsStatutoryCY.$x", true, routes.WhoGetsStatutoryCYController.onPageLoad(CheckMode).url)
   }
 
+
   def employmentIncomeCY: Option[AnswerRow] = userAnswers.employmentIncomeCY map {
     x => AnswerRow("employmentIncomeCY.checkYourAnswersLabel", s"${x.parentEmploymentIncome} ${x.partnerEmploymentIncome}", false, routes.EmploymentIncomeCYController.onPageLoad(CheckMode).url)
   }
@@ -234,6 +245,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def whoPaysIntoPension: Option[AnswerRow] = userAnswers.whoPaysIntoPension map {
     x => AnswerRow("whoPaysIntoPension.checkYourAnswersLabel", s"whoPaysIntoPension.$x", true, routes.WhoPaysIntoPensionController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerAnyOtherIncomeThisYear: Option[AnswerRow] = userAnswers.partnerAnyOtherIncomeThisYear map {
+    x => AnswerRow("partnerAnyOtherIncomeThisYear.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(CheckMode).url)
+
   }
 
   def yourOtherIncomeThisYear: Option[AnswerRow] = userAnswers.yourOtherIncomeThisYear map {
