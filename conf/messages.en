@@ -996,7 +996,7 @@ aboutYourChild.error.past = You must enter a date less than 20 years in the past
 
 childRegisteredBlind.title = Is {0} registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
-childRegisteredBlind.error = You must tell the calculator if your child is registered blind
+childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
 
 
