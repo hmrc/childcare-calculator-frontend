@@ -845,7 +845,6 @@ partnerStatutoryPayPY.hint = This is pay from your partner’s employer for mate
 partnerStatutoryPayPY.error = You must select yes if your partner got statutory pay last year
 partnerStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
 
-
 bothStatutoryPayPY.title = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
 bothStatutoryPayPY.heading = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
 bothStatutoryPayPY.checkYourAnswersLabel = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
@@ -853,3 +852,20 @@ bothStatutoryPayPY.hint = This is pay from you or your partner’s employer for 
 bothStatutoryPayPY.error = You must select yes if you, your partner or both got statutory pay last year
 bothStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
 
+yourStatutoryPayAmountCY.title = How much statutory pay will you get paid a week?
+yourStatutoryPayAmountCY.heading = How much statutory pay will you get paid a week?
+yourStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you get paid a week?
+parentStatutoryPayAmount.required = You must tell the calculator what statutory pay will you get paid a week
+parentStatutoryPayAmount.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountCY.title = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmountCY.heading = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmount.required = You must tell the calculator what statutory pay will your partner get paid a week
+partnerStatutoryPayAmount.invalid = You must enter a number between 1 and 99
+
+statutoryPayAmountCY.title = How much statutory pay will you or your partner get paid a week?
+statutoryPayAmountCY.heading = How much statutory pay will you or your partner get paid a week?
+statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
+statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
+statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?

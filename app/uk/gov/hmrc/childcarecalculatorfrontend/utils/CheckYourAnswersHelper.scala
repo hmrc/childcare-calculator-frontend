@@ -62,8 +62,20 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("registeredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.RegisteredBlindController.onPageLoad(CheckMode).url)
   }
 
+  def statutoryPayAmountCY: Option[AnswerRow] = userAnswers.statutoryPayAmountCY map {
+    x => AnswerRow("statutoryPayAmountCY.checkYourAnswersLabel", s"${x.parentStatutoryPayAmount} ${x.partnerStatutoryPayAmount}", false, routes.StatutoryPayAmountCYController.onPageLoad(CheckMode).url)
+  }
+
   def statutoryPayAWeekLY: Option[AnswerRow] = userAnswers.statutoryPayAWeekLY map {
     x => AnswerRow("statutoryPayAWeekLY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekLYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerStatutoryPayAmountCY: Option[AnswerRow] = userAnswers.partnerStatutoryPayAmountCY map {
+    x => AnswerRow("partnerStatutoryPayAmountCY.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryPayAmountCYController.onPageLoad(CheckMode).url)
+  }
+
+  def yourStatutoryPayAmountCY: Option[AnswerRow] = userAnswers.yourStatutoryPayAmountCY map {
+    x => AnswerRow("yourStatutoryPayAmountCY.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryPayAmountCYController.onPageLoad(CheckMode).url)
   }
 
   def whosHadBenefitsPY: Option[AnswerRow] = userAnswers.whosHadBenefitsPY map {
