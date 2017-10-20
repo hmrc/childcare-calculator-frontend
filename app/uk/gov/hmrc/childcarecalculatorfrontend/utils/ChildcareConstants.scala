@@ -117,4 +117,11 @@ object ChildcareConstants {
   val approvedProviderErrorKey = "approvedProvider.error"
   val selfEmployedOrApprenticeErrorKey = "areYouSelfEmployedOrApprentice.error"
   val noOfChildrenErrorKey = "noOfChildren.error"
+  val partnerChildcareVouchersErrorKey = "partnerChildcareVouchers.error"
+  val partnerSelfEmployedOrApprenticeErrorKey = "partnerSelfEmployedOrApprentice.error"
+  val whatIsYourPartnersTaxCodeBlankErrorKey = "whatIsYourPartnersTaxCode.blank"
+  val invalidTaxCodeErrorKey = "taxCode.invalid"
+  val whatIsYourTaxCodeBlankErrorKey = "whatIsYourTaxCode.blank"
+  val whoGetsVouchersErrorKey = "whoGetsVouchers.error"
+  val yourChildcareVoucherErrorKey = "yourChildcareVouchers.error"
 }

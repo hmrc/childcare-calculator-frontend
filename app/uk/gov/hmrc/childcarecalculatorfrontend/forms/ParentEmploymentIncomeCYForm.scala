@@ -37,7 +37,7 @@ class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) exte
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
 
-        case Some(strValue) if(strValue.matches(decimalRegex)) =>
+        case Some(strValue) if strValue.matches(decimalRegex) =>
           val value = BigDecimal(strValue)
 
           if (validateInRange(value, minValue, maxValue)) {
