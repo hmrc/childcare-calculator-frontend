@@ -31,8 +31,8 @@ trait FormSpec extends UnitSpec with GuiceOneAppPerSuite {
   def checkForError(form: Form[_], data: Map[String, String], expectedErrors: Seq[FormError]) = {
     form.bind(data).fold(
       formWithErrors => {
-        for (error <- formWithErrors.errors) {
-          expectedErrors should contain(FormError(error.key, error.message))
+        for (error <- expectedErrors) {
+          formWithErrors.errors should contain(FormError(error.key, error.message))
         }
         formWithErrors.errors.size shouldBe expectedErrors.size
       },

@@ -58,6 +58,18 @@ object YesNoUnsureEnum extends Enumeration {
   implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
 }
 
+object YesNoNotYetEnum extends Enumeration {
+  type YesNoNotYetEnum = Value
+  val YES = Value("yes")
+  val NO = Value("no")
+  val NOTYET = Value("notYet")
+
+  val enumReads: Reads[YesNoNotYetEnum] = EnumUtils.enumReads(YesNoNotYetEnum)
+  val enumWrites: Writes[YesNoNotYetEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[YesNoNotYetEnum] = EnumUtils.enumFormat(YesNoNotYetEnum)
+}
+
 object AgeEnum extends Enumeration {
   type AgeEnum = Value
 
@@ -83,5 +95,19 @@ object SelfEmployedOrApprenticeOrNeitherEnum extends Enumeration {
   val enumWrites: Writes[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumFormat(SelfEmployedOrApprenticeOrNeitherEnum)
+}
+
+object WhichBenefitsEnum extends Enumeration {
+  type WhichBenefitsEnum = Value
+
+  val INCOMEBENEFITS = Value("incomeBenefits")
+  val DISABILITYBENEFITS = Value("disabilityBenefits")
+  val HIGHRATEDISABILITYBENEFITS = Value("highRateDisabilityBenefits")
+  val CARERSALLOWANCE = Value("carersAllowance")
+
+  val enumReads: Reads[WhichBenefitsEnum] = EnumUtils.enumReads(WhichBenefitsEnum)
+  val enumWrites: Writes[WhichBenefitsEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[WhichBenefitsEnum] = EnumUtils.enumFormat(WhichBenefitsEnum)
 }
 

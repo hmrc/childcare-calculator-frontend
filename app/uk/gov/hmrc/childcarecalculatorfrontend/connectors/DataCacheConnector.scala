@@ -76,7 +76,12 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
   def replaceInCollection[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = {
     sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
       optionalCacheMap.fold(throw new Exception(s"Couldn't find document with key $cacheId")) {cacheMap =>
-        val newSeq = cacheMap.data(collectionKey).as[Seq[A]].updated(index, item)
+        val oldSeq = cacheMap.data.lift(collectionKey).map(_.as[Seq[A]]).getOrElse(Seq.empty)
+        val newSeq = if (index > oldSeq.length - 1) {
+          oldSeq :+ item
+        } else {
+          oldSeq.updated(index, item)
+        }
         val updatedCacheMap = cacheMap copy (data = cacheMap.data + (collectionKey -> Json.toJson(newSeq)))
         sessionRepository().upsert(updatedCacheMap).map {_ => updatedCacheMap}
       }

@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 class YourStatutoryPayAmountCYFormSpec extends FormSpec {
 
   val statutoryForm = new YourStatutoryPayAmountCYForm(frontendAppConfig).apply()
 
-  val errorKeyBlank = "parentStatutoryPayAmount.required"
-  val errorKeyInvalid = "parentStatutoryPayAmount.invalid"
+  val errorKeyBlank = parentStatutoryPayAmountRequiredErrorKey
+  val errorKeyInvalid = parentStatutoryPayAmountInvalidErrorKey
 
   "YourStatutoryPayAmountCY Form" must {
 

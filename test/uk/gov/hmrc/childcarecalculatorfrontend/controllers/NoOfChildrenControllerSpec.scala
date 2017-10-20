@@ -34,11 +34,13 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new NoOfChildrenController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new NoOfChildrenForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = NoOfChildrenForm()) = noOfChildren(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = NoOfChildrenForm) = noOfChildren(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 19
+
+  val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
 
   "NoOfChildren Controller" must {
 
@@ -55,7 +57,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(NoOfChildrenForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(NoOfChildrenForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -69,7 +71,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = NoOfChildrenForm().bind(Map("value" -> "invalid value"))
+      val boundForm = NoOfChildrenForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
