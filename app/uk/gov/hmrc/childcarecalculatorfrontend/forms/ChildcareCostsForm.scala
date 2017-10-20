@@ -19,15 +19,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object ChildcareCostsForm extends FormErrorHelper {
 
     def ChildcareCostsFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "childcareCosts.error")
-      case _ => produceError(key, "error.unknown")
+      case None => produceError(key, childcareCostsErrorKey)
+      case _ => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
@@ -36,9 +38,9 @@ object ChildcareCostsForm extends FormErrorHelper {
   def apply(): Form[String] = Form(single("value" -> of(ChildcareCostsFormatter)))
 
   def options = Seq(
-    InputOption("childcareCosts", "yes"),
-    InputOption("childcareCosts", "no"),
-    InputOption("childcareCosts", "notYet")
+    InputOption("childcareCosts", YesNoNotYetEnum.YES.toString),
+    InputOption("childcareCosts", YesNoNotYetEnum.NO.toString),
+    InputOption("childcareCosts", YesNoNotYetEnum.NOTYET.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

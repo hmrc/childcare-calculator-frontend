@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 class PartnerBenefitsIncomePYFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyInvalid = "invalid"
+  val errorKeyBlank = partnerBenefitsIncomePYRequiredErrorKey
+  val errorKeyInvalid = partnerBenefitsIncomeInvalidErrorKey
 
   "PartnerBenefitsIncomePY Form" must {
 
