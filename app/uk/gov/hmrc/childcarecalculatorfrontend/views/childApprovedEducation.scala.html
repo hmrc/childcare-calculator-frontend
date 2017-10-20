@@ -21,14 +21,14 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("childApprovedEducation.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = ChildApprovedEducationController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = ChildApprovedEducationController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @components.back_link()
 

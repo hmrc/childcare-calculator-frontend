@@ -73,7 +73,7 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
     }
   }
 
-  def replaceInCollection[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = {
+  def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = {
     sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
       optionalCacheMap.fold(throw new Exception(s"Couldn't find document with key $cacheId")) {cacheMap =>
         val oldSeq = cacheMap.data.lift(collectionKey).map(_.as[Seq[A]]).getOrElse(Seq.empty)
@@ -85,6 +85,19 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
         val updatedCacheMap = cacheMap copy (data = cacheMap.data + (collectionKey -> Json.toJson(newSeq)))
         sessionRepository().upsert(updatedCacheMap).map {_ => updatedCacheMap}
       }
+    }
+  }
+
+  def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)
+                        (implicit fmt: Format[Map[K, V]]): Future[CacheMap] = {
+    sessionRepository().get(cacheId).flatMap {
+      _.map {
+        cacheMap =>
+          val map = cacheMap.data.get(collectionKey).map(_.as[Map[K, V]]).getOrElse(Map.empty)
+          val updatedMap = map + (key -> value)
+          val updatedCacheMap = cacheMap copy (data = cacheMap.data + (collectionKey -> Json.toJson(updatedMap)))
+          sessionRepository().upsert(updatedCacheMap).map { _ => updatedCacheMap }
+      }.getOrElse(throw new RuntimeException(s"Couldn't find document with key $cacheId"))
     }
   }
 }
@@ -103,5 +116,7 @@ trait DataCacheConnector {
 
   def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(implicit fmt: Format[A]): Future[CacheMap]
 
-  def replaceInCollection[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap]
+  def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap]
+
+  def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(implicit fmt: Format[Map[K, V]]): Future[CacheMap]
 }

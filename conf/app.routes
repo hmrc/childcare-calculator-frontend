@@ -598,7 +598,8 @@ POST       /employmentIncomePY                       uk.gov.hmrc.childcarecalcul
 GET        /changeEmploymentIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEmploymentIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onSubmit(mode: Mode = CheckMode)
 
-GET        /childApprovedEducation                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = NormalMode)
-POST       /childApprovedEducation                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeChildApprovedEducation                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeChildApprovedEducation                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = CheckMode)
+GET        /childApprovedEducation                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = NormalMode, id: Int = 0)
+GET        /childApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = NormalMode, id: Int)
+POST       /childApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = NormalMode, id: Int)
+GET        /changeChildApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = CheckMode, id: Int)
+POST       /changeChildApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = CheckMode, id: Int)

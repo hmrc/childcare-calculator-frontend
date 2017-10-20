@@ -63,7 +63,7 @@ class AboutYourChildController @Inject()(
               Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren)))
           }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))),
         (value) =>
-          dataCacheConnector.replaceInCollection[AboutYourChild](
+          dataCacheConnector.replaceInSeq[AboutYourChild](
             request.sessionId,
             AboutYourChildId.toString,
             childIndex,

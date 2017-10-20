@@ -27,9 +27,9 @@ class ChildApprovedEducationViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childApprovedEducation"
 
-  def createView = () => childApprovedEducation(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => childApprovedEducation(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => childApprovedEducation(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => childApprovedEducation(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages)
 
   "ChildApprovedEducation view" must {
 
@@ -37,6 +37,6 @@ class ChildApprovedEducationViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildApprovedEducationController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildApprovedEducationController.onSubmit(NormalMode, 0).url)
   }
 }
