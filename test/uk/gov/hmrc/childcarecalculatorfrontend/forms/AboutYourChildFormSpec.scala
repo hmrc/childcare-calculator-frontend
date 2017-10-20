@@ -53,6 +53,17 @@ class AboutYourChildFormSpec extends FormBehaviours {
       checkForError(form, data, expectedError)
     }
 
+    "fail to bind when the date is blank" in {
+      val data = Map(
+        "name"      -> "Foo",
+        "dob.day"   -> "",
+        "dob.month" -> "",
+        "dob.year"  -> ""
+      )
+      val expectedError = error("dob", "aboutYourChild.error.dob")
+      checkForError(form, data, expectedError)
+    }
+
     "fail to bind when the date is more than 20 years in the past" in {
       val date = LocalDate.now.minusYears(20).minusDays(1)
       val data = Map(

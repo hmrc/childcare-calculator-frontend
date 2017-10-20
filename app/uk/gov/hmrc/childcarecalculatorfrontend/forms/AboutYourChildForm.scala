@@ -38,6 +38,9 @@ object AboutYourChildForm {
         .replaceError(FormError("day", "error.required"), FormError("", "aboutYourChild.error.dob"))
         .replaceError(FormError("month", "error.required"), FormError("", "aboutYourChild.error.dob"))
         .replaceError(FormError("year", "error.required"), FormError("", "aboutYourChild.error.dob"))
+        .replaceError(FormError("day", "error.number"), FormError("", "aboutYourChild.error.dob"))
+        .replaceError(FormError("month", "error.number"), FormError("", "aboutYourChild.error.dob"))
+        .replaceError(FormError("year", "error.number"), FormError("", "aboutYourChild.error.dob"))
     )(AboutYourChild.apply)(AboutYourChild.unapply)
   )
 }
