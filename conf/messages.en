@@ -887,6 +887,28 @@ statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
 
+howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.yourPension = You
+howMuchBothPayPensionPY.partnerPension = Partner
+howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
+
+howMuchYouPayPensionPY.title = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.yourPension = You
+howMuchYouPayPensionPY.required = Please tell the calculator how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.partnerPension = Partner
+howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
 childDisabilityBenefits.title = Do any of your children get any of these disability benefits?
 childDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
 childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
