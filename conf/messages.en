@@ -836,7 +836,7 @@ youNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your w
 youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
 youNoWeeksStatPayCY.numeric.error = must be a whole number
 youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
-youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
+youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41 for your number of Statutory weeks pay
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
@@ -927,7 +927,7 @@ partnerNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so th
 partnerNoWeeksStatPayCY.error = You must tell the calculator how many weeks your partner will take this year
 partnerNoWeeksStatPayCY.numeric.error = must be a whole number
 partnerNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
-partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
+partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
 
 youNoWeeksStatPayPY.title = How many weeks did you take last year?
 youNoWeeksStatPayPY.heading = How many weeks did you take last year?
@@ -948,5 +948,5 @@ bothNoWeeksStatPayCY.error = You must tell the calculator how many weeks you wil
 bothNoWeeksStatPayCY.numeric.error = must be a whole number
 bothNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 bothNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
-bothNoWeeksStatPayCY.youNoWeeksStatPayCY = test1
-bothNoWeeksStatPayCY.partnerNoWeeksStatPayCY = test2
+
+
