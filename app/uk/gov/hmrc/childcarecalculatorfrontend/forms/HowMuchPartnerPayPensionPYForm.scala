@@ -21,9 +21,9 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object HowMuchPartnerPayPensionForm extends FormErrorHelper {
+object HowMuchPartnerPayPensionPYForm extends FormErrorHelper {
 
-  def howMuchPartnerPayPensionFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def howMuchPartnerPayPensionPYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
     val decimalRegex = """\d+(\.\d{1,2})?"""
 
@@ -39,6 +39,6 @@ object HowMuchPartnerPayPensionForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = howMuchPartnerPayPensionInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(howMuchPartnerPayPensionFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = howMuchPartnerPayPensionPYInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(howMuchPartnerPayPensionPYFormatter(errorKeyBlank, errorKeyInvalid))))
 }

@@ -16,22 +16,35 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object HowMuchPartnerPayPensionForm extends FormErrorHelper {
+@Singleton
+class YourOtherIncomeAmountPYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def howMuchPartnerPayPensionFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def yourOtherIncomeAmountPYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    val decimalRegex = """\d+(\.\d{1,2})?"""
+    val minValue: Double = appConfig.minIncome
+    val maxValue: Double = appConfig.maxIncome
+
+    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
+        case Some(s) if(s.matches(decimalRegex)) =>
+          val value = BigDecimal(s)
+
+          if (validateInRange(value, minValue, maxValue)) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyInvalid)
+          }
         case _ => produceError(key, errorKeyInvalid)
       }
     }
@@ -39,6 +52,6 @@ object HowMuchPartnerPayPensionForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = howMuchPartnerPayPensionInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(howMuchPartnerPayPensionFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(errorKeyBlank: String = parentOtherIncomeAmountPYRequiredErrorKey, errorKeyInvalid: String = parentOtherIncomeAmountPYInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(yourOtherIncomeAmountPYFormatter(errorKeyBlank, errorKeyInvalid))))
 }
