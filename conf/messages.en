@@ -958,3 +958,11 @@ parentEmploymentIncomePY.required = You must tell the calculator what did you ge
 parentEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
 parentEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
 parentEmploymentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+
+partnerEmploymentIncomePY.title = How much did your partner get paid last year?
+partnerEmploymentIncomePY.heading = How much did your partner get paid last year?
+partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid last year?
+partnerEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+partnerEmploymentIncomePY.required = You must tell the calculator what did your partner get paid last year
+partnerEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9

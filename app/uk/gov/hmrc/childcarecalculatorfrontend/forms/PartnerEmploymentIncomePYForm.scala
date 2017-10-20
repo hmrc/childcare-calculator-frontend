@@ -18,19 +18,19 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.data.{Form, FormError}
+import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
-class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
+class PartnerEmploymentIncomePYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def partnerEmploymentIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def partnerEmploymentIncomePYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+
     val minValue: Double = appConfig.minIncome
     val maxValue: Double = appConfig.maxIncome
-
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
     def bind(key: String, data: Map[String, String]) = {
@@ -52,6 +52,6 @@ class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) ext
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey, errorKeyInvalid: String = employmentIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(partnerEmploymentIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(errorKeyBlank: String = partnerEmploymentIncomePYRequiredErrorKey, errorKeyInvalid: String = partnerEmploymentIncomePYInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(partnerEmploymentIncomePYFormatter(errorKeyBlank, errorKeyInvalid))))
 }
