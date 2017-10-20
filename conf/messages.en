@@ -893,3 +893,21 @@ childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowa
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if your children get disability benefits
+
+yourOtherIncomeAmountPY.title = How much was your other income?
+yourOtherIncomeAmountPY.heading = How much was your other income?
+yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
+parentOtherIncomeAmountPY.required = You must tell the calculator how much your other income was
+parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountPY.required = You must tell the calculator how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
+
+otherIncomeAmountPY.title = How much was you and your partner’s other income?
+otherIncomeAmountPY.heading = How much was you and your partner’s other income?
+otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
+otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
+otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?

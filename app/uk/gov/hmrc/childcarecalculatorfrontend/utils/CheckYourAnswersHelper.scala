@@ -36,6 +36,18 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("parentEmploymentIncomeCY.checkYourAnswersLabel", s"$x", false, routes.ParentEmploymentIncomeCYController.onPageLoad(CheckMode).url)
   }
 
+  def otherIncomeAmountPY: Option[AnswerRow] = userAnswers.otherIncomeAmountPY map {
+    x => AnswerRow("otherIncomeAmountPY.checkYourAnswersLabel", s"${x.parentOtherIncomeAmountPY} ${x.partnerOtherIncomeAmountPY}", false, routes.OtherIncomeAmountPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerOtherIncomeAmountPY: Option[AnswerRow] = userAnswers.partnerOtherIncomeAmountPY map {
+    x => AnswerRow("partnerOtherIncomeAmountPY.checkYourAnswersLabel", s"$x", false, routes.PartnerOtherIncomeAmountPYController.onPageLoad(CheckMode).url)
+  }
+
+  def yourOtherIncomeAmountPY: Option[AnswerRow] = userAnswers.yourOtherIncomeAmountPY map {
+    x => AnswerRow("yourOtherIncomeAmountPY.checkYourAnswersLabel", s"$x", false, routes.YourOtherIncomeAmountPYController.onPageLoad(CheckMode).url)
+  }
+
   def yourStatutoryPayPY: Option[AnswerRow] = userAnswers.yourStatutoryPayPY map {
     x => AnswerRow("yourStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayPYController.onPageLoad(CheckMode).url)
   }
