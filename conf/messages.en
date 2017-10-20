@@ -895,6 +895,31 @@ statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
 
+childDisabilityBenefits.title = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
+childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
+childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
+childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
+childDisabilityBenefits.error = You must answer yes if your children get disability benefits
+
+yourOtherIncomeAmountPY.title = How much was your other income?
+yourOtherIncomeAmountPY.heading = How much was your other income?
+yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
+parentOtherIncomeAmountPY.required = You must tell the calculator how much your other income was
+parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountPY.required = You must tell the calculator how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
+
+otherIncomeAmountPY.title = How much was you and your partner’s other income?
+otherIncomeAmountPY.heading = How much was you and your partner’s other income?
+otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
+otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
+otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
+
 partnerNoWeeksStatPayCY.title = How many weeks will your partner take this year?
 partnerNoWeeksStatPayCY.heading = How many weeks will your partner take this year?
 partnerNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will your partner take this year?
@@ -912,3 +937,9 @@ youNoWeeksStatPayPY.error = You must tell the calculator how many weeks you took
 youNoWeeksStatPayPY.numeric.error = must be a whole number
 youNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
 youNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
+
+bothNoWeeksStatPayCY.title = bothNoWeeksStatPayCY
+bothNoWeeksStatPayCY.heading = bothNoWeeksStatPayCY
+bothNoWeeksStatPayCY.field1 = Field 1
+bothNoWeeksStatPayCY.field2 = Field 2
+bothNoWeeksStatPayCY.checkYourAnswersLabel = bothNoWeeksStatPayCY
