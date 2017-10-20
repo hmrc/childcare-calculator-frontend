@@ -878,3 +878,6 @@ parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999
 
 partnerOtherIncomeAmountPY.required = You must tell the calculator how much was your other income
 partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
