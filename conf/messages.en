@@ -886,3 +886,7 @@ statutoryPayAmountCY.heading = How much statutory pay will you or your partner g
 statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
 statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
 statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
+
+childDisabilityBenefits.title = childDisabilityBenefits
+childDisabilityBenefits.heading = childDisabilityBenefits
+childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
