@@ -32,6 +32,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def howMuchBothPayPensionPY: Option[HowMuchBothPayPensionPY] = cacheMap.getEntry[HowMuchBothPayPensionPY](HowMuchBothPayPensionPYId.toString)
 
+  def statutoryPayAmountPY: Option[StatutoryPayAmountPY] = cacheMap.getEntry[StatutoryPayAmountPY](StatutoryPayAmountPYId.toString)
+
+  def partnerStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayAmountPYId.toString)
+
+  def yourStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayAmountPYId.toString)
+
   def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildDisabilityBenefitsId.toString)
 
   def otherIncomeAmountPY: Option[OtherIncomeAmountPY] = cacheMap.getEntry[OtherIncomeAmountPY](OtherIncomeAmountPYId.toString)
