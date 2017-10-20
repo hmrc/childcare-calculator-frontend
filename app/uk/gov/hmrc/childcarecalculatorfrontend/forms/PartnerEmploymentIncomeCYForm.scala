@@ -37,7 +37,6 @@ class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) ext
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-
         case Some(strValue) if strValue.matches(decimalRegex) =>
           val value = BigDecimal(strValue)
 

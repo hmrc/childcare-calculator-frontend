@@ -18,16 +18,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.data.{Form, FormError}
+import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
-class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
+class PartnerEmploymentIncomePYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def parentEmploymentIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def partnerEmploymentIncomePYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+
     val minValue: Double = appConfig.minIncome
     val maxValue: Double = appConfig.maxIncome
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
@@ -36,7 +37,7 @@ class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) exte
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(strValue) if strValue.matches(decimalRegex) =>
+        case Some(strValue) if(strValue.matches(decimalRegex)) =>
           val value = BigDecimal(strValue)
 
           if (validateInRange(value, minValue, maxValue)) {
@@ -51,6 +52,6 @@ class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) exte
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey, errorKeyInvalid: String = employmentIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(parentEmploymentIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(errorKeyBlank: String = partnerEmploymentIncomePYRequiredErrorKey, errorKeyInvalid: String = partnerEmploymentIncomePYInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(partnerEmploymentIncomePYFormatter(errorKeyBlank, errorKeyInvalid))))
 }

@@ -587,3 +587,18 @@ GET        /childRegisteredBlind                       uk.gov.hmrc.childcarecalc
 POST       /childRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onSubmit(mode: Mode = NormalMode)
 GET        /changeChildRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeChildRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onSubmit(mode: Mode = CheckMode)
+
+GET        /parentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onPageLoad(mode: Mode = NormalMode)
+POST       /parentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeParentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeParentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomePYController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomePYController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomePYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomePYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /employmentIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onPageLoad(mode: Mode = NormalMode)
+POST       /employmentIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEmploymentIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEmploymentIncomePY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onSubmit(mode: Mode = CheckMode)

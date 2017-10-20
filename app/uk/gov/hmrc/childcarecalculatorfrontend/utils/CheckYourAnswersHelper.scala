@@ -34,6 +34,18 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("childcarePayFrequency.checkYourAnswersLabel", s"childcarePayFrequency.$x", true, routes.ChildcarePayFrequencyController.onPageLoad(CheckMode).url)
   }
 
+  def employmentIncomePY: Option[AnswerRow] = userAnswers.employmentIncomePY map {
+    x => AnswerRow("employmentIncomePY.checkYourAnswersLabel", s"${x.parentEmploymentIncomePY} ${x.partnerEmploymentIncomePY}", false, routes.EmploymentIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerEmploymentIncomePY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomePY map {
+    x => AnswerRow("partnerEmploymentIncomePY.checkYourAnswersLabel", s"$x", false, routes.PartnerEmploymentIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def parentEmploymentIncomePY: Option[AnswerRow] = userAnswers.parentEmploymentIncomePY map {
+    x => AnswerRow("parentEmploymentIncomePY.checkYourAnswersLabel", s"$x", false, routes.ParentEmploymentIncomePYController.onPageLoad(CheckMode).url)
+  }
+
   def howMuchPartnerPayPensionPY: Option[AnswerRow] = userAnswers.howMuchPartnerPayPensionPY map {
     x => AnswerRow("howMuchPartnerPayPensionPY.checkYourAnswersLabel", s"$x", false, routes.HowMuchPartnerPayPensionPYController.onPageLoad(CheckMode).url)
   }
