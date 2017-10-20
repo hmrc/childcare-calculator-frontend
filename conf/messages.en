@@ -993,3 +993,7 @@ aboutYourChild.error.name = You must enter your child’s name
 aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
 aboutYourChild.error.future = You must enter a date less than 12 months in the future
 aboutYourChild.error.past = You must enter a date less than 20 years in the past
+
+childRegisteredBlind.title = childRegisteredBlind
+childRegisteredBlind.heading = childRegisteredBlind
+childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
