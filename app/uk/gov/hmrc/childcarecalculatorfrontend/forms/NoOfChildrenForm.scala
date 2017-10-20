@@ -52,6 +52,6 @@ class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormError
     def unbind(key: String, value: Int) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
+  def apply(errorKeyBlank: String = noOfChildrenRequiredErrorKey, errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
     Form(single("value" -> of(noOfChildrenFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
 }

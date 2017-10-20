@@ -39,6 +39,6 @@ object YouBenefitsIncomeCYForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = parentBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = parentBenefitsIncomeCYRequiredErrorKey, errorKeyInvalid: String = parentBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(youBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
 }

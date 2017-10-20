@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 class HowMuchPartnerPayPensionFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyInvalid = "invalid"
+  val errorKeyBlank = howMuchPartnerPayPensionRequiredErrorKey
+  val errorKeyInvalid = howMuchPartnerPayPensionInvalidErrorKey
 
   "HowMuchPartnerPayPension Form" must {
 

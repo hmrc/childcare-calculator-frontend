@@ -381,6 +381,7 @@ noOfChildren.title = How many children do you have?
 noOfChildren.heading = How many children do you have?
 noOfChildren.hint.text = Only include children under the age of 20 that you're responsible for.
 noOfChildren.error = You must enter a number that's not below 1 or above 19
+noOfChildren.required = You m
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
 maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
@@ -638,6 +639,9 @@ youBenefitsIncomeCY.heading = How much will you get in benefits this year?
 youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
+youBenefitsIncomeCY.invalid = Please only enter a numerical value of up to two decimal places
+youBenefitsIncomeCY.required = Please tell the calculator how much you got paid in benefits this year
+
 
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
@@ -838,6 +842,8 @@ youBenefitsIncomePY.heading = How much did you get in benefits last year?
 youBenefitsIncomePY.info = Your benefits income
 youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
+youBenefitsIncomePY.invalid = Please only enter a numerical value of up to two decimal places
+youBenefitsIncomePY.required = Please tell the calculator how much you got paid in benefits last year
 
 yourStatutoryPayPY.title = Did you get statutory pay while on leave for a birth or adoption last year?
 yourStatutoryPayPY.heading = Did you get statutory pay while on leave for a birth or adoption last year?

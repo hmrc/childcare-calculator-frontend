@@ -31,7 +31,7 @@ object HowMuchPartnerPayPensionForm extends FormErrorHelper {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
         case _ => produceError(key, errorKeyInvalid)
       }
     }
@@ -39,6 +39,6 @@ object HowMuchPartnerPayPensionForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = howMuchPartnerPayPensionInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = howMuchPartnerPayPensionRequiredErrorKey, errorKeyInvalid: String = howMuchPartnerPayPensionInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(howMuchPartnerPayPensionFormatter(errorKeyBlank, errorKeyInvalid))))
 }
