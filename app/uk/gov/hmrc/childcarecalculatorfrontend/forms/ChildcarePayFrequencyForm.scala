@@ -26,7 +26,7 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
   def ChildcarePayFrequencyFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "childcarePayFrequency.error")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,9 +37,8 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
     Form(single("value" -> of(ChildcarePayFrequencyFormatter)))
 
   def options = Seq(
-    InputOption("childcarePayFrequency", "option1"),
-    InputOption("childcarePayFrequency", "option2")
-  )
+    InputOption("childcarePayFrequency", "weekly"),
+    InputOption("childcarePayFrequency", "monthly"))
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
