@@ -959,3 +959,7 @@ statutoryPayAmountPY.heading = How much statutory pay did you or your partner ge
 statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
 statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
 statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
+
+childApprovedEducation.title = childApprovedEducation
+childApprovedEducation.heading = childApprovedEducation
+childApprovedEducation.checkYourAnswersLabel = childApprovedEducation

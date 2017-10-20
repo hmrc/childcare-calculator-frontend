@@ -45,5 +45,4 @@ trait FormSpec extends UnitSpec with GuiceOneAppPerSuite {
   def error(key: String, value: String) = Seq(FormError(key, value))
 
   lazy val emptyForm = Map[String, String]()
-
 }
