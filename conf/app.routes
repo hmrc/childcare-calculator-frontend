@@ -516,3 +516,8 @@ POST       /statutoryPayAmountCY                       uk.gov.hmrc.childcarecalc
 GET        /changeStatutoryPayAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountCYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeStatutoryPayAmountCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountCYController.onSubmit(mode: Mode = CheckMode)
 
+
+GET        /childDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onPageLoad(mode: Mode = NormalMode)
+POST       /childDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeChildDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeChildDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onSubmit(mode: Mode = CheckMode)
