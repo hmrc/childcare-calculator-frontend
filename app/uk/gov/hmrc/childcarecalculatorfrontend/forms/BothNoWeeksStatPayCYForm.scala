@@ -22,12 +22,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.BothNoWeeksStatPayCY
 
 object BothNoWeeksStatPayCYForm extends FormErrorHelper {
 
+
+
   def apply(): Form[BothNoWeeksStatPayCY] = Form(
     mapping(
-      "field1" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("field1.required"))),
-      "field2" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("field2.required")))
+      "youNoWeeksYouStatPayCY" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("youNoWeeksStatPayCY.invalid"),
+        validateDecimal("youNoWeeksStatPayCY.numeric.error"))),
+      "partnerWeeksYouStatPayCY" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("partnerNoWeeksStatPayCY.invalid"),
+        validateDecimal("partnerNoWeeksStatPayCY.numeric.error")))
     )(BothNoWeeksStatPayCY.apply)(BothNoWeeksStatPayCY.unapply)
   )
 }
