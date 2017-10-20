@@ -916,6 +916,14 @@ childDisabilityBenefits.personal.independence.payment = Personal Independence Pa
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if your children get disability benefits
 
+
+childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.weekly = Weekly
+childcarePayFrequency.monthly = Monthly
+childcarePayFrequency.checkYourAnswersLabel = childcarePayFrequency
+
+childcarePayFrequency.error = Select how often you pay or expect to pay for childcare
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
