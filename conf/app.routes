@@ -566,3 +566,8 @@ GET        /statutoryPayAmountPY                       uk.gov.hmrc.childcarecalc
 POST       /statutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeStatutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeStatutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /parentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onPageLoad(mode: Mode = NormalMode)
+POST       /parentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeParentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeParentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onSubmit(mode: Mode = CheckMode)

@@ -424,7 +424,6 @@ partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
-
 parentEmploymentIncomeCY.title = How much will you get paid this year?
 parentEmploymentIncomeCY.heading = How much will you get paid this year?
 parentEmploymentIncomeCY.hint= This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
@@ -951,3 +950,11 @@ statutoryPayAmountPY.heading = How much statutory pay did you or your partner ge
 statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
 statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
 statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
+
+parentEmploymentIncomePY.title = How much did you get paid last year?
+parentEmploymentIncomePY.heading = How much did you get paid last year?
+parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
+parentEmploymentIncomePY.required = You must tell the calculator what did you get paid last year
+parentEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
+parentEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+parentEmploymentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
