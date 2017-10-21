@@ -994,6 +994,13 @@ aboutYourChild.error.dob = You must enter your child’s date of birth in the co
 aboutYourChild.error.future = You must enter a date less than 12 months in the future
 aboutYourChild.error.past = You must enter a date less than 20 years in the past
 
+
+childRegisteredBlind.title = Is {0} registered blind?
+childRegisteredBlind.heading = Is {0} registered blind?
+childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
+childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
+
+
 parentEmploymentIncomePY.title = How much did you get paid last year?
 parentEmploymentIncomePY.heading = How much did you get paid last year?
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
