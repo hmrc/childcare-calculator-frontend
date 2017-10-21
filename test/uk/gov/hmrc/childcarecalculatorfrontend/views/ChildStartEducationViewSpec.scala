@@ -16,28 +16,35 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.joda.time.LocalDate
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.DateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 
-class ChildStartEducationViewSpec extends IntViewBehaviours {
+class ChildStartEducationViewSpec extends DateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "childStartEducation"
 
-  def createView = () => childStartEducation(frontendAppConfig, ChildStartEducationForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => childStartEducation(frontendAppConfig, ChildStartEducationForm(), NormalMode, 0, "Foo")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => childStartEducation(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[LocalDate]) => childStartEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
 
   val form = ChildStartEducationForm()
 
   "ChildStartEducation view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      title = messages(s"$messageKeyPrefix.title"),
+      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    )
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.ChildStartEducationController.onSubmit(NormalMode).url)
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "date")
   }
 }

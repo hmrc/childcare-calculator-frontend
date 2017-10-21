@@ -16,52 +16,59 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.joda.time.LocalDate
+
 class ChildStartEducationFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "non numeric"
+  val validData: Map[String, String] = Map(
+    "date.day"   -> "1",
+    "date.month" -> "2",
+    "date.year"  -> "2017"
+  )
+
+  val form = ChildStartEducationForm()
 
   "ChildStartEducation Form" must {
 
-    "bind zero" in {
-      val form = ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "0"))
-      form.get shouldBe 0
+    "successfully bind when the date is valid" in {
+      form.bind(validData).get shouldEqual new LocalDate(2017, 2, 1)
     }
 
-    "bind positive numbers" in {
-      val form = ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "1"))
-      form.get shouldBe 1
+    "fail to bind when the date is omitted" in {
+      val data = Map.empty[String, String]
+      val expectedError = error("date", "childStartEducation.error")
+      checkForError(form, data, expectedError)
     }
 
-    "bind positive, comma separated numbers" in {
-      val form = ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "10,000"))
-      form.get shouldBe 10000
+    "fail to bind when the date is blank" in {
+      val data = Map(
+        "date.day"   -> "",
+        "date.month" -> "",
+        "date.year"  -> ""
+      )
+      val expectedError = error("date", "childStartEducation.error")
+      checkForError(form, data, expectedError)
     }
 
-    "fail to bind negative numbers" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "-1"), expectedError)
+    "fail to bind when the date is invalid" in {
+      val data = Map(
+        "date.day"   -> "31",
+        "date.month" -> "2",
+        "date.year"  -> "2017"
+      )
+      val expectedError = error("date", "childStartEducation.error.invalid")
+      checkForError(form, data, expectedError)
     }
 
-    "fail to bind non-numerics" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "not a number"), expectedError)
-    }
-
-    "fail to bind a blank value" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> ""), expectedError)
-    }
-
-    "fail to bind when value is omitted" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), emptyForm, expectedError)
-    }
-
-    "fail to bind decimal numbers" in {
-      val expectedError = error("value", errorKeyDecimal)
-      checkForError(ChildStartEducationForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "123.45"), expectedError)
+    "fail to bind when the date is in the future" in {
+      val futureDate = LocalDate.now.plusDays(1)
+      val data = Map(
+        "date.day"   -> futureDate.getDayOfMonth.toString,
+        "date.month" -> futureDate.getMonthOfYear.toString,
+        "date.year"  -> futureDate.getYear.toString
+      )
+      val expectedError = error("date", "childStartEducation.error.invalid")
+      checkForError(form, data, expectedError)
     }
   }
 }

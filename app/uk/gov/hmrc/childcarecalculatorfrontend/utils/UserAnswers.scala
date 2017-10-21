@@ -22,8 +22,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
-  def childStartEducation: Option[Int] = cacheMap.getEntry[Int](ChildStartEducationId.toString)
 
+  def childStartEducation(index: Int): Option[LocalDate] = {
+    childStartEducation.flatMap(_.get(index))
+  }
+
+  def childStartEducation: Option[Map[Int, LocalDate]] = cacheMap.getEntry[Map[Int, LocalDate]](ChildStartEducationId.toString)
 
   def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
 

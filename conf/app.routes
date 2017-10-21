@@ -609,7 +609,8 @@ POST       /childApprovedEducation/:id                       uk.gov.hmrc.childca
 GET        /changeChildApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeChildApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = CheckMode, id: Int)
 
-GET        /childStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = NormalMode)
-POST       /childStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeChildStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeChildStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = CheckMode)
+GET        /childStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = NormalMode, id: Int = 0)
+GET        /childStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = NormalMode, id: Int)
+POST       /childStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = NormalMode, id: Int)
+GET        /changeChildStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = CheckMode, id: Int)
+POST       /changeChildStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = CheckMode, id: Int)

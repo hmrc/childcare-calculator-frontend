@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
+import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{RequestHeader, Result}
@@ -29,36 +30,64 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildStartEducationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 
 import scala.concurrent.Future
 
-class ChildStartEducationController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+class ChildStartEducationController @Inject() (
+                                                appConfig: FrontendAppConfig,
+                                                override val messagesApi: MessagesApi,
+                                                dataCacheConnector: DataCacheConnector,
+                                                navigator: Navigator,
+                                                getData: DataRetrievalAction,
+                                                requireData: DataRequiredAction
+                                             ) extends FrontendController with I18nSupport with MapFormats {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.childStartEducation match {
-        case None => ChildStartEducationForm()
-        case Some(value) => ChildStartEducationForm().fill(value)
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+
+  private def validateIndex[A](childIndex: Int)(block: String => Future[Result])
+                              (implicit request: DataRequest[A]): Future[Result] = {
+    for {
+      child <- request.userAnswers.aboutYourChild(childIndex)
+      name  <- request.userAnswers.childApprovedEducation(childIndex).flatMap {
+        case true  => Some(child.name)
+        case false => None
       }
-      Ok(childStartEducation(appConfig, preparedForm, mode))
+    } yield block(name)
+  }.getOrElse(sessionExpired)
+
+  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+    implicit request =>
+      validateIndex(childIndex) {
+        name =>
+          val preparedForm = request.userAnswers.childStartEducation(childIndex) match {
+            case None => ChildStartEducationForm()
+            case Some(value) => ChildStartEducationForm().fill(value)
+          }
+          Future.successful(Ok(childStartEducation(appConfig, preparedForm, mode, childIndex, name)))
+      }
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
-      ChildStartEducationForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(childStartEducation(appConfig, formWithErrors, mode))),
-        (value) =>
-          dataCacheConnector.save[Int](request.sessionId, ChildStartEducationId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(ChildStartEducationId, mode)(new UserAnswers(cacheMap))))
-      )
+      validateIndex(childIndex) {
+        name =>
+          ChildStartEducationForm().bindFromRequest().fold(
+            (formWithErrors: Form[LocalDate]) =>
+              Future.successful(BadRequest(childStartEducation(appConfig, formWithErrors, mode, childIndex, name))),
+            (value) =>
+              dataCacheConnector.saveInMap[Int, LocalDate](
+                request.sessionId,
+                ChildStartEducationId.toString,
+                childIndex,
+                value
+              ).map {
+                cacheMap =>
+                  Redirect(navigator.nextPage(ChildStartEducationId, mode)(new UserAnswers(cacheMap)))
+              }
+          )
+      }
   }
 }
