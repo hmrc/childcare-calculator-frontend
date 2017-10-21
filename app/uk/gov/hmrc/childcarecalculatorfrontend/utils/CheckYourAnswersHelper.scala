@@ -22,7 +22,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
-  def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation map {
+  def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
+    x => AnswerRow("childRegisteredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildRegisteredBlindController.onPageLoad(CheckMode).url)
+  }
+
+  def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation(index) map {
     x => AnswerRow("childApprovedEducation.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildApprovedEducationController.onPageLoad(CheckMode, index).url)
   }
 

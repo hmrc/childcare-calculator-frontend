@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.Inject
 
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{RequestHeader, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -58,7 +58,7 @@ class ChildApprovedEducationController @Inject() (
     implicit request =>
       validateIndex(childIndex) {
         name =>
-          val preparedForm = request.userAnswers.childApprovedEducation match {
+          val preparedForm = request.userAnswers.childApprovedEducation(childIndex) match {
             case None => BooleanForm()
             case Some(value) => BooleanForm().fill(value)
           }

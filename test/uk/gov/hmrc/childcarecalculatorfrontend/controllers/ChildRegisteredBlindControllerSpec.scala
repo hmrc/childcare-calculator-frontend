@@ -16,54 +16,42 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, Json}
+import play.api.libs.json.JsBoolean
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildApprovedEducationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildRegisteredBlindId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
-class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
+class ChildRegisteredBlindControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ChildApprovedEducationController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new ChildRegisteredBlindController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = childApprovedEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = childRegisteredBlind(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
-  val requiredData = Map(
-    AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),
-      "1" -> Json.toJson(AboutYourChild("Bar", LocalDate.now))
-    )
-  )
-  val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
-
-  "ChildApprovedEducation Controller" must {
+  "ChildRegisteredBlind Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller(getRequiredData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = requiredData + (ChildApprovedEducationId.toString -> Json.obj(
-        "0" -> true
-      ))
+      val validData = Map(ChildRegisteredBlindId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
@@ -71,7 +59,7 @@ class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
 
-      val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -79,16 +67,16 @@ class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("childApprovedEducation.error", "Foo").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("childRegisteredBlind.error").bind(Map("value" -> "invalid value"))
 
-      val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
@@ -96,22 +84,7 @@ class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
-      val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
-    }
-
-    "redirect to Session Expired for a GET if child index is not valid" in {
-      val result = controller(getRequiredData).onPageLoad(NormalMode, 1)(fakeRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
-    }
-
-    "redirect to Session Expired for POST if child index is not valid" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
-      val result = controller(getRequiredData).onSubmit(NormalMode, 1)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
