@@ -20,6 +20,7 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 
 case class InputViewModel[A](id: String, form: Form[A]) extends InputViewModelBase {
+  override def args: Seq[Any] = form(id).errors.flatMap(_.args)
   def errorKey = FormHelpers.getErrorByKey(form, id)
   def value = Some(form.data.getOrElse(id, ""))
 }

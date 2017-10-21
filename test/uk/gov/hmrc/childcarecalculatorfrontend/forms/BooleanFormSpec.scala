@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class BooleanFormSpec extends FormSpec {
 
   val errorKey = "error.key"

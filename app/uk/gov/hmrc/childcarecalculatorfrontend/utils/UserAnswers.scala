@@ -21,7 +21,7 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
 
   def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
 
@@ -118,11 +118,11 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def yourOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeLYId.toString)
 
   def aboutYourChild(index: Int): Option[AboutYourChild] = {
-    aboutYourChild.flatMap(_.lift(index))
+    aboutYourChild.flatMap(_.get(index))
   }
 
-  def aboutYourChild: Option[Seq[AboutYourChild]] = {
-    cacheMap.getEntry[Seq[AboutYourChild]](AboutYourChildId.toString)
+  def aboutYourChild: Option[Map[Int, AboutYourChild]] = {
+    cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
   }
 
   def bothPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidPensionPYId.toString)
@@ -267,10 +267,11 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
     doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
   }
 
+  // TODO 31st August
   def childrenOver16: Option[Map[Int, String]] = {
     aboutYourChild.map {
       children =>
-        Stream.from(0).zip(children).foldLeft(Map.empty[Int, String]) {
+        children.foldLeft(Map.empty[Int, String]) {
           case (m, (i, model)) =>
             if (model.dob isBefore LocalDate.now.minusYears(16)) {
               m + (i -> model.name)

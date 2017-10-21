@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 class FormErrorHelper {
 
   val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-  def produceError(key: String, error: String) = Left(Seq(FormError(key, error)))
+  def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))
 
   def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
     value >= minValue && value <= maxValue

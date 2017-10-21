@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.Inject
 
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Result
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.mvc.{RequestHeader, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
@@ -43,40 +43,36 @@ class ChildApprovedEducationController @Inject() (
                                                    requireData: DataRequiredAction
                                                 ) extends FrontendController with I18nSupport with MapFormats {
 
-  private val sessionExpired: Future[Result] =
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
 
-  private def validateIndex[A](childIndex: Int)(block: Map[Int, String] => Future[Result])
+  private def validateIndex[A](childIndex: Int)(block: String => Future[Result])
                               (implicit request: DataRequest[A]): Future[Result] = {
-    request.userAnswers.childrenOver16.map {
+    request.userAnswers.childrenOver16.flatMap {
       childrenOver16 =>
-        if (childrenOver16.isDefinedAt(childIndex)) {
-          block(childrenOver16)
-        } else {
-          sessionExpired
-        }
+        childrenOver16.get(childIndex).map(block)
     }.getOrElse(sessionExpired)
   }
 
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
-        childrenOver16 =>
+        name =>
           val preparedForm = request.userAnswers.childApprovedEducation match {
             case None => BooleanForm()
             case Some(value) => BooleanForm().fill(value)
           }
-          Future.successful(Ok(childApprovedEducation(appConfig, preparedForm, mode, childIndex)))
+          Future.successful(Ok(childApprovedEducation(appConfig, preparedForm, mode, childIndex, name)))
       }
   }
 
   def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
-        childrenOver16 =>
-          BooleanForm().bindFromRequest().fold(
+        name =>
+          BooleanForm("childApprovedEducation.error", name).bindFromRequest().fold(
             (formWithErrors: Form[Boolean]) =>
-              Future.successful(BadRequest(childApprovedEducation(appConfig, formWithErrors, mode, childIndex))),
+              Future.successful(BadRequest(childApprovedEducation(appConfig, formWithErrors, mode, childIndex, name))),
             (value) =>
               dataCacheConnector.saveInMap[Int, Boolean](
                 request.sessionId,

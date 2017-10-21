@@ -981,19 +981,6 @@ childrenDisabilityBenefits.personal.independence.payment = Personal Independence
 childrenDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childrenDisabilityBenefits.error = You must answer yes if your children get disability benefits
 
-aboutYourChild.title = About your child
-aboutYourChild.title.nth = About your {0} child
-aboutYourChild.heading = About your child
-aboutYourChild.heading.nth = About your {0} child
-aboutYourChild.lede = Names are only used to make your questions and results clear. The calculator will not store or share them with anyone.
-aboutYourChild.name = What’s their first name?
-aboutYourChild.dob = What’s their date of birth?
-aboutYourChild.checkYourAnswersLabel = About your child
-aboutYourChild.error.name = You must enter your child’s name
-aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
-aboutYourChild.error.future = You must enter a date less than 12 months in the future
-aboutYourChild.error.past = You must enter a date less than 20 years in the past
-
 parentEmploymentIncomePY.title = How much did you get paid last year?
 parentEmploymentIncomePY.heading = How much did you get paid last year?
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
@@ -1017,6 +1004,21 @@ employmentIncomePY.partnerEmploymentIncomePY = Partner’s income
 employmentIncomePY.checkYourAnswersLabel = How much did you and your partner get paid last year?
 employmentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
 employmentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
-childApprovedEducation.title = childApprovedEducation
-childApprovedEducation.heading = childApprovedEducation
-childApprovedEducation.checkYourAnswersLabel = childApprovedEducation
+
+aboutYourChild.title = About your child
+aboutYourChild.title.nth = About your {0} child
+aboutYourChild.heading = About your child
+aboutYourChild.heading.nth = About your {0} child
+aboutYourChild.lede = Names are only used to make your questions and results clear. The calculator will not store or share them with anyone.
+aboutYourChild.name = What’s their first name?
+aboutYourChild.dob = What’s their date of birth?
+aboutYourChild.checkYourAnswersLabel = About your child
+aboutYourChild.error.name = You must enter your child’s name
+aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
+aboutYourChild.error.future = You must enter a date less than 12 months in the future
+aboutYourChild.error.past = You must enter a date less than 20 years in the past
+
+childApprovedEducation.title = Is your child in approved education or training?
+childApprovedEducation.heading = Is your child {0} in approved education or training?
+childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
+childApprovedEducation.error = You must answer yes if your child {0} is in approved education or training

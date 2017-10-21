@@ -115,12 +115,12 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val under16 = LocalDate.now
 
       val answers: CacheMap = cacheMap(
-        AboutYourChildId.toString -> JsArray(Seq(
-          Json.toJson(AboutYourChild("Foo", over16)),
-          Json.toJson(AboutYourChild("Bar", under16)),
-          Json.toJson(AboutYourChild("Quux", under16)),
-          Json.toJson(AboutYourChild("Baz", over16))
-        ))
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
+          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", over16))
+        )
       )
 
       val result = helper(answers).childrenOver16
