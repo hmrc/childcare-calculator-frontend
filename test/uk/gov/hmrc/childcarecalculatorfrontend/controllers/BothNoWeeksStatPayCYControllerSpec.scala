@@ -51,16 +51,16 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString()
+      contentAsString(result) mustBe viewAsString(new BothNoWeeksStatPayCYForm(frontendAppConfig).apply)
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(BothNoWeeksStatPayCYId.toString -> Json.toJson(BothNoWeeksStatPayCY("1", "2")))
+      val validData = Map(BothNoWeeksStatPayCYId.toString -> Json.toJson(BothNoWeeksStatPayCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(new BothNoWeeksStatPayCYForm(frontendAppConfig).fill(BothNoWeeksStatPayCY("1", "2")))
+      contentAsString(result) mustBe viewAsString(new BothNoWeeksStatPayCYForm(frontendAppConfig).apply.fill(BothNoWeeksStatPayCY(1, 2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -74,7 +74,7 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = new BothNoWeeksStatPayCYForm(frontendAppConfig).bind(Map("value" -> "invalid value"))
+      val boundForm = new BothNoWeeksStatPayCYForm(frontendAppConfig).apply.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

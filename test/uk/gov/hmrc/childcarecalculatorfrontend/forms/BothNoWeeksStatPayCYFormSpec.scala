@@ -26,10 +26,10 @@ class BothNoWeeksStatPayCYFormSpec extends FormBehaviours {
     "field2" -> "2"
   )
 
-  val form = BothNoWeeksStatPayCYForm()
+  val form = new BothNoWeeksStatPayCYForm(frontendAppConfig).apply
 
   "BothNoWeeksStatPayCY form" must {
-    behave like questionForm(BothNoWeeksStatPayCY("1", "2"))
+    behave like questionForm(new BothNoWeeksStatPayCY(1, 2))
 
     behave like formWithMandatoryTextFields("field1", "field2")
   }

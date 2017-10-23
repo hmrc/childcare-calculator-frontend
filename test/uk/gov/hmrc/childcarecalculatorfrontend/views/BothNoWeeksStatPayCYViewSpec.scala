@@ -27,11 +27,11 @@ class BothNoWeeksStatPayCYViewSpec extends QuestionViewBehaviours[BothNoWeeksSta
 
   val messageKeyPrefix = "bothNoWeeksStatPayCY"
 
-  def createView = () => bothNoWeeksStatPayCY(frontendAppConfig, BothNoWeeksStatPayCYForm(), NormalMode)(fakeRequest, messages)
+  override val form = new BothNoWeeksStatPayCYForm(frontendAppConfig).apply
+
+  def createView = () => bothNoWeeksStatPayCY(frontendAppConfig, new BothNoWeeksStatPayCYForm(frontendAppConfig).apply, NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[BothNoWeeksStatPayCY]) => bothNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
-
-  override val form = BothNoWeeksStatPayCYForm()
 
   "BothNoWeeksStatPayCY view" must {
 
