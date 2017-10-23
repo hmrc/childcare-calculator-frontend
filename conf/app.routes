@@ -608,3 +608,9 @@ GET        /childApprovedEducation/:id                       uk.gov.hmrc.childca
 POST       /childApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeChildApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeChildApprovedEducation/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode = CheckMode, id: Int)
+
+GET        /childStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = NormalMode, id: Int = 0)
+GET        /childStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = NormalMode, id: Int)
+POST       /childStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = NormalMode, id: Int)
+GET        /changeChildStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode = CheckMode, id: Int)
+POST       /changeChildStartEducation/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = CheckMode, id: Int)

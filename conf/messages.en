@@ -1027,3 +1027,9 @@ childRegisteredBlind.title = Is {0} registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
 childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
+
+childStartEducation.title = When did your child start their education or training
+childStartEducation.heading = When did {0} start their education or training
+childStartEducation.checkYourAnswersLabel = When did your child start their education or training
+childStartEducation.error = You must tell the calculator when your child started their approved education or training
+childStartEducation.error.invalid = You must enter a date in the correct format
