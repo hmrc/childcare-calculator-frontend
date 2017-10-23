@@ -37,7 +37,7 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
       messagesApi,
       FakeDataCacheConnector,
       new FakeNavigator(desiredRoute = onwardRoute),
-      new DataRetrievalActionImpl(FakeDataCacheConnector),
+      dontGetAnyData,
       new BothNoWeeksStatPayCYForm(frontendAppConfig),
       new DataRequiredActionImpl())
 

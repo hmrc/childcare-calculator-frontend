@@ -31,7 +31,9 @@ class BothNoWeeksStatPayCYViewSpec extends QuestionViewBehaviours[BothNoWeeksSta
 
   def createView = () => bothNoWeeksStatPayCY(frontendAppConfig, new BothNoWeeksStatPayCYForm(frontendAppConfig).apply, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BothNoWeeksStatPayCY]) => bothNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BothNoWeeksStatPayCY]) => bothNoWeeksStatPayCY(frontendAppConfig,
+    form,
+    NormalMode)(fakeRequest, messages)
 
   "BothNoWeeksStatPayCY view" must {
 
@@ -39,6 +41,10 @@ class BothNoWeeksStatPayCYViewSpec extends QuestionViewBehaviours[BothNoWeeksSta
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.BothNoWeeksStatPayCYController.onSubmit(NormalMode).url, "field1", "field2")
+    behave like pageWithTextFields(createViewUsingForm,
+      messageKeyPrefix,
+      routes.BothNoWeeksStatPayCYController.onSubmit(NormalMode).url,
+      "youNoWeeksYouStatPayCY",
+      "partnerWeeksYouStatPayCY")
   }
 }
