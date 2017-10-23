@@ -17,14 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class ParentWorkHoursFormSpec extends FormSpec {
 
   val parentWorkHoursForm: Form[BigDecimal] = new ParentWorkHoursForm(frontendAppConfig).apply()
 
-  val errorKeyBlank = "workHours.blank"
-  val errorKeyInvalid = "workHours.invalid"
+  val errorKeyBlank = workHoursBlankErrorKey
+  val errorKeyInvalid = workHoursInvalidErrorKey
 
   "ParentWorkHours Form" must {
 

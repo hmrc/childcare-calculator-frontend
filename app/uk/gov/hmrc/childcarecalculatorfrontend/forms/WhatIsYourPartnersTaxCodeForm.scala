@@ -56,6 +56,6 @@ class WhatIsYourPartnersTaxCodeForm @Inject()(appConfig: FrontendAppConfig) exte
     def unbind(key: String, value: String) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "whatIsYourPartnersTaxCode.blank", errorKeyInvalid: String = "taxCode.invalid"): Form[String] =
+  def apply(errorKeyBlank: String = whatIsYourPartnersTaxCodeBlankErrorKey, errorKeyInvalid: String = invalidTaxCodeErrorKey): Form[String] =
     Form(single("value" -> of(whatIsYourPartnersTaxCodeFormatter(errorKeyBlank, errorKeyInvalid))))
 }

@@ -26,12 +26,10 @@ object BothNoWeeksStatPayCYForm extends FormErrorHelper {
 
   def apply(): Form[BothNoWeeksStatPayCY] = Form(
     mapping(
-      "youNoWeeksYouStatPayCY" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("youNoWeeksStatPayCY.invalid"),
-        validateDecimal("youNoWeeksStatPayCY.numeric.error"))),
-      "partnerWeeksYouStatPayCY" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("partnerNoWeeksStatPayCY.invalid"),
-        validateDecimal("partnerNoWeeksStatPayCY.numeric.error")))
+      "youNoWeeksYouStatPayCY" -> number
+        .verifying("error", answer => (answer > 0) && (answer < 42)),
+      "partnerWeeksYouStatPayCY" -> number
+        .verifying("error", answer => (answer > 0) && (answer < 42))
     )(BothNoWeeksStatPayCY.apply)(BothNoWeeksStatPayCY.unapply)
   )
 }

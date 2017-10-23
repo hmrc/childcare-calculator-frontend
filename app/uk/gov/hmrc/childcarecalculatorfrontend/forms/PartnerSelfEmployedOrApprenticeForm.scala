@@ -19,15 +19,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object PartnerSelfEmployedOrApprenticeForm extends FormErrorHelper {
 
   def PartnerSelfEmployedOrApprenticeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "partnerSelfEmployedOrApprentice.error")
-      case _ => produceError(key, "error.unknown")
+      case None => produceError(key, partnerSelfEmployedOrApprenticeErrorKey)
+      case _ => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
@@ -37,9 +39,9 @@ object PartnerSelfEmployedOrApprenticeForm extends FormErrorHelper {
     Form(single("value" -> of(PartnerSelfEmployedOrApprenticeFormatter)))
 
   def options = Seq(
-    InputOption("partnerSelfEmployedOrApprentice", "selfEmployed"),
-    InputOption("partnerSelfEmployedOrApprentice", "apprentice"),
-    InputOption("partnerSelfEmployedOrApprentice", "neither")
+    InputOption("partnerSelfEmployedOrApprentice", SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
+    InputOption("partnerSelfEmployedOrApprentice", SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString),
+    InputOption("partnerSelfEmployedOrApprentice", SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

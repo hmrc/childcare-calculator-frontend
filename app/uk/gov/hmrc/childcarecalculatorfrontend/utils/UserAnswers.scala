@@ -18,11 +18,33 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, EmploymentIncomeCY, OtherIncomeAmountCY, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+  def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
+
+  def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
+
+  def childcarePayFrequency: Option[String] = cacheMap.getEntry[String](ChildcarePayFrequencyId.toString)
+
+  def employmentIncomePY: Option[EmploymentIncomePY] = cacheMap.getEntry[EmploymentIncomePY](EmploymentIncomePYId.toString)
+
+  def partnerEmploymentIncomePY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerEmploymentIncomePYId.toString)
+
+  def parentEmploymentIncomePY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentEmploymentIncomePYId.toString)
+
+  def howMuchPartnerPayPensionPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](HowMuchPartnerPayPensionPYId.toString)
+
+  def howMuchYouPayPensionPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](HowMuchYouPayPensionPYId.toString)
+
+  def howMuchBothPayPensionPY: Option[HowMuchBothPayPensionPY] = cacheMap.getEntry[HowMuchBothPayPensionPY](HowMuchBothPayPensionPYId.toString)
+
+  def statutoryPayAmountPY: Option[StatutoryPayAmountPY] = cacheMap.getEntry[StatutoryPayAmountPY](StatutoryPayAmountPYId.toString)
+
+  def partnerStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayAmountPYId.toString)
+
+  def yourStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayAmountPYId.toString)
+
   def bothNoWeeksStatPayCY: Option[BothNoWeeksStatPayCY] = cacheMap.getEntry[BothNoWeeksStatPayCY](BothNoWeeksStatPayCYId.toString)
 
   def youNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayPYId.toString)
@@ -98,6 +120,11 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def partnerBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerBenefitsIncomeCYId.toString)
 
   def yourOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeLYId.toString)
+
+
+  def aboutYourChild(index: Int): Option[AboutYourChild] = {
+    cacheMap.getEntry[Seq[AboutYourChild]](AboutYourChildId.toString).getOrElse(Seq.empty).lift(index)
+  }
 
   def youNoWeeksStatPayCY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayCYId.toString)
 

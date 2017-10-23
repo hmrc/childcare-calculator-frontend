@@ -29,7 +29,7 @@ object YourPartnersAgeForm extends FormErrorHelper {
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, yourPartnersAgeErrorKey)
-      case _ => produceError(key, "error.unknown")
+      case _ => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)

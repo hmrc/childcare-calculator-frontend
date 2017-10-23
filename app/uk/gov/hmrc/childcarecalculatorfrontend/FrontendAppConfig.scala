@@ -75,4 +75,10 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
 
   lazy val minStatutoryPay: Double = configuration.getDouble("statutoryPay.min").
     getOrElse(throw new ConfigException.Missing("Missing configuration statutoryPay.min"))
+
+  lazy val maxAmountChildren: Double = configuration.getDouble("amountChildren.max").
+    getOrElse(throw new ConfigException.Missing("Missing configuration amountChildren.max"))
+
+  lazy val minAmountChildren: Double = configuration.getDouble("amountChildren.min").
+    getOrElse(throw new ConfigException.Missing("Missing configuration amountChildren.min"))
 }

@@ -29,7 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchPartnerPayPension
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-
 class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()

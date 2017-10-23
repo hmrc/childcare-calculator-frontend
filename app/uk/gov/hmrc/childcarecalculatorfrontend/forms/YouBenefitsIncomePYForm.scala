@@ -31,7 +31,7 @@ object YouBenefitsIncomePYForm extends FormErrorHelper {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
         case _ => produceError(key, errorKeyInvalid)
       }
     }
@@ -39,6 +39,6 @@ object YouBenefitsIncomePYForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = parentBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = parentBenefitsIncomePYRequiredErrorKey, errorKeyInvalid: String = parentBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(youBenefitsIncomePYFormatter(errorKeyBlank, errorKeyInvalid))))
 }
