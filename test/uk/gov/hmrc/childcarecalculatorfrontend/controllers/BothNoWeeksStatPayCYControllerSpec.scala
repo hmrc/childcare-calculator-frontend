@@ -18,25 +18,32 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothNoWeeksStatPayCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothNoWeeksStatPayCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, BothNoWeeksStatPayCY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BothNoWeeksStatPayCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothNoWeeksStatPayCY
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BothNoWeeksStatPayCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new BothNoWeeksStatPayCYController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      new DataRetrievalActionImpl(FakeDataCacheConnector),
+      new BothNoWeeksStatPayCYForm(frontendAppConfig),
+      new DataRequiredActionImpl())
 
-  def viewAsString(form: Form[BothNoWeeksStatPayCY] = BothNoWeeksStatPayCYForm()) = bothNoWeeksStatPayCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BothNoWeeksStatPayCY]) = bothNoWeeksStatPayCY(frontendAppConfig,
+    form,
+    NormalMode)(fakeRequest, messages).toString
 
   "BothNoWeeksStatPayCY Controller" must {
 
@@ -53,7 +60,7 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BothNoWeeksStatPayCYForm().fill(BothNoWeeksStatPayCY("1", "2")))
+      contentAsString(result) mustBe viewAsString(new BothNoWeeksStatPayCYForm(frontendAppConfig).fill(BothNoWeeksStatPayCY("1", "2")))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -67,7 +74,7 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BothNoWeeksStatPayCYForm().bind(Map("value" -> "invalid value"))
+      val boundForm = new BothNoWeeksStatPayCYForm(frontendAppConfig).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

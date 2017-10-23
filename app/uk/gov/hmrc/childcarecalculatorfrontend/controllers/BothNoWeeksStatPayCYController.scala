@@ -37,20 +37,21 @@ class BothNoWeeksStatPayCYController @Inject()(appConfig: FrontendAppConfig,
                                                   dataCacheConnector: DataCacheConnector,
                                                   navigator: Navigator,
                                                   getData: DataRetrievalAction,
+                                                  form: BothNoWeeksStatPayCYForm,
                                                   requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.bothNoWeeksStatPayCY match {
-        case None => BothNoWeeksStatPayCYForm()
-        case Some(value) => BothNoWeeksStatPayCYForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(bothNoWeeksStatPayCY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BothNoWeeksStatPayCYForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[BothNoWeeksStatPayCY]) =>
           Future.successful(BadRequest(bothNoWeeksStatPayCY(appConfig, formWithErrors, mode))),
         (value) =>
