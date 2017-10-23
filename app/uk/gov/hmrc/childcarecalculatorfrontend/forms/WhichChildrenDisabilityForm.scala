@@ -23,23 +23,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichChildrenDisabilityForm extends FormErrorHelper {
 
-  def WhichChildrenDisabilityFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
-      case _ => produceError(key, "error.unknown")
-    }
-
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[Set[String]] =
-    Form(single("value" -> set(of(WhichChildrenDisabilityFormatter))))
-
-  def options = Seq(
-    InputOption("whichChildrenDisability", "option1"),
-    InputOption("whichChildrenDisability", "option2")
-  )
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def apply(validValues: String*): Form[Set[String]] =
+    Form(
+      "value" -> set(
+        text.verifying("error.invalid", validValues.toSet.contains _)
+      )
+        .verifying("error.required", _.nonEmpty)
+    )
 }

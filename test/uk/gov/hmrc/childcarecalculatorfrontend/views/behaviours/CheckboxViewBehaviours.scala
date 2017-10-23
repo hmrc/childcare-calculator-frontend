@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.childcarecalculatorfrontend.views.ViewSpecBase
 
-class WhichChildrenDisabilityFormSpec extends CheckboxBehaviours[String] {
+trait CheckboxViewBehaviours extends ViewSpecBase {
 
-  override def fieldName: String = "value"
+  def checkboxPage(view: () => HtmlFormat.Appendable,
+                 messageKeyPrefix: String,
+                 expectedGuidanceKeys: String*) = {
 
-  override def validOptions = Set("0", "1")
 
-  val form = WhichChildrenDisabilityForm(validOptions.toSeq: _*)
-
-  "WhichChildrenDisability form" must {
-
-    behave like aCheckboxForm()
-
-    behave like aMandatoryCheckboxForm()
   }
 }

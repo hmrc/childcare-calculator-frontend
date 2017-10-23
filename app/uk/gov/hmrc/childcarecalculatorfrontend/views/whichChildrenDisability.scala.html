@@ -21,8 +21,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
-@(appConfig: FrontendAppConfig, answer: Option[Set[String]], form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], options: Seq[InputOption], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("whichChildrenDisability.title"),
@@ -38,11 +39,12 @@
         @components.heading("whichChildrenDisability.heading")
 
         @components.input_check_box(
-            answer = answer,
-            viewModel = InputViewModel[Set[String]]("value", form),
+            field = form("value"),
+//            answer = None,
+//            viewModel = InputViewModel[Set[String]]("value", form),
             legend = messages("whichChildrenDisability.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhichChildrenDisabilityForm.options
+            inputs = options
         )
 
         @components.submit_button()

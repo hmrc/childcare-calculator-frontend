@@ -17,8 +17,8 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
 
-@(answer: Option[Set[String]],
-  viewModel: InputViewModelBase,
+@(
+  field: Field,
   legend: String,
   legendClass: Option[String] = None,
   hint: Option[String] = None,
@@ -27,21 +27,25 @@
 )(implicit messages: Messages)
 
 <div class="form-field">
-    <fieldset class="form-group" id="@{viewModel.id}">
+    <fieldset class="form-group" id="@{field.id}">
         <legend class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</legend>
-        @if(hint.nonEmpty){
-        <span class="form-hint">@{hint.get}</span>
+        @if(hint.nonEmpty) {
+            <span class="form-hint">
+                @hint.get
+            </span>
         }
-        @if(viewModel.errorKey.nonEmpty){
-        <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
+        @field.errors.map { error =>
+            <span class="error-notification" id="error-message-@field.id-input">
+                @messages(error.message, error.args: _*)
+            </span>
         }
         @for((input, i) <- inputs.zipWithIndex) {
-        <div class="multiple-choice">
-            <input id="@{input.id}" type="checkbox" name="@{viewModel.id}[@i]" value="@{input.value}" @if(answer.map(_.contains(input.value)).getOrElse(false)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
-            <label class="block-label" for="@{input.id}">
-                @messages(input.messageKey)
-            </label>
-        </div>
+            <div class="multiple-choice">
+                <input id="@input.id" type="checkbox" name="@{field.name}[@i]" value="@input.value" @if(field(s"[$i]").value.contains(input.value)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@input.id"} />
+                <label class="block-label" for="@input.id">
+                    @messages(input.messageKey)
+                </label>
+            </div>
         }
     </fieldset>
 </div>

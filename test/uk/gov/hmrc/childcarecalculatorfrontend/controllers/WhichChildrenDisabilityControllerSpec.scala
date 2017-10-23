@@ -36,7 +36,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase {
     new WhichChildrenDisabilityController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Set[String]] = WhichChildrenDisabilityForm()) = whichChildrenDisability(frontendAppConfig, None, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichChildrenDisabilityForm()) = whichChildrenDisability(frontendAppConfig, form, Seq.empty, NormalMode)(fakeRequest, messages).toString
 
   "WhichChildrenDisability Controller" must {
 
@@ -49,17 +49,17 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        WhichChildrenDisabilityId.toString -> JsArray(Seq(JsString(WhichChildrenDisabilityForm.options.head.value)))
+        WhichChildrenDisabilityId.toString -> JsArray(Seq(JsString("0")))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhichChildrenDisabilityForm().fill(Set(WhichChildrenDisabilityForm.options.head.value)))
+      contentAsString(result) mustBe viewAsString(WhichChildrenDisabilityForm().fill(Set("0")))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichChildrenDisabilityForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0"))
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -67,8 +67,8 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = WhichChildrenDisabilityForm().bind(Map("value" -> "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value"))
+      val boundForm = WhichChildrenDisabilityForm().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -84,7 +84,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichChildrenDisabilityForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

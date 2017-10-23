@@ -47,7 +47,7 @@ class WhichChildrenDisabilityController @Inject()(
         case None => WhichChildrenDisabilityForm()
         case Some(value) => WhichChildrenDisabilityForm().fill(value)
       }
-      Ok(whichChildrenDisability(appConfig, answer, preparedForm, mode))
+      Ok(whichChildrenDisability(appConfig, preparedForm, Seq.empty, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
@@ -55,7 +55,7 @@ class WhichChildrenDisabilityController @Inject()(
       WhichChildrenDisabilityForm().bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
           val answer = request.userAnswers.whichChildrenDisability
-          Future.successful (BadRequest (whichChildrenDisability (appConfig, answer, formWithErrors, mode)))
+          Future.successful (BadRequest (whichChildrenDisability (appConfig, formWithErrors, Seq.empty, mode)))
         },
         (value) => {
           dataCacheConnector.save[Set[String]] (request.sessionId, WhichChildrenDisabilityId.toString, value).map (cacheMap =>
