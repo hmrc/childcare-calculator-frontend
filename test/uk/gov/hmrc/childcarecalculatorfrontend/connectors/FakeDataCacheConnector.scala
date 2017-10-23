@@ -36,5 +36,7 @@ object FakeDataCacheConnector extends DataCacheConnector {
 
   override def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
 
-  override def replaceInCollection[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+
+  override def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(implicit fmt: Format[Map[K, V]]) = Future(CacheMap(cacheId, Map()))
 }

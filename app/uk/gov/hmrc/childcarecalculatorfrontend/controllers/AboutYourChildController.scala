@@ -20,14 +20,16 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{RequestHeader, Result}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AboutYourChildId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 
 import scala.concurrent.Future
@@ -38,32 +40,45 @@ class AboutYourChildController @Inject()(
                                           dataCacheConnector: DataCacheConnector,
                                           navigator: Navigator,
                                           getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction,
-                                          validateIndex: ChildIndexActionFilterFactory
-                                        ) extends FrontendController with I18nSupport {
+                                          requireData: DataRequiredAction
+                                        ) extends FrontendController with I18nSupport with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData andThen validateIndex(childIndex)) {
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+
+  private def validateIndex[A](childIndex: Int)(block: Int => Future[Result])
+                              (implicit request: DataRequest[A]): Future[Result] = {
+    request.userAnswers.noOfChildren.map {
+      noOfChildren =>
+        if (childIndex >= 0 && childIndex < noOfChildren) {
+          block(noOfChildren)
+        } else {
+          sessionExpired
+        }
+    }.getOrElse(sessionExpired)
+  }
+
+  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.noOfChildren.map {
+      validateIndex(childIndex) {
         noOfChildren =>
           val preparedForm = request.userAnswers.aboutYourChild(childIndex) match {
             case None => AboutYourChildForm()
             case Some(value) => AboutYourChildForm().fill(value)
           }
-          Ok(aboutYourChild(appConfig, preparedForm, mode, childIndex, noOfChildren))
-      }.getOrElse(Redirect(routes.SessionExpiredController.onPageLoad()))
+          Future.successful(Ok(aboutYourChild(appConfig, preparedForm, mode, childIndex, noOfChildren)))
+      }
   }
 
-  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData andThen validateIndex(childIndex)).async {
+  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
-      AboutYourChildForm().bindFromRequest().fold(
-        (formWithErrors: Form[AboutYourChild]) =>
-          request.userAnswers.noOfChildren.map {
-            noOfChildren =>
-              Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren)))
-          }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))),
-        (value) =>
-          dataCacheConnector.replaceInCollection[AboutYourChild](
+      validateIndex(childIndex) {
+        noOfChildren =>
+          AboutYourChildForm().bindFromRequest().fold(
+            (formWithErrors: Form[AboutYourChild]) =>
+              Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren))),
+              (value) =>
+          dataCacheConnector.saveInMap[Int, AboutYourChild](
             request.sessionId,
             AboutYourChildId.toString,
             childIndex,
@@ -72,6 +87,7 @@ class AboutYourChildController @Inject()(
             cacheMap =>
               Redirect(navigator.nextPage(AboutYourChildId, mode)(new UserAnswers(cacheMap)))
           }
-      )
+        )
+      }
   }
 }
