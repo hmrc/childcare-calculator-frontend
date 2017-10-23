@@ -25,6 +25,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FakeNavigator(desiredRoute: Call,
                     mode: Mode = NormalMode,
-                    schemes: Schemes = new Schemes()) extends Navigator(schemes) {
+                    schemes: Schemes = new Schemes()) extends Navigator() {
   override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call = (ua) => desiredRoute
 }

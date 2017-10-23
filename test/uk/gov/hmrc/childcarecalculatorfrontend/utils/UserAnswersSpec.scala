@@ -29,79 +29,35 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
   def helper(cacheMap: CacheMap): UserAnswers =
     new UserAnswers(cacheMap)
 
-  "hasPartnerInPaidWork" must {
-
-    "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'partner'" in {
-      val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("partner"),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
-      )
-      helper(answers).hasPartnerInPaidWork mustEqual true
-    }
-
-    "return false when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
-      val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("both"),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
-      )
-      helper(answers).hasPartnerInPaidWork mustEqual false
-    }
-
-    "return false when the answer to whoIsInPaidEmployment returns 'you'" in {
-      val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("you"),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
-      )
-      helper(answers).hasPartnerInPaidWork mustEqual false
-    }
-
-    "return false when user does not live with partner" in {
-      val answers: CacheMap = cacheMap(
-        DoYouLiveWithPartnerId.toString -> JsBoolean(false)
-      )
-      helper(answers).hasPartnerInPaidWork mustEqual false
-    }
-
-    "return false when the answer to whoIsInPaidEmployment returns None" in {
-      val answers: CacheMap = cacheMap()
-      helper(answers).hasPartnerInPaidWork mustEqual false
-    }
+  "return partner when user lives with partner and the answer to whoIsInPaidEmployment returns 'partner'" in {
+    val answers: CacheMap = cacheMap(
+      WhoIsInPaidEmploymentId.toString -> JsString("partner"),
+      DoYouLiveWithPartnerId.toString -> JsBoolean(true)
+    )
+    helper(answers).isYouPartnerOrBoth(Some("partner")) mustEqual "partner"
   }
 
-  "hasBothInPaidWork" must {
-    "return true when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
-      val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("both"),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
-      )
-      helper(answers).hasBothInPaidWork mustEqual true
-    }
-
-    "return false when the answer to whoIsInPaidEmployment returns 'you'" in {
-      val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("you"),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true)
-      )
-      helper(answers).hasBothInPaidWork mustEqual false
-    }
-
-    "return false when the answer to whoIsInPaidEmployment returns 'partner'" in {
-      val answers: CacheMap = cacheMap(
-        WhoIsInPaidEmploymentId.toString -> JsString("partner")
-      )
-      helper(answers).hasBothInPaidWork mustEqual false
-    }
-
-    "return false when user does not live with partner" in {
-      val answers: CacheMap = cacheMap(
-        DoYouLiveWithPartnerId.toString -> JsBoolean(false)
-      )
-      helper(answers).hasBothInPaidWork mustEqual false
-    }
-
-    "return false when the answer to whoIsInPaidEmployment returns None" in {
-      val answers: CacheMap = cacheMap()
-      helper(answers).hasBothInPaidWork mustEqual false
-    }
+  "return both when user lives with partner and the answer to whoIsInPaidEmployment returns 'both'" in {
+    val answers: CacheMap = cacheMap(
+      WhoIsInPaidEmploymentId.toString -> JsString("both"),
+      DoYouLiveWithPartnerId.toString -> JsBoolean(true)
+    )
+    helper(answers).isYouPartnerOrBoth(Some("both")) mustEqual "both"
   }
+
+  "return you when the answer to whoIsInPaidEmployment returns 'you'" in {
+    val answers: CacheMap = cacheMap(
+      WhoIsInPaidEmploymentId.toString -> JsString("you"),
+      DoYouLiveWithPartnerId.toString -> JsBoolean(true)
+    )
+    helper(answers).isYouPartnerOrBoth(Some("you")) mustEqual "you"
+  }
+
+  "return you when user does not live with partner" in {
+    val answers: CacheMap = cacheMap(
+      DoYouLiveWithPartnerId.toString -> JsBoolean(false)
+    )
+    helper(answers).isYouPartnerOrBoth(Some("you")) mustEqual "you"
+  }
+
 }

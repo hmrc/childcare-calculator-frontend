@@ -87,7 +87,7 @@ class MaximumHoursNavigation {
 
   def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
 
-    if(answers.hasYourPartnersTaxCodeBeenAdjusted.contains("you")) {
+    if(answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
       routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
     } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
       routes.EitherGetsVouchersController.onPageLoad(NormalMode)
@@ -138,7 +138,7 @@ class MaximumHoursNavigation {
 
   def eitherGetVouchersRoute(answers: UserAnswers): Call = {
 
-    if(answers.eitherGetsVouchers.contains(true)) {
+    if(answers.eitherGetsVouchers.contains("yes")) {
       routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     } else {
       routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -203,10 +203,10 @@ class MaximumHoursNavigation {
 
   def yourPartnerAgeRoute(answers: UserAnswers) = {
 
-    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
-      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
-    } else {
+    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
       routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+    } else {
+      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
     }
   }
 
@@ -223,12 +223,24 @@ class MaximumHoursNavigation {
 
   def partnerMinimumEarningsRoute(answers: UserAnswers) = {
 
-    if(answers.yourMinimumEarnings.contains(false)){
-      routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-    } else if(answers.partnerMinimumEarnings.contains(false)) {
-      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-    } else {
-      routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
+    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
+      if(answers.partnerMinimumEarnings.contains(true)) {
+        routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      } else {
+        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      }
+    } else if(answers.partnerMinimumEarnings.contains(false)) { //when both is selected and partner min earning is false
+      if(answers.yourMinimumEarnings.contains(false)) {
+        routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      } else {
+        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      }
+    } else { //when both is selected and partner min earning is true
+      if(answers.yourMinimumEarnings.contains(false)) {
+        routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      } else {
+        routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
+      }
     }
   }
 
