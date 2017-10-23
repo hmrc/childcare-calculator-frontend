@@ -72,11 +72,11 @@ class MaximumHoursNavigation {
     }
   }
 
-  def taxCodeAdjustedRoute(answers: UserAnswers): Call = {
+  def yourTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
     answers.hasYourTaxCodeBeenAdjusted match {
       case Some(true) => routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
       case Some(false) =>
-        if (answers.hasBothInPaidWork) {
+        if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
           routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
         } else {
           routes.YourChildcareVouchersController.onPageLoad(NormalMode)
@@ -85,16 +85,36 @@ class MaximumHoursNavigation {
     }
   }
 
+  def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
+
+    if(answers.hasYourPartnersTaxCodeBeenAdjusted.contains("you")) {
+      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
+      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+    }
+  }
+
   def doYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers): Call = {
-    answers.doYouKnowYourAdjustedTaxCode match {
-      case Some(true) => routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
-      case Some(false) =>
-        if (answers.hasPartnerInPaidWork | answers.hasBothInPaidWork) {
-          routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-        } else {
-          routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-        }
-      case _ => routes.SessionExpiredController.onPageLoad()
+
+    if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
+      routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
+      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+    }
+  }
+
+  def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call = {
+
+    if(answers.doYouKnowYourPartnersAdjustedTaxCode.contains(true)) {
+      routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
@@ -107,89 +127,26 @@ class MaximumHoursNavigation {
     }
   }
 
-  def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
-    answers.hasYourPartnersTaxCodeBeenAdjusted match {
-      case Some(true) => routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-      case Some(false) =>
-        if (answers.hasBothInPaidWork) {
-          routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-        } else {
-          routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-        }
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
-  }
-
-  def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call =
-    answers.doYouKnowYourPartnersAdjustedTaxCode match {
-      case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
-      case Some(false) =>
-        if(answers.hasPartnerInPaidWork) {
-          routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-        } else {
-          routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-        }
-      case None => routes.SessionExpiredController.onPageLoad()
-    }
-
   def whatIsYourPartnersTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.hasBothInPaidWork) {
+
+    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
       routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-    } else if (answers.hasPartnerInPaidWork) {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     } else {
-      routes.SessionExpiredController.onPageLoad()
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 
-  def parentsVouchersRoute(answers: UserAnswers) = {
-    answers.yourChildcareVouchers match {
-      case Some(_) =>
-        if(answers.doYouLiveWithPartner.contains(true)) {
-          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-        } else {
-          routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-        }
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
-  }
+  def eitherGetVouchersRoute(answers: UserAnswers): Call = {
 
-  def partnersVouchersRoute(answers: UserAnswers) = {
-    answers.partnerChildcareVouchers match {
-      case Some(_) =>
-        if(answers.doYouLiveWithPartner.contains(true)) {
-          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-        } else {
-          routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-        }
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
-  }
-
-  def vouchersRoute(answers: UserAnswers): Call = {
-    val Yes = YesNoUnsureEnum.YES.toString
-
-    answers.eitherGetsVouchers match {
-      case Some(Yes) => if(answers.doYouLiveWithPartner.contains(true)) {
-        if(answers.whoIsInPaidEmployment.contains(Both)) {
-          routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-        } else {
-          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-        }
-      } else {
-        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-      }
-      case Some(_) =>
-        if(answers.doYouLiveWithPartner.contains(true)) {
-          routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-        } else {
-          routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-        }
-      case _ => routes.SessionExpiredController.onPageLoad()
+    if(answers.eitherGetsVouchers.contains(true)) {
+      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
     }
   }
 
   def doYouGetAnyBenefitsRoute(answers: UserAnswers) = {
+
     if(answers.doYouGetAnyBenefits.contains(false)){
       routes.YourAgeController.onPageLoad(NormalMode)
     } else {
