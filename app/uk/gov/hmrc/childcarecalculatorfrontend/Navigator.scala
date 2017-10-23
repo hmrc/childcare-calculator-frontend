@@ -38,7 +38,7 @@ class Navigator @Inject() (schemes: Schemes,
 
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
-    ChildAgedTwoId -> (_ => routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode)),
+    ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
     ChildcareCostsId -> costRoute,
     ApprovedProviderId -> approvedChildCareRoute,

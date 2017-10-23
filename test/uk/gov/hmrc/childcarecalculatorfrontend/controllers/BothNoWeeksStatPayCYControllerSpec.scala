@@ -37,7 +37,7 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
       messagesApi,
       FakeDataCacheConnector,
       new FakeNavigator(desiredRoute = onwardRoute),
-      dontGetAnyData,
+      dataRetrievalAction,
       new BothNoWeeksStatPayCYForm(frontendAppConfig),
       new DataRequiredActionImpl())
 
@@ -48,10 +48,13 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
   "BothNoWeeksStatPayCY Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val validData = Map(BothNoWeeksStatPayCYId.toString -> Json.toJson(BothNoWeeksStatPayCY(1, 2)))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString(new BothNoWeeksStatPayCYForm(frontendAppConfig).apply)
+      contentAsString(result) mustBe viewAsString(new BothNoWeeksStatPayCYForm(frontendAppConfig).apply.fill(BothNoWeeksStatPayCY(1, 2)))
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
@@ -64,7 +67,7 @@ class BothNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "1"), ("field2", "2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("youNoWeeksYouStatPayCY", "1"), ("partnerWeeksYouStatPayCY", "2"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

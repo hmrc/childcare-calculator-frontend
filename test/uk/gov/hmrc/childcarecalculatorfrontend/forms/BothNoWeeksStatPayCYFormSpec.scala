@@ -22,8 +22,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.BothNoWeeksStatPayCY
 class BothNoWeeksStatPayCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "field1" -> "1",
-    "field2" -> "2"
+    "youNoWeeksYouStatPayCY" -> "1",
+    "partnerWeeksYouStatPayCY" -> "2"
   )
 
   val form = new BothNoWeeksStatPayCYForm(frontendAppConfig).apply
@@ -31,6 +31,9 @@ class BothNoWeeksStatPayCYFormSpec extends FormBehaviours {
   "BothNoWeeksStatPayCY form" must {
     behave like questionForm(new BothNoWeeksStatPayCY(1, 2))
 
-    behave like formWithMandatoryTextFields("field1", "field2")
+    behave like formWithMandatoryTextFieldWithErrorMsgs("youNoWeeksYouStatPayCY", "youNoWeeksStatPayCY.error", "youNoWeeksStatPayCY.error")
+
+    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerWeeksYouStatPayCY", "partnerNoWeeksStatPayCY.error", "partnerNoWeeksStatPayCY.error")
+
   }
 }
