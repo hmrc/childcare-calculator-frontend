@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 
 object ChildcareConstants {
-  val you = "you"
-  val partner = "partner"
-  val both = "both"
+  val you: String = YouPartnerBothEnum.YOU.toString
+  val partner: String = YouPartnerBothEnum.PARTNER.toString
+  val both: String = YouPartnerBothEnum.BOTH.toString
   val no = "no"
   val yes = "yes"
   val unknownErrorKey = "error.unknown"
