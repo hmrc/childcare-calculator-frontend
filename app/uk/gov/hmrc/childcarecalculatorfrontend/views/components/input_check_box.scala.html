@@ -46,7 +46,6 @@
                 }
             ) { answers =>
                 <div class="multiple-choice">
-                    <div>@field(s"[$i]").value.toString</div>
                     <input id="@field(s"[$i]").id" type="checkbox" name="@field(s"[$i]").name" value="@v" @if(answers.contains(v)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@field(s"[$i]").id"} />
                     <label class="block-label" for="@field(s"[$i]").id">
                     @messages(label)
