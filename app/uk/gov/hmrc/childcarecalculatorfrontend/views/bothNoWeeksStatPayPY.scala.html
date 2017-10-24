@@ -36,9 +36,13 @@
 
         @components.heading("bothNoWeeksStatPayPY.heading", "heading-xlarge")
 
-        @components.input_text(InputViewModel[BothNoWeeksStatPayPY]("field1", form), label = messages("bothNoWeeksStatPayPY.field1"))
+        <p>@messages("bothNoWeeksStatPayPY.year.start.end.date")</p>
 
-        @components.input_text(InputViewModel[BothNoWeeksStatPayPY]("field2", form), label = messages("bothNoWeeksStatPayPY.field2"))
+        <p>@messages("bothNoWeeksStatPayPY.hint")</p>
+
+        @components.input_text(InputViewModel[BothNoWeeksStatPayPY]("youNoWeeksYouStatPayPY", form), label = messages("bothNoWeeksStatPayPY.youStatPayPY"))
+
+        @components.input_text(InputViewModel[BothNoWeeksStatPayPY]("partnerWeeksYouStatPayPY", form), label = messages("bothNoWeeksStatPayPY.partnerStatPayPY"))
 
         @components.submit_button()
     }

@@ -15,19 +15,49 @@
  */
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
+import javax.inject.{Inject, Singleton}
 
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.BothNoWeeksStatPayPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object BothNoWeeksStatPayPYForm extends FormErrorHelper {
+
+@Singleton
+class BothNoWeeksStatPayPYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
+
+  def formatter(errorKeyBlank: String, errorKeyValue: String, errorKeyInvalid: String) = new Formatter[Int] {
+
+    val intRegex = """^(\d+)$"""
+    val minValue: Double = appConfig.minNoWeeksStatPay
+    val maxValue: Double = appConfig.maxNoWeeksStatPay
+
+    def bind(key: String, data: Map[String, String]) = {
+      data.get(key).map(_.trim.replaceAll(",", "")) match {
+        case None => produceError(key, errorKeyBlank)
+        case Some("") => produceError(key, errorKeyBlank)
+        case Some(s) if s.matches(intRegex) =>
+          val value = s.toInt
+          if (validateInRange(value, minValue, maxValue)) {
+            Right(value)
+          } else {
+            produceError(key, errorKeyValue)
+          }
+
+        case _ =>
+          produceError(key, errorKeyInvalid)
+      }
+    }
+
+    def unbind(key: String, value: Int) = Map(key -> value.toString)
+  }
 
   def apply(): Form[BothNoWeeksStatPayPY] = Form(
     mapping(
-      "field1" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("field1.required"))),
-      "field2" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("field2.required")))
+      "youNoWeeksYouStatPayPY" -> of(formatter(youNoWeeksStatPayPYErrorKey, youNoWeeksStatPayPYInvalidErrorKey, youNoWeeksStatPayPYInvalidErrorKey)),
+      "partnerWeeksYouStatPayPY" -> of(formatter(partnerNoWeeksStatPayPYErrorKey, partnerNoWeeksStatPayPYInvalidErrorKey, partnerNoWeeksStatPayPYInvalidErrorKey))
     )(BothNoWeeksStatPayPY.apply)(BothNoWeeksStatPayPY.unapply)
   )
 }

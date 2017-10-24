@@ -986,18 +986,16 @@ youNoWeeksStatPayPY.numeric.error = must be a whole number
 youNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
 youNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
 
-bothNoWeeksStatPayCY.title = How many weeks did you and your partner take last year?
-bothNoWeeksStatPayCY.heading = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayCY.title = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.heading = How many weeks did you and your partner take this year?
 bothNoWeeksStatPayCY.youStatPayCY = Your weeks
 bothNoWeeksStatPayCY.partnerStatPayCY = Partners weeks
-bothNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks did you and your partner take this year?
 bothNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
 bothNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
 bothNoWeeksStatPayCY.numeric.error = must be a whole number
 bothNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 bothNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
-
-
 
 yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
 yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
@@ -1086,9 +1084,13 @@ partnerNoWeeksStatPayPY.numeric.error = must be a whole number
 partnerNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
 partnerNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
 
-
-bothNoWeeksStatPayPY.title = bothNoWeeksStatPayPY
-bothNoWeeksStatPayPY.heading = bothNoWeeksStatPayPY
-bothNoWeeksStatPayPY.field1 = Field 1
-bothNoWeeksStatPayPY.field2 = Field 2
-bothNoWeeksStatPayPY.checkYourAnswersLabel = bothNoWeeksStatPayPY
+bothNoWeeksStatPayPY.title = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.heading = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.youStatPayPY = Your weeks
+bothNoWeeksStatPayPY.partnerStatPayPY = Partners weeks
+bothNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+bothNoWeeksStatPayPY.error = You must tell the calculator how many weeks you will take last year
+bothNoWeeksStatPayPY.numeric.error = must be a whole number
+bothNoWeeksStatPayPY.year.start.end.date = This year is 6 April 2016 to 5 April 2017.
+bothNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
