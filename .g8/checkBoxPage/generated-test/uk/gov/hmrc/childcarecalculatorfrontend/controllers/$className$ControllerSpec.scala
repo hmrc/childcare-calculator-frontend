@@ -20,15 +20,15 @@ class $className$ControllerSpec extends ControllerSpecBase {
     new $className$Controller(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = $className$Form()) = $className;format="decap"$(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = $className$Form()) = $className;format="decap"$(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "$className$ Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
-      status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString()
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
@@ -39,7 +39,7 @@ class $className$ControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString($className$Form().fill(Set($className$Form.options.head._2)))
+      contentAsString(result) mustEqual viewAsString($className$Form().fill(Set($className$Form.options.head._2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -47,8 +47,8 @@ class $className$ControllerSpec extends ControllerSpecBase {
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(onwardRoute.url)
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result) mustEqual Some(onwardRoute.url)
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
@@ -57,23 +57,23 @@ class $className$ControllerSpec extends ControllerSpecBase {
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
-      status(result) mustBe BAD_REQUEST
-      contentAsString(result) mustBe viewAsString(boundForm)
+      status(result) mustEqual BAD_REQUEST
+      contentAsString(result) mustEqual viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result) mustEqual Some(routes.SessionExpiredController.onPageLoad().url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", $className$Form.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", $className$Form.options.head._2))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result) mustEqual Some(routes.SessionExpiredController.onPageLoad().url)
     }
   }
 }
