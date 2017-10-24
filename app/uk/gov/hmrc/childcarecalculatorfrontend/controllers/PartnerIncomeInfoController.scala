@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Call}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
@@ -32,6 +32,17 @@ class PartnerIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
                                       requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(partnerIncomeInfo(appConfig))
+
+
+
+    Ok(partnerIncomeInfo(appConfig, getNextPageUrl()))
+  }
+
+  /**
+    * Gets the next page url
+    * @return
+    */
+  private def getNextPageUrl() = {
+    Call("GET", "NextPageUrl")
   }
 }

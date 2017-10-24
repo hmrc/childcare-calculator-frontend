@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
@@ -29,7 +30,7 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe partnerIncomeInfo(frontendAppConfig)(fakeRequest, messages).toString
+      contentAsString(result) mustBe partnerIncomeInfo(frontendAppConfig, Call("GET", "testurl"))(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
