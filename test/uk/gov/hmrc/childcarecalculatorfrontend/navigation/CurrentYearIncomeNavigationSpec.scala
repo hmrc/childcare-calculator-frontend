@@ -21,7 +21,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -41,49 +41,48 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
     "in Normal mode" must {
       "Partner Paid Work CY Route" must {
 
-        "redirects to parent employment income CY when parent lives with partner and parent in paid work" in {
+        "redirects to parent employment income CY when user selects yes or no" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+          when(answers.partnerPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
+
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode)(answers) mustBe
+            routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
 
           navigator.nextPage(PartnerPaidWorkCYId, NormalMode)(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
-
       }
 
       "Parent Paid Work CY Route" must {
 
-        "redirects to partner employment income CY when parent lives with partner and partner in paid work" in {
+        "redirects to partner employment income CY when user selects yes or no" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+          when(answers.parentPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
+
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode)(answers) mustBe
+            routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
 
           navigator.nextPage(ParentPaidWorkCYId, NormalMode)(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
-
       }
 
       "Parent Employment Income CY Route" must {
 
-        "redirects to parent paid pension CY when parent lives with partner and parent in paid work" in {
+        "redirects to parent paid pension CY when user provides valid value" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+          when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
 
           navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode)(answers) mustBe
             routes.YouPaidPensionCYController.onPageLoad(NormalMode)
         }
-
       }
 
       "Partner Employment Income CY Route" must {
 
-        "redirects to partner paid pension CY when parent lives with partner and partner in paid work" in {
+        "redirects to partner paid pension CY when when user provides valid value" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+          when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
 
           navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode)(answers) mustBe
             routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
@@ -93,10 +92,9 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
 
       "Parent and Partner Employment Income CY Route" must {
 
-        "redirects to both paid pension CY when parent lives with partner and both in paid work" in {
+        "redirects to both paid pension CY when when user provides valid values" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY("12", "20"))
 
           navigator.nextPage(EmploymentIncomeCYId, NormalMode)(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)

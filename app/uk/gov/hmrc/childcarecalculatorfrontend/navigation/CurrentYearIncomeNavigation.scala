@@ -26,15 +26,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @Singleton
 class CurrentYearIncomeNavigation {
 
-  def partnerPaidWorkCYRoute(answers: UserAnswers) = routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
+  def partnerPaidWorkCYRoute = routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
 
-  def parentPaidWorkCYRoute(answers: UserAnswers) = routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
+  def parentPaidWorkCYRoute = routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
 
-  def parentEmploymentIncomeCYRoute(answers: UserAnswers) = routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+  def parentEmploymentIncomeCYRoute = routes.YouPaidPensionCYController.onPageLoad(NormalMode)
 
-  def partnerEmploymentIncomeCYRoute(answers: UserAnswers) = routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
+  def partnerEmploymentIncomeCYRoute= routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
 
-  def EmploymentIncomeCYRoute(answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+  def employmentIncomeCYRoute = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
 
 }

@@ -76,11 +76,11 @@ class Navigator @Inject()(schemes: Schemes,
     YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    PartnerPaidWorkCYId -> currentYearIncomeNav.partnerPaidWorkCYRoute,
-    ParentPaidWorkCYId -> currentYearIncomeNav.parentPaidWorkCYRoute,
-    ParentEmploymentIncomeCYId -> currentYearIncomeNav.parentEmploymentIncomeCYRoute,
-    PartnerEmploymentIncomeCYId -> currentYearIncomeNav.partnerEmploymentIncomeCYRoute,
-    EmploymentIncomeCYId -> currentYearIncomeNav.EmploymentIncomeCYRoute
+    PartnerPaidWorkCYId -> (_ =>  currentYearIncomeNav.partnerPaidWorkCYRoute),
+    ParentPaidWorkCYId -> (_ => currentYearIncomeNav.parentPaidWorkCYRoute),
+    ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
+    PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
+    EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute)
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
