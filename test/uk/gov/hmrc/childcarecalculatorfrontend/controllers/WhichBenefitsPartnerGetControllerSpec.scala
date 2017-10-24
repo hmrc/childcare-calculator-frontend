@@ -38,7 +38,7 @@ class WhichBenefitsPartnerGetControllerSpec extends ControllerSpecBase {
     new WhichBenefitsPartnerGetController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsPartnerGetForm()) = whichBenefitsPartnerGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsPartnerGetForm()) = whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhichBenefitsPartnerGet Controller" must {
 

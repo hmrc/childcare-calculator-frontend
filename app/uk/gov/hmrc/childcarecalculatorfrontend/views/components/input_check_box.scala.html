@@ -34,19 +34,25 @@
                 @hint
             </span>
         }
-        @field.errors.isEmpty
         @field.errors.map { error =>
             <span class="error-notification" id="error-message-@field.id-input">
                 @messages(error.message, error.args: _*)
             </span>
         }
         @for(((label, v), i) <- inputs.zipWithIndex) {
-            <div class="multiple-choice">
-                <input id="@field(s"[$i]").id" type="checkbox" name="@field(s"[$i]").name" value="@v" @if(field(s"[$i]").value.contains(v)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@field(s"[$i]").id"} />
-                <label class="block-label" for="@field(s"[$i]").id">
+            @defining(
+                (0 until inputs.size).flatMap { j =>
+                    field(s"[$j]").value
+                }
+            ) { answers =>
+                <div class="multiple-choice">
+                    <div>@field(s"[$i]").value.toString</div>
+                    <input id="@field(s"[$i]").id" type="checkbox" name="@field(s"[$i]").name" value="@v" @if(answers.contains(v)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@field(s"[$i]").id"} />
+                    <label class="block-label" for="@field(s"[$i]").id">
                     @messages(label)
-                </label>
-            </div>
+                    </label>
+                </div>
+            }
         }
     </fieldset>
 </div>

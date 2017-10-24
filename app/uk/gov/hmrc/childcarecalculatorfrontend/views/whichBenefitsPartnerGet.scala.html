@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, answer: Option[Set[String]], form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("whichBenefitsPartnerGet.title"),

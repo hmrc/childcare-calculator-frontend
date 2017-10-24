@@ -21,7 +21,6 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichBenefitsPartnerGetForm extends FormErrorHelper {
 

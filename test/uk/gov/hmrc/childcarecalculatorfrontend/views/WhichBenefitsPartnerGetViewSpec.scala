@@ -34,7 +34,7 @@ class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours with CheckboxViewBe
   def form: Form[Set[String]] = WhichBenefitsPartnerGetForm()
 
   def createView(form: Form[Set[String]] = form): Html =
-    whichBenefitsPartnerGet(frontendAppConfig, None, form, NormalMode)(fakeRequest, messages)
+    whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhichBenefitsPartnerGet view" must {
 

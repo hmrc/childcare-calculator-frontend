@@ -36,9 +36,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     new WhichBenefitsYouGetController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  val answer = Some(Set("option1", "option2"))
-
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = whichBenefitsYouGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhichBenefitsYouGet Controller" must {
 

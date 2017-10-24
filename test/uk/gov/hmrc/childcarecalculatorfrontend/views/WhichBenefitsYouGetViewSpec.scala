@@ -34,7 +34,7 @@ class WhichBenefitsYouGetViewSpec extends ViewBehaviours with CheckboxViewBehavi
   def form: Form[Set[String]] = WhichBenefitsYouGetForm()
 
   def createView(form: Form[Set[String]] = form): Html =
-    whichBenefitsYouGet(frontendAppConfig, None, form, NormalMode)(fakeRequest, messages)
+    whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhichBenefitsYouGet view" must {
 

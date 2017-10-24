@@ -20,15 +20,17 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.mvc.{AnyContent, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichChildrenDisabilityId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{InputOption, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
@@ -40,27 +42,49 @@ class WhichChildrenDisabilityController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def withValues(block: Map[String, String] => Future[Result])
+                (implicit request: DataRequest[AnyContent]): Future[Result] = {
+
+    request.userAnswers.aboutYourChild.map {
+      aboutYourChild =>
+
+        val values: Map[String, String] = aboutYourChild.map {
+          case (k, v) =>
+            v.name -> k.toString
+        }
+
+      block(values)
+    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }
+
+  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      val answer = request.userAnswers.whichChildrenDisability
-      val preparedForm = answer match {
-        case None => WhichChildrenDisabilityForm()
-        case Some(value) => WhichChildrenDisabilityForm().fill(value)
+      withValues {
+        values =>
+          val answer = request.userAnswers.whichChildrenDisability
+          val preparedForm = answer match {
+            case None => WhichChildrenDisabilityForm()
+            case Some(value) => WhichChildrenDisabilityForm().fill(value)
+          }
+          Future.successful(Ok(whichChildrenDisability(appConfig, preparedForm, values, mode)))
       }
-      Ok(whichChildrenDisability(appConfig, preparedForm, Map("Foo" -> "0"), mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhichChildrenDisabilityForm().bindFromRequest().fold(
-        (formWithErrors: Form[Set[String]]) => {
-          val answer = request.userAnswers.whichChildrenDisability
-          Future.successful (BadRequest (whichChildrenDisability (appConfig, formWithErrors, Map("Foo" -> "0"), mode)))
-        },
-        (value) => {
-          dataCacheConnector.save[Set[String]] (request.sessionId, WhichChildrenDisabilityId.toString, value).map (cacheMap =>
-            Redirect (navigator.nextPage (WhichChildrenDisabilityId, mode) (new UserAnswers (cacheMap))))
-        }
-      )
+      withValues {
+        values =>
+          WhichChildrenDisabilityForm(values.values.toSeq: _*).bindFromRequest().fold(
+            (formWithErrors: Form[Set[String]]) => {
+              Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, values, mode)))
+            },
+            (value) => {
+              dataCacheConnector.save[Set[String]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
+                cacheMap =>
+                  Redirect(navigator.nextPage(WhichChildrenDisabilityId, mode)(new UserAnswers (cacheMap)))
+              }
+            }
+          )
+      }
   }
 }
