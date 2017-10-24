@@ -1,19 +1,3 @@
-/*
- * Copyright 2017 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
@@ -23,22 +7,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothNoWeeksStatPayPyForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothNoWeeksStatPayPyId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, BothNoWeeksStatPayPy}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothNoWeeksStatPayPy
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothNoWeeksStatPayPYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothNoWeeksStatPayPYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, BothNoWeeksStatPayPY}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothNoWeeksStatPayPY
 
-class BothNoWeeksStatPayPyControllerSpec extends ControllerSpecBase {
+class BothNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BothNoWeeksStatPayPyController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new BothNoWeeksStatPayPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[BothNoWeeksStatPayPy] = BothNoWeeksStatPayPyForm()) = bothNoWeeksStatPayPy(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BothNoWeeksStatPayPY] = BothNoWeeksStatPayPYForm()) = bothNoWeeksStatPayPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "BothNoWeeksStatPayPy Controller" must {
+  "BothNoWeeksStatPayPY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -48,12 +32,12 @@ class BothNoWeeksStatPayPyControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(BothNoWeeksStatPayPyId.toString -> Json.toJson(BothNoWeeksStatPayPy("1", "2")))
+      val validData = Map(BothNoWeeksStatPayPYId.toString -> Json.toJson(BothNoWeeksStatPayPY("1", "2")))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BothNoWeeksStatPayPyForm().fill(BothNoWeeksStatPayPy("1", "2")))
+      contentAsString(result) mustBe viewAsString(BothNoWeeksStatPayPYForm().fill(BothNoWeeksStatPayPY("1", "2")))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -67,7 +51,7 @@ class BothNoWeeksStatPayPyControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BothNoWeeksStatPayPyForm().bind(Map("value" -> "invalid value"))
+      val boundForm = BothNoWeeksStatPayPYForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

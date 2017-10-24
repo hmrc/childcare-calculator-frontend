@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import play.api.data.Form
-import play.api.data.Forms._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.BothNoWeeksStatPayPy
-
-object BothNoWeeksStatPayPyForm extends FormErrorHelper {
-
-  def apply(): Form[BothNoWeeksStatPayPy] = Form(
-    mapping(
-      "field1" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("field1.required"))),
-      "field2" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("field2.required")))
-    )(BothNoWeeksStatPayPy.apply)(BothNoWeeksStatPayPy.unapply)
-  )
+case object BothNoWeeksStatPayPYId extends Identifier {
+  override def toString: String = "bothNoWeeksStatPayPY"
 }

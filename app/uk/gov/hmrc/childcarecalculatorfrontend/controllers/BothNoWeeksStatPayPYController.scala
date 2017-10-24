@@ -24,15 +24,15 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothNoWeeksStatPayPyForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothNoWeeksStatPayPyId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, BothNoWeeksStatPayPy}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothNoWeeksStatPayPYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothNoWeeksStatPayPYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, BothNoWeeksStatPayPY}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothNoWeeksStatPayPy
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothNoWeeksStatPayPY
 
 import scala.concurrent.Future
 
-class BothNoWeeksStatPayPyController @Inject()(appConfig: FrontendAppConfig,
+class BothNoWeeksStatPayPYController @Inject()(appConfig: FrontendAppConfig,
                                                   override val messagesApi: MessagesApi,
                                                   dataCacheConnector: DataCacheConnector,
                                                   navigator: Navigator,
@@ -41,21 +41,21 @@ class BothNoWeeksStatPayPyController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.bothNoWeeksStatPayPy match {
-        case None => BothNoWeeksStatPayPyForm()
-        case Some(value) => BothNoWeeksStatPayPyForm().fill(value)
+      val preparedForm = request.userAnswers.bothNoWeeksStatPayPY match {
+        case None => BothNoWeeksStatPayPYForm()
+        case Some(value) => BothNoWeeksStatPayPYForm().fill(value)
       }
-      Ok(bothNoWeeksStatPayPy(appConfig, preparedForm, mode))
+      Ok(bothNoWeeksStatPayPY(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BothNoWeeksStatPayPyForm().bindFromRequest().fold(
-        (formWithErrors: Form[BothNoWeeksStatPayPy]) =>
-          Future.successful(BadRequest(bothNoWeeksStatPayPy(appConfig, formWithErrors, mode))),
+      BothNoWeeksStatPayPYForm().bindFromRequest().fold(
+        (formWithErrors: Form[BothNoWeeksStatPayPY]) =>
+          Future.successful(BadRequest(bothNoWeeksStatPayPY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[BothNoWeeksStatPayPy](request.sessionId, BothNoWeeksStatPayPyId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(BothNoWeeksStatPayPyId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[BothNoWeeksStatPayPY](request.sessionId, BothNoWeeksStatPayPYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(BothNoWeeksStatPayPYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

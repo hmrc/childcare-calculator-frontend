@@ -16,21 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.BothNoWeeksStatPayPy
+import play.api.data.Form
+import play.api.data.Forms._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.BothNoWeeksStatPayPY
 
-class BothNoWeeksStatPayPyFormSpec extends FormBehaviours {
+object BothNoWeeksStatPayPYForm extends FormErrorHelper {
 
-  val validData: Map[String, String] = Map(
-    "field1" -> "1",
-    "field2" -> "2"
+  def apply(): Form[BothNoWeeksStatPayPY] = Form(
+    mapping(
+      "field1" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("field1.required"))),
+      "field2" -> text.verifying(returnOnFirstFailure(
+        valueNonEmpty("field2.required")))
+    )(BothNoWeeksStatPayPY.apply)(BothNoWeeksStatPayPY.unapply)
   )
-
-  val form = BothNoWeeksStatPayPyForm()
-
-  "BothNoWeeksStatPayPy form" must {
-    behave like questionForm(BothNoWeeksStatPayPy("1", "2"))
-
-    behave like formWithMandatoryTextFields("field1", "field2")
-  }
 }

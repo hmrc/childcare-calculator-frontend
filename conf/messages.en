@@ -1086,8 +1086,9 @@ partnerNoWeeksStatPayPY.numeric.error = must be a whole number
 partnerNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
 partnerNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
 
-bothNoWeeksStatPayPy.title = bothNoWeeksStatPayPy
-bothNoWeeksStatPayPy.heading = bothNoWeeksStatPayPy
-bothNoWeeksStatPayPy.field1 = Field 1
-bothNoWeeksStatPayPy.field2 = Field 2
-bothNoWeeksStatPayPy.checkYourAnswersLabel = bothNoWeeksStatPayPy
+
+bothNoWeeksStatPayPY.title = bothNoWeeksStatPayPY
+bothNoWeeksStatPayPY.heading = bothNoWeeksStatPayPY
+bothNoWeeksStatPayPY.field1 = Field 1
+bothNoWeeksStatPayPY.field2 = Field 2
+bothNoWeeksStatPayPY.checkYourAnswersLabel = bothNoWeeksStatPayPY

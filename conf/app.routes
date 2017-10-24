@@ -640,7 +640,7 @@ POST       /partnerNoWeeksStatPayPY               uk.gov.hmrc.childcarecalculato
 GET        /changePartnerNoWeeksStatPayPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerNoWeeksStatPayPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerNoWeeksStatPayPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerNoWeeksStatPayPYController.onSubmit(mode: Mode = CheckMode)
 
-GET        /bothNoWeeksStatPayPy                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPyController.onPageLoad(mode: Mode = NormalMode)
-POST       /bothNoWeeksStatPayPy                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPyController.onSubmit(mode: Mode = NormalMode)
-GET        /changeBothNoWeeksStatPayPy                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPyController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeBothNoWeeksStatPayPy                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPyController.onSubmit(mode: Mode = CheckMode)
+GET        /bothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /bothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onSubmit(mode: Mode = CheckMode)
