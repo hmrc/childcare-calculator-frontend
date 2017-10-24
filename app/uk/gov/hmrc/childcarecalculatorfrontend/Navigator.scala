@@ -23,13 +23,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.navigation.{MaximumEarningsNavigation, SelfEmployedOrApprenticeNavigation}
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
 class Navigator @Inject() (schemes: Schemes,
                            maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
-                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation()) {
+                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
+                           currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -74,7 +75,8 @@ class Navigator @Inject() (schemes: Schemes,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    PartnerPaidWorkCYId -> currentYearIncomeNav.partnerPaidWorkCYRoute
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
