@@ -1076,3 +1076,7 @@ childStartEducation.heading = When did {0} start their education or training
 childStartEducation.checkYourAnswersLabel = When did your child start their education or training
 childStartEducation.error = You must tell the calculator when your child started their approved education or training
 childStartEducation.error.invalid = You must enter a date in the correct format
+
+partnerNoWeeksStatPayPY.title = partnerNoWeeksStatPayPY
+partnerNoWeeksStatPayPY.heading = partnerNoWeeksStatPayPY
+partnerNoWeeksStatPayPY.checkYourAnswersLabel = partnerNoWeeksStatPayPY
