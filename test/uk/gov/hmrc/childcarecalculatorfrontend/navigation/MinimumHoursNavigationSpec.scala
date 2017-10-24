@@ -22,6 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -32,7 +33,7 @@ class MinimumHoursNavigationSpec extends SpecBase with MockitoSugar{
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  val navigator = new Navigator(new MinimumHoursNavigation(), new MaximumHoursNavigation())
+  val navigator = new Navigator(new Schemes())
 
   "go to Index from an identifier that doesn't exist in the route map" in {
     case object UnknownIdentifier extends Identifier

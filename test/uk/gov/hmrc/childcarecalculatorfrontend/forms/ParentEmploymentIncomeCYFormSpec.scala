@@ -43,6 +43,13 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
       form.get shouldBe 10.80
     }
 
+    Seq("10000000", "9999999.99").foreach { value =>
+      s"fail to bind number $value not within the range" in {
+        val expectedError = error("value", errorKeyInvalid)
+        checkForError(parentEmploymentIncomeCYForm, Map("value" -> value), expectedError)
+      }
+    }
+
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
       checkForError(parentEmploymentIncomeCYForm, Map("value" -> "-1"), expectedError)

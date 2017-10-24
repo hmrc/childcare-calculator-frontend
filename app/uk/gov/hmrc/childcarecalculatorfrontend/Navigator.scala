@@ -20,14 +20,21 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
-class Navigator @Inject() (minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
-                           maxEarningsNav: MaximumHoursNavigation = new MaximumHoursNavigation()) {
+class Navigator @Inject()(schemes: Schemes,
+                          minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
+                          maxHoursNav: MaximumHoursNavigation = new MaximumHoursNavigation(),
+                          currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
+
+  val You: String = YouPartnerBothEnum.YOU.toString
+  val Partner: String = YouPartnerBothEnum.PARTNER.toString
+  val Both: String = YouPartnerBothEnum.BOTH.toString
 
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> minHoursNav.locationRoute,
@@ -36,41 +43,46 @@ class Navigator @Inject() (minHoursNav: MinimumHoursNavigation = new MinimumHour
     ChildcareCostsId -> minHoursNav.costRoute,
     ApprovedProviderId -> minHoursNav.approvedChildCareRoute,
     FreeHoursInfoId -> (_ => routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)),
-    DoYouLiveWithPartnerId -> maxEarningsNav.doYouLiveRoute,
-    AreYouInPaidWorkId -> maxEarningsNav.areYouInPaidWorkRoute,
-    PaidEmploymentId -> maxEarningsNav.paidEmploymentRoute,
-    WhoIsInPaidEmploymentId -> maxEarningsNav.whoIsInPaidWorkRoute,
+    DoYouLiveWithPartnerId -> maxHoursNav.doYouLiveRoute,
+    AreYouInPaidWorkId -> maxHoursNav.areYouInPaidWorkRoute,
+    PaidEmploymentId -> maxHoursNav.paidEmploymentRoute,
+    WhoIsInPaidEmploymentId -> maxHoursNav.whoIsInPaidWorkRoute,
     ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
-    PartnerWorkHoursId -> maxEarningsNav.partnerWorkHoursRoute,
-    HasYourTaxCodeBeenAdjustedId -> maxEarningsNav.hasYourTaxCodeBeenAdjusted,
-    DoYouKnowYourAdjustedTaxCodeId -> maxEarningsNav.doYouKnowYourAdjustedTaxCodeRoute,
-    WhatIsYourTaxCodeId -> maxEarningsNav.whatIsYourTaxCodeRoute,
-    HasYourPartnersTaxCodeBeenAdjustedId -> maxEarningsNav.hasYourPartnersTaxCodeBeenAdjusted,
-    DoYouKnowYourPartnersAdjustedTaxCodeId -> maxEarningsNav.doYouKnowPartnersTaxCodeRoute,
-    WhatIsYourPartnersTaxCodeId -> maxEarningsNav.whatIsYourPartnersTaxCodeRoute,
+    PartnerWorkHoursId -> maxHoursNav.partnerWorkHoursRoute,
+    HasYourTaxCodeBeenAdjustedId -> maxHoursNav.hasYourTaxCodeBeenAdjusted,
+    DoYouKnowYourAdjustedTaxCodeId -> maxHoursNav.doYouKnowYourAdjustedTaxCodeRoute,
+    WhatIsYourTaxCodeId -> maxHoursNav.whatIsYourTaxCodeRoute,
+    HasYourPartnersTaxCodeBeenAdjustedId -> maxHoursNav.hasYourPartnersTaxCodeBeenAdjusted,
+    DoYouKnowYourPartnersAdjustedTaxCodeId -> maxHoursNav.doYouKnowPartnersTaxCodeRoute,
+    WhatIsYourPartnersTaxCodeId -> maxHoursNav.whatIsYourPartnersTaxCodeRoute,
     YourChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
     PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
-    EitherGetsVouchersId -> maxEarningsNav.eitherGetVouchersRoute,
+    EitherGetsVouchersId -> maxHoursNav.eitherGetVouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
-    DoYouGetAnyBenefitsId -> maxEarningsNav.doYouGetAnyBenefitsRoute,
-    DoYouOrYourPartnerGetAnyBenefitsId -> maxEarningsNav.doYouOrYourPartnerGetAnyBenefitsRoute,
-    WhoGetsBenefitsId -> maxEarningsNav.whoGetsBenefitsRoute,
-    WhichBenefitsYouGetId -> maxEarningsNav.whichBenefitsYouGetRoute,
-    WhichBenefitsPartnerGetId -> maxEarningsNav.whichBenefitsPartnerGetRoute,
-    YourAgeId -> maxEarningsNav.yourAgeRoute,
-    YourPartnersAgeId -> maxEarningsNav.yourPartnerAgeRoute,
-    YourMinimumEarningsId -> maxEarningsNav.yourMinimumEarningsRoute,
-    PartnerMinimumEarningsId -> maxEarningsNav.partnerMinimumEarningsRoute,
-    AreYouSelfEmployedOrApprenticeId -> maxEarningsNav.areYouSelfEmployedOrApprenticeRoute,
-    PartnerSelfEmployedOrApprenticeId -> maxEarningsNav.partnerSelfEmployedOrApprenticeRoute,
-    YourSelfEmployedId -> maxEarningsNav.yourSelfEmployedRoute,
-    PartnerSelfEmployedId -> maxEarningsNav.partnerSelfEmployedRoute,
-    YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
+    DoYouGetAnyBenefitsId -> maxHoursNav.doYouGetAnyBenefitsRoute,
+    DoYouOrYourPartnerGetAnyBenefitsId -> maxHoursNav.doYouOrYourPartnerGetAnyBenefitsRoute,
+    WhoGetsBenefitsId -> maxHoursNav.whoGetsBenefitsRoute,
+    WhichBenefitsYouGetId -> maxHoursNav.whichBenefitsYouGetRoute,
+    WhichBenefitsPartnerGetId -> maxHoursNav.whichBenefitsPartnerGetRoute,
+    YourAgeId -> maxHoursNav.yourAgeRoute,
+    YourPartnersAgeId -> maxHoursNav.yourPartnerAgeRoute,
+    YourMinimumEarningsId -> maxHoursNav.yourMinimumEarningsRoute,
+    PartnerMinimumEarningsId -> maxHoursNav.partnerMinimumEarningsRoute,
+    AreYouSelfEmployedOrApprenticeId -> maxHoursNav.areYouSelfEmployedOrApprenticeRoute,
+    PartnerSelfEmployedOrApprenticeId -> maxHoursNav.partnerSelfEmployedOrApprenticeRoute,
+    YourSelfEmployedId -> maxHoursNav.yourSelfEmployedRoute,
+    PartnerSelfEmployedId -> maxHoursNav.partnerSelfEmployedRoute,
+    YourMaximumEarningsId -> maxHoursNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    PartnerPaidWorkCYId -> (_ =>  currentYearIncomeNav.partnerPaidWorkCYRoute),
+    ParentPaidWorkCYId -> (_ => currentYearIncomeNav.parentPaidWorkCYRoute),
+    ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
+    PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
+    EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute)
   )
 
-  private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map()
+  private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
 
   def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
     answers =>

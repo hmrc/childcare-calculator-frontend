@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.scalatest.{MustMatchers, WordSpec}
-import play.api.libs.json.{JsBoolean, JsString, JsValue}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, WhoIsInPaidEmploymentId}
+import org.joda.time.LocalDate
+import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import play.api.libs.json._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, DoYouLiveWithPartnerId, WhoIsInPaidEmploymentId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class UserAnswersSpec extends WordSpec with MustMatchers {
+class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   def cacheMap(answers: (String, JsValue)*): CacheMap =
     CacheMap("", Map(answers: _*))
@@ -60,4 +62,32 @@ class UserAnswersSpec extends WordSpec with MustMatchers {
     helper(answers).isYouPartnerOrBoth(Some("you")) mustEqual "you"
   }
 
+  ".childrenOver16" must {
+
+    "return any children who are over 16" in {
+
+      val over16 = LocalDate.now.minusYears(16).minusDays(1)
+      val under16 = LocalDate.now
+
+      val answers: CacheMap = cacheMap(
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
+          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", over16))
+        )
+      )
+
+      val result = helper(answers).childrenOver16
+      result.value must contain(0 -> "Foo")
+      result.value must contain(3 -> "Baz")
+    }
+
+    "return `None` when there are no children defined" in {
+
+      val answers: CacheMap = cacheMap()
+
+      helper(answers).childrenOver16 mustNot be(defined)
+    }
+  }
 }

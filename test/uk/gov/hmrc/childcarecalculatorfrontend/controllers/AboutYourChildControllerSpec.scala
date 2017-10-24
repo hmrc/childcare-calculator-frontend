@@ -35,7 +35,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new AboutYourChildController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, FakeChildIndexActionFilterFactory)
+      dataRetrievalAction, new DataRequiredActionImpl)
 
   def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()) = aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages).toString
 
@@ -55,7 +55,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = requiredData + (AboutYourChildId.toString -> Json.toJson(Seq(AboutYourChild("Foo", new LocalDate(2016, 2, 1)))))
+      val validData = requiredData + (AboutYourChildId.toString -> Json.obj("0" -> AboutYourChild("Foo", new LocalDate(2016, 2, 1))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
@@ -64,14 +64,16 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
+      val date = LocalDate.now
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
-        "dob.day"   -> "1",
-        "dob.month" -> "2",
-        "dob.year"  -> "2016"
+        "dob.day"   -> date.getDayOfMonth.toString,
+        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.year"  -> date.getYear.toString
       )
 
-      val result = controller().onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(getRelevantData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -96,8 +98,37 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+      val date = LocalDate.now
+      val postRequest = fakeRequest.withFormUrlEncodedBody(
+        "name"      -> "Foo",
+        "dob.day"   -> date.getDayOfMonth.toString,
+        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.year"  -> date.getYear.toString
+      )
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
+
+    "redirect to Session Expired for a GET if the user hasn't said how many children they have" in {
+      val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))
+      val result = controller(getData).onPageLoad(NormalMode, 0)(fakeRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
+
+    "redirect to Session Expired for a POST if the user hasn't said how many children they have" in {
+      val date = LocalDate.now
+      val postRequest = fakeRequest.withFormUrlEncodedBody(
+        "name"      -> "Foo",
+        "dob.day"   -> date.getDayOfMonth.toString,
+        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.year"  -> date.getYear.toString
+      )
+      val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))
+      val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)

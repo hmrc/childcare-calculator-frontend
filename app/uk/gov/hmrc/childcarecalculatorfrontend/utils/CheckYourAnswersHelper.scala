@@ -22,16 +22,56 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
-  def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
-    x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourTaxCodeBeenAdjusted.$x", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+  def bothNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.bothNoWeeksStatPayPY map {
+    x => AnswerRow("bothNoWeeksStatPayPY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
   }
 
-  def hasYourPartnersTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourPartnersTaxCodeBeenAdjusted map {
-    x => AnswerRow("hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourPartnersTaxCodeBeenAdjusted.$x", true, routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+  def partnerNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.partnerNoWeeksStatPayPY map {
+    x => AnswerRow("partnerNoWeeksStatPayPY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def childStartEducation(index: Int): Option[AnswerRow] = userAnswers.childStartEducation(index) map {
+    x => AnswerRow("childStartEducation.checkYourAnswersLabel", s"$x", false, routes.ChildStartEducationController.onPageLoad(CheckMode, index).url)
+  }
+
+  def bothNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.bothNoWeeksStatPayCY map {
+    x => AnswerRow("bothNoWeeksStatPayCY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
+  }
+
+  def youNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.youNoWeeksStatPayPY map {
+    x => AnswerRow("youNoWeeksStatPayPY.checkYourAnswersLabel", s"$x", false, routes.YouNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.partnerNoWeeksStatPayCY map {
+    x => AnswerRow("partnerNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
+  }
+
+  def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
+    x => AnswerRow("childRegisteredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildRegisteredBlindController.onPageLoad(CheckMode).url)
+  }
+
+  def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation(index) map {
+    x => AnswerRow("childApprovedEducation.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildApprovedEducationController.onPageLoad(CheckMode, index).url)
+  }
+
+  def childrenDisabilityBenefits: Option[AnswerRow] = userAnswers.childrenDisabilityBenefits map {
+    x => AnswerRow("childrenDisabilityBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildrenDisabilityBenefitsController.onPageLoad(CheckMode).url)
   }
 
   def childcarePayFrequency: Option[AnswerRow] = userAnswers.childcarePayFrequency map {
     x => AnswerRow("childcarePayFrequency.checkYourAnswersLabel", s"childcarePayFrequency.$x", true, routes.ChildcarePayFrequencyController.onPageLoad(CheckMode).url)
+  }
+
+  def employmentIncomePY: Option[AnswerRow] = userAnswers.employmentIncomePY map {
+    x => AnswerRow("employmentIncomePY.checkYourAnswersLabel", s"${x.parentEmploymentIncomePY} ${x.partnerEmploymentIncomePY}", false, routes.EmploymentIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerEmploymentIncomePY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomePY map {
+    x => AnswerRow("partnerEmploymentIncomePY.checkYourAnswersLabel", s"$x", false, routes.PartnerEmploymentIncomePYController.onPageLoad(CheckMode).url)
+  }
+
+  def parentEmploymentIncomePY: Option[AnswerRow] = userAnswers.parentEmploymentIncomePY map {
+    x => AnswerRow("parentEmploymentIncomePY.checkYourAnswersLabel", s"$x", false, routes.ParentEmploymentIncomePYController.onPageLoad(CheckMode).url)
   }
 
   def howMuchPartnerPayPensionPY: Option[AnswerRow] = userAnswers.howMuchPartnerPayPensionPY map {
@@ -128,6 +168,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def statutoryPayAmountCY: Option[AnswerRow] = userAnswers.statutoryPayAmountCY map {
     x => AnswerRow("statutoryPayAmountCY.checkYourAnswersLabel", s"${x.parentStatutoryPayAmount} ${x.partnerStatutoryPayAmount}", false, routes.StatutoryPayAmountCYController.onPageLoad(CheckMode).url)
+  }
+
+  def youNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.youNoWeeksStatPayCY map {
+    x => AnswerRow("youNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.YouNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
   def statutoryPayAWeekLY: Option[AnswerRow] = userAnswers.statutoryPayAWeekLY map {
@@ -398,6 +442,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("eitherGetsVouchers.checkYourAnswersLabel", s"vouchers.$x", true, routes.EitherGetsVouchersController.onPageLoad(CheckMode).url)
   }
 
+      def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
+        x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourTaxCodeBeenAdjusted.$x", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+      }
+
+      def hasYourPartnersTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourPartnersTaxCodeBeenAdjusted map {
+        x => AnswerRow("hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourPartnersTaxCodeBeenAdjusted.$x", true, routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+}
   def doYouKnowYourAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourAdjustedTaxCode map {
     x => AnswerRow("doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(CheckMode).url)
   }

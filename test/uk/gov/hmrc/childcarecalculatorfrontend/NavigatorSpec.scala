@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Scheme
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{Scheme, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -31,7 +31,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  val navigator = new Navigator()
+  val navigator = new Navigator(new Schemes())
 
   case object UnknownIdentifier extends Identifier
 
@@ -56,7 +56,7 @@ class NavigatorSpec extends SpecBase with MockitoSugar {
       "return a redirect to the Results page" when {
 
         "all schemes are determined" in {
-          val navigator = new Navigator()
+          val navigator = new Navigator(new Schemes())
           navigator.nextPage(UnknownIdentifier, NormalMode)(spy(userAnswers())) mustEqual routes.WhatToTellTheCalculatorController.onPageLoad()
         }
       }

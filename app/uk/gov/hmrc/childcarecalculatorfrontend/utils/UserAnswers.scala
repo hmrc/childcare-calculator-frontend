@@ -16,17 +16,39 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
-  def hasYourTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourTaxCodeBeenAdjustedId.toString)
+class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
+  def bothNoWeeksStatPayPY: Option[BothNoWeeksStatPayPY] = cacheMap.getEntry[BothNoWeeksStatPayPY](BothNoWeeksStatPayPYId.toString)
 
-  def hasYourPartnersTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourPartnersTaxCodeBeenAdjustedId.toString)
+  def partnerNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](PartnerNoWeeksStatPayPYId.toString)
 
+  def childStartEducation(index: Int): Option[LocalDate] = {
+    childStartEducation.flatMap(_.get(index))
+  }
+
+  def childStartEducation: Option[Map[Int, LocalDate]] = cacheMap.getEntry[Map[Int, LocalDate]](ChildStartEducationId.toString)
+
+  def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
+
+  def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
+
+  def childApprovedEducation: Option[Map[Int, Boolean]] = cacheMap.getEntry[Map[Int, Boolean]](ChildApprovedEducationId.toString)
+
+  def childApprovedEducation(childIndex: Int): Option[Boolean] = {
+    childApprovedEducation.flatMap(_.get(childIndex))
+  }
 
   def childcarePayFrequency: Option[String] = cacheMap.getEntry[String](ChildcarePayFrequencyId.toString)
+
+  def employmentIncomePY: Option[EmploymentIncomePY] = cacheMap.getEntry[EmploymentIncomePY](EmploymentIncomePYId.toString)
+
+  def partnerEmploymentIncomePY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerEmploymentIncomePYId.toString)
+
+  def parentEmploymentIncomePY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentEmploymentIncomePYId.toString)
 
   def howMuchPartnerPayPensionPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](HowMuchPartnerPayPensionPYId.toString)
 
@@ -39,6 +61,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
   def partnerStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayAmountPYId.toString)
 
   def yourStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayAmountPYId.toString)
+
+  def bothNoWeeksStatPayCY: Option[BothNoWeeksStatPayCY] = cacheMap.getEntry[BothNoWeeksStatPayCY](BothNoWeeksStatPayCYId.toString)
+
+  def youNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayPYId.toString)
+
+  def partnerNoWeeksStatPayCY: Option[Int] = cacheMap.getEntry[Int](PartnerNoWeeksStatPayCYId.toString)
 
   def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildDisabilityBenefitsId.toString)
 
@@ -110,10 +138,15 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def yourOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeLYId.toString)
 
-
   def aboutYourChild(index: Int): Option[AboutYourChild] = {
-    cacheMap.getEntry[Seq[AboutYourChild]](AboutYourChildId.toString).getOrElse(Seq.empty).lift(index)
+    aboutYourChild.flatMap(_.get(index))
   }
+
+  def aboutYourChild: Option[Map[Int, AboutYourChild]] = {
+    cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
+  }
+
+  def youNoWeeksStatPayCY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayCYId.toString)
 
   def bothPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidPensionPYId.toString)
 
@@ -223,6 +256,10 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def doYouKnowYourAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourAdjustedTaxCodeId.toString)
 
+  def hasYourTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourTaxCodeBeenAdjustedId.toString)
+
+  def hasYourPartnersTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourPartnersTaxCodeBeenAdjustedId.toString)
+
   def partnerWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerWorkHoursId.toString)
 
   def parentWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentWorkHoursId.toString)
@@ -258,4 +295,18 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
     }
   }
 
+  // TODO 31st August
+  def childrenOver16: Option[Map[Int, String]] = {
+    aboutYourChild.map {
+      children =>
+        children.foldLeft(Map.empty[Int, String]) {
+          case (m, (i, model)) =>
+            if (model.dob isBefore LocalDate.now.minusYears(16)) {
+              m + (i -> model.name)
+            } else {
+              m
+            }
+        }
+    }
+  }
 }

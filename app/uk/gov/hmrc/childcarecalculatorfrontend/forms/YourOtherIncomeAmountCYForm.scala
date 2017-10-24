@@ -38,7 +38,7 @@ class YourOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) exten
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) =>
+        case Some(s) if s.matches(decimalRegex) =>
           val value = BigDecimal(s)
 
           if (validateInRange(value, minValue, maxValue)) {

@@ -19,5 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.viewmodels
 trait InputViewModelBase {
   val id: String
   def errorKey: String
+  def args: Seq[Any] = Seq.empty
   def value: Option[String]
 }

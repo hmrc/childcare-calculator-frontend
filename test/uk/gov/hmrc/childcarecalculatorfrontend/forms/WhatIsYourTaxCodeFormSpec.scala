@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 class WhatIsYourTaxCodeFormSpec extends FormSpec {
 
   val whatIsYourTaxCodeForm = new WhatIsYourTaxCodeForm(frontendAppConfig).apply()
 
-  val errorKeyBlank = "whatIsYourTaxCode.blank"
-  val errorKeyInvalid = "taxCode.invalid"
+  val errorKeyBlank = whatIsYourTaxCodeBlankErrorKey
+  val errorKeyInvalid = invalidTaxCodeErrorKey
 
   "WhatIsYourTaxCode Form" must {
 

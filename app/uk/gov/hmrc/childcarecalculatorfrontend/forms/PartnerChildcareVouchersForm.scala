@@ -21,14 +21,15 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object PartnerChildcareVouchersForm extends FormErrorHelper {
 
   def PartnerChildcareVouchersFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "partnerChildcareVouchers.error")
-      case _ => produceError(key, "error.unknown")
+      case None => produceError(key, partnerChildcareVouchersErrorKey)
+      case _ => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
