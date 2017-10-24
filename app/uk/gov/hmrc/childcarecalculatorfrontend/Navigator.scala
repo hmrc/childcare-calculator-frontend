@@ -39,7 +39,7 @@ class Navigator @Inject() (minHoursNav: MinimumHoursNavigation = new MinimumHour
     DoYouLiveWithPartnerId -> maxEarningsNav.doYouLiveRoute,
     AreYouInPaidWorkId -> maxEarningsNav.areYouInPaidWorkRoute,
     PaidEmploymentId -> maxEarningsNav.paidEmploymentRoute,
-    WhoIsInPaidEmploymentId -> maxEarningsNav.parentWorkHoursRoute,
+    WhoIsInPaidEmploymentId -> maxEarningsNav.whoIsInPaidWorkRoute,
     ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
     PartnerWorkHoursId -> maxEarningsNav.partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> maxEarningsNav.yourTaxCodeAdjustedRoute,
