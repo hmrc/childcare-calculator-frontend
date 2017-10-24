@@ -16,14 +16,28 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
+class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
+
+  def childStartEducation(index: Int): Option[LocalDate] = {
+    childStartEducation.flatMap(_.get(index))
+  }
+
+  def childStartEducation: Option[Map[Int, LocalDate]] = cacheMap.getEntry[Map[Int, LocalDate]](ChildStartEducationId.toString)
+
   def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
 
   def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
+
+  def childApprovedEducation: Option[Map[Int, Boolean]] = cacheMap.getEntry[Map[Int, Boolean]](ChildApprovedEducationId.toString)
+
+  def childApprovedEducation(childIndex: Int): Option[Boolean] = {
+    childApprovedEducation.flatMap(_.get(childIndex))
+  }
 
   def childcarePayFrequency: Option[String] = cacheMap.getEntry[String](ChildcarePayFrequencyId.toString)
 
@@ -121,9 +135,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def yourOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeLYId.toString)
 
-
   def aboutYourChild(index: Int): Option[AboutYourChild] = {
-    cacheMap.getEntry[Seq[AboutYourChild]](AboutYourChildId.toString).getOrElse(Seq.empty).lift(index)
+    aboutYourChild.flatMap(_.get(index))
+  }
+
+  def aboutYourChild: Option[Map[Int, AboutYourChild]] = {
+    cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
   }
 
   def youNoWeeksStatPayCY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayCYId.toString)
@@ -268,5 +285,20 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks {
 
   def hasPartnerInPaidWork: Boolean = {
     doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
+  }
+
+  // TODO 31st August
+  def childrenOver16: Option[Map[Int, String]] = {
+    aboutYourChild.map {
+      children =>
+        children.foldLeft(Map.empty[Int, String]) {
+          case (m, (i, model)) =>
+            if (model.dob isBefore LocalDate.now.minusYears(16)) {
+              m + (i -> model.name)
+            } else {
+              m
+            }
+        }
+    }
   }
 }

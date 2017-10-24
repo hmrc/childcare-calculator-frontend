@@ -26,7 +26,8 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
   def yesNoPage(createView: (Form[Boolean]) => HtmlFormat.Appendable,
                 messageKeyPrefix: String,
-                expectedFormAction: String) = {
+                expectedFormAction: String,
+                legend: Option[String] = None) = {
 
     "behave like a page with a Yes/No question" when {
       "rendered" must {
@@ -34,7 +35,7 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
           val doc = asDocument(createView(BooleanForm()))
           val legends = doc.getElementsByTag("legend")
           legends.size mustBe 1
-          legends.first.text mustBe messages(s"$messageKeyPrefix.heading")
+          legends.first.text mustBe legend.getOrElse(messages(s"$messageKeyPrefix.heading"))
         }
 
         "contain an input for the value" in {

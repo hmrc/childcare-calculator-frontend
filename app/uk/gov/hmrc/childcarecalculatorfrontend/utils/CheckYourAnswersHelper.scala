@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def childStartEducation(index: Int): Option[AnswerRow] = userAnswers.childStartEducation(index) map {
+    x => AnswerRow("childStartEducation.checkYourAnswersLabel", s"$x", false, routes.ChildStartEducationController.onPageLoad(CheckMode, index).url)
+  }
+
   def bothNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.bothNoWeeksStatPayCY map {
     x => AnswerRow("bothNoWeeksStatPayCY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
@@ -36,6 +40,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
     x => AnswerRow("childRegisteredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildRegisteredBlindController.onPageLoad(CheckMode).url)
+  }
+
+  def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation(index) map {
+    x => AnswerRow("childApprovedEducation.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildApprovedEducationController.onPageLoad(CheckMode, index).url)
   }
 
   def childrenDisabilityBenefits: Option[AnswerRow] = userAnswers.childrenDisabilityBenefits map {

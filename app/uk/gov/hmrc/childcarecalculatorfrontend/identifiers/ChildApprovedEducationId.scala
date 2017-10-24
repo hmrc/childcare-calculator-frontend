@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.viewmodels
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-trait InputViewModelBase {
-  val id: String
-  def errorKey: String
-  def args: Seq[Any] = Seq.empty
-  def value: Option[String]
+case object ChildApprovedEducationId extends Identifier {
+  override def toString: String = "childApprovedEducation"
 }
