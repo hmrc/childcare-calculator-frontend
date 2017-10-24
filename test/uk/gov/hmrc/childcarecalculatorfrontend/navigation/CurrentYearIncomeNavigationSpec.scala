@@ -91,6 +91,19 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
 
       }
 
+      "Parent and Partner Employment Income CY Route" must {
+
+        "redirects to both paid pension CY when parent lives with partner and both in paid work" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+
+          navigator.nextPage(EmploymentIncomeCYId, NormalMode)(answers) mustBe
+            routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+        }
+
+      }
+
     }
   }
 

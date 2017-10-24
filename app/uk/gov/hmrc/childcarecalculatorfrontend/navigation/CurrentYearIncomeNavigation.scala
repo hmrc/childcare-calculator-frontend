@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Singleton
 
-import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -35,6 +34,7 @@ class CurrentYearIncomeNavigation {
 
   def partnerEmploymentIncomeCYRoute(answers: UserAnswers) = routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
 
+  def EmploymentIncomeCYRoute(answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
 
 }

@@ -20,17 +20,17 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerPaidWorkCYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
-class Navigator @Inject() (schemes: Schemes,
-                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
-                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
-                           currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
+class Navigator @Inject()(schemes: Schemes,
+                          maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
+                          selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
+                          currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -79,7 +79,8 @@ class Navigator @Inject() (schemes: Schemes,
     PartnerPaidWorkCYId -> currentYearIncomeNav.partnerPaidWorkCYRoute,
     ParentPaidWorkCYId -> currentYearIncomeNav.parentPaidWorkCYRoute,
     ParentEmploymentIncomeCYId -> currentYearIncomeNav.parentEmploymentIncomeCYRoute,
-      PartnerEmploymentIncomeCYId -> currentYearIncomeNav.partnerEmploymentIncomeCYRoute
+    PartnerEmploymentIncomeCYId -> currentYearIncomeNav.partnerEmploymentIncomeCYRoute,
+    EmploymentIncomeCYId -> currentYearIncomeNav.EmploymentIncomeCYRoute
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
@@ -133,7 +134,7 @@ class Navigator @Inject() (schemes: Schemes,
   }
 
   private def paidEmploymentRoute(answers: UserAnswers) = {
-    if(answers.paidEmployment.contains(true)){
+    if (answers.paidEmployment.contains(true)) {
       routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
     } else {
       routes.FreeHoursResultController.onPageLoad()
@@ -150,7 +151,7 @@ class Navigator @Inject() (schemes: Schemes,
   }
 
   private def partnerWorkHoursRoute(answers: UserAnswers) = {
-    if(answers.whoIsInPaidEmployment.contains(Both)) {
+    if (answers.whoIsInPaidEmployment.contains(Both)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
@@ -176,12 +177,12 @@ class Navigator @Inject() (schemes: Schemes,
 
     answers.approvedProvider match {
       case Some(No) =>
-        if(answers.isEligibleForMaxFreeHours == Eligible){
+        if (answers.isEligibleForMaxFreeHours == Eligible) {
           routes.FreeHoursInfoController.onPageLoad()
         } else {
           routes.FreeHoursResultController.onPageLoad()
         }
-      case Some(_) => if(answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
+      case Some(_) => if (answers.isEligibleForFreeHours == Eligible) routes.FreeHoursInfoController.onPageLoad()
       else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
@@ -242,7 +243,7 @@ class Navigator @Inject() (schemes: Schemes,
     answers.doYouKnowYourPartnersAdjustedTaxCode match {
       case Some(true) => routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
       case Some(false) =>
-        if(answers.hasPartnerInPaidWork) {
+        if (answers.hasPartnerInPaidWork) {
           routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
         } else {
           routes.EitherGetsVouchersController.onPageLoad(NormalMode)
@@ -263,7 +264,7 @@ class Navigator @Inject() (schemes: Schemes,
   private def parentsVouchersRoute(answers: UserAnswers) = {
     answers.yourChildcareVouchers match {
       case Some(_) =>
-        if(answers.doYouLiveWithPartner.contains(true)) {
+        if (answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         } else {
           routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -275,7 +276,7 @@ class Navigator @Inject() (schemes: Schemes,
   private def partnersVouchersRoute(answers: UserAnswers) = {
     answers.partnerChildcareVouchers match {
       case Some(_) =>
-        if(answers.doYouLiveWithPartner.contains(true)) {
+        if (answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         } else {
           routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -288,8 +289,8 @@ class Navigator @Inject() (schemes: Schemes,
     val Yes = YesNoUnsureEnum.YES.toString
 
     answers.eitherGetsVouchers match {
-      case Some(Yes) => if(answers.doYouLiveWithPartner.contains(true)) {
-        if(answers.whoIsInPaidEmployment.contains(Both)) {
+      case Some(Yes) => if (answers.doYouLiveWithPartner.contains(true)) {
+        if (answers.whoIsInPaidEmployment.contains(Both)) {
           routes.WhoGetsVouchersController.onPageLoad(NormalMode)
         } else {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -298,7 +299,7 @@ class Navigator @Inject() (schemes: Schemes,
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
       }
       case Some(_) =>
-        if(answers.doYouLiveWithPartner.contains(true)) {
+        if (answers.doYouLiveWithPartner.contains(true)) {
           routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
         } else {
           routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -308,7 +309,7 @@ class Navigator @Inject() (schemes: Schemes,
   }
 
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers) = {
-    if(answers.doYouGetAnyBenefits.contains(false)){
+    if (answers.doYouGetAnyBenefits.contains(false)) {
       routes.YourAgeController.onPageLoad(NormalMode)
     } else {
       routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
@@ -318,9 +319,9 @@ class Navigator @Inject() (schemes: Schemes,
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers) = {
     answers.doYouOrYourPartnerGetAnyBenefits match {
       case Some(false) =>
-        if(answers.hasPartnerInPaidWork) {
+        if (answers.hasPartnerInPaidWork) {
           routes.YourPartnersAgeController.onPageLoad(NormalMode)
-        }else{
+        } else {
           routes.YourAgeController.onPageLoad(NormalMode)
         }
       case Some(true) => routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
@@ -349,9 +350,9 @@ class Navigator @Inject() (schemes: Schemes,
   }
 
   private def yourPartnerAgeRoute(answers: UserAnswers) = {
-    if(answers.hasBothInPaidWork){
+    if (answers.hasBothInPaidWork) {
       routes.YourMinimumEarningsController.onPageLoad(NormalMode)
-    } else if(answers.hasPartnerInPaidWork){
+    } else if (answers.hasPartnerInPaidWork) {
       routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
     } else {
       routes.SessionExpiredController.onPageLoad()
@@ -369,8 +370,8 @@ class Navigator @Inject() (schemes: Schemes,
       case (Some(true), true, _, Some(You)) => routes.YourMaximumEarningsController.onPageLoad(NormalMode)
       case (Some(true), true, _, Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case (Some(false), false, true, _) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-      case (Some(false), true, _ , Some(You)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-      case (Some(false), true, _ , Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+      case (Some(false), true, _, Some(You)) => routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      case (Some(false), true, _, Some(Both)) => routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -390,7 +391,7 @@ class Navigator @Inject() (schemes: Schemes,
     }
   }
 
- private def yourSelfEmployedRoute(answers: UserAnswers) = {
+  private def yourSelfEmployedRoute(answers: UserAnswers) = {
     val yourMinEarnings = answers.yourMinimumEarnings
     val partnerMinEarnings = answers.partnerMinimumEarnings
 
