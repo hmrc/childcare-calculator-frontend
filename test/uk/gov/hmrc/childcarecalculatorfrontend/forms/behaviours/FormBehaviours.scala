@@ -63,6 +63,24 @@ trait FormBehaviours extends FormSpec with OptionValues {
     }
   }
 
+  def formWithMandatoryTextFieldWithErrorMsgs(field: String,
+                                              errorKeyRequired: String = "error.required",
+                                              errorKeyBlank: String = "error.blank") = {
+
+      s"fail to bind when $field is omitted" in {
+        val data = validData - field
+        val expectedError = error(field, errorKeyRequired)
+        checkForError(form, data, expectedError)
+      }
+
+      s"fail to bind when $field is blank" in {
+        val data = validData + (field -> "")
+        val expectedError = error(field, errorKeyBlank)
+        checkForError(form, data, expectedError)
+      }
+
+  }
+
   def formWithMandatoryNumberFields(fields: String*) = {
     for (field <- fields) {
       s"fail to bind when $field is omitted" in {
