@@ -27,20 +27,10 @@ class YouNoWeeksStatPayCYFormSpec extends FormSpec {
 
   "YouNoWeeksStatPayCY Form" must {
 
-   /* "bind zero" in {
-      val form = noWeeksForm.bind(Map("value" -> "0"))
-      form.get shouldBe 0
-    }*/
-
     "bind positive numbers" in {
       val form = noWeeksForm.bind(Map("value" ->"1"))
       form.get shouldBe 1
     }
-
-   /* "bind positive, comma separated numbers" in {
-      val form = noWeeksForm.bind(Map("value" ->"10,000"))
-      form.get shouldBe 10000
-    }*/
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyValue)

@@ -33,11 +33,6 @@ class PartnerNoWeeksStatPayPYFormSpec extends FormSpec {
       val form = partnerNoStatWeeksForm.bind(Map("value" -> "1"))
       form.get shouldBe 1
     }
-//
-//    "bind positive, comma separated numbers" in {
-//      val form = partnerNoStatWeeksForm.bind(Map("value" -> "10,000"))
-//      form.get shouldBe 10000
-//    }
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyValue)
