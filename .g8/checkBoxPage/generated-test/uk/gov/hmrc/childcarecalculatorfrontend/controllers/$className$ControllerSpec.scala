@@ -1,16 +1,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.libs.json.Json
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.$className$Form
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.$className$Id
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$className;format="decap"$
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class $className$ControllerSpec extends ControllerSpecBase {
 
@@ -32,16 +32,18 @@ class $className$ControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map($className$Id.toString -> JsString($className$Form.options.head.value))
+      val validData = Map(
+        $className$Id.toString -> Json.toJson(Seq($className$Form.options.head._2))
+      )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString($className$Form().fill($className$Form.options.head.value))
+      contentAsString(result) mustBe viewAsString($className$Form().fill(Set($className$Form.options.head._2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", $className$Form.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", $className$Form.options.head._2))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -50,8 +52,8 @@ class $className$ControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = $className$Form().bind(Map("value" -> "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value"))
+      val boundForm = $className$Form().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
