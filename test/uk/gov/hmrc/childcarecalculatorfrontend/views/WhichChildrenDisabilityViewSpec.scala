@@ -16,32 +16,28 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import play.api.data.{Form, FormError}
+import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 
-class WhichChildrenDisabilityViewSpec extends ViewBehaviours {
+class WhichChildrenDisabilityViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
 
   val messageKeyPrefix = "whichChildrenDisability"
 
   val fieldKey = "value"
   val errorMessage = "error.invalid"
-  val error = FormError(fieldKey, errorMessage)
 
-  val values = Seq(
-    InputOption("Foo", "0"),
-    InputOption("Bar", "1")
+  val values = Map(
+    "Foo" -> "0",
+    "Bar" -> "1"
   )
 
-  def form: Form[Set[String]] = WhichChildrenDisabilityForm()
+  def form: Form[Set[String]] = WhichChildrenDisabilityForm("0", "1")
 
-  def createView = () =>
-    whichChildrenDisability(frontendAppConfig, WhichChildrenDisabilityForm(), values, NormalMode)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Set[String]]) =>
+  def createView(form: Form[Set[String]] = form): Html =
     whichChildrenDisability(frontendAppConfig, form, values, NormalMode)(fakeRequest, messages)
 
   "WhichChildrenDisability view" must {
@@ -50,63 +46,6 @@ class WhichChildrenDisabilityViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    "rendered" must {
-      "contain a legend for the question" in {
-        val doc = asDocument(createView())
-        val legends = doc.getElementsByTag("legend")
-        legends.size mustBe 1
-        legends.first.text mustBe messages(s"$messageKeyPrefix.heading")
-      }
-
-      "contain an input for the value" in {
-        val doc = asDocument(createView())
-        for { value <- values } yield {
-          assertRenderedById(doc, value.id)
-        }
-      }
-
-      "have no values checked when rendered with no form" in {
-        val doc = asDocument(createView())
-        for { value <- values } yield {
-          assert(!doc.getElementById(value.id).hasAttr("checked"))
-        }
-      }
-
-      values.zipWithIndex.foreach {
-        case (v, i) =>
-          s"has correct value checked when value `$v` is given" in {
-            val data: Map[String, String] = Map(
-              s"$fieldKey[$i]" -> v.value
-            )
-
-            val doc = asDocument(createViewUsingForm(form.bind(data)))
-
-            assert(doc.getElementById(v.id).hasAttr("checked"))
-
-            values.filterNot(_ == v).foreach {
-              field =>
-                assert(!doc.getElementById(field.id).hasAttr("checked"))
-            }
-          }
-      }
-
-      "not render an error summary" in {
-        val doc = asDocument(createView())
-        assertNotRenderedById(doc, "error-summary-heading")
-      }
-    }
-
-    "rendered with an error" must {
-      "show an error summary" in {
-        val doc = asDocument(createViewUsingForm(form.withError(error)))
-        assertRenderedById(doc, "error-summary-heading")
-      }
-
-      "show an error in the value field's label" in {
-        val doc = asDocument(createViewUsingForm(form.withError(error)))
-        val errorSpan = doc.getElementsByClass("error-notification").first
-        errorSpan.text mustBe messages(errorMessage)
-      }
-    }
+    behave like checkboxPage()
   }
 }

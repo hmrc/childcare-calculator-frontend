@@ -38,12 +38,12 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
   def apply(): Form[Set[String]] =
     Form(single("value" -> set(of(WhichBenefitsPartnerGetFormatter))))
 
-  def options = Seq(
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.INCOMEBENEFITS.toString),
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.DISABILITYBENEFITS.toString),
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString),
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.CARERSALLOWANCE.toString)
+  def options = Map(
+    "whichBenefitsPartnerGet.incomeBenefits"             -> WhichBenefitsEnum.INCOMEBENEFITS.toString,
+    "whichBenefitsPartnerGet.disabilityBenefits"         -> WhichBenefitsEnum.DISABILITYBENEFITS.toString,
+    "whichBenefitsPartnerGet.highRateDisabilityBenefits" -> WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString,
+    "whichBenefitsPartnerGet.carersAllowance"            -> WhichBenefitsEnum.CARERSALLOWANCE.toString
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
 }

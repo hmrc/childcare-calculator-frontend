@@ -36,7 +36,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase {
     new WhichChildrenDisabilityController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Set[String]] = WhichChildrenDisabilityForm()) = whichChildrenDisability(frontendAppConfig, form, Seq.empty, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichChildrenDisabilityForm()) = whichChildrenDisability(frontendAppConfig, form, Map.empty, NormalMode)(fakeRequest, messages).toString
 
   "WhichChildrenDisability Controller" must {
 

@@ -23,7 +23,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
-@(appConfig: FrontendAppConfig, form: Form[Set[String]], options: Seq[InputOption], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], options: Map[String, String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("whichChildrenDisability.title"),
@@ -40,8 +40,6 @@
 
         @components.input_check_box(
             field = form("value"),
-//            answer = None,
-//            viewModel = InputViewModel[Set[String]]("value", form),
             legend = messages("whichChildrenDisability.heading"),
             legendClass = Some("visually-hidden"),
             inputs = options
