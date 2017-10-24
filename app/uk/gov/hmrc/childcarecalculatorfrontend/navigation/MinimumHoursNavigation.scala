@@ -27,40 +27,42 @@ class MinimumHoursNavigation {
 
   def locationRoute(answers: UserAnswers) = {
     val Ni = LocationEnum.NORTHERNIRELAND.toString
-    answers.location match {
-      case Some(Ni) => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
-      case Some(_) => routes.ChildAgedTwoController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+
+    if(answers.location.contains(Ni)) {
+      routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
+    } else {
+      routes.ChildAgedTwoController.onPageLoad(NormalMode)
     }
   }
 
   def costRoute(answers: UserAnswers) = {
     val No = YesNoUnsureEnum.NO.toString
-    answers.childcareCosts match {
-      case Some(No) =>
-        if (answers.isEligibleForMaxFreeHours == Eligible) {
-          routes.FreeHoursInfoController.onPageLoad()
-        } else {
-          routes.FreeHoursResultController.onPageLoad()
-        }
-      case Some(_) => routes.ApprovedProviderController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+    if(answers.childcareCosts.contains(No)) {
+      if (answers.isEligibleForMaxFreeHours == Eligible) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
+      }
+    } else {
+      routes.ApprovedProviderController.onPageLoad(NormalMode)
     }
   }
 
   def approvedChildCareRoute(answers: UserAnswers) = {
     val No = YesNoUnsureEnum.NO.toString
-    answers.approvedProvider match {
-      case Some(No) =>
-        if(answers.isEligibleForMaxFreeHours == Eligible){
-          routes.FreeHoursInfoController.onPageLoad()
-        } else {
-          routes.FreeHoursResultController.onPageLoad()
-        }
-      case Some(_) => if(answers.isEligibleForFreeHours == Eligible)
+
+    if(answers.approvedProvider.contains(No)) {
+      if(answers.isEligibleForMaxFreeHours == Eligible){
         routes.FreeHoursInfoController.onPageLoad()
-      else routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
+      }
+    } else {
+      if(answers.isEligibleForFreeHours == Eligible) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else {
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
     }
   }
 
