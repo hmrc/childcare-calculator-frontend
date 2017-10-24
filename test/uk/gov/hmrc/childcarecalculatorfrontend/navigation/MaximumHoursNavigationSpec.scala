@@ -38,54 +38,6 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
   lazy val apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
   lazy val neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
 
-  "Has Your Tax Code Been Adjusted" when {
-    "go to do you know your tax code if yes is selected" in {
-      val answers = spy(userAnswers())
-      when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(true)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
-    }
-
-    "go to partner tax code been adjusted if both are in paid work and no is selected" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    }
-
-    "go to your childcare vouchers if only partner in paid work and no is selected" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-      when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(false)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-  "Has Your Partners Tax Code Been Adjusted" when {
-    "go to do you know your partner tax code if yes is selected" in {
-      val answers = spy(userAnswers())
-      when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(true)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-    }
-
-    "go to either get vouchers if both are in paid work and no is selected" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-    }
-
-    "go to partners childcare vouchers if only partner in paid work and no is selected" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-      when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(false)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
   "Do you know your adjusted tax code" when {
     "go to what is your tax code when yes is selected" in {
       val answers = spy(userAnswers())

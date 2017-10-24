@@ -76,28 +76,6 @@ class MaximumHoursNavigation {
     }
   }
 
-  def yourTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
-
-    if(answers.hasYourTaxCodeBeenAdjusted.contains(true)) {
-      routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    } else {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-  def partnerTaxCodeAdjustedRoute(answers: UserAnswers): Call = {
-
-    if(answers.hasYourPartnersTaxCodeBeenAdjusted.contains(true)) {
-      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
-      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
   def doYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers): Call = {
 
     if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {

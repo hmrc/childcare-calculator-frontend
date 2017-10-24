@@ -575,3 +575,13 @@ GET        /aboutYourChild/:id                       uk.gov.hmrc.childcarecalcul
 POST       /aboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeAboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeAboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = CheckMode, id: Int)
+
+GET        /hasYourPartnersTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = NormalMode)
+POST       /hasYourPartnersTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHasYourPartnersTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHasYourPartnersTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /hasYourTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = NormalMode)
+POST       /hasYourTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHasYourTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHasYourTaxCodeBeenAdjusted               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode = CheckMode)
