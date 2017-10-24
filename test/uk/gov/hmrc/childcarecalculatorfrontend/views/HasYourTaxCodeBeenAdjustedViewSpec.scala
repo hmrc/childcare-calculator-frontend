@@ -31,7 +31,7 @@ class HasYourTaxCodeBeenAdjustedViewSpec extends ViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => hasYourTaxCodeBeenAdjusted(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "HasYourTaxCodeBeenAdjusted view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "info")
 
     behave like pageWithBackLink(createView)
   }

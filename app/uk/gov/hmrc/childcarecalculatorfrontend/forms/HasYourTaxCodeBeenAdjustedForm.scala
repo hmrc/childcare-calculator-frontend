@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object HasYourTaxCodeBeenAdjustedForm extends FormErrorHelper {
@@ -26,7 +27,7 @@ object HasYourTaxCodeBeenAdjustedForm extends FormErrorHelper {
   def HasYourTaxCodeBeenAdjustedFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "hasYourTaxCodeBeenAdjusted.error")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,8 +38,9 @@ object HasYourTaxCodeBeenAdjustedForm extends FormErrorHelper {
     Form(single("value" -> of(HasYourTaxCodeBeenAdjustedFormatter)))
 
   def options = Seq(
-    InputOption("hasYourTaxCodeBeenAdjusted", "option1"),
-    InputOption("hasYourTaxCodeBeenAdjusted", "option2")
+    InputOption("hasYourTaxCodeBeenAdjusted", YesNoUnsureEnum.YES.toString),
+    InputOption("hasYourTaxCodeBeenAdjusted", YesNoUnsureEnum.NO.toString),
+    InputOption("hasYourTaxCodeBeenAdjusted", YesNoUnsureEnum.NOTSURE.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

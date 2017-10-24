@@ -199,6 +199,9 @@ partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero
 
 hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.yes = Yes
+hasYourTaxCodeBeenAdjusted.no = No
+hasYourTaxCodeBeenAdjusted.notSure = Not sure
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
 hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
@@ -219,6 +222,9 @@ hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been ad
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.yes = Yes
+hasYourPartnersTaxCodeBeenAdjusted.no = No
+hasYourPartnersTaxCodeBeenAdjusted.notSure = Not sure
 hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if your partner’s tax code has been adjusted
 
 doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
@@ -983,14 +989,4 @@ aboutYourChild.error.dob = You must enter your child’s date of birth in the co
 aboutYourChild.error.future = You must enter a date less than 12 months in the future
 aboutYourChild.error.past = You must enter a date less than 20 years in the past
 
-hasYourPartnersTaxCodeBeenAdjusted.title = hasYourPartnersTaxCodeBeenAdjusted
-hasYourPartnersTaxCodeBeenAdjusted.heading = hasYourPartnersTaxCodeBeenAdjusted
-hasYourPartnersTaxCodeBeenAdjusted.option1 = hasYourPartnersTaxCodeBeenAdjusted Option 1
-hasYourPartnersTaxCodeBeenAdjusted.option2 = hasYourPartnersTaxCodeBeenAdjusted Option 2
-hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourPartnersTaxCodeBeenAdjusted
 
-hasYourTaxCodeBeenAdjusted.title = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.heading = hasYourTaxCodeBeenAdjusted
-hasYourTaxCodeBeenAdjusted.option1 = hasYourTaxCodeBeenAdjusted Option 1
-hasYourTaxCodeBeenAdjusted.option2 = hasYourTaxCodeBeenAdjusted Option 2
-hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = hasYourTaxCodeBeenAdjusted

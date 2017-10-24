@@ -29,6 +29,6 @@ class HasYourTaxCodeBeenAdjustedFormSpec extends FormBehaviours {
   "HasYourTaxCodeBeenAdjusted form" must {
     behave like questionForm[String](HasYourTaxCodeBeenAdjustedForm.options.head.value)
 
-    behave like formWithOptionField("value", HasYourTaxCodeBeenAdjustedForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "hasYourTaxCodeBeenAdjusted.error", HasYourTaxCodeBeenAdjustedForm.options.map{x => x.value}:_*)
   }
 }

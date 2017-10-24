@@ -37,6 +37,8 @@
 
         @components.heading("hasYourPartnersTaxCodeBeenAdjusted.heading", "heading-xlarge")
 
+        <p>@Messages("hasYourPartnersTaxCodeBeenAdjusted.info")</p>
+
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
             legend = messages("hasYourPartnersTaxCodeBeenAdjusted.heading"),

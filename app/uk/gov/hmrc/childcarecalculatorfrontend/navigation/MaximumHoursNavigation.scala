@@ -76,6 +76,16 @@ class MaximumHoursNavigation {
     }
   }
 
+  def hasYourTaxCodeBeenAdjusted (answers: UserAnswers): Call = {
+    if(answers.hasYourTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)){
+      routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
+      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+    }
+  }
+
   def doYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers): Call = {
 
     if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
@@ -104,6 +114,16 @@ class MaximumHoursNavigation {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     } else {
       routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+    }
+  }
+
+  def hasYourPartnersTaxCodeBeenAdjusted (answers: UserAnswers): Call = {
+    if(answers.hasYourPartnersTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)){
+      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
