@@ -1077,6 +1077,11 @@ childStartEducation.checkYourAnswersLabel = When did your child start their educ
 childStartEducation.error = You must tell the calculator when your child started their approved education or training
 childStartEducation.error.invalid = You must enter a date in the correct format
 
-partnerNoWeeksStatPayPY.title = partnerNoWeeksStatPayPY
-partnerNoWeeksStatPayPY.heading = partnerNoWeeksStatPayPY
-partnerNoWeeksStatPayPY.checkYourAnswersLabel = partnerNoWeeksStatPayPY
+partnerNoWeeksStatPayPY.title = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.heading = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
+partnerNoWeeksStatPayPY.error = You must tell the calculator how many weeks your partner took last year
+partnerNoWeeksStatPayPY.numeric.error = must be a whole number
+partnerNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
+partnerNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay

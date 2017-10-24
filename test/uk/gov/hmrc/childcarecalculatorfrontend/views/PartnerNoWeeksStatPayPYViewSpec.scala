@@ -27,11 +27,11 @@ class PartnerNoWeeksStatPayPYViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "partnerNoWeeksStatPayPY"
 
-  def createView = () => partnerNoWeeksStatPayPY(frontendAppConfig, PartnerNoWeeksStatPayPYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerNoWeeksStatPayPY(frontendAppConfig, new PartnerNoWeeksStatPayPYForm(frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Int]) => partnerNoWeeksStatPayPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  val form = PartnerNoWeeksStatPayPYForm()
+  val form = new PartnerNoWeeksStatPayPYForm(frontendAppConfig).apply()
 
   "PartnerNoWeeksStatPayPY view" must {
     behave like normalPage(createView, messageKeyPrefix)

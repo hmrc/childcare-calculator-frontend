@@ -32,13 +32,16 @@ class PartnerNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val partnerNoWeeksStatPayPYForm = new PartnerNoWeeksStatPayPYForm(frontendAppConfig).apply()
+
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerNoWeeksStatPayPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new PartnerNoWeeksStatPayPYForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = PartnerNoWeeksStatPayPYForm()) = partnerNoWeeksStatPayPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = partnerNoWeeksStatPayPYForm) = partnerNoWeeksStatPayPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 12
 
   "PartnerNoWeeksStatPayPY Controller" must {
 
@@ -55,7 +58,7 @@ class PartnerNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerNoWeeksStatPayPYForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(partnerNoWeeksStatPayPYForm.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -69,7 +72,7 @@ class PartnerNoWeeksStatPayPYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerNoWeeksStatPayPYForm().bind(Map("value" -> "invalid value"))
+      val boundForm = partnerNoWeeksStatPayPYForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
