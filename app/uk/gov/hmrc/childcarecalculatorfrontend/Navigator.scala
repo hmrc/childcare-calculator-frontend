@@ -77,7 +77,8 @@ class Navigator @Inject() (schemes: Schemes,
     PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
     PartnerPaidWorkCYId -> currentYearIncomeNav.partnerPaidWorkCYRoute,
-      ParentPaidWorkCYId -> currentYearIncomeNav.parentPaidWorkCYRoute
+    ParentPaidWorkCYId -> currentYearIncomeNav.parentPaidWorkCYRoute,
+    ParentEmploymentIncomeCYId -> currentYearIncomeNav.parentEmploymentIncomeCYRoute
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {

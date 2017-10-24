@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentPaidWorkCYId, PartnerPaidWorkCYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, ParentPaidWorkCYId, PartnerPaidWorkCYId, YouPaidPensionCYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -64,6 +64,20 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
         }
 
       }
+
+      "Parent Employment Income CY Route" must {
+
+        "redirects to parent paid pension CY when parent lives with partner and parent in paid work" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+
+          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode)(answers) mustBe
+            routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+        }
+
+      }
+
 
     }
   }
