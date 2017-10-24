@@ -77,7 +77,7 @@ package object forms {
           mapping.verifying(constraints: _*).replaceError(error, newError)
 
         private def mapErrors(errors: Seq[FormError]): Seq[FormError] = {
-          val index = errors.indexOf(error)
+          val index = errors.indexWhere(e => e.key == error.key && e.message == error.message)
           if (index > -1) {
             errors.updated(index, newError).distinct
           } else {

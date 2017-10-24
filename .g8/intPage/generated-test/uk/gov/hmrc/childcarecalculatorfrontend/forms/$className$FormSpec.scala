@@ -4,7 +4,7 @@ class $className$FormSpec extends FormSpec {
 
   val errorKeyBlank = "blank"
   val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "non numeric"
+  val errorKeyNonNumeric = "must be a whole number"
 
   "$className$ Form" must {
 

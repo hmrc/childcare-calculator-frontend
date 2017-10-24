@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.youNoWeeksStatPayCYInvalidErrorKey
+
 
 
 object ChildcareConstants {
@@ -94,6 +96,9 @@ object ChildcareConstants {
   val howMuchPartnerPayPensionRequiredErrorKey = "howMuchPartnerPayPension.required"
   val howMuchBothPayPensionInvalidErrorKey = "howMuchBothPayPension.invalid"
   val howMuchBothPayPensionRequiredErrorKey = "howMuchBothPayPension.required"
+  val youNoWeeksStatPayCYErrorKey = "youNoWeeksStatPayCY.error"
+  val youNoWeeksStatPayCYInvalidErrorKey = "youNoWeeksStatPayCY.invalid"
+  val youNoWeeksStatPayCYNumericErrorKey = "youNoWeeksStatPayCY.numeric.error"
   val howMuchYouPayPensionPYInvalidErrorKey = "howMuchYouPayPensionPY.invalid"
   val howMuchYouPayPensionPYRequiredErrorKey = "howMuchYouPayPensionPY.required"
   val howMuchPartnerPayPensionPYInvalidErrorKey = "howMuchPartnerPayPensionPY.invalid"
@@ -118,6 +123,12 @@ object ChildcareConstants {
   val parentStatutoryPayAmountInvalidErrorKey = "parentStatutoryPayAmount.invalid"
   val partnerStatutoryPayAmountRequiredErrorKey = "partnerStatutoryPayAmount.required"
   val partnerStatutoryPayAmountInvalidErrorKey = "partnerStatutoryPayAmount.invalid"
+  val partnerNoWeeksStatPayCYErrorKey = "partnerNoWeeksStatPayCY.error"
+  val partnerNoWeeksStatPayCYInvalidErrorKey = "partnerNoWeeksStatPayCY.invalid"
+  val partnerNoWeeksStatPayCYNumericErrorKey = "partnerNoWeeksStatPayCY.numeric.error"
+  val youNoWeeksStatPayPYErrorKey = "youNoWeeksStatPayPY.error"
+  val youNoWeeksStatPayPYInvalidErrorKey = "youNoWeeksStatPayPY.invalid"
+  val youNoWeeksStatPayPYNumericErrorKey = "youNoWeeksStatPayPY.numeric.error"
   val childcareCostsErrorKey = "childcareCosts.error"
   val eitherGetsVouchersErrorKey = "eitherGetsVouchers.error"
   val approvedProviderErrorKey = "approvedProvider.error"
@@ -139,6 +150,7 @@ object ChildcareConstants {
   val parentOtherIncomeAmountPYInvalidErrorKey = "parentOtherIncomeAmountPY.invalid"
   val partnerOtherIncomeAmountPYRequiredErrorKey = "partnerOtherIncomeAmountPY.required"
   val partnerOtherIncomeAmountPYInvalidErrorKey = "partnerOtherIncomeAmountPY.invalid"
+
   val parentStatutoryPayAmountPYRequiredErrorKey = "parentStatutoryPayAmountPY.required"
   val parentStatutoryPayAmountPYInvalidErrorKey = "parentStatutoryPayAmountPY.invalid"
   val partnerStatutoryPayAmountPYRequiredErrorKey = "partnerStatutoryPayAmountPY.required"
@@ -147,4 +159,9 @@ object ChildcareConstants {
   val parentEmploymentIncomePYInvalidErrorKey = "parentEmploymentIncomePY.invalid"
   val partnerEmploymentIncomePYRequiredErrorKey = "partnerEmploymentIncomePY.required"
   val partnerEmploymentIncomePYInvalidErrorKey = "partnerEmploymentIncomePY.invalid"
+  val bothNoWeeksStatPayCYInvalidErrorKey = "bothNoWeeksStatPayCY.invalid"
+  val bothNoWeeksStatPayPYInvalidErrorKey = "bothNoWeeksStatPayPY.invalid"
+  val partnerNoWeeksStatPayPYErrorKey = "partnerNoWeeksStatPayPY.error"
+  val partnerNoWeeksStatPayPYInvalidErrorKey = "partnerNoWeeksStatPayPY.invalid"
+  val partnerNoWeeksStatPayPYNumericErrorKey = "partnerNoWeeksStatPayPY.numeric.error"
 }
