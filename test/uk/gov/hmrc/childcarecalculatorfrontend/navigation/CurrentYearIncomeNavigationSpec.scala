@@ -40,7 +40,6 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
 
     "in Normal mode" must {
       "Partner Paid Work CY Route" must {
-
         "redirects to parent employment income CY when user selects yes or no" in {
           val answers = spy(userAnswers())
           when(answers.partnerPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
@@ -54,7 +53,6 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
       }
 
       "Parent Paid Work CY Route" must {
-
         "redirects to partner employment income CY when user selects yes or no" in {
           val answers = spy(userAnswers())
           when(answers.parentPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
@@ -68,7 +66,6 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
       }
 
       "Parent Employment Income CY Route" must {
-
         "redirects to parent paid pension CY when user provides valid value" in {
           val answers = spy(userAnswers())
           when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
@@ -79,7 +76,6 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
       }
 
       "Partner Employment Income CY Route" must {
-
         "redirects to partner paid pension CY when when user provides valid value" in {
           val answers = spy(userAnswers())
           when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
@@ -87,11 +83,9 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode)(answers) mustBe
             routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
         }
-
       }
 
       "Parent and Partner Employment Income CY Route" must {
-
         "redirects to both paid pension CY when when user provides valid values" in {
           val answers = spy(userAnswers())
           when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY("12", "20"))
@@ -99,7 +93,6 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(EmploymentIncomeCYId, NormalMode)(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)
         }
-
       }
 
     }

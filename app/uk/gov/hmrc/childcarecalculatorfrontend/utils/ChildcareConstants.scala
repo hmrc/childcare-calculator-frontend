@@ -25,7 +25,7 @@ object ChildcareConstants {
 
   val no = "no"
   val yes = "yes"
-  
+
   val unknownErrorKey = "error.unknown"
 
   val locationErrorKey = "location.error"
