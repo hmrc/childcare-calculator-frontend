@@ -16,9 +16,9 @@
 
 @(
 messageKey: String = "",
-href: Call
-)(implicit messages: Messages)
+href: Call,
+id: String = "target-page-link")(implicit messages: Messages)
 
 <div class="section">
-    <a href="@href" class="button">@messages(messageKey)</a>
+    <a id ="@id" href="@href" class="button">@messages(messageKey)</a>
 </div>
