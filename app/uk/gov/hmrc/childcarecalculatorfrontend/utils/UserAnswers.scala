@@ -22,6 +22,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
+  def bothNoWeeksStatPayPy: Option[BothNoWeeksStatPayPy] = cacheMap.getEntry[BothNoWeeksStatPayPy](BothNoWeeksStatPayPyId.toString)
+
   def partnerNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](PartnerNoWeeksStatPayPYId.toString)
 
 
