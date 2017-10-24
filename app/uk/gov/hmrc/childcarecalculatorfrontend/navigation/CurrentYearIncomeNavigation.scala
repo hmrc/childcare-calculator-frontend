@@ -29,4 +29,6 @@ class CurrentYearIncomeNavigation {
 
   def partnerPaidWorkCYRoute(answers: UserAnswers) = routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
 
+  def parentPaidWorkCYRoute(answers: UserAnswers) = routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
+
 }
