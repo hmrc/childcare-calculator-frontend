@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@(
-messageKey: String = "",
-href: Call,
-id: String = "target-page-link")(implicit messages: Messages)
+package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-<div class="section">
-    <a id ="@id" href="@href" class="button">@messages(messageKey)</a>
-</div>
+import play.api.libs.json._
+
+case class BothNoWeeksStatPayCY (field1: Int, field2: Int)
+
+object BothNoWeeksStatPayCY {
+  implicit val format = Json.format[BothNoWeeksStatPayCY]
+}

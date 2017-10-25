@@ -844,6 +844,15 @@ statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
 statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
 
+youNoWeeksStatPayCY.title = How many weeks will you take this year?
+youNoWeeksStatPayCY.heading = How many weeks will you take this year?
+youNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will you take this year?
+youNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
+youNoWeeksStatPayCY.numeric.error = must be a whole number
+youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41 for your number of Statutory weeks pay
+
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error = You must tell the calculator if your children are registered blind
@@ -956,6 +965,35 @@ otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
 otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
 otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
 
+partnerNoWeeksStatPayCY.title = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.heading = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
+partnerNoWeeksStatPayCY.error = You must tell the calculator how many weeks your partner will take this year
+partnerNoWeeksStatPayCY.numeric.error = must be a whole number
+partnerNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
+
+youNoWeeksStatPayPY.title = How many weeks did you take last year?
+youNoWeeksStatPayPY.heading = How many weeks did you take last year?
+youNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did you take last year?
+youNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+youNoWeeksStatPayPY.error = You must tell the calculator how many weeks you took last year
+youNoWeeksStatPayPY.numeric.error = must be a whole number
+youNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
+youNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
+
+bothNoWeeksStatPayCY.title = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.heading = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.youStatPayCY = Your weeks
+bothNoWeeksStatPayCY.partnerStatPayCY = Partners weeks
+bothNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+bothNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
+bothNoWeeksStatPayCY.numeric.error = must be a whole number
+bothNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+bothNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
+
 yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
 yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
 yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
@@ -1033,6 +1071,26 @@ childStartEducation.heading = When did {0} start their education or training
 childStartEducation.checkYourAnswersLabel = When did your child start their education or training
 childStartEducation.error = You must tell the calculator when your child started their approved education or training
 childStartEducation.error.invalid = You must enter a date in the correct format
+
+partnerNoWeeksStatPayPY.title = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.heading = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
+partnerNoWeeksStatPayPY.error = You must tell the calculator how many weeks your partner took last year
+partnerNoWeeksStatPayPY.numeric.error = must be a whole number
+partnerNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
+partnerNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
+
+bothNoWeeksStatPayPY.title = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.heading = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.youStatPayPY = Your weeks
+bothNoWeeksStatPayPY.partnerStatPayPY = Partners weeks
+bothNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+bothNoWeeksStatPayPY.error = You must tell the calculator how many weeks you will take last year
+bothNoWeeksStatPayPY.numeric.error = must be a whole number
+bothNoWeeksStatPayPY.year.start.end.date = This year is 6 April 2016 to 5 April 2017.
+bothNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
 
 whichChildrenDisability.title = Who gets disability benefits?
 whichChildrenDisability.heading = Who gets disability benefits?

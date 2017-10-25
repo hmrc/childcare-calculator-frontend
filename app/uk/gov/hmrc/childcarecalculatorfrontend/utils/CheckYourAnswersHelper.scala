@@ -22,12 +22,32 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def bothNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.bothNoWeeksStatPayPY map {
+    x => AnswerRow("bothNoWeeksStatPayPY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.partnerNoWeeksStatPayPY map {
+    x => AnswerRow("partnerNoWeeksStatPayPY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
+  }
+
   def whichChildrenDisability: Option[AnswerRow] = userAnswers.whichChildrenDisability map {
     x => AnswerRow("whichChildrenDisability.checkYourAnswersLabel", s"whichChildrenDisability.$x", true, routes.WhichChildrenDisabilityController.onPageLoad(CheckMode).url)
   }
 
   def childStartEducation(index: Int): Option[AnswerRow] = userAnswers.childStartEducation(index) map {
     x => AnswerRow("childStartEducation.checkYourAnswersLabel", s"$x", false, routes.ChildStartEducationController.onPageLoad(CheckMode, index).url)
+  }
+
+  def bothNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.bothNoWeeksStatPayCY map {
+    x => AnswerRow("bothNoWeeksStatPayCY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
+  }
+
+  def youNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.youNoWeeksStatPayPY map {
+    x => AnswerRow("youNoWeeksStatPayPY.checkYourAnswersLabel", s"$x", false, routes.YouNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.partnerNoWeeksStatPayCY map {
+    x => AnswerRow("partnerNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
   def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
@@ -152,6 +172,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def statutoryPayAmountCY: Option[AnswerRow] = userAnswers.statutoryPayAmountCY map {
     x => AnswerRow("statutoryPayAmountCY.checkYourAnswersLabel", s"${x.parentStatutoryPayAmount} ${x.partnerStatutoryPayAmount}", false, routes.StatutoryPayAmountCYController.onPageLoad(CheckMode).url)
+  }
+
+  def youNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.youNoWeeksStatPayCY map {
+    x => AnswerRow("youNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.YouNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
   def statutoryPayAWeekLY: Option[AnswerRow] = userAnswers.statutoryPayAWeekLY map {
