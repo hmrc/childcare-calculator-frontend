@@ -23,7 +23,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Singleton
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
@@ -32,6 +32,7 @@ class PensionNavigation {
 
   /**
     * Route for parent current and previous year pension
+    *
     * @param answers
     * @param year
     * @return
@@ -79,7 +80,12 @@ class PensionNavigation {
     }
   }
 
-
+  def howMuchBothPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
+    year match {
+      case CurrentYear => redirectionForHowMuchBothPayPension(answers)
+      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
+    }
+  }
 
   private def redirectionForParentPensionCY(answers: UserAnswers) = {
 
@@ -134,6 +140,14 @@ class PensionNavigation {
     val howMuchPartnerPayPensionValue = answers.howMuchPartnerPayPension
     howMuchPartnerPayPensionValue match {
       case Some(_) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def redirectionForHowMuchBothPayPension(answers: UserAnswers) = {
+    val howMuchBothPayPensionValue: Option[HowMuchBothPayPension] = answers.howMuchBothPayPension
+    howMuchBothPayPensionValue match {
+      case Some(_) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
