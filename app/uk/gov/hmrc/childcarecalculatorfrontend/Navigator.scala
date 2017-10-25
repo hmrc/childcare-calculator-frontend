@@ -20,7 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidPensionCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
@@ -84,7 +84,8 @@ class Navigator @Inject()(schemes: Schemes,
     PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
     EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute),
     YouPaidPensionCYId -> (answers => pensionNav.yourPensionRoute(answers, currentYear)),
-    PartnerPaidPensionCYId -> (answers => pensionNav.partnerPensionRoute(answers, currentYear))
+    PartnerPaidPensionCYId -> (answers => pensionNav.partnerPensionRoute(answers, currentYear)),
+    BothPaidPensionCYId -> (answers => pensionNav.bothPensionRoute(answers, currentYear))
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
