@@ -67,6 +67,34 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
 
       }
 
+      "Partner Paid Pension CY Route" must {
+        "redirects to HowMuchPartnerPayPension page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.PartnerPaidPensionCY) thenReturn Some(true)
+
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to yourOtherIncomeThisYear page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.PartnerPaidPensionCY) thenReturn Some(false)
+
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.YouPaidPensionCY) thenReturn None
+
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+
+        }
+      }
+
     }
   }
 

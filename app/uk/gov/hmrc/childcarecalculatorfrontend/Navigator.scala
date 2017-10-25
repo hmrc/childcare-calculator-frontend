@@ -83,7 +83,8 @@ class Navigator @Inject()(schemes: Schemes,
     ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
     PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
     EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute),
-    YouPaidPensionCYId -> (answers => pensionNav.yourPensionRoute(answers, currentYear))
+    YouPaidPensionCYId -> (answers => pensionNav.yourPensionRoute(answers, currentYear)),
+    PartnerPaidPensionCYId -> (answers => pensionNav.partnerPensionRoute(answers, currentYear))
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
