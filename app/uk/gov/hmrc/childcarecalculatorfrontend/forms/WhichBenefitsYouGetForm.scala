@@ -37,12 +37,10 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
   def apply(): Form[Set[String]] =
     Form(single("value" -> set(of(WhichBenefitsYouGetFormatter))))
 
-  def options = Map(
-    "whichBenefitsYouGet.incomeBenefits"             -> WhichBenefitsEnum.INCOMEBENEFITS.toString,
-    "whichBenefitsYouGet.disabilityBenefits"         -> WhichBenefitsEnum.DISABILITYBENEFITS.toString,
-    "whichBenefitsYouGet.highRateDisabilityBenefits" -> WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString,
-    "whichBenefitsYouGet.carersAllowance"            -> WhichBenefitsEnum.CARERSALLOWANCE.toString
-  )
+  lazy val options: Map[String, String] = WhichBenefitsEnum.values.map {
+    value =>
+      s"whichBenefitsYouGet.$value" -> value.toString
+  }.toMap
 
   def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
 }
