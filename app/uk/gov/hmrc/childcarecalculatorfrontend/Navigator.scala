@@ -20,17 +20,19 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.currentYear
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
-                          currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
+                          currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation(),
+                          pensionNav: PensionNavigation = new PensionNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -80,7 +82,8 @@ class Navigator @Inject()(schemes: Schemes,
     ParentPaidWorkCYId -> (_ => currentYearIncomeNav.parentPaidWorkCYRoute),
     ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
     PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
-    EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute)
+    EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute),
+    YouPaidPensionCYId -> (answers => pensionNav.yourPensionRoute(answers, currentYear))
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
