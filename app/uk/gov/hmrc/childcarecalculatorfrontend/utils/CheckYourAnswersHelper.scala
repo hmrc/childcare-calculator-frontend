@@ -30,6 +30,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerNoWeeksStatPayPY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayPYController.onPageLoad(CheckMode).url)
   }
 
+  def whichChildrenDisability: Option[AnswerRow] = userAnswers.whichChildrenDisability map {
+    x => AnswerRow("whichChildrenDisability.checkYourAnswersLabel", s"whichChildrenDisability.$x", true, routes.WhichChildrenDisabilityController.onPageLoad(CheckMode).url)
+  }
+
   def childStartEducation(index: Int): Option[AnswerRow] = userAnswers.childStartEducation(index) map {
     x => AnswerRow("childStartEducation.checkYourAnswersLabel", s"$x", false, routes.ChildStartEducationController.onPageLoad(CheckMode, index).url)
   }

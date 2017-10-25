@@ -1,18 +1,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
 
-class $className$FormSpec extends FormBehaviours {
+class $className$FormSpec extends CheckboxBehaviours[String] {
 
-  val validData: Map[String, String] = Map(
-    "value" -> $className$Form.options.head.value
-  )
+  override val validOptions: Set[String] = Set("option1", "option2")
+
+  override val fieldName = "value"
 
   val form = $className$Form()
 
   "$className$ form" must {
-    behave like questionForm[String]($className$Form.options.head.value)
-
-    behave like formWithOptionField("value", $className$Form.options.map{x => x.value}:_*)
+    behave like aCheckboxForm(invalid = "error.unknown")
   }
 }

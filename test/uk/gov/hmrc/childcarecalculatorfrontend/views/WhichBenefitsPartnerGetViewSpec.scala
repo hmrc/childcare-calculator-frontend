@@ -17,48 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGet
 
-class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours {
+class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
 
   val messageKeyPrefix = "whichBenefitsPartnerGet"
+  val fieldKey = "value"
+  val errorMessage = "error.invalid"
 
-  val answer = Some(Set("options1", "option2"))
+  val values: Map[String, String] = WhichBenefitsPartnerGetForm.options
 
-  def createView = () => whichBenefitsPartnerGet(frontendAppConfig, answer, WhichBenefitsPartnerGetForm(), NormalMode)(fakeRequest, messages)
+  def form: Form[Set[String]] = WhichBenefitsPartnerGetForm()
 
-  def createViewUsingForm = (form: Form[Set[String]]) => whichBenefitsPartnerGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages)
+  def createView(form: Form[Set[String]] = form): Html =
+    whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhichBenefitsPartnerGet view" must {
+
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
+
+    behave like checkboxPage()
   }
-
-//  "WhichBenefitsPartnerGet view" when {
-//    "rendered" must {
-//      "contain check boxes for the value" in {
-//        val doc = asDocument(createViewUsingForm(WhichBenefitsPartnerGetForm()))
-//        for (option <- WhichBenefitsPartnerGetForm.options) {
-//          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-//        }
-//      }
-//    }
-
-//    for(option <- WhichBenefitsPartnerGetForm.options) {
-//      s"rendered with a value of '${option.value}'" must {
-//        s"have the '${option.value}' radio button selected" in {
-//          val doc = asDocument(createViewUsingForm(WhichBenefitsPartnerGetForm().bind(Map("value" -> s"${option.value}"))))
-//          assertContainsRadioButton(doc, option.id, "value", option.value, true)
-//
-//          for(unselectedOption <- WhichBenefitsPartnerGetForm.options.filterNot(o => o == option)) {
-//            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-//          }
-//        }
-//      }
-//    }
-//  }
 }

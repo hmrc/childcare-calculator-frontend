@@ -669,7 +669,6 @@ howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pensi
 howMuchYouPayPension.invalid = Please only enter a numerical value of up to two decimal places
 howMuchYouPayPension.required = Please tell the calculator how much you pay into your pension a month
 
-
 howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.heading = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
@@ -693,7 +692,6 @@ benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get 
 
 parentBenefitsIncome.required = You must tell the calculator how much you got paid in benefits this year
 partnerBenefitsIncome.required = You must tell the calculator how much your partner got paid in benefits this year
-
 parentBenefitsIncome.invalid = Please enter a valid numerical value
 partnerBenefitsIncome.invalid = Please enter a valid numerical value
 
@@ -839,7 +837,6 @@ bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner g
 
 parentBenefitsIncomePY.required = You must tell the calculator how much you got paid in benefits last year
 partnerBenefitsIncomePY.required = You must tell the calculator how much your partner got paid in benefits last year
-
 parentBenefitsIncomePY.invalid = Please enter a valid numerical value
 partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
 
@@ -1094,3 +1091,10 @@ bothNoWeeksStatPayPY.error = You must tell the calculator how many weeks you wil
 bothNoWeeksStatPayPY.numeric.error = must be a whole number
 bothNoWeeksStatPayPY.year.start.end.date = This year is 6 April 2016 to 5 April 2017.
 bothNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
+
+whichChildrenDisability.title = Who gets disability benefits?
+whichChildrenDisability.heading = Who gets disability benefits?
+whichChildrenDisability.checkYourAnswersLabel = Who gets disability benefits?
+whichChildrenDisability.summary = Help with benefits
+whichChildrenDisability.selectAll = Select all who get them.
+whichChildrenDisability.error = You must tell the calculator who gets disability benefits
