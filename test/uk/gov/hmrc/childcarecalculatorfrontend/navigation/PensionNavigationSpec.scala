@@ -180,6 +180,25 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "How Much Partner Pay Pension CY Route" must {
+        "redirects to PartnerAnyOtherIncomeThisYear page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchPartnerPayPension) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
+            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchPartnerPayPension) thenReturn None
+
+          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+
+        }
+      }
+
     }
   }
 

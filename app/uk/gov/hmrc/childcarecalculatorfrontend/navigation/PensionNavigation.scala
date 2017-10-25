@@ -65,13 +65,21 @@ class PensionNavigation {
     }
   }
 
-
   def howMuchYouPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
     year match {
       case CurrentYear => redirectionForHowMuchYouPayPension(answers)
       case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
     }
   }
+
+  def howMuchPartnerPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
+    year match {
+      case CurrentYear => redirectionForHowMuchPartnerPayPension(answers)
+      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
+    }
+  }
+
+
 
   private def redirectionForParentPensionCY(answers: UserAnswers) = {
 
@@ -121,4 +129,13 @@ class PensionNavigation {
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
+
+  private def redirectionForHowMuchPartnerPayPension(answers: UserAnswers) = {
+    val howMuchPartnerPayPensionValue = answers.howMuchPartnerPayPension
+    howMuchPartnerPayPensionValue match {
+      case Some(_) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
 }
