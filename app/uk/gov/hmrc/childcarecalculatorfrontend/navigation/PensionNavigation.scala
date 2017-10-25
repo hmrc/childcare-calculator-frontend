@@ -36,31 +36,31 @@ class PensionNavigation {
     * @param year
     * @return
     */
-  def yourPensionRoute(answers: UserAnswers, year: String = currentYear) = {
+  def yourPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
     year match {
-      case "CY" => redirectionForParentPensionCY(answers)
+      case CurrentYear => redirectionForParentPensionCY(answers)
       case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
     }
   }
 
 
-  def partnerPensionRoute(answers: UserAnswers, year: String = currentYear) = {
+  def partnerPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
     year match {
-      case "CY" => redirectionForPartnerPensionCY(answers)
+      case CurrentYear => redirectionForPartnerPensionCY(answers)
       case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
     }
   }
 
-  def bothPensionRoute(answers: UserAnswers, year: String = currentYear) = {
+  def bothPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
     year match {
-      case "CY" => redirectionForBothPensionCY(answers)
+      case CurrentYear => redirectionForBothPensionCY(answers)
       case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
     }
   }
 
-  def WhoPaysPensionRoute(answers: UserAnswers, year: String = currentYear) = {
+  def WhoPaysPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
     year match {
-      case "CY" => redirectionForWhoPaysPensionCY(answers)
+      case CurrentYear => redirectionForWhoPaysPensionCY(answers)
       case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
     }
   }
@@ -102,9 +102,9 @@ class PensionNavigation {
 
     val WhoPaysPensionValue = answers.whoPaysIntoPension
     WhoPaysPensionValue match {
-      case Some("you") => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
-      case Some("partner") => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case Some("both") => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+      case Some(You) => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+      case Some(Partner) => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+      case Some(Both) => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
 

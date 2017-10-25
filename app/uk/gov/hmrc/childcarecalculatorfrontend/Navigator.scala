@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentInco
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.currentYear
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.CurrentYear
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
@@ -83,10 +83,10 @@ class Navigator @Inject()(schemes: Schemes,
     ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
     PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
     EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute),
-    YouPaidPensionCYId -> (answers => pensionNav.yourPensionRoute(answers, currentYear)),
-    PartnerPaidPensionCYId -> (answers => pensionNav.partnerPensionRoute(answers, currentYear)),
-    BothPaidPensionCYId -> (answers => pensionNav.bothPensionRoute(answers, currentYear)),
-    WhoPaysIntoPensionId -> (answers => pensionNav.WhoPaysPensionRoute(answers, currentYear))
+    YouPaidPensionCYId -> (answers => pensionNav.yourPensionRoute(answers, CurrentYear)),
+    PartnerPaidPensionCYId -> (answers => pensionNav.partnerPensionRoute(answers, CurrentYear)),
+    BothPaidPensionCYId -> (answers => pensionNav.bothPensionRoute(answers, CurrentYear)),
+    WhoPaysIntoPensionId -> (answers => pensionNav.WhoPaysPensionRoute(answers, CurrentYear))
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {

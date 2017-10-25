@@ -23,6 +23,11 @@ object ChildcareConstants {
   val partner: String = YouPartnerBothEnum.PARTNER.toString
   val both: String = YouPartnerBothEnum.BOTH.toString
 
+  // First letter is capital in naming for below constants as these are being used in case statements
+  val You: String = YouPartnerBothEnum.YOU.toString
+  val Partner: String = YouPartnerBothEnum.PARTNER.toString
+  val Both: String = YouPartnerBothEnum.BOTH.toString
+
   val no = "no"
   val yes = "yes"
 
@@ -197,6 +202,6 @@ object ChildcareConstants {
   val partnerNoWeeksStatPayPYInvalidErrorKey = "partnerNoWeeksStatPayPY.invalid"
   val partnerNoWeeksStatPayPYNumericErrorKey = "partnerNoWeeksStatPayPY.numeric.error"
 
-  lazy val currentYear = "CY"
-  lazy val previousYear = "PY"
+  lazy val CurrentYear = "CY"
+  lazy val PreviousYear = "PY"
 }
