@@ -161,6 +161,25 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "How Much You Pay Pension CY Route" must {
+        "redirects to YourOtherIncomeThisYear page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(HowMuchYouPayPensionId, NormalMode)(answers) mustBe
+            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchYouPayPension) thenReturn None
+
+          navigator.nextPage(HowMuchYouPayPensionId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+
+        }
+      }
+
     }
   }
 

@@ -58,9 +58,17 @@ class PensionNavigation {
     }
   }
 
-  def WhoPaysPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
+  def whoPaysPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
     year match {
       case CurrentYear => redirectionForWhoPaysPensionCY(answers)
+      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
+    }
+  }
+
+
+  def howMuchYouPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
+    year match {
+      case CurrentYear => redirectionForHowMuchYouPayPension(answers)
       case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
     }
   }
@@ -73,7 +81,6 @@ class PensionNavigation {
       case Some(false) => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-
   }
 
   private def redirectionForPartnerPensionCY(answers: UserAnswers) = {
@@ -84,7 +91,6 @@ class PensionNavigation {
       case Some(false) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-
   }
 
   private def redirectionForBothPensionCY(answers: UserAnswers) = {
@@ -95,7 +101,6 @@ class PensionNavigation {
       case Some(false) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-
   }
 
   private def redirectionForWhoPaysPensionCY(answers: UserAnswers) = {
@@ -107,6 +112,13 @@ class PensionNavigation {
       case Some(Both) => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
+  }
 
+  private def redirectionForHowMuchYouPayPension(answers: UserAnswers) = {
+    val howMuchYouPayPensionValue = answers.howMuchYouPayPension
+    howMuchYouPayPensionValue match {
+      case Some(_) => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
   }
 }
