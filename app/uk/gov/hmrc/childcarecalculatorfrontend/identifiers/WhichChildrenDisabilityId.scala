@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
-
-class WhichBenefitsYouGetFormSpec extends CheckboxBehaviours[String] {
-
-  val form = WhichBenefitsYouGetForm()
-
-  override val validOptions: Set[String] = WhichBenefitsEnum.values.map(_.toString)
-
-  override val fieldName = "value"
-
-  "WhichBenefitsYouGet form" must {
-    behave like aCheckboxForm(invalid = "error.unknown")
-  }
+case object WhichChildrenDisabilityId extends Identifier {
+  override def toString: String = "whichChildrenDisability"
 }

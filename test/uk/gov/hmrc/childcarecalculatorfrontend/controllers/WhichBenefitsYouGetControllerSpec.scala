@@ -17,16 +17,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.libs.json.Json
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsYouGetId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
 
@@ -36,9 +36,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     new WhichBenefitsYouGetController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  val answer = Some(Set("option1", "option2"))
-
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = whichBenefitsYouGet(frontendAppConfig, answer, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhichBenefitsYouGet Controller" must {
 
@@ -49,17 +47,19 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString()
     }
 
-//    "populate the view correctly on a GET when the question has previously been answered" in {
-//      val validData = Map(WhichBenefitsYouGetId.toString -> JsString(WhichBenefitsYouGetForm.options.head.value))
-//      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-//
-//      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
-//
-//      contentAsString(result) mustBe viewAsString(WhichBenefitsYouGetForm().fill(Set(WhichBenefitsYouGetForm.options.head.value)))
-//    }
+    "populate the view correctly on a GET when the question has previously been answered" in {
+      val validData = Map(
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq(WhichBenefitsYouGetForm.options.head._2))
+      )
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+
+      contentAsString(result) mustBe viewAsString(WhichBenefitsYouGetForm().fill(Set(WhichBenefitsYouGetForm.options.head._2)))
+    }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsYouGetForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", WhichBenefitsYouGetForm.options.toSeq.head._2))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -67,15 +67,15 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
-//    "return a Bad Request and errors when invalid data is submitted" in {
-//      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-//      val boundForm = WhichBenefitsYouGetForm().bind(Map("value" -> "invalid value"))
-//
-//      val result = controller().onSubmit(NormalMode)(postRequest)
-//
-//      status(result) mustBe BAD_REQUEST
-//      contentAsString(result) mustBe viewAsString(boundForm)
-//    }
+    "return a Bad Request and errors when invalid data is submitted" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value"))
+      val boundForm = WhichBenefitsYouGetForm().bind(Map("value[0]" -> "invalid value"))
+
+      val result = controller().onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) mustBe viewAsString(boundForm)
+    }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
@@ -85,7 +85,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsYouGetForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsYouGetForm.options.toSeq.head._1))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

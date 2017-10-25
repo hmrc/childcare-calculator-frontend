@@ -3,11 +3,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object $className$Form extends FormErrorHelper {
 
-  def $className$Formatter = new Formatter[String] {
+  def $className;format="decap"$Formatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, "error.required")
@@ -18,12 +17,12 @@ object $className$Form extends FormErrorHelper {
   }
 
   def apply(): Form[Set[String]] =
-    Form(single("value" -> set(of($className$Formatter))))
+    Form(single("value" -> set(of($className;format="decap"$Formatter))))
 
-  def options = Seq(
-    InputOption("$className;format="decap"$", "option1"),
-    InputOption("$className;format="decap"$", "option2")
+  def options = Map(
+    "$className;format="decap"$.option1" -> "option1",
+    "$className;format="decap"$.option2" -> "option2"
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
 }
