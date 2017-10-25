@@ -1034,8 +1034,9 @@ childStartEducation.checkYourAnswersLabel = When did your child start their educ
 childStartEducation.error = You must tell the calculator when your child started their approved education or training
 childStartEducation.error.invalid = You must enter a date in the correct format
 
-whichChildrenDisability.title = whichChildrenDisability
-whichChildrenDisability.heading = whichChildrenDisability
-whichChildrenDisability.option1 = whichChildrenDisability Option 1
-whichChildrenDisability.option2 = whichChildrenDisability Option 2
-whichChildrenDisability.checkYourAnswersLabel = whichChildrenDisability
+whichChildrenDisability.title = Who gets disability benefits?
+whichChildrenDisability.heading = Who gets disability benefits?
+whichChildrenDisability.checkYourAnswersLabel = Who gets disability benefits?
+whichChildrenDisability.summary = Help with benefits
+whichChildrenDisability.selectAll = Select all who get them.
+whichChildrenDisability.error = You must tell the calculator who gets disability benefits
