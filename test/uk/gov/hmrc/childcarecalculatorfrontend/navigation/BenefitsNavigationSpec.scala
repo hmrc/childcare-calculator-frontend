@@ -26,6 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 
 class BenefitsNavigationSpec extends SpecBase with MockitoSugar {
@@ -117,41 +118,41 @@ class BenefitsNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /* "Who Pays Into Pension CY Route" must {
-        "redirects to howMuchYouPayPension page when user selects you option" in {
+      "Whos Had Benefits CY Route" must {
+        "redirects to youBenefitsIncomeCY page when user selects you option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn Some("you")
+          when(answers.whosHadBenefits) thenReturn Some(You)
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
-            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(WhosHadBenefitsId, NormalMode)(answers) mustBe
+            routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to HowMuchPartnerPayPension page when user selects partner option" in {
+        "redirects to partnerBenefitsIncomeCY page when user selects partner option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn Some("partner")
+          when(answers.whosHadBenefits) thenReturn Some(Partner)
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
-            routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(WhosHadBenefitsId, NormalMode)(answers) mustBe
+            routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to HowMuchBothPayPension page when user selects both option" in {
+        "redirects to benefitsIncomeCY page when user selects both option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn Some("both")
+          when(answers.whosHadBenefits) thenReturn Some(Both)
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
-            routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(WhosHadBenefitsId, NormalMode)(answers) mustBe
+            routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.bothPaidPensionCY) thenReturn None
+          when(answers.whosHadBenefits) thenReturn None
 
-          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(WhosHadBenefitsId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
 
-      "How Much You Pay Pension CY Route" must {
+      /*"How Much You Pay Pension CY Route" must {
         "redirects to YourOtherIncomeThisYear page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
