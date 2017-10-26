@@ -642,3 +642,13 @@ GET        /bothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalc
 POST       /bothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeBothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBothNoWeeksStatPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothNoWeeksStatPayPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whichChildrenDisability               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onPageLoad(mode: Mode = NormalMode)
+POST       /whichChildrenDisability               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhichChildrenDisability               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhichChildrenDisability               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onPageLoad(mode: Mode = NormalMode)
+POST       /whichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onSubmit(mode: Mode = CheckMode)

@@ -18,25 +18,29 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import play.twirl.api.Html
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 
-class WhichBenefitsYouGetViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
+class WhichChildrenDisabilityViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
 
-  val messageKeyPrefix = "whichBenefitsYouGet"
+  val messageKeyPrefix = "whichChildrenDisability"
+
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, String] = WhichBenefitsYouGetForm.options
+  val values = Map(
+    "Foo" -> "0",
+    "Bar" -> "1"
+  )
 
-  def form: Form[Set[String]] = WhichBenefitsYouGetForm()
+  def form: Form[Set[String]] = WhichChildrenDisabilityForm("0", "1")
 
   def createView(form: Form[Set[String]] = form): Html =
-    whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+    whichChildrenDisability(frontendAppConfig, form, values, NormalMode)(fakeRequest, messages)
 
-  "WhichBenefitsYouGet view" must {
+  "WhichChildrenDisability view" must {
 
     behave like normalPage(createView, messageKeyPrefix)
 

@@ -21,7 +21,6 @@ import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichBenefitsPartnerGetForm extends FormErrorHelper {
 
@@ -38,12 +37,10 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
   def apply(): Form[Set[String]] =
     Form(single("value" -> set(of(WhichBenefitsPartnerGetFormatter))))
 
-  def options = Seq(
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.INCOMEBENEFITS.toString),
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.DISABILITYBENEFITS.toString),
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString),
-    InputOption("whichBenefitsPartnerGet", WhichBenefitsEnum.CARERSALLOWANCE.toString)
-  )
+  lazy val options: Map[String, String] = WhichBenefitsEnum.values.map {
+    value =>
+      s"whichBenefitsPartnerGet.$value" -> value.toString
+  }.toMap
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
 }

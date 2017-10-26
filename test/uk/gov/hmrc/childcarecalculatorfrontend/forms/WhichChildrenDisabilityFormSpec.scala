@@ -17,17 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 
-class WhichBenefitsYouGetFormSpec extends CheckboxBehaviours[String] {
+class WhichChildrenDisabilityFormSpec extends CheckboxBehaviours[String] {
 
-  val form = WhichBenefitsYouGetForm()
+  override def fieldName: String = "value"
 
-  override val validOptions: Set[String] = WhichBenefitsEnum.values.map(_.toString)
+  override def validOptions = Set("0", "1")
 
-  override val fieldName = "value"
+  val form = WhichChildrenDisabilityForm(validOptions.toSeq: _*)
 
-  "WhichBenefitsYouGet form" must {
-    behave like aCheckboxForm(invalid = "error.unknown")
+  "WhichChildrenDisability form" must {
+
+    behave like aCheckboxForm()
+
+    behave like aMandatoryCheckboxForm("whichChildrenDisability.error")
   }
 }

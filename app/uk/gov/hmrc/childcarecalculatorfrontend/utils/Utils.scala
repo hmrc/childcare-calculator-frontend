@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat
 import javax.inject.Singleton
 
 import org.joda.time.LocalDate
+import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import play.api.Configuration
 
@@ -57,6 +59,7 @@ class Utils {
 
   /**
     * Gets the NMW for the given age range
+    *
     * @param configuration
     * @param currentDate
     * @param ageRange
@@ -105,6 +108,22 @@ class Utils {
         conf
       case _ =>
         configs.filter(_.getString(ruleDateConfigParam).contains("default")).head
+    }
+  }
+
+  def sessionExpired = routes.SessionExpiredController.onPageLoad()
+
+  /**
+    * Get the call if Some(call) is passed as an input otherwise session expired page as call
+    * @param optionalElement
+    * @param call
+    * @tparam T
+    * @return
+    */
+  def getCallOrSessionExpired[T](optionalElement: Option[T], call: Call) = {
+    optionalElement match {
+      case Some(_) => call
+      case _ => sessionExpired
     }
   }
 

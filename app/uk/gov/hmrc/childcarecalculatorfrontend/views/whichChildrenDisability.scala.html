@@ -15,33 +15,36 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
-@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], options: Map[String, String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("whichBenefitsYouGet.title"),
+    title = messages("whichChildrenDisability.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = WhichBenefitsYouGetController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("whichBenefitsYouGet.heading", "heading-xlarge")
+        @components.heading("whichChildrenDisability.heading")
 
-        <p>@messages("whichBenefits.select.all")</p>
+        <p>Select all who get them</p>
 
         @components.input_check_box(
-            form("value"),
-            legend = messages("whichBenefitsYouGet.heading"),
+            field = form("value"),
+            legend = messages("whichChildrenDisability.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhichBenefitsYouGetForm.options
+            inputs = options
         )
 
         @components.submit_button()

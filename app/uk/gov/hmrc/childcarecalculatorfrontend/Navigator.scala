@@ -20,14 +20,18 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidPensionCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
+                          maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
+                          selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
+                          employmentIncomeNav: EmploymentIncomeNavigation = new EmploymentIncomeNavigation(),
+                          pensionNav: PensionNavigation = new PensionNavigation(),
                           minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
                           maxHoursNav: MaximumHoursNavigation = new MaximumHoursNavigation(),
                           currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
@@ -35,6 +39,7 @@ class Navigator @Inject()(schemes: Schemes,
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
   val Both: String = YouPartnerBothEnum.BOTH.toString
+
 
   private val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> minHoursNav.locationRoute,
@@ -75,11 +80,18 @@ class Navigator @Inject()(schemes: Schemes,
     YourMaximumEarningsId -> maxHoursNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
     EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    PartnerPaidWorkCYId -> (_ =>  currentYearIncomeNav.partnerPaidWorkCYRoute),
-    ParentPaidWorkCYId -> (_ => currentYearIncomeNav.parentPaidWorkCYRoute),
-    ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
-    PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
-    EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute)
+    PartnerPaidWorkCYId -> (_ =>  employmentIncomeNav.partnerPaidWorkCYRoute),
+    ParentPaidWorkCYId -> (_ => employmentIncomeNav.parentPaidWorkCYRoute),
+    ParentEmploymentIncomeCYId -> (_ => employmentIncomeNav.parentEmploymentIncomeCYRoute),
+    PartnerEmploymentIncomeCYId -> (_ =>employmentIncomeNav.partnerEmploymentIncomeCYRoute),
+    EmploymentIncomeCYId -> (_ => employmentIncomeNav.employmentIncomeCYRoute),
+    YouPaidPensionCYId -> pensionNav.yourPensionRouteCY,
+    PartnerPaidPensionCYId -> pensionNav.partnerPensionRouteCY,
+    BothPaidPensionCYId -> pensionNav.bothPensionRouteCY,
+    WhoPaysIntoPensionId -> pensionNav.whoPaysPensionRouteCY,
+    HowMuchYouPayPensionId -> pensionNav.howMuchYouPayPensionRouteCY,
+    HowMuchPartnerPayPensionId -> pensionNav.howMuchPartnerPayPensionRouteCY,
+    HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY
   )
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
@@ -93,5 +105,4 @@ class Navigator @Inject()(schemes: Schemes,
           editRouteMap.getOrElse(id, (_: UserAnswers) => routes.CheckYourAnswersController.onPageLoad())(answers)
       }
   }
-
 }

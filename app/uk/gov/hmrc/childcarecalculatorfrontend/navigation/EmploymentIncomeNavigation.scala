@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+  * Contains the navigation for current and previous year employment income pages
+  */
+
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Singleton
@@ -24,8 +28,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 
 @Singleton
-class CurrentYearIncomeNavigation {
+class EmploymentIncomeNavigation {
 
+  //TODO: parameterize the method as per year (i.e. - current and previous year)
   def partnerPaidWorkCYRoute = routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
 
   def parentPaidWorkCYRoute = routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
