@@ -21,7 +21,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
@@ -188,23 +188,23 @@ class BenefitsNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /*"How Much Both Pay Pension CY Route" must {
-        "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
+      "Both Benefits Income CY Route" must {
+        "redirects to bothStatutoryPayCY page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
+          when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY("23", "23"))
 
-          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
-            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator.nextPage(BenefitsIncomeCYId, NormalMode)(answers) mustBe
+            routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchBothPayPension) thenReturn None
+          when(answers.benefitsIncomeCY) thenReturn None
 
-          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
+          navigator.nextPage(BenefitsIncomeCYId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-      }*/
+      }
 
     }
   }
