@@ -32,7 +32,8 @@ class Navigator @Inject()(schemes: Schemes,
                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
                           employmentIncomeNav: EmploymentIncomeNavigation = new EmploymentIncomeNavigation(),
-                          pensionNav: PensionNavigation = new PensionNavigation()) {
+                          pensionNav: PensionNavigation = new PensionNavigation(),
+                          benefitsNav: BenefitsNavigation = new BenefitsNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -89,7 +90,8 @@ class Navigator @Inject()(schemes: Schemes,
     WhoPaysIntoPensionId -> pensionNav.whoPaysPensionRouteCY,
     HowMuchYouPayPensionId -> pensionNav.howMuchYouPayPensionRouteCY,
     HowMuchPartnerPayPensionId -> pensionNav.howMuchPartnerPayPensionRouteCY,
-    HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY
+    HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY,
+    YouAnyTheseBenefitsIdCY -> benefitsNav.yourBenefitsRouteCY
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
