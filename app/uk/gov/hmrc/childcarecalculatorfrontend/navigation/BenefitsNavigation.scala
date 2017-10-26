@@ -78,14 +78,14 @@ class BenefitsNavigation @Inject()(utils: Utils = new Utils()){
                             routes.YourStatutoryPayCYController.onPageLoad(NormalMode))
   }
 
-  /*def howMuchPartnerPayPensionRouteCY(answers: UserAnswers) = {
-    val howMuchPartnerPayPensionValue = answers.howMuchPartnerPayPension
+  def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = {
+    val partnerBenefitsIncomeCYValue = answers.partnerBenefitsIncomeCY
 
-    utils.getCallOrSessionExpired(howMuchPartnerPayPensionValue,
-      routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode))
+    utils.getCallOrSessionExpired(partnerBenefitsIncomeCYValue,
+      routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
   }
 
-  def howMuchBothPayPensionRouteCY(answers: UserAnswers) = {
+  /*def howMuchBothPayPensionRouteCY(answers: UserAnswers) = {
     val howMuchBothPayPensionValue = answers.howMuchBothPayPension
 
     utils.getCallOrSessionExpired(howMuchBothPayPensionValue,
