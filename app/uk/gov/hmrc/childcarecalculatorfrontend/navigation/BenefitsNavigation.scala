@@ -35,22 +35,22 @@ class BenefitsNavigation @Inject()(utils: Utils = new Utils()){
     val youAnyTheseBenefitsValue = answers.youAnyTheseBenefits
     youAnyTheseBenefitsValue match {
       case Some(true) => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourStatutoryPayAmountCYController.onPageLoad(NormalMode)
+      case Some(false) => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
     }
   }
 
-  /*def partnerPensionRouteCY(answers: UserAnswers) = {
+  def partnerBenefitsRouteCY(answers: UserAnswers) = {
 
-    val partnerPaidPensionValue = answers.PartnerPaidPensionCY
-    partnerPaidPensionValue match {
-      case Some(true) => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+    val partnerAnyTheseBenefitsCYValue = answers.partnerAnyTheseBenefitsCY
+    partnerAnyTheseBenefitsCYValue match {
+      case Some(true) => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
+      case Some(false) => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
     }
   }
 
-  def bothPensionRouteCY(answers: UserAnswers) = {
+  /*def bothPensionRouteCY(answers: UserAnswers) = {
 
     val bothPaidPensionValue = answers.bothPaidPensionCY
     bothPaidPensionValue match {
