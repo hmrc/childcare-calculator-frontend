@@ -15,7 +15,7 @@
  */
 
 /**
-  * Contains the navigation for current and previous year pension pages
+  * Contains the navigation for current and previous year other income pages
   */
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
