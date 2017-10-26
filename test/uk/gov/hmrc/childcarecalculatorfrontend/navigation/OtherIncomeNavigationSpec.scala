@@ -22,11 +22,10 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode, OtherIncomeAmountCY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, OtherIncomeAmountCY}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
-
 
 class OtherIncomeNavigationSpec extends SpecBase with MockitoSugar {
 
