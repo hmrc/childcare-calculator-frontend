@@ -17,26 +17,46 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.HasYourTaxCodeBeenAdjustedForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hasYourTaxCodeBeenAdjusted
 
-class HasYourTaxCodeBeenAdjustedViewSpec extends YesNoViewBehaviours {
+class HasYourTaxCodeBeenAdjustedViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "hasYourTaxCodeBeenAdjusted"
 
-  def createView = () => hasYourTaxCodeBeenAdjusted(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => hasYourTaxCodeBeenAdjusted(frontendAppConfig, HasYourTaxCodeBeenAdjustedForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => hasYourTaxCodeBeenAdjusted(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => hasYourTaxCodeBeenAdjusted(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "HasYourTaxCodeBeenAdjusted view" must {
-
     behave like normalPage(createView, messageKeyPrefix, "info")
 
     behave like pageWithBackLink(createView)
+  }
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.HasYourTaxCodeBeenAdjustedController.onSubmit(NormalMode).url)
+  "HasYourTaxCodeBeenAdjusted view" when {
+    "rendered" must {
+      "contain radio buttons for the value" in {
+        val doc = asDocument(createViewUsingForm(HasYourTaxCodeBeenAdjustedForm()))
+        for (option <- HasYourTaxCodeBeenAdjustedForm.options) {
+          assertContainsRadioButton(doc, option.id, "value", option.value, false)
+        }
+      }
+    }
+
+    for(option <- HasYourTaxCodeBeenAdjustedForm.options) {
+      s"rendered with a value of '${option.value}'" must {
+        s"have the '${option.value}' radio button selected" in {
+          val doc = asDocument(createViewUsingForm(HasYourTaxCodeBeenAdjustedForm().bind(Map("value" -> s"${option.value}"))))
+          assertContainsRadioButton(doc, option.id, "value", option.value, true)
+
+          for(unselectedOption <- HasYourTaxCodeBeenAdjustedForm.options.filterNot(o => o == option)) {
+            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
+          }
+        }
+      }
+    }
   }
 }
