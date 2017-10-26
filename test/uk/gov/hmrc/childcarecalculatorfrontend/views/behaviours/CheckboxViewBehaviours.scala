@@ -102,7 +102,6 @@ trait CheckboxViewBehaviours[A] extends ViewSpecBase {
       "show an error in the value field's label" in {
         val doc = asDocument(createView(form.withError(error)))
         val errorSpan = doc.getElementsByClass("error-notification").first
-        println(doc.getElementsByClass("form-field"))
         errorSpan.text mustBe messages(errorMessage)
       }
     }

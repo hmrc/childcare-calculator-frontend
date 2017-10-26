@@ -68,7 +68,6 @@ class YouNoWeeksStatPayCYControllerSpec extends ControllerSpecBase {
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
-      println("********************the result is "+result+"*********************")
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
