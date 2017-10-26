@@ -42,17 +42,6 @@ class WhichChildrenBlindController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  private def withValues[A](block: Map[String, String] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
-    request.userAnswers.aboutYourChild.map {
-      aboutYourChild =>
-        val values: Map[String, String] = aboutYourChild.map {
-          case (i, model) =>
-            model.name -> i.toString
-        }
-        block(values)
-    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
-  }
-
   def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       withValues {
@@ -82,5 +71,16 @@ class WhichChildrenBlindController @Inject()(
             }
           )
       }
+  }
+
+  private def withValues[A](block: Map[String, String] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
+    request.userAnswers.aboutYourChild.map {
+      aboutYourChild =>
+        val values: Map[String, String] = aboutYourChild.map {
+          case (i, model) =>
+            model.name -> i.toString
+        }
+        block(values)
+    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
   }
 }

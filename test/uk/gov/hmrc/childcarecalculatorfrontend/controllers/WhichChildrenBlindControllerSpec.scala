@@ -33,33 +33,6 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionValues {
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
-
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichChildrenBlindController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
-
-  val defaultValues = Map("Foo" -> "0", "Bar" -> "1")
-  def viewAsString(
-                    form: Form[Set[String]] = WhichChildrenBlindForm("0", "1"),
-                    values: Map[String, String] = defaultValues
-                  ) =
-    whichChildrenBlind(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
-
-  def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
-    AboutYourChildId.toString -> Json.obj(
-      values.map {
-        case (name, v) =>
-          v -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
-      }.toSeq: _*
-    )
-  )
-
-  def getRequiredData(values: Map[String, String]): DataRetrievalAction =
-    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(values))))
-
-  def getRequiredData: DataRetrievalAction = getRequiredData(defaultValues)
-
   "WhichChildrenBlind Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -138,4 +111,32 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
     }
   }
+  
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+    new WhichChildrenBlindController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl)
+
+  val defaultValues = Map("Foo" -> "0", "Bar" -> "1")
+  def viewAsString(
+                    form: Form[Set[String]] = WhichChildrenBlindForm("0", "1"),
+                    values: Map[String, String] = defaultValues
+                  ) =
+    whichChildrenBlind(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
+
+  def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
+    AboutYourChildId.toString -> Json.obj(
+      values.map {
+        case (name, v) =>
+          v -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
+      }.toSeq: _*
+    )
+  )
+
+  def getRequiredData(values: Map[String, String]): DataRetrievalAction =
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(values))))
+
+  def getRequiredData: DataRetrievalAction = getRequiredData(defaultValues)
+
 }
