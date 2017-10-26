@@ -50,12 +50,12 @@ class OtherIncomeNavigation @Inject()(utils: Utils = new Utils()){
     }
   }
 
-  def bothPensionRouteCY(answers: UserAnswers) = {
+  def bothOtherIncomeRouteCY(answers: UserAnswers) = {
 
-    val bothPaidPensionValue = answers.bothPaidPensionCY
-    bothPaidPensionValue match {
-      case Some(true) => routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+    val bothOtherIncomeValue = answers.bothOtherIncomeThisYear
+    bothOtherIncomeValue match {
+      case Some(true) => routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
+      case Some(false) => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
     }
   }
