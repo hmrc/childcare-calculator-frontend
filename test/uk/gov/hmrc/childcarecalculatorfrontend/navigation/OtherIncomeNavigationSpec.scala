@@ -150,42 +150,42 @@ class OtherIncomeNavigationSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
       }
-//
-//      "How Much You Pay Pension CY Route" must {
-//        "redirects to YourOtherIncomeThisYear page when user provides valid input" in {
-//          val answers = spy(userAnswers())
-//          when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
-//
-//          navigator.nextPage(HowMuchYouPayPensionId, NormalMode)(answers) mustBe
-//            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-//        }
-//
-//        "redirects to sessionExpired page when there is no value for user selection" in {
-//          val answers = spy(userAnswers())
-//          when(answers.howMuchYouPayPension) thenReturn None
-//
-//          navigator.nextPage(HowMuchYouPayPensionId, NormalMode)(answers) mustBe
-//            routes.SessionExpiredController.onPageLoad()
-//        }
-//      }
-//
-//      "How Much Partner Pay Pension CY Route" must {
-//        "redirects to PartnerAnyOtherIncomeThisYear page when user provides valid input" in {
-//          val answers = spy(userAnswers())
-//          when(answers.howMuchPartnerPayPension) thenReturn Some(BigDecimal(23))
-//
-//          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
-//            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-//        }
-//
-//        "redirects to sessionExpired page when there is no value for user selection" in {
-//          val answers = spy(userAnswers())
-//          when(answers.howMuchPartnerPayPension) thenReturn None
-//
-//          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
-//            routes.SessionExpiredController.onPageLoad()
-//        }
-//      }
+
+      "How Much Your Other Income CY Route" must {
+        "redirects to YouAnyTheseBenefitsCY page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode)(answers) mustBe
+            routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeAmountCY) thenReturn None
+
+          navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "How Much Partner Other Income CY Route" must {
+        "redirects to PartnerAnyTheseBenefitsCY page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode)(answers) mustBe
+            routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerOtherIncomeAmountCY) thenReturn None
+
+          navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
 //
 //      "How Much Both Pay Pension CY Route" must {
 //        "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
@@ -193,7 +193,7 @@ class OtherIncomeNavigationSpec extends SpecBase with MockitoSugar {
 //          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
 //
 //          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
-//            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+//            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
 //        }
 //
 //        "redirects to sessionExpired page when there is no value for user selection" in {
