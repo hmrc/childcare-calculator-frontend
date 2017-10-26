@@ -27,6 +27,9 @@ class WhichChildrenBlindFormSpec extends CheckboxBehaviours[String] {
   val form = WhichChildrenBlindForm()
 
   "WhichChildrenBlind form" must {
+
     behave like aCheckboxForm(invalid = "error.unknown")
+
+    behave like aMandatoryCheckboxForm("whichChildrenBlind.error")
   }
 }

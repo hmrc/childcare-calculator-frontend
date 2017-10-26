@@ -1099,8 +1099,7 @@ whichChildrenDisability.summary = Help with benefits
 whichChildrenDisability.selectAll = Select all who get them.
 whichChildrenDisability.error = You must tell the calculator who gets disability benefits
 
-whichChildrenBlind.title = whichChildrenBlind
-whichChildrenBlind.heading = whichChildrenBlind
-whichChildrenBlind.option1 = whichChildrenBlind Option 1
-whichChildrenBlind.option2 = whichChildrenBlind Option 2
-whichChildrenBlind.checkYourAnswersLabel = whichChildrenBlind
+whichChildrenBlind.title = Who is registered blind?
+whichChildrenBlind.heading = Who is registered blind?
+whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
+whichChildrenBlind.error = You must tell the calculator who is registered blind

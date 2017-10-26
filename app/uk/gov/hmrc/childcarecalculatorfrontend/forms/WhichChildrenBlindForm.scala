@@ -33,7 +33,10 @@ object WhichChildrenBlindForm extends FormErrorHelper {
   }
 
   def apply(): Form[Set[String]] =
-    Form(single("value" -> set(of(whichChildrenBlindFormatter))))
+    Form(single(
+      "value" -> set(of(whichChildrenBlindFormatter))
+        .verifying("whichChildrenBlind.error", _.nonEmpty)
+    ))
 
   def options = Map(
     "whichChildrenBlind.option1" -> "option1",
