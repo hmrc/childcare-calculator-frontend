@@ -201,7 +201,4 @@ object ChildcareConstants {
   val partnerNoWeeksStatPayPYErrorKey = "partnerNoWeeksStatPayPY.error"
   val partnerNoWeeksStatPayPYInvalidErrorKey = "partnerNoWeeksStatPayPY.invalid"
   val partnerNoWeeksStatPayPYNumericErrorKey = "partnerNoWeeksStatPayPY.numeric.error"
-
-  lazy val CurrentYear = "CY"
-  lazy val PreviousYear = "PY"
 }
