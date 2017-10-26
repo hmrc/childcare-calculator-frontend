@@ -95,7 +95,9 @@ class Navigator @Inject()(schemes: Schemes,
     BothOtherIncomeThisYearId -> otherIncomeNav.bothOtherIncomeRouteCY,
     WhoGetsOtherIncomeCYId -> otherIncomeNav.whoGetsOtherIncomeRouteCY,
     YourOtherIncomeAmountCYId -> otherIncomeNav.howMuchYourOtherIncomeRouteCY,
-    PartnerOtherIncomeAmountCYId -> otherIncomeNav.howMuchPartnerOtherIncomeRouteCY
+    PartnerOtherIncomeAmountCYId -> otherIncomeNav.howMuchPartnerOtherIncomeRouteCY,
+    OtherIncomeAmountCYId -> otherIncomeNav.howMuchBothOtherIncomeRouteCY
+
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {

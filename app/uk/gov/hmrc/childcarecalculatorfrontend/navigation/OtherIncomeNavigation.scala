@@ -85,11 +85,11 @@ class OtherIncomeNavigation @Inject()(utils: Utils = new Utils()){
       routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode))
   }
 
-  def howMuchBothPayPensionRouteCY(answers: UserAnswers) = {
-    val howMuchBothPayPensionValue = answers.howMuchBothPayPension
+  def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = {
+    val howMuchBothOtherIncomeValue = answers.otherIncomeAmountCY
 
-    utils.getCallOrSessionExpired(howMuchBothPayPensionValue,
-      routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
+    utils.getCallOrSessionExpired(howMuchBothOtherIncomeValue,
+      routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode))
  }
 
 }

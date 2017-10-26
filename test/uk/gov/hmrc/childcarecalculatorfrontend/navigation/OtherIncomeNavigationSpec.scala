@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode, OtherIncomeAmountCY}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -186,25 +186,25 @@ class OtherIncomeNavigationSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
       }
-//
-//      "How Much Both Pay Pension CY Route" must {
-//        "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
-//          val answers = spy(userAnswers())
-//          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
-//
-//          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
-//            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-//        }
-//
-//        "redirects to sessionExpired page when there is no value for user selection" in {
-//          val answers = spy(userAnswers())
-//          when(answers.howMuchBothPayPension) thenReturn None
-//
-//          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
-//            routes.SessionExpiredController.onPageLoad()
-//        }
-//      }
-//
+
+      "How Much Both Other Income CY Route" must {
+        "redirects to BothAnyTheseBenefitsCY page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY("23", "23"))
+
+          navigator.nextPage(OtherIncomeAmountCYId, NormalMode)(answers) mustBe
+            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchBothPayPension) thenReturn None
+
+          navigator.nextPage(OtherIncomeAmountCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
    }
   }
 
