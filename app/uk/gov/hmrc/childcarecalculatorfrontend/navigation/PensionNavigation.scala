@@ -30,126 +30,71 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @Singleton
 class PensionNavigation {
 
-  /**
-    * Route for parent current and previous year pension
-    *
-    * @param answers
-    * @param year
-    * @return
-    */
-  def yourPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForParentPensionCY(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-
-  def partnerPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForPartnerPensionCY(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-  def bothPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForBothPensionCY(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-  def whoPaysPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForWhoPaysPensionCY(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-  def howMuchYouPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForHowMuchYouPayPension(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-  def howMuchPartnerPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForHowMuchPartnerPayPension(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-  def howMuchBothPayPensionRoute(answers: UserAnswers, year: String = CurrentYear) = {
-    year match {
-      case CurrentYear => redirectionForHowMuchBothPayPension(answers)
-      case _ => routes.SessionExpiredController.onPageLoad() //TODO: To be implemented for PY
-    }
-  }
-
-  private def redirectionForParentPensionCY(answers: UserAnswers) = {
+  def yourPensionRouteCY(answers: UserAnswers) = {
 
     val youPaidPensionValue = answers.YouPaidPensionCY
     youPaidPensionValue match {
       case Some(true) => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
       case Some(false) => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
 
-  private def redirectionForPartnerPensionCY(answers: UserAnswers) = {
+  def partnerPensionRouteCY(answers: UserAnswers) = {
 
     val partnerPaidPensionValue = answers.PartnerPaidPensionCY
     partnerPaidPensionValue match {
       case Some(true) => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
       case Some(false) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
 
-  private def redirectionForBothPensionCY(answers: UserAnswers) = {
+  def bothPensionRouteCY(answers: UserAnswers) = {
 
     val bothPaidPensionValue = answers.bothPaidPensionCY
     bothPaidPensionValue match {
       case Some(true) => routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
       case Some(false) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
 
-  private def redirectionForWhoPaysPensionCY(answers: UserAnswers) = {
+  def whoPaysPensionRouteCY(answers: UserAnswers) = {
 
     val WhoPaysPensionValue = answers.whoPaysIntoPension
     WhoPaysPensionValue match {
       case Some(You) => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
       case Some(Partner) => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
       case Some(Both) => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
 
-  private def redirectionForHowMuchYouPayPension(answers: UserAnswers) = {
+  def howMuchYouPayPensionRouteCY(answers: UserAnswers) = {
     val howMuchYouPayPensionValue = answers.howMuchYouPayPension
     howMuchYouPayPensionValue match {
       case Some(_) => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
 
-  private def redirectionForHowMuchPartnerPayPension(answers: UserAnswers) = {
+  def howMuchPartnerPayPensionRouteCY(answers: UserAnswers) = {
     val howMuchPartnerPayPensionValue = answers.howMuchPartnerPayPension
     howMuchPartnerPayPensionValue match {
       case Some(_) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
 
-  private def redirectionForHowMuchBothPayPension(answers: UserAnswers) = {
+  def howMuchBothPayPensionRouteCY(answers: UserAnswers) = {
     val howMuchBothPayPensionValue: Option[HowMuchBothPayPension] = answers.howMuchBothPayPension
     howMuchBothPayPensionValue match {
       case Some(_) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ => sessionExpired
     }
   }
+
+  private def sessionExpired = routes.SessionExpiredController.onPageLoad()
 
 }
