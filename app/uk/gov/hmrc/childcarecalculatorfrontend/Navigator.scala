@@ -24,15 +24,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentInco
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.CurrentYear
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
                           employmentIncomeNav: EmploymentIncomeNavigation = new EmploymentIncomeNavigation(),
-                          pensionNav: PensionNavigation = new PensionNavigation()) {
+                          pensionNav: PensionNavigation = new PensionNavigation(),
+                          otherIncomeNav: OtherIncomeNavigation = new OtherIncomeNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -89,7 +89,8 @@ class Navigator @Inject()(schemes: Schemes,
     WhoPaysIntoPensionId -> pensionNav.whoPaysPensionRouteCY,
     HowMuchYouPayPensionId -> pensionNav.howMuchYouPayPensionRouteCY,
     HowMuchPartnerPayPensionId -> pensionNav.howMuchPartnerPayPensionRouteCY,
-    HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY
+    HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY,
+    YourOtherIncomeThisYearId -> otherIncomeNav.yourOtherIncomeRouteCY
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
