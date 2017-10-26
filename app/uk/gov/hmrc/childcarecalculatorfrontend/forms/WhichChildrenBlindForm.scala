@@ -18,30 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.data.format.Formatter
 
 object WhichChildrenBlindForm extends FormErrorHelper {
 
-  def whichChildrenBlindFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
-      case _ => produceError(key, "error.unknown")
-    }
-
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[Set[String]] =
-    Form(single(
-      "value" -> set(of(whichChildrenBlindFormatter))
+  def apply(options: String*): Form[Set[String]] =
+    Form(
+      "value" -> set(text.verifying("error.unknown", options.contains _))
         .verifying("whichChildrenBlind.error", _.nonEmpty)
-    ))
-
-  def options = Map(
-    "whichChildrenBlind.option1" -> "option1",
-    "whichChildrenBlind.option2" -> "option2"
-  )
-
-  def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
+    )
 }

@@ -20,11 +20,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviou
 
 class WhichChildrenBlindFormSpec extends CheckboxBehaviours[String] {
 
-  override val validOptions: Set[String] = Set("option1", "option2")
+  override val validOptions: Set[String] = Set("0", "1")
 
   override val fieldName = "value"
 
-  val form = WhichChildrenBlindForm()
+  val form = WhichChildrenBlindForm("0", "1")
 
   "WhichChildrenBlind form" must {
 

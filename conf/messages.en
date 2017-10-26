@@ -1102,4 +1102,5 @@ whichChildrenDisability.error = You must tell the calculator who gets disability
 whichChildrenBlind.title = Who is registered blind?
 whichChildrenBlind.heading = Who is registered blind?
 whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
+whichChildrenBlind.hint = Select all who are
 whichChildrenBlind.error = You must tell the calculator who is registered blind

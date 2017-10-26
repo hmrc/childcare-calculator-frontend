@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.Result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -27,6 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenBlindForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichChildrenBlindId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
@@ -40,28 +42,45 @@ class WhichChildrenBlindController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  private def withValues[A](block: Map[String, String] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
+    request.userAnswers.aboutYourChild.map {
+      aboutYourChild =>
+        val values: Map[String, String] = aboutYourChild.map {
+          case (i, model) =>
+            model.name -> i.toString
+        }
+        block(values)
+    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }
+
+  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      val answer = request.userAnswers.whichChildrenBlind
-      val preparedForm = answer match {
-        case None => WhichChildrenBlindForm()
-        case Some(value) => WhichChildrenBlindForm().fill(value)
+      withValues {
+        values =>
+          val answer = request.userAnswers.whichChildrenBlind
+          val preparedForm = answer match {
+            case None => WhichChildrenBlindForm()
+            case Some(value) => WhichChildrenBlindForm().fill(value)
+          }
+          Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, mode, values)))
       }
-      Ok(whichChildrenBlind(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhichChildrenBlindForm().bindFromRequest().fold(
-        (formWithErrors: Form[Set[String]]) => {
-          Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode)))
-        },
-        (value) => {
-          dataCacheConnector.save[Set[String]](request.sessionId, WhichChildrenBlindId.toString, value).map {
-            cacheMap =>
-              Redirect(navigator.nextPage(WhichChildrenBlindId, mode)(new UserAnswers(cacheMap)))
-          }
-        }
-      )
+      withValues {
+        values =>
+          WhichChildrenBlindForm(values.values.toSeq: _*).bindFromRequest().fold(
+            (formWithErrors: Form[Set[String]]) => {
+              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, values)))
+            },
+            (value) => {
+              dataCacheConnector.save[Set[String]](request.sessionId, WhichChildrenBlindId.toString, value).map {
+                cacheMap =>
+                  Redirect(navigator.nextPage(WhichChildrenBlindId, mode)(new UserAnswers(cacheMap)))
+              }
+            }
+          )
+      }
   }
 }

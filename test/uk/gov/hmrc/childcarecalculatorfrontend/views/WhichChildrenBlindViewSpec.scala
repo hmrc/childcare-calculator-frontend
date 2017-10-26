@@ -29,16 +29,19 @@ class WhichChildrenBlindViewSpec extends ViewBehaviours with CheckboxViewBehavio
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, String] = WhichChildrenBlindForm.options
+  val values: Map[String, String] = Map(
+    "Foo" -> "0",
+    "Bar" -> "1"
+  )
 
-  def form: Form[Set[String]] = WhichChildrenBlindForm()
+  def form: Form[Set[String]] = WhichChildrenBlindForm("0", "1")
 
   def createView(form: Form[Set[String]] = form): Html =
-    whichChildrenBlind(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+    whichChildrenBlind(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages)
 
   "WhichChildrenBlind view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 
