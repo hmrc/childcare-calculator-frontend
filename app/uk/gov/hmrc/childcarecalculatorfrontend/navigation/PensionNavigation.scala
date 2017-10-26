@@ -22,6 +22,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Singleton
 
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -73,28 +74,32 @@ class PensionNavigation {
 
   def howMuchYouPayPensionRouteCY(answers: UserAnswers) = {
     val howMuchYouPayPensionValue = answers.howMuchYouPayPension
-    howMuchYouPayPensionValue match {
-      case Some(_) => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => sessionExpired
-    }
+
+    getCallOrSessionExpired(howMuchYouPayPensionValue,
+                            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode))
   }
 
   def howMuchPartnerPayPensionRouteCY(answers: UserAnswers) = {
     val howMuchPartnerPayPensionValue = answers.howMuchPartnerPayPension
-    howMuchPartnerPayPensionValue match {
-      case Some(_) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => sessionExpired
-    }
+
+    getCallOrSessionExpired(howMuchPartnerPayPensionValue,
+      routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode))
   }
 
   def howMuchBothPayPensionRouteCY(answers: UserAnswers) = {
-    val howMuchBothPayPensionValue: Option[HowMuchBothPayPension] = answers.howMuchBothPayPension
-    howMuchBothPayPensionValue match {
-      case Some(_) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+    val howMuchBothPayPensionValue = answers.howMuchBothPayPension
+
+    getCallOrSessionExpired(howMuchBothPayPensionValue,
+      routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
+ }
+
+  private def sessionExpired = routes.SessionExpiredController.onPageLoad()
+
+  private def getCallOrSessionExpired[T](optionalElement: Option[T], call: Call) = {
+    optionalElement match {
+      case Some(_) => call
       case _ => sessionExpired
     }
   }
-
-  private def sessionExpired = routes.SessionExpiredController.onPageLoad()
 
 }
