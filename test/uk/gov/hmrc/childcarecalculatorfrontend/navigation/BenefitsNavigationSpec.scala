@@ -63,7 +63,6 @@ class BenefitsNavigationSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
      "Partner Benefits CY Route" must {
