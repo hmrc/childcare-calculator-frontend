@@ -92,7 +92,8 @@ class Navigator @Inject()(schemes: Schemes,
     HowMuchPartnerPayPensionId -> pensionNav.howMuchPartnerPayPensionRouteCY,
     HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY,
     YouAnyTheseBenefitsIdCY -> benefitsNav.yourBenefitsRouteCY,
-    PartnerAnyTheseBenefitsCYId -> benefitsNav.partnerBenefitsRouteCY
+    PartnerAnyTheseBenefitsCYId -> benefitsNav.partnerBenefitsRouteCY,
+    BothAnyTheseBenefitsCYId -> benefitsNav.bothBenefitsRouteCY
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {

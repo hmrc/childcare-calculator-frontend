@@ -91,33 +91,33 @@ class BenefitsNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /* "Both Benefits CY Route" must {
-        "redirects to WhoPaysIntoPension page when user selects yes" in {
+      "Both Benefits CY Route" must {
+        "redirects to whosHadBenefits page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.bothPaidPensionCY) thenReturn Some(true)
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
 
-          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
-            routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode)(answers) mustBe
+            routes.WhosHadBenefitsController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothOtherIncomeThisYear page when user selects no" in {
+        "redirects to bothStatutoryPayCY page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.bothPaidPensionCY) thenReturn Some(false)
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(false)
 
-          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
-            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode)(answers) mustBe
+            routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.bothPaidPensionCY) thenReturn None
+          when(answers.bothAnyTheseBenefitsCY) thenReturn None
 
-          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
 
-      "Who Pays Into Pension CY Route" must {
+      /* "Who Pays Into Pension CY Route" must {
         "redirects to howMuchYouPayPension page when user selects you option" in {
           val answers = spy(userAnswers())
           when(answers.whoPaysIntoPension) thenReturn Some("you")
