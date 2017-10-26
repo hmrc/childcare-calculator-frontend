@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentInco
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
