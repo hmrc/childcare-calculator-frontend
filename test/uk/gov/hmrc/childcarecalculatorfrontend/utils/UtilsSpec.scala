@@ -16,7 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 class UtilsSpec extends SpecBase {
 
@@ -59,6 +61,24 @@ class UtilsSpec extends SpecBase {
         }.getMessage mustBe
         s"no element found in ${controllerId.getOrElse("")} while fetching ${objectName.getOrElse("")}"
 
+      }
+    }
+
+    "getCallOrSessionExpired" should {
+      "return the input call when Some(call) is passed as input" in {
+
+        val optionalElementValue = Some(true)
+        val call = Call("GET", "http://abc.com")
+
+        val utils = new Utils
+        utils.getCallOrSessionExpired(optionalElementValue, call) mustBe call
+      }
+
+      "return the session expired page as call when None is passed as input" in {
+        val call = Call("GET", "http://abc.com")
+
+        val utils = new Utils
+        utils.getCallOrSessionExpired(None, call) mustBe routes.SessionExpiredController.onPageLoad()
       }
     }
 

@@ -20,17 +20,18 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidWorkCYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidPensionCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
                           maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
                           selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
-                          currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
+                          employmentIncomeNav: EmploymentIncomeNavigation = new EmploymentIncomeNavigation(),
+                          pensionNav: PensionNavigation = new PensionNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -76,11 +77,18 @@ class Navigator @Inject()(schemes: Schemes,
     YourMaximumEarningsId -> maxEarningsNav.yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> maxEarningsNav.partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    PartnerPaidWorkCYId -> (_ =>  currentYearIncomeNav.partnerPaidWorkCYRoute),
-    ParentPaidWorkCYId -> (_ => currentYearIncomeNav.parentPaidWorkCYRoute),
-    ParentEmploymentIncomeCYId -> (_ => currentYearIncomeNav.parentEmploymentIncomeCYRoute),
-    PartnerEmploymentIncomeCYId -> (_ =>currentYearIncomeNav.partnerEmploymentIncomeCYRoute),
-    EmploymentIncomeCYId -> (_ => currentYearIncomeNav.employmentIncomeCYRoute)
+    PartnerPaidWorkCYId -> (_ =>  employmentIncomeNav.partnerPaidWorkCYRoute),
+    ParentPaidWorkCYId -> (_ => employmentIncomeNav.parentPaidWorkCYRoute),
+    ParentEmploymentIncomeCYId -> (_ => employmentIncomeNav.parentEmploymentIncomeCYRoute),
+    PartnerEmploymentIncomeCYId -> (_ =>employmentIncomeNav.partnerEmploymentIncomeCYRoute),
+    EmploymentIncomeCYId -> (_ => employmentIncomeNav.employmentIncomeCYRoute),
+    YouPaidPensionCYId -> pensionNav.yourPensionRouteCY,
+    PartnerPaidPensionCYId -> pensionNav.partnerPensionRouteCY,
+    BothPaidPensionCYId -> pensionNav.bothPensionRouteCY,
+    WhoPaysIntoPensionId -> pensionNav.whoPaysPensionRouteCY,
+    HowMuchYouPayPensionId -> pensionNav.howMuchYouPayPensionRouteCY,
+    HowMuchPartnerPayPensionId -> pensionNav.howMuchPartnerPayPensionRouteCY,
+    HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY
   )
 
   private def defineWhoGetsBenefits(whoGetsBenefits: Option[String]): String = {
