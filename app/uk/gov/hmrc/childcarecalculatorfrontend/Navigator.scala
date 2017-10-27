@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentInco
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
@@ -32,6 +32,7 @@ class Navigator @Inject()(schemes: Schemes,
                           pensionNav: PensionNavigation = new PensionNavigation(),
                           minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
                           maxHoursNav: MaximumHoursNavigation = new MaximumHoursNavigation(),
+                          otherIncomeNav: OtherIncomeNavigation = new OtherIncomeNavigation(),
                           benefitsNav: BenefitsNavigation = new BenefitsNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
@@ -90,6 +91,13 @@ class Navigator @Inject()(schemes: Schemes,
     HowMuchYouPayPensionId -> pensionNav.howMuchYouPayPensionRouteCY,
     HowMuchPartnerPayPensionId -> pensionNav.howMuchPartnerPayPensionRouteCY,
     HowMuchBothPayPensionId -> pensionNav.howMuchBothPayPensionRouteCY,
+    YourOtherIncomeThisYearId -> otherIncomeNav.yourOtherIncomeRouteCY,
+    PartnerAnyOtherIncomeThisYearId -> otherIncomeNav.partnerOtherIncomeRouteCY,
+    BothOtherIncomeThisYearId -> otherIncomeNav.bothOtherIncomeRouteCY,
+    WhoGetsOtherIncomeCYId -> otherIncomeNav.whoGetsOtherIncomeRouteCY,
+    YourOtherIncomeAmountCYId -> otherIncomeNav.howMuchYourOtherIncomeRouteCY,
+    PartnerOtherIncomeAmountCYId -> otherIncomeNav.howMuchPartnerOtherIncomeRouteCY,
+    OtherIncomeAmountCYId -> otherIncomeNav.howMuchBothOtherIncomeRouteCY,
     YouAnyTheseBenefitsIdCY -> benefitsNav.yourBenefitsRouteCY,
     PartnerAnyTheseBenefitsCYId -> benefitsNav.partnerBenefitsRouteCY,
     BothAnyTheseBenefitsCYId -> benefitsNav.bothBenefitsRouteCY,
