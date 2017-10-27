@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -29,7 +30,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
   */
 class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
-  def yourOtherIncomeRouteCY(answers: UserAnswers) = {
+  override protected def routeMap = Map(
+    YourOtherIncomeThisYearId -> yourOtherIncomeRouteCY,
+    PartnerAnyOtherIncomeThisYearId -> partnerOtherIncomeRouteCY,
+    BothOtherIncomeThisYearId -> bothOtherIncomeRouteCY,
+    WhoGetsOtherIncomeCYId -> whoGetsOtherIncomeRouteCY,
+    YourOtherIncomeAmountCYId -> howMuchYourOtherIncomeRouteCY,
+    PartnerOtherIncomeAmountCYId -> howMuchPartnerOtherIncomeRouteCY,
+    OtherIncomeAmountCYId -> howMuchBothOtherIncomeRouteCY
+  )
+
+  private def yourOtherIncomeRouteCY(answers: UserAnswers) = {
 
     val youOtherIncomeValue = answers.yourOtherIncomeThisYear
     youOtherIncomeValue match {
@@ -39,7 +50,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  def partnerOtherIncomeRouteCY(answers: UserAnswers) = {
+  private def partnerOtherIncomeRouteCY(answers: UserAnswers) = {
 
     val partnerOtherIncomeValue = answers.partnerAnyOtherIncomeThisYear
     partnerOtherIncomeValue match {
@@ -49,7 +60,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  def bothOtherIncomeRouteCY(answers: UserAnswers) = {
+  private def bothOtherIncomeRouteCY(answers: UserAnswers) = {
 
     val bothOtherIncomeValue = answers.bothOtherIncomeThisYear
     bothOtherIncomeValue match {
@@ -59,7 +70,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  def whoGetsOtherIncomeRouteCY(answers: UserAnswers) = {
+  private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) = {
 
     val WhoGetsOtherIncomeValue = answers.whoGetsOtherIncomeCY
     WhoGetsOtherIncomeValue match {
@@ -70,24 +81,24 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
+  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
     val howMuchYourOtherIncomeValue = answers.yourOtherIncomeAmountCY
 
     utils.getCallOrSessionExpired(howMuchYourOtherIncomeValue,
                             routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode))
   }
 
-  def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = {
+  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = {
     val howMuchPartnerOtherIncomeValue = answers.partnerOtherIncomeAmountCY
 
     utils.getCallOrSessionExpired(howMuchPartnerOtherIncomeValue,
       routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode))
   }
 
-  def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = {
+  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = {
     val howMuchBothOtherIncomeValue = answers.otherIncomeAmountCY
 
     utils.getCallOrSessionExpired(howMuchBothOtherIncomeValue,
       routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode))
- }
+  }
 }

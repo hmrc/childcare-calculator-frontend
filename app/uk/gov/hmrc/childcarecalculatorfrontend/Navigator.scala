@@ -23,7 +23,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.navigation.{EmploymentIncomeNavigator, MaximumHoursNavigator, MinimumHoursNavigator, PensionNavigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
@@ -33,7 +33,9 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             minHours: MinimumHoursNavigator,
             maxHours: MaximumHoursNavigator,
             pensions: PensionNavigator,
-            employment: EmploymentIncomeNavigator
+            employment: EmploymentIncomeNavigator,
+            benefits: BenefitsNavigator,
+            otherIncome: OtherIncomeNavigator
           ) {
     this(Seq(minHours, maxHours, pensions, employment): _*)
   }
