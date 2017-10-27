@@ -208,4 +208,177 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
     }
   }
 
+  "Previous Year Pension Route Navigation" when {
+
+    "in Normal mode" must {
+      "Parent Paid Pension PY Route" must {
+        "redirects to howMuchYouPayPension page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.YouPaidPensionCY) thenReturn Some(true)
+
+          navigator.nextPage(YouPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to yourOtherIncomeThisYear page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.YouPaidPensionCY) thenReturn Some(false)
+
+          navigator.nextPage(YouPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.YouPaidPensionCY) thenReturn None
+
+          navigator.nextPage(YouPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+      }
+
+      /*"Partner Paid Pension CY Route" must {
+        "redirects to HowMuchPartnerPayPension page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.PartnerPaidPensionCY) thenReturn Some(true)
+
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to yourOtherIncomeThisYear page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.PartnerPaidPensionCY) thenReturn Some(false)
+
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.PartnerPaidPensionCY) thenReturn None
+
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Both Paid Pension CY Route" must {
+        "redirects to WhoPaysIntoPension page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.bothPaidPensionCY) thenReturn Some(true)
+
+          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to BothOtherIncomeThisYear page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.bothPaidPensionCY) thenReturn Some(false)
+
+          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.bothPaidPensionCY) thenReturn None
+
+          navigator.nextPage(BothPaidPensionCYId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Who Pays Into Pension CY Route" must {
+        "redirects to howMuchYouPayPension page when user selects you option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoPaysIntoPension) thenReturn Some("you")
+
+          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
+            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to HowMuchPartnerPayPension page when user selects partner option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoPaysIntoPension) thenReturn Some("partner")
+
+          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
+            routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to HowMuchBothPayPension page when user selects both option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoPaysIntoPension) thenReturn Some("both")
+
+          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
+            routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.whoPaysIntoPension) thenReturn None
+
+          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "How Much You Pay Pension CY Route" must {
+        "redirects to YourOtherIncomeThisYear page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(HowMuchYouPayPensionId, NormalMode)(answers) mustBe
+            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchYouPayPension) thenReturn None
+
+          navigator.nextPage(HowMuchYouPayPensionId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "How Much Partner Pay Pension CY Route" must {
+        "redirects to PartnerAnyOtherIncomeThisYear page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchPartnerPayPension) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
+            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchPartnerPayPension) thenReturn None
+
+          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "How Much Both Pay Pension CY Route" must {
+        "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
+
+          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
+            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.howMuchBothPayPension) thenReturn None
+
+          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }*/
+
+    }
+  }
+
 }
