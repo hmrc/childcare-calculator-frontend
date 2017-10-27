@@ -28,14 +28,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
-//                          maxEarningsNav: MaximumEarningsNavigation = new MaximumEarningsNavigation(),
-//                          selfEmpOrApprNav: SelfEmployedOrApprenticeNavigation = new SelfEmployedOrApprenticeNavigation(),
                           employmentIncomeNav: EmploymentIncomeNavigation = new EmploymentIncomeNavigation(),
                           pensionNav: PensionNavigation = new PensionNavigation(),
                           minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
                           maxHoursNav: MaximumHoursNavigation = new MaximumHoursNavigation(),
- otherIncomeNav: OtherIncomeNavigation = new OtherIncomeNavigation()) {
-//                          currentYearIncomeNav: CurrentYearIncomeNavigation = new CurrentYearIncomeNavigation()) {
+                          otherIncomeNav: OtherIncomeNavigation = new OtherIncomeNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
