@@ -92,4 +92,15 @@ class PensionNavigation @Inject()  (utils: Utils = new Utils()){
       routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
  }
 
+  def yourPensionRoutePY(answers: UserAnswers) = {
+
+    val youPaidPensionPYValue = answers.youPaidPensionPY
+    youPaidPensionPYValue match {
+      case Some(true) => routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
+      case Some(false) => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+      case _ => utils.sessionExpired
+    }
+  }
+
+
 }

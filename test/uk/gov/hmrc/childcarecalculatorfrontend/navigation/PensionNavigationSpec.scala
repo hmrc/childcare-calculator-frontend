@@ -212,27 +212,27 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
 
     "in Normal mode" must {
       "Parent Paid Pension PY Route" must {
-        "redirects to howMuchYouPayPension page when user selects yes" in {
+        "redirects to howMuchYouPayPensionPY page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.YouPaidPensionCY) thenReturn Some(true)
+          when(answers.youPaidPensionPY) thenReturn Some(true)
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode)(answers) mustBe
-            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(YouPaidPensionPYId, NormalMode)(answers) mustBe
+            routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to yourOtherIncomeThisYear page when user selects no" in {
+        "redirects to yourOtherIncomeLY page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.YouPaidPensionCY) thenReturn Some(false)
+          when(answers.youPaidPensionPY) thenReturn Some(false)
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode)(answers) mustBe
-            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator.nextPage(YouPaidPensionPYId, NormalMode)(answers) mustBe
+            routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.YouPaidPensionCY) thenReturn None
+          when(answers.youPaidPensionPY) thenReturn None
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(YouPaidPensionPYId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
