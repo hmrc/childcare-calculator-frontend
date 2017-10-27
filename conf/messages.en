@@ -199,6 +199,9 @@ partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero
 
 hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.yes = Yes
+hasYourTaxCodeBeenAdjusted.no = No
+hasYourTaxCodeBeenAdjusted.notSure = Not sure
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
 hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
@@ -219,6 +222,9 @@ hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been ad
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.yes = Yes
+hasYourPartnersTaxCodeBeenAdjusted.no = No
+hasYourPartnersTaxCodeBeenAdjusted.notSure = Not sure
 hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if your partner’s tax code has been adjusted
 
 doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
@@ -554,6 +560,7 @@ YouPaidPensionCY.title = Have you paid into a work pension this year?
 YouPaidPensionCY.heading = Have you paid into a work pension this year?
 YouPaidPensionCY.checkYourAnswersLabel = YouPaidPensionCY
 YouPaidPensionCY.error = You must answer yes if you have paid into a pension through payroll this year
+
 PartnerPaidPensionCY.title = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.heading = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.checkYourAnswersLabel = Has your partner paid into a work pension this year?
@@ -787,6 +794,7 @@ parentEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
 
 partnerEmploymentIncome.required = You must tell the calculator what your partner will get paid this year
 partnerEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
+
 youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
 youAnyTheseBenefitsPY.heading = Did you get any of these benefits last year?
 youAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
