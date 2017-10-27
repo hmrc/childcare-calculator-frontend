@@ -42,22 +42,6 @@ class WhichDisabilityBenefitsController @Inject() (
                                                     requireData: DataRequiredAction
                                                  ) extends FrontendController with I18nSupport with MapFormats {
 
-  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
-
-  private def withValidIndex[A](index: Int)
-                               (block: String => Future[Result])
-                               (implicit request: DataRequest[A]): Future[Result] = {
-    for {
-      children <- request.userAnswers.whichChildrenDisability
-      name     <- request.userAnswers.aboutYourChild(index).map(_.name)
-    } yield if (children.contains(index.toString)) {
-        block(name)
-      } else {
-        sessionExpired
-      }
-    }.getOrElse(sessionExpired)
-
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
       withValidIndex(childIndex) {
@@ -93,4 +77,20 @@ class WhichDisabilityBenefitsController @Inject() (
           )
       }
   }
+
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+
+  private def withValidIndex[A](index: Int)
+                               (block: String => Future[Result])
+                               (implicit request: DataRequest[A]): Future[Result] = {
+    for {
+      children <- request.userAnswers.whichChildrenDisability
+      name     <- request.userAnswers.aboutYourChild(index).map(_.name)
+    } yield if (children.contains(index.toString)) {
+      block(name)
+    } else {
+      sessionExpired
+    }
+  }.getOrElse(sessionExpired)
 }
