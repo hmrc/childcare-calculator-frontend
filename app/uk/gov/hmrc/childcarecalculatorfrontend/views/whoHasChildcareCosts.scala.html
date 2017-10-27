@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.play.views.html._
 
-@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode, inputs: Map[String, String])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("whoHasChildcareCosts.title"),
@@ -35,11 +35,13 @@
 
         @components.heading("whoHasChildcareCosts.heading")
 
+        <p>@messages("whoHasChildcareCosts.hint")</p>
+
         @components.input_check_box(
             form("value"),
             legend = messages("whoHasChildcareCosts.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhoHasChildcareCostsForm.options
+            inputs = inputs
         )
 
         @components.submit_button()

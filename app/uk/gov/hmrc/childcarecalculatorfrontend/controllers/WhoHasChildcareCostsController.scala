@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.Result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -27,6 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoHasChildcareCostsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
@@ -40,21 +42,26 @@ class WhoHasChildcareCostsController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      val answer = request.userAnswers.whoHasChildcareCosts
-      val preparedForm = answer match {
-        case None => WhoHasChildcareCostsForm()
-        case Some(value) => WhoHasChildcareCostsForm().fill(value)
+      withValues {
+        values =>
+        val answer = request.userAnswers.whoHasChildcareCosts
+        val preparedForm = answer match {
+          case None => WhoHasChildcareCostsForm()
+          case Some(value) => WhoHasChildcareCostsForm().fill(value)
+        }
+        Future.successful(Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, values)))
       }
-      Ok(whoHasChildcareCosts(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhoHasChildcareCostsForm().bindFromRequest().fold(
+      withValues {
+        values =>
+      WhoHasChildcareCostsForm(values.values.toSeq: _*).bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
-          Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode)))
+          Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, values)))
         },
         (value) => {
           dataCacheConnector.save[Set[String]](request.sessionId, WhoHasChildcareCostsId.toString, value).map {
@@ -63,5 +70,17 @@ class WhoHasChildcareCostsController @Inject()(
           }
         }
       )
+      }
+  }
+
+  private def withValues[A](block: Map[String, String] => Future[Result])(implicit request: DataRequest[A]): Future[Result]= {
+    request.userAnswers.aboutYourChild.map {
+      aboutYourChild =>
+        val values: Map[String, String] = aboutYourChild.map {
+          case (i, model) =>
+            model.name -> i.toString
+        }
+        block(values)
+      }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
   }
 }

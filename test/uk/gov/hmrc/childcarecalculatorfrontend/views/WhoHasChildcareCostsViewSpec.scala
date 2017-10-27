@@ -29,19 +29,21 @@ class WhoHasChildcareCostsViewSpec extends ViewBehaviours with CheckboxViewBehav
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, String] = WhoHasChildcareCostsForm.options
+  val values: Map[String, String] = Map(
+    "Foo" -> "0",
+    "Bar" -> "1"
+  )
 
-  def form: Form[Set[String]] = WhoHasChildcareCostsForm()
+  def form: Form[Set[String]] = WhoHasChildcareCostsForm("0", "1")
 
   def createView(form: Form[Set[String]] = form): Html =
-    whoHasChildcareCosts(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+    whoHasChildcareCosts(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages)
 
   "WhoHasChildcareCosts view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
-
     behave like checkboxPage()
   }
 }

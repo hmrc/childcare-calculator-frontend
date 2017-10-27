@@ -1113,8 +1113,8 @@ whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
 whichChildrenBlind.hint = Select all who are
 whichChildrenBlind.error = You must tell the calculator who is registered blind
 
-whoHasChildcareCosts.title = whoHasChildcareCosts
-whoHasChildcareCosts.heading = whoHasChildcareCosts
-whoHasChildcareCosts.option1 = whoHasChildcareCosts Option 1
-whoHasChildcareCosts.option2 = whoHasChildcareCosts Option 2
-whoHasChildcareCosts.checkYourAnswersLabel = whoHasChildcareCosts
+whoHasChildcareCosts.title = Who has childcare costs?
+whoHasChildcareCosts.heading = Who has childcare costs?
+whoHasChildcareCosts.checkYourAnswersLabel = Who has childcare costs?
+whoHasChildcareCosts.hint = Select all who have
+whoHasChildcareCosts.error = You must tell the calculator who has childcare costs
