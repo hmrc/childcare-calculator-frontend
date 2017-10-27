@@ -23,6 +23,8 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfoPY
 
 @Singleton
@@ -32,6 +34,27 @@ class PartnerIncomeInfoPYController @Inject()(val appConfig: FrontendAppConfig,
                                       requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(partnerIncomeInfoPY(appConfig))
+    Ok(partnerIncomeInfoPY(appConfig,getNextPageUrl(request.userAnswers)))
+  }
+
+  private def getNextPageUrl(userAnswers: UserAnswers) = {
+
+    val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
+    val paidEmployment = userAnswers.whoIsInPaidEmployment
+
+    val You = YouPartnerBothEnum.YOU.toString
+    val Partner = YouPartnerBothEnum.PARTNER.toString
+    val Both = YouPartnerBothEnum.BOTH.toString
+
+    if(hasPartner) {
+      paidEmployment match {
+        case Some(You) => routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
+        case Some(Partner) => routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
+        case Some(Both) => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
+    }else {
+      routes.SessionExpiredController.onPageLoad()
+    }
   }
 }

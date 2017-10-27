@@ -97,5 +97,4 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
 
     }
   }
-
 }
