@@ -32,7 +32,8 @@ class Navigator @Inject()(schemes: Schemes,
                           pensionNav: PensionNavigation = new PensionNavigation(),
                           minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
                           maxHoursNav: MaximumHoursNavigation = new MaximumHoursNavigation(),
-                          otherIncomeNav: OtherIncomeNavigation = new OtherIncomeNavigation()) {
+                          otherIncomeNav: OtherIncomeNavigation = new OtherIncomeNavigation(),
+                          benefitsNav: BenefitsNavigation = new BenefitsNavigation()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -96,7 +97,14 @@ class Navigator @Inject()(schemes: Schemes,
     WhoGetsOtherIncomeCYId -> otherIncomeNav.whoGetsOtherIncomeRouteCY,
     YourOtherIncomeAmountCYId -> otherIncomeNav.howMuchYourOtherIncomeRouteCY,
     PartnerOtherIncomeAmountCYId -> otherIncomeNav.howMuchPartnerOtherIncomeRouteCY,
-    OtherIncomeAmountCYId -> otherIncomeNav.howMuchBothOtherIncomeRouteCY
+    OtherIncomeAmountCYId -> otherIncomeNav.howMuchBothOtherIncomeRouteCY,
+    YouAnyTheseBenefitsIdCY -> benefitsNav.yourBenefitsRouteCY,
+    PartnerAnyTheseBenefitsCYId -> benefitsNav.partnerBenefitsRouteCY,
+    BothAnyTheseBenefitsCYId -> benefitsNav.bothBenefitsRouteCY,
+    WhosHadBenefitsId -> benefitsNav.whosHadBenefitsRouteCY,
+    YouBenefitsIncomeCYId -> benefitsNav.yourBenefitsIncomeRouteCY,
+    PartnerBenefitsIncomeCYId -> benefitsNav.partnerBenefitsIncomeRouteCY,
+    BenefitsIncomeCYId -> benefitsNav.bothBenefitsIncomeRouteCY
   )
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
