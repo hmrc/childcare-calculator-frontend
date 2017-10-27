@@ -1,0 +1,31 @@
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.play.views.html._
+
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("whoHasChildcareCosts.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
+
+    @helpers.form(action = WhoHasChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("whoHasChildcareCosts.heading")
+
+        @components.input_check_box(
+            form("value"),
+            legend = messages("whoHasChildcareCosts.heading"),
+            legendClass = Some("visually-hidden"),
+            inputs = WhoHasChildcareCostsForm.options
+        )
+
+        @components.submit_button()
+    }
+}
