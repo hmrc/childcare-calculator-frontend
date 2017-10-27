@@ -652,3 +652,8 @@ GET        /whichChildrenBlind               uk.gov.hmrc.childcarecalculatorfron
 POST       /whichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhichChildrenBlind               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whoHasChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoHasChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoHasChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoHasChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onSubmit(mode: Mode = CheckMode)
