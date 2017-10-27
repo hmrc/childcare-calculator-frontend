@@ -51,7 +51,7 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
 
   lazy val cases: Seq[(Int, String)] = {
     val names: Stream[String] = Stream.continually(Random.alphanumeric.take(5).mkString)
-    val indices: Stream[Int] = Stream.continually(Random.nextInt(20))
+    lazy val indices: Stream[Int] = Stream.from(Random.nextInt(15))
     indices.zip(names).take(3)
   }.distinct
 

@@ -38,7 +38,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
   "WhichDisabilityBenefits Controller" must {
 
     val cases: Stream[(Int, String)] = {
-      val indices = Stream.continually(Random.nextInt(20))
+      val indices = Stream.from(Random.nextInt(15))
       val names = Stream.continually(Random.alphanumeric.take(5).mkString)
       indices.zip(names).take(3)
     }.distinct

@@ -29,6 +29,8 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
   def whichDisabilityBenefits(index: Int): Option[Set[DisabilityBenefits.Value]] =
     whichDisabilityBenefits.flatMap(_.get(index))
 
+  def whoHasChildcareCosts: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhoHasChildcareCostsId.toString)
+
   def whichChildrenBlind: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenBlindId.toString)
 
   def whichChildrenDisability: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenDisabilityId.toString)
