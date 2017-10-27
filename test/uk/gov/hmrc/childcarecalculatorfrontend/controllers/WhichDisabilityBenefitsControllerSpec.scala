@@ -65,7 +65,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
           val result = controller(getRelevantData).onPageLoad(NormalMode, index)(fakeRequest)
 
-          contentAsString(result) mustEqual viewAsString(WhichDisabilityBenefitsForm().fill(Set(DisabilityBenefits(0))), index, name)
+          contentAsString(result) mustEqual viewAsString(WhichDisabilityBenefitsForm(name).fill(Set(DisabilityBenefits(0))), index, name)
         }
 
         s"redirect to the next page when valid data is submitted, for index: $index, name: $name" in {
@@ -80,7 +80,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value"))
-      val boundForm = WhichDisabilityBenefitsForm().bind(Map("value[0]" -> "invalid value"))
+      val boundForm = WhichDisabilityBenefitsForm("Foo").bind(Map("value[0]" -> "invalid value"))
 
       val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 0)(postRequest)
 
@@ -155,11 +155,19 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
     new WhichDisabilityBenefitsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
+  def viewAsString(form: Form[Set[DisabilityBenefits.Value]]): String =
+    viewAsString(form, 0, "Foo")
+
   def viewAsString(
-                    form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm(),
-                    index: Int = 0,
-                    name: String = "Foo"
-                  ) =
+                  index: Int,
+                  name: String
+                  ): String = viewAsString(WhichDisabilityBenefitsForm(name), index, name)
+
+  def viewAsString(
+                    form: Form[Set[DisabilityBenefits.Value]],
+                    index: Int,
+                    name: String
+                  ): String =
     whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages).toString
 
   def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = Map(

@@ -25,12 +25,12 @@ class WhichDisabilityBenefitsFormSpec extends CheckboxBehaviours[DisabilityBenef
 
   override val fieldName = "value"
 
-  val form = WhichDisabilityBenefitsForm()
+  val form = WhichDisabilityBenefitsForm("Foo")
 
   "WhichDisabilityBenefits form" must {
 
     behave like aCheckboxForm(invalid = "error.unknown")
 
-    behave like aMandatoryCheckboxForm(required = "whichDisabilityBenefits.error")
+    behave like aMandatoryCheckboxForm("whichDisabilityBenefits.error", "Foo")
   }
 }

@@ -19,11 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import play.api.data.validation.{Constraint, Invalid, Valid}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
 
 object WhichDisabilityBenefitsForm extends FormErrorHelper {
 
-  def whichDisabilityBenefitsFormatter = new Formatter[DisabilityBenefits.Value] {
+  private def whichDisabilityBenefitsFormatter = new Formatter[DisabilityBenefits.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(DisabilityBenefits.withName(s))
       case None => produceError(key, "whichDisabilityBenefits.error")
@@ -33,16 +34,23 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
     def unbind(key: String, value: DisabilityBenefits.Value) = Map(key -> value.toString)
   }
 
-  def apply(): Form[Set[DisabilityBenefits.Value]] =
+  private def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
+
+  private def constraint(name: String): Constraint[Set[DisabilityBenefits.Value]] = Constraint {
+    case set if set.nonEmpty =>
+      Valid
+    case _ =>
+      Invalid("whichDisabilityBenefits.error", name)
+  }
+
+  def apply(name: String): Form[Set[DisabilityBenefits.Value]] =
     Form(
       "value" -> set(of(whichDisabilityBenefitsFormatter))
-        .verifying("whichDisabilityBenefits.error", _.nonEmpty)
+        .verifying(constraint(name))
     )
 
   def options: Map[String, String] = DisabilityBenefits.values.map {
     value =>
       s"whichDisabilityBenefits.$value" -> value.toString
   }.toMap
-
-  def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
 }

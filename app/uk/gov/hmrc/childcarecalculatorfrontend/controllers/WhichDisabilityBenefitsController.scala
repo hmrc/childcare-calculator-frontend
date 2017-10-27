@@ -64,8 +64,8 @@ class WhichDisabilityBenefitsController @Inject() (
         name =>
           val answer = request.userAnswers.whichDisabilityBenefits(childIndex)
           val preparedForm = answer match {
-            case None => WhichDisabilityBenefitsForm()
-            case Some(value) => WhichDisabilityBenefitsForm().fill(value)
+            case None => WhichDisabilityBenefitsForm(name)
+            case Some(value) => WhichDisabilityBenefitsForm(name).fill(value)
           }
           Future.successful(Ok(whichDisabilityBenefits(appConfig, preparedForm, childIndex, name, mode)))
         }
@@ -75,7 +75,7 @@ class WhichDisabilityBenefitsController @Inject() (
     implicit request =>
       withValidIndex(childIndex) {
         name =>
-          WhichDisabilityBenefitsForm().bindFromRequest().fold(
+          WhichDisabilityBenefitsForm(name).bindFromRequest().fold(
             formWithErrors => {
               Future.successful(BadRequest(whichDisabilityBenefits(appConfig, formWithErrors, childIndex, name, mode)))
             },

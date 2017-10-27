@@ -36,7 +36,7 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
       case (k, v) => k -> DisabilityBenefits.withName(v)
     }
 
-  def form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm()
+  def form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm("Foo")
 
   override def createView(): Html = createView(form)
 
@@ -67,7 +67,7 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
         s"data of index: $index, name: $name" when {
 
           behave like normalPageWithTitleAsString(
-            () => createView(form, index, name),
+            () => createView(WhichDisabilityBenefitsForm(name), index, name),
             messageKeyPrefix,
             messages("whichDisabilityBenefits.title"),
             Some(messages("whichDisabilityBenefits.heading", name)),
