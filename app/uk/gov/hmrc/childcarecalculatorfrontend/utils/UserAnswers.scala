@@ -257,13 +257,13 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
 
   def whatIsYourPartnersTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourPartnersTaxCodeId.toString)
 
-  def hasYourPartnersTaxCodeBeenAdjusted: Option[Boolean] = cacheMap.getEntry[Boolean](HasYourPartnersTaxCodeBeenAdjustedId.toString)
-
-  def hasYourTaxCodeBeenAdjusted: Option[Boolean] = cacheMap.getEntry[Boolean](HasYourTaxCodeBeenAdjustedId.toString)
-
   def doYouKnowYourPartnersAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourPartnersAdjustedTaxCodeId.toString)
 
   def doYouKnowYourAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourAdjustedTaxCodeId.toString)
+
+  def hasYourTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourTaxCodeBeenAdjustedId.toString)
+
+  def hasYourPartnersTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourPartnersTaxCodeBeenAdjustedId.toString)
 
   def partnerWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerWorkHoursId.toString)
 
@@ -287,12 +287,17 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
 
   def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
 
-  def hasBothInPaidWork: Boolean = {
-    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)
-  }
+  def isYouPartnerOrBoth(who: Option[String]): String = {
+    val You: String = YouPartnerBothEnum.YOU.toString
+    val Partner: String = YouPartnerBothEnum.PARTNER.toString
+    val Both: String = YouPartnerBothEnum.BOTH.toString
 
-  def hasPartnerInPaidWork: Boolean = {
-    doYouLiveWithPartner.contains(true) && whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
+    who match {
+      case Some(You) => You
+      case Some(Partner) => Partner
+      case Some(Both) => Both
+      case _ => You
+    }
   }
 
   // TODO 31st August

@@ -20,7 +20,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.navigation.MaximumEarningsNavigation
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.MaximumHoursNavigation
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FakeNavigator(desiredRoute: Call,

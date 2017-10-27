@@ -450,14 +450,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("eitherGetsVouchers.checkYourAnswersLabel", s"vouchers.$x", true, routes.EitherGetsVouchersController.onPageLoad(CheckMode).url)
   }
 
-  def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
-    x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
-  }
+      def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
+        x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourTaxCodeBeenAdjusted.$x", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+      }
 
-  def hasYourPartnersTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourPartnersTaxCodeBeenAdjusted map {
-    x => AnswerRow("hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
-  }
-
+      def hasYourPartnersTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourPartnersTaxCodeBeenAdjusted map {
+        x => AnswerRow("hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourPartnersTaxCodeBeenAdjusted.$x", true, routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
+}
   def doYouKnowYourAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourAdjustedTaxCode map {
     x => AnswerRow("doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(CheckMode).url)
   }

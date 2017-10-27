@@ -20,12 +20,11 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.HasYourPartnersTaxCodeBeenAdjustedForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HasYourPartnersTaxCodeBeenAdjustedId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -33,29 +32,30 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.hasYourPartnersTaxCode
 
 import scala.concurrent.Future
 
-class HasYourPartnersTaxCodeBeenAdjustedController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+class HasYourPartnersTaxCodeBeenAdjustedController @Inject()(
+                                        appConfig: FrontendAppConfig,
+                                        override val messagesApi: MessagesApi,
+                                        dataCacheConnector: DataCacheConnector,
+                                        navigator: Navigator,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.hasYourPartnersTaxCodeBeenAdjusted match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+        case None => HasYourPartnersTaxCodeBeenAdjustedForm()
+        case Some(value) => HasYourPartnersTaxCodeBeenAdjustedForm().fill(value)
       }
       Ok(hasYourPartnersTaxCodeBeenAdjusted(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("hasYourPartnersTaxCodeBeenAdjusted.error").bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
+      HasYourPartnersTaxCodeBeenAdjustedForm().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(hasYourPartnersTaxCodeBeenAdjusted(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, HasYourPartnersTaxCodeBeenAdjustedId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[String](request.sessionId, HasYourPartnersTaxCodeBeenAdjustedId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, mode)(new UserAnswers(cacheMap))))
       )
   }
