@@ -143,9 +143,9 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.bothPaidPensionCY) thenReturn None
+          when(answers.whoPaysIntoPension) thenReturn None
 
-          navigator.nextPage(BothPaidPensionCYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(WhoPaysIntoPensionId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
