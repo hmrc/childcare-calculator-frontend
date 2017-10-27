@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-case object WhoHasChildcareCostsId extends Identifier {
-  override def toString: String = "whoHasChildcareCosts"
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
+
+class WhoHasChildcareCostsFormSpec extends CheckboxBehaviours[String] {
+
+  override val validOptions: Set[String] = Set("option1", "option2")
+
+  override val fieldName = "value"
+
+  val form = WhoHasChildcareCostsForm()
+
+  "WhoHasChildcareCosts form" must {
+    behave like aCheckboxForm(invalid = "error.unknown")
+  }
 }

@@ -1112,3 +1112,9 @@ whichChildrenBlind.heading = Who is registered blind?
 whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
 whichChildrenBlind.hint = Select all who are
 whichChildrenBlind.error = You must tell the calculator who is registered blind
+
+whoHasChildcareCosts.title = whoHasChildcareCosts
+whoHasChildcareCosts.heading = whoHasChildcareCosts
+whoHasChildcareCosts.option1 = whoHasChildcareCosts Option 1
+whoHasChildcareCosts.option2 = whoHasChildcareCosts Option 2
+whoHasChildcareCosts.checkYourAnswersLabel = whoHasChildcareCosts
