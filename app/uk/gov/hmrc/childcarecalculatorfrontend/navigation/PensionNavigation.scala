@@ -146,4 +146,11 @@ class PensionNavigation @Inject()  (utils: Utils = new Utils()){
     utils.getCallOrSessionExpired(howMuchPartnerPayPensionPYValue,
       routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode))
   }
+
+  def howMuchBothPayPensionRoutePY(answers: UserAnswers) = {
+    val howMuchBothPayPensionPYValue = answers.howMuchBothPayPensionPY
+
+    utils.getCallOrSessionExpired(howMuchBothPayPensionPYValue,
+      routes.BothOtherIncomeLYController.onPageLoad(NormalMode))
+  }
 }

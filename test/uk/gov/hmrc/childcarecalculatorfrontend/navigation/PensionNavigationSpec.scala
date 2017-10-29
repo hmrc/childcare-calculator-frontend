@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, EmploymentIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPensionPY, HowMuchBothPayPension, EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
@@ -361,23 +361,23 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /*"How Much Both Pay Pension CY Route" must {
-        "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
+      "How Much Both Pay Pension PY Route" must {
+        "redirects to bothOtherIncomeLY page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
+          when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY("23", "23"))
 
-          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
-            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator.nextPage(HowMuchBothPayPensionPYId, NormalMode)(answers) mustBe
+            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchBothPayPension) thenReturn None
+          when(answers.howMuchBothPayPensionPY) thenReturn None
 
-          navigator.nextPage(HowMuchBothPayPensionId, NormalMode)(answers) mustBe
+          navigator.nextPage(HowMuchBothPayPensionPYId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-      }*/
+      }
 
     }
   }
