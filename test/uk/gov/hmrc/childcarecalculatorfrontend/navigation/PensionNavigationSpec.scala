@@ -343,25 +343,25 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /*"How Much Partner Pay Pension CY Route" must {
-        "redirects to PartnerAnyOtherIncomeThisYear page when user provides valid input" in {
+      "How Much Partner Pay Pension PY Route" must {
+        "redirects to partnerAnyOtherIncomeLY page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchPartnerPayPension) thenReturn Some(BigDecimal(23))
+          when(answers.howMuchPartnerPayPensionPY) thenReturn Some(BigDecimal(23))
 
-          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
-            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator.nextPage(HowMuchPartnerPayPensionPYId, NormalMode)(answers) mustBe
+            routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchPartnerPayPension) thenReturn None
+          when(answers.howMuchPartnerPayPensionPY) thenReturn None
 
-          navigator.nextPage(HowMuchPartnerPayPensionId, NormalMode)(answers) mustBe
+          navigator.nextPage(HowMuchPartnerPayPensionPYId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
 
-      "How Much Both Pay Pension CY Route" must {
+      /*"How Much Both Pay Pension CY Route" must {
         "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
