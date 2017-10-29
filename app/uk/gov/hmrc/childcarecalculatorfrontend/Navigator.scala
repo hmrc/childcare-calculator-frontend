@@ -108,7 +108,8 @@ class Navigator @Inject()(schemes: Schemes,
     YouPaidPensionPYId -> pensionNav.yourPensionRoutePY,
     PartnerPaidPensionPYId -> pensionNav.partnerPensionRoutePY,
     BothPaidPensionPYId -> pensionNav.bothPensionRoutePY,
-    WhoPaidIntoPensionPYId -> pensionNav.whoPaysPensionRoutePY
+    WhoPaidIntoPensionPYId -> pensionNav.whoPaysPensionRoutePY,
+    HowMuchYouPayPensionPYId -> pensionNav.howMuchYouPayPensionRoutePY
   )
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
