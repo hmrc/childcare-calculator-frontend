@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -290,41 +291,41 @@ class PensionNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /*"Who Pays Into Pension CY Route" must {
-        "redirects to howMuchYouPayPension page when user selects you option" in {
+      "Who Pays Into Pension PY Route" must {
+        "redirects to howMuchYouPayPensionPY page when user selects you option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn Some("you")
+          when(answers.whoPaidIntoPensionPY) thenReturn Some(You)
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
-            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(WhoPaidIntoPensionPYId, NormalMode)(answers) mustBe
+            routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to HowMuchPartnerPayPension page when user selects partner option" in {
+        "redirects to HowMuchPartnerPayPensionPY page when user selects partner option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn Some("partner")
+          when(answers.whoPaidIntoPensionPY) thenReturn Some(Partner)
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
-            routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(WhoPaidIntoPensionPYId, NormalMode)(answers) mustBe
+            routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to HowMuchBothPayPension page when user selects both option" in {
+        "redirects to HowMuchBothPayPensionPY page when user selects both option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn Some("both")
+          when(answers.whoPaidIntoPensionPY) thenReturn Some(Both)
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
-            routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(WhoPaidIntoPensionPYId, NormalMode)(answers) mustBe
+            routes.HowMuchBothPayPensionPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension) thenReturn None
+          when(answers.whoPaidIntoPensionPY) thenReturn None
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode)(answers) mustBe
+          navigator.nextPage(WhoPaidIntoPensionPYId, NormalMode)(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
 
-      "How Much You Pay Pension CY Route" must {
+      /*"How Much You Pay Pension CY Route" must {
         "redirects to YourOtherIncomeThisYear page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
