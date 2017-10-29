@@ -112,4 +112,14 @@ class PensionNavigation @Inject()  (utils: Utils = new Utils()){
     }
   }
 
+  def bothPensionRoutePY(answers: UserAnswers) = {
+
+    val bothPaidPensionPYValue = answers.bothPaidPensionPY
+    bothPaidPensionPYValue match {
+      case Some(true) => routes.WhoPaidIntoPensionPYController.onPageLoad(NormalMode)
+      case Some(false) => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+      case _ => utils.sessionExpired
+    }
+  }
+
 }
