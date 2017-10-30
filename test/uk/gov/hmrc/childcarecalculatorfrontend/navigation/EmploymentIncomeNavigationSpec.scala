@@ -17,21 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import org.mockito.Mockito._
+import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with OptionValues {
 
-class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
-
-  val navigator = new Navigator(new Schemes())
+  val navigator = new EmploymentIncomeNavigator()
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -44,10 +42,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
       }
@@ -57,10 +55,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.parentPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
       }
@@ -70,7 +68,7 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.YouPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
@@ -80,7 +78,7 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
@@ -90,12 +88,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY("12", "20"))
 
-          navigator.nextPage(EmploymentIncomeCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
-
-
 
     }
   }
@@ -108,10 +104,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerPaidWorkPY) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(PartnerPaidWorkPYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerPaidWorkPYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
 
-          navigator.nextPage(PartnerPaidWorkPYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerPaidWorkPYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
         }
       }
@@ -121,10 +117,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
          val answers = spy(userAnswers())
          when(answers.parentPaidWorkPY) thenReturn Some(true) thenReturn Some(false)
 
-         navigator.nextPage(ParentPaidWorkPYId, NormalMode)(answers) mustBe
+         navigator.nextPage(ParentPaidWorkPYId, NormalMode).value(answers) mustBe
            routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
 
-         navigator.nextPage(ParentPaidWorkPYId, NormalMode)(answers) mustBe
+         navigator.nextPage(ParentPaidWorkPYId, NormalMode).value(answers) mustBe
            routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
        }
      }
@@ -134,35 +130,32 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(ParentEmploymentIncomePYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentEmploymentIncomePYId, NormalMode).value(answers) mustBe
             routes.YouPaidPensionPYController.onPageLoad(NormalMode)
         }
       }
 
-   "Partner Employment Income PY Route" must {
+    "Partner Employment Income PY Route" must {
         "redirects to partner paid pension PY when when user provides valid value" in {
           val answers = spy(userAnswers())
           when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode).value(answers) mustBe
             routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
         }
       }
 
-   "Parent and Partner Employment Income PY Route" must {
+    "Parent and Partner Employment Income PY Route" must {
        "redirects to both paid pension PY when when user provides valid values" in {
          val answers = spy(userAnswers())
          when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY("12", "20"))
 
-         navigator.nextPage(EmploymentIncomePYId, NormalMode)(answers) mustBe
+         navigator.nextPage(EmploymentIncomePYId, NormalMode).value(answers) mustBe
            routes.BothPaidPensionPYController.onPageLoad(NormalMode)
        }
      }
 
-
-
     }
   }
-
 
 }

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import play.api.data.Form
+import play.api.data.Forms._
 
-class FakeNavigator(
-                     desiredRoute: Call,
-                     mode: Mode = NormalMode
-                   ) extends Navigator {
 
-  override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call =
-    _ => desiredRoute
-}
+object WhoHasChildcareCostsForm extends FormErrorHelper {
+
+
+  def apply(options: String*): Form[Set[String]] =
+    Form(
+      "value" -> set(text.verifying("error.unknown", options.contains _))
+          .verifying("whoHasChildcareCosts.error", _.nonEmpty)
+    )
+  }

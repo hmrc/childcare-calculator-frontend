@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
 
-class FakeNavigator(
-                     desiredRoute: Call,
-                     mode: Mode = NormalMode
-                   ) extends Navigator {
+class WhoHasChildcareCostsFormSpec extends CheckboxBehaviours[String] {
 
-  override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call =
-    _ => desiredRoute
+  override val validOptions: Set[String] = Set("0", "1")
+
+  override val fieldName = "value"
+
+  val form = WhoHasChildcareCostsForm("0", "1")
+
+  "WhoHasChildcareCosts form" must {
+
+    behave like aCheckboxForm(invalid = "error.unknown")
+
+    behave like aMandatoryCheckboxForm("whoHasChildcareCosts.error")
+  }
 }

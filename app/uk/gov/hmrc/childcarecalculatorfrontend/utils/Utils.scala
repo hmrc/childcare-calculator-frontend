@@ -25,7 +25,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import play.api.Configuration
 
-@Singleton
 class Utils {
 
   /**
@@ -126,5 +125,4 @@ class Utils {
       case _ => sessionExpired
     }
   }
-
 }

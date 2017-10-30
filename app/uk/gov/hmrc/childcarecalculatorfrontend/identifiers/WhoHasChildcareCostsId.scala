@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-
-class FakeNavigator(
-                     desiredRoute: Call,
-                     mode: Mode = NormalMode
-                   ) extends Navigator {
-
-  override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call =
-    _ => desiredRoute
+case object WhoHasChildcareCostsId extends Identifier {
+  override def toString: String = "whoHasChildcareCosts"
 }
