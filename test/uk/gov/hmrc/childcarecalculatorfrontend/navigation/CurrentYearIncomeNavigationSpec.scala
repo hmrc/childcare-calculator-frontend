@@ -17,21 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import org.mockito.Mockito._
+import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 
-class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
+class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar with OptionValues {
 
-  val navigator = new Navigator(new Schemes())
+  val navigator = new EmploymentIncomeNavigator()
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -44,10 +43,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
       }
@@ -57,10 +56,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.parentPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
       }
@@ -70,7 +69,7 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.YouPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
@@ -80,7 +79,7 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
@@ -90,12 +89,10 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY("12", "20"))
 
-          navigator.nextPage(EmploymentIncomeCYId, NormalMode)(answers) mustBe
+          navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
-
     }
   }
-
 }
