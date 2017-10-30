@@ -204,4 +204,61 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
+  "Previous Year Other Income Route Navigation" when {
+
+    "in Normal mode" must {
+      "Parent Other Income PY Route" must {
+        "redirects to YourOtherIncomeAmountLY page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeLY) thenReturn Some(true)
+
+          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to YouAnyTheseBenefitsLY page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeLY) thenReturn Some(false)
+
+          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeLY) thenReturn None
+
+          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner Other Income PY Route" must {
+        "redirects to PartnerOtherIncomeAmountPY page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerAnyOtherIncomeLY) thenReturn Some(true)
+
+          navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to PartnerAnyTheseBenefitsPY page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerAnyOtherIncomeLY) thenReturn Some(false)
+
+          navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerAnyOtherIncomeLY) thenReturn None
+
+          navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+    }
+  }
 }
