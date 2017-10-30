@@ -43,7 +43,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     BothAnyTheseBenefitsPYId -> bothBenefitsRoutePY,
     WhosHadBenefitsPYId -> whosHadBenefitsRoutePY,
     YouBenefitsIncomePYId -> yourBenefitsIncomeRoutePY,
-    PartnerBenefitsIncomePYId -> partnerBenefitsIncomeRoutePY
+    PartnerBenefitsIncomePYId -> partnerBenefitsIncomeRoutePY,
+    BothBenefitsIncomePYId -> bothBenefitsIncomeRoutePY
   )
 
   private def yourBenefitsRouteCY(answers: UserAnswers) = {
@@ -147,5 +148,11 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode))
   }
 
+  private def bothBenefitsIncomeRoutePY(answers: UserAnswers) = {
+    val bothBenefitsIncomePYValue = answers.bothBenefitsIncomePY
+
+    utils.getCallOrSessionExpired(bothBenefitsIncomePYValue,
+      routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
+  }
 
 }
