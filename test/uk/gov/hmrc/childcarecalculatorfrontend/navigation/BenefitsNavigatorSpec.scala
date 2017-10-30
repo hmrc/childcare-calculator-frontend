@@ -205,4 +205,175 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
+  "Previous Year Benefits Route Navigation" when {
+
+    "in Normal mode" must {
+      "Parent Benefits PY Route" must {
+        "redirects to youBenefitsIncomePY page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefitsPY) thenReturn Some(true)
+
+          navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to yourStatutoryPayPY page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefitsPY) thenReturn Some(false)
+
+          navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefitsPY) thenReturn None
+
+          navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      /*"Partner Benefits CY Route" must {
+        "redirects to partnerBenefitsIncomeCY page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(true)
+
+          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+            routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to partnerStatutoryPayCY page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(false)
+
+          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerAnyTheseBenefitsCY) thenReturn None
+
+          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Both Benefits CY Route" must {
+        "redirects to whosHadBenefits page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
+
+          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+            routes.WhosHadBenefitsController.onPageLoad(NormalMode)
+        }
+
+        "redirects to bothStatutoryPayCY page when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(false)
+
+          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+            routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.bothAnyTheseBenefitsCY) thenReturn None
+
+          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Whos Had Benefits CY Route" must {
+        "redirects to youBenefitsIncomeCY page when user selects you option" in {
+          val answers = spy(userAnswers())
+          when(answers.whosHadBenefits) thenReturn Some(You)
+
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to partnerBenefitsIncomeCY page when user selects partner option" in {
+          val answers = spy(userAnswers())
+          when(answers.whosHadBenefits) thenReturn Some(Partner)
+
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to benefitsIncomeCY page when user selects both option" in {
+          val answers = spy(userAnswers())
+          when(answers.whosHadBenefits) thenReturn Some(Both)
+
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.whosHadBenefits) thenReturn None
+
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "You Benefits Income CY Route" must {
+        "redirects to YourStatutoryPayCY page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.youBenefitsIncomeCY) thenReturn None
+
+          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner Benefits Income CY Route" must {
+        "redirects to partnerStatutoryPayCY page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerBenefitsIncomeCY) thenReturn None
+
+          navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Both Benefits Income CY Route" must {
+        "redirects to bothStatutoryPayCY page when user provides valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY("23", "23"))
+
+          navigator.nextPage(BenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.benefitsIncomeCY) thenReturn None
+
+          navigator.nextPage(BenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }*/
+    }
+  }
 }

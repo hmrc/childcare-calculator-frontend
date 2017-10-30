@@ -37,7 +37,7 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             benefits: BenefitsNavigator,
             otherIncome: OtherIncomeNavigator
           ) {
-    this(Seq(minHours, maxHours, pensions, employment): _*)
+    this(Seq(minHours, maxHours, pensions, employment, benefits, otherIncome): _*)
   }
 
   override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
