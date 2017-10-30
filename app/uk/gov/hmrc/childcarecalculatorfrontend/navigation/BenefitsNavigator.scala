@@ -40,7 +40,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY,
     YouAnyTheseBenefitsPYId -> yourBenefitsRoutePY,
     PartnerAnyTheseBenefitsPYId -> partnerBenefitsRoutePY,
-    BothAnyTheseBenefitsPYId -> bothBenefitsRoutePY
+    BothAnyTheseBenefitsPYId -> bothBenefitsRoutePY,
+    WhosHadBenefitsPYId -> whosHadBenefitsRoutePY
   )
 
   private def yourBenefitsRouteCY(answers: UserAnswers) = {
@@ -117,6 +118,15 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     answers.bothAnyTheseBenefitsPY match {
       case Some(true) => routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
       case Some(false) => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+      case _ => utils.sessionExpired
+    }
+  }
+
+  private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
+    answers.whosHadBenefitsPY match {
+      case Some(You) => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
+      case Some(Partner) => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
+      case Some(Both) => routes.BothBenefitsIncomePYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
     }
   }
