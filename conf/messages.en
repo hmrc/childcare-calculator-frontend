@@ -1118,3 +1118,17 @@ whoHasChildcareCosts.heading = Who has childcare costs?
 whoHasChildcareCosts.checkYourAnswersLabel = Who has childcare costs?
 whoHasChildcareCosts.hint = Select all who have
 whoHasChildcareCosts.error = You must tell the calculator who has childcare costs
+
+whichDisabilityBenefits.title = Which disability benefits does your child get?
+whichDisabilityBenefits.heading = Which disability benefits does {0} get?
+whichDisabilityBenefits.checkYourAnswersLabel = Which disability benefits does {0} get?
+whichDisabilityBenefits.disability-benefits = Disability benefits
+whichDisabilityBenefits.higher-disability-benefit = Higher rate disability benefits
+whichDisabilityBenefits.help = Help with benefits
+whichDisabilityBenefits.types = Types of disability benefits
+whichDisabilityBenefits.dla = Disability Living Allowance
+whichDisabilityBenefits.pip = Personal Independence Payment
+whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
+whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
+whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
+whichDisabilityBenefits.error = You must tell the calculator if {0} gets benefits

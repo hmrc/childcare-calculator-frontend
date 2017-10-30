@@ -16,16 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Singleton
+import javax.inject.Inject
 
+import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, LocationEnum, NormalMode, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-@Singleton
-class MinimumHoursNavigation {
+class MinimumHoursNavigator @Inject() () extends SubNavigator {
 
-  def locationRoute(answers: UserAnswers) = {
+  override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
+    LocationId -> locationRoute,
+    ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildcareCostsId -> costRoute,
+    ApprovedProviderId -> approvedChildCareRoute
+  )
+
+  def locationRoute(answers: UserAnswers): Call = {
     val Ni = LocationEnum.NORTHERNIRELAND.toString
 
     if(answers.location.contains(Ni)) {
@@ -35,7 +45,7 @@ class MinimumHoursNavigation {
     }
   }
 
-  def costRoute(answers: UserAnswers) = {
+  def costRoute(answers: UserAnswers): Call = {
     val No = YesNoUnsureEnum.NO.toString
     if(answers.childcareCosts.contains(No)) {
       if (answers.isEligibleForMaxFreeHours == Eligible) {
@@ -48,7 +58,7 @@ class MinimumHoursNavigation {
     }
   }
 
-  def approvedChildCareRoute(answers: UserAnswers) = {
+  def approvedChildCareRoute(answers: UserAnswers): Call = {
     val No = YesNoUnsureEnum.NO.toString
 
     if(answers.approvedProvider.contains(No)) {
@@ -65,5 +75,4 @@ class MinimumHoursNavigation {
       }
     }
   }
-
 }

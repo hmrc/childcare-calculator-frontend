@@ -26,6 +26,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whoHasChildcareCosts.checkYourAnswersLabel", s"whoHasChildcareCosts.$x", true, routes.WhoHasChildcareCostsController.onPageLoad(CheckMode).url)
   }
 
+  def whichDisabilityBenefits(index: Int): Option[AnswerRow] = userAnswers.whichDisabilityBenefits(index) map {
+    x => AnswerRow("whichDisabilityBenefits.checkYourAnswersLabel", s"whichDisabilityBenefits.$x", true, routes.WhichDisabilityBenefitsController.onPageLoad(CheckMode, index).url)
+  }
+
   def whichChildrenBlind: Option[AnswerRow] = userAnswers.whichChildrenBlind map {
     x => AnswerRow("whichChildrenBlind.checkYourAnswersLabel", s"whichChildrenBlind.$x", true, routes.WhichChildrenBlindController.onPageLoad(CheckMode).url)
   }
