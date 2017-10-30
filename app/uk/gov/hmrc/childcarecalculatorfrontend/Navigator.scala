@@ -36,7 +36,8 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             pensions: PensionNavigator,
             employment: EmploymentIncomeNavigator,
             benefits: BenefitsNavigator,
-            otherIncome: OtherIncomeNavigator
+            otherIncome: OtherIncomeNavigator,
+            incomeInfo: IncomeInfoNavigator
           ) {
     this(Seq(minHours, maxHours, pensions, employment): _*)
   }

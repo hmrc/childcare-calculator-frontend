@@ -20,41 +20,21 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerIncomeInfoPYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfoPY
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class PartnerIncomeInfoPYController @Inject()(val appConfig: FrontendAppConfig,
-                                      val messagesApi: MessagesApi,
-                                      getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                              val messagesApi: MessagesApi,
+                                              getData: DataRetrievalAction,
+                                              navigator: Navigator,
+                                              requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(partnerIncomeInfoPY(appConfig,getNextPageUrl(request.userAnswers)))
-  }
-
-  private def getNextPageUrl(userAnswers: UserAnswers) = {
-
-    val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
-    val paidEmployment = userAnswers.whoIsInPaidEmployment
-
-    val You = YouPartnerBothEnum.YOU.toString
-    val Partner = YouPartnerBothEnum.PARTNER.toString
-    val Both = YouPartnerBothEnum.BOTH.toString
-
-    if(hasPartner) {
-      paidEmployment match {
-        case Some(You) => routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
-        case Some(Partner) => routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
-        case Some(Both) => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    }else {
-      routes.SessionExpiredController.onPageLoad()
-    }
+    Ok(partnerIncomeInfoPY(appConfig, navigator.nextPage(PartnerIncomeInfoPYId, NormalMode)(request.userAnswers)))
   }
 }
