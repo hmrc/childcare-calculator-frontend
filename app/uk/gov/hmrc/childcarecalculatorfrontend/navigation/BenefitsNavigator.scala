@@ -39,13 +39,12 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     PartnerBenefitsIncomeCYId -> partnerBenefitsIncomeRouteCY,
     BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY,
     YouAnyTheseBenefitsPYId -> yourBenefitsRoutePY,
-    PartnerAnyTheseBenefitsPYId -> partnerBenefitsRoutePY
+    PartnerAnyTheseBenefitsPYId -> partnerBenefitsRoutePY,
+    BothAnyTheseBenefitsPYId -> bothBenefitsRoutePY
   )
 
   private def yourBenefitsRouteCY(answers: UserAnswers) = {
-
-    val youAnyTheseBenefitsValue = answers.youAnyTheseBenefits
-    youAnyTheseBenefitsValue match {
+    answers.youAnyTheseBenefits match {
       case Some(true) => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
       case Some(false) => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
@@ -53,9 +52,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def partnerBenefitsRouteCY(answers: UserAnswers) = {
-
-    val partnerAnyTheseBenefitsCYValue = answers.partnerAnyTheseBenefitsCY
-    partnerAnyTheseBenefitsCYValue match {
+    answers.partnerAnyTheseBenefitsCY match {
       case Some(true) => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
       case Some(false) => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
@@ -63,9 +60,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def bothBenefitsRouteCY(answers: UserAnswers) = {
-
-    val bothAnyTheseBenefitsCYValue = answers.bothAnyTheseBenefitsCY
-    bothAnyTheseBenefitsCYValue match {
+    answers.bothAnyTheseBenefitsCY match {
       case Some(true) => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
       case Some(false) => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
@@ -73,9 +68,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
-
-    val whosHadBenefitsValue = answers.whosHadBenefits
-    whosHadBenefitsValue match {
+    answers.whosHadBenefits match {
       case Some(You) => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
       case Some(Partner) => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
       case Some(Both) => routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
@@ -105,9 +98,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def yourBenefitsRoutePY(answers: UserAnswers) = {
-
-    val youAnyTheseBenefitsPYValue = answers.youAnyTheseBenefitsPY
-    youAnyTheseBenefitsPYValue match {
+    answers.youAnyTheseBenefitsPY match {
       case Some(true) => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
       case Some(false) => routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
@@ -115,13 +106,20 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def partnerBenefitsRoutePY(answers: UserAnswers) = {
-
-    val partnerAnyTheseBenefitsPYValue = answers.partnerAnyTheseBenefitsPY
-    partnerAnyTheseBenefitsPYValue match {
+    answers.partnerAnyTheseBenefitsPY match {
       case Some(true) => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
       case Some(false) => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
       case _ => utils.sessionExpired
     }
   }
+
+  private def bothBenefitsRoutePY(answers: UserAnswers) = {
+    answers.bothAnyTheseBenefitsPY match {
+      case Some(true) => routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
+      case Some(false) => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+      case _ => utils.sessionExpired
+    }
+  }
+
 
 }
