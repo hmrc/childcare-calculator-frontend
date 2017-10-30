@@ -20,11 +20,11 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerPaidPensionCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, PartnerEmploymentIncomeCYId, PartnerEmploymentIncomePYId, PartnerPaidPensionCYId, PartnerPaidWorkCYId, YouPaidPensionCYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 @Singleton
 class Navigator @Inject()(schemes: Schemes,
@@ -104,7 +104,12 @@ class Navigator @Inject()(schemes: Schemes,
     WhosHadBenefitsId -> benefitsNav.whosHadBenefitsRouteCY,
     YouBenefitsIncomeCYId -> benefitsNav.yourBenefitsIncomeRouteCY,
     PartnerBenefitsIncomeCYId -> benefitsNav.partnerBenefitsIncomeRouteCY,
-    BenefitsIncomeCYId -> benefitsNav.bothBenefitsIncomeRouteCY
+    BenefitsIncomeCYId -> benefitsNav.bothBenefitsIncomeRouteCY,
+    ParentEmploymentIncomePYId -> (_ => employmentIncomeNav.parentEmploymentIncomePYRoute),
+    PartnerPaidWorkPYId -> (_ =>  employmentIncomeNav.partnerPaidWorkPYRoute),
+    ParentPaidWorkPYId -> (_ => employmentIncomeNav.parentPaidWorkPYRoute),
+    PartnerEmploymentIncomePYId -> (_ =>employmentIncomeNav.partnerEmploymentIncomePYRoute),
+    EmploymentIncomePYId -> (_ => employmentIncomeNav.employmentIncomePYRoute)
   )
 
   private val editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty

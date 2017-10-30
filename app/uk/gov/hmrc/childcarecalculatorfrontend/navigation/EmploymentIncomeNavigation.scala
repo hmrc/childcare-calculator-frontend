@@ -41,4 +41,14 @@ class EmploymentIncomeNavigation {
 
   def employmentIncomeCYRoute = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
+  def parentEmploymentIncomePYRoute = routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+
+  def partnerPaidWorkPYRoute = routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+
+  def parentPaidWorkPYRoute = routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+
+  def partnerEmploymentIncomePYRoute= routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+
+  def employmentIncomePYRoute = routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+
 }

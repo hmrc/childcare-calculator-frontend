@@ -21,7 +21,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -95,6 +95,74 @@ class CurrentYearIncomeNavigationSpec extends SpecBase with MockitoSugar {
         }
       }
 
+
+
     }
   }
+
+  "Previous Year Income Route Navigation" when {
+
+    "in Normal mode" must {
+     "Partner Paid Work PY Route" must {
+        "redirects to parent employment income PY when user selects yes or no" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerPaidWorkPY) thenReturn Some(true) thenReturn Some(false)
+
+          navigator.nextPage(PartnerPaidWorkPYId, NormalMode)(answers) mustBe
+            routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+
+          navigator.nextPage(PartnerPaidWorkPYId, NormalMode)(answers) mustBe
+            routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+        }
+      }
+
+      "Parent Paid Work PY Route" must {
+       "redirects to partner employment income PY when user selects yes or no" in {
+         val answers = spy(userAnswers())
+         when(answers.parentPaidWorkPY) thenReturn Some(true) thenReturn Some(false)
+
+         navigator.nextPage(ParentPaidWorkPYId, NormalMode)(answers) mustBe
+           routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+
+         navigator.nextPage(ParentPaidWorkPYId, NormalMode)(answers) mustBe
+           routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+       }
+     }
+
+      "Parent Employment Income PY Route" must {
+        "redirects to parent paid pension PY when user provides valid value" in {
+          val answers = spy(userAnswers())
+          when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(12))
+
+          navigator.nextPage(ParentEmploymentIncomePYId, NormalMode)(answers) mustBe
+            routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+        }
+      }
+
+   "Partner Employment Income PY Route" must {
+        "redirects to partner paid pension PY when when user provides valid value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(12))
+
+          navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode)(answers) mustBe
+            routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+        }
+      }
+
+   "Parent and Partner Employment Income PY Route" must {
+       "redirects to both paid pension PY when when user provides valid values" in {
+         val answers = spy(userAnswers())
+         when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY("12", "20"))
+
+         navigator.nextPage(EmploymentIncomePYId, NormalMode)(answers) mustBe
+           routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+       }
+     }
+
+
+
+    }
+  }
+
+
 }
