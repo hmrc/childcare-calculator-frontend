@@ -79,14 +79,14 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       )
 
       val result = helper(answers).childrenOver16
-      result.value must contain(0 -> "Foo")
-      result.value must contain(3 -> "Baz")
+      result.value must contain(0 -> AboutYourChild("Foo", over16))
+      result.value must contain(3 -> AboutYourChild("Baz", over16))
+      result.value mustNot contain(1 -> AboutYourChild("Bar", under16))
+      result.value mustNot contain(2 -> AboutYourChild("Quux", under16))
     }
 
     "return `None` when there are no children defined" in {
-
       val answers: CacheMap = cacheMap()
-
       helper(answers).childrenOver16 mustNot be(defined)
     }
   }

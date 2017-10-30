@@ -23,7 +23,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class ChildcareNavigator @Inject() () extends SubNavigator {
@@ -46,7 +46,8 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
 
       val firstOver16 = aboutYourChild.values.toSeq.indexWhere {
         // TODO helper with more specific logic
-        _.dob.isBefore(LocalDate.now.minusYears(16))
+        model =>
+          model.dob.isBefore(LocalDate.now.minusYears(16))
       }
 
       if (firstOver16 > -1) {
@@ -61,15 +62,19 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
 
   private def childApprovedEducationRoutes(id: Int)(answers: UserAnswers): Call = {
 
-    def next(i: Int, childrenOver16: Map[Int, String]): Option[Int] = {
+    def next(i: Int, childrenOver16: Map[Int, AboutYourChild]): Option[Int] = {
       val ints: Seq[Int] = childrenOver16.keys.toSeq
       ints.lift(ints.indexOf(i) + 1)
     }
 
+    def over19(dob: LocalDate): Boolean =
+      dob.isBefore(LocalDate.now.minusYears(19))
+
     for {
       childrenOver16    <- answers.childrenOver16
       approvedEducation <- answers.childApprovedEducation(id)
-    } yield if (approvedEducation) {
+      dob               <- childrenOver16.get(id).map(_.dob)
+    } yield if (approvedEducation && over19(dob)) {
       routes.ChildStartEducationController.onPageLoad(NormalMode, id)
     } else {
       next(id, childrenOver16).map {

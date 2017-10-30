@@ -50,7 +50,7 @@ class ChildApprovedEducationController @Inject() (
                               (implicit request: DataRequest[A]): Future[Result] = {
     request.userAnswers.childrenOver16.flatMap {
       childrenOver16 =>
-        childrenOver16.get(childIndex).map(block)
+        childrenOver16.get(childIndex).map(child => block(child.name))
     }.getOrElse(sessionExpired)
   }
 

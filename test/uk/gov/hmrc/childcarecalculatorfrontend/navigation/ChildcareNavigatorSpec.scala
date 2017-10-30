@@ -104,29 +104,19 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   "Approved education or training" must {
 
     "user answers `Yes`" when {
-      Seq(0, 1).foreach {
-        id =>
-          s"redirect to `Child start education`, for id: $id" in {
-            val answers: UserAnswers = userAnswers(
-              aboutYourChildren(
-                "Foo" -> dob16,
-                "Spoon" -> dob,
-                "Bar" -> dob16,
-                "Baz" -> dob
-              ),
-              ChildApprovedEducationId.toString -> Json.obj(
-                id.toString -> true
-              )
-            )
-            val result = navigator.nextPage(ChildApprovedEducationId(id), NormalMode).value(answers)
-            result mustEqual routes.ChildStartEducationController.onPageLoad(NormalMode, id)
-          }
+
+      "redirect to `Child start education` if child is over 19" in {
+        val answers: UserAnswers = userAnswers(
+          defaultAboutYourChildren,
+          ChildApprovedEducationId.toString -> Json.obj(
+            "0" -> true
+          )
+        )
+        val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
+        result mustEqual routes.ChildStartEducationController.onPageLoad(NormalMode, 0)
       }
-    }
 
-    "user answers `No`" when {
-
-      "redirect to `Approved education or training` for the next child if this is not the last child" in {
+      "redirect to `Approved education or training` if child is under 19 and this is not the last child" in {
         val answers: UserAnswers = userAnswers(
           aboutYourChildren(
             "Foo" -> dob16,
@@ -134,6 +124,32 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             "Bar" -> dob16,
             "Baz" -> dob
           ),
+          ChildApprovedEducationId.toString -> Json.obj(
+            "0" -> true
+          )
+        )
+        val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
+        result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 2)
+      }
+
+      "redirect to `Do your children get disability benefits` if child is under 19 and this is the last child" in {
+        val answers: UserAnswers = userAnswers(
+          defaultAboutYourChildren,
+          ChildApprovedEducationId.toString -> Json.obj(
+            "0" -> true,
+            "2" -> true
+          )
+        )
+        val result = navigator.nextPage(ChildApprovedEducationId(2), NormalMode).value(answers)
+        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
+      }
+    }
+
+    "user answers `No`" when {
+
+      "redirect to `Approved education or training` for the next child if this is not the last child" in {
+        val answers: UserAnswers = userAnswers(
+          defaultAboutYourChildren,
           ChildApprovedEducationId.toString -> Json.obj(
             "0" -> false
           )
@@ -144,12 +160,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `Do your children get disability benefits` if this is the last child" in {
         val answers: UserAnswers = userAnswers(
-          aboutYourChildren(
-            "Foo" -> dob16,
-            "Spoon" -> dob,
-            "Bar" -> dob16,
-            "Baz" -> dob
-          ),
+          defaultAboutYourChildren,
           ChildApprovedEducationId.toString -> Json.obj(
             "0" -> false,
             "2" -> false
@@ -162,12 +173,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `SessionExpired` if there is no answer for `ChildApprovedEducation`" in {
       val answers: UserAnswers = userAnswers(
-        aboutYourChildren(
-          "Foo" -> dob16,
-          "Spoon" -> dob,
-          "Bar" -> dob16,
-          "Baz" -> dob
-        )
+        defaultAboutYourChildren
       )
       val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
@@ -183,7 +189,16 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
     }
+
+    def defaultAboutYourChildren: (String, JsValue) =
+      aboutYourChildren(
+        "Foo" -> dob19,
+        "Spoon" -> dob,
+        "Bar" -> dob16,
+        "Baz" -> dob
+      )
   }
+
 
   private def userAnswers(data: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", data.toMap))
@@ -194,6 +209,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         i.toString -> Json.toJson(AboutYourChild(name, dob))
     }.toMap)
 
-  private def dob16: LocalDate = LocalDate.now.minusYears(17)
+  private def dob16: LocalDate = LocalDate.now.minusYears(16).minusDays(1)
+  private def dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
   private def dob: LocalDate = LocalDate.now.minusYears(1)
 }
