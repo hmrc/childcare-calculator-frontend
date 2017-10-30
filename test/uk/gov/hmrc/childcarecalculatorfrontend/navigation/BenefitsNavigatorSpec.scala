@@ -321,25 +321,25 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /*"You Benefits Income CY Route" must {
-        "redirects to YourStatutoryPayCY page when user provides valid input" in {
+      "You Benefits Income PY Route" must {
+        "redirects to yourStatutoryPayPY page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
+          when(answers.youBenefitsIncomePY) thenReturn Some(BigDecimal(23))
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
-            routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
+          navigator.nextPage(YouBenefitsIncomePYId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.youBenefitsIncomeCY) thenReturn None
+          when(answers.youBenefitsIncomePY) thenReturn None
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(YouBenefitsIncomePYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
 
-      "Partner Benefits Income CY Route" must {
+      /*"Partner Benefits Income CY Route" must {
         "redirects to partnerStatutoryPayCY page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
