@@ -235,33 +235,33 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      /*"Partner Benefits CY Route" must {
-        "redirects to partnerBenefitsIncomeCY page when user selects yes" in {
+      "Partner Benefits PY Route" must {
+        "redirects to partnerBenefitsIncomePY page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(true)
+          when(answers.partnerAnyTheseBenefitsPY) thenReturn Some(true)
 
-          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
-            routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
         }
 
         "redirects to partnerStatutoryPayCY page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(false)
+          when(answers.partnerAnyTheseBenefitsPY) thenReturn Some(false)
 
-          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsCY) thenReturn None
+          when(answers.partnerAnyTheseBenefitsPY) thenReturn None
 
-          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
 
-      "Both Benefits CY Route" must {
+      /*"Both Benefits CY Route" must {
         "redirects to whosHadBenefits page when user selects yes" in {
           val answers = spy(userAnswers())
           when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)

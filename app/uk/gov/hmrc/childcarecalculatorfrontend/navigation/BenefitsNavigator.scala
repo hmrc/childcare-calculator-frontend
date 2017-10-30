@@ -38,7 +38,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     YouBenefitsIncomeCYId -> yourBenefitsIncomeRouteCY,
     PartnerBenefitsIncomeCYId -> partnerBenefitsIncomeRouteCY,
     BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY,
-    YouAnyTheseBenefitsPYId -> yourBenefitsRoutePY
+    YouAnyTheseBenefitsPYId -> yourBenefitsRoutePY,
+    PartnerAnyTheseBenefitsPYId -> partnerBenefitsRoutePY
   )
 
   private def yourBenefitsRouteCY(answers: UserAnswers) = {
@@ -112,4 +113,15 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       case _ => utils.sessionExpired
     }
   }
+
+  private def partnerBenefitsRoutePY(answers: UserAnswers) = {
+
+    val partnerAnyTheseBenefitsPYValue = answers.partnerAnyTheseBenefitsPY
+    partnerAnyTheseBenefitsPYValue match {
+      case Some(true) => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
+      case Some(false) => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
+      case _ => utils.sessionExpired
+    }
+  }
+
 }
