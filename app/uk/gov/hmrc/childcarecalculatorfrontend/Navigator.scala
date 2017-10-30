@@ -39,10 +39,10 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             otherIncome: OtherIncomeNavigator,
             incomeInfo: IncomeInfoNavigator
           ) {
-    this(Seq(minHours, maxHours, pensions, employment): _*)
+    this(Seq(minHours, maxHours, pensions, employment, benefits, otherIncome, incomeInfo): _*)
   }
 
-  override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
+  override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call =
     navigators.map(_.nextPage(id, mode)).reduce(_ orElse _)
       .getOrElse {
         mode match {
@@ -52,7 +52,6 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             _ => routes.CheckYourAnswersController.onPageLoad()
         }
       }
-  }
 }
 
 @ImplementedBy(classOf[NavigatorImpl])

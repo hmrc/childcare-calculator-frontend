@@ -21,8 +21,9 @@ import javax.inject.Singleton
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, LocationId, PartnerIncomeInfoId, PartnerIncomeInfoPYId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId, PartnerIncomeInfoPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 /**
@@ -31,19 +32,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @Singleton
 class IncomeInfoNavigator extends SubNavigator {
 
-  override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
-    PartnerIncomeInfoId-> nextPageUrlCY,
-    PartnerIncomeInfoPYId -> nextPageUrlPY
-  )
+  override protected val routeMap: Map[Identifier, UserAnswers => Call] =
+    Map(
+      PartnerIncomeInfoId -> nextPageUrlCY,
+      PartnerIncomeInfoPYId -> nextPageUrlPY
+    )
 
   private def nextPageUrlCY(userAnswers: UserAnswers) = {
 
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
     val paidEmployment = userAnswers.whoIsInPaidEmployment
-
-    val You = YouPartnerBothEnum.YOU.toString
-    val Partner = YouPartnerBothEnum.PARTNER.toString
-    val Both = YouPartnerBothEnum.BOTH.toString
 
     if (hasPartner) {
       paidEmployment match {
@@ -61,10 +59,6 @@ class IncomeInfoNavigator extends SubNavigator {
 
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
     val paidEmployment = userAnswers.whoIsInPaidEmployment
-
-    val You = YouPartnerBothEnum.YOU.toString
-    val Partner = YouPartnerBothEnum.PARTNER.toString
-    val Both = YouPartnerBothEnum.BOTH.toString
 
     if(hasPartner) {
       paidEmployment match {
