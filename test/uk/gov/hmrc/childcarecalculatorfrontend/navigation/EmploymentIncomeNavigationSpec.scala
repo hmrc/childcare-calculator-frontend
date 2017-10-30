@@ -24,12 +24,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
+
 
 class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with OptionValues {
 
-  val navigator = new EmploymentIncomeNavigator()
+  val navigator = new EmploymentIncomeNavigator(new Utils())
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -48,6 +49,15 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerPaidWorkCY)  thenReturn None
+
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
       }
 
       "Parent Paid Work CY Route" must {
@@ -61,6 +71,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.parentPaidWorkCY)  thenReturn None
+
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
       }
 
       "Parent Employment Income CY Route" must {
@@ -70,6 +88,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
 
           navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.parentEmploymentIncomeCY)  thenReturn None
+
+          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
         }
       }
 
@@ -81,6 +107,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
         }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerEmploymentIncomeCY)  thenReturn None
+
+          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
       }
 
       "Parent and Partner Employment Income CY Route" must {
@@ -90,6 +124,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
 
           navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.employmentIncomeCY)  thenReturn None
+
+          navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
         }
       }
 
@@ -110,6 +152,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(PartnerPaidWorkPYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
         }
+
+       "redirects to session expired route when relevant answers has no value" in {
+         val answers = spy(userAnswers())
+         when(answers.partnerPaidWorkPY)  thenReturn None
+
+         navigator.nextPage(PartnerPaidWorkPYId, NormalMode).value(answers) mustBe
+           routes.SessionExpiredController.onPageLoad()
+       }
       }
 
       "Parent Paid Work PY Route" must {
@@ -123,6 +173,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
          navigator.nextPage(ParentPaidWorkPYId, NormalMode).value(answers) mustBe
            routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
        }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.parentPaidWorkPY)  thenReturn None
+
+          navigator.nextPage(ParentPaidWorkPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
      }
 
       "Parent Employment Income PY Route" must {
@@ -133,9 +191,17 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(ParentEmploymentIncomePYId, NormalMode).value(answers) mustBe
             routes.YouPaidPensionPYController.onPageLoad(NormalMode)
         }
+
+        "redirects to session expired route when relevant answers has no value" in {
+          val answers = spy(userAnswers())
+          when(answers.parentEmploymentIncomePY)  thenReturn None
+
+          navigator.nextPage(ParentEmploymentIncomePYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
       }
 
-    "Partner Employment Income PY Route" must {
+     "Partner Employment Income PY Route" must {
         "redirects to partner paid pension PY when when user provides valid value" in {
           val answers = spy(userAnswers())
           when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(12))
@@ -143,6 +209,14 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode).value(answers) mustBe
             routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
         }
+
+       "redirects to session expired route when relevant answers has no value" in {
+         val answers = spy(userAnswers())
+         when(answers.partnerEmploymentIncomePY)  thenReturn None
+
+         navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode).value(answers) mustBe
+           routes.SessionExpiredController.onPageLoad()
+       }
       }
 
     "Parent and Partner Employment Income PY Route" must {
@@ -153,9 +227,18 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
          navigator.nextPage(EmploymentIncomePYId, NormalMode).value(answers) mustBe
            routes.BothPaidPensionPYController.onPageLoad(NormalMode)
        }
+
+      "redirects to session expired route when relevant answers has no value" in {
+        val answers = spy(userAnswers())
+        when(answers.employmentIncomePY)  thenReturn None
+
+        navigator.nextPage(EmploymentIncomePYId, NormalMode).value(answers) mustBe
+          routes.SessionExpiredController.onPageLoad()
+      }
      }
 
     }
   }
+
 
 }

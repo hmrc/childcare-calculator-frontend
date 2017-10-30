@@ -23,43 +23,94 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
   * Contains the navigation for current and previous year employment income pages
   */
-class EmploymentIncomeNavigator @Inject() () extends SubNavigator {
+class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
-    PartnerPaidWorkCYId -> (_ =>  partnerPaidWorkCYRoute),
-    ParentPaidWorkCYId -> (_ => parentPaidWorkCYRoute),
-    ParentEmploymentIncomeCYId -> (_ => parentEmploymentIncomeCYRoute),
-    PartnerEmploymentIncomeCYId -> (_ => partnerEmploymentIncomeCYRoute),
-    EmploymentIncomeCYId -> (_ => employmentIncomeCYRoute),
-    ParentEmploymentIncomePYId -> (_ => parentEmploymentIncomePYRoute),
-    PartnerPaidWorkPYId -> (_ =>  partnerPaidWorkPYRoute),
-    ParentPaidWorkPYId -> (_ => parentPaidWorkPYRoute),
-    PartnerEmploymentIncomePYId -> (_ => partnerEmploymentIncomePYRoute),
-    EmploymentIncomePYId -> (_ => employmentIncomePYRoute)
+    PartnerPaidWorkCYId -> partnerPaidWorkCYRoute,
+    ParentPaidWorkCYId -> parentPaidWorkCYRoute,
+    ParentEmploymentIncomeCYId -> parentEmploymentIncomeCYRoute,
+    PartnerEmploymentIncomeCYId -> partnerEmploymentIncomeCYRoute,
+    EmploymentIncomeCYId -> employmentIncomeCYRoute,
+    ParentEmploymentIncomePYId -> parentEmploymentIncomePYRoute,
+    PartnerPaidWorkPYId -> partnerPaidWorkPYRoute,
+    ParentPaidWorkPYId -> parentPaidWorkPYRoute,
+    PartnerEmploymentIncomePYId -> partnerEmploymentIncomePYRoute,
+    EmploymentIncomePYId -> employmentIncomePYRoute
   )
 
-  private def partnerPaidWorkCYRoute = routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
+  private def partnerPaidWorkCYRoute(answers: UserAnswers) = {
+    val partnerPaidWorkCYValue = answers.partnerPaidWorkCY
 
-  private def parentPaidWorkCYRoute = routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
+    utils.getCallOrSessionExpired(partnerPaidWorkCYValue,
+      routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode))
+  }
 
-  private def parentEmploymentIncomeCYRoute = routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+  private def parentPaidWorkCYRoute(answers: UserAnswers) = {
+    val parentPaidWorkCYValue = answers.parentPaidWorkCY
 
-  private def partnerEmploymentIncomeCYRoute= routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
+    utils.getCallOrSessionExpired(parentPaidWorkCYValue,
+      routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode))
+  }
 
-  private def employmentIncomeCYRoute = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+  private def parentEmploymentIncomeCYRoute(answers: UserAnswers) = {
+    val parentEmploymentIncomeCYValue = answers.parentEmploymentIncomeCY
 
-  private def parentEmploymentIncomePYRoute = routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+    utils.getCallOrSessionExpired(parentEmploymentIncomeCYValue,
+      routes.YouPaidPensionCYController.onPageLoad(NormalMode))
+  }
 
-  private def partnerPaidWorkPYRoute = routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+  private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) = {
+    val partnerEmploymentIncomeCYValue = answers.partnerEmploymentIncomeCY
 
-  private def parentPaidWorkPYRoute = routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+    utils.getCallOrSessionExpired(partnerEmploymentIncomeCYValue,
+      routes.PartnerPaidPensionCYController.onPageLoad(NormalMode))
+  }
 
-  private def partnerEmploymentIncomePYRoute= routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+  private def employmentIncomeCYRoute(answers: UserAnswers) = {
+    val employmentIncomeCYValue = answers.employmentIncomeCY
 
-  private def employmentIncomePYRoute = routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+    utils.getCallOrSessionExpired(employmentIncomeCYValue,
+      routes.BothPaidPensionCYController.onPageLoad(NormalMode))
+  }
+
+  private def parentEmploymentIncomePYRoute(answers: UserAnswers) = {
+    val parentEmploymentIncomePYValue = answers.parentEmploymentIncomePY
+
+    utils.getCallOrSessionExpired(parentEmploymentIncomePYValue,
+      routes.YouPaidPensionPYController.onPageLoad(NormalMode))
+  }
+
+  private def partnerPaidWorkPYRoute(answers: UserAnswers) = {
+    val partnerPaidWorkPYValue = answers.partnerPaidWorkPY
+
+    utils.getCallOrSessionExpired(partnerPaidWorkPYValue,
+      routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode))
+  }
+
+  private def parentPaidWorkPYRoute(answers: UserAnswers) = {
+    val parentPaidWorkPYValue = answers.parentPaidWorkPY
+
+    utils.getCallOrSessionExpired(parentPaidWorkPYValue,
+      routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode))
+  }
+
+ private def partnerEmploymentIncomePYRoute(answers: UserAnswers) = {
+   val partnerEmploymentIncomePYValue = answers.partnerEmploymentIncomePY
+
+   utils.getCallOrSessionExpired(partnerEmploymentIncomePYValue,
+     routes.PartnerPaidPensionPYController.onPageLoad(NormalMode))
+ }
+
+  private def employmentIncomePYRoute(answers: UserAnswers) =  {
+    val employmentIncomePYValue = answers.employmentIncomePY
+
+    utils.getCallOrSessionExpired(employmentIncomePYValue,
+      routes.BothPaidPensionPYController.onPageLoad(NormalMode))
+  }
+
 }
