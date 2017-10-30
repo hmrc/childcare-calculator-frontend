@@ -32,6 +32,7 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case NoOfChildrenId => _ => routes.AboutYourChildController.onPageLoad(NormalMode, 0)
     case AboutYourChildId(id) => aboutYourChildRoutes(id)
     case ChildApprovedEducationId(id) => childApprovedEducationRoutes(id)
+    case ChildStartEducationId(id) => childEducationStartRoutes(id)
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -83,4 +84,20 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
       }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
     }
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def childEducationStartRoutes(id: Int)(answers: UserAnswers): Call = {
+
+    def next(i: Int, childrenOver16: Map[Int, AboutYourChild]): Option[Int] = {
+      val ints: Seq[Int] = childrenOver16.keys.toSeq
+      ints.lift(ints.indexOf(i) + 1)
+    }
+
+    answers.childrenOver16.map {
+      childrenOver16 =>
+        next(id, childrenOver16).map {
+          nextId =>
+            routes.ChildApprovedEducationController.onPageLoad(NormalMode, nextId)
+        }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
+    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }
 }
