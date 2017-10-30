@@ -21,7 +21,7 @@ import javax.inject.Singleton
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, LocationId, PartnerIncomeInfoPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, LocationId, PartnerIncomeInfoId, PartnerIncomeInfoPYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
@@ -32,8 +32,30 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class IncomeInfoNavigator extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
+    PartnerIncomeInfoId-> nextPageUrlCY,
     PartnerIncomeInfoPYId -> nextPageUrlPY
   )
+
+  private def nextPageUrlCY(userAnswers: UserAnswers) = {
+
+    val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
+    val paidEmployment = userAnswers.whoIsInPaidEmployment
+
+    val You = YouPartnerBothEnum.YOU.toString
+    val Partner = YouPartnerBothEnum.PARTNER.toString
+    val Both = YouPartnerBothEnum.BOTH.toString
+
+    if (hasPartner) {
+      paidEmployment match {
+        case Some(You) => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
+        case Some(Partner) => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
+        case Some(Both) => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def nextPageUrlPY(userAnswers: UserAnswers) = {
 
@@ -55,4 +77,5 @@ class IncomeInfoNavigator extends SubNavigator {
       routes.SessionExpiredController.onPageLoad()
     }
   }
+
 }
