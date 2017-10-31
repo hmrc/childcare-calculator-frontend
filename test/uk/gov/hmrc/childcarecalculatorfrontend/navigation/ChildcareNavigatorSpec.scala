@@ -226,6 +226,61 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 
+  "Do any of your children get disability benefits" must {
+
+    "redirect to `Any children blind` when the user ansers `No` when the user has 1 child" in {
+      val answers: UserAnswers = userAnswers(
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        NoOfChildrenId.toString -> JsNumber(1)
+      )
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `Any children blind` when the user ansers `No` when the user has more than 1 child" in {
+      val answers: UserAnswers = userAnswers(
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        NoOfChildrenId.toString -> JsNumber(2)
+      )
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `Which disability benefits` when the user answers `Yes` and has 1 child" in {
+      val answers: UserAnswers = userAnswers(
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+        NoOfChildrenId.toString -> JsNumber(1)
+      )
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.ChildDisabilityBenefitsController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `Which of your children get disability benefits` when the user answers `Yes` and has more than 1 child" in {
+      val answers: UserAnswers = userAnswers(
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+        NoOfChildrenId.toString -> JsNumber(2)
+      )
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.WhichChildrenDisabilityController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `SessionExpired` when the user has no answer for `Do any of your children get disability benefits`" in {
+      val answers: UserAnswers = userAnswers(
+        NoOfChildrenId.toString -> JsNumber(1)
+      )
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+
+    "redirect to `SessionExpired` when the user has no answer for `Number of children`" in {
+      val answers: UserAnswers = userAnswers(
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
+      )
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
   private def userAnswers(data: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", data.toMap))
 

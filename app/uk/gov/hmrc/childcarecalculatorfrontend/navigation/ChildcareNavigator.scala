@@ -33,6 +33,7 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case AboutYourChildId(id) => aboutYourChildRoutes(id)
     case ChildApprovedEducationId(id) => childApprovedEducationRoutes(id)
     case ChildStartEducationId(id) => childEducationStartRoutes(id)
+    case ChildrenDisabilityBenefitsId => childrenDisabilityBenefitsRoutes
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -100,4 +101,19 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
         }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
     }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
+
+  private def childrenDisabilityBenefitsRoutes(answers: UserAnswers): Call = {
+    for {
+      noOfChildren            <- answers.noOfChildren
+      childDisabilityBenefits <- answers.childrenDisabilityBenefits
+    } yield if (childDisabilityBenefits) {
+      if (noOfChildren > 1) {
+        routes.WhichChildrenDisabilityController.onPageLoad(NormalMode)
+      } else {
+        routes.ChildDisabilityBenefitsController.onPageLoad(NormalMode)
+      }
+    } else {
+      routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+  }.getOrElse(routes.SessionExpiredController.onPageLoad())
 }
