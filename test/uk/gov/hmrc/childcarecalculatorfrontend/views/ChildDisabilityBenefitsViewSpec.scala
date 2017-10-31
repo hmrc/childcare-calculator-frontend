@@ -27,13 +27,18 @@ class ChildDisabilityBenefitsViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childDisabilityBenefits"
 
-  def createView = () => childDisabilityBenefits(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => childDisabilityBenefits(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => childDisabilityBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => childDisabilityBenefits(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildDisabilityBenefits view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      messages(s"$messageKeyPrefix.title"),
+      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    )
 
     behave like pageWithBackLink(createView)
 

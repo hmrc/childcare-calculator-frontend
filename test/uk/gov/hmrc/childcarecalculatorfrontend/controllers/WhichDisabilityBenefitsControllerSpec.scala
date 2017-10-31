@@ -20,13 +20,13 @@ import org.joda.time.LocalDate
 import org.scalatest.OptionValues
 import play.api.data.Form
 import play.api.libs.json.Json.JsValueWrapper
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhichChildrenDisabilityId, WhichDisabilityBenefitsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -170,15 +170,27 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
                   ): String =
     whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages).toString
 
-  def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = Map(
-    WhichChildrenDisabilityId.toString -> Json.toJson(cases.map(_._1.toString)),
-    AboutYourChildId.toString -> Json.obj(
-      cases.map {
-        case (index, name) =>
-          index.toString -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
-      }: _*
-    )
-  )
+  def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = {
+    if (cases.size == 1) {
+      Map(
+        NoOfChildrenId.toString               -> JsNumber(1),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+        AboutYourChildId.toString             -> Json.obj(
+          cases.head._1.toString -> (Json.toJson(AboutYourChild(cases.head._2, LocalDate.now)): JsValueWrapper)
+        )
+      )
+    } else {
+      Map(
+        WhichChildrenDisabilityId.toString -> Json.toJson(cases.map(_._1.toString)),
+        AboutYourChildId.toString -> Json.obj(
+          cases.map {
+            case (index, name) =>
+              index.toString -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
+          }: _*
+        )
+      )
+    }
+  }
 
   def getRequiredData(cases: (Int, String)*) =
     new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(cases))))

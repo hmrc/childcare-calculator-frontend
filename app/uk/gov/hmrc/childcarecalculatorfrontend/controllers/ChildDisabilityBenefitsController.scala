@@ -45,14 +45,14 @@ class ChildDisabilityBenefitsController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(childDisabilityBenefits(appConfig, preparedForm, mode))
+      Ok(childDisabilityBenefits(appConfig, preparedForm, "", mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("childDisabilityBenefits.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(childDisabilityBenefits(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(childDisabilityBenefits(appConfig, formWithErrors, "", mode))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, ChildDisabilityBenefitsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ChildDisabilityBenefitsId, mode)(new UserAnswers(cacheMap))))

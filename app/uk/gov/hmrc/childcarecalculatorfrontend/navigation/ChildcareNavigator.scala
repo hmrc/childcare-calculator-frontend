@@ -127,12 +127,11 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
   }
 
   private def whichDisabilityBenefitsRoutes(id: Int)(answers: UserAnswers): Call = {
-    answers.whichChildrenDisability.map {
+    answers.childrenWithDisabilityBenefits.map {
       whichChildrenDisability =>
 
         def next: Option[Int] = {
-          // TODO remove `Int` conversion when underlying type is changed
-          val children: Seq[Int] = whichChildrenDisability.map(_.toInt).toSeq
+          val children: Seq[Int] = whichChildrenDisability.toSeq
           children.lift(children.indexOf(id) + 1)
         }
 
@@ -143,5 +142,16 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
           routes.RegisteredBlindController.onPageLoad(NormalMode)
         }
     }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }
+
+  private def toRegisteredBlind(answers: UserAnswers): Option[Call] = {
+    answers.noOfChildren.map {
+      noOfChildren =>
+        if (noOfChildren == 1) {
+          routes.ChildRegisteredBlindController.onPageLoad(NormalMode)
+        } else {
+          routes.RegisteredBlindController.onPageLoad(NormalMode)
+        }
+    }
   }
 }

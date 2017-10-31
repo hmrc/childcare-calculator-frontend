@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import org.joda.time.LocalDate
 import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
+import org.mockito.Mockito._
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
@@ -315,6 +316,15 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq("0", "2"))
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(2), NormalMode).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `Any children blind` when this is the only child" in {
+      val answers: UserAnswers = userAnswers(
+        NoOfChildrenId.toString               -> JsNumber(1),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
+      )
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
       result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
     }
 

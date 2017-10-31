@@ -36,7 +36,7 @@ class ChildDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     new ChildDisabilityBenefitsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = childDisabilityBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = childDisabilityBenefits(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
 
   "ChildDisabilityBenefits Controller" must {
 
