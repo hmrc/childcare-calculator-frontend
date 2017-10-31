@@ -34,6 +34,8 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case ChildApprovedEducationId(id) => childApprovedEducationRoutes(id)
     case ChildStartEducationId(id) => childEducationStartRoutes(id)
     case ChildrenDisabilityBenefitsId => childrenDisabilityBenefitsRoutes
+    case WhichChildrenDisabilityId => whichChildrenDisabilityRoutes
+    case WhichDisabilityBenefitsId(id) => whichDisabilityBenefitsRoutes(id)
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -116,4 +118,30 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
       routes.RegisteredBlindController.onPageLoad(NormalMode)
     }
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def whichChildrenDisabilityRoutes(answers: UserAnswers): Call = {
+    answers.whichChildrenDisability.map {
+      children =>
+        routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, children.head.toInt)
+    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }
+
+  private def whichDisabilityBenefitsRoutes(id: Int)(answers: UserAnswers): Call = {
+    answers.whichChildrenDisability.map {
+      whichChildrenDisability =>
+
+        def next: Option[Int] = {
+          // TODO remove `Int` conversion when underlying type is changed
+          val children: Seq[Int] = whichChildrenDisability.map(_.toInt).toSeq
+          children.lift(children.indexOf(id) + 1)
+        }
+
+        next.map {
+          nextId =>
+            routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, nextId)
+        }.getOrElse {
+          routes.RegisteredBlindController.onPageLoad(NormalMode)
+        }
+    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }
 }

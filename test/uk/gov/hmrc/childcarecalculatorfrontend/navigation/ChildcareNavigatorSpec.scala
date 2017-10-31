@@ -281,6 +281,49 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 
+  "Which of your children get disability benefits" must {
+
+    Seq(0, 2).foreach {
+      id =>
+        s"redirect to `WhichDisabilityBenefits` for the first appropriate child, for id: $id" in {
+          val answers: UserAnswers = userAnswers(
+            WhichChildrenDisabilityId.toString -> Json.toJson(Seq(id.toString))
+          )
+          val result = navigator.nextPage(WhichChildrenDisabilityId, NormalMode).value(answers)
+          result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, id)
+        }
+    }
+
+    "redirect to `SessionExpired` when there is no answer for `WhichChildrenDisability`" in {
+      val result = navigator.nextPage(WhichChildrenDisabilityId, NormalMode).value(userAnswers())
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "Which disability benefits" must {
+
+    "redirect to `Which disability benefits` for the next applicable child, if this is not the last child" in {
+      val answers: UserAnswers = userAnswers(
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq("0", "2"))
+      )
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
+      result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, 2)
+    }
+
+    "redirect to `Any children blind` when this is the last applicable child" in {
+      val answers: UserAnswers = userAnswers(
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq("0", "2"))
+      )
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(2), NormalMode).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `SessionExpired` when there is no answer for `WhichChildrenDisability`" in {
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(userAnswers())
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
   private def userAnswers(data: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", data.toMap))
 
@@ -290,7 +333,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         i.toString -> Json.toJson(AboutYourChild(name, dob))
     }.toMap)
 
-  private def dob16: LocalDate = LocalDate.now.minusYears(16).minusDays(1)
-  private def dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
-  private def dob: LocalDate = LocalDate.now.minusYears(1)
+  private lazy val dob16: LocalDate = LocalDate.now.minusYears(16).minusDays(1)
+  private lazy val dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
+  private lazy val dob: LocalDate = LocalDate.now.minusYears(1)
 }
