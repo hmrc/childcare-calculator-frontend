@@ -111,3 +111,13 @@ object WhichBenefitsEnum extends Enumeration {
   implicit def enumFormats: Format[WhichBenefitsEnum] = EnumUtils.enumFormat(WhichBenefitsEnum)
 }
 
+object DisabilityBenefits extends Enumeration {
+
+  val DISABILITY_BENEFITS = Value("disability-benefits")
+  val HIGHER_DISABILITY_BENEFITS = Value("higher-disability-benefit")
+
+  val reads: Reads[Value] = EnumUtils.enumReads(DisabilityBenefits)
+  val writes: Writes[Value] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(DisabilityBenefits)
+}

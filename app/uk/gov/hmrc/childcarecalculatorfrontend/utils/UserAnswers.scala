@@ -16,14 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.joda.time.LocalDate
+import org.joda.time.{LocalDate, Years}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
-  def whichChildrenBlind: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenBlindId.toString)
 
+  def whichDisabilityBenefits: Option[Map[Int, Set[DisabilityBenefits.Value]]] =
+    cacheMap.getEntry[Map[Int, Set[DisabilityBenefits.Value]]](WhichDisabilityBenefitsId.toString)
+
+  def whichDisabilityBenefits(index: Int): Option[Set[DisabilityBenefits.Value]] =
+    whichDisabilityBenefits.flatMap(_.get(index))
+
+  def whoHasChildcareCosts: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhoHasChildcareCostsId.toString)
+
+  def whichChildrenBlind: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenBlindId.toString)
 
   def whichChildrenDisability: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenDisabilityId.toString)
 
@@ -301,16 +309,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
   }
 
   // TODO 31st August
-  def childrenOver16: Option[Map[Int, String]] = {
+  def childrenOver16: Option[Map[Int, AboutYourChild]] = {
     aboutYourChild.map {
       children =>
-        children.foldLeft(Map.empty[Int, String]) {
-          case (m, (i, model)) =>
-            if (model.dob isBefore LocalDate.now.minusYears(16)) {
-              m + (i -> model.name)
-            } else {
-              m
-            }
+        children.filter {
+          case (_, model) =>
+            model.dob.isBefore(LocalDate.now.minusYears(16))
         }
     }
   }

@@ -23,26 +23,28 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxFreeChildcareSpec extends SchemeSpec {
 
+  val taxFreeChildCare = new TaxFreeChildcare
+
   ".eligibility" must {
 
     "return `NotDetermined`" when {
 
       "the user has not told the calculator that they have costs" in {
-        TaxFreeChildcare.eligibility(helper()) mustEqual NotDetermined
+        taxFreeChildCare.eligibility(helper()) mustEqual NotDetermined
       }
 
       "the user has told the calculator that they have costs" in {
         val answers: UserAnswers = helper(
           ChildcareCostsId.toString -> JsString("yes")
         )
-        TaxFreeChildcare.eligibility(answers) mustEqual NotDetermined
+        taxFreeChildCare.eligibility(answers) mustEqual NotDetermined
       }
 
       "the user has told the calculator that they may have costs in the future" in {
         val answers: UserAnswers = helper(
           ChildcareCostsId.toString -> JsString("notYet")
         )
-        TaxFreeChildcare.eligibility(answers) mustEqual NotDetermined
+        taxFreeChildCare.eligibility(answers) mustEqual NotDetermined
       }
     }
 
@@ -52,7 +54,7 @@ class TaxFreeChildcareSpec extends SchemeSpec {
         val answers: UserAnswers = helper(
           ChildcareCostsId.toString -> JsString("no")
         )
-        TaxFreeChildcare.eligibility(answers) mustEqual NotEligible
+        taxFreeChildCare.eligibility(answers) mustEqual NotEligible
       }
     }
   }

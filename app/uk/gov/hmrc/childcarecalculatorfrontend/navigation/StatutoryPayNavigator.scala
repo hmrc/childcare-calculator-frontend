@@ -14,34 +14,104 @@
  * limitations under the License.
  */
 
-/**
-  * Contains the navigation for current and previous year pension pages
-  */
-
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
+import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.MaxFreeHoursResultController
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-@Singleton
-class StatutoryPayNavigator @Inject() (
-                                        utils: Utils,
-                                        scheme: TaxCredits
-                                      ) extends SubNavigator {
+/**
+  * Contains the navigation for current and previous year statutory pay pages
+  */
+class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends SubNavigator {
 
-  def yourStatutoryPayRouteCY(answers: UserAnswers) = {
+  override protected def routeMap = Map(
+    YourStatutoryPayCYId -> yourStatutoryPayRouteCY,
+    YourStatutoryPayPYId -> yourStatutoryPayRoutePY,
+    PartnerStatutoryPayPYId -> partnerStatutoryPayRoutePY,
+    BothStatutoryPayPYId->bothStatutoryPayRoutePY,
+    WhoGetsStatutoryPYId->whoGetsStatutoryRoutePY,
+    YouNoWeeksStatPayPYId-> youNoWeeksStatutoryPayRoutePY,
+    PartnerNoWeeksStatPayPYId->partnerNoWeeksStatutoryPayRoutePY,
+    BothNoWeeksStatPayPYId->bothNoWeeksStatutoryPayRoutePY,
+    YourStatutoryPayAmountPYId->yourStatutoryPayAmountRoutePY,
+    PartnerStatutoryPayAmountPYId->partnerStatutoryPayAmountRoutePY,
+    StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY
+  )
 
-    val youStatutoryPayValue = answers.yourStatutoryPayCY
-    youStatutoryPayValue match {
+ def yourStatutoryPayRouteCY(answers: UserAnswers) = {
+   answers.yourStatutoryPayCY match {
       case Some(true) => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
-      case Some(false) => MaxFreeHoursResultController.onPageLoad()
+      case Some(false) => yourStatutoryPayRouteCYForNoSelection(answers)
       case _ => utils.sessionExpired
     }
   }
+
+  private def yourStatutoryPayRouteCYForNoSelection(answers: UserAnswers) ={
+   val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+   val eligibility =  scheme.eligibility(answers)
+
+    (hasPartner, eligibility) match {
+      case (false, Eligible) => routes.YourIncomeInfoPYController.onPageLoad()
+      case (false, _) => routes.MaxFreeHoursInfoController.onPageLoad()
+      case (true, Eligible) => routes.PartnerIncomeInfoController.onPageLoad()
+      case (true, _) => routes.MaxFreeHoursInfoController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def yourStatutoryPayRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.yourStatutoryPayPY,
+      routes.YouNoWeeksStatPayPYController.onPageLoad(NormalMode),
+      routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def partnerStatutoryPayRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.partnerStatutoryPayPY,
+      routes.PartnerNoWeeksStatPayPYController.onPageLoad(NormalMode),
+      routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def bothStatutoryPayRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.bothStatutoryPayPY,
+      routes.WhoGetsStatutoryPYController.onPageLoad(NormalMode),
+      routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def whoGetsStatutoryRoutePY(answers: UserAnswers) =
+    utils.getCallYouPartnerBothOrSessionExpired(answers.whoGetsStatutoryPY,
+      routes.YouNoWeeksStatPayPYController.onPageLoad(NormalMode),
+      routes.PartnerNoWeeksStatPayPYController.onPageLoad(NormalMode),
+      routes.BothNoWeeksStatPayPYController.onPageLoad(NormalMode))
+
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
+  private def youNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.youNoWeeksStatPayPY,
+      routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
+
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
+  private def partnerNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.partnerNoWeeksStatPayPY,
+      routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
+
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
+  private def bothNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.bothNoWeeksStatPayPY,
+      routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
+
+  private def yourStatutoryPayAmountRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.yourStatutoryPayAmountPY,
+      routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def partnerStatutoryPayAmountRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.partnerStatutoryPayAmountPY,
+      routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def bothStatutoryPayAmountRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.statutoryPayAmountPY,
+      routes.MaxFreeHoursResultController.onPageLoad())
 
 }

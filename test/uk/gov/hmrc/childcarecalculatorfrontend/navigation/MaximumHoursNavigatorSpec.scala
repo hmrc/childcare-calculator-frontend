@@ -19,22 +19,23 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
+import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.{Navigator, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 
-class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
+class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
+
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  val navigator = new Navigator(new Schemes())
+  val navigator = new MaximumHoursNavigator
   lazy val selfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
   lazy val apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
   lazy val neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
@@ -46,7 +47,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "go to what is your tax code when yes is selected" in {
       val answers = spy(userAnswers())
       when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(true)
-      navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
     }
 
     "go to parent childcare vouchers if only partner is in paid work and no is selected" in {
@@ -54,7 +55,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
       when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
-      navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     }
 
     "go to partner tax code been adjusted if both are in paid work and no is selected" in {
@@ -62,7 +63,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
       when(answers.doYouKnowYourAdjustedTaxCode) thenReturn Some(false)
-      navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
   }
 
@@ -70,7 +71,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "go to partners what is your partner tax code when yes is selected" in {
       val answers = spy(userAnswers())
       when(answers.doYouKnowYourPartnersAdjustedTaxCode) thenReturn Some(true)
-      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
     }
 
     "go to partner childcare vouchers if only partner is in paid work and no is selected" in {
@@ -78,7 +79,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
       when(answers.doYouKnowYourPartnersAdjustedTaxCode) thenReturn Some(false)
-      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
 
     "go to either get vouchers if both are in paid work and no is selected" in {
@@ -86,7 +87,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
       when(answers.doYouKnowYourPartnersAdjustedTaxCode) thenReturn Some(false)
-      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
@@ -94,7 +95,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "user will be taken to DoYouKnowYourAdjustedTaxCode screen from HasYourTaxCodeBeenAdjusted when yes is selected" in {
       val answers = spy(userAnswers())
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(yes)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
     }
 
     "user will be taken to DoYouKnowYourAdjustedTaxCode screen from HasYourTaxCodeBeenAdjusted when yes is selected and only parent in paid employment" in {
@@ -102,14 +103,14 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(yes)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
     }
 
     "user will be taken to do you get childcare vouchers screen from HasYourTaxCodeBeenAdjusted when no or notSure is selected" in {
       val answers = spy(userAnswers())
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(no) thenReturn Some(notSure)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     }
 
     "user will be taken to yourChildcareVouchers screen from HasYourTaxCodeBeenAdjusted when no or notSure is selected and only parent in paid employment" in {
@@ -117,8 +118,8 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(no) thenReturn Some(notSure)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     }
 
     "user will be taken to hasPartnerTaxCodeHasBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when no or notSure is selected and only partner in paid employment" in {
@@ -126,8 +127,8 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(no) thenReturn Some(notSure)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
 
     "user will be taken to hasPartnerTaxCodeHasBeenAdjusted screen from HasYourTaxCodeBeenAdjusted when no or notSure is selected and both are in paid employment" in {
@@ -135,8 +136,8 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(no) thenReturn Some(notSure)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
   }
 
@@ -146,7 +147,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
       when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(yes)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
     }
 
     "user will be taken to DoYouKnowYourPartnerAdjustedTaxCode screen from HasYourPartnersTaxCodeBeenAdjusted when yes is selected and both are in paid work" in {
@@ -154,7 +155,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("Both")
       when(answers.hasYourPartnersTaxCodeBeenAdjusted) thenReturn Some(yes)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
     }
 
     "user will be taken to YourPartnerGetChildcareVouchers screen from HasYourPartnersTaxCodeBeenAdjusted when no or notSure is selected and only partner in paid work" in {
@@ -162,8 +163,8 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(no) thenReturn Some(notSure)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
 
     "user will be taken to EitherOfYouGetsChildcareVouchers screen from HasYourPartnersTaxCodeBeenAdjusted when no or notSure is selected and both are in paid work" in {
@@ -171,8 +172,8 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("Both")
       when(answers.hasYourTaxCodeBeenAdjusted) thenReturn Some(no) thenReturn Some(notSure)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
-      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(HasYourPartnersTaxCodeBeenAdjustedId, NormalMode).value(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
@@ -181,14 +182,14 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(WhatIsYourTaxCodeId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
 
     "go to your childcare vouchers if only you in paid work" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-      navigator.nextPage(WhatIsYourTaxCodeId, NormalMode)(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(WhatIsYourTaxCodeId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 
@@ -197,58 +198,54 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode)(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode).value(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     }
 
     "go to partner childcare vouchers if only partner is in paid work" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-      navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode)(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode).value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 
   "go to are you in paid work from do you live with partner when user selects No" in {
     val answers = spy(userAnswers())
     when(answers.doYouLiveWithPartner) thenReturn Some(false)
-    navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(answers) mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
+    navigator.nextPage(DoYouLiveWithPartnerId, NormalMode).value(answers) mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
   }
 
   "Go to free hours results" when {
     "user selects 'No' from are you in paid work" in {
       val answers = spy(userAnswers())
       when(answers.areYouInPaidWork) thenReturn Some(false)
-      navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
     }
     "user selects 'No' from paid employment" in {
       val answers = spy(userAnswers())
       when(answers.paidEmployment) thenReturn Some(false)
-      navigator.nextPage(PaidEmploymentId, NormalMode)(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      navigator.nextPage(PaidEmploymentId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
     }
-  }
-
-  "go to do you live with partner from free hours info page" in {
-    navigator.nextPage(FreeHoursInfoId, NormalMode)(spy(userAnswers())) mustBe routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
   }
 
   "go to paid employment from do you live with partner when user selects yes" in {
     val answers = spy(userAnswers())
     when(answers.doYouLiveWithPartner) thenReturn Some(true)
-    navigator.nextPage(DoYouLiveWithPartnerId, NormalMode)(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
+    navigator.nextPage(DoYouLiveWithPartnerId, NormalMode).value(answers) mustBe routes.PaidEmploymentController.onPageLoad(NormalMode)
   }
 
   "go to who is in paid employment from paid employment when user answers yes" in {
     val answers = spy(userAnswers())
     when(answers.paidEmployment) thenReturn Some(true)
-    navigator.nextPage(PaidEmploymentId, NormalMode)(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+    navigator.nextPage(PaidEmploymentId, NormalMode).value(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
   }
 
   "Go to Partner work hours" when {
     "user selects 'partner' or 'both' from who is in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment) thenReturn Some(partner) thenReturn Some(both)
-      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.PartnerWorkHoursController.onPageLoad(NormalMode)
     }
   }
 
@@ -256,19 +253,19 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "user selects 'Yes' from are you in paid work" in {
       val answers = spy(userAnswers())
       when(answers.areYouInPaidWork) thenReturn Some(true)
-      navigator.nextPage(AreYouInPaidWorkId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
     }
     "user selects 'you' from who is in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
     }
 
     "when user selects 'both' on paid employment and coming from partner work hours" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment) thenReturn Some(both)
       when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
-      navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerWorkHoursId, NormalMode).value(answers) mustBe routes.ParentWorkHoursController.onPageLoad(NormalMode)
     }
   }
 
@@ -277,7 +274,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
       when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
-      navigator.nextPage(PartnerWorkHoursId, NormalMode)(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerWorkHoursId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
   }
 
@@ -285,13 +282,13 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "user selects hit continue on Parent work hours" in {
       val answers = spy(userAnswers())
       when(answers.parentWorkHours) thenReturn Some(BigDecimal(23))
-      navigator.nextPage(ParentWorkHoursId, NormalMode)(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(ParentWorkHoursId, NormalMode).value(answers) mustBe routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     }
   }
 
   "either gets vouchers pages" when {
     "go to you or your partner benefits page from which of you gets vouchers page" in {
-      navigator.nextPage(WhoGetsVouchersId, NormalMode)(spy(userAnswers())) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoGetsVouchersId, NormalMode).value(spy(userAnswers())) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
     }
 
     "go to who gets vouchers or you or your partner benefits page from do either of you get vouchers page when user selects 'yes' and lives with partner" in {
@@ -299,15 +296,15 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.eitherGetsVouchers) thenReturn Some("yes")
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(EitherGetsVouchersId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     }
 
     "go to do you or your partner get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure' and lives with partner" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.eitherGetsVouchers) thenReturn Some("no") thenReturn Some("notSure")
-      navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(EitherGetsVouchersId, NormalMode)(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(EitherGetsVouchersId, NormalMode).value(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(EitherGetsVouchersId, NormalMode).value(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
     }
 
   }
@@ -320,11 +317,11 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         Some(YesNoUnsureEnum.NO.toString) thenReturn
         Some(YesNoUnsureEnum.NOTSURE.toString)
 
-      navigator.nextPage(YourChildcareVouchersId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(YourChildcareVouchersId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(YourChildcareVouchersId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
     }
   }
@@ -337,11 +334,11 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         Some(YesNoUnsureEnum.NO.toString) thenReturn
         Some(YesNoUnsureEnum.NOTSURE.toString)
 
-      navigator.nextPage(PartnerChildcareVouchersId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(PartnerChildcareVouchersId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(PartnerChildcareVouchersId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
     }
   }
@@ -351,7 +348,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
     }
 
     "partner user with partner in paid work will be taken to whats your partners age page when user selects no" in {
@@ -359,7 +356,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }
 
     "partner user with you/both in paid work will be taken to whats your age page when user selects no" in {
@@ -367,13 +364,13 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
     }
 
     "partner user will be taken to Who Gets Benefit page when user selects yes" in {
       val answers = spy(userAnswers())
       when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
     }
   }
 
@@ -381,13 +378,13 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "single user will be taken to whats your age page when user selects 'No'" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetAnyBenefits) thenReturn Some(false)
-      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
     }
 
     "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
     }
   }
 
@@ -395,13 +392,13 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "partner user will be taken to which benefits do you get page when user selects You/both" in {
       val answers = spy(userAnswers())
       when(answers.whoGetsBenefits) thenReturn Some("you") thenReturn Some("both")
-      navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoGetsBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
     }
 
     "partner user will be taken to which benefits does your partner get page when user selects Partner" in {
       val answers = spy(userAnswers())
       when(answers.whoGetsBenefits) thenReturn Some("partner")
-      navigator.nextPage(WhoGetsBenefitsId, NormalMode)(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoGetsBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
     }
   }
 
@@ -414,7 +411,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.YourMaximumEarningsController.onPageLoad(NormalMode)
 
       }
@@ -425,7 +422,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.areYouInPaidWork) thenReturn Some(true)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
 
@@ -436,7 +433,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       }
 
@@ -446,7 +443,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
       }
 
@@ -456,7 +453,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.YourMaximumEarningsController.onPageLoad(NormalMode)
       }
 
@@ -466,7 +463,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
 
@@ -482,7 +479,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
       }
 
@@ -491,7 +488,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
 
@@ -501,7 +498,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
 
       }
@@ -511,7 +508,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
 
@@ -521,7 +518,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
       }
 
@@ -531,7 +528,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
         when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode)(answers) mustBe
+        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
 
@@ -542,13 +539,13 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "redirect to your age page as a single parent" in {
       val answers = spy(userAnswers())
       when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
-      navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(WhichBenefitsYouGetId, NormalMode).value(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
     }
     "redirect to your age page as a single parent when both in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whichBenefitsYouGet) thenReturn Some(Set("carersAllowance"))
       when(answers.whoGetsBenefits) thenReturn Some("both")
-      navigator.nextPage(WhichBenefitsYouGetId, NormalMode)(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+      navigator.nextPage(WhichBenefitsYouGetId, NormalMode).value(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
     }
   }
 
@@ -557,7 +554,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("carersAllowance"))
       when(answers.whoGetsBenefits) thenReturn Some("partner")
-      navigator.nextPage(WhichBenefitsPartnerGetId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(WhichBenefitsPartnerGetId, NormalMode).value(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }
 
   }
@@ -566,21 +563,21 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
     "single user will be taken to parent minimum earnings page when user selects any age option " in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
-      navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
     }
 
     "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }
 
     "partner user with only user(You) in paid work will be taken to parent minimum earnings page when user selects any age option " in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-      navigator.nextPage(YourAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
     }
   }
 
@@ -589,14 +586,14 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-      navigator.nextPage(YourPartnersAgeId, NormalMode)(answers) mustBe routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
     }
 
     "both in paid work, selecting any age option redirect to parent's minimum earnings page" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(YourPartnersAgeId, NormalMode)(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
     }
   }
 
@@ -606,7 +603,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourSelfEmployed) thenReturn Some(true) thenReturn Some(false)
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -617,7 +614,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
         routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
     }
 
@@ -629,7 +626,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.yourSelfEmployed) thenReturn Some(true)
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
         routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
     }
 
@@ -641,7 +638,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
       when(answers.yourSelfEmployed) thenReturn Some(true)
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode)(answers) mustBe
+      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
         routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
     }
   }
@@ -655,7 +652,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
-      navigator.nextPage(PartnerSelfEmployedId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -667,7 +664,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployed) thenReturn Some(true)
 
-      navigator.nextPage(PartnerSelfEmployedId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedId, NormalMode).value(answers) mustBe
         routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     }
 
@@ -678,7 +675,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployed) thenReturn Some(true)
 
-      navigator.nextPage(PartnerSelfEmployedId, NormalMode)  (answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedId, NormalMode)  .value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
   }
@@ -691,7 +688,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
     }
 
@@ -702,9 +699,9 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -716,7 +713,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
     }
 
@@ -728,10 +725,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -744,7 +741,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.YourSelfEmployedController.onPageLoad(NormalMode)
     }
 
@@ -757,10 +754,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
     }
 
@@ -775,7 +772,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
     }
 
@@ -787,10 +784,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn(Some(apprentice)) thenReturn(Some(neither))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -803,7 +800,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
     }
 
@@ -816,10 +813,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some(apprentice)) thenReturn(Some(neither))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.YourMaximumEarningsController.onPageLoad(NormalMode)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     }
 
@@ -833,7 +830,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(apprentice)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
     }
@@ -848,7 +845,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(neither)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(neither)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
     }
@@ -863,7 +860,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(apprentice)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
     }
@@ -878,7 +875,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(neither)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -892,7 +889,7 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(neither)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(apprentice)
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode)(answers) mustBe
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
 
@@ -908,10 +905,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
 
@@ -922,10 +919,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
         }
 
@@ -935,10 +932,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
           when(answers.partnerMinimumEarnings) thenReturn Some(false)
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
 
@@ -947,10 +944,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
       }
@@ -961,10 +958,10 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.partnerMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
       }
@@ -974,16 +971,14 @@ class MaximumHoursNavigationSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode)(answers) mustBe
+          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
         }
       }
-
     }
   }
-
 }

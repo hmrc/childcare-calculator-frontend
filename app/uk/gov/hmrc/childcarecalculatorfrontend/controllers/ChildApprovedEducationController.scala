@@ -50,7 +50,7 @@ class ChildApprovedEducationController @Inject() (
                               (implicit request: DataRequest[A]): Future[Result] = {
     request.userAnswers.childrenOver16.flatMap {
       childrenOver16 =>
-        childrenOver16.get(childIndex).map(block)
+        childrenOver16.get(childIndex).map(child => block(child.name))
     }.getOrElse(sessionExpired)
   }
 
@@ -81,7 +81,7 @@ class ChildApprovedEducationController @Inject() (
                 value
               ).map {
                 cacheMap =>
-                  Redirect(navigator.nextPage(ChildApprovedEducationId, mode)(new UserAnswers(cacheMap)))
+                  Redirect(navigator.nextPage(ChildApprovedEducationId(childIndex), mode)(new UserAnswers(cacheMap)))
               }
           )
       }

@@ -18,13 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, LocationEnum, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class MaxFreeHours @Inject() () extends Scheme {
+class MaxFreeHours @Inject() (freeHours: FreeHours) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    if (FreeHours.eligibility(answers) == NotEligible) {
+    if (freeHours.eligibility(answers) == NotEligible) {
       NotEligible
     } else {
       (for {
