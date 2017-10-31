@@ -37,43 +37,33 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     WhosHadBenefitsId -> whosHadBenefitsRouteCY,
     YouBenefitsIncomeCYId -> yourBenefitsIncomeRouteCY,
     PartnerBenefitsIncomeCYId -> partnerBenefitsIncomeRouteCY,
-    BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY
+    BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY,
+    YouAnyTheseBenefitsPYId -> yourBenefitsRoutePY,
+    PartnerAnyTheseBenefitsPYId -> partnerBenefitsRoutePY,
+    BothAnyTheseBenefitsPYId -> bothBenefitsRoutePY,
+    WhosHadBenefitsPYId -> whosHadBenefitsRoutePY,
+    YouBenefitsIncomePYId -> yourBenefitsIncomeRoutePY,
+    PartnerBenefitsIncomePYId -> partnerBenefitsIncomeRoutePY,
+    BothBenefitsIncomePYId -> bothBenefitsIncomeRoutePY
   )
 
-  private def yourBenefitsRouteCY(answers: UserAnswers) = {
+  private def yourBenefitsRouteCY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.youAnyTheseBenefits,
+      routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode),
+      routes.YourStatutoryPayCYController.onPageLoad(NormalMode))
 
-    val youAnyTheseBenefitsValue = answers.youAnyTheseBenefits
-    youAnyTheseBenefitsValue match {
-      case Some(true) => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def partnerBenefitsRouteCY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.partnerAnyTheseBenefitsCY,
+      routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode),
+      routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
 
-  private def partnerBenefitsRouteCY(answers: UserAnswers) = {
-
-    val partnerAnyTheseBenefitsCYValue = answers.partnerAnyTheseBenefitsCY
-    partnerAnyTheseBenefitsCYValue match {
-      case Some(true) => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
-
-  private def bothBenefitsRouteCY(answers: UserAnswers) = {
-
-    val bothAnyTheseBenefitsCYValue = answers.bothAnyTheseBenefitsCY
-    bothAnyTheseBenefitsCYValue match {
-      case Some(true) => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def bothBenefitsRouteCY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsCY,
+      routes.WhosHadBenefitsController.onPageLoad(NormalMode),
+      routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
-
-    val whosHadBenefitsValue = answers.whosHadBenefits
-    whosHadBenefitsValue match {
+    answers.whosHadBenefits match {
       case Some(You) => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
       case Some(Partner) => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
       case Some(Both) => routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
@@ -101,4 +91,50 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCallOrSessionExpired(benefitsIncomeCYValue,
       routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
   }
+
+  private def yourBenefitsRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.youAnyTheseBenefitsPY,
+      routes.YouBenefitsIncomePYController.onPageLoad(NormalMode),
+      routes.YourStatutoryPayPYController.onPageLoad(NormalMode))
+
+  private def partnerBenefitsRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.partnerAnyTheseBenefitsPY,
+      routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode),
+      routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode))
+
+  private def bothBenefitsRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsPY,
+      routes.WhosHadBenefitsPYController.onPageLoad(NormalMode),
+      routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
+
+  private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
+    answers.whosHadBenefitsPY match {
+      case Some(You) => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
+      case Some(Partner) => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
+      case Some(Both) => routes.BothBenefitsIncomePYController.onPageLoad(NormalMode)
+      case _ => utils.sessionExpired
+    }
+  }
+
+  private def yourBenefitsIncomeRoutePY(answers: UserAnswers) = {
+    val youBenefitsIncomePYValue = answers.youBenefitsIncomePY
+
+    utils.getCallOrSessionExpired(youBenefitsIncomePYValue,
+      routes.YourStatutoryPayPYController.onPageLoad(NormalMode))
+  }
+
+  private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) = {
+    val partnerBenefitsIncomePYValue = answers.partnerBenefitsIncomePY
+
+    utils.getCallOrSessionExpired(partnerBenefitsIncomePYValue,
+      routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode))
+  }
+
+  private def bothBenefitsIncomeRoutePY(answers: UserAnswers) = {
+    val bothBenefitsIncomePYValue = answers.bothBenefitsIncomePY
+
+    utils.getCallOrSessionExpired(bothBenefitsIncomePYValue,
+      routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
+  }
+
 }

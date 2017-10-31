@@ -53,7 +53,7 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             _ => routes.CheckYourAnswersController.onPageLoad()
         }
       }
-}
+  }
 
 @ImplementedBy(classOf[NavigatorImpl])
 trait Navigator {

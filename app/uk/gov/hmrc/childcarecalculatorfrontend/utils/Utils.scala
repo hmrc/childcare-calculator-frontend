@@ -125,4 +125,20 @@ class Utils {
       case _ => sessionExpired
     }
   }
+
+  /**
+    * Returns the trueCall if optionalBoolean is Some(true) and returns falseCall if optionalBoolean is Some(false)
+    * and returns SessionExpired page if optionalBoolean is None
+    *
+    * @param optionalBoolean
+    * @param trueCall
+    * @param falseCall
+    */
+  def getCallForOptionBooleanOrSessionExpired(optionalBoolean: Option[Boolean], trueCall: Call, falseCall: Call) ={
+    optionalBoolean match {
+      case Some(true) => trueCall
+      case Some(false) => falseCall
+      case _ => sessionExpired
+    }
+  }
 }
