@@ -42,6 +42,6 @@ class ChildDisabilityBenefitsViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildDisabilityBenefitsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildrenDisabilityBenefitsController.onSubmit(NormalMode).url)
   }
 }

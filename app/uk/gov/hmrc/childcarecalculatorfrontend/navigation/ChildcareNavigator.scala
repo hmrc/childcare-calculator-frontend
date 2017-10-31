@@ -143,15 +143,4 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
         }
     }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
-
-  private def toRegisteredBlind(answers: UserAnswers): Option[Call] = {
-    answers.noOfChildren.map {
-      noOfChildren =>
-        if (noOfChildren == 1) {
-          routes.ChildRegisteredBlindController.onPageLoad(NormalMode)
-        } else {
-          routes.RegisteredBlindController.onPageLoad(NormalMode)
-        }
-    }
-  }
 }
