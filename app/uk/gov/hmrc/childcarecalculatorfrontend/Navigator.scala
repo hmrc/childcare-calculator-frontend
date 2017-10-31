@@ -37,9 +37,10 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             employment: EmploymentIncomeNavigator,
             benefits: BenefitsNavigator,
             otherIncome: OtherIncomeNavigator,
-            incomeInfo: IncomeInfoNavigator
+            incomeInfo: IncomeInfoNavigator,
+            childcare: ChildcareNavigator
           ) {
-    this(Seq(minHours, maxHours, pensions, employment, benefits, otherIncome, incomeInfo): _*)
+    this(Seq(minHours, maxHours, pensions, employment, benefits, otherIncome, incomeInfo, childcare): _*)
   }
 
   override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call =
@@ -73,15 +74,15 @@ trait Navigator {
 
 trait SubNavigator {
 
-  protected def routeMap: Map[Identifier, UserAnswers => Call] = Map.empty
-  protected def editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
+  protected def routeMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
+  protected def editRouteMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
 
   def nextPage(id: Identifier, mode: Mode): Option[UserAnswers => Call] = {
     mode match {
       case NormalMode =>
-        routeMap.get(id)
+        routeMap.lift(id)
       case CheckMode =>
-        editRouteMap.get(id)
+        editRouteMap.lift(id)
     }
   }
 }

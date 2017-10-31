@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.joda.time.LocalDate
+import org.joda.time.{LocalDate, Years}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -309,16 +309,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
   }
 
   // TODO 31st August
-  def childrenOver16: Option[Map[Int, String]] = {
+  def childrenOver16: Option[Map[Int, AboutYourChild]] = {
     aboutYourChild.map {
       children =>
-        children.foldLeft(Map.empty[Int, String]) {
-          case (m, (i, model)) =>
-            if (model.dob isBefore LocalDate.now.minusYears(16)) {
-              m + (i -> model.name)
-            } else {
-              m
-            }
+        children.filter {
+          case (_, model) =>
+            model.dob.isBefore(LocalDate.now.minusYears(16))
         }
     }
   }

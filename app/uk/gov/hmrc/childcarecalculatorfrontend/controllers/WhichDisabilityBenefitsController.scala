@@ -71,7 +71,7 @@ class WhichDisabilityBenefitsController @Inject() (
                 value
               ).map {
                 cacheMap =>
-                  Redirect(navigator.nextPage(WhichDisabilityBenefitsId, mode)(new UserAnswers(cacheMap)))
+                  Redirect(navigator.nextPage(WhichDisabilityBenefitsId(childIndex), mode)(new UserAnswers(cacheMap)))
               }
             }
           )

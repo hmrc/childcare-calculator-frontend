@@ -85,7 +85,7 @@ class AboutYourChildController @Inject()(
             value
           ).map {
             cacheMap =>
-              Redirect(navigator.nextPage(AboutYourChildId, mode)(new UserAnswers(cacheMap)))
+              Redirect(navigator.nextPage(AboutYourChildId(childIndex), mode)(new UserAnswers(cacheMap)))
           }
         )
       }

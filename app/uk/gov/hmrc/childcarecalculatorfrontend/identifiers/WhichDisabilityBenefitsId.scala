@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object WhichDisabilityBenefitsId extends Identifier {
+case class WhichDisabilityBenefitsId(id: Int) extends Identifier
+
+object WhichDisabilityBenefitsId {
   override def toString: String = "whichDisabilityBenefits"
 }
