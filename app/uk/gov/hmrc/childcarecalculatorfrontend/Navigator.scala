@@ -23,6 +23,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
@@ -35,12 +36,13 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             pensions: PensionNavigator,
             employment: EmploymentIncomeNavigator,
             benefits: BenefitsNavigator,
-            otherIncome: OtherIncomeNavigator
+            otherIncome: OtherIncomeNavigator,
+            incomeInfo: IncomeInfoNavigator
           ) {
-    this(Seq(minHours, maxHours, pensions, employment): _*)
+    this(Seq(minHours, maxHours, pensions, employment, benefits, otherIncome, incomeInfo): _*)
   }
 
-  override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
+  override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call =
     navigators.map(_.nextPage(id, mode)).reduce(_ orElse _)
       .getOrElse {
         mode match {
@@ -50,7 +52,6 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             _ => routes.CheckYourAnswersController.onPageLoad()
         }
       }
-  }
 }
 
 @ImplementedBy(classOf[NavigatorImpl])
