@@ -61,7 +61,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YourStatutoryPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-    }
+      }
 
       "Partner Statutory Pay PY Route" must {
         "redirects to PartnerNoWeeksStatPayPY page when user selects yes" in {
@@ -155,7 +155,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.youNoWeeksStatPayPY) thenReturn Some(12)
 
           navigator.nextPage(YouNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode) //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -173,7 +173,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerNoWeeksStatPayPY) thenReturn Some(12)
 
           navigator.nextPage(PartnerNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode) //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -188,10 +188,10 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
       "Both No Weeks Statutory Pay PY Route" must {
         "redirects to StatutoryPayAWeekLY page when user provides a valid value" in {
           val answers = spy(userAnswers())
-          when(answers.bothNoWeeksStatPayPY) thenReturn Some(BothNoWeeksStatPayPY(12,12))
+          when(answers.bothNoWeeksStatPayPY) thenReturn Some(BothNoWeeksStatPayPY(12, 12))
 
           navigator.nextPage(BothNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode) //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -219,7 +219,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YourStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "Partner Statutory Pay Amount PY Route" must {
@@ -257,8 +256,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
       }
-
-  }
+    }
 
   }
 }

@@ -20,9 +20,8 @@ import javax.inject.Inject
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothNoWeeksStatPayPYId, PartnerStatutoryPayPYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
@@ -58,23 +57,23 @@ class StatutoryPayNavigator @Inject()(utils: Utils) extends SubNavigator {
       routes.WhoGetsStatutoryPYController.onPageLoad(NormalMode),
       routes.MaxFreeHoursResultController.onPageLoad())
 
-
   private def whoGetsStatutoryRoutePY(answers: UserAnswers) =
-    answers.whoGetsStatutoryPY match {
-      case Some(You) => routes.YouNoWeeksStatPayPYController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.PartnerNoWeeksStatPayPYController.onPageLoad(NormalMode)
-      case Some(Both) => routes.BothNoWeeksStatPayPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-  }
+    utils.getCallYouPartnerBothOrSessionExpired(answers.whoGetsStatutoryPY,
+      routes.YouNoWeeksStatPayPYController.onPageLoad(NormalMode),
+      routes.PartnerNoWeeksStatPayPYController.onPageLoad(NormalMode),
+      routes.BothNoWeeksStatPayPYController.onPageLoad(NormalMode))
 
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def youNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCallOrSessionExpired(answers.youNoWeeksStatPayPY,
       routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
 
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def partnerNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCallOrSessionExpired(answers.partnerNoWeeksStatPayPY,
       routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
 
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def bothNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCallOrSessionExpired(answers.bothNoWeeksStatPayPY,
       routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))

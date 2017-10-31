@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class UtilsSpec extends SpecBase {
 
@@ -111,6 +112,64 @@ class UtilsSpec extends SpecBase {
         utils.getCallForOptionBooleanOrSessionExpired(None, trueCall, falseCall) mustBe routes.SessionExpiredController.onPageLoad()
       }
     }
+
+    "getCallYouPartnerBothOrSessionExpired" should {
+      "return the youCall when optional element has Some(you)" in {
+
+        val optionalElementValue = Some(You)
+        val youCall = Call("GET", "http://you.com")
+        val partnerCall = Call("GET", "http://partner.com")
+        val bothCall = Call("GET", "http://both.com")
+
+        val utils = new Utils
+        utils.getCallYouPartnerBothOrSessionExpired(optionalElementValue, youCall, partnerCall, bothCall) mustBe youCall
+      }
+
+      "return the partnerCall when optional element has Some(partner)" in {
+
+        val optionalElementValue = Some(Partner)
+        val youCall = Call("GET", "http://you.com")
+        val partnerCall = Call("GET", "http://partner.com")
+        val bothCall = Call("GET", "http://both.com")
+
+        val utils = new Utils
+        utils.getCallYouPartnerBothOrSessionExpired(optionalElementValue, youCall, partnerCall, bothCall) mustBe partnerCall
+      }
+
+      "return the bothCall when optional element has Some(both)" in {
+
+        val optionalElementValue = Some(Both)
+        val youCall = Call("GET", "http://you.com")
+        val partnerCall = Call("GET", "http://partner.com")
+        val bothCall = Call("GET", "http://both.com")
+
+        val utils = new Utils
+        utils.getCallYouPartnerBothOrSessionExpired(optionalElementValue, youCall, partnerCall, bothCall) mustBe bothCall
+      }
+
+      "return the session expired page as call when any invalid data is passed in optional element" in {
+        val optionalElementValue = Some("invalid")
+        val youCall = Call("GET", "http://you.com")
+        val partnerCall = Call("GET", "http://partner.com")
+        val bothCall = Call("GET", "http://both.com")
+
+        val utils = new Utils
+        utils.getCallYouPartnerBothOrSessionExpired(optionalElementValue, youCall, partnerCall, bothCall) mustBe
+          routes.SessionExpiredController.onPageLoad()
+      }
+
+      "return the session expired page as call when None is passed as optional element" in {
+        val optionalElementValue = None
+        val youCall = Call("GET", "http://you.com")
+        val partnerCall = Call("GET", "http://partner.com")
+        val bothCall = Call("GET", "http://both.com")
+
+        val utils = new Utils
+        utils.getCallYouPartnerBothOrSessionExpired(optionalElementValue, youCall, partnerCall, bothCall) mustBe
+          routes.SessionExpiredController.onPageLoad()
+      }
+    }
+
 
   }
 }
