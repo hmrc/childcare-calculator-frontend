@@ -37,7 +37,10 @@ class StatutoryPayNavigator @Inject()(utils: Utils) extends SubNavigator {
     WhoGetsStatutoryPYId->whoGetsStatutoryRoutePY,
     YouNoWeeksStatPayPYId-> youNoWeeksStatutoryPayRoutePY,
     PartnerNoWeeksStatPayPYId->partnerNoWeeksStatutoryPayRoutePY,
-      BothNoWeeksStatPayPYId->bothNoWeeksStatutoryPayRoutePY
+    BothNoWeeksStatPayPYId->bothNoWeeksStatutoryPayRoutePY,
+    YourStatutoryPayAmountPYId->yourStatutoryPayAmountRoutePY,
+    PartnerStatutoryPayAmountPYId->partnerStatutoryPayAmountRoutePY,
+    StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY
   )
 
   private def yourStatutoryPayRoutePY(answers: UserAnswers) =
@@ -76,6 +79,16 @@ class StatutoryPayNavigator @Inject()(utils: Utils) extends SubNavigator {
     utils.getCallOrSessionExpired(answers.bothNoWeeksStatPayPY,
       routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
 
+  private def yourStatutoryPayAmountRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.yourStatutoryPayAmountPY,
+      routes.MaxFreeHoursResultController.onPageLoad())
 
+  private def partnerStatutoryPayAmountRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.partnerStatutoryPayAmountPY,
+      routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def bothStatutoryPayAmountRoutePY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.statutoryPayAmountPY,
+      routes.MaxFreeHoursResultController.onPageLoad())
 
 }

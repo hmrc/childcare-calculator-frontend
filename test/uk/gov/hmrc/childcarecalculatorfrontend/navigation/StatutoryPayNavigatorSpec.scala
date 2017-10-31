@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, BothBenefitsIncomePY, BothNoWeeksStatPayPY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -61,7 +61,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YourStatutoryPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
     }
 
       "Partner Statutory Pay PY Route" must {
@@ -88,7 +87,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(PartnerStatutoryPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "Both Statutory Pay PY Route" must {
@@ -115,7 +113,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(BothStatutoryPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "Who Gets Statutory PY Route" must {
@@ -150,11 +147,10 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(WhoGetsStatutoryPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "You No Weeks Statutory Pay PY Route" must {
-        "redirects to StatutoryPayAWeekLY page when user selects you" in {
+        "redirects to StatutoryPayAWeekLY page when user provides a valid value" in {
           val answers = spy(userAnswers())
           when(answers.youNoWeeksStatPayPY) thenReturn Some(12)
 
@@ -169,11 +165,10 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YouNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "Partner No Weeks Statutory Pay PY Route" must {
-        "redirects to StatutoryPayAWeekLY page when user selects you" in {
+        "redirects to StatutoryPayAWeekLY page when user provides a valid value" in {
           val answers = spy(userAnswers())
           when(answers.partnerNoWeeksStatPayPY) thenReturn Some(12)
 
@@ -188,11 +183,10 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(PartnerNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "Both No Weeks Statutory Pay PY Route" must {
-        "redirects to StatutoryPayAWeekLY page when user selects you" in {
+        "redirects to StatutoryPayAWeekLY page when user provides a valid value" in {
           val answers = spy(userAnswers())
           when(answers.bothNoWeeksStatPayPY) thenReturn Some(BothNoWeeksStatPayPY(12,12))
 
@@ -207,12 +201,64 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(BothNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
+      }
+
+      "Your Statutory Pay Amount PY Route" must {
+        "redirects to MaxFreeHoursResult page when user provides a valid value" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayAmountPY) thenReturn Some(BigDecimal(12))
+
+          navigator.nextPage(YourStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursResultController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayAmountPY) thenReturn None
+
+          navigator.nextPage(YourStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
 
       }
 
+      "Partner Statutory Pay Amount PY Route" must {
+        "redirects to MaxFreeHoursResult page when user provides a valid value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPayAmountPY) thenReturn Some(BigDecimal(12))
+
+          navigator.nextPage(PartnerStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursResultController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPayAmountPY) thenReturn None
+
+          navigator.nextPage(PartnerStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Both Statutory Pay Amount PY Route" must {
+        "redirects to MaxFreeHoursResult page when user provides a valid value" in {
+          val answers = spy(userAnswers())
+          when(answers.statutoryPayAmountPY) thenReturn Some(StatutoryPayAmountPY("12", "12"))
+
+          navigator.nextPage(StatutoryPayAmountPYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursResultController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.statutoryPayAmountPY) thenReturn None
+
+          navigator.nextPage(StatutoryPayAmountPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
   }
-
-
 
   }
 }
