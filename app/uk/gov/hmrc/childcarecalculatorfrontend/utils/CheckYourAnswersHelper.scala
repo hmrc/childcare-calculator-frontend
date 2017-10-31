@@ -62,10 +62,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
-  def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
-    x => AnswerRow("childRegisteredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildRegisteredBlindController.onPageLoad(CheckMode).url)
-  }
-
   def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation(index) map {
     x => AnswerRow("childApprovedEducation.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildApprovedEducationController.onPageLoad(CheckMode, index).url)
   }
