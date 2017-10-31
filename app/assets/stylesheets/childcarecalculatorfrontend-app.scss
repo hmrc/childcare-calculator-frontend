@@ -30,7 +30,11 @@
 /*
 IE8: Fix wrapping of crown on Gov.UK in header
 */
+
 .lte-ie8 #logo img {
     max-width: none;
 }
 
+.link-back, .js-visible p {
+    margin-top: 0;
+}
