@@ -15,8 +15,10 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import play.api.mvc.Call
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig,
+nextPage: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
         title = messages("partnerIncomeInfoPY.title"),
@@ -38,5 +40,8 @@
             <li>@messages("partnerIncomeInfoPY.li.birth_or_adoption")</li>
         </ul>
 
-        @components.submit_button()
+@components.button_link(
+messageKey = "site.save_and_continue",
+href = nextPage
+)
 }
