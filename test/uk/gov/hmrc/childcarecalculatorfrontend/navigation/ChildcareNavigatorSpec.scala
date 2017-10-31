@@ -252,7 +252,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         NoOfChildrenId.toString -> JsNumber(1)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
-      result mustEqual routes.ChildDisabilityBenefitsController.onPageLoad(NormalMode)
+      result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, 0)
     }
 
     "redirect to `Which of your children get disability benefits` when the user answers `Yes` and has more than 1 child" in {

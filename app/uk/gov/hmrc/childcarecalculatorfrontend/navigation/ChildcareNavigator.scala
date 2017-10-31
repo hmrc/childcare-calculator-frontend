@@ -110,7 +110,7 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
       if (noOfChildren > 1) {
         routes.WhichChildrenDisabilityController.onPageLoad(NormalMode)
       } else {
-        routes.ChildDisabilityBenefitsController.onPageLoad(NormalMode)
+        routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, 0)
       }
     } else {
       routes.RegisteredBlindController.onPageLoad(NormalMode)
