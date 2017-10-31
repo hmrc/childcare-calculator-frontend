@@ -82,5 +82,35 @@ class UtilsSpec extends SpecBase {
       }
     }
 
+    "getCallForBooleanOrSessionExpired" should {
+      "return the true call when optional element has Some(true)" in {
+
+        val optionalElementValue = Some(true)
+        val trueCall = Call("GET", "http://true.com")
+        val falseCall = Call("GET", "http://false.com")
+
+        val utils = new Utils
+        utils.getCallForOptionBooleanOrSessionExpired(optionalElementValue, trueCall, falseCall) mustBe trueCall
+      }
+
+      "return the false call when optional element has Some(false)" in {
+
+        val optionalElementValue = Some(false)
+        val trueCall = Call("GET", "http://true.com")
+        val falseCall = Call("GET", "http://false.com")
+
+        val utils = new Utils
+        utils.getCallForOptionBooleanOrSessionExpired(optionalElementValue, trueCall, falseCall) mustBe falseCall
+      }
+
+      "return the session expired page as call when None is passed as optional element" in {
+        val trueCall = Call("GET", "http://true.com")
+        val falseCall = Call("GET", "http://false.com")
+
+        val utils = new Utils
+        utils.getCallForOptionBooleanOrSessionExpired(None, trueCall, falseCall) mustBe routes.SessionExpiredController.onPageLoad()
+      }
+    }
+
   }
 }

@@ -47,29 +47,20 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     BothBenefitsIncomePYId -> bothBenefitsIncomeRoutePY
   )
 
-  private def yourBenefitsRouteCY(answers: UserAnswers) = {
-    answers.youAnyTheseBenefits match {
-      case Some(true) => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def yourBenefitsRouteCY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.youAnyTheseBenefits,
+      routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode),
+      routes.YourStatutoryPayCYController.onPageLoad(NormalMode))
 
-  private def partnerBenefitsRouteCY(answers: UserAnswers) = {
-    answers.partnerAnyTheseBenefitsCY match {
-      case Some(true) => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def partnerBenefitsRouteCY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.partnerAnyTheseBenefitsCY,
+      routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode),
+      routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
 
-  private def bothBenefitsRouteCY(answers: UserAnswers) = {
-    answers.bothAnyTheseBenefitsCY match {
-      case Some(true) => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def bothBenefitsRouteCY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsCY,
+      routes.WhosHadBenefitsController.onPageLoad(NormalMode),
+      routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
     answers.whosHadBenefits match {
@@ -101,29 +92,20 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
   }
 
-  private def yourBenefitsRoutePY(answers: UserAnswers) = {
-    answers.youAnyTheseBenefitsPY match {
-      case Some(true) => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def yourBenefitsRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.youAnyTheseBenefitsPY,
+      routes.YouBenefitsIncomePYController.onPageLoad(NormalMode),
+      routes.YourStatutoryPayPYController.onPageLoad(NormalMode))
 
-  private def partnerBenefitsRoutePY(answers: UserAnswers) = {
-    answers.partnerAnyTheseBenefitsPY match {
-      case Some(true) => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def partnerBenefitsRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.partnerAnyTheseBenefitsPY,
+      routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode),
+      routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode))
 
-  private def bothBenefitsRoutePY(answers: UserAnswers) = {
-    answers.bothAnyTheseBenefitsPY match {
-      case Some(true) => routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def bothBenefitsRoutePY(answers: UserAnswers) =
+    utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsPY,
+      routes.WhosHadBenefitsPYController.onPageLoad(NormalMode),
+      routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
 
   private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
     answers.whosHadBenefitsPY match {
