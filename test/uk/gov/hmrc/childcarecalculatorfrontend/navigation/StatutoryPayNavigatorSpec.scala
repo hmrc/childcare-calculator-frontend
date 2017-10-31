@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, BothBenefitsIncomePY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, BothBenefitsIncomePY, BothNoWeeksStatPayPY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -64,7 +64,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
 
     }
 
-
       "Partner Statutory Pay PY Route" must {
         "redirects to PartnerNoWeeksStatPayPY page when user selects yes" in {
           val answers = spy(userAnswers())
@@ -92,7 +91,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
 
       }
 
-
       "Both Statutory Pay PY Route" must {
         "redirects to WhoGetsStatutoryPY page when user selects yes" in {
           val answers = spy(userAnswers())
@@ -119,7 +117,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
         }
 
       }
-
 
       "Who Gets Statutory PY Route" must {
         "redirects to YouNoWeeksStatPayPY page when user selects you" in {
@@ -151,6 +148,63 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoGetsStatutoryPY) thenReturn None
 
           navigator.nextPage(WhoGetsStatutoryPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+      }
+
+      "You No Weeks Statutory Pay PY Route" must {
+        "redirects to StatutoryPayAWeekLY page when user selects you" in {
+          val answers = spy(userAnswers())
+          when(answers.youNoWeeksStatPayPY) thenReturn Some(12)
+
+          navigator.nextPage(YouNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.youNoWeeksStatPayPY) thenReturn None
+
+          navigator.nextPage(YouNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+      }
+
+      "Partner No Weeks Statutory Pay PY Route" must {
+        "redirects to StatutoryPayAWeekLY page when user selects you" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerNoWeeksStatPayPY) thenReturn Some(12)
+
+          navigator.nextPage(PartnerNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerNoWeeksStatPayPY) thenReturn None
+
+          navigator.nextPage(PartnerNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+      }
+
+      "Both No Weeks Statutory Pay PY Route" must {
+        "redirects to StatutoryPayAWeekLY page when user selects you" in {
+          val answers = spy(userAnswers())
+          when(answers.bothNoWeeksStatPayPY) thenReturn Some(BothNoWeeksStatPayPY(12,12))
+
+          navigator.nextPage(BothNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.bothNoWeeksStatPayPY) thenReturn None
+
+          navigator.nextPage(BothNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
