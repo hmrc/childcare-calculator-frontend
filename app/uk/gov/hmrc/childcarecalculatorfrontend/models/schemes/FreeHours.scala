@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-object FreeHours extends Scheme {
+class FreeHours extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
     for {

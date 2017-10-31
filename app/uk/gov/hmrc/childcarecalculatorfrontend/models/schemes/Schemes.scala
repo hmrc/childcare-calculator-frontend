@@ -25,7 +25,7 @@ class Schemes(schemes: Scheme*) {
 
   @Inject()
   def this() =
-    this(FreeHours, MaxFreeHours, TaxFreeChildcare)
+    this(new FreeHours, new MaxFreeHours, new TaxFreeChildcare)
 
   def allSchemesDetermined(answers: UserAnswers): Boolean = {
     !schemes.map(_.eligibility(answers)).contains(NotDetermined)

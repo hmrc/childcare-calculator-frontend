@@ -32,7 +32,7 @@ class Navigator @Inject()(schemes: Schemes,
                           pensionNav: PensionNavigation = new PensionNavigation(),
                           minHoursNav: MinimumHoursNavigation = new MinimumHoursNavigation(),
                           maxHoursNav: MaximumHoursNavigation = new MaximumHoursNavigation(),
-                          StatutoryPayNav: StatutoryPayNavigation = new StatutoryPayNavigation()) {
+                          StatutoryPayNav: StatutoryPayNavigator = new StatutoryPayNavigator()) {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
