@@ -55,7 +55,7 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
     childApprovedEducation.flatMap(_.get(childIndex))
   }
 
-  def childcarePayFrequency: Option[String] = cacheMap.getEntry[String](ChildcarePayFrequencyId.toString)
+  def childcarePayFrequency: Option[ChildcarePayFrequency.Value] = cacheMap.getEntry[ChildcarePayFrequency.Value](ChildcarePayFrequencyId.toString)
 
   def employmentIncomePY: Option[EmploymentIncomePY] = cacheMap.getEntry[EmploymentIncomePY](EmploymentIncomePYId.toString)
 
@@ -334,6 +334,24 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
               case true => None
               case false => Some(Set.empty)
             }
+          }
+      }
+    }
+  }
+
+  def childrenWithCosts: Option[Set[Int]] = {
+    // TODO remove `Int` conversion when type is fixed
+    whoHasChildcareCosts.map(_.map(_.toInt)).orElse {
+      noOfChildren.flatMap {
+        noOfChildren =>
+          if (noOfChildren == 1) {
+            childcareCosts.map {
+              // TODO fix this when the enums are used properly
+              case s if s == YesNoNotYetEnum.YES.toString || s == YesNoNotYetEnum.NOTYET.toString => Set(0)
+              case s if s == YesNoNotYetEnum.NO.toString => Set.empty
+            }
+          } else {
+            None
           }
       }
     }

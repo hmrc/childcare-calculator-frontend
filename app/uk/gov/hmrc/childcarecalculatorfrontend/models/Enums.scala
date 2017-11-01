@@ -121,3 +121,14 @@ object DisabilityBenefits extends Enumeration {
 
   implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(DisabilityBenefits)
 }
+
+object ChildcarePayFrequency extends Enumeration {
+
+  val WEEKLY = Value("weekly")
+  val MONTHLY = Value("monthly")
+
+  val reads: Reads[Value] = EnumUtils.enumReads(ChildcarePayFrequency)
+  val writes: Writes[Value] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(ChildcarePayFrequency)
+}
