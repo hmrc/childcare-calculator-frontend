@@ -44,7 +44,10 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY,
     PartnerStatutoryPayCYId->partnerStatutoryPayRouteCY,
     BothStatutoryPayCYId->bothStatutoryPayRouteCY,
-    WhoGetsStatutoryCYId->whoGetsStatutoryRouteCY
+    WhoGetsStatutoryCYId->whoGetsStatutoryRouteCY,
+    YouNoWeeksStatPayCYId->youNoWeeksStatutoryPayRouteCY,
+    PartnerNoWeeksStatPayCYId->partnerNoWeeksStatutoryPayRouteCY,
+    BothNoWeeksStatPayCYId->bothNoWeeksStatutoryPayRouteCY
   )
 
   private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
@@ -98,6 +101,22 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
       routes.YouNoWeeksStatPayPYController.onPageLoad(NormalMode),
       routes.PartnerNoWeeksStatPayPYController.onPageLoad(NormalMode),
       routes.BothNoWeeksStatPayPYController.onPageLoad(NormalMode))
+
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
+  private def youNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.youNoWeeksStatPayCY,
+      routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
+
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
+  private def partnerNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.partnerNoWeeksStatPayCY,
+      routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
+
+  //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
+  private def bothNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
+    utils.getCallOrSessionExpired(answers.bothNoWeeksStatPayCY,
+      routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
+
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def youNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =

@@ -211,6 +211,59 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "You No Weeks Stat Pay CY Route" must {
+        "redirects to StatutoryPayAWeek page when user enters valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.youNoWeeksStatPayCY) thenReturn Some(12)
+
+          navigator().nextPage(YouNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
+            routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when user enters invalid input" in {
+          val answers = spy(userAnswers())
+          when(answers.youNoWeeksStatPayCY) thenReturn None
+
+          navigator().nextPage(YouNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner No Weeks Stat Pay CY Route" must {
+        "redirects to StatutoryPayAWeek page when user enters valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerNoWeeksStatPayCY) thenReturn Some(12)
+
+          navigator().nextPage(PartnerNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
+            routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when user enters invalid input" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerNoWeeksStatPayCY) thenReturn None
+
+          navigator().nextPage(PartnerNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Both No Weeks Stat Pay CY Route" must {
+        "redirects to StatutoryPayAWeek page when user enters valid input" in {
+          val answers = spy(userAnswers())
+          when(answers.bothNoWeeksStatPayCY) thenReturn Some(BothNoWeeksStatPayCY(12,12))
+
+          navigator().nextPage(BothNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
+            routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when user enters invalid input" in {
+          val answers = spy(userAnswers())
+          when(answers.bothNoWeeksStatPayCY) thenReturn None
+
+          navigator().nextPage(BothNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
     }
   }
 
