@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{Scheme, TaxCredits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -38,7 +38,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
     override def eligibility(answers: UserAnswers) = NotEligible
   }
 
-  def NotDeterminedScheme: TaxCredits = new TaxCredits {
+  def notDeterminedScheme: TaxCredits = new TaxCredits {
     override def eligibility(answers: UserAnswers) = NotDetermined
   }
 
@@ -80,31 +80,31 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerIncomeInfoPYController.onPageLoad()
         }
 
-        "redirects to MaxFreeHoursInfo page when user selects no, live with partner and not eligible for TC" in {
+        "redirects to MaxFreeHoursResults page when user selects no, live with partner and not eligible for TC" in {
           val answers = spy(userAnswers())
 
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.yourStatutoryPayCY) thenReturn Some(false)
 
           navigator(notEligibleScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
-            routes.MaxFreeHoursInfoController.onPageLoad()
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
-        "redirects to MaxFreeHoursInfo page when user selects no, does not live with partner and not eligible for TC" in {
+        "redirects to MaxFreeHoursResults page when user selects no, does not live with partner and not eligible for TC" in {
           val answers = spy(userAnswers())
 
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourStatutoryPayCY) thenReturn Some(false)
 
           navigator(notEligibleScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
-            routes.MaxFreeHoursInfoController.onPageLoad()
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to sessionExpired page when there is tax credit eligibility is not determined" in {
           val answers = spy(userAnswers())
           when(answers.yourStatutoryPayCY) thenReturn None
 
-          navigator(NotDeterminedScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
+          navigator(notDeterminedScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -126,19 +126,19 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerIncomeInfoPYController.onPageLoad()
         }
 
-        "redirects to MaxFreeHoursInfo page when user selects no and not eligible for TC" in {
+        "redirects to MaxFreeHoursResults page when user selects no and not eligible for TC" in {
           val answers = spy(userAnswers())
 
           when(answers.partnerStatutoryPayCY) thenReturn Some(false)
           navigator(notEligibleScheme).nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
-            routes.MaxFreeHoursInfoController.onPageLoad()
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to sessionExpired page when there is tax credit eligibility is not determined" in {
           val answers = spy(userAnswers())
           when(answers.partnerStatutoryPayCY) thenReturn None
 
-          navigator(NotDeterminedScheme).nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
+          navigator(notDeterminedScheme).nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -160,19 +160,19 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerIncomeInfoPYController.onPageLoad()
         }
 
-        "redirects to MaxFreeHoursInfo page when user selects no and not eligible for TC" in {
+        "redirects to MaxFreeHoursResult page when user selects no and not eligible for TC" in {
           val answers = spy(userAnswers())
 
           when(answers.bothStatutoryPayCY) thenReturn Some(false)
           navigator(notEligibleScheme).nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
-            routes.MaxFreeHoursInfoController.onPageLoad()
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to sessionExpired page when there is tax credit eligibility is not determined" in {
           val answers = spy(userAnswers())
           when(answers.bothStatutoryPayCY) thenReturn None
 
-          navigator(NotDeterminedScheme).nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
+          navigator(notDeterminedScheme).nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -216,6 +216,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.youNoWeeksStatPayCY) thenReturn Some(12)
 
+          //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
           navigator().nextPage(YouNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
             routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
         }
@@ -234,8 +235,9 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerNoWeeksStatPayCY) thenReturn Some(12)
 
+          //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
           navigator().nextPage(PartnerNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
+            routes.StatutoryPayAWeekController.onPageLoad(NormalMode)  
         }
 
         "redirects to sessionExpired page when user enters invalid input" in {
@@ -250,12 +252,12 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
       "Both No Weeks Stat Pay CY Route" must {
         "redirects to StatutoryPayAWeek page when user enters valid input" in {
           val answers = spy(userAnswers())
-          when(answers.bothNoWeeksStatPayCY) thenReturn Some(BothNoWeeksStatPayCY(12,12))
+          when(answers.bothNoWeeksStatPayCY) thenReturn Some(BothNoWeeksStatPayCY(12, 12))
 
+          //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
           navigator().nextPage(BothNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
             routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
         }
-
         "redirects to sessionExpired page when user enters invalid input" in {
           val answers = spy(userAnswers())
           when(answers.bothNoWeeksStatPayCY) thenReturn None
@@ -263,6 +265,107 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator().nextPage(BothNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
+
+        "Your Statutory Pay Amount CY Route" must {
+
+          "redirects to YourIncomeInfoPY page when user does not lives with partner, provides a valid value and eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            when(answers.yourStatutoryPayAmountCY) thenReturn Some(BigDecimal(12))
+
+            navigator(eligibleScheme).nextPage(YourStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.YourIncomeInfoPYController.onPageLoad()
+          }
+
+          "redirects to MaxFreeHoursResult page when user does not lives with partner,provides a valid value and not eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            when(answers.yourStatutoryPayAmountCY) thenReturn Some(BigDecimal(12))
+
+            navigator(notEligibleScheme).nextPage(YourStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.MaxFreeHoursResultController.onPageLoad()
+          }
+
+          "redirects to PartnerIncomeInfoPY page when user lives with partner, provides a valid value and eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourStatutoryPayAmountCY) thenReturn Some(BigDecimal(12))
+
+            navigator(eligibleScheme).nextPage(YourStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.PartnerIncomeInfoPYController.onPageLoad()
+          }
+
+          "redirects to MaxFreeHoursResult page when user lives with partner, provides a valid value and not eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.yourStatutoryPayAmountCY) thenReturn Some(BigDecimal(12))
+
+            navigator(notEligibleScheme).nextPage(YourStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.MaxFreeHoursResultController.onPageLoad()
+          }
+
+          "redirects to sessionExpired page when there is no value for user selection" in {
+            val answers = spy(userAnswers())
+            when(answers.yourStatutoryPayAmountCY) thenReturn None
+
+            navigator(notDeterminedScheme).nextPage(YourStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.SessionExpiredController.onPageLoad()
+          }
+        }
+
+        "Partner Statutory Pay Amount CY Route" must {
+
+          "redirects to PartnerIncomeInfoPY page when user provides a valid value and eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.partnerStatutoryPayAmountCY) thenReturn Some(BigDecimal(12))
+
+            navigator(eligibleScheme).nextPage(PartnerStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.PartnerIncomeInfoPYController.onPageLoad()
+          }
+
+          "redirects to MaxFreeHoursResult page when user provides a valid value and not eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.partnerStatutoryPayAmountCY) thenReturn Some(BigDecimal(12))
+
+            navigator(notEligibleScheme).nextPage(PartnerStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.MaxFreeHoursResultController.onPageLoad()
+          }
+
+          "redirects to sessionExpired page when there is no value for user selection" in {
+            val answers = spy(userAnswers())
+            when(answers.partnerStatutoryPayAmountCY) thenReturn None
+
+            navigator(notDeterminedScheme).nextPage(PartnerStatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.SessionExpiredController.onPageLoad()
+          }
+        }
+
+        "Both Statutory Pay Amount CY Route" must {
+
+          "redirects to PartnerIncomeInfoPY page when user provides a valid value and eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.statutoryPayAmountCY) thenReturn Some(StatutoryPayAmountCY("12", "12"))
+
+            navigator(eligibleScheme).nextPage(StatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.PartnerIncomeInfoPYController.onPageLoad()
+          }
+
+          "redirects to MaxFreeHoursResult page when user provides a valid value and not eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.statutoryPayAmountCY) thenReturn Some(StatutoryPayAmountCY("12", "12"))
+
+            navigator(notEligibleScheme).nextPage(StatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.MaxFreeHoursResultController.onPageLoad()
+          }
+
+          "redirects to sessionExpired page when there is no value for user selection" in {
+            val answers = spy(userAnswers())
+            when(answers.statutoryPayAmountCY) thenReturn None
+
+            navigator(notDeterminedScheme).nextPage(StatutoryPayAmountCYId, NormalMode).value(answers) mustBe
+              routes.SessionExpiredController.onPageLoad()
+          }
+        }
+
       }
     }
   }
@@ -387,8 +490,9 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.youNoWeeksStatPayPY) thenReturn Some(12)
 
+          //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
           navigator().nextPage(YouNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode) //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -405,8 +509,9 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerNoWeeksStatPayPY) thenReturn Some(12)
 
+          //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
           navigator().nextPage(PartnerNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode) //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -423,8 +528,9 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothNoWeeksStatPayPY) thenReturn Some(BothNoWeeksStatPayPY(12, 12))
 
+          //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
           navigator().nextPage(BothNoWeeksStatPayPYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode) //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
+            routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {

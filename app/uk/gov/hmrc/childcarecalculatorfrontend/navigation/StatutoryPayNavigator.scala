@@ -47,7 +47,10 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     WhoGetsStatutoryCYId->whoGetsStatutoryRouteCY,
     YouNoWeeksStatPayCYId->youNoWeeksStatutoryPayRouteCY,
     PartnerNoWeeksStatPayCYId->partnerNoWeeksStatutoryPayRouteCY,
-    BothNoWeeksStatPayCYId->bothNoWeeksStatutoryPayRouteCY
+    BothNoWeeksStatPayCYId->bothNoWeeksStatutoryPayRouteCY,
+    YourStatutoryPayAmountCYId-> yourStatutoryPayAmountRouteCY,
+    PartnerStatutoryPayAmountCYId->partnerStatutoryPayAmountRouteCY,
+    StatutoryPayAmountCYId->bothStatutoryPayAmountRouteCY
   )
 
   private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
@@ -117,6 +120,26 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     utils.getCallOrSessionExpired(answers.bothNoWeeksStatPayCY,
       routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
 
+  private def yourStatutoryPayAmountRouteCY(answers: UserAnswers) = {
+    answers.yourStatutoryPayAmountCY match {
+      case Some(_) => yourStatutoryPayRouteCYForNoSelection(answers)
+      case _ => utils.sessionExpired
+    }
+  }
+
+  private def partnerStatutoryPayAmountRouteCY(answers: UserAnswers) = {
+    answers.partnerStatutoryPayAmountCY match {
+      case Some(_) => statutoryPayRouteCYForNoSelection(answers)
+      case _ => utils.sessionExpired
+    }
+  }
+
+  private def bothStatutoryPayAmountRouteCY(answers: UserAnswers) = {
+    answers.statutoryPayAmountCY match {
+      case Some(_) => statutoryPayRouteCYForNoSelection(answers)
+      case _ => utils.sessionExpired
+    }
+  }
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def youNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
@@ -151,9 +174,9 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
 
     (hasPartner, eligibility) match {
       case (false, Eligible) => routes.YourIncomeInfoPYController.onPageLoad()
-      case (false, _) => routes.MaxFreeHoursInfoController.onPageLoad()
+      case (false, _) => routes.MaxFreeHoursResultController.onPageLoad()
       case (true, Eligible) => routes.PartnerIncomeInfoPYController.onPageLoad()
-      case (true, _) => routes.MaxFreeHoursInfoController.onPageLoad()
+      case (true, _) => routes.MaxFreeHoursResultController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -163,14 +186,8 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
 
     eligibility match {
       case Eligible => routes.PartnerIncomeInfoPYController.onPageLoad()
-      case NotEligible => routes.MaxFreeHoursInfoController.onPageLoad()
+      case NotEligible => routes.MaxFreeHoursResultController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
-
-
-
-
-
-
 }
