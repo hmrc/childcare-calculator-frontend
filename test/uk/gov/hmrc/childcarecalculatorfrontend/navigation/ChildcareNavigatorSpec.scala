@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import org.joda.time.LocalDate
 import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
+import org.mockito.Mockito._
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
@@ -318,9 +319,93 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
     }
 
+    "redirect to `Any children blind` when this is the only child" in {
+      val answers: UserAnswers = userAnswers(
+        NoOfChildrenId.toString               -> JsNumber(1),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
+      )
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+
     "redirect to `SessionExpired` when there is no answer for `WhichChildrenDisability`" in {
       val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(userAnswers())
       result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "Are any of your children registered blind" must {
+
+    "user has a single child" when {
+
+      "redirect to `How often do you expect to pay for childcare` when the user answers `Yes`" in {
+        val answers: UserAnswers = userAnswers(
+          NoOfChildrenId.toString -> JsNumber(1),
+          RegisteredBlindId.toString -> JsBoolean(true)
+        )
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+
+      "redirect to `How often do you expect to pay for childcare` when the user answers `No`" in {
+        val answers: UserAnswers = userAnswers(
+          NoOfChildrenId.toString -> JsNumber(1),
+          RegisteredBlindId.toString -> JsBoolean(false)
+        )
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+    }
+
+    "user has multiple children" when {
+
+      "redirect to `Which children are registered blind` when the user answers `Yes`" in {
+        val answers: UserAnswers = userAnswers(
+          NoOfChildrenId.toString -> JsNumber(2),
+          RegisteredBlindId.toString -> JsBoolean(true)
+        )
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.WhichChildrenBlindController.onPageLoad(NormalMode)
+      }
+
+      "redirect to `How often do you expect to pay childcare` when the user answers `No`" in {
+        val answers: UserAnswers = userAnswers(
+          NoOfChildrenId.toString -> JsNumber(2),
+          RegisteredBlindId.toString -> JsBoolean(false)
+        )
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+    }
+
+    "redirect to `Session Expired` when there is no answer for `Are any of your children registered blind`" in {
+      val answers: UserAnswers = userAnswers(
+        NoOfChildrenId.toString -> JsNumber(1)
+      )
+      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+
+    "redirect to `Session Expired` when there is no answer for `Number of Children`" in {
+      val answers: UserAnswers = userAnswers(
+        RegisteredBlindId.toString -> JsBoolean(true)
+      )
+      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "Which children are registered blind" must {
+    "redirect to `Who has childcare costs`" in {
+      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(userAnswers())
+      result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    }
+  }
+
+  "Who has childcare costs" must {
+    "redirect to `How often do you expect to pay for childcare`" in {
+      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(userAnswers())
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
     }
   }
 

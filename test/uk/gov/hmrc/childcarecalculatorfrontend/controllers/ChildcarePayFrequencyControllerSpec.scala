@@ -16,19 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.joda.time.LocalDate
+import org.scalatest.OptionValues
 import play.api.data.Form
-import play.api.libs.json.JsString
+import play.api.libs.json.{JsString, JsValue, Json}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildcarePayFrequencyId, WhoHasChildcareCostsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
-class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase {
+class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with OptionValues {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
@@ -36,56 +38,66 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase {
     new ChildcarePayFrequencyController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = ChildcarePayFrequencyForm()) = childcarePayFrequency(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[ChildcarePayFrequency.Value] = ChildcarePayFrequencyForm("Foo"), id: Int = 0, name: String = "Foo") =
+    childcarePayFrequency(frontendAppConfig, form, id, name, NormalMode)(fakeRequest, messages).toString
+
+  val requiredData: Map[String, JsValue] = Map(
+    WhoHasChildcareCostsId.toString -> Json.toJson(Seq("0", "1")),
+    AboutYourChildId.toString -> Json.obj(
+      "0" -> AboutYourChild("Foo", LocalDate.now),
+      "1" -> AboutYourChild("Bar", LocalDate.now)
+    )
+  )
+
+  val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
   "ChildcarePayFrequency Controller" must {
 
-    "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+    val cases: Map[Int, String] = Map(
+      0 -> "Foo", 1 -> "Bar"
+    )
 
-      status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString()
-    }
+    cases.foreach {
+      case (id, name) =>
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(ChildcarePayFrequencyId.toString -> JsString(ChildcarePayFrequencyForm.options.head.value))
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        s"return OK and the correct view for a GET, for id: $id" in {
+          val result = controller(getRequiredData).onPageLoad(NormalMode, id)(fakeRequest)
+          status(result) mustEqual OK
+          contentAsString(result) mustBe viewAsString(name = name, id = id)
+        }
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+        s"populate the view correctly on a GET when the question has previously been answered, for id: $id" in {
+          val validData = requiredData + (ChildcarePayFrequencyId.toString -> JsString(ChildcarePayFrequency(0).toString))
+          val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+          val result = controller(getRelevantData).onPageLoad(NormalMode, id)(fakeRequest)
+          contentAsString(result) mustEqual viewAsString(ChildcarePayFrequencyForm(name).fill(ChildcarePayFrequency(0)), id, name)
+        }
 
-      contentAsString(result) mustBe viewAsString(ChildcarePayFrequencyForm().fill(ChildcarePayFrequencyForm.options.head.value))
+        s"return a Bad Request and errors when invalid data is submitted, for id: $id" in {
+          val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+          val boundForm = ChildcarePayFrequencyForm(name).bind(Map("value" -> "invalid value"))
+          val result = controller(getRequiredData).onSubmit(NormalMode, id)(postRequest)
+          status(result) mustBe BAD_REQUEST
+          contentAsString(result) mustBe viewAsString(boundForm, id, name)
+        }
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
-
-      val result = controller().onSubmit(NormalMode)(postRequest)
-
+      val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(onwardRoute.url)
-    }
-
-    "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = ChildcarePayFrequencyForm().bind(Map("value" -> "invalid value"))
-
-      val result = controller().onSubmit(NormalMode)(postRequest)
-
-      status(result) mustBe BAD_REQUEST
-      contentAsString(result) mustBe viewAsString(boundForm)
+      redirectLocation(result).value mustEqual onwardRoute.url
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
-
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
-
+      val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }

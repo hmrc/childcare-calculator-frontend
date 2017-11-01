@@ -26,7 +26,7 @@ object TaxOrUniversalCreditsForm extends FormErrorHelper {
   def TaxOrUniversalCreditsFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, "taxOrUniversalCredits.error")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,8 +37,9 @@ object TaxOrUniversalCreditsForm extends FormErrorHelper {
     Form(single("value" -> of(TaxOrUniversalCreditsFormatter)))
 
   def options = Seq(
-    InputOption("taxOrUniversalCredits", "option1"),
-    InputOption("taxOrUniversalCredits", "option2")
+    InputOption("taxOrUniversalCredits", "tc"),
+    InputOption("taxOrUniversalCredits", "uc"),
+    InputOption("taxOrUniversalCredits", "none")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

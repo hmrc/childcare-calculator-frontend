@@ -62,10 +62,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
-  def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
-    x => AnswerRow("childRegisteredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildRegisteredBlindController.onPageLoad(CheckMode).url)
-  }
-
   def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation(index) map {
     x => AnswerRow("childApprovedEducation.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildApprovedEducationController.onPageLoad(CheckMode, index).url)
   }
@@ -74,8 +70,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("childrenDisabilityBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildrenDisabilityBenefitsController.onPageLoad(CheckMode).url)
   }
 
-  def childcarePayFrequency: Option[AnswerRow] = userAnswers.childcarePayFrequency map {
-    x => AnswerRow("childcarePayFrequency.checkYourAnswersLabel", s"childcarePayFrequency.$x", true, routes.ChildcarePayFrequencyController.onPageLoad(CheckMode).url)
+  def childcarePayFrequency(index: Int): Option[AnswerRow] = userAnswers.childcarePayFrequency map {
+    x => AnswerRow("childcarePayFrequency.checkYourAnswersLabel", s"childcarePayFrequency.$x", true, routes.ChildcarePayFrequencyController.onPageLoad(CheckMode, index).url)
   }
 
   def employmentIncomePY: Option[AnswerRow] = userAnswers.employmentIncomePY map {
@@ -112,10 +108,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def yourStatutoryPayAmountPY: Option[AnswerRow] = userAnswers.yourStatutoryPayAmountPY map {
     x => AnswerRow("yourStatutoryPayAmountPY.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryPayAmountPYController.onPageLoad(CheckMode).url)
-  }
-
-  def childDisabilityBenefits: Option[AnswerRow] = userAnswers.childDisabilityBenefits map {
-    x => AnswerRow("childDisabilityBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildDisabilityBenefitsController.onPageLoad(CheckMode).url)
   }
 
   def partnerEmploymentIncomeCY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomeCY map {
