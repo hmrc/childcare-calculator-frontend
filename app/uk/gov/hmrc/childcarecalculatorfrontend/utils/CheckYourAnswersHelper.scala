@@ -62,10 +62,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerNoWeeksStatPayCY.checkYourAnswersLabel", s"$x", false, routes.PartnerNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
   }
 
-  def childRegisteredBlind: Option[AnswerRow] = userAnswers.childRegisteredBlind map {
-    x => AnswerRow("childRegisteredBlind.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildRegisteredBlindController.onPageLoad(CheckMode).url)
-  }
-
   def childApprovedEducation(index: Int): Option[AnswerRow] = userAnswers.childApprovedEducation(index) map {
     x => AnswerRow("childApprovedEducation.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildApprovedEducationController.onPageLoad(CheckMode, index).url)
   }
@@ -112,10 +108,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def yourStatutoryPayAmountPY: Option[AnswerRow] = userAnswers.yourStatutoryPayAmountPY map {
     x => AnswerRow("yourStatutoryPayAmountPY.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryPayAmountPYController.onPageLoad(CheckMode).url)
-  }
-
-  def childDisabilityBenefits: Option[AnswerRow] = userAnswers.childDisabilityBenefits map {
-    x => AnswerRow("childDisabilityBenefits.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.ChildDisabilityBenefitsController.onPageLoad(CheckMode).url)
   }
 
   def partnerEmploymentIncomeCY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomeCY map {

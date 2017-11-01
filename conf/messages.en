@@ -944,7 +944,7 @@ howMuchPartnerPayPensionPY.partnerPension = Partner
 howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
 howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
 
-childDisabilityBenefits.title = Does {0} get any of these disability benefits?
+childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
 childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment

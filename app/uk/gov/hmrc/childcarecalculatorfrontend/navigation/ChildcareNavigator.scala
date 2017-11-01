@@ -36,6 +36,9 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case ChildrenDisabilityBenefitsId => childrenDisabilityBenefitsRoutes
     case WhichChildrenDisabilityId => whichChildrenDisabilityRoutes
     case WhichDisabilityBenefitsId(id) => whichDisabilityBenefitsRoutes(id)
+    case RegisteredBlindId => registeredBlindRoutes
+    case WhichChildrenBlindId => _ => routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    case WhoHasChildcareCostsId => _ => routes.ChildcarePayFrequencyController.onPageLoad(NormalMode)
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -127,12 +130,11 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
   }
 
   private def whichDisabilityBenefitsRoutes(id: Int)(answers: UserAnswers): Call = {
-    answers.whichChildrenDisability.map {
+    answers.childrenWithDisabilityBenefits.map {
       whichChildrenDisability =>
 
         def next: Option[Int] = {
-          // TODO remove `Int` conversion when underlying type is changed
-          val children: Seq[Int] = whichChildrenDisability.map(_.toInt).toSeq
+          val children: Seq[Int] = whichChildrenDisability.toSeq
           children.lift(children.indexOf(id) + 1)
         }
 
@@ -144,4 +146,15 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
         }
     }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
+
+  private def registeredBlindRoutes(answers: UserAnswers): Call = {
+    for {
+      noOfChildren    <- answers.noOfChildren
+      registeredBlind <- answers.registeredBlind
+    } yield if (noOfChildren > 1 && registeredBlind) {
+      routes.WhichChildrenBlindController.onPageLoad(NormalMode)
+    } else {
+      routes.ChildcarePayFrequencyController.onPageLoad(NormalMode)
+    }
+  }.getOrElse(routes.SessionExpiredController.onPageLoad())
 }

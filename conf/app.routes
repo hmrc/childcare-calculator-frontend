@@ -545,10 +545,6 @@ POST       /otherIncomeAmountPY                       uk.gov.hmrc.childcarecalcu
 GET        /changeOtherIncomeAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeOtherIncomeAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountPYController.onSubmit(mode: Mode = CheckMode)
 
-GET        /childDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onPageLoad(mode: Mode = NormalMode)
-POST       /childDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeChildDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeChildDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildDisabilityBenefitsController.onSubmit(mode: Mode = CheckMode)
 GET        /youNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouNoWeeksStatPayCYController.onPageLoad(mode: Mode = NormalMode)
 POST       /youNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouNoWeeksStatPayCYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeYouNoWeeksStatPayCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouNoWeeksStatPayCYController.onPageLoad(mode: Mode = CheckMode)
@@ -600,11 +596,6 @@ GET        /aboutYourChild/:id                       uk.gov.hmrc.childcarecalcul
 POST       /aboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeAboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeAboutYourChild/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = CheckMode, id: Int)
-
-GET        /childRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onPageLoad(mode: Mode = NormalMode)
-POST       /childRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onSubmit(mode: Mode = NormalMode)
-GET        /changeChildRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeChildRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildRegisteredBlindController.onSubmit(mode: Mode = CheckMode)
 
 GET        /parentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onPageLoad(mode: Mode = NormalMode)
 POST       /parentEmploymentIncomePY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onSubmit(mode: Mode = NormalMode)

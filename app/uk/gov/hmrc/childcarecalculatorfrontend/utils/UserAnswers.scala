@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.joda.time.{LocalDate, Years}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
 
@@ -316,6 +316,26 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
           case (_, model) =>
             model.dob.isBefore(LocalDate.now.minusYears(16))
         }
+    }
+  }
+
+  def childrenWithDisabilityBenefits: Option[Set[Int]] = {
+    // TODO remove `Int` conversion when the type is fixed
+    whichChildrenDisability.map(_.map(_.toInt)).orElse {
+      noOfChildren.flatMap {
+        noOfChildren =>
+          if (noOfChildren == 1) {
+            childrenDisabilityBenefits.map {
+              case true => Set(0)
+              case false => Set.empty
+            }
+          } else {
+            childrenDisabilityBenefits.flatMap {
+              case true => None
+              case false => Some(Set.empty)
+            }
+          }
+      }
     }
   }
 }
