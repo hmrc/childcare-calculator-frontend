@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
 
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
@@ -57,10 +58,17 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode),
       routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
 
-  private def bothBenefitsRouteCY(answers: UserAnswers) =
+  private def bothBenefitsRouteCY(answers: UserAnswers): Call =
+  utils.getCall(answers.bothAnyTheseBenefitsCY) {
+    case true => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
+    case false => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+  }
+/*
+
     utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsCY,
       routes.WhosHadBenefitsController.onPageLoad(NormalMode),
       routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
+*/
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
     answers.whosHadBenefits match {

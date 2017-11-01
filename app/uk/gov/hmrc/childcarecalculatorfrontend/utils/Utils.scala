@@ -166,4 +166,8 @@ class Utils {
       case _ => sessionExpired
     }
   }
+
+  def getCall[A](optionalElement: Option[A])(f: A => Call) =
+    optionalElement.getOrElse(routes.SessionExpiredController.onPageLoad())
+
 }
