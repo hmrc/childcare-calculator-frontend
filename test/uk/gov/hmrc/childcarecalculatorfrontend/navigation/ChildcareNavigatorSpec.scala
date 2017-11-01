@@ -402,6 +402,13 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 
+  "Who has childcare costs" must {
+    "redirect to `How often do you expect to pay for childcare`" in {
+      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(userAnswers())
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode)
+    }
+  }
+
   private def userAnswers(data: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", data.toMap))
 

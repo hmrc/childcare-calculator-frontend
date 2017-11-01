@@ -38,6 +38,7 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case WhichDisabilityBenefitsId(id) => whichDisabilityBenefitsRoutes(id)
     case RegisteredBlindId => registeredBlindRoutes
     case WhichChildrenBlindId => _ => routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    case WhoHasChildcareCostsId => _ => routes.ChildcarePayFrequencyController.onPageLoad(NormalMode)
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
