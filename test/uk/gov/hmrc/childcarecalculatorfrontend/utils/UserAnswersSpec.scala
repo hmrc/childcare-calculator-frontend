@@ -134,6 +134,55 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
   }
 
+  ".childrenWithCosts" must {
+
+    "return `Some` if there are multiple children and `whoHasChildcareCosts` is defined" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(2),
+        WhoHasChildcareCostsId.toString -> Json.toJson(Seq(JsString("0")))
+      ))
+      answers.childrenWithCosts.value mustEqual Set(0)
+    }
+
+    "return `Some` if there is a single child and the `childcareCosts` is `yes`" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        ChildcareCostsId.toString -> JsString("yes")
+      ))
+      answers.childrenWithCosts.value mustEqual Set(0)
+    }
+
+    "return `Some` if there is a single child and the `childcareCosts` is `not yet`" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        ChildcareCostsId.toString -> JsString("notYet")
+      ))
+      answers.childrenWithCosts.value mustEqual Set(0)
+    }
+
+    "return `Some(Set())` if there is a single child and `childcareCosts` is `no`" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        ChildcareCostsId.toString -> JsString("no")
+      ))
+      answers.childrenWithCosts.value mustEqual Set.empty
+    }
+
+    "return `None` if there is a single child and `childcareCosts` is undefined" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1)
+      ))
+      answers.childrenWithCosts mustNot be(defined)
+    }
+
+    "return `None` if there are multiple children and `whoHasChildcareCosts` is undefined" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(2)
+      ))
+      answers.childrenWithCosts mustNot be(defined)
+    }
+  }
+
   def cacheMap(answers: (String, JsValue)*): CacheMap =
     CacheMap("", Map(answers: _*))
 

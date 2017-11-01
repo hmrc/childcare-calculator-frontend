@@ -952,12 +952,12 @@ childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if {0} get disability benefits
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
-childcarePayFrequency.heading = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay for {0}’s childcare?
 childcarePayFrequency.weekly = Weekly
 childcarePayFrequency.monthly = Monthly
-childcarePayFrequency.checkYourAnswersLabel = childcarePayFrequency
+childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.error = You must tell the calculator how often you expect to pay for {0}’s childcare
 
-childcarePayFrequency.error = Select how often you pay or expect to pay for childcare
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?

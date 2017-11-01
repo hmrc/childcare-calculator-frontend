@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
@@ -26,12 +26,20 @@ class ChildcarePayFrequencyViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "childcarePayFrequency"
 
-  def createView = () => childcarePayFrequency(frontendAppConfig, ChildcarePayFrequencyForm(), NormalMode)(fakeRequest, messages)
+  def createView = () =>
+    childcarePayFrequency(frontendAppConfig, ChildcarePayFrequencyForm("Foo"), 0, "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => childcarePayFrequency(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[ChildcarePayFrequency.Value]) =>
+    childcarePayFrequency(frontendAppConfig, form, 0, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildcarePayFrequency view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      messages(s"$messageKeyPrefix.title"),
+      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    )
 
     behave like pageWithBackLink(createView)
   }
@@ -39,7 +47,7 @@ class ChildcarePayFrequencyViewSpec extends ViewBehaviours {
   "ChildcarePayFrequency view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm()))
+        val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo")))
         for (option <- ChildcarePayFrequencyForm.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
@@ -49,7 +57,7 @@ class ChildcarePayFrequencyViewSpec extends ViewBehaviours {
     for(option <- ChildcarePayFrequencyForm.options) {
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo").bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
           for(unselectedOption <- ChildcarePayFrequencyForm.options.filterNot(o => o == option)) {

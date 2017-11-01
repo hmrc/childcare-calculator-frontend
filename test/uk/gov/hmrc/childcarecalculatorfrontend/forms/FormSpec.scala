@@ -32,7 +32,7 @@ trait FormSpec extends UnitSpec with GuiceOneAppPerSuite {
     form.bind(data).fold(
       formWithErrors => {
         for (error <- expectedErrors) {
-          formWithErrors.errors should contain(FormError(error.key, error.message))
+          formWithErrors.errors should contain(error)
         }
         formWithErrors.errors.size shouldBe expectedErrors.size
       },

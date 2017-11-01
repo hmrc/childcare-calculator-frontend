@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours
 
 import org.scalatest.OptionValues
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
 
 trait FormBehaviours extends FormSpec with OptionValues {
@@ -131,26 +131,29 @@ trait FormBehaviours extends FormSpec with OptionValues {
     formWithOptionFieldError(field, "error.required", validValues:_*)
   }
 
-  def formWithOptionFieldError(field: String, errorMessage: String, validValues: String*) = {
+  def formWithOptionFieldError(formError: FormError, validValues: String*): Unit = {
     for (validValue <- validValues) {
-      s"bind when $field is set to $validValue" in {
-        val data = validData + (field -> validValue)
+      s"bind when ${formError.key} is set to $validValue" in {
+        val data = validData + (formError.key -> validValue)
         val boundForm = form.bind(data)
         boundForm.errors.isEmpty shouldBe true
       }
     }
 
-    s"fail to bind when $field is omitted" in {
-      val data = validData - field
-      val expectedError = error(field, errorMessage)
-      checkForError(form, data, expectedError)
+    s"fail to bind when ${formError.key} is omitted" in {
+      val data = validData - formError.key
+      checkForError(form, data, Seq(formError))
     }
 
-    s"fail to bind when $field is invalid" in {
-      val data = validData + (field -> "invalid value")
-      val expectedError = error(field, "error.unknown")
+    s"fail to bind when ${formError.key} is invalid" in {
+      val data = validData + (formError.key -> "invalid value")
+      val expectedError = error(formError.key, "error.unknown")
       checkForError(form, data, expectedError)
     }
+  }
+
+  def formWithOptionFieldError(field: String, errorMessage: String, validValues: String*): Unit = {
+    formWithOptionFieldError(FormError(field, errorMessage), validValues: _*)
   }
 
   def formWithDateField(field: String) = {
