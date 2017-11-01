@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whichBenefitsYouGet.heading", "heading-xlarge")
+
     @helpers.form(action = WhichBenefitsYouGetController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("whichBenefitsYouGet.heading", "heading-xlarge")
 
         <p>@messages("whichBenefits.select.all")</p>
 

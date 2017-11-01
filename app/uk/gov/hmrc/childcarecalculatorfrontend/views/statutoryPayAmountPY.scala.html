@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("statutoryPayAmountPY.heading", "heading-xlarge")
+
     @helpers.form(action = StatutoryPayAmountPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("statutoryPayAmountPY.heading", "heading-xlarge")
 
         @components.input_text(InputViewModel[StatutoryPayAmountPY]("parentStatutoryPayAmountPY", form), label = messages("statutoryPayAmountPY.parentStatutoryPayAmountPY"))
 

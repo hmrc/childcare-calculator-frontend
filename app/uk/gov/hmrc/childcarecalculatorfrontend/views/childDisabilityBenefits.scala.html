@@ -28,17 +28,18 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("childDisabilityBenefits.heading", "heading-xlarge")
+
     @helpers.form(action = ChildDisabilityBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("childDisabilityBenefits.heading", "heading-xlarge")
-    <ul class="list list-bullet">
-        <li>@messages("childDisabilityBenefits.disabilities.living.allowance")</li>
-        <li>@messages("childDisabilityBenefits.personal.independence.payment")</li>
-    </ul>
+        <ul class="list list-bullet">
+            <li>@messages("childDisabilityBenefits.disabilities.living.allowance")</li>
+            <li>@messages("childDisabilityBenefits.personal.independence.payment")</li>
+        </ul>
 
 
         @components.input_yes_no(

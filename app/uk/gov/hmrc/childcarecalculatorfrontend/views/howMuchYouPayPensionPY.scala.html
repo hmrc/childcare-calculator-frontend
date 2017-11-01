@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("howMuchYouPayPensionPY.heading", "heading-xlarge")
+
     @helpers.form(action = HowMuchYouPayPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("howMuchYouPayPensionPY.heading", "heading-xlarge")
 
         <p>How much did you pay into your pension a month?</p>
 

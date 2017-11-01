@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("employmentIncomePY.heading", "heading-xlarge")
+
     @helpers.form(action = EmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("employmentIncomePY.heading", "heading-xlarge")
 
         <p>@messages("employmentIncomePY.tax_year")</p>
         <p>@messages("employmentIncomePY.hint")</p>

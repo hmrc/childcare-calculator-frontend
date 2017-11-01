@@ -27,13 +27,14 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("yourOtherIncomeAmountPY.heading", "heading-xlarge")
+
+
     @helpers.form(action = YourOtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("yourOtherIncomeAmountPY.heading", "heading-xlarge")
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("yourOtherIncomeAmountPY.heading"), labelClass=Some("visually-hidden"))
 

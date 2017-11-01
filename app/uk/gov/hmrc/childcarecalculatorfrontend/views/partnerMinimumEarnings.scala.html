@@ -31,13 +31,13 @@ amount: BigDecimal)(implicit request: Request[_], messages: Messages)
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading(messages("partnerMinimumEarnings.heading", amount), "heading-xlarge")
+
     @helpers.form(action = PartnerMinimumEarningsController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading(messages("partnerMinimumEarnings.heading", amount), "heading-xlarge")
 
         <p>@messages("partnerMinimumEarnings.hint")</p>
 
