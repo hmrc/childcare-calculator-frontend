@@ -63,12 +63,6 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     case true => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
     case false => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
   }
-/*
-
-    utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsCY,
-      routes.WhosHadBenefitsController.onPageLoad(NormalMode),
-      routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
-*/
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
     answers.whosHadBenefits match {
@@ -79,19 +73,11 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  private def yourBenefitsIncomeRouteCY(answers: UserAnswers) = {
-    val youBenefitsIncomeCYValue = answers.youBenefitsIncomeCY
+  private def yourBenefitsIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.youBenefitsIncomeCY)(_ => routes.YourStatutoryPayCYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(youBenefitsIncomeCYValue,
-                            routes.YourStatutoryPayCYController.onPageLoad(NormalMode))
-  }
-
-  private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = {
-    val partnerBenefitsIncomeCYValue = answers.partnerBenefitsIncomeCY
-
-    utils.getCallOrSessionExpired(partnerBenefitsIncomeCYValue,
-      routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
-  }
+  private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
+    utils.getCall(answers.partnerBenefitsIncomeCY)(_ => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) = {
     val benefitsIncomeCYValue = answers.benefitsIncomeCY

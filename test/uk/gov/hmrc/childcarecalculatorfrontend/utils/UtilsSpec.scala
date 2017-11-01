@@ -170,6 +170,37 @@ class UtilsSpec extends SpecBase {
       }
     }
 
+    "getCall" should {
+      "return the apt call when there is a value in element" in {
+        val optionalElementValue = Some(true)
+        val call1 = Call("GET", "one")
+        val call2 = Call("GET", "two")
 
-  }
+        def valueToCall[T](element: T) = element match {
+          case true => call1
+          case false => call2
+        }
+
+        val utils = new Utils
+        utils.getCall(optionalElementValue)(valueToCall) mustBe call1
+      }
+
+      "return SessionExpired call when there is None in element" in {
+        val optionalElementValue = None
+        val call1 = Call("GET", "one")
+        val call2 = Call("GET", "two")
+
+        def valueToCall[T](element: T) = element match {
+          case true => call1
+          case false => call2
+        }
+
+        val utils = new Utils
+        utils.getCall(optionalElementValue)(valueToCall) mustBe routes.SessionExpiredController.onPageLoad()
+        utils.getCall(optionalElementValue)(_ => call1) mustBe routes.SessionExpiredController.onPageLoad()
+      }
+    }
+
+
+    }
 }

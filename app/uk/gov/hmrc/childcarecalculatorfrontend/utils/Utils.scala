@@ -167,7 +167,7 @@ class Utils {
     }
   }
 
-  def getCall[A](optionalElement: Option[A])(f: A => Call) =
-    optionalElement.getOrElse(routes.SessionExpiredController.onPageLoad())
+  def getCall[A](optionalElement: Option[A])(f: A => Call): Call =
+    optionalElement.map(f).getOrElse(routes.SessionExpiredController.onPageLoad())
 
 }
