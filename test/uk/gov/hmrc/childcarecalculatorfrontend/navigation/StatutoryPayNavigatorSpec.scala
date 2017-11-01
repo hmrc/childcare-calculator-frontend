@@ -55,7 +55,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to yourIncomeInfoPY page when user selects no, does not live with partner and eligible for TC" in {
+        "redirects to YourIncomeInfoPY page when user selects no, does not live with partner and eligible for TC" in {
           val answers = spy(userAnswers())
 
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -64,8 +64,79 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           navigator(eligibleScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
             routes.YourIncomeInfoPYController.onPageLoad()
         }
+
+        "redirects to PartnerIncomeInfoPY page when user selects no, live with partner and eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.yourStatutoryPayCY) thenReturn Some(false)
+
+          navigator(eligibleScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.PartnerIncomeInfoPYController.onPageLoad()
+        }
+
+        "redirects to MaxFreeHoursInfo page when user selects no, live with partner and not eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.yourStatutoryPayCY) thenReturn Some(false)
+
+          navigator(notEligibleScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursInfoController.onPageLoad()
+        }
+
+        "redirects to MaxFreeHoursInfo page when user selects no, does not live with partner and not eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourStatutoryPayCY) thenReturn Some(false)
+
+          navigator(notEligibleScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursInfoController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is tax credit eligibility is not determined" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayCY) thenReturn None
+
+          navigator().nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
       }
 
+      "Partner Statutory Pay CY Route" must {
+        "redirects to PartnerNoWeeksStatPayCY page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPayCY) thenReturn Some(true)
+
+          navigator().nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to PartnerIncomeInfoPY page when user selects no and eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.partnerStatutoryPayCY) thenReturn Some(false)
+          navigator(eligibleScheme).nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.PartnerIncomeInfoPYController.onPageLoad()
+        }
+
+        "redirects to MaxFreeHoursInfo page when user selects no and not eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.partnerStatutoryPayCY) thenReturn Some(false)
+          navigator(notEligibleScheme).nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursInfoController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is tax credit eligibility is not determined" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPayCY) thenReturn None
+
+          navigator().nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
     }
   }
 

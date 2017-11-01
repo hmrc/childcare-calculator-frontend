@@ -18,12 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
 
-import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
@@ -42,10 +41,11 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     BothNoWeeksStatPayPYId->bothNoWeeksStatutoryPayRoutePY,
     YourStatutoryPayAmountPYId->yourStatutoryPayAmountRoutePY,
     PartnerStatutoryPayAmountPYId->partnerStatutoryPayAmountRoutePY,
-    StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY
+    StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY,
+    PartnerStatutoryPayCYId->partnerStatutoryPayRouteCY
   )
 
- def yourStatutoryPayRouteCY(answers: UserAnswers) = {
+  private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
    answers.yourStatutoryPayCY match {
       case Some(true) => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
       case Some(false) => yourStatutoryPayRouteCYForNoSelection(answers)
@@ -53,16 +53,11 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     }
   }
 
-  private def yourStatutoryPayRouteCYForNoSelection(answers: UserAnswers) ={
-   val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-   val eligibility =  scheme.eligibility(answers)
-
-    (hasPartner, eligibility) match {
-      case (false, Eligible) => routes.YourIncomeInfoPYController.onPageLoad()
-      case (false, _) => routes.MaxFreeHoursInfoController.onPageLoad()
-      case (true, Eligible) => routes.PartnerIncomeInfoController.onPageLoad()
-      case (true, _) => routes.MaxFreeHoursInfoController.onPageLoad()
-      case _ => routes.SessionExpiredController.onPageLoad()
+  private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
+    answers.partnerStatutoryPayCY match {
+      case Some(true) => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
+      case Some(false) => partnerStatutoryPayRouteCYForNoSelection(answers)
+      case _ => utils.sessionExpired
     }
   }
 
@@ -113,5 +108,28 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
   private def bothStatutoryPayAmountRoutePY(answers: UserAnswers) =
     utils.getCallOrSessionExpired(answers.statutoryPayAmountPY,
       routes.MaxFreeHoursResultController.onPageLoad())
+
+  private def yourStatutoryPayRouteCYForNoSelection(answers: UserAnswers) ={
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val eligibility =  scheme.eligibility(answers)
+
+    (hasPartner, eligibility) match {
+      case (false, Eligible) => routes.YourIncomeInfoPYController.onPageLoad()
+      case (false, _) => routes.MaxFreeHoursInfoController.onPageLoad()
+      case (true, Eligible) => routes.PartnerIncomeInfoPYController.onPageLoad()
+      case (true, _) => routes.MaxFreeHoursInfoController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def partnerStatutoryPayRouteCYForNoSelection(answers: UserAnswers) ={
+    val eligibility =  scheme.eligibility(answers)
+
+    eligibility match {
+      case Eligible => routes.PartnerIncomeInfoPYController.onPageLoad()
+      case NotEligible => routes.MaxFreeHoursInfoController.onPageLoad()
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
 }
