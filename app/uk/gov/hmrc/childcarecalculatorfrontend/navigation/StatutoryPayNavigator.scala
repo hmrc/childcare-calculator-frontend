@@ -186,5 +186,5 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
       case NotEligible => routes.MaxFreeHoursResultController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
-  
+
 }
