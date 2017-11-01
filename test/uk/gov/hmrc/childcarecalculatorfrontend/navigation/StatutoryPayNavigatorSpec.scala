@@ -38,6 +38,11 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
     override def eligibility(answers: UserAnswers) = NotEligible
   }
 
+  def NotDeterminedScheme: TaxCredits = new TaxCredits {
+    override def eligibility(answers: UserAnswers) = NotDetermined
+  }
+
+
   def navigator(scheme: TaxCredits = eligibleScheme) = new StatutoryPayNavigator(new Utils(), scheme)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
@@ -99,7 +104,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourStatutoryPayCY) thenReturn None
 
-          navigator().nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
+          navigator(NotDeterminedScheme).nextPage(YourStatutoryPayCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -133,10 +138,45 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerStatutoryPayCY) thenReturn None
 
-          navigator().nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
+          navigator(NotDeterminedScheme).nextPage(PartnerStatutoryPayCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
+
+      "Both Statutory Pay CY Route" must {
+        "redirects to WhoGetsStatutoryCY page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.bothStatutoryPayCY) thenReturn Some(true)
+
+          navigator().nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.WhoGetsStatutoryCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to PartnerIncomeInfoPY page when user selects no and eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.bothStatutoryPayCY) thenReturn Some(false)
+          navigator(eligibleScheme).nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.PartnerIncomeInfoPYController.onPageLoad()
+        }
+
+        "redirects to MaxFreeHoursInfo page when user selects no and not eligible for TC" in {
+          val answers = spy(userAnswers())
+
+          when(answers.bothStatutoryPayCY) thenReturn Some(false)
+          navigator(notEligibleScheme).nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursInfoController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is tax credit eligibility is not determined" in {
+          val answers = spy(userAnswers())
+          when(answers.bothStatutoryPayCY) thenReturn None
+
+          navigator(NotDeterminedScheme).nextPage(BothStatutoryPayCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
     }
   }
 

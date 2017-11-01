@@ -42,7 +42,8 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     YourStatutoryPayAmountPYId->yourStatutoryPayAmountRoutePY,
     PartnerStatutoryPayAmountPYId->partnerStatutoryPayAmountRoutePY,
     StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY,
-    PartnerStatutoryPayCYId->partnerStatutoryPayRouteCY
+    PartnerStatutoryPayCYId->partnerStatutoryPayRouteCY,
+    BothStatutoryPayCYId->bothStatutoryPayRouteCY
   )
 
   private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
@@ -56,7 +57,15 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
   private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
     answers.partnerStatutoryPayCY match {
       case Some(true) => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
-      case Some(false) => partnerStatutoryPayRouteCYForNoSelection(answers)
+      case Some(false) => statutoryPayRouteCYForNoSelection(answers)
+      case _ => utils.sessionExpired
+    }
+  }
+
+  private def bothStatutoryPayRouteCY(answers: UserAnswers) = {
+    answers.bothStatutoryPayCY match {
+      case Some(true) => routes.WhoGetsStatutoryCYController.onPageLoad(NormalMode)
+      case Some(false) => statutoryPayRouteCYForNoSelection(answers)
       case _ => utils.sessionExpired
     }
   }
@@ -122,7 +131,7 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     }
   }
 
-  private def partnerStatutoryPayRouteCYForNoSelection(answers: UserAnswers) ={
+  private def statutoryPayRouteCYForNoSelection(answers: UserAnswers) ={
     val eligibility =  scheme.eligibility(answers)
 
     eligibility match {
@@ -131,5 +140,10 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
+
+
+
+
+
 
 }
