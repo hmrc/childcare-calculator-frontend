@@ -167,6 +167,13 @@ class Utils {
     }
   }
 
+  /**
+    *
+    * @param optionalElement
+    * @param f
+    * @tparam A
+    * @return
+    */
   def getCall[A](optionalElement: Option[A])(f: A => Call): Call =
     optionalElement.map(f).getOrElse(routes.SessionExpiredController.onPageLoad())
 
