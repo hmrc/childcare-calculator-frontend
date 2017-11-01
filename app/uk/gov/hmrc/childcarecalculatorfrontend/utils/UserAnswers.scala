@@ -347,8 +347,12 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
           if (noOfChildren == 1) {
             childcareCosts.map {
               // TODO fix this when the enums are used properly
-              case s if s == YesNoNotYetEnum.YES.toString || s == YesNoNotYetEnum.NOTYET.toString => Set(0)
-              case s if s == YesNoNotYetEnum.NO.toString => Set.empty
+              value =>
+              if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
+                Set(0)
+              } else {
+                Set.empty
+              }
             }
           } else {
             None
