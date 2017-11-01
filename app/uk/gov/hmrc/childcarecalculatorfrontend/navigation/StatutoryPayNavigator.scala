@@ -43,7 +43,8 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     PartnerStatutoryPayAmountPYId->partnerStatutoryPayAmountRoutePY,
     StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY,
     PartnerStatutoryPayCYId->partnerStatutoryPayRouteCY,
-    BothStatutoryPayCYId->bothStatutoryPayRouteCY
+    BothStatutoryPayCYId->bothStatutoryPayRouteCY,
+    WhoGetsStatutoryCYId->whoGetsStatutoryRouteCY
   )
 
   private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
@@ -69,6 +70,13 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
       case _ => utils.sessionExpired
     }
   }
+
+  private def whoGetsStatutoryRouteCY(answers: UserAnswers) =
+    utils.getCallYouPartnerBothOrSessionExpired(answers.whoGetsStatutoryCY,
+    routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode),
+    routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode),
+    routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode))
+
 
   private def yourStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCallForOptionBooleanOrSessionExpired(answers.yourStatutoryPayPY,

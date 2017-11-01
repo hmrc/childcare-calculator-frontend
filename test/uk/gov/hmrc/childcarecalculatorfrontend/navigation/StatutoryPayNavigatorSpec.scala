@@ -177,6 +177,40 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Who Gets Statutory Pay CY Route" must {
+        "redirects to YouNoWeeksStatPayCY page when user selects you option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGetsStatutoryCY) thenReturn Some(You)
+
+          navigator().nextPage(WhoGetsStatutoryCYId, NormalMode).value(answers) mustBe
+            routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to PartnerNoWeeksStatPayCY page when user selects partner option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGetsStatutoryCY) thenReturn Some(Partner)
+
+          navigator().nextPage(WhoGetsStatutoryCYId, NormalMode).value(answers) mustBe
+            routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to BothGetsStatutoryCY page when user selects both option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGetsStatutoryCY) thenReturn Some(Both)
+
+          navigator().nextPage(WhoGetsStatutoryCYId, NormalMode).value(answers) mustBe
+            routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGetsStatutoryCY) thenReturn None
+
+          navigator().nextPage(WhoGetsStatutoryCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
     }
   }
 
