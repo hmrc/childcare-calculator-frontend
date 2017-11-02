@@ -19,26 +19,28 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object ChildcarePayFrequencyForm extends FormErrorHelper {
 
-  def ChildcarePayFrequencyFormatter = new Formatter[String] {
+  def apply(name: String): Form[ChildcarePayFrequency.Value] =
+    Form(single("value" -> of(ChildcarePayFrequencyFormatter(name))))
+
+  lazy val options: Seq[InputOption] = ChildcarePayFrequency.values.toSeq.map {
+    value =>
+      InputOption("childcarePayFrequency", value.toString)
+  }
+
+  private def ChildcarePayFrequencyFormatter(name: String) = new Formatter[ChildcarePayFrequency.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "childcarePayFrequency.error")
+      case Some(s) if optionIsValid(s) => Right(ChildcarePayFrequency.withName(s))
+      case None => produceError(key, "childcarePayFrequency.error", name)
       case _ => produceError(key, "error.unknown")
     }
 
-    def unbind(key: String, value: String) = Map(key -> value)
+    def unbind(key: String, value: ChildcarePayFrequency.Value) = Map(key -> value.toString)
   }
 
-  def apply(): Form[String] = 
-    Form(single("value" -> of(ChildcarePayFrequencyFormatter)))
-
-  def options = Seq(
-    InputOption("childcarePayFrequency", "weekly"),
-    InputOption("childcarePayFrequency", "monthly"))
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

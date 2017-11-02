@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
+import javax.inject.Inject
+
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-object TaxFreeChildcare extends Scheme {
+class TaxFreeChildcare @Inject() () extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
     for {

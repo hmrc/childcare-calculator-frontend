@@ -36,6 +36,9 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case ChildrenDisabilityBenefitsId => childrenDisabilityBenefitsRoutes
     case WhichChildrenDisabilityId => whichChildrenDisabilityRoutes
     case WhichDisabilityBenefitsId(id) => whichDisabilityBenefitsRoutes(id)
+    case RegisteredBlindId => registeredBlindRoutes
+    case WhichChildrenBlindId => _ => routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    case WhoHasChildcareCostsId => whoHasChildcareCostsRoutes
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -143,4 +146,33 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
         }
     }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
+
+  private def registeredBlindRoutes(answers: UserAnswers): Call = {
+    for {
+      noOfChildren    <- answers.noOfChildren
+      registeredBlind <- answers.registeredBlind
+    } yield if (noOfChildren > 1) {
+      if (registeredBlind) {
+        Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
+      } else {
+        Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
+      }
+    } else {
+      for {
+        children   <- answers.childrenWithCosts
+        childIndex <- children.toSeq.headOption
+      } yield {
+        routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
+      }
+    }
+  }.flatten.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def whoHasChildcareCostsRoutes(answers: UserAnswers): Call = {
+    for {
+      children   <- answers.childrenWithCosts
+      childIndex <- children.toSeq.headOption
+    } yield {
+      routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
+    }
+  }.getOrElse(routes.SessionExpiredController.onPageLoad())
 }

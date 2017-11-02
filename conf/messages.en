@@ -397,11 +397,14 @@ eitherOfYouMaximumEarnings.error = You must select yes if either you or your par
 eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
-taxOrUniversalCredits.title = taxOrUniversalCredits
-taxOrUniversalCredits.heading = taxOrUniversalCredits
-taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
-taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
+taxOrUniversalCredits.title = Do you get tax credits or Universal Credit?
+taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
+taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
+taxOrUniversalCredits.uc = Universal Credit
+taxOrUniversalCredits.none = None of these
+taxOrUniversalCredits.error = You must tell the calculator if you get tax credits or Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
+
 
 noOfChildren.title = How many children do you have?
 noOfChildren.heading = How many children do you have?
@@ -949,12 +952,12 @@ childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if {0} get disability benefits
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
-childcarePayFrequency.heading = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay for {0}’s childcare?
 childcarePayFrequency.weekly = Weekly
 childcarePayFrequency.monthly = Monthly
-childcarePayFrequency.checkYourAnswersLabel = childcarePayFrequency
+childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.error = You must tell the calculator how often you expect to pay for {0}’s childcare
 
-childcarePayFrequency.error = Select how often you pay or expect to pay for childcare
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
