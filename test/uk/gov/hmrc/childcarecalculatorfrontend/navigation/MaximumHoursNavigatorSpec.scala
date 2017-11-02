@@ -25,17 +25,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-
 class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
-
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  val navigator = new MaximumHoursNavigator
+  val navigator = new MaximumHoursNavigator(new Utils)
   lazy val selfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
   lazy val apprentice: String = SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString
   lazy val neither: String = SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString
@@ -310,8 +308,27 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "Does Your Employer Offer Childcare Vouchers" when {
-    "user with partner will be taken to Do you get any benefits screen from YourChildcareVouchers screen when any selection is done" in {
+    "user will be taken to DoYouOrYourPartnerGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
+      "lives with partner" in {
       val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.yourChildcareVouchers) thenReturn
+        Some(YesNoUnsureEnum.YES.toString) thenReturn
+        Some(YesNoUnsureEnum.NO.toString) thenReturn
+        Some(YesNoUnsureEnum.NOTSURE.toString)
+
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+    }
+
+    "user will be taken to DoYouGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
+      "does not lives with partner" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourChildcareVouchers) thenReturn
         Some(YesNoUnsureEnum.YES.toString) thenReturn
         Some(YesNoUnsureEnum.NO.toString) thenReturn
