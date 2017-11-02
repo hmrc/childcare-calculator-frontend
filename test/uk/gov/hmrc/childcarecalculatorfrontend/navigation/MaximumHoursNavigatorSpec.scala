@@ -28,9 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, p
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-
 class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
-
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -314,9 +312,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       "lives with partner" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-
-
-
       when(answers.yourChildcareVouchers) thenReturn
         Some(YesNoUnsureEnum.YES.toString) thenReturn
         Some(YesNoUnsureEnum.NO.toString) thenReturn
@@ -334,9 +329,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       "does not lives with partner" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
-
-
-
       when(answers.yourChildcareVouchers) thenReturn
         Some(YesNoUnsureEnum.YES.toString) thenReturn
         Some(YesNoUnsureEnum.NO.toString) thenReturn
@@ -350,8 +342,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
     }
   }
-
-
 
   "Does Your Partner Employer Offer Childcare Vouchers" when {
     "user with partner will be taken to Do you get any benefits screen from YourChildcareVouchers screen when any selection is done" in {
