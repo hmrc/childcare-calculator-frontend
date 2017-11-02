@@ -16,18 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
+import javax.inject.Inject
+
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class FreeHours extends Scheme {
-
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childAgedThreeOrFour <- answers.childAgedThreeOrFour
-    } yield if (childAgedThreeOrFour) {
-      Eligible
-    } else {
-      NotEligible
-    }
-  }.getOrElse(NotDetermined)
+class TaxCredits @Inject() () extends Scheme {
+  override def eligibility(answers: UserAnswers): Eligibility = NotDetermined
 }
