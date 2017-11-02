@@ -96,9 +96,10 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def bothBenefitsRoutePY(answers: UserAnswers) =
-    utils.getCallForOptionBooleanOrSessionExpired(answers.bothAnyTheseBenefitsPY,
-      routes.WhosHadBenefitsPYController.onPageLoad(NormalMode),
-      routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
+    utils.getCall(answers.bothAnyTheseBenefitsPY) {
+      case true => routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
+      case false => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+   }
 
   private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
     utils.getCall(answers.whosHadBenefitsPY) {

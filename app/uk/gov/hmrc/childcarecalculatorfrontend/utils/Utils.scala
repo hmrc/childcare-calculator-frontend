@@ -111,68 +111,16 @@ class Utils {
     }
   }
 
-  def sessionExpired = routes.SessionExpiredController.onPageLoad()
-
   /**
-    * Get the call if Some(call) is passed as an input otherwise session expired page as call
-    *
-    * @param optionalElement
-    * @param call
-    * @tparam T
-    * @return
-    */
-  def getCallOrSessionExpired[T](optionalElement: Option[T], call: Call) = {
-    optionalElement match {
-      case Some(_) => call
-      case _ => sessionExpired
-    }
-  }
-
-  /**
-    * Returns the trueCall if optionalBoolean is Some(true) and returns falseCall if optionalBoolean is Some(false)
-    * and returns SessionExpired page if optionalBoolean is None
-    *
-    * @param optionalBoolean
-    * @param trueCall
-    * @param falseCall
-    */
-  def getCallForOptionBooleanOrSessionExpired(optionalBoolean: Option[Boolean], trueCall: Call, falseCall: Call) = {
-    optionalBoolean match {
-      case Some(true) => trueCall
-      case Some(false) => falseCall
-      case _ => sessionExpired
-    }
-  }
-
-  /**
-    * Returns youCall if optionString is Some(you), partnerCall if optionString is Some(partner),
-    * bothCall if optionString is Some(both) and returns SessionExpired page if optionString is None or
-    * not among the desired values
-    *
-    * @param optionString
-    * @param youCall
-    * @param partnerCall
-    * @param bothCall
-    * @return
-    */
-  def getCallYouPartnerBothOrSessionExpired(optionString: Option[String],
-                                            youCall: Call,
-                                            partnerCall: Call,
-                                            bothCall: Call) = {
-    optionString match {
-      case Some(You) => youCall
-      case Some(Partner) => partnerCall
-      case Some(Both) => bothCall
-      case _ => sessionExpired
-    }
-  }
-
-  /**
-    *
+    * Returns the call from the input function (f: A => Call) when optionalElement has some value otherwise
+    * returns SessionExpired Page
+    * Ex - getCall(Some(true))(_ => Call("GET", "http://test.com")) returns Call("GET", "http://test.com")
+    *      getCall(None)(_ => Call("GET", "http://test.com")) returns routes.SessionExpiredController.onPageLoad()
+    *      
     * @param optionalElement
     * @param f
     * @tparam A
-    * @return
+    * @return Call form the function f
     */
   def getCall[A](optionalElement: Option[A])(f: A => Call): Call =
     optionalElement.map(f).getOrElse(routes.SessionExpiredController.onPageLoad())
