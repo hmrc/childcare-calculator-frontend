@@ -23,9 +23,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-class MaximumHoursNavigator @Inject() () extends SubNavigator {
+class MaximumHoursNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
@@ -163,13 +163,11 @@ class MaximumHoursNavigator @Inject() () extends SubNavigator {
     }
   }
 
-  def yourChildcareVoucherRoute(answers: UserAnswers): Call = {
-    answers.doYouLiveWithPartner match {
-      case Some(true)=> routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      case Some(false)=> routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-      case _=>routes.SessionExpiredController.onPageLoad()
+  def yourChildcareVoucherRoute(answers: UserAnswers): Call =
+    utils.getCall(answers.doYouLiveWithPartner) {
+      case true => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      case false => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
     }
-  }
 
   def eitherGetVouchersRoute(answers: UserAnswers): Call = {
     if(answers.eitherGetsVouchers.contains(YesNoUnsureEnum.YES.toString)) {
