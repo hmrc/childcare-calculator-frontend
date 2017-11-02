@@ -55,7 +55,11 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
     childApprovedEducation.flatMap(_.get(childIndex))
   }
 
-  def childcarePayFrequency: Option[ChildcarePayFrequency.Value] = cacheMap.getEntry[ChildcarePayFrequency.Value](ChildcarePayFrequencyId.toString)
+  def childcarePayFrequency: Option[Map[Int, ChildcarePayFrequency.Value]] =
+    cacheMap.getEntry[Map[Int, ChildcarePayFrequency.Value]](ChildcarePayFrequencyId.toString)
+
+  def childcarePayFrequency(index: Int): Option[ChildcarePayFrequency.Value] =
+    childcarePayFrequency.flatMap(_.get(index))
 
   def employmentIncomePY: Option[EmploymentIncomePY] = cacheMap.getEntry[EmploymentIncomePY](EmploymentIncomePYId.toString)
 

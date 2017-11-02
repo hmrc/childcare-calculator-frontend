@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
 import scala.concurrent.Future
@@ -41,13 +41,13 @@ class ChildcarePayFrequencyController @Inject() (
                                                   navigator: Navigator,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction
-                                                ) extends FrontendController with I18nSupport {
+                                                ) extends FrontendController with I18nSupport with MapFormats {
 
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
         name =>
-          val preparedForm = request.userAnswers.childcarePayFrequency match {
+          val preparedForm = request.userAnswers.childcarePayFrequency(childIndex) match {
             case None => ChildcarePayFrequencyForm(name)
             case Some(value) => ChildcarePayFrequencyForm(name).fill(value)
           }
@@ -63,9 +63,10 @@ class ChildcarePayFrequencyController @Inject() (
             (formWithErrors: Form[ChildcarePayFrequency.Value]) =>
               Future.successful(BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, name, mode))),
             (value) =>
-              dataCacheConnector.save[ChildcarePayFrequency.Value](
+              dataCacheConnector.saveInMap[Int, ChildcarePayFrequency.Value](
                 request.sessionId,
                 ChildcarePayFrequencyId.toString,
+                childIndex,
                 value
               ).map { cacheMap =>
                 Redirect(navigator.nextPage(ChildcarePayFrequencyId, mode)(new UserAnswers(cacheMap)))
