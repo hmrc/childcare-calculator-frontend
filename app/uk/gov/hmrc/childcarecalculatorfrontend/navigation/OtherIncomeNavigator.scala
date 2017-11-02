@@ -75,14 +75,11 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeAmountCY) (_=>  routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode))
 
-
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountCY)(_ => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode))
 
-
   private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountCY)(_ => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode))
-
 
   private def yourOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeLY) {
@@ -112,12 +109,9 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeAmountPY)(_ => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode))
 
-
   private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountPY)(_ => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode))
 
-
   private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountPY)(_ => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode))
-
 }

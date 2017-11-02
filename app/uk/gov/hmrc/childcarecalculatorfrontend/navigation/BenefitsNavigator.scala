@@ -116,5 +116,4 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def bothBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothBenefitsIncomePY) (_ => routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
-
 }

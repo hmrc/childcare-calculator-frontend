@@ -46,40 +46,30 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
   private def partnerPaidWorkCYRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerPaidWorkCY) (_=>  routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode))
 
-
   private def parentPaidWorkCYRoute(answers: UserAnswers) =
     utils.getCall(answers.parentPaidWorkCY) (_=>  routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode))
-
 
   private def parentEmploymentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.parentEmploymentIncomeCY) (_=>  routes.YouPaidPensionCYController.onPageLoad(NormalMode))
 
-
   private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerEmploymentIncomeCY) (_=>  routes.PartnerPaidPensionCYController.onPageLoad(NormalMode))
-
 
   private def employmentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.employmentIncomeCY) (_=>  routes.BothPaidPensionCYController.onPageLoad(NormalMode))
 
-
   private def parentEmploymentIncomePYRoute(answers: UserAnswers) =
     utils.getCall(answers.parentEmploymentIncomePY) (_=>  routes.YouPaidPensionPYController.onPageLoad(NormalMode))
-
 
   private def partnerPaidWorkPYRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerPaidWorkPY) (_=>  routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode))
 
-
   private def parentPaidWorkPYRoute(answers: UserAnswers) =
     utils.getCall(answers.parentPaidWorkPY) (_=>  routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode))
-
 
   private def partnerEmploymentIncomePYRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerEmploymentIncomePY) (_=>  routes.PartnerPaidPensionPYController.onPageLoad(NormalMode))
 
-
   private def employmentIncomePYRoute(answers: UserAnswers) =
     utils.getCall(answers.employmentIncomePY) (_=>  routes.BothPaidPensionPYController.onPageLoad(NormalMode))
-
 }

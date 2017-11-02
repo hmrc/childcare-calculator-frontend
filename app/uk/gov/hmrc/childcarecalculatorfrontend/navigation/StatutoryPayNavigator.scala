@@ -55,70 +55,53 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
   )
 
   private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
-   answers.yourStatutoryPayCY match {
-      case Some(true) => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
-      case Some(false) => yourStatutoryPayRouteCYForNoSelection(answers)
-      case _ => utils.sessionExpired
+    utils.getCall(answers.yourStatutoryPayCY) {
+      case true => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
+      case false => yourStatutoryPayRouteCYForNoSelection(answers)
     }
   }
 
   private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
-    answers.partnerStatutoryPayCY match {
-      case Some(true) => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
-      case Some(false) => statutoryPayRouteCYForNoSelection(answers)
-      case _ => utils.sessionExpired
+    utils.getCall(answers.partnerStatutoryPayCY) {
+      case true => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
+      case false => statutoryPayRouteCYForNoSelection(answers)
     }
   }
 
   private def bothStatutoryPayRouteCY(answers: UserAnswers) = {
-    answers.bothStatutoryPayCY match {
-      case Some(true) => routes.WhoGetsStatutoryCYController.onPageLoad(NormalMode)
-      case Some(false) => statutoryPayRouteCYForNoSelection(answers)
-      case _ => utils.sessionExpired
+    utils.getCall(answers.bothStatutoryPayCY) {
+      case true => routes.WhoGetsStatutoryCYController.onPageLoad(NormalMode)
+      case false => statutoryPayRouteCYForNoSelection(answers)
     }
   }
 
   private def whoGetsStatutoryRouteCY(answers: UserAnswers) =
-    utils.getCallYouPartnerBothOrSessionExpired(answers.whoGetsStatutoryCY,
-    routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode),
-    routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode),
-    routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode))
+    utils.getCall(answers.whoGetsStatutoryCY) {
+      case You => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
+      case Partner => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
+      case Both => routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode)
+    }
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
   private def youNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
-    utils.getCallOrSessionExpired(answers.youNoWeeksStatPayCY,
-      routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
+    utils.getCall(answers.youNoWeeksStatPayCY)(_ => routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
   private def partnerNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
-    utils.getCallOrSessionExpired(answers.partnerNoWeeksStatPayCY,
-      routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
+    utils.getCall(answers.partnerNoWeeksStatPayCY)(_ => routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
   private def bothNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
-    utils.getCallOrSessionExpired(answers.bothNoWeeksStatPayCY,
-      routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
+    utils.getCall(answers.bothNoWeeksStatPayCY)(_ => routes.StatutoryPayAWeekController.onPageLoad(NormalMode))
 
-  private def yourStatutoryPayAmountRouteCY(answers: UserAnswers) = {
-    answers.yourStatutoryPayAmountCY match {
-      case Some(_) => yourStatutoryPayRouteCYForNoSelection(answers)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def yourStatutoryPayAmountRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.yourStatutoryPayAmountCY)(_ => yourStatutoryPayRouteCYForNoSelection(answers))
 
-  private def partnerStatutoryPayAmountRouteCY(answers: UserAnswers) = {
-    answers.partnerStatutoryPayAmountCY match {
-      case Some(_) => statutoryPayRouteCYForNoSelection(answers)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def partnerStatutoryPayAmountRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.partnerStatutoryPayAmountCY)(_ => statutoryPayRouteCYForNoSelection(answers))
 
-  private def bothStatutoryPayAmountRouteCY(answers: UserAnswers) = {
-    answers.statutoryPayAmountCY match {
-      case Some(_) => statutoryPayRouteCYForNoSelection(answers)
-      case _ => utils.sessionExpired
-    }
-  }
+  private def bothStatutoryPayAmountRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.statutoryPayAmountCY)(_ => statutoryPayRouteCYForNoSelection(answers))
 
   private def yourStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCall(answers.yourStatutoryPayPY) {
@@ -148,7 +131,6 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def youNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youNoWeeksStatPayPY)(_ => routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode))
-
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def partnerNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =

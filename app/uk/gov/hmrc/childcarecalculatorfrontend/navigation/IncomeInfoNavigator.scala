@@ -40,13 +40,12 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
     )
 
   private def nextPageUrlCY(userAnswers: UserAnswers) = {
-
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
     if (hasPartner) {
       utils.getCall(userAnswers.whoIsInPaidEmployment) {
         case You => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
         case Partner => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
-        case Both => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
+        case Both => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
       }
     } else {
       routes.SessionExpiredController.onPageLoad()
@@ -54,7 +53,6 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
   }
 
   private def nextPageUrlPY(userAnswers: UserAnswers) = {
-
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
 
     if(hasPartner) {
