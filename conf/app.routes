@@ -655,3 +655,8 @@ GET        /whichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalcu
 POST       /whichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeWhichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeWhichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onSubmit(mode: Mode = CheckMode, id: Int)
+
+GET        /expectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = NormalMode)
+POST       /expectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeExpectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeExpectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = CheckMode)

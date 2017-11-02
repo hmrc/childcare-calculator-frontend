@@ -1135,3 +1135,7 @@ whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
 whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
 whichDisabilityBenefits.error = You must tell the calculator if {0} gets benefits
+
+expectedChildcareCosts.title = expectedChildcareCosts
+expectedChildcareCosts.heading = expectedChildcareCosts
+expectedChildcareCosts.checkYourAnswersLabel = expectedChildcareCosts
