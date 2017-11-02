@@ -173,9 +173,8 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
 
     (hasPartner, eligibility) match {
       case (false, Eligible) => routes.YourIncomeInfoPYController.onPageLoad()
-      case (false, NotEligible) => routes.MaxFreeHoursResultController.onPageLoad()
       case (true, Eligible) => routes.PartnerIncomeInfoPYController.onPageLoad()
-      case (true, NotEligible) => routes.MaxFreeHoursResultController.onPageLoad()
+      case (_, NotEligible) => routes.MaxFreeHoursResultController.onPageLoad()
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
