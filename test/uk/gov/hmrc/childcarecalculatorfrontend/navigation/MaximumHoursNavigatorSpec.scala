@@ -310,8 +310,33 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "Does Your Employer Offer Childcare Vouchers" when {
-    "user with partner will be taken to Do you get any benefits screen from YourChildcareVouchers screen when any selection is done" in {
+    "user will be taken to DoYouOrYourPartnerGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
+      "lives with partner" in {
       val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+
+
+      when(answers.yourChildcareVouchers) thenReturn
+        Some(YesNoUnsureEnum.YES.toString) thenReturn
+        Some(YesNoUnsureEnum.NO.toString) thenReturn
+        Some(YesNoUnsureEnum.NOTSURE.toString)
+
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+    }
+
+    "user will be taken to DoYouGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
+      "does not lives with partner" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
+
+
       when(answers.yourChildcareVouchers) thenReturn
         Some(YesNoUnsureEnum.YES.toString) thenReturn
         Some(YesNoUnsureEnum.NO.toString) thenReturn
@@ -325,6 +350,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
     }
   }
+
+
 
   "Does Your Partner Employer Offer Childcare Vouchers" when {
     "user with partner will be taken to Do you get any benefits screen from YourChildcareVouchers screen when any selection is done" in {

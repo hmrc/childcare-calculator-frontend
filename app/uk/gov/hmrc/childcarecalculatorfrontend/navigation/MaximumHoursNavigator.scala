@@ -40,7 +40,7 @@ class MaximumHoursNavigator @Inject() () extends SubNavigator {
     HasYourPartnersTaxCodeBeenAdjustedId -> hasYourPartnersTaxCodeBeenAdjusted,
     DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
     WhatIsYourPartnersTaxCodeId -> whatIsYourPartnersTaxCodeRoute,
-    YourChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    YourChildcareVouchersId -> yourChildcareVoucherRoute,
     PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     EitherGetsVouchersId -> eitherGetVouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
@@ -160,6 +160,14 @@ class MaximumHoursNavigator @Inject() () extends SubNavigator {
       routes.EitherGetsVouchersController.onPageLoad(NormalMode)
     } else {
       routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+    }
+  }
+
+  def yourChildcareVoucherRoute(answers: UserAnswers): Call = {
+    answers.doYouLiveWithPartner match {
+      case Some(true)=> routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      case Some(false)=> routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+      case _=>routes.SessionExpiredController.onPageLoad()
     }
   }
 
