@@ -47,127 +47,77 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     OtherIncomeAmountPYId -> howMuchBothOtherIncomeRoutePY
   )
 
-  private def yourOtherIncomeRouteCY(answers: UserAnswers) = {
-
-    val youOtherIncomeValue = answers.yourOtherIncomeThisYear
-    youOtherIncomeValue match {
-      case Some(true) => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def yourOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.yourOtherIncomeThisYear) {
+      case true =>  routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case false =>  routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def partnerOtherIncomeRouteCY(answers: UserAnswers) = {
-
-    val partnerOtherIncomeValue = answers.partnerAnyOtherIncomeThisYear
-    partnerOtherIncomeValue match {
-      case Some(true) => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
+      case true =>  routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case false =>  routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def bothOtherIncomeRouteCY(answers: UserAnswers) = {
-
-    val bothOtherIncomeValue = answers.bothOtherIncomeThisYear
-    bothOtherIncomeValue match {
-      case Some(true) => routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def bothOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.bothOtherIncomeThisYear) {
+      case true =>  routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
+      case false =>  routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) = {
-
-    val WhoGetsOtherIncomeValue = answers.whoGetsOtherIncomeCY
-    WhoGetsOtherIncomeValue match {
-      case Some(You) => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case Some(Both) => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.whoGetsOtherIncomeCY) {
+      case You =>  routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case Partner =>  routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case Both =>  routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
-    val howMuchYourOtherIncomeValue = answers.yourOtherIncomeAmountCY
+  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.yourOtherIncomeAmountCY) (_=>  routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchYourOtherIncomeValue,
-                            routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode))
-  }
 
-  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = {
-    val howMuchPartnerOtherIncomeValue = answers.partnerOtherIncomeAmountCY
+  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.partnerOtherIncomeAmountCY)(_ => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchPartnerOtherIncomeValue,
-      routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode))
-  }
 
-  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = {
-    val howMuchBothOtherIncomeValue = answers.otherIncomeAmountCY
+  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
+    utils.getCall(answers.otherIncomeAmountCY)(_ => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchBothOtherIncomeValue,
-      routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode))
-  }
 
-  private def yourOtherIncomeRoutePY(answers: UserAnswers) = {
-
-    val youOtherIncomePYValue = answers.yourOtherIncomeLY
-    youOtherIncomePYValue match {
-      case Some(true) => routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def yourOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.yourOtherIncomeLY) {
+      case true =>  routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case false =>  routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def partnerOtherIncomeRoutePY(answers: UserAnswers) = {
-
-    val partnerOtherIncomePYValue = answers.partnerAnyOtherIncomeLY
-    partnerOtherIncomePYValue match {
-      case Some(true) => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def partnerOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.partnerAnyOtherIncomeLY) {
+      case true =>  routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case false =>  routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def bothOtherIncomeRoutePY(answers: UserAnswers) = {
-
-    val bothOtherIncomePYValue = answers.bothOtherIncomeLY
-    bothOtherIncomePYValue match {
-      case Some(true) => routes.WhoOtherIncomePYController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def bothOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.bothOtherIncomeLY) {
+      case true =>  routes.WhoOtherIncomePYController.onPageLoad(NormalMode)
+      case false =>  routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def whoGetsOtherIncomeRoutePY(answers: UserAnswers) = {
-
-    val WhoGetsOtherIncomePYValue = answers.whoOtherIncomePY
-    WhoGetsOtherIncomePYValue match {
-      case Some(You) => routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case Some(Both) => routes.OtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def whoGetsOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.whoOtherIncomePY) {
+      case You =>  routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case Partner =>  routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case Both =>  routes.OtherIncomeAmountPYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) = {
-    val howMuchYourOtherIncomePYValue = answers.yourOtherIncomeAmountPY
+  private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.yourOtherIncomeAmountPY)(_ => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchYourOtherIncomePYValue,
-      routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode))
-  }
 
-  private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) = {
-    val howMuchPartnerOtherIncomePYValue = answers.partnerOtherIncomeAmountPY
+  private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.partnerOtherIncomeAmountPY)(_ => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchPartnerOtherIncomePYValue,
-      routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode))
-  }
 
-  private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) = {
-    val howMuchBothOtherIncomePYValue = answers.otherIncomeAmountPY
+  private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.otherIncomeAmountPY)(_ => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchBothOtherIncomePYValue,
-      routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode))
-  }
 }
