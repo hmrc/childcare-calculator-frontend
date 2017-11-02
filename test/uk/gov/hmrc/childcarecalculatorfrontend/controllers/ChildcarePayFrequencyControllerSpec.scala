@@ -67,7 +67,9 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
         }
 
         s"populate the view correctly on a GET when the question has previously been answered, for id: $id" in {
-          val validData = requiredData + (ChildcarePayFrequencyId.toString -> JsString(ChildcarePayFrequency(0).toString))
+          val validData = requiredData + (ChildcarePayFrequencyId.toString -> Json.obj(
+            id.toString -> JsString(ChildcarePayFrequency(0).toString)
+          ))
           val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
           val result = controller(getRelevantData).onPageLoad(NormalMode, id)(fakeRequest)
           contentAsString(result) mustEqual viewAsString(ChildcarePayFrequencyForm(name).fill(ChildcarePayFrequency(0)), id, name)
