@@ -19,25 +19,30 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 
 object ExpectedChildcareCostsForm extends FormErrorHelper {
 
-  def expectedChildcareCostsFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  private def expectedChildcareCostsFormatter(frequency: ChildcarePayFrequency.Value) = new Formatter[BigDecimal] {
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+    val decimalRegex = """\d+(\.\d{1,2})?"""
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
       data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
-        case _ => produceError(key, errorKeyInvalid)
+        case None => produceError(key, "expectedChildcareCosts.error", frequency)
+        case Some("") => produceError(key, "expectedChildcareCosts.error", frequency)
+        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
+        case _ => produceError(key, "expectedChildcareCosts.invalid")
       }
     }
 
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[BigDecimal] =
-    Form(single("value" -> of(expectedChildcareCostsFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(frequency: ChildcarePayFrequency.Value): Form[BigDecimal] =
+    Form(
+      "value" -> of(expectedChildcareCostsFormatter(frequency))
+        .verifying("expectedChildcareCosts.invalid", _ >= 1.0)
+        .verifying("expectedChildcareCosts.invalid", _ <= 999.99)
+    )
 }

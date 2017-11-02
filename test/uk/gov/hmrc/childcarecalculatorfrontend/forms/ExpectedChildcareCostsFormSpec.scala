@@ -16,47 +16,70 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.FormError
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
+
 class ExpectedChildcareCostsFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyInvalid = "invalid"
+  val errorKeyBlank = "expectedChildcareCosts.error"
+  val errorKeyInvalid = "expectedChildcareCosts.invalid"
+  val form = ExpectedChildcareCostsForm(WEEKLY)
 
   "ExpectedChildcareCosts Form" must {
 
-    "bind zero" in {
-      val form = ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "0.0"))
-      form.get shouldBe 0.0
-    }
-
     "bind positive numbers" in {
-      val form = ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "1.0"))
-      form.get shouldBe 1.0
+      val result = form.bind(Map("value" -> "1.0"))
+      result.get shouldEqual 1.0
     }
 
     "bind positive decimal number" in {
-      val form = ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "10.80"))
-      form.get shouldBe 10.80
+      val result = form.bind(Map("value" -> "10.80"))
+      result.get shouldEqual 10.80
+    }
+
+    "bind the upper bound" in {
+      val result = form.bind(Map("value" -> "999.99"))
+      result.get shouldEqual 999.99
+    }
+
+    "fail to bind 0" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(form, Map("value" -> "0"), expectedError)
+    }
+
+    "fail to bind a number less than 1" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(form, Map("value" -> "0.9"), expectedError)
+    }
+
+    "fail to bind a number greater than 999.99" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(form, Map("value" -> "1000"), expectedError)
     }
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "-1"), expectedError)
+      checkForError(form, Map("value" -> "-1"), expectedError)
+    }
+
+    "fail to bind a decimal with more than 2 decimal places" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(form, Map("value" -> "10.888"), expectedError)
     }
 
     "fail to bind non-numerics" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "not a number"), expectedError)
+      checkForError(form, Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid), Map("value" -> ""), expectedError)
+      val expectedError = Seq(FormError("value", errorKeyBlank, Seq(WEEKLY)))
+      checkForError(form, Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(ExpectedChildcareCostsForm(errorKeyBlank, errorKeyInvalid), emptyForm, expectedError)
+      val expectedError = Seq(FormError("value", errorKeyBlank, Seq(WEEKLY)))
+      checkForError(form, emptyForm, expectedError)
     }
-
   }
 }

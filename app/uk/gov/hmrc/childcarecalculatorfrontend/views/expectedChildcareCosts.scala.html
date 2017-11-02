@@ -18,24 +18,29 @@
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BigDecimal], childIndex: Int, frequency: ChildcarePayFrequency.Value, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("expectedChildcareCosts.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("expectedChildcareCosts.heading")
+        @components.heading(messages("expectedChildcareCosts.heading", frequency, name))
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("expectedChildcareCosts.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            label = messages("expectedChildcareCosts.heading", frequency, name),
+            labelClass = Some("visually-hidden")
+        )
 
         @components.submit_button()
     }

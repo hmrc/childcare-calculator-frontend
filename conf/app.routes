@@ -656,7 +656,8 @@ POST       /whichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalcu
 GET        /changeWhichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeWhichDisabilityBenefits/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onSubmit(mode: Mode = CheckMode, id: Int)
 
-GET        /expectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = NormalMode)
-POST       /expectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeExpectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeExpectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = CheckMode)
+GET        /expectedChildcareCosts               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = NormalMode, id: Int = 0)
+GET        /expectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = NormalMode, id: Int)
+POST       /expectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = NormalMode, id: Int)
+GET        /changeExpectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = CheckMode, id: Int)
+POST       /changeExpectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = CheckMode, id: Int)

@@ -22,8 +22,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
-  def expectedChildcareCosts: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ExpectedChildcareCostsId.toString)
 
+  def expectedChildcareCosts(index: Int): Option[BigDecimal] =
+    expectedChildcareCosts.flatMap(_.get(index))
+
+  def expectedChildcareCosts: Option[Map[Int, BigDecimal]] =
+    cacheMap.getEntry[Map[Int, BigDecimal]](ExpectedChildcareCostsId.toString)
 
   def whichDisabilityBenefits: Option[Map[Int, Set[DisabilityBenefits.Value]]] =
     cacheMap.getEntry[Map[Int, Set[DisabilityBenefits.Value]]](WhichDisabilityBenefitsId.toString)

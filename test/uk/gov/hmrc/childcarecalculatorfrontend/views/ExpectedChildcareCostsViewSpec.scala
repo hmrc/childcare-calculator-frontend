@@ -19,7 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectedChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 
@@ -27,17 +28,30 @@ class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "expectedChildcareCosts"
 
-  def createView = () => expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(), NormalMode)(fakeRequest, messages)
+  def createView = () =>
+    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY), 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => expectedChildcareCosts(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) =>
+    expectedChildcareCosts(frontendAppConfig, form, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
-  val form = ExpectedChildcareCostsForm()
+  val form = ExpectedChildcareCostsForm(WEEKLY)
 
   "ExpectedChildcareCosts view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      messages(s"$messageKeyPrefix.title"),
+      Some(messages(s"$messageKeyPrefix.heading", WEEKLY, "Foo"))
+    )
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.ExpectedChildcareCostsController.onSubmit(NormalMode).url)
+    behave like intPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.ExpectedChildcareCostsController.onSubmit(NormalMode, 0).url,
+      Some(messages(s"$messageKeyPrefix.heading", WEEKLY, "Foo"))
+    )
   }
 }
