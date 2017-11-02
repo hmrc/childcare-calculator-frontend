@@ -140,6 +140,17 @@ Input prefix / suffix
     font-weight: 700;
 }
 
+
+.form-control-wrapper input, .form-field .inline .multiple-choice, .form-field .form-group {
+    margin-bottom: 0.8em;
+}
+
+@media screen and (max-width: 640px){
+    .form-control-wrapper input, .form-field .inline .multiple-choice, .form-field .form-group {
+        margin-bottom: 0;
+    }
+}
+
 /*
 Remove spinner from number inputs
 */
@@ -193,4 +204,15 @@ Currency symbol alignment
 .currencyInput {
         margin-left: 0.3em;
         float: none;
+}
+
+/*
+=====================================
+Continue button
+=====================================
+*/
+@media screen and (max-width: 640px){
+    button, .button, .button--get-started {
+        width: 100%;
+    }
 }

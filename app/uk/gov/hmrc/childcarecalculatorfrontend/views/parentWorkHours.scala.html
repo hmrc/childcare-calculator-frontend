@@ -33,9 +33,11 @@
 
     @components.heading("parentWorkHours.heading", "heading-xlarge")
 
+    <p>@messages("parentWorkHours.hint")</p>
+
     @helpers.form(action = ParentWorkHoursController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"), hint = Some(messages("parentWorkHours.hint")))
+        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }
