@@ -23,25 +23,27 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FreeHoursSpec extends SchemeSpec {
 
+  val freeHours = new FreeHours
+
   ".eligibility" must {
 
     "return `NotDetermined` if the user hasn't answered whether they have a child aged 3 or 4" in {
       val answers: UserAnswers = helper()
-      FreeHours.eligibility(answers) mustEqual NotDetermined
+      freeHours.eligibility(answers) mustEqual NotDetermined
     }
 
     "return `Eligible` if the user has a child aged 3 or 4" in {
       val answers: UserAnswers = helper(
         ChildAgedThreeOrFourId.toString -> JsBoolean(true)
       )
-      FreeHours.eligibility(answers) mustEqual Eligible
+      freeHours.eligibility(answers) mustEqual Eligible
     }
 
     "return `NotEligible` is the user does not have a child aged 3 or 4" in {
       val answers: UserAnswers = helper(
         ChildAgedThreeOrFourId.toString -> JsBoolean(false)
       )
-      FreeHours.eligibility(answers) mustEqual NotEligible
+      freeHours.eligibility(answers) mustEqual NotEligible
     }
   }
 }

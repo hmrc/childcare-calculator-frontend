@@ -23,6 +23,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MaxFreeHoursSpec extends SchemeSpec {
 
+  val maxFreeHours = new MaxFreeHours(new FreeHours)
+
   ".eligibility" must {
 
     "return `NotDetermined`" when {
@@ -31,14 +33,14 @@ class MaxFreeHoursSpec extends SchemeSpec {
         val answers: UserAnswers = helper(
           LocationId.toString -> JsString("england")
         )
-        MaxFreeHours.eligibility(answers) mustEqual NotDetermined
+        maxFreeHours.eligibility(answers) mustEqual NotDetermined
       }
 
       "user has not told the calculator where they live" in {
         val answers: UserAnswers = helper(
           ChildAgedThreeOrFourId.toString -> JsBoolean(true)
         )
-        MaxFreeHours.eligibility(answers) mustEqual NotDetermined
+        maxFreeHours.eligibility(answers) mustEqual NotDetermined
       }
     }
 
@@ -49,7 +51,7 @@ class MaxFreeHoursSpec extends SchemeSpec {
           ChildAgedThreeOrFourId.toString -> JsBoolean(false),
           LocationId.toString -> JsString("england")
         )
-        MaxFreeHours.eligibility(answers) mustEqual NotEligible
+        maxFreeHours.eligibility(answers) mustEqual NotEligible
       }
 
       "user is not from England" in {
