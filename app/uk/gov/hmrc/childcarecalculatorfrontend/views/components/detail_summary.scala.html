@@ -24,7 +24,7 @@
 <div class="form-group">
     <details role="group">
         <summary class="@summaryClasses.mkString(" ")">@summary</summary>
-        <div@if(detailsInner) { class="details__inner"}>
+        <div@if(detailsInner) { class="panel-indent"}>
             @content
         </div>
     </details>

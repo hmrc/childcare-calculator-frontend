@@ -323,6 +323,24 @@ whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
 whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsPartnerGet.error = You must tell the calculator which benefits your partner gets
 
+whichBenefitsList.typeof.income.benefits = Types of income benefits
+whichBenefitsList.typeof.income.support = Income Support
+whichBenefitsList.typeof.jobseeker.allowance = Income-based Jobseeker’s Allowance
+whichBenefitsList.typeof.employer.support.allowance = Income-related Employment and Support Allowance
+whichBenefitsList.typeof.pension.credit = Pension Credit
+
+whichBenefitsList.typeof.disability.benefits = Types of disability benefits
+whichBenefitsList.typeof.disability.benefit.living.allowance = Disability Living Allowance
+whichBenefitsList.typeof.disability.benefit.attendance.allowance = Attendance Allowance
+whichBenefitsList.typeof.disability.benefit.personal.allowance = Personal Independence Payment
+
+whichBenefitsList.typeof.higher.rate.benefits = Types of higher rate disability benefits
+whichBenefitsList.typeof.higher.rate.benefit.living.allowance = Disability Living Allowance (highest rate care component)
+whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance = Attendance Allowance (higher rate)
+whichBenefitsList.typeof.higher.rate.benefit.personal.payment = Personal Independence Payment (enhanced daily living component)
+whichBenefitsList.typeof.higher.rate.benefit.independent.payment = Armed Forces Independence Payment
+
+
 yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?
 yourPartnersAge.UNDER18 = Under 18
