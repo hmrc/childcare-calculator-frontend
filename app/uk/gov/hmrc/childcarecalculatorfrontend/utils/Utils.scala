@@ -125,4 +125,14 @@ class Utils {
   def getCall[A](optionalElement: Option[A])(f: A => Call): Call =
     optionalElement.map(f).getOrElse(routes.SessionExpiredController.onPageLoad())
 
+  def getCallForPartnerOrBothForPaidWork(paidWork: Option[String],
+                                         partnerCall: Call,
+                                         bothCall: Call)  = {
+    getCall(paidWork) {
+      case Partner => partnerCall
+      case Both => bothCall
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
 }

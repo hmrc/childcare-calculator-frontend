@@ -79,12 +79,9 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.howMuchPartnerPayPension) (_=>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-      case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => routes.SessionExpiredController.onPageLoad()
-    })
-
+      utils.getCallForPartnerOrBothForPaidWork(answers.whoIsInPaidEmployment,
+        routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode),
+        routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)))
 
   private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.howMuchBothPayPension) (_=>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
@@ -119,11 +116,9 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def howMuchPartnerPayPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.howMuchPartnerPayPensionPY) (_=>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case Partner => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      })
+      utils.getCallForPartnerOrBothForPaidWork(answers.whoIsInPaidEmployment,
+        routes.YourOtherIncomeLYController.onPageLoad(NormalMode),
+        routes.BothOtherIncomeLYController.onPageLoad(NormalMode)))
 
   private def howMuchBothPayPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.howMuchBothPayPensionPY) (_=>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode))
@@ -149,4 +144,6 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
+
+
 }

@@ -96,5 +96,40 @@ class UtilsSpec extends SpecBase {
         }
       }
 
+    "getCallForPartnerOrBothForPaidWork" should {
+      "return the apt call when partner or both in paid employment" in {
+        val paidWorkForPartner = Some(Partner)
+        val paidWorkForBoth = Some(Both)
+
+        val partnerCall = Call("GET", "partner")
+        val bothCall = Call("GET", "both")
+
+        val utils = new Utils
+        utils.getCallForPartnerOrBothForPaidWork(paidWorkForPartner, partnerCall, bothCall) mustBe partnerCall
+        utils.getCallForPartnerOrBothForPaidWork(paidWorkForBoth, partnerCall, bothCall) mustBe bothCall
+      }
+
+      "return SessionExpired call when paid employment has You value" in {
+        val paidWork = Some(You)
+
+        val partnerCall = Call("GET", "partner")
+        val bothCall = Call("GET", "both")
+
+        val utils = new Utils
+        utils.getCallForPartnerOrBothForPaidWork(paidWork, partnerCall, bothCall) mustBe routes.SessionExpiredController.onPageLoad()
+      }
+
+      "return SessionExpired call when there is None in element" in {
+        val paidWork = None
+
+        val partnerCall = Call("GET", "partner")
+        val bothCall = Call("GET", "both")
+
+        val utils = new Utils
+        utils.getCallForPartnerOrBothForPaidWork(paidWork, partnerCall, bothCall) mustBe routes.SessionExpiredController.onPageLoad()
+      }
     }
+
+
+  }
 }
