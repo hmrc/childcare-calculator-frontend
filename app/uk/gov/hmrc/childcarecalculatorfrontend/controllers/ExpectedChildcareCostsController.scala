@@ -25,8 +25,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectedChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ExpectedChildcareCostsId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum.NOTYET
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -46,22 +47,22 @@ class ExpectedChildcareCostsController @Inject() (
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
       validIndex(childIndex) {
-        case (name, frequency) =>
+        case (hasCosts, name, frequency) =>
           val preparedForm = request.userAnswers.expectedChildcareCosts(childIndex) match {
             case None => ExpectedChildcareCostsForm(frequency)
             case Some(value) => ExpectedChildcareCostsForm(frequency).fill(value)
           }
-          Future.successful(Ok(expectedChildcareCosts(appConfig, preparedForm, childIndex, frequency, name, mode)))
+          Future.successful(Ok(expectedChildcareCosts(appConfig, preparedForm, hasCosts, childIndex, frequency, name, mode)))
       }
   }
 
   def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
       validIndex(childIndex) {
-        case (name, frequency) =>
+        case (hasCosts, name, frequency) =>
           ExpectedChildcareCostsForm(frequency).bindFromRequest().fold(
             (formWithErrors: Form[BigDecimal]) =>
-              Future.successful(BadRequest(expectedChildcareCosts(appConfig, formWithErrors, childIndex, frequency, name, mode))),
+              Future.successful(BadRequest(expectedChildcareCosts(appConfig, formWithErrors, hasCosts, childIndex, frequency, name, mode))),
             (value) =>
               dataCacheConnector.saveInMap[Int, BigDecimal](
                 request.sessionId,
@@ -76,12 +77,14 @@ class ExpectedChildcareCostsController @Inject() (
       }
   }
 
-  private def validIndex[A](childIndex: Int)(block: (String, ChildcarePayFrequency.Value) => Future[Result])
+  private def validIndex[A](childIndex: Int)(block: (YesNoNotYetEnum.Value, String, ChildcarePayFrequency.Value) => Future[Result])
                         (implicit request: DataRequest[A]): Future[Result] = {
 
     for {
+      // TODO remove `map` when type is fixed
+      hasCosts  <- request.userAnswers.childcareCosts.map(YesNoNotYetEnum.withName)
       model     <- request.userAnswers.aboutYourChild(childIndex)
       frequency <- request.userAnswers.childcarePayFrequency(childIndex)
-    } yield block(model.name, frequency)
+    } yield block(hasCosts, model.name, frequency)
   }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
 }

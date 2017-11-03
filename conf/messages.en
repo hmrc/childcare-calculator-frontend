@@ -1136,8 +1136,11 @@ whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate c
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
 whichDisabilityBenefits.error = You must tell the calculator if {0} gets benefits
 
-expectedChildcareCosts.title = What are your childcare costs?
-expectedChildcareCosts.heading = What are your {0} childcare costs for {1}?
-expectedChildcareCosts.checkYourAnswersLabel = expectedChildcareCosts
+expectedChildcareCosts.title = What are your expected childcare costs?
+expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
+expectedChildcareCosts.heading.notYet = What will your expected {0} childcare costs be for {1}?
+expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
+expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
+expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
 expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
 expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99
