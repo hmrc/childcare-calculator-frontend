@@ -117,7 +117,7 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def howMuchPartnerPayPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.howMuchPartnerPayPensionPY) (_=>
       utils.getCallForPartnerOrBothForPaidWork(answers.whoIsInPaidEmployment,
-        routes.YourOtherIncomeLYController.onPageLoad(NormalMode),
+        routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode),
         routes.BothOtherIncomeLYController.onPageLoad(NormalMode)))
 
   private def howMuchBothPayPensionRoutePY(answers: UserAnswers) =
