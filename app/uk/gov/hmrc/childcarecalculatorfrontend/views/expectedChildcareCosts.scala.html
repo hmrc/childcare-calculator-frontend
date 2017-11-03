@@ -19,27 +19,39 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal], childIndex: Int, frequency: ChildcarePayFrequency.Value, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BigDecimal], hasCosts: YesNoNotYetEnum.Value, childIndex: Int, frequency: ChildcarePayFrequency.Value, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@suffix = @{
+    if (hasCosts == YesNoNotYetEnum.NOTYET) {
+        ".notYet"
+    } else {
+        ""
+    }
+}
 
 @main_template(
     title = messages("expectedChildcareCosts.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name))
+
+    <p class="panel-indent">@messages(s"expectedChildcareCosts.info$suffix")</p>
+
     @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading(messages("expectedChildcareCosts.heading", frequency, name))
 
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),
             label = messages("expectedChildcareCosts.heading", frequency, name),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("visually-hidden"),
+            currencySymbol = Some(true)
         )
 
         @components.submit_button()
