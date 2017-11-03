@@ -75,10 +75,20 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def yourBenefitsIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.youBenefitsIncomeCY)(_ => routes.YourStatutoryPayCYController.onPageLoad(NormalMode))
+    utils.getCall(answers.youBenefitsIncomeCY)(_ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
+        case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
-    utils.getCall(answers.partnerBenefitsIncomeCY)(_ => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode))
+    utils.getCall(answers.partnerBenefitsIncomeCY)(_ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case Partner => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+        case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.benefitsIncomeCY)(_ =>  routes.BothStatutoryPayCYController.onPageLoad(NormalMode))
@@ -110,10 +120,20 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def yourBenefitsIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.youBenefitsIncomePY)( _ => routes.YourStatutoryPayPYController.onPageLoad(NormalMode))
+    utils.getCall(answers.youBenefitsIncomePY)( _ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
+        case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.partnerBenefitsIncomePY) (_ => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode))
+    utils.getCall(answers.partnerBenefitsIncomePY) (_ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case Partner => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
+        case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def bothBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothBenefitsIncomePY) (_ => routes.BothStatutoryPayPYController.onPageLoad(NormalMode))
