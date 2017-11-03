@@ -73,12 +73,8 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeAmountCY) (_=>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      })
+    utils.getCall(answers.yourOtherIncomeAmountCY) (_=> getCallForYourOtherIncomeAsPerPaidWorkCY(answers)
+     )
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountCY)(_=>
@@ -117,12 +113,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeAmountPY)(_ =>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      })
+    utils.getCall(answers.yourOtherIncomeAmountPY)(_ => getCallForYourOtherIncomeAsPerPaidWorkPY(answers))
 
   private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountPY)(_ =>
@@ -134,4 +125,26 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountPY)(_ => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode))
+
+  private def getCallForYourOtherIncomeAsPerPaidWorkCY(answers: UserAnswers)=
+    if(answers.areYouInPaidWork.nonEmpty) {
+      routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+    } else {
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
+    }
+
+  private def getCallForYourOtherIncomeAsPerPaidWorkPY(answers: UserAnswers)=
+    if(answers.areYouInPaidWork.nonEmpty) {
+      routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+    } else {
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      }
+    }
 }

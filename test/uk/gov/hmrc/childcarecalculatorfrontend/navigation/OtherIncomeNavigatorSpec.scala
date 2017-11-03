@@ -151,7 +151,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Your Other Income CY Route" must {
-        "redirects to YouAnyTheseBenefitsCY page when user provides valid input and " +
+        "redirects to YouAnyTheseBenefitsCY page when user provides valid input,lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -161,7 +161,17 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to SessionExpired page when user provides valid input and " +
+        "redirects to YouAnyTheseBenefitsCY page when user provides valid input,does not lives with partner and " +
+          "parent in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input,lives with partner and " +
         "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -171,7 +181,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
 
-        "redirects to BothAnyTheseBenefitsCY page when user provides valid input and " +
+        "redirects to BothAnyTheseBenefitsCY page when user provides valid input, lives with partner and " +
           "both in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
@@ -365,7 +375,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Your Other Income PY Route" must {
-        "redirects to YouAnyTheseBenefitsPY page when user provides valid input and " +
+        "redirects to YouAnyTheseBenefitsPY page when user provides valid input, lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -375,7 +385,17 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to SessionExpired page when user provides valid input and " +
+        "redirects to YouAnyTheseBenefitsPY page when user provides valid input,does not lives with partner and " +
+          "parent in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -385,7 +405,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
 
-        "redirects to BothAnyTheseBenefitsPY page when user provides valid input and " +
+        "redirects to BothAnyTheseBenefitsPY page when user provides valid input, lives with partner and " +
           "both in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
