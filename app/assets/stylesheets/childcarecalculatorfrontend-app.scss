@@ -38,3 +38,11 @@ IE8: Fix wrapping of crown on Gov.UK in header
 .link-back, .js-visible p {
     margin-top: 0;
 }
+
+
+
+/* Fix's for some styling - Please put in the more appropriate place */
+
+.button {
+    padding: .526315em .789473em .263157em;
+}

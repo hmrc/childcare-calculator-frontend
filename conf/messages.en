@@ -62,11 +62,13 @@ checkYourAnswers.guidance = Guidance for check your answers
 whatToTellTheCalculator.title = What to tell the calculator
 whatToTellTheCalculator.heading = What to tell the calculator
 whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
-whatToTellTheCalculator.li.childcare_costs = known or estimated childcare costs
+whatToTellTheCalculator.li.childcare_costs = estimated childcare costs
 whatToTellTheCalculator.li.pay = weeks and pay taken while on leave for a birth or an adoption
-whatToTellTheCalculator.text = For a more accurate result, you’ll need to know your:
+whatToTellTheCalculator.text = For a more accurate result, you can give your:
+whatToTellTheCalculator.li.known = known childcare costs
 whatToTellTheCalculator.li.tax_code = personal tax code
 whatToTellTheCalculator.li.pension = pension contributions
+whatToTellTheCalculator.minutes = It should take around 5 minutes to complete.
 
 location.title = Where do you live?
 location.heading = Where do you live?
