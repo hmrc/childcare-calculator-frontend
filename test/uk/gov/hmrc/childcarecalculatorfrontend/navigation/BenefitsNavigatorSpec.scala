@@ -150,7 +150,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "You Benefits Income CY Route" must {
-        "redirects to YourStatutoryPayCY page when user provides valid input and " +
+        "redirects to YourStatutoryPayCY page when user provides valid input,lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -160,7 +160,17 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to SessionExpired page when user provides valid input and " +
+        "redirects to YourStatutoryPayCY page when user provides valid input, does not live with partner and " +
+          "parent in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -170,7 +180,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
 
-        "redirects to BothStatutoryPayCY page when user provides valid input" in {
+        "redirects to BothStatutoryPayCY page when user provides valid input, live with partner" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
@@ -362,7 +372,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "You Benefits Income PY Route" must {
-        "redirects to yourStatutoryPayPY page when user provides valid input and" +
+        "redirects to yourStatutoryPayPY page when user provides valid input, lives with partner and" +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -372,7 +382,17 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to SessionExpired page when user provides valid input and " +
+        "redirects to yourStatutoryPayPY page when user provides valid input, does not lives with partner and" +
+          "parent in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.youBenefitsIncomePY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YouBenefitsIncomePYId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -382,7 +402,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
 
-        "redirects to BothStatutoryPayPY page when user provides valid input" in {
+        "redirects to BothStatutoryPayPY page when user provides valid input, lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.youBenefitsIncomePY) thenReturn Some(BigDecimal(23))
