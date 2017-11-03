@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class UtilsSpec extends SpecBase {
 
@@ -64,53 +65,36 @@ class UtilsSpec extends SpecBase {
       }
     }
 
-    "getCallOrSessionExpired" should {
-      "return the input call when Some(call) is passed as input" in {
-
+    "getCall" should {
+      "return the apt call when there is a value in element" in {
         val optionalElementValue = Some(true)
-        val call = Call("GET", "http://abc.com")
+        val call1 = Call("GET", "one")
+        val call2 = Call("GET", "two")
+
+        def valueToCall[T](element: T) = element match {
+          case true => call1
+          case false => call2
+        }
 
         val utils = new Utils
-        utils.getCallOrSessionExpired(optionalElementValue, call) mustBe call
+        utils.getCall(optionalElementValue)(valueToCall) mustBe call1
       }
 
-      "return the session expired page as call when None is passed as input" in {
-        val call = Call("GET", "http://abc.com")
+      "return SessionExpired call when there is None in element" in {
+        val optionalElementValue = None
+        val call1 = Call("GET", "one")
+        val call2 = Call("GET", "two")
+
+        def valueToCall[T](element: T) = element match {
+          case true => call1
+          case false => call2
+        }
 
         val utils = new Utils
-        utils.getCallOrSessionExpired(None, call) mustBe routes.SessionExpiredController.onPageLoad()
+        utils.getCall(optionalElementValue)(valueToCall) mustBe routes.SessionExpiredController.onPageLoad()
+        utils.getCall(optionalElementValue)(_ => call1) mustBe routes.SessionExpiredController.onPageLoad()
+        }
       }
+
     }
-
-    "getCallForBooleanOrSessionExpired" should {
-      "return the true call when optional element has Some(true)" in {
-
-        val optionalElementValue = Some(true)
-        val trueCall = Call("GET", "http://true.com")
-        val falseCall = Call("GET", "http://false.com")
-
-        val utils = new Utils
-        utils.getCallForOptionBooleanOrSessionExpired(optionalElementValue, trueCall, falseCall) mustBe trueCall
-      }
-
-      "return the false call when optional element has Some(false)" in {
-
-        val optionalElementValue = Some(false)
-        val trueCall = Call("GET", "http://true.com")
-        val falseCall = Call("GET", "http://false.com")
-
-        val utils = new Utils
-        utils.getCallForOptionBooleanOrSessionExpired(optionalElementValue, trueCall, falseCall) mustBe falseCall
-      }
-
-      "return the session expired page as call when None is passed as optional element" in {
-        val trueCall = Call("GET", "http://true.com")
-        val falseCall = Call("GET", "http://false.com")
-
-        val utils = new Utils
-        utils.getCallForOptionBooleanOrSessionExpired(None, trueCall, falseCall) mustBe routes.SessionExpiredController.onPageLoad()
-      }
-    }
-
-  }
 }

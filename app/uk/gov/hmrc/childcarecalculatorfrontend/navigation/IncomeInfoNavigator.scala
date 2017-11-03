@@ -24,13 +24,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId, PartnerIncomeInfoPYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import javax.inject.Inject
 
 /**
   * Contains the navigation for current and previous year employment income pages
   */
 @Singleton
-class IncomeInfoNavigator extends SubNavigator {
+class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] =
     Map(
@@ -39,16 +40,12 @@ class IncomeInfoNavigator extends SubNavigator {
     )
 
   private def nextPageUrlCY(userAnswers: UserAnswers) = {
-
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
-    val paidEmployment = userAnswers.whoIsInPaidEmployment
-
     if (hasPartner) {
-      paidEmployment match {
-        case Some(You) => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
-        case Some(Partner) => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
-        case Some(Both) => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
+      utils.getCall(userAnswers.whoIsInPaidEmployment) {
+        case You => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
+        case Partner => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
+        case Both => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
       }
     } else {
       routes.SessionExpiredController.onPageLoad()
@@ -56,16 +53,13 @@ class IncomeInfoNavigator extends SubNavigator {
   }
 
   private def nextPageUrlPY(userAnswers: UserAnswers) = {
-
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
-    val paidEmployment = userAnswers.whoIsInPaidEmployment
 
     if(hasPartner) {
-      paidEmployment match {
-        case Some(You) => routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
-        case Some(Partner) => routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
-        case Some(Both) => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
+      utils.getCall(userAnswers.whoIsInPaidEmployment) {
+        case You => routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
+        case Partner => routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
+        case Both => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
       }
     }else {
       routes.SessionExpiredController.onPageLoad()

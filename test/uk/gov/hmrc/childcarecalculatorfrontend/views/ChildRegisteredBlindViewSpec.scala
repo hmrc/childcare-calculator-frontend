@@ -27,16 +27,21 @@ class ChildRegisteredBlindViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childRegisteredBlind"
 
-  def createView = () => childRegisteredBlind(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => childRegisteredBlind(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => childRegisteredBlind(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => childRegisteredBlind(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildRegisteredBlind view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      messages(s"$messageKeyPrefix.title"),
+      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    )
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildRegisteredBlindController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.RegisteredBlindController.onSubmit(NormalMode).url)
   }
 }

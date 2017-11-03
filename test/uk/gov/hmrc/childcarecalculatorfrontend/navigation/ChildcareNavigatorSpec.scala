@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import org.joda.time.LocalDate
 import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
+import org.mockito.Mockito._
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
@@ -318,8 +319,173 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
     }
 
+    "redirect to `Any children blind` when this is the only child" in {
+      val answers: UserAnswers = userAnswers(
+        NoOfChildrenId.toString               -> JsNumber(1),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
+      )
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+    }
+
     "redirect to `SessionExpired` when there is no answer for `WhichChildrenDisability`" in {
       val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(userAnswers())
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "Are any of your children registered blind" must {
+
+    "user has a single child" when {
+
+      "redirect to `How often do you expect to pay for childcare` when the user answers `Yes`" in {
+        val answers: UserAnswers = mock[UserAnswers]
+        when(answers.noOfChildren).thenReturn(Some(1))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(true))
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+
+      "redirect to `How often do you expect to pay for childcare` when the user answers `No`" in {
+        val answers: UserAnswers = mock[UserAnswers]
+        when(answers.noOfChildren).thenReturn(Some(1))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+    }
+
+    "user has multiple children" when {
+
+      "redirect to `Which children are registered blind` when the user answers `Yes`" in {
+        val answers: UserAnswers = mock[UserAnswers]
+        when(answers.noOfChildren).thenReturn(Some(2))
+        when(answers.childrenWithCosts).thenReturn(None)
+        when(answers.registeredBlind).thenReturn(Some(true))
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.WhichChildrenBlindController.onPageLoad(NormalMode)
+      }
+
+      "redirect to `Who has childcare costs` when the user answers `No`" in {
+        val answers: UserAnswers = mock[UserAnswers]
+        when(answers.noOfChildren).thenReturn(Some(2))
+        when(answers.childrenWithCosts).thenReturn(None)
+        when(answers.registeredBlind).thenReturn(Some(false))
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+      }
+    }
+
+    "redirect to `Session Expired` when `childrenWithCosts` is undefined and there's a single child" in {
+      val answers: UserAnswers = mock[UserAnswers]
+      when(answers.noOfChildren).thenReturn(Some(1))
+      when(answers.childrenWithCosts).thenReturn(None)
+      when(answers.registeredBlind).thenReturn(Some(false))
+      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+
+    "redirect to `Session Expired` when `registeredBlind` is undefined" in {
+      val answers: UserAnswers = mock[UserAnswers]
+      when(answers.registeredBlind).thenReturn(None)
+      when(answers.noOfChildren).thenReturn(Some(2))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(2, 5)))
+      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+
+    "redirect to `Session Expired` when `noOfChildren` is undefined" in {
+      val answers: UserAnswers = mock[UserAnswers]
+      when(answers.registeredBlind).thenReturn(None)
+      when(answers.noOfChildren).thenReturn(None)
+      when(answers.childrenWithCosts).thenReturn(Some(Set(2, 5)))
+      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "Which children are registered blind" must {
+    "redirect to `Who has childcare costs`" in {
+      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(userAnswers())
+      result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    }
+  }
+
+  "Who has childcare costs" must {
+
+    "redirect to `How often do you expect to pay for childcare` when `childrenWithCosts` returns a non empty `Set`" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(Some(Set(2, 5)))
+      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(answers)
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 2)
+    }
+
+    "redirect to `Session Expired` when `childrenWithCosts` returns an empty `Set`" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(Some(Set.empty[Int]))
+      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+
+    "redirect to `Session Expired` when `childrenWithCosts` is undefined" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(None)
+      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "How often do you expect to pay for childcare" must {
+    Seq(0, 1, 2).foreach {
+      id =>
+        s"redirect to `What are your expected childcare costs` for the current child, for id: $id" in {
+          val result = navigator.nextPage(ChildcarePayFrequencyId(id), NormalMode).value(userAnswers())
+          result mustEqual routes.ExpectedChildcareCostsController.onPageLoad(NormalMode, id)
+        }
+    }
+  }
+
+  "What are your expected childcare costs" must {
+
+    "redirect to `Your income this year` for a single user when this is the last child" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(4), NormalMode).value(answers)
+      result mustEqual routes.YourIncomeInfoController.onPageLoad()
+    }
+
+    "redirect to `Your partner's income this year` for a partner user when this is the last child" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(4), NormalMode).value(answers)
+      result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+    }
+
+    "redirect to `What are your expected childcare costs` for the next child when this is not the last child" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(3), NormalMode).value(answers)
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 4)
+    }
+
+    "redirect to `Session Expired` when `doYouLiveWithPartner` is undefined" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
+      when(answers.doYouLiveWithPartner).thenReturn(None)
+      val result = navigator.nextPage(ExpectedChildcareCostsId(3), NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+
+    "redirect to `Session Expired` when `childrenWithCosts` is undefined" in {
+      val answers = mock[UserAnswers]
+      when(answers.childrenWithCosts).thenReturn(None)
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(3), NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
     }
   }

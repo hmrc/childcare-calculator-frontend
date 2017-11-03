@@ -31,6 +31,7 @@ class TaxOrUniversalCreditsViewSpec extends ViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => taxOrUniversalCredits(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "TaxOrUniversalCredits view" must {
+
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)

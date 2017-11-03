@@ -48,124 +48,71 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     HowMuchBothPayPensionPYId -> howMuchBothPayPensionRoutePY
   )
 
-  private def yourPensionRouteCY(answers: UserAnswers): Call = {
-    val youPaidPensionValue = answers.YouPaidPensionCY
-    youPaidPensionValue match {
-      case Some(true) => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def yourPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.YouPaidPensionCY) {
+      case true =>  routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+      case false =>  routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
-  }
 
-  private def partnerPensionRouteCY(answers: UserAnswers): Call = {
-    val partnerPaidPensionValue = answers.PartnerPaidPensionCY
-    partnerPaidPensionValue match {
-      case Some(true) => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def partnerPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.PartnerPaidPensionCY) {
+      case true =>  routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+      case false =>  routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
-  }
 
-  private def bothPensionRouteCY(answers: UserAnswers): Call = {
-    val bothPaidPensionValue = answers.bothPaidPensionCY
-    bothPaidPensionValue match {
-      case Some(true) => routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def bothPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.bothPaidPensionCY) {
+      case true =>  routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
+      case false =>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
-  }
 
-  private def whoPaysPensionRouteCY(answers: UserAnswers): Call = {
-    val WhoPaysPensionValue = answers.whoPaysIntoPension
-    WhoPaysPensionValue match {
-      case Some(You) => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case Some(Both) => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def whoPaysPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.whoPaysIntoPension) {
+      case You =>  routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+      case Partner =>  routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+      case Both =>  routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
     }
-  }
 
-  private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = {
-    val howMuchYouPayPensionValue = answers.howMuchYouPayPension
-    utils.getCallOrSessionExpired(
-      howMuchYouPayPensionValue,
-      routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-    )
-  }
+  private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.howMuchYouPayPension) (_=>  routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode))
 
-  private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call = {
-    val howMuchPartnerPayPensionValue = answers.howMuchPartnerPayPension
+  private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.howMuchPartnerPayPension) (_=>  routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchPartnerPayPensionValue,
-      routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode))
-  }
+  private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
+    utils.getCall(answers.howMuchBothPayPension) (_=>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
 
-  private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call = {
-    val howMuchBothPayPensionValue = answers.howMuchBothPayPension
-
-    utils.getCallOrSessionExpired(howMuchBothPayPensionValue,
-      routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
- }
-
-  private def yourPensionRoutePY(answers: UserAnswers) = {
-
-    val youPaidPensionPYValue = answers.youPaidPensionPY
-    youPaidPensionPYValue match {
-      case Some(true) => routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def yourPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.youPaidPensionPY) {
+      case true =>  routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
+      case false =>  routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def partnerPensionRoutePY(answers: UserAnswers) = {
-
-    val partnerPaidPensionPYValue = answers.partnerPaidPensionPY
-    partnerPaidPensionPYValue match {
-      case Some(true) => routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
-      case Some(false) => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def partnerPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.partnerPaidPensionPY) {
+      case true =>  routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
+      case false =>  routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def bothPensionRoutePY(answers: UserAnswers) = {
-
-    val bothPaidPensionPYValue = answers.bothPaidPensionPY
-    bothPaidPensionPYValue match {
-      case Some(true) => routes.WhoPaidIntoPensionPYController.onPageLoad(NormalMode)
-      case Some(false) => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def bothPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.bothPaidPensionPY) {
+      case true =>  routes.WhoPaidIntoPensionPYController.onPageLoad(NormalMode)
+      case false =>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def whoPaysPensionRoutePY(answers: UserAnswers) = {
-
-    val whoPaidIntoPensionPYValue = answers.whoPaidIntoPensionPY
-    whoPaidIntoPensionPYValue match {
-      case Some(You) => routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
-      case Some(Partner) => routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
-      case Some(Both) => routes.HowMuchBothPayPensionPYController.onPageLoad(NormalMode)
-      case _ => utils.sessionExpired
+  private def whoPaysPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.whoPaidIntoPensionPY) {
+      case You =>  routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
+      case Partner =>  routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
+      case Both =>  routes.HowMuchBothPayPensionPYController.onPageLoad(NormalMode)
     }
-  }
 
-  private def howMuchYouPayPensionRoutePY(answers: UserAnswers) = {
-    val howMuchYouPayPensionPYValue = answers.howMuchYouPayPensionPY
+  private def howMuchYouPayPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.howMuchYouPayPensionPY) (_=>  routes.YourOtherIncomeLYController.onPageLoad(NormalMode))
 
-    utils.getCallOrSessionExpired(howMuchYouPayPensionPYValue,
-      routes.YourOtherIncomeLYController.onPageLoad(NormalMode))
-  }
+  private def howMuchPartnerPayPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.howMuchPartnerPayPensionPY) (_=>  routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode))
 
-  private def howMuchPartnerPayPensionRoutePY(answers: UserAnswers) = {
-    val howMuchPartnerPayPensionPYValue = answers.howMuchPartnerPayPensionPY
-
-    utils.getCallOrSessionExpired(howMuchPartnerPayPensionPYValue,
-      routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode))
-  }
-
-  private def howMuchBothPayPensionRoutePY(answers: UserAnswers) = {
-    val howMuchBothPayPensionPYValue = answers.howMuchBothPayPensionPY
-
-    utils.getCallOrSessionExpired(howMuchBothPayPensionPYValue,
-      routes.BothOtherIncomeLYController.onPageLoad(NormalMode))
-  }
+  private def howMuchBothPayPensionRoutePY(answers: UserAnswers) =
+    utils.getCall(answers.howMuchBothPayPensionPY) (_=>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode))
 }

@@ -397,11 +397,14 @@ eitherOfYouMaximumEarnings.error = You must select yes if either you or your par
 eitherOfYouMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
-taxOrUniversalCredits.title = taxOrUniversalCredits
-taxOrUniversalCredits.heading = taxOrUniversalCredits
-taxOrUniversalCredits.option1 = taxOrUniversalCredits Option 1
-taxOrUniversalCredits.option2 = taxOrUniversalCredits Option 2
+taxOrUniversalCredits.title = Do you get tax credits or Universal Credit?
+taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
+taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
+taxOrUniversalCredits.uc = Universal Credit
+taxOrUniversalCredits.none = None of these
+taxOrUniversalCredits.error = You must tell the calculator if you get tax credits or Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
+
 
 noOfChildren.title = How many children do you have?
 noOfChildren.heading = How many children do you have?
@@ -941,7 +944,7 @@ howMuchPartnerPayPensionPY.partnerPension = Partner
 howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
 howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
 
-childDisabilityBenefits.title = Does {0} get any of these disability benefits?
+childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
 childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
@@ -949,12 +952,12 @@ childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if {0} get disability benefits
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
-childcarePayFrequency.heading = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay for {0}’s childcare?
 childcarePayFrequency.weekly = Weekly
 childcarePayFrequency.monthly = Monthly
-childcarePayFrequency.checkYourAnswersLabel = childcarePayFrequency
+childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.error = You must tell the calculator how often you expect to pay for {0}’s childcare
 
-childcarePayFrequency.error = Select how often you pay or expect to pay for childcare
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
@@ -1132,3 +1135,12 @@ whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
 whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
 whichDisabilityBenefits.error = You must tell the calculator if {0} gets benefits
+
+expectedChildcareCosts.title = What are your expected childcare costs?
+expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
+expectedChildcareCosts.heading.notYet = What will your expected {0} childcare costs be for {1}?
+expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
+expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
+expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
+expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
+expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99

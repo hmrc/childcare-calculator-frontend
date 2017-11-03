@@ -24,14 +24,15 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import play.api.Configuration
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
 class Utils {
 
   /**
     * Throws exception with appropriate error message if optional element value is None otherwise returns the value
     * ex - val a = Some(5), return value is 5
-    *      val a = Some(PageObjects), return value is PageObjects
-    *      val a = None , return is runtime exception
+    * val a = Some(PageObjects), return value is PageObjects
+    * val a = None , return is runtime exception
     *
     * @param optionalElement
     * @param controllerId
@@ -48,9 +49,9 @@ class Utils {
     val controller = controllerId.getOrElse("")
     val objectId = objectName.getOrElse("")
 
-    if(controllerId.isDefined && objectName.isDefined){
+    if (controllerId.isDefined && objectName.isDefined) {
       optionalElement.fold(throw new RuntimeException(s"no element found in $controller while fetching $objectId"))(identity)
-    }else{
+    } else {
       optionalElement.fold(throw new RuntimeException(errorMessage))(identity)
     }
 
@@ -65,20 +66,20 @@ class Utils {
     * @return
     */
   def getEarningsForAgeRange(configuration: Configuration,
-                        currentDate: LocalDate,
-                        ageRange: Option[String]) = {
+                             currentDate: LocalDate,
+                             ageRange: Option[String]) = {
     getOrException(getNMWConfig(configuration, currentDate).getInt(ageRange.getOrElse("non-existent-age")))
   }
 
- /**
+  /**
     *
     * @param currentDate
     * @return
     */
   def getNMWConfig(configuration: Configuration,
                    currentDate: LocalDate): Configuration = getLatestConfig(configuration,
-                                                                            nmwConfigFileAbbreviation,
-                                                                            currentDate)
+    nmwConfigFileAbbreviation,
+    currentDate)
 
   /**
     * Gets the latest configuration for the input config type
@@ -110,35 +111,18 @@ class Utils {
     }
   }
 
-  def sessionExpired = routes.SessionExpiredController.onPageLoad()
-
   /**
-    * Get the call if Some(call) is passed as an input otherwise session expired page as call
+    * Returns the call from the input function (f: A => Call) when optionalElement has some value otherwise
+    * returns SessionExpired Page
+    * Ex - getCall(Some(true))(_ => Call("GET", "http://test.com")) returns Call("GET", "http://test.com")
+    *      getCall(None)(_ => Call("GET", "http://test.com")) returns routes.SessionExpiredController.onPageLoad()
+    *      
     * @param optionalElement
-    * @param call
-    * @tparam T
-    * @return
+    * @param f
+    * @tparam A
+    * @return Call form the function f
     */
-  def getCallOrSessionExpired[T](optionalElement: Option[T], call: Call) = {
-    optionalElement match {
-      case Some(_) => call
-      case _ => sessionExpired
-    }
-  }
+  def getCall[A](optionalElement: Option[A])(f: A => Call): Call =
+    optionalElement.map(f).getOrElse(routes.SessionExpiredController.onPageLoad())
 
-  /**
-    * Returns the trueCall if optionalBoolean is Some(true) and returns falseCall if optionalBoolean is Some(false)
-    * and returns SessionExpired page if optionalBoolean is None
-    *
-    * @param optionalBoolean
-    * @param trueCall
-    * @param falseCall
-    */
-  def getCallForOptionBooleanOrSessionExpired(optionalBoolean: Option[Boolean], trueCall: Call, falseCall: Call) ={
-    optionalBoolean match {
-      case Some(true) => trueCall
-      case Some(false) => falseCall
-      case _ => sessionExpired
-    }
-  }
 }

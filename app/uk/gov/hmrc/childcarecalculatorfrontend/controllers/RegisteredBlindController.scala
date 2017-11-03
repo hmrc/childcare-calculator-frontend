@@ -20,6 +20,8 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Request, Result}
+import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -27,8 +29,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.RegisteredBlindId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.registeredBlind
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
 import scala.concurrent.Future
 
@@ -39,23 +43,45 @@ class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      val preparedForm = request.userAnswers.registeredBlind match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+      withData {
+        case (noOfChildren, name) =>
+          val preparedForm = request.userAnswers.registeredBlind match {
+            case None => BooleanForm()
+            case Some(value) => BooleanForm().fill(value)
+          }
+          Future.successful(Ok(view(appConfig, preparedForm, name, mode, noOfChildren)))
       }
-      Ok(registeredBlind(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("registeredBlind.error").bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(registeredBlind(appConfig, formWithErrors, mode))),
-        (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, RegisteredBlindId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(RegisteredBlindId, mode)(new UserAnswers(cacheMap))))
-      )
+      withData {
+        case (noOfChildren, name) =>
+          BooleanForm("registeredBlind.error").bindFromRequest().fold(
+            (formWithErrors: Form[Boolean]) =>
+              Future.successful(BadRequest(view(appConfig, formWithErrors, name, mode, noOfChildren))),
+            (value) =>
+              dataCacheConnector.save[Boolean](request.sessionId, RegisteredBlindId.toString, value).map(cacheMap =>
+                Redirect(navigator.nextPage(RegisteredBlindId, mode)(new UserAnswers(cacheMap))))
+          )
+      }
   }
+
+  private def withData[A](block: (Int, String) => Future[Result])
+                         (implicit request: DataRequest[A]): Future[Result] = {
+    for {
+      noOfChildren <- request.userAnswers.noOfChildren
+      name         <- request.userAnswers.aboutYourChild(0).map(_.name)
+    } yield block(noOfChildren, name)
+  }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+
+  private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode, noOfChildren: Int)
+                  (implicit request: Request[_]): Html =
+    if (noOfChildren == 1) {
+      childRegisteredBlind(appConfig, form, name, mode)
+    } else {
+      registeredBlind(appConfig, form, mode)
+    }
 }

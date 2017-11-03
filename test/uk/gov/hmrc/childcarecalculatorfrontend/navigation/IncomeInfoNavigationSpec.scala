@@ -25,12 +25,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId, PartnerIncomeInfoPYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionValues {
 
-  val navigator = new IncomeInfoNavigator()
+  val navigator = new IncomeInfoNavigator(new Utils())
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -39,7 +39,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
 
     "in Normal mode" must {
       "NextPageUrlCY" must {
-        "redirects return PartnerPaidWorkCY page when parent in paid work and lives with partner" in {
+        "return  PartnerPaidWorkCY page when parent in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -48,7 +48,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
         }
 
-        "redirects return ParentPaidWorkCY page when partner in paid work and lives with partner" in {
+        "return ParentPaidWorkCY page when partner in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -57,7 +57,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
         }
 
-        "redirects return EmploymentIncomeCY page when both in paid work and lives with partner" in {
+        "return EmploymentIncomeCY page when both in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
@@ -66,7 +66,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
         }
 
-        "redirects return sessionExpired page when there is no value for paid work and lives with partner" in {
+        "return sessionExpired page when there is no value for paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn None
@@ -83,7 +83,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
 
     "in Normal mode" must {
       "NextPageUrlPY" must {
-        "redirects return PartnerPaidWorkPY page when parent in paid work and lives with partner" in {
+        "return PartnerPaidWorkPY page when parent in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -92,7 +92,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
         }
 
-        "redirects return ParentPaidWorkPY page when partner in paid work and lives with partner" in {
+        "return ParentPaidWorkPY page when partner in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -101,7 +101,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
         }
 
-        "redirects return EmploymentIncomePY page when both in paid work and lives with partner" in {
+        "return EmploymentIncomePY page when both in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
@@ -110,7 +110,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.EmploymentIncomePYController.onPageLoad(NormalMode)
         }
 
-        "redirects return sessionExpired page when there is no value for paid work and lives with partner" in {
+        "return sessionExpired page when there is no value for paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn None

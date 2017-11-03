@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+case class ExpectedChildcareCostsId(id: Int) extends Identifier
 
-class FreeHours extends Scheme {
-
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childAgedThreeOrFour <- answers.childAgedThreeOrFour
-    } yield if (childAgedThreeOrFour) {
-      Eligible
-    } else {
-      NotEligible
-    }
-  }.getOrElse(NotDetermined)
+object ExpectedChildcareCostsId {
+  override def toString: String = "expectedChildcareCosts"
 }

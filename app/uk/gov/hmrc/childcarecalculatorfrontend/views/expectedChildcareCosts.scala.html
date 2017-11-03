@@ -17,16 +17,23 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[ChildcarePayFrequency.Value], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BigDecimal], hasCosts: YesNoNotYetEnum.Value, childIndex: Int, frequency: ChildcarePayFrequency.Value, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@suffix = @{
+    if (hasCosts == YesNoNotYetEnum.NOTYET) {
+        ".notYet"
+    } else {
+        ""
+    }
+}
 
 @main_template(
-    title = messages("childcarePayFrequency.title"),
+    title = messages("expectedChildcareCosts.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -34,15 +41,17 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading(messages("childcarePayFrequency.heading", name))
+    @components.heading(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name))
 
-    @helpers.form(action = ChildcarePayFrequencyController.onSubmit(mode), 'autoComplete -> "off") {
+    <p class="panel-indent">@messages(s"expectedChildcareCosts.info$suffix")</p>
 
-        @components.input_radio(
-            viewModel = InputViewModel[ChildcarePayFrequency.Value]("value", form),
-            legend = messages("childcarePayFrequency.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = ChildcarePayFrequencyForm.options
+    @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
+
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            label = messages("expectedChildcareCosts.heading", frequency, name),
+            labelClass = Some("visually-hidden"),
+            currencySymbol = Some(true)
         )
 
         @components.submit_button()

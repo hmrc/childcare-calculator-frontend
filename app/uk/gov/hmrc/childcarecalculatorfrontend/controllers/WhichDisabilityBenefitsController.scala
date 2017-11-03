@@ -85,9 +85,9 @@ class WhichDisabilityBenefitsController @Inject() (
                                (block: String => Future[Result])
                                (implicit request: DataRequest[A]): Future[Result] = {
     for {
-      children <- request.userAnswers.whichChildrenDisability
+      children <- request.userAnswers.childrenWithDisabilityBenefits
       name     <- request.userAnswers.aboutYourChild(index).map(_.name)
-    } yield if (children.contains(index.toString)) {
+    } yield if (children.contains(index)) {
       block(name)
     } else {
       sessionExpired
