@@ -31,17 +31,17 @@
 
     <p>@messages(s"freeHoursInfo.para1.$location")</p>
 
-    @if(isChildAgedTwo) {
-        <p>@messages(s"freeHoursInfo.para2.$location")</p>
-    }
-
-    <h2>@messages(s"freeHoursInfo.heading2")</h2>
+    <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
     <p>@messages(s"freeHoursInfo.guidance")</p>
 
     <ul class="bullets">
+        <li>@messages("freeHoursInfo.li.30hours")</li>
         <li>@messages("freeHoursInfo.li.vouchers")</li>
         <li>@messages("freeHoursInfo.li.tfc")</li>
         <li>@messages("freeHoursInfo.li.tax_credits")</li>
+        @if(isChildAgedTwo) {
+            <li>@messages("freeHoursInfo.li.2year")</li>
+        }
     </ul>
 
     @components.button_link(
