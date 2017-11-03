@@ -998,4 +998,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
+  "Do you get tax credits or universal credit" must {
+    "redirect to `How many children do you have`" in {
+      val result = navigator.nextPage(TaxOrUniversalCreditsId, NormalMode).value(userAnswers())
+      result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+    }
+  }
 }

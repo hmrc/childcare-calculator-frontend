@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Inject
 
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
+import uk.gov.hmrc.childcarecalculatorfrontend.{SubNavigator, identifiers}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
@@ -59,7 +59,8 @@ class MaximumHoursNavigator @Inject() (utils:Utils) extends SubNavigator {
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
     PartnerMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    TaxOrUniversalCreditsId -> (_ => routes.NoOfChildrenController.onPageLoad(NormalMode))
   )
 
   val You: String = YouPartnerBothEnum.YOU.toString

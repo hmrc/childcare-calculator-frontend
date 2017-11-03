@@ -70,7 +70,7 @@ class ExpectedChildcareCostsController @Inject() (
                 value
               ).map {
                 cacheMap =>
-                  Redirect(navigator.nextPage(ExpectedChildcareCostsId, mode)(new UserAnswers(cacheMap)))
+                  Redirect(navigator.nextPage(ExpectedChildcareCostsId(childIndex), mode)(new UserAnswers(cacheMap)))
               }
           )
       }
