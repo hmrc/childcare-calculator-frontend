@@ -74,10 +74,21 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call =
-    utils.getCall(answers.howMuchYouPayPension) (_=>  routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode))
+    utils.getCall(answers.howMuchYouPayPension) (_=>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
-    utils.getCall(answers.howMuchPartnerPayPension) (_=>  routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode))
+    utils.getCall(answers.howMuchPartnerPayPension) (_=>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+      case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    })
+
 
   private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.howMuchBothPayPension) (_=>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
