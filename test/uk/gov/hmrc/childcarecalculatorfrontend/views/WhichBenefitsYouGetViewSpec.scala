@@ -44,4 +44,25 @@ class WhichBenefitsYouGetViewSpec extends ViewBehaviours with CheckboxViewBehavi
 
     behave like checkboxPage()
   }
+
+
+  "whichBenefitsYouGet view " must {
+    s"display correct content when loaded" in {
+      val view = whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.income.benefits"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.income.support"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.jobseeker.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.employer.support.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.pension.credit"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefits"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefit.living.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefit.attendance.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefit.personal.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefits"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.living.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.personal.payment"))
+      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.independent.payment"))
+    }
+  }
 }
