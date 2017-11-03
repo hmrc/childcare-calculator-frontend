@@ -39,6 +39,8 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
     case RegisteredBlindId => registeredBlindRoutes
     case WhichChildrenBlindId => _ => routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
     case WhoHasChildcareCostsId => whoHasChildcareCostsRoutes
+    case ChildcarePayFrequencyId(id) => _ => routes.ExpectedChildcareCostsController.onPageLoad(NormalMode, id)
+    case ExpectedChildcareCostsId(id) => expectedChildcareCostsRoutes(id)
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -173,6 +175,30 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
       childIndex <- children.toSeq.headOption
     } yield {
       routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
+    }
+  }.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def expectedChildcareCostsRoutes(id: Int)(answers: UserAnswers): Call = {
+    for {
+      hasPartner        <- answers.doYouLiveWithPartner
+      childrenWithCosts <- answers.childrenWithCosts
+    } yield {
+
+      def next: Option[Int] = {
+        val children: Seq[Int] = childrenWithCosts.toSeq
+        children.lift(children.indexOf(id) + 1)
+      }
+
+      next.map {
+        nextId =>
+          routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, nextId)
+      }.getOrElse {
+        if (hasPartner) {
+          routes.PartnerIncomeInfoController.onPageLoad()
+        } else {
+          routes.YourIncomeInfoController.onPageLoad()
+        }
+      }
     }
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
 }
