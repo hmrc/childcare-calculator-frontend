@@ -46,6 +46,36 @@
             inputs = WhichBenefitsPartnerGetForm.options
         )
 
+        <details class="form-group" role="group">
+            <summary role="button" aria-controls="benefits-content" aria-expanded="false"><span class="summary">Help with benefits</span></summary>
+            <div class="panel-indent" id="benefits-content" aria-hidden="true">
+
+                <h2 class="heading-small">Types of income benefits</h2>
+                <ul class="list list-bullet">
+                    <li>Income Support</li>
+                    <li>Income-based Jobseeker’s Allowance</li>
+                    <li>Income-related Employment and Support Allowance</li>
+                    <li>Pension Credit</li>
+                </ul>
+
+                <h2 class="heading-small">Types of disability benefits</h2>
+                <ul class="list list-bullet">
+                    <li>Disability Living Allowance</li>
+                    <li>Attendance Allowance</li>
+                    <li>Personal Independence Payment</li>
+                </ul>
+
+                <h2 class="heading-small">Types of higher rate disability benefits</h2>
+                <ul class="list list-bullet">
+                    <li>Disability Living Allowance (highest rate care component)</li>
+                    <li>Attendance Allowance (higher rate)</li>
+                    <li>Personal Independence Payment (enhanced daily living component)</li>
+                    <li>Armed Forces Independence Payment</li>
+                </ul>
+
+            </div>
+        </details>
+
         @components.submit_button()
     }
 }
