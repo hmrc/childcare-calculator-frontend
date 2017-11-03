@@ -73,10 +73,20 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeAmountCY) (_=>  routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode))
+    utils.getCall(answers.yourOtherIncomeAmountCY) (_=>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.partnerOtherIncomeAmountCY)(_ => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode))
+    utils.getCall(answers.partnerOtherIncomeAmountCY)(_=>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+      case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    })
 
   private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountCY)(_ => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode))
@@ -107,10 +117,20 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeAmountPY)(_ => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode))
+    utils.getCall(answers.yourOtherIncomeAmountPY)(_ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.partnerOtherIncomeAmountPY)(_ => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode))
+    utils.getCall(answers.partnerOtherIncomeAmountPY)(_ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
+      })
 
   private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountPY)(_ => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode))

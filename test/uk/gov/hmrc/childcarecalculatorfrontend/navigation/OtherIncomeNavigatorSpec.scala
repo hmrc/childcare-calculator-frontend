@@ -25,6 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{OtherIncomeAmountPY, NormalMode, OtherIncomeAmountCY}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
@@ -150,12 +151,34 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Your Other Income CY Route" must {
-        "redirects to YouAnyTheseBenefitsCY page when user provides valid input" in {
+        "redirects to YouAnyTheseBenefitsCY page when user provides valid input and " +
+          "parent in paid employment" in {
           val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
           when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
             routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input and " +
+        "partner in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+          when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+        "redirects to BothAnyTheseBenefitsCY page when user provides valid input and " +
+          "both in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -170,10 +193,31 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "How Much Partner Other Income CY Route" must {
         "redirects to PartnerAnyTheseBenefitsCY page when user provides valid input" in {
           val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
           when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
             routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to BothAnyTheseBenefitsCY page when user provides valid input and " +
+          "both in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input and " +
+          "you in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -321,12 +365,34 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Your Other Income PY Route" must {
-        "redirects to YouAnyTheseBenefitsPY page when user provides valid input" in {
+        "redirects to YouAnyTheseBenefitsPY page when user provides valid input and " +
+          "parent in paid employment" in {
           val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input and " +
+          "partner in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+          when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+        "redirects to BothAnyTheseBenefitsPY page when user provides valid input and " +
+          "both in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -339,12 +405,34 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Partner Other Income PY Route" must {
-        "redirects to PartnerAnyTheseBenefitsPY page when user provides valid input" in {
+        "redirects to PartnerAnyTheseBenefitsPY page when user provides valid input and " +
+          "partner in paid employment" in {
           val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
           when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to BothAnyTheseBenefitsPY page when user provides valid input and " +
+          "both in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to SessionExpired page when user provides valid input and " +
+          "partner in paid employment" in {
+          val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
+
+          navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
