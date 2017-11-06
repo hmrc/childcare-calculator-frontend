@@ -43,7 +43,9 @@
 
     @components.heading(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name))
 
-    <p class="panel-indent panel-border-wide">@messages(s"expectedChildcareCosts.info$suffix")</p>
+    <div class="panel-indent panel-border-wide">
+        <p>@messages(s"expectedChildcareCosts.info$suffix")</p>
+    </div>
 
     @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
 
