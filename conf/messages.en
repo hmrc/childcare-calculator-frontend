@@ -208,12 +208,12 @@ hasYourTaxCodeBeenAdjusted.yes = Yes
 hasYourTaxCodeBeenAdjusted.no = No
 hasYourTaxCodeBeenAdjusted.notSure = Not sure
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.info = Your tax code will have been adjusted if you have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourTaxCodeBeenAdjusted.info = It would be adjusted if you have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, you’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
 hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
 
 doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+# doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
 doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
 
@@ -225,7 +225,7 @@ taxCode.invalid = You must enter a valid tax code
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.info = Their tax code will have been adjusted if they have company benefits such as a car, accommodation or loans, or if paying tax owed from a previous year.
+hasYourPartnersTaxCodeBeenAdjusted.info = It would be adjusted if they have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, they’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.yes = Yes
 hasYourPartnersTaxCodeBeenAdjusted.no = No
@@ -235,7 +235,7 @@ hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if your partner�
 doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
 doYouKnowYourPartnersAdjustedTaxCode.heading = Do you know your partner’s adjusted tax code?
 doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = Do you know your partner’s adjusted tax code?
-doYouKnowYourPartnersAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
+# doYouKnowYourPartnersAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
 doYouKnowYourPartnersAdjustedTaxCode.error = You must tell the calculator if you know your partner’s tax code
 
 whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
