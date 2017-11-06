@@ -183,6 +183,7 @@ paidEmployment.error = You must answer yes if you, your partner, or both of you 
 
 whoIsInPaidEmployment.title = Who’s in paid work?
 whoIsInPaidEmployment.heading = Who’s in paid work?
+whoIsInPaidEmployment.para1 = Paid work includes sick, maternity, paternity, shared parental and adoption leave.
 whoIsInPaidEmployment.you = You
 whoIsInPaidEmployment.partner = Partner
 whoIsInPaidEmployment.both = Both
@@ -194,12 +195,12 @@ workHours.invalid = You must enter a number with no more than 2 digits and 1 dec
 parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
 parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
-parentWorkHours.hint = This is the hours worked in all your paid jobs, 'zero hours' contracts and self-employment. If you’re on maternity, paternity, adoption or sick leave, it’s your usual hours before you went off work.
+parentWorkHours.para1 = This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on sick, maternity, paternity, shared parental or adoption leave, it’s your usual hours before you went off work.
 
 partnerWorkHours.title = How many hours a week does your partner usually work?
 partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
-partnerWorkHours.hint = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on maternity, paternity, adoption or sick leave, it’s their usual hours before they went off work.
+partnerWorkHours.para1 = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on sick, maternity, paternity, shared parental or adoption leave, it’s their usual hours before they went off work.
 
 hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?

@@ -31,7 +31,7 @@ class WhoIsInPaidEmploymentViewSpec extends ViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => whoIsInPaidEmployment(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhoIsInPaidEmployment view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "para1")
 
     behave like pageWithBackLink(createView)
   }
