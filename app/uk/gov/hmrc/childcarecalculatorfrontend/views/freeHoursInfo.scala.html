@@ -36,13 +36,19 @@
 
     <ul class="bullets">
         <li>@messages("freeHoursInfo.li.30hours")</li>
-        <li>@messages("freeHoursInfo.li.vouchers")</li>
-        <li>@messages("freeHoursInfo.li.tfc")</li>
-        <li>@messages("freeHoursInfo.li.tax_credits")</li>
         @if(isChildAgedTwo) {
             <li>@messages("freeHoursInfo.li.2year")</li>
         }
+        <li>@messages("freeHoursInfo.li.vouchers")</li>
+        <li>@messages("freeHoursInfo.li.tfc")</li>
+        <li>@messages("freeHoursInfo.li.tax_credits")</li>
+
     </ul>
+
+    <!-- One of tHese 2 messages should show if the user either has no costs, or no approved costs -->
+    <p>@messages("freeHoursInfo.no.childcare.para")</p>
+    <p>@messages("freeHoursInfo.no.approved.para")</p>
+    <!-- / end of meesages to include -->
 
     @components.button_link(
         messageKey = "site.save_and_continue",

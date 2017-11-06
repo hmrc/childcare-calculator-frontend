@@ -127,6 +127,9 @@ freeHoursInfo.li.vouchers = Childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = Tax credits
 freeHoursInfo.li.2year = Free hours for your 2 year old
+freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs in the future. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you will have approved childcare costs or that your not sure. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.heading = Your eligibility for childcare support
@@ -399,7 +402,7 @@ yourSelfEmployed.error = You must select yes if you’ve been self-employed less
 
 yourMaximumEarnings.title = Will you earn more than £100,000 a year?
 yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
-yourMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+yourMaximumEarnings.hint = This is your salary with any pension and gift aid contributions taken off.
 yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
 yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
