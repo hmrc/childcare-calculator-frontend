@@ -35,8 +35,6 @@
 
     @helpers.form(action = WhoHasChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("whoHasChildcareCosts.hint")</p>
-
         @components.input_check_box(
             form("value"),
             legend = messages("whoHasChildcareCosts.heading"),

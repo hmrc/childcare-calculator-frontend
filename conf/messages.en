@@ -120,9 +120,6 @@ freeHoursInfo.para1.england = You can get a minimum of 15 hours free early educa
 freeHoursInfo.para1.scotland = You can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
 freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time (390 hours a year) for your 3 or 4 year old.
 freeHoursInfo.para1.northernIreland = You can get 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 3 or 4 year old.
-# freeHoursInfo.para2.england = You could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year) for your 2 year old.
-# freeHoursInfo.para2.scotland = You could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 2 year old.
-# freeHoursInfo.para2.wales = You could be entitled to 10 hours of free childcare a week in term time (390 hours a year) for your 2 year old.
 freeHoursInfo.heading2 = Still to check
 freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible for help from:
 freeHoursInfo.li.30hours = 30 hours free childcare
@@ -213,7 +210,6 @@ hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been
 
 doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
-# doYouKnowYourAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
 doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
 doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
 
@@ -235,7 +231,6 @@ hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if your partner�
 doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
 doYouKnowYourPartnersAdjustedTaxCode.heading = Do you know your partner’s adjusted tax code?
 doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = Do you know your partner’s adjusted tax code?
-# doYouKnowYourPartnersAdjustedTaxCode.info = This will make your results more accurate, but the calculator will use the standard tax code of 1150L if you don’t know.
 doYouKnowYourPartnersAdjustedTaxCode.error = You must tell the calculator if you know your partner’s tax code
 
 whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
@@ -554,8 +549,8 @@ partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.error = You must tell the calculator if your partner had any of these benefits this year
 
-bothAnyTheseBenefitsCY.title = Have you or your partner had any of these benefits this year?
-bothAnyTheseBenefitsCY.heading = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
+bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
 bothAnyTheseBenefitsCY.li.income_support = Income support
 bothAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
@@ -1142,7 +1137,6 @@ whichChildrenBlind.error = You must tell the calculator who is registered blind
 whoHasChildcareCosts.title = Who has childcare costs?
 whoHasChildcareCosts.heading = Who has childcare costs?
 whoHasChildcareCosts.checkYourAnswersLabel = Who has childcare costs?
-whoHasChildcareCosts.hint = Select all who have
 whoHasChildcareCosts.error = You must tell the calculator who has childcare costs
 
 whichDisabilityBenefits.title = Which disability benefits does your child get?
