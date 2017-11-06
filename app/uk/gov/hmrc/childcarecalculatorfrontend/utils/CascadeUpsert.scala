@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 import play.api.libs.json._
 import uk.gov.hmrc.http.cache.client.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothBenefitsIncomePYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
@@ -47,7 +47,8 @@ class CascadeUpsert {
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
       PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
-      PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm))
+      PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
+      WhosHadBenefitsPYId.toString -> ((v, cm) => storeWhosHadBenefitsPY(v, cm)) //TODO: To be moved to seperate files
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -217,6 +218,19 @@ class CascadeUpsert {
     store(PartnerSelfEmployedOrApprenticeId.toString, value, mapToStore)
   }
 
+  private def storeWhosHadBenefitsPY(value: JsValue, cacheMap: CacheMap): CacheMap ={
+    val mapToStore = value match {
+      case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerBenefitsIncomePYId.toString -
+        BothBenefitsIncomePYId.toString)
+      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomePYId.toString -
+        BothBenefitsIncomePYId.toString)
+      case JsString(Both) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomePYId.toString -
+        PartnerBenefitsIncomePYId.toString)
+      case _ => cacheMap
+    }
+
+    store(WhosHadBenefitsPYId.toString, value, mapToStore)
+  }
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
     funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}
