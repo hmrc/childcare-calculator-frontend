@@ -267,10 +267,10 @@ eitherGetsVouchers.notSure = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = Which of you is offered childcare vouchers?
-whoGetsVouchers.heading = Which of you is offered childcare vouchers?
-whoGetsVouchers.you = You
-whoGetsVouchers.partner = Partner
+whoGetsVouchers.title = Who’s employer offers childcare vouchers?
+whoGetsVouchers.heading = Who’s employer offers childcare vouchers?
+whoGetsVouchers.you = Yours
+whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
 whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
