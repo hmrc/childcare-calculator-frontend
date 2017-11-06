@@ -19,13 +19,26 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Inject
 
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.{SubNavigator, identifiers}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{Scheme, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-class MaximumHoursNavigator @Inject() (utils:Utils) extends SubNavigator {
+class MaximumHoursNavigator @Inject() (
+                                        utils: Utils,
+                                        override val schemes: Schemes
+                                      ) extends ResultsNavigator {
+
+  def this(utils: Utils, schemes: Scheme*) {
+    this(utils, new Schemes(schemes: _*))
+  }
+
+  override protected lazy val resultLocation: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+  override protected def resultsMap: Map[Identifier, UserAnswers => Call] = Map(
+    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute
+  )
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
@@ -45,7 +58,6 @@ class MaximumHoursNavigator @Inject() (utils:Utils) extends SubNavigator {
     EitherGetsVouchersId -> eitherGetVouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
-    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
     WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
     WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
@@ -187,13 +199,14 @@ class MaximumHoursNavigator @Inject() (utils:Utils) extends SubNavigator {
   }
 
   def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
-    if(answers.doYouOrYourPartnerGetAnyBenefits.contains(true)) {
-      routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
-      routes.YourPartnersAgeController.onPageLoad(NormalMode)
-    } else {
-      routes.YourAgeController.onPageLoad(NormalMode)
-    }
+    answers.doYouOrYourPartnerGetAnyBenefits.map {
+      youOrYourPartnerGetAnyBenefits =>
+        if (youOrYourPartnerGetAnyBenefits) {
+          routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+        } else {
+          routes.YourAgeController.onPageLoad(NormalMode)
+        }
+    }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
 
   def whoGetsBenefitsRoute(answers: UserAnswers): Call = {

@@ -19,18 +19,27 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Inject
 
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Scheme, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, LocationEnum, NormalMode, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class MinimumHoursNavigator @Inject() () extends SubNavigator {
+class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val schemes: Schemes) extends ResultsNavigator {
+
+  def this(freeHours: FreeHours, schemes: Scheme*) {
+    this(freeHours, new Schemes(schemes: _*))
+  }
+
+  override protected lazy val resultLocation: Call = routes.FreeHoursResultController.onPageLoad()
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
-    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode))
+  )
+
+  override protected val resultsMap: Map[Identifier, UserAnswers => Call] = Map(
     ChildcareCostsId -> costRoute,
     ApprovedProviderId -> approvedChildCareRoute
   )
@@ -38,7 +47,7 @@ class MinimumHoursNavigator @Inject() () extends SubNavigator {
   def locationRoute(answers: UserAnswers): Call = {
     val Ni = LocationEnum.NORTHERNIRELAND.toString
 
-    if(answers.location.contains(Ni)) {
+    if (answers.location.contains(Ni)) {
       routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
     } else {
       routes.ChildAgedTwoController.onPageLoad(NormalMode)
@@ -47,32 +56,25 @@ class MinimumHoursNavigator @Inject() () extends SubNavigator {
 
   def costRoute(answers: UserAnswers): Call = {
     val No = YesNoUnsureEnum.NO.toString
-    if(answers.childcareCosts.contains(No)) {
-      if (answers.isEligibleForMaxFreeHours == Eligible) {
-        routes.FreeHoursInfoController.onPageLoad()
-      } else {
-        routes.FreeHoursResultController.onPageLoad()
-      }
-    } else {
-      routes.ApprovedProviderController.onPageLoad(NormalMode)
-    }
+    answers.childcareCosts.map {
+      childcareCosts =>
+        if (childcareCosts == No) {
+          if (freeHours.eligibility(answers) == Eligible) {
+            routes.FreeHoursInfoController.onPageLoad()
+          } else {
+            routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+          }
+        } else {
+          routes.ApprovedProviderController.onPageLoad(NormalMode)
+        }
+    }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
 
   def approvedChildCareRoute(answers: UserAnswers): Call = {
-    val No = YesNoUnsureEnum.NO.toString
-
-    if(answers.approvedProvider.contains(No)) {
-      if(answers.isEligibleForMaxFreeHours == Eligible){
-        routes.FreeHoursInfoController.onPageLoad()
-      } else {
-        routes.FreeHoursResultController.onPageLoad()
-      }
+    if (freeHours.eligibility(answers) == Eligible) {
+      routes.FreeHoursInfoController.onPageLoad()
     } else {
-      if(answers.isEligibleForFreeHours == Eligible) {
-        routes.FreeHoursInfoController.onPageLoad()
-      } else {
-        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
-      }
+      routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
     }
   }
 }
