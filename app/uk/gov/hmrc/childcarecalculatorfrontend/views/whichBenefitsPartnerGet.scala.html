@@ -29,13 +29,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whichBenefitsPartnerGet.heading", "heading-xlarge")
+
     @helpers.form(action = WhichBenefitsPartnerGetController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("whichBenefitsPartnerGet.heading", "heading-xlarge")
 
         <p>@messages("whichBenefits.select.all")</p>
 
@@ -45,6 +45,35 @@
             legendClass = Some("visually-hidden"),
             inputs = WhichBenefitsPartnerGetForm.options
         )
+
+        @components.detail_summary(
+            summary = "Help with benefits",
+            detailsInner = true
+        ) {
+            <h2 class="heading-small">@messages("whichBenefitsList.typeof.income.benefits")</h2>
+            <ul class="list list-bullet">
+                <li>@messages("whichBenefitsList.typeof.income.support")</li>
+                <li>@messages("whichBenefitsList.typeof.jobseeker.allowance")</li>
+                <li>@messages("whichBenefitsList.typeof.employer.support.allowance")</li>
+                <li>@messages("whichBenefitsList.typeof.pension.credit")</li>
+            </ul>
+
+            <h2 class="heading-small">@messages("whichBenefitsList.typeof.disability.benefits")</h2>
+            <ul class="list list-bullet">
+                <li>@messages("whichBenefitsList.typeof.disability.benefit.living.allowance")</li>
+                <li>@messages("whichBenefitsList.typeof.disability.benefit.attendance.allowance")</li>
+                <li>@messages("whichBenefitsList.typeof.disability.benefit.personal.allowance")</li>
+            </ul>
+
+            <h2 class="heading-small">@messages("whichBenefitsList.typeof.higher.rate.benefits")</h2>
+            <ul class="list list-bullet">
+                <li>@messages("whichBenefitsList.typeof.higher.rate.benefit.living.allowance")</li>
+                <li>@messages("whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance")</li>
+                <li>@messages("whichBenefitsList.typeof.higher.rate.benefit.personal.payment")</li>
+                <li>@messages("whichBenefitsList.typeof.higher.rate.benefit.independent.payment")</li>
+            </ul>
+        }
+
 
         @components.submit_button()
     }

@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whatIsYourTaxCode.heading", "heading-xlarge")
+
     @helpers.form(action = WhatIsYourTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("whatIsYourTaxCode.heading", "heading-xlarge")
 
         @components.input_text(InputViewModel[String]("value", form), label = messages("whatIsYourTaxCode.heading"), labelClass=Some("visually-hidden"))
 

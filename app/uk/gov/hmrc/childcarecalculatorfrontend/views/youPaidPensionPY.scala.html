@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("youPaidPensionPY.heading", "heading-xlarge")
+
     @helpers.form(action = YouPaidPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("youPaidPensionPY.heading", "heading-xlarge")
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),

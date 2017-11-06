@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("yourStatutoryPayAmountPY.heading")
+
     @helpers.form(action = YourStatutoryPayAmountPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("yourStatutoryPayAmountPY.heading")
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("yourStatutoryPayAmountPY.heading"), labelClass=Some("visually-hidden"))
 

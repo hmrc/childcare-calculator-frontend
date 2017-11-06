@@ -13,13 +13,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("$className;format="decap"$.heading", "heading-xlarge")
+
     @helpers.form(action = $className$Controller.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("$className;format="decap"$.heading", "heading-xlarge")
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),

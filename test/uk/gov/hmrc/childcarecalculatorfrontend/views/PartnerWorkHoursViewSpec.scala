@@ -34,7 +34,7 @@ class PartnerWorkHoursViewSpec extends BigDecimalViewBehaviours {
   val form = new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply()
 
   "PartnerWorkHours view" must {
-    behave like normalPage(createView, messageKeyPrefix, "hint")
+    behave like normalPage(createView, messageKeyPrefix, "para1")
 
     behave like pageWithBackLink(createView)
 

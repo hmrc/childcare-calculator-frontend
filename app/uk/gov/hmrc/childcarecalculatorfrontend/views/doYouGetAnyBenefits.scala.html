@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("doYouGetAnyBenefits.heading", "heading-xlarge")
+
     @helpers.form(action = DoYouGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("doYouGetAnyBenefits.heading", "heading-xlarge")
 
         <ul class="bullets">
             <li>@messages("doYouGetAnyBenefits.li.incomeSupport")</li>

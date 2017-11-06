@@ -28,13 +28,14 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("partnerAnyTheseBenefitsPY.heading", "heading-xlarge")
+
     @helpers.form(action = PartnerAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("partnerAnyTheseBenefitsPY.heading", "heading-xlarge")
 
         <p>@messages("partnerAnyTheseBenefitsPY.tax_year")</p>
 

@@ -41,7 +41,7 @@ class WhoHasChildcareCostsViewSpec extends ViewBehaviours with CheckboxViewBehav
 
   "WhoHasChildcareCosts view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "hint")
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
     behave like checkboxPage()

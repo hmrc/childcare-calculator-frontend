@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("youNoWeeksStatPayPY.heading", "heading-xlarge")
+
     @helpers.form(action = YouNoWeeksStatPayPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("youNoWeeksStatPayPY.heading", "heading-xlarge")
 
         <p>@messages("youNoWeeksStatPayPY.year.start.end.date")</p>
 

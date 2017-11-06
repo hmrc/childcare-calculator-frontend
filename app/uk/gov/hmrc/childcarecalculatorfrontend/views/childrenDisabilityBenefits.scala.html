@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("childrenDisabilityBenefits.heading", "heading-xlarge")
+
     @helpers.form(action = ChildrenDisabilityBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("childrenDisabilityBenefits.heading", "heading-xlarge")
 
         <ul class="list list-bullet">
             <li>@messages("childrenDisabilityBenefits.disabilities.living.allowance")</li>

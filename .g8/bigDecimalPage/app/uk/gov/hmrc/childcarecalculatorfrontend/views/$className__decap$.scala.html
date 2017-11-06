@@ -11,13 +11,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("$className;format="decap"$.heading")
+
     @helpers.form(action = $className$Controller.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("$className;format="decap"$.heading")
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("$className;format="decap"$.heading"), labelClass=Some("visually-hidden"))
 

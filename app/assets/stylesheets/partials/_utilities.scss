@@ -5,6 +5,7 @@ Utility alignments
 */
 .u-align--right {
   text-align: right;
+  float: right;
 }
 @media screen and (min-width: 641px){
   .u-align--tablet-right {

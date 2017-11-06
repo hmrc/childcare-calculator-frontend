@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("otherIncomeAmountCY.heading", "heading-xlarge")
+
     @helpers.form(action = OtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("otherIncomeAmountCY.heading", "heading-xlarge")
 
         @components.input_text(InputViewModel[OtherIncomeAmountCY]("parentOtherIncome", form), label = messages("otherIncomeAmountCY.parentOtherIncome"))
 

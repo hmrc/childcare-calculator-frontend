@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("partnerPaidWorkPY.heading", "heading-xlarge")
+
     @helpers.form(action = PartnerPaidWorkPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("partnerPaidWorkPY.heading", "heading-xlarge")
 
         <p>@messages("partnerPaidWorkPY.currentYear.startEndDate")</p>
 

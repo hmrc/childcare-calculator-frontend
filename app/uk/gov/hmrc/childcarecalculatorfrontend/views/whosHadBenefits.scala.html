@@ -29,13 +29,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whosHadBenefits.heading", "heading-xlarge")
+
     @helpers.form(action = WhosHadBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("whosHadBenefits.heading", "heading-xlarge")
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
