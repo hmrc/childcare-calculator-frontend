@@ -37,13 +37,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading(heading, "heading-xlarge")
+
     @helpers.form(action = AboutYourChildController.onSubmit(mode, index), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading(heading, "heading-xlarge")
 
         <p class="panel-indent">
             @messages("aboutYourChild.lede")

@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("statutoryPayAWeekLY.heading", "heading-xlarge")
+
     @helpers.form(action = StatutoryPayAWeekLYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("statutoryPayAWeekLY.heading", "heading-xlarge")
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),

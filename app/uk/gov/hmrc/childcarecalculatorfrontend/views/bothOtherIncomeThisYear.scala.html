@@ -28,13 +28,14 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("bothOtherIncomeThisYear.heading", "heading-xlarge")
+
     @helpers.form(action = BothOtherIncomeThisYearController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("bothOtherIncomeThisYear.heading", "heading-xlarge")
         <p>@messages("bothOtherIncomeThisYear.year.start.end.date")</p>
         <p>@messages("bothOtherIncomeThisYear.hint.text")</p>
 

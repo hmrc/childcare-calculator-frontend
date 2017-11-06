@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("bothStatutoryPayPY.heading", "heading-xlarge")
+
     @helpers.form(action = BothStatutoryPayPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("bothStatutoryPayPY.heading", "heading-xlarge")
 
         <p>@messages("bothStatutoryPayPY.startEndDate")</p>
         <p>@messages("bothStatutoryPayPY.hint")</p>

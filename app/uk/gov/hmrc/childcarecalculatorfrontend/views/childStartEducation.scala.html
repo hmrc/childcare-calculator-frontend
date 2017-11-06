@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading(messages("childStartEducation.heading", name), "heading-xlarge")
+
     @helpers.form(action = ChildStartEducationController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading(messages("childStartEducation.heading", name), "heading-xlarge")
 
         @components.input_date(
             field = form("date"),

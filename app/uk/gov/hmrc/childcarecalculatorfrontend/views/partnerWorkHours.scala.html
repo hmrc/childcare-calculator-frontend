@@ -27,15 +27,15 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("partnerWorkHours.heading", "heading-xlarge")
+
+    <p>@messages("partnerWorkHours.para1")</p>
+
     @helpers.form(action = PartnerWorkHoursController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("partnerWorkHours.heading", "heading-xlarge")
-
-        <p>@messages("partnerWorkHours.para1")</p>
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("partnerWorkHours.heading"), labelClass=Some("visually-hidden"))
 

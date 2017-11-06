@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("youBenefitsIncomePY.heading", "heading-xlarge")
+
     @helpers.form(action = YouBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("youBenefitsIncomePY.heading", "heading-xlarge")
 
         <p>@messages("youBenefitsIncomePY.info")</p>
 

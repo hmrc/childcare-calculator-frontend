@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("howMuchBothPayPensionPY.heading", "heading-xlarge")
+
     @helpers.form(action = HowMuchBothPayPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("howMuchBothPayPensionPY.heading", "heading-xlarge")
 
         @components.input_text(InputViewModel[HowMuchBothPayPensionPY]("howMuchYouPayPensionPY", form), label = messages("howMuchBothPayPensionPY.yourPension"))
 

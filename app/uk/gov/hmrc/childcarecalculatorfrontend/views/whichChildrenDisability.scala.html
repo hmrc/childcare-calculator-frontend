@@ -30,13 +30,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whichChildrenDisability.heading")
+
     @helpers.form(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("whichChildrenDisability.heading")
 
         <p>Select all who get them</p>
 

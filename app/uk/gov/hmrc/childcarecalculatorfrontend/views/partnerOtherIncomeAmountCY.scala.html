@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("partnerOtherIncomeAmountCY.heading", "heading-xlarge")
+
     @helpers.form(action = PartnerOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("partnerOtherIncomeAmountCY.heading", "heading-xlarge")
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("partnerOtherIncomeAmountCY.heading"), labelClass=Some("visually-hidden"))
 

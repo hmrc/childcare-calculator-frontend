@@ -27,13 +27,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whoHasChildcareCosts.heading")
+
     @helpers.form(action = WhoHasChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading("whoHasChildcareCosts.heading")
 
         <p>@messages("whoHasChildcareCosts.hint")</p>
 

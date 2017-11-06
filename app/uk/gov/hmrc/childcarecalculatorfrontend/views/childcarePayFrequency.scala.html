@@ -30,14 +30,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading(messages("childcarePayFrequency.heading", name))
+
     @helpers.form(action = ChildcarePayFrequencyController.onSubmit(mode, index), 'autoComplete -> "off") {
-
-        @components.back_link()
-
-        @components.error_summary(form.errors)
-
-        @components.heading(messages("childcarePayFrequency.heading", name))
-
 
         @components.input_radio(
             viewModel = InputViewModel[ChildcarePayFrequency.Value]("value", form),

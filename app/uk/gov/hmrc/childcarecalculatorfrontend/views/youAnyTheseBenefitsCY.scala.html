@@ -24,17 +24,17 @@
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-        title = messages("youAnyTheseBenefitsCY.title"),
-        appConfig = appConfig,
-        bodyClasses = None) {
+    title = messages("youAnyTheseBenefitsCY.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-        @helpers.form(action = YouAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @components.back_link()
 
-        @components.back_link()
+    @components.error_summary(form.errors)
 
-        @components.error_summary(form.errors)
+    @components.heading("youAnyTheseBenefitsCY.heading", "heading-xlarge")
 
-        @components.heading("youAnyTheseBenefitsCY.heading", "heading-xlarge")
+    @helpers.form(action = YouAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
 
         <p>@messages("youAnyTheseBenefitsCY.tax_year")</p>
 
@@ -49,11 +49,11 @@
             <li>@messages("youAnyTheseBenefitsCY.li.carers")</li>
         </ul>
 
-        @components.input_yes_no(
+    @components.input_yes_no(
         InputViewModel[Boolean]("value", form),
         label = messages("youAnyTheseBenefitsCY.heading"),
         labelClass = Some("visually-hidden")
-        )
+    )
 
         @components.submit_button()
     }

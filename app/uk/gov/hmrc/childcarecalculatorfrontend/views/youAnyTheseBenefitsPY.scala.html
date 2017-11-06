@@ -28,13 +28,13 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @helpers.form(action = YouAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
-
         @components.back_link()
 
         @components.error_summary(form.errors)
 
         @components.heading("youAnyTheseBenefitsPY.heading", "heading-xlarge")
+
+        @helpers.form(action = YouAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
         <p>@messages("youAnyTheseBenefitsPY.tax_year")</p>
 
