@@ -36,7 +36,6 @@
 
     @helpers.form(action = DoYouKnowYourAdjustedTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@Messages("doYouKnowYourAdjustedTaxCode.info")</p>
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),

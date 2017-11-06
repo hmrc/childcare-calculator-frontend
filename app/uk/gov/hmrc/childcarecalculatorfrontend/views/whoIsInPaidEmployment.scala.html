@@ -37,6 +37,8 @@
 
     @helpers.form(action = WhoIsInPaidEmploymentController.onSubmit(mode), 'autoComplete -> "off") {
 
+        <p>@messages("whoIsInPaidEmployment.para1")</p>
+
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
             legend = messages("whoIsInPaidEmployment.heading"),

@@ -33,7 +33,7 @@ class DoYouKnowYourPartnersAdjustedTaxCodeViewSpec extends YesNoViewBehaviours {
 
   "DoYouKnowYourPartnersAdjustedTaxCode view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "info")
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
