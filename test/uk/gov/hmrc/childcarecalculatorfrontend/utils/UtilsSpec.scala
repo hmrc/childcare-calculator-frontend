@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class UtilsSpec extends SpecBase {
@@ -67,69 +68,48 @@ class UtilsSpec extends SpecBase {
 
     "getCall" should {
       "return the apt call when there is a value in element" in {
-        val optionalElementValue = Some(true)
+        val optionalBooleanValue = Some(true)
+
         val call1 = Call("GET", "one")
         val call2 = Call("GET", "two")
 
-        def valueToCall[T](element: T) = element match {
+        val optionalStringValue = Some(partner)
+        val partnerCall = Call("GET", "partner")
+        val bothCall = Call("GET", "both")
+
+        def booleanPf: PartialFunction[Boolean, Call] ={
           case true => call1
           case false => call2
         }
 
+        def stringPf: PartialFunction[String, Call] ={
+          case Partner => partnerCall
+          case Both => bothCall
+        }
+
         val utils = new Utils
-        utils.getCall(optionalElementValue)(valueToCall) mustBe call1
+        utils.getCall(optionalBooleanValue)(booleanPf) mustBe call1
+        utils.getCall(optionalStringValue)(stringPf) mustBe partnerCall
+
       }
 
       "return SessionExpired call when there is None in element" in {
-        val optionalElementValue = None
+        val noneValue = None
+        val optionalStringValue = Some(You)
         val call1 = Call("GET", "one")
         val call2 = Call("GET", "two")
 
-        def valueToCall[T](element: T) = element match {
-          case true => call1
-          case false => call2
+        def stringPf: PartialFunction[String, Call] ={
+          case Partner => call1
+          case Both => call2
         }
 
         val utils = new Utils
-        utils.getCall(optionalElementValue)(valueToCall) mustBe routes.SessionExpiredController.onPageLoad()
-        utils.getCall(optionalElementValue)(_ => call1) mustBe routes.SessionExpiredController.onPageLoad()
+        utils.getCall(noneValue){case _ => call1} mustBe routes.SessionExpiredController.onPageLoad()
+        utils.getCall(optionalStringValue)(stringPf) mustBe routes.SessionExpiredController.onPageLoad()
+
         }
       }
-
-    "getCallForPartnerOrBothForPaidWork" should {
-      "return the apt call when partner or both in paid employment" in {
-        val paidWorkForPartner = Some(Partner)
-        val paidWorkForBoth = Some(Both)
-
-        val partnerCall = Call("GET", "partner")
-        val bothCall = Call("GET", "both")
-
-        val utils = new Utils
-        utils.getCallForPartnerOrBothForPaidWork(paidWorkForPartner, partnerCall, bothCall) mustBe partnerCall
-        utils.getCallForPartnerOrBothForPaidWork(paidWorkForBoth, partnerCall, bothCall) mustBe bothCall
-      }
-
-      "return SessionExpired call when paid employment has You value" in {
-        val paidWork = Some(You)
-
-        val partnerCall = Call("GET", "partner")
-        val bothCall = Call("GET", "both")
-
-        val utils = new Utils
-        utils.getCallForPartnerOrBothForPaidWork(paidWork, partnerCall, bothCall) mustBe routes.SessionExpiredController.onPageLoad()
-      }
-
-      "return SessionExpired call when there is None in element" in {
-        val paidWork = None
-
-        val partnerCall = Call("GET", "partner")
-        val bothCall = Call("GET", "both")
-
-        val utils = new Utils
-        utils.getCallForPartnerOrBothForPaidWork(paidWork, partnerCall, bothCall) mustBe routes.SessionExpiredController.onPageLoad()
-      }
-    }
-
 
   }
 }

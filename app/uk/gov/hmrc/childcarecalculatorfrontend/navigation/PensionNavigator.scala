@@ -74,17 +74,19 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = {
-      utils.getCall(answers.howMuchYouPayPension)(_ => getCallForYourPensionAsPerPaidWorkCY(answers))
+      utils.getCall(answers.howMuchYouPayPension){case _ => getCallForYourPensionAsPerPaidWorkCY(answers)}
     }
 
   private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
-    utils.getCall(answers.howMuchPartnerPayPension) (_=>
-      utils.getCallForPartnerOrBothForPaidWork(answers.whoIsInPaidEmployment,
-        routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode),
-        routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)))
+    utils.getCall(answers.howMuchPartnerPayPension) { case _ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+      }
+    }
 
   private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
-    utils.getCall(answers.howMuchBothPayPension) (_=>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode))
+    utils.getCall(answers.howMuchBothPayPension) {case _ =>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)}
 
   private def yourPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youPaidPensionPY) {
@@ -112,16 +114,18 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYouPayPensionRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.howMuchYouPayPensionPY) ( _ => getCallForYourPensionAsPerPaidWorkPY(answers))
+    utils.getCall(answers.howMuchYouPayPensionPY) { case _ => getCallForYourPensionAsPerPaidWorkPY(answers)}
 
   private def howMuchPartnerPayPensionRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.howMuchPartnerPayPensionPY) (_=>
-      utils.getCallForPartnerOrBothForPaidWork(answers.whoIsInPaidEmployment,
-        routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode),
-        routes.BothOtherIncomeLYController.onPageLoad(NormalMode)))
+    utils.getCall(answers.howMuchPartnerPayPensionPY) { case _ =>
+      utils.getCall(answers.whoIsInPaidEmployment) {
+        case Partner => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+      }
+    }
 
   private def howMuchBothPayPensionRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.howMuchBothPayPensionPY) (_=>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode))
+    utils.getCall(answers.howMuchBothPayPensionPY) {case _=>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode)}
 
   private def getCallForYourPensionAsPerPaidWorkCY(answers: UserAnswers) =
     if (answers.areYouInPaidWork.nonEmpty) {
