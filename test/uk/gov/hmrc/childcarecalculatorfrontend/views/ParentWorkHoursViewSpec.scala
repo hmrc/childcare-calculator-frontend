@@ -34,7 +34,7 @@ class ParentWorkHoursViewSpec extends BigDecimalViewBehaviours {
   val form = new ParentWorkHoursForm(frontendAppConfig).apply()
 
   "ParentWorkHours view" must {
-    behave like normalPage(createView, messageKeyPrefix, "hint")
+    behave like normalPage(createView, messageKeyPrefix, "para1")
 
     behave like pageWithBackLink(createView)
 

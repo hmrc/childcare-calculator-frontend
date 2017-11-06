@@ -35,7 +35,9 @@
 
         @components.heading("parentWorkHours.heading", "heading-xlarge")
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"), hint = Some(messages("parentWorkHours.hint")))
+        <p>@messages("parentWorkHours.para1")</p>
+
+        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentWorkHours.heading"), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }
