@@ -239,14 +239,13 @@ class CascadeUpsert {
         BenefitsIncomeCYId.toString)
       case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
         BenefitsIncomeCYId.toString)
-      case JsString(Both) => cacheMap copy (data = cacheMap.data  - BenefitsIncomeCYId.toString -
+      case JsString(Both) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
         PartnerBenefitsIncomeCYId.toString)
       case _ => cacheMap
     }
 
     store(WhosHadBenefitsId.toString, value, mapToStore)
   }
-
 
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =

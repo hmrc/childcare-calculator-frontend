@@ -388,45 +388,44 @@ class CascadeUpsertSpec extends SpecBase {
           YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)))
       }
 
-      /*"remove youBenefitsIncomePY and bothBenefitsIncomePY page data when user selects partner option"in{
-        val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20", "20"))))
+      "remove youBenefitsIncomeCY and BenefitsIncomeCY page data when user selects partner option"in{
+        val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY("20", "20"))))
 
         val cascadeUpsert = new CascadeUpsert
-        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, Partner, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsId.toString, Partner, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(Partner),
-          PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)))
+        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(Partner),
+          PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)))
       }
 
-      "remove partnerBenefitsIncomePY and youBenefitsIncomePY page data when user selects both option"in{
-        val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20", "20"))))
+    "remove PartnerBenefitsIncomeCY and youBenefitsIncomeCY page data when user selects both option"in{
+       val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY("20", "20"))))
 
         val cascadeUpsert = new CascadeUpsert
-        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, Both, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsId.toString, Both, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(Both),
-          BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20", "20")))
+        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(Both),
+          BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY("20", "20")))
       }
 
       "return original cache map when there is any invalid value for the input"in{
-        val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20", "20"))))
+        val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY("20", "20"))))
 
         val cascadeUpsert = new CascadeUpsert
-        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, "invalidvalue", originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsId.toString, "invalidvalue", originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString("invalidvalue"),
-          YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20", "20")))
-      }*/
+        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString("invalidvalue"),
+          YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
+          BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY("20", "20")))
+      }
     }
-
-
+    
   }
 }
