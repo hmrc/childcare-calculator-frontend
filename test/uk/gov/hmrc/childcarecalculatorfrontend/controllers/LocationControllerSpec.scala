@@ -26,6 +26,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
 class LocationControllerSpec extends ControllerSpecBase {
@@ -36,7 +37,7 @@ class LocationControllerSpec extends ControllerSpecBase {
     new LocationController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = LocationForm()) = location(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = LocationForm()) = location(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "Location Controller" must {
 
@@ -53,7 +54,7 @@ class LocationControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(LocationForm().fill(LocationForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(LocationForm().fill(Location(0)))
     }
 
     "redirect to the next page when valid data is submitted" in {

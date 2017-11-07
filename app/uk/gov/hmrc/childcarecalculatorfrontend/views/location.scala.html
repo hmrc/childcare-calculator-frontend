@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("location.title"),
@@ -40,7 +40,7 @@
         <p>@messages("location.guidance")</p>
 
         @components.input_radio(
-            viewModel = InputViewModel[String]("value", form),
+            viewModel = InputViewModel("value", form),
             legend = messages("location.heading"),
             legendClass = Some("visually-hidden"),
             inputs = LocationForm.options

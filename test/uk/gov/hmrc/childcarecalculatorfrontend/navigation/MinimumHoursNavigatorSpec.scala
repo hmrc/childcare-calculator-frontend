@@ -23,6 +23,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
@@ -33,7 +34,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
   "go to Child Aged Two from Location when the location is England, Scotland or Wales" in {
     val answers = spy(userAnswers())
-    when(answers.location) thenReturn Some("england") thenReturn Some("wales") thenReturn Some("scotland")
+    when(answers.location) thenReturn Some(ENGLAND) thenReturn Some(WALES) thenReturn Some(SCOTLAND)
 
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
@@ -42,7 +43,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
   "go to Child Aged Three or Four from Location when the location is Northern Ireland" in {
     val answers = spy(userAnswers())
-    when(answers.location) thenReturn Some("northernIreland")
+    when(answers.location) thenReturn Some(NORTHERN_IRELAND)
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
   }
 

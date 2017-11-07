@@ -16,14 +16,14 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerSection, RepeaterAnswerSection}
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible,NotEligible}
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 
 @(appConfig: FrontendAppConfig,
-location: String,
+location: Location.Value,
 eligibility: Eligibility,
 answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
@@ -81,7 +81,7 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
             <h2>@messages("freeHoursResult.notEligible.heading")</h2>
 
             <div id="free-hours-results-not-entitled">
-                @if(location == LocationEnum.NORTHERNIRELAND.toString) {
+                @if(location == Location.NORTHERN_IRELAND) {
                 <p>@messages("freeHoursResult.notEligible.info.northern-ireland")</p>
                 } else {
                 <p>@messages("freeHoursResult.notEligible.info")</p>

@@ -22,7 +22,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Scheme, Schemes}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, LocationEnum, NormalMode, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NormalMode, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val schemes: Schemes) extends ResultsNavigator {
@@ -45,9 +45,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   )
 
   private def locationRoute(answers: UserAnswers): Call = {
-    val Ni = LocationEnum.NORTHERNIRELAND.toString
-
-    if (answers.location.contains(Ni)) {
+    if (answers.location.contains(Location.NORTHERN_IRELAND)) {
       routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
     } else {
       routes.ChildAgedTwoController.onPageLoad(NormalMode)
