@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AreYouSelfEmployedOrApprenticeId, PartnerMaximumEarningsId, _}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, BothBenefitsIncomePY, OtherIncomeAmountPY, SelfEmployedOrApprenticeOrNeitherEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
@@ -322,7 +322,7 @@ class CascadeUpsertSpec extends SpecBase {
     }
 
   }
-  ///////////////////////////////////////////////////////
+
   "Save YourOtherIncomeLY data " must{
     "remove yourOtherIncomeAmountPY page data when user selects no option" in {
       val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20))))
@@ -397,7 +397,6 @@ class CascadeUpsertSpec extends SpecBase {
 
   }
 
-
   "Save WhoOtherIncomePY data " must{
     "remove PartnerOtherIncomeAmountPY and OtherIncomeAmountPY page data when user selects you option"in{
       val originalCacheMap = new CacheMap("id", Map(
@@ -451,9 +450,133 @@ class CascadeUpsertSpec extends SpecBase {
     }
   }
 
+  "Save YourOtherIncomeThisYear data " must{
+    "remove yourOtherIncomeAmountCY page data when user selects no option" in {
+      val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
 
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(YourOtherIncomeThisYearId.toString, false, originalCacheMap)
 
-  //////////////////////////////////////////////////////
+      result.data mustBe Map(YourOtherIncomeThisYearId.toString -> JsBoolean(false))
+    }
+
+    "return original cache map when user selects yes option" in {
+      val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(YourOtherIncomeThisYearId.toString, true, originalCacheMap)
+
+      result.data mustBe Map(YourOtherIncomeThisYearId.toString.toString -> JsBoolean(true),
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
+    }
+
+  }
+
+  "Save PartnerAnyOtherIncomeThisYear data " must{
+    "remove partnerOtherIncomeAmountCY page data when user selects no option" in {
+      val originalCacheMap = new CacheMap("id", Map(PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(PartnerAnyOtherIncomeThisYearId.toString, false, originalCacheMap)
+
+      result.data mustBe Map(PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(false))
+    }
+
+    "return original cache map when user selects yes option" in {
+      val originalCacheMap = new CacheMap("id", Map(PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(PartnerAnyOtherIncomeThisYearId.toString, true, originalCacheMap)
+
+      result.data mustBe Map(PartnerAnyOtherIncomeThisYearId.toString.toString -> JsBoolean(true),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
+    }
+
+  }
+
+  "Save BothOtherIncomeThisYear data " must{
+    "remove whoGetsOtherIncomeCY, yourOtherIncomeAmountCY, partnerOtherIncomeAmountCY and otherIncomeAmountCY pages data" +
+      " when user selects no option" in {
+      val originalCacheMap = new CacheMap("id", Map(
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        OtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        WhoGetsOtherIncomeCYId.toString -> JsString(You)))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(BothOtherIncomeThisYearId.toString, false, originalCacheMap)
+
+      result.data mustBe Map(BothOtherIncomeThisYearId.toString -> JsBoolean(false))
+    }
+
+    "return original cache map when user selects yes option" in {
+      val originalCacheMap = new CacheMap("id", Map(
+        WhoGetsOtherIncomeCYId.toString -> JsString(You),
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(BothOtherIncomeThisYearId.toString, true, originalCacheMap)
+
+      result.data mustBe Map(BothOtherIncomeThisYearId.toString.toString -> JsBoolean(true),
+        WhoGetsOtherIncomeCYId.toString -> JsString(You),
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
+    }
+
+  }
+
+  "Save WhoGetsOtherIncomeCY data " must{
+    "remove PartnerOtherIncomeAmountCY and OtherIncomeAmountCY page data when user selects you option"in{
+      val originalCacheMap = new CacheMap("id", Map(
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        OtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(WhoGetsOtherIncomeCYId.toString, You, originalCacheMap)
+
+      result.data mustBe Map(WhoGetsOtherIncomeCYId.toString -> JsString(You),
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
+    }
+
+    "remove YourOtherIncomeAmountCY and OtherIncomeAmountCY page data when user selects partner option"in{
+      val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("20", "20"))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(WhoGetsOtherIncomeCYId.toString, Partner, originalCacheMap)
+
+      result.data mustBe Map(WhoGetsOtherIncomeCYId.toString -> JsString(Partner),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
+    }
+
+    "remove PartnerOtherIncomeAmountCY and YourOtherIncomeAmountCY page data when user selects both option"in{
+      val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("20", "20"))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(WhoGetsOtherIncomeCYId.toString, Both, originalCacheMap)
+
+      result.data mustBe Map(WhoGetsOtherIncomeCYId.toString -> JsString(Both),
+        OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("20", "20")))
+    }
+
+    "return original cache map when there is any invalid value for the input"in{
+      val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("20", "20"))))
+
+      val cascadeUpsert = new CascadeUpsert
+      val result = cascadeUpsert(WhoGetsOtherIncomeCYId.toString, "invalidvalue", originalCacheMap)
+
+      result.data mustBe Map(WhoGetsOtherIncomeCYId.toString -> JsString("invalidvalue"),
+        YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)),
+        OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("20", "20")))
+    }
+  }
+
   "Save YouAnyTheseBenefitsPY data " must{
     "remove YouBenefitsIncomePY page data when user selects no option" in {
       val originalCacheMap = new CacheMap("id", Map(YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20))))

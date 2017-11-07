@@ -55,7 +55,10 @@ class CascadeUpsert {
       PartnerAnyOtherIncomeLYId.toString -> ((v, cm) => storePartnerAnyOtherIncomePY(v, cm)),
       BothOtherIncomeLYId.toString -> ((v, cm) => storeBothOtherIncomePY(v, cm)),
       WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm)),
-
+      YourOtherIncomeThisYearId.toString -> ((v, cm) => storeYourOtherIncomeThisYear(v, cm)),
+      PartnerAnyOtherIncomeThisYearId.toString -> ((v, cm) => storePartnerAnyOtherIncomeThisYear(v, cm)),
+      BothOtherIncomeThisYearId.toString -> ((v, cm) => storeBothOtherIncomeThisYear(v, cm)),
+      WhoGetsOtherIncomeCYId.toString -> ((v, cm) => storeWhoGetsOtherIncomeCY(v, cm)),
 
 
       WhosHadBenefitsPYId.toString -> ((v, cm) => storeWhosHadBenefitsPY(v, cm)),//TODO: To be moved to seperate files
@@ -267,7 +270,6 @@ class CascadeUpsert {
     store(BothOtherIncomeLYId.toString, value, mapToStore)
   }
 
-
   private def storeWhoOtherIncomePY(value: JsValue, cacheMap: CacheMap): CacheMap ={
     val mapToStore = value match {
       case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountPYId.toString -
@@ -280,6 +282,48 @@ class CascadeUpsert {
     }
 
     store(WhoOtherIncomePYId.toString, value, mapToStore)
+  }
+
+  private def storeYourOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore= value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourOtherIncomeAmountCYId.toString)
+      case _ => cacheMap
+    }
+
+    store(YourOtherIncomeThisYearId.toString, value, mapToStore)
+  }
+
+  private def storePartnerAnyOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore= value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - PartnerOtherIncomeAmountCYId.toString)
+      case _ => cacheMap
+    }
+
+    store(PartnerAnyOtherIncomeThisYearId.toString, value, mapToStore)
+  }
+
+  private def storeBothOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore= value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhoGetsOtherIncomeCYId.toString - YourOtherIncomeAmountCYId.toString
+        - PartnerOtherIncomeAmountCYId.toString - OtherIncomeAmountCYId.toString)
+      case _ => cacheMap
+    }
+
+    store(BothOtherIncomeThisYearId.toString, value, mapToStore)
+  }
+
+  private def storeWhoGetsOtherIncomeCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
+    val mapToStore = value match {
+      case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountCYId.toString -
+        OtherIncomeAmountCYId.toString)
+      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountCYId.toString -
+        OtherIncomeAmountCYId.toString)
+      case JsString(Both) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountCYId.toString -
+        PartnerOtherIncomeAmountCYId.toString)
+      case _ => cacheMap
+    }
+
+    store(WhoGetsOtherIncomeCYId.toString, value, mapToStore)
   }
 
 
