@@ -44,7 +44,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     ApprovedProviderId -> approvedChildCareRoute
   )
 
-  def locationRoute(answers: UserAnswers): Call = {
+  private def locationRoute(answers: UserAnswers): Call = {
     val Ni = LocationEnum.NORTHERNIRELAND.toString
 
     if (answers.location.contains(Ni)) {
@@ -54,7 +54,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     }
   }
 
-  def costRoute(answers: UserAnswers): Call = {
+  private def costRoute(answers: UserAnswers): Call = {
     val No = YesNoUnsureEnum.NO.toString
     answers.childcareCosts.map {
       childcareCosts =>
@@ -70,7 +70,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
 
-  def approvedChildCareRoute(answers: UserAnswers): Call = {
+  private def approvedChildCareRoute(answers: UserAnswers): Call = {
     if (freeHours.eligibility(answers) == Eligible) {
       routes.FreeHoursInfoController.onPageLoad()
     } else {
