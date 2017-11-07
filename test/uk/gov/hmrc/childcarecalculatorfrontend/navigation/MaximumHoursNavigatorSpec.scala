@@ -402,22 +402,67 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(schemes.allSchemesDetermined(any())) thenReturn false
       val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
+
     }
   }
 
   "Do You get any benefits" when {
-    "single user will be taken to whats your age page when user selects 'No'" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouGetAnyBenefits) thenReturn Some(false)
-      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+
+    "not all schemes are determined" when {
+
+      "go to 'what is your age' when you answer 'no'" in {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(schemes.allSchemesDetermined(any())) thenReturn false
+        val result = navigator(schemes).nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+      }
+
+      "go to 'which benefits do you get' page when 'yes' selected" in  {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+        when(answers.doYouGetAnyBenefits) thenReturn Some(true)
+        when(schemes.allSchemesDetermined(any())) thenReturn false
+        val result = navigator(schemes).nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      }
     }
 
-    "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
+     "go to `Do you get tax credits or universal credits` if all schemes are determined" in {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        val result = navigator(schemes).nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+     }
+
+    "go to 'Session expired' when there is no answer for 'Do you get any benefits" in {
       val answers = spy(userAnswers())
-      when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      val schemes = mock[Schemes]
+      when(answers.doYouGetAnyBenefits) thenReturn None
+      when(schemes.allSchemesDetermined(any())) thenReturn false
+      val result = navigator(schemes).nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+      result mustEqual routes.SessionExpiredController.onPageLoad()
     }
-  }
+
+
+    }
+
+//
+//    "single user will be taken to whats your age page when user selects 'No'" in {
+//      val answers = spy(userAnswers())
+//      when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+//      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.YourAgeController.onPageLoad(NormalMode)
+//    }
+//
+//    "single user will be taken to which benefits do you get page when user selects 'Yes'" in {
+//      val answers = spy(userAnswers())
+//      when(answers.doYouGetAnyBenefits) thenReturn Some(true)
+//      navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+//    }
+
 
   "Who gets benefits" when {
     "partner user will be taken to which benefits do you get page when user selects You/both" in {

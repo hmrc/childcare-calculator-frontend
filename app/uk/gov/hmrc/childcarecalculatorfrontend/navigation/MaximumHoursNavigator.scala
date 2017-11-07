@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{Scheme, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
@@ -37,7 +38,8 @@ class MaximumHoursNavigator @Inject() (
   override protected lazy val resultLocation: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
 
   override protected def resultsMap: Map[Identifier, UserAnswers => Call] = Map(
-    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute
+    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
+    DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute
   )
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
@@ -191,11 +193,14 @@ class MaximumHoursNavigator @Inject() (
   }
 
   def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call = {
-    if(answers.doYouGetAnyBenefits.contains(false)) {
-      routes.YourAgeController.onPageLoad(NormalMode)
-    } else {
-      routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
-    }
+    answers.doYouGetAnyBenefits.map {
+      youGetBenefits =>
+      if (!youGetBenefits) {
+        routes.YourAgeController.onPageLoad(NormalMode)
+      } else {
+        routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      }
+    }.getOrElse(routes.SessionExpiredController.onPageLoad())
   }
 
   def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
