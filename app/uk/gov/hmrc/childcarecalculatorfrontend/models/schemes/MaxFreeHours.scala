@@ -29,7 +29,7 @@ class MaxFreeHours @Inject() (freeHours: FreeHours) extends Scheme {
     } else {
       (for {
         location <- answers.location
-      } yield if (location == LocationEnum.ENGLAND) {
+      } yield if (location == Location.ENGLAND) {
         NotDetermined
       } else {
         NotEligible

@@ -21,14 +21,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 
 class ChildAgedTwoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childAgedTwo"
 
-  val location = LocationEnum.ENGLAND
+  val location = Location.ENGLAND
 
   def createView = () => childAgedTwo(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
 

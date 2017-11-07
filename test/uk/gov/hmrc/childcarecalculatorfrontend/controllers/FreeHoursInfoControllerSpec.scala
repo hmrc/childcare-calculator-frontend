@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedTwoId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {

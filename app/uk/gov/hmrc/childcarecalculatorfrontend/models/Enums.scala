@@ -19,18 +19,18 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import play.api.libs.json.{Reads, Writes, Format}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
-object LocationEnum extends Enumeration {
-  type LocationEnum = Value
+object Location extends Enumeration {
+  type Location = Value
   val ENGLAND = Value("england")
   val SCOTLAND = Value("scotland")
   val WALES = Value("wales")
   val NORTHERN_IRELAND = Value("northern-ireland")
 
-  val enumReads: Reads[LocationEnum] = EnumUtils.enumReads(LocationEnum)
+  val enumReads: Reads[Location] = EnumUtils.enumReads(Location)
 
-  val enumWrites: Writes[LocationEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[Location] = EnumUtils.enumWrites
 
-  implicit def enumFormats: Format[LocationEnum] = EnumUtils.enumFormat(LocationEnum)
+  implicit def enumFormats: Format[Location] = EnumUtils.enumFormat(Location)
 }
 
 object YouPartnerBothEnum extends Enumeration {

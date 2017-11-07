@@ -19,28 +19,28 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object LocationForm extends FormErrorHelper {
 
-  def apply(): Form[LocationEnum.Value] =
+  def apply(): Form[Location.Value] =
     Form(single("value" -> of(LocationFormatter)))
 
-  def options: Seq[InputOption] = LocationEnum.values.map {
+  def options: Seq[InputOption] = Location.values.map {
     value =>
       InputOption("location", value.toString)
   }.toSeq
 
-  private def LocationFormatter = new Formatter[LocationEnum.Value] {
+  private def LocationFormatter = new Formatter[Location.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(LocationEnum.withName(s))
+      case Some(s) if optionIsValid(s) => Right(Location.withName(s))
       case None => produceError(key, locationErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
 
-    def unbind(key: String, value: LocationEnum.Value) = Map(key -> value.toString)
+    def unbind(key: String, value: Location.Value) = Map(key -> value.toString)
   }
 
   private def optionIsValid(value: String) = options.exists(o => o.value == value)

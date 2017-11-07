@@ -26,14 +26,14 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedTwoId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 
 class ChildAgedTwoControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  val location = LocationEnum.ENGLAND
+  val location = Location.ENGLAND
 
   val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
 
