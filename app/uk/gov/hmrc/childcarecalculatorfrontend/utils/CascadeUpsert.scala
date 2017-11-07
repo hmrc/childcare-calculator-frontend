@@ -48,7 +48,8 @@ class CascadeUpsert {
       PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
       PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
-      WhosHadBenefitsPYId.toString -> ((v, cm) => storeWhosHadBenefitsPY(v, cm)) //TODO: To be moved to seperate files
+      WhosHadBenefitsPYId.toString -> ((v, cm) => storeWhosHadBenefitsPY(v, cm)),//TODO: To be moved to seperate files
+      WhosHadBenefitsId.toString->((v,cm) => storeWhosHadBenefits(v,cm))
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -231,6 +232,22 @@ class CascadeUpsert {
 
     store(WhosHadBenefitsPYId.toString, value, mapToStore)
   }
+
+  private def storeWhosHadBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
+    val mapToStore = value match {
+      case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerBenefitsIncomeCYId.toString -
+        BenefitsIncomeCYId.toString)
+      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
+        BenefitsIncomeCYId.toString)
+      case JsString(Both) => cacheMap copy (data = cacheMap.data  - BenefitsIncomeCYId.toString -
+        PartnerBenefitsIncomeCYId.toString)
+      case _ => cacheMap
+    }
+
+    store(WhosHadBenefitsId.toString, value, mapToStore)
+  }
+
+
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
     funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}
