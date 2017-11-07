@@ -25,6 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedTwoId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {
@@ -36,9 +37,9 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
   "FreeHoursInfo Controller" must {
 
-    Seq("England", "Wales", "Scotland").foreach { location =>
+    Seq(ENGLAND, WALES, SCOTLAND).foreach { location =>
       s"return OK with childAgedTwo as true and location $location and the correct view for a GET" in {
-        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(true), LocationId.toString -> JsString(location))
+        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(true), LocationId.toString -> JsString(location.toString))
         val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
         val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
@@ -47,9 +48,9 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       }
     }
 
-    Seq("England", "Wales", "Scotland").foreach { location =>
+    Seq(ENGLAND, WALES, SCOTLAND).foreach { location =>
       s"return OK with childAgedTwo as false, location $location and the correct view for a GET" in {
-        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(false), LocationId.toString -> JsString(location))
+        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(false), LocationId.toString -> JsString(location.toString))
         val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
         val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
@@ -59,8 +60,8 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
     }
 
     "return OK with childAgedTwo as false, location Northern Ireland and the correct view for a GET" in {
-      val location = "Northern Ireland"
-      val validData = Map(LocationId.toString -> JsString(location))
+      val location = NORTHERN_IRELAND
+      val validData = Map(LocationId.toString -> JsString(location.toString))
       val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 

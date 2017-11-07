@@ -17,8 +17,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 
-@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, location: String)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, location: LocationEnum.Value)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursInfo.title"),

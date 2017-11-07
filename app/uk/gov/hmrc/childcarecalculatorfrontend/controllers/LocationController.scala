@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Mode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
@@ -52,10 +52,10 @@ class LocationController @Inject()(
   def onSubmit(mode: Mode) = getData.async {
     implicit request =>
       LocationForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
+        (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, LocationId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[LocationEnum.Value](request.sessionId, LocationId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
       )
   }

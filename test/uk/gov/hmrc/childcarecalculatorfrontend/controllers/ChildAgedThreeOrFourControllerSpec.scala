@@ -26,15 +26,16 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedThreeOrFourId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 
 class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  val location = "england"
+  val location = LocationEnum.ENGLAND
 
-  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location)))
+  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
 
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
@@ -55,7 +56,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        LocationId.toString -> JsString(location),
+        LocationId.toString -> JsString(location.toString),
         ChildAgedThreeOrFourId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 

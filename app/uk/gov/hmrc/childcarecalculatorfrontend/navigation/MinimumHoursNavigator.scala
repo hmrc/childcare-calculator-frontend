@@ -45,9 +45,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   )
 
   private def locationRoute(answers: UserAnswers): Call = {
-    val Ni = LocationEnum.NORTHERNIRELAND.toString
-
-    if (answers.location.contains(Ni)) {
+    if (answers.location.contains(LocationEnum.NORTHERN_IRELAND)) {
       routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
     } else {
       routes.ChildAgedTwoController.onPageLoad(NormalMode)
