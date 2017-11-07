@@ -42,21 +42,6 @@ class WhichChildrenDisabilityController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def withValues(block: Map[String, String] => Future[Result])
-                (implicit request: DataRequest[AnyContent]): Future[Result] = {
-
-    request.userAnswers.aboutYourChild.map {
-      aboutYourChild =>
-
-        val values: Map[String, String] = aboutYourChild.map {
-          case (k, v) =>
-            v.name -> k.toString
-        }
-
-      block(values)
-    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
-  }
-
   def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       withValues {
@@ -66,7 +51,7 @@ class WhichChildrenDisabilityController @Inject()(
             case None => WhichChildrenDisabilityForm()
             case Some(value) => WhichChildrenDisabilityForm().fill(value)
           }
-          Future.successful(Ok(whichChildrenDisability(appConfig, preparedForm, values, mode)))
+          Future.successful(Ok(whichChildrenDisability(appConfig, preparedForm, options(values), mode)))
       }
   }
 
@@ -75,11 +60,11 @@ class WhichChildrenDisabilityController @Inject()(
       withValues {
         values =>
           WhichChildrenDisabilityForm(values.values.toSeq: _*).bindFromRequest().fold(
-            (formWithErrors: Form[Set[String]]) => {
-              Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, values, mode)))
+            (formWithErrors: Form[_]) => {
+              Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, options(values), mode)))
             },
             (value) => {
-              dataCacheConnector.save[Set[String]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
+              dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
                 cacheMap =>
                   Redirect(navigator.nextPage(WhichChildrenDisabilityId, mode)(new UserAnswers (cacheMap)))
               }
@@ -87,4 +72,26 @@ class WhichChildrenDisabilityController @Inject()(
           )
       }
   }
+
+  private def options(values: Map[String, Int]): Map[String, String] =
+    values.map {
+      case (k, v) =>
+        (k, v.toString)
+    }
+
+  private def withValues(block: Map[String, Int] => Future[Result])
+                        (implicit request: DataRequest[AnyContent]): Future[Result] = {
+
+    request.userAnswers.aboutYourChild.map {
+      aboutYourChild =>
+
+        val values: Map[String, Int] = aboutYourChild.map {
+          case (k, v) =>
+            v.name -> k
+        }
+
+        block(values)
+    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }
+
 }

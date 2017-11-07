@@ -52,13 +52,13 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
         s"populate the view correctly on a GET when the question has previously been answered $i" in {
           val validData = requiredData(values) + (
-            WhoHasChildcareCostsId.toString -> Json.toJson(Seq(value))
+            WhoHasChildcareCostsId.toString -> Json.toJson(Seq(value.toInt))
             )
           val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
           val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-          contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(value)), values)
+          contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(value.toInt)), values)
         }
 
         s"redirect to the next page when valid data is submitted $i" in {
@@ -122,7 +122,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
   val defaultValues = Map("Foo" -> "0", "Bar" ->"1")
 
   def viewAsString(
-                    form: Form[Set[String]] = WhoHasChildcareCostsForm("0", "1"),
+                    form: Form[_] = WhoHasChildcareCostsForm(0, 1),
                     values: Map[String, String] = defaultValues
                   ) =
     whoHasChildcareCosts(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString

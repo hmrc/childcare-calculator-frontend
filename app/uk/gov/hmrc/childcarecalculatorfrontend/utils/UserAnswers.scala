@@ -36,11 +36,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def whichDisabilityBenefits(index: Int): Option[Set[DisabilityBenefits.Value]] =
     whichDisabilityBenefits.flatMap(_.get(index))
 
-  def whoHasChildcareCosts: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhoHasChildcareCostsId.toString)
+  def whoHasChildcareCosts: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhoHasChildcareCostsId.toString)
 
-  def whichChildrenBlind: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenBlindId.toString)
+  def whichChildrenBlind: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenBlindId.toString)
 
-  def whichChildrenDisability: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenDisabilityId.toString)
+  def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenDisabilityId.toString)
 
   def bothNoWeeksStatPayPY: Option[BothNoWeeksStatPayPY] = cacheMap.getEntry[BothNoWeeksStatPayPY](BothNoWeeksStatPayPYId.toString)
 
@@ -331,8 +331,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
-    // TODO remove `Int` conversion when the type is fixed
-    whichChildrenDisability.map(_.map(_.toInt)).orElse {
+    whichChildrenDisability.orElse {
       noOfChildren.flatMap {
         noOfChildren =>
           if (noOfChildren == 1) {
@@ -351,8 +350,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
   def childrenWithCosts: Option[Set[Int]] = {
-    // TODO remove `Int` conversion when type is fixed
-    whoHasChildcareCosts.map(_.map(_.toInt)).orElse {
+    whoHasChildcareCosts.orElse {
       noOfChildren.flatMap {
         noOfChildren =>
           if (noOfChildren == 1) {
