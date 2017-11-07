@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NotDetermined
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
-class Schemes(schemes: Scheme*) {
+class Schemes(val schemes: Scheme*) {
 
   @Inject()
   def this(freeHours: FreeHours, maxFreeHours: MaxFreeHours, taxFreeChildcare: TaxFreeChildcare) =
