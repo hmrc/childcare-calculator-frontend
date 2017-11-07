@@ -48,7 +48,10 @@ class CascadeUpsert {
       PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
       PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
-
+      YouPaidPensionCYId.toString -> ((v, cm) => storeYouPaidPensionCY(v, cm)),
+      PartnerPaidPensionCYId.toString -> ((v, cm) => storePartnerPaidPensionCY(v, cm)),
+      BothPaidPensionCYId.toString -> ((v, cm) => storeBothPaidPensionCY(v, cm)),
+      WhoPaysIntoPensionId.toString -> ((v, cm) => storeWhoPaysIntoPension(v, cm)),
       YouPaidPensionPYId.toString -> ((v, cm) => storeYouPaidPensionPY(v, cm)),
       PartnerPaidPensionPYId.toString -> ((v, cm) => storePartnerPaidPensionPY(v, cm)),
       BothPaidPensionPYId.toString -> ((v, cm) => storeBothPaidPensionPY(v, cm)),
@@ -238,7 +241,51 @@ class CascadeUpsert {
     store(PartnerSelfEmployedOrApprenticeId.toString, value, mapToStore)
   }
 
-  private def storeYouPaidPensionPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+///////////////////////////////
+
+  private def storeYouPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore= value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchYouPayPensionId.toString)
+      case _ => cacheMap
+    }
+
+    store(YouPaidPensionCYId.toString, value, mapToStore)
+  }
+
+  private def storePartnerPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore= value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchPartnerPayPensionId.toString)
+      case _ => cacheMap
+    }
+
+    store(PartnerPaidPensionCYId.toString, value, mapToStore)
+  }
+
+  private def storeBothPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore= value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchYouPayPensionId.toString - HowMuchPartnerPayPensionId.toString
+        - HowMuchBothPayPensionId.toString  - WhoPaysIntoPensionId.toString)
+      case _ => cacheMap
+    }
+
+    store(BothPaidPensionCYId.toString, value, mapToStore)
+  }
+
+  private def storeWhoPaysIntoPension(value: JsValue, cacheMap: CacheMap): CacheMap ={
+    val mapToStore = value match {
+      case JsString(You) => cacheMap copy (data = cacheMap.data  - HowMuchPartnerPayPensionId.toString -
+        HowMuchBothPayPensionId.toString)
+      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - HowMuchYouPayPensionId.toString -
+        HowMuchBothPayPensionId.toString)
+      case JsString(Both) => cacheMap copy (data = cacheMap.data  - HowMuchYouPayPensionId.toString -
+        HowMuchPartnerPayPensionId.toString)
+      case _ => cacheMap
+    }
+
+    store(WhoPaysIntoPensionId.toString, value, mapToStore)
+  }
+
+private def storeYouPaidPensionPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore= value match {
       case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchYouPayPensionPYId.toString)
       case _ => cacheMap
@@ -280,6 +327,10 @@ class CascadeUpsert {
 
     store(WhoPaidIntoPensionPYId.toString, value, mapToStore)
   }
+
+  //////////////////////////////////////
+
+
 
   private def storeYourOtherIncomePY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore= value match {
