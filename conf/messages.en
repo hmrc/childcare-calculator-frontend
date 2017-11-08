@@ -76,7 +76,7 @@ location.guidance = Free childcare hours are different between countries in the 
 location.england = England
 location.scotland = Scotland
 location.wales = Wales
-location.northernIreland = Northern Ireland
+location.northern-ireland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
 location.error = You must tell the calculator where you live
 
@@ -127,6 +127,9 @@ freeHoursInfo.li.vouchers = Childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = Tax credits
 freeHoursInfo.li.2year = Free hours for your 2 year old
+freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs in the future. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you will have approved childcare costs or that your not sure. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.heading = Your eligibility for childcare support
@@ -399,7 +402,7 @@ yourSelfEmployed.error = You must select yes if you’ve been self-employed less
 
 yourMaximumEarnings.title = Will you earn more than £100,000 a year?
 yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
-yourMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+yourMaximumEarnings.hint = This is your salary with any pension and gift aid contributions taken off.
 yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
 yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
@@ -450,26 +453,26 @@ yourOtherIncomeThisYear.hint.text = Other income could be from investments, rent
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
 yourOtherIncomeThisYear.error = Select yes if you will get any other income this year
 
-yourIncomeInfo.title = Your income this tax year
-yourIncomeInfo.heading = Your income this tax year
-yourIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+yourIncomeInfo.title = Your income this year
+yourIncomeInfo.heading = Your income this year
+yourIncomeInfo.tax_year = This year is 6 April 2017 to 5 April 2018.
 yourIncomeInfo.guidance = We’ll now ask questions about your income, including:
 yourIncomeInfo.li.income_paid_work = income from paid work
 yourIncomeInfo.li.pensions = pension contributions
 yourIncomeInfo.li.other_income = other income
 yourIncomeInfo.li.benefits_income = income from benefits
 yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
-yourIncomeInfo.checkYourAnswersLabel = Your income this tax year
+yourIncomeInfo.checkYourAnswersLabel = Your income this year
 
-partnerIncomeInfo.title = Your partner’s income this tax year
-partnerIncomeInfo.heading = Your partner’s income this tax year
-partnerIncomeInfo.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+partnerIncomeInfo.title = Your partner’s income this year
+partnerIncomeInfo.heading = Your partner’s income this year
+partnerIncomeInfo.tax_year = This year is 6 April 2017 to 5 April 2018.
 partnerIncomeInfo.guidance = We’ll now ask questions about your partner’s income, including:
 partnerIncomeInfo.li.income_paid_work = income from paid work
 partnerIncomeInfo.li.pensions = pension contributions
 partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
-partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this tax year
+partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this year
 partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
 parentEmploymentIncomeCY.title = How much will you get paid this year?
@@ -485,7 +488,7 @@ partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 employmentIncome.invalid=You must enter a number between 0 and 999999.99
 partnerEmploymentIncome.blank= You must tell the calculator what your partner will get paid this year
 parentEmploymentIncome.blank= You must tell the calculator what you will get paid this year
-employmentIncomeCY.tax_year= This tax year is 6 April 2017 to 5 April 2018.
+employmentIncomeCY.tax_year= This year is 6 April 2017 to 5 April 2018.
 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
@@ -591,6 +594,7 @@ bothPaidPensionCY.title = Have you, your partner, or both of you paid into a wor
 bothPaidPensionCY.heading = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.error = You must answer yes if you, your partner, or both have paid into a pension through payroll this year
+bothPaidPensionCY.tax.year = This year is 6 April 2017 to 5 April 2018.
 
 whosHadBenefits.title = Who’s had benefits?
 whosHadBenefits.heading = Who’s had benefits?
@@ -723,26 +727,26 @@ partnerBenefitsIncome.required = You must tell the calculator how much your part
 parentBenefitsIncome.invalid = Please enter a valid numerical value
 partnerBenefitsIncome.invalid = Please enter a valid numerical value
 
-yourIncomeInfoPY.title = Your income last tax year
-yourIncomeInfoPY.heading = Your income last tax year
-yourIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.title = Your income last year
+yourIncomeInfoPY.heading = Your income last year
+yourIncomeInfoPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
 yourIncomeInfoPY.guidance = We’ll now ask questions about your income, including:
 yourIncomeInfoPY.li.income_paid_work = income from paid work
 yourIncomeInfoPY.li.pensions = pension contributions
 yourIncomeInfoPY.li.other_income = other income
 yourIncomeInfoPY.li.benefits_income = income from benefits
 yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
-yourIncomeInfoPY.checkYourAnswersLabel = Your income last tax year
+yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 
-partnerIncomeInfoPY.title = Your partner’s income last tax year
-partnerIncomeInfoPY.heading = Your partner’s income last tax year
-partnerIncomeInfoPY.tax_year = Last tax year is 6 April 2016 to 5 April 2017.
+partnerIncomeInfoPY.title = Your partner’s income last year
+partnerIncomeInfoPY.heading = Your partner’s income last year
+partnerIncomeInfoPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
 partnerIncomeInfoPY.guidance = We’ll now ask questions about your partner’s income, including:
 partnerIncomeInfoPY.li.income_paid_work = income from paid work
 partnerIncomeInfoPY.li.pensions = pension contributions
 partnerIncomeInfoPY.li.other_income = other income
 partnerIncomeInfoPY.li.benefits_income = income from benefits
-partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last tax year
+partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
 bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income last year?
@@ -807,7 +811,7 @@ employmentIncomeCY.heading = How much will you and your partner get paid this ye
 employmentIncomeCY.parentEmploymentIncome = Your income
 employmentIncomeCY.partnerEmploymentIncome = Partner’s income
 employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
-employmentIncomeCY.tax_year = This tax year is 6 April 2017 to 5 April 2018.
+employmentIncomeCY.tax_year = This year is 6 April 2017 to 5 April 2018.
 employmentIncomeCY.hint = This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 
 parentEmploymentIncome.required = You must tell the calculator what you will get paid this year
@@ -1128,10 +1132,9 @@ whichChildrenDisability.summary = Help with benefits
 whichChildrenDisability.selectAll = Select all who get them.
 whichChildrenDisability.error = You must tell the calculator who gets disability benefits
 
-whichChildrenBlind.title = Who is registered blind?
-whichChildrenBlind.heading = Who is registered blind?
+whichChildrenBlind.title = Who’s registered blind?
+whichChildrenBlind.heading = Who’s registered blind?
 whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
-whichChildrenBlind.hint = Select all who are
 whichChildrenBlind.error = You must tell the calculator who is registered blind
 
 whoHasChildcareCosts.title = Who has childcare costs?

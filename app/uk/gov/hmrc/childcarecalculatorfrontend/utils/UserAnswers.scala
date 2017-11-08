@@ -18,10 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapFormats {
+class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def expectedChildcareCosts(index: Int): Option[BigDecimal] =
     expectedChildcareCosts.flatMap(_.get(index))
@@ -303,7 +304,7 @@ class UserAnswers(val cacheMap: CacheMap) extends EligibilityChecks with MapForm
 
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
-  def location: Option[String] = cacheMap.getEntry[String](LocationId.toString)
+  def location: Option[Location.Value] = cacheMap.getEntry[Location.Value](LocationId.toString)
 
   def isYouPartnerOrBoth(who: Option[String]): String = {
     val You: String = YouPartnerBothEnum.YOU.toString

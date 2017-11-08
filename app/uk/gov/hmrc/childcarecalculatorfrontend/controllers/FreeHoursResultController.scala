@@ -20,25 +20,25 @@ import com.google.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{Utils, CheckYourAnswersHelper}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CheckYourAnswersHelper, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{freeHoursResult, check_your_answers}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-
-import scala.concurrent.Future
 
 class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
                                           override val messagesApi: MessagesApi,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
-                                          utils: Utils) extends FrontendController with I18nSupport {
+                                          utils: Utils,
+                                          freeHours: FreeHours) extends FrontendController with I18nSupport {
 
   def onPageLoad() = (getData andThen requireData) {
     implicit request =>
 
       val location = utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-      val eligibility = request.userAnswers.isEligibleForFreeHours
+      val eligibility = freeHours.eligibility(request.userAnswers)
 
       val sections = Seq(AnswerSection(None, Seq(
         checkYourAnswersHelper.location,

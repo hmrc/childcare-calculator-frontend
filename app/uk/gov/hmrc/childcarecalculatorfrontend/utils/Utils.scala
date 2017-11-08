@@ -112,17 +112,17 @@ class Utils {
   }
 
   /**
-    * Returns the call from the input function (f: A => Call) when optionalElement has some value otherwise
+    * * Returns the call from the input function (f: A => Call) when optionalElement has some value otherwise
     * returns SessionExpired Page
-    * Ex - getCall(Some(true))(_ => Call("GET", "http://test.com")) returns Call("GET", "http://test.com")
-    *      getCall(None)(_ => Call("GET", "http://test.com")) returns routes.SessionExpiredController.onPageLoad()
-    *      
+    * Ex - getCall(Some(true)){case _ => Call("GET", "http://test.com")} returns Call("GET", "http://test.com")
+    *      getCall(None){case _ => Call("GET", "http://test.com")} returns routes.SessionExpiredController.onPageLoad()
+    *
     * @param optionalElement
     * @param f
     * @tparam A
-    * @return Call form the function f
+    * @return Call
     */
-  def getCall[A](optionalElement: Option[A])(f: A => Call): Call =
-    optionalElement.map(f).getOrElse(routes.SessionExpiredController.onPageLoad())
+  def getCall[A](optionalElement: Option[A])(f: PartialFunction[A, Call]): Call =
+    optionalElement.flatMap(f.lift).getOrElse(routes.SessionExpiredController.onPageLoad())
 
 }
