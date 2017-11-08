@@ -90,7 +90,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
     "return `Some` if `whichChildrenDisability` is defined" in {
       val answers = helper(cacheMap(
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq("0", "2"))
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2))
       ))
       answers.childrenWithDisabilityBenefits.value mustEqual Set(0, 2)
     }
@@ -139,7 +139,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     "return `Some` if there are multiple children and `whoHasChildcareCosts` is defined" in {
       val answers = helper(cacheMap(
         NoOfChildrenId.toString -> JsNumber(2),
-        WhoHasChildcareCostsId.toString -> Json.toJson(Seq(JsString("0")))
+        WhoHasChildcareCostsId.toString -> Json.toJson(Seq(JsNumber(0)))
       ))
       answers.childrenWithCosts.value mustEqual Set(0)
     }

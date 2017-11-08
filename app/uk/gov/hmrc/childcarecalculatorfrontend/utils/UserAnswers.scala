@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -36,11 +35,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def whichDisabilityBenefits(index: Int): Option[Set[DisabilityBenefits.Value]] =
     whichDisabilityBenefits.flatMap(_.get(index))
 
-  def whoHasChildcareCosts: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhoHasChildcareCostsId.toString)
+  def whoHasChildcareCosts: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhoHasChildcareCostsId.toString)
 
-  def whichChildrenBlind: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenBlindId.toString)
+  def whichChildrenBlind: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenBlindId.toString)
 
-  def whichChildrenDisability: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichChildrenDisabilityId.toString)
+  def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenDisabilityId.toString)
 
   def bothNoWeeksStatPayPY: Option[BothNoWeeksStatPayPY] = cacheMap.getEntry[BothNoWeeksStatPayPY](BothNoWeeksStatPayPYId.toString)
 
@@ -140,7 +139,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def bothOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](BothOtherIncomeLYId.toString)
 
-  def whosHadBenefitsPY: Option[String] = cacheMap.getEntry[String](WhosHadBenefitsPYId.toString)
+  def whosHadBenefitsPY: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsPYId.toString)
 
   def partnerAnyOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeLYId.toString)
 
@@ -200,7 +199,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionCYId.toString)
 
-  def whosHadBenefits: Option[String] = cacheMap.getEntry[String](WhosHadBenefitsId.toString)
+  def whosHadBenefits: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
 
   def whoGetsStatutoryCY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryCYId.toString)
 
@@ -331,8 +330,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
-    // TODO remove `Int` conversion when the type is fixed
-    whichChildrenDisability.map(_.map(_.toInt)).orElse {
+    whichChildrenDisability.orElse {
       noOfChildren.flatMap {
         noOfChildren =>
           if (noOfChildren == 1) {
@@ -351,8 +349,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
   def childrenWithCosts: Option[Set[Int]] = {
-    // TODO remove `Int` conversion when type is fixed
-    whoHasChildcareCosts.map(_.map(_.toInt)).orElse {
+    whoHasChildcareCosts.orElse {
       noOfChildren.flatMap {
         noOfChildren =>
           if (noOfChildren == 1) {

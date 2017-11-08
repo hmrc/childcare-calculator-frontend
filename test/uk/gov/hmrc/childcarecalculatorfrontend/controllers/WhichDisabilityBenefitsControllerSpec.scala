@@ -181,7 +181,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       )
     } else {
       Map(
-        WhichChildrenDisabilityId.toString -> Json.toJson(cases.map(_._1.toString)),
+        WhichChildrenDisabilityId.toString -> Json.toJson(cases.map(_._1)),
         AboutYourChildId.toString -> Json.obj(
           cases.map {
             case (index, name) =>

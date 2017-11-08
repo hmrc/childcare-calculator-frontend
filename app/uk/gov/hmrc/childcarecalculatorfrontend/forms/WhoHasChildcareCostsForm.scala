@@ -22,10 +22,9 @@ import play.api.data.Forms._
 
 object WhoHasChildcareCostsForm extends FormErrorHelper {
 
-
-  def apply(options: String*): Form[Set[String]] =
+  def apply(options: Int*): Form[Set[Int]] =
     Form(
-      "value" -> set(text.verifying("error.unknown", options.contains _))
+      "value" -> set(number.verifying("error.unknown", options.contains _))
           .verifying("whoHasChildcareCosts.error", _.nonEmpty)
     )
-  }
+}

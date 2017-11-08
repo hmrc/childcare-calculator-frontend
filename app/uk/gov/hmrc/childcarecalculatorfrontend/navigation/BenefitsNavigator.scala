@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
@@ -68,9 +68,9 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
     utils.getCall(answers.whosHadBenefits) {
-      case You => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Partner => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case Both => routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
+      case YOU => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
+      case PARTNER => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
+      case BOTH => routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
     }
   }
 
@@ -108,9 +108,9 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
     utils.getCall(answers.whosHadBenefitsPY) {
-      case You => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
-      case Partner => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
-      case Both => routes.BothBenefitsIncomePYController.onPageLoad(NormalMode)
+      case YOU => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
+      case PARTNER => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
+      case BOTH => routes.BothBenefitsIncomePYController.onPageLoad(NormalMode)
     }
   }
 

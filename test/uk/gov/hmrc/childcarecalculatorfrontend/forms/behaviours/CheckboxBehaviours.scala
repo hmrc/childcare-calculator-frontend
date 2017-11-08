@@ -22,6 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
 trait CheckboxBehaviours[A] extends FormSpec {
 
   def validOptions: Set[A]
+  def invalidValue: String = "invalid value"
   def fieldName: String
   def form: Form[Set[A]]
 
@@ -37,7 +38,7 @@ trait CheckboxBehaviours[A] extends FormSpec {
 
     "fail to bind when the answer is invalid" in {
       val data = Map(
-        "value[0]" -> "invalid value"
+        "value[0]" -> invalidValue
       )
       form.bind(data).errors should contain(FormError("value[0]", invalid))
     }
