@@ -34,7 +34,7 @@ class TaxCredits @Inject() (household: HouseholdFactory) extends Scheme {
   }
 
   private def singleEligibility(parent: Parent): Eligibility = {
-    if (parent.hours >= 16) {
+    if (parent.hours >= individualHours) {
       Eligible
     } else {
       NotEligible
