@@ -25,24 +25,23 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhosHadBenefitsPYForm extends FormErrorHelper {
 
-  def WhosHadBenefitsPYFormatter = new Formatter[String] {
+  def apply(): Form[YouPartnerBothEnum.Value] =
+    Form(single("value" -> of(WhosHadBenefitsPYFormatter)))
+
+  def options: Seq[InputOption] = YouPartnerBothEnum.values.map {
+    value =>
+      InputOption("whosHadBenefitsPY", value.toString)
+  }.toSeq
+
+  private def WhosHadBenefitsPYFormatter = new Formatter[YouPartnerBothEnum.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
+      case Some(s) if optionIsValid(s) => Right(YouPartnerBothEnum.withName(s))
       case None => produceError(key, whosHadBenefitsPYErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
 
-    def unbind(key: String, value: String) = Map(key -> value)
+    def unbind(key: String, value: YouPartnerBothEnum.Value) = Map(key -> value.toString)
   }
 
-  def apply(): Form[String] = 
-    Form(single("value" -> of(WhosHadBenefitsPYFormatter)))
-
-  def options = Seq(
-    InputOption("whosHadBenefitsPY", YouPartnerBothEnum.YOU.toString),
-    InputOption("whosHadBenefitsPY", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whosHadBenefitsPY", YouPartnerBothEnum.BOTH.toString)
-  )
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

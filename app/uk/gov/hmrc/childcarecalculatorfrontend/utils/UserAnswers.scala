@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -140,7 +139,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def bothOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](BothOtherIncomeLYId.toString)
 
-  def whosHadBenefitsPY: Option[String] = cacheMap.getEntry[String](WhosHadBenefitsPYId.toString)
+  def whosHadBenefitsPY: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsPYId.toString)
 
   def partnerAnyOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeLYId.toString)
 
@@ -200,7 +199,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionCYId.toString)
 
-  def whosHadBenefits: Option[String] = cacheMap.getEntry[String](WhosHadBenefitsId.toString)
+  def whosHadBenefits: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
 
   def whoGetsStatutoryCY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryCYId.toString)
 

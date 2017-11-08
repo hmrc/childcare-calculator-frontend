@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsPYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhosHadBenefitsPYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefitsPY
 
@@ -52,10 +52,10 @@ class WhosHadBenefitsPYController @Inject()(
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       WhosHadBenefitsPYForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
+        (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(whosHadBenefitsPY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, WhosHadBenefitsPYId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[YouPartnerBothEnum.Value](request.sessionId, WhosHadBenefitsPYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(WhosHadBenefitsPYId, mode)(new UserAnswers(cacheMap))))
       )
   }
