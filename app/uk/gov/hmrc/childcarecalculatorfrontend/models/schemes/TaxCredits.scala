@@ -18,9 +18,56 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxCredits @Inject() () extends Scheme {
-  override def eligibility(answers: UserAnswers): Eligibility = NotDetermined
+class TaxCredits @Inject() (household: HouseholdFactory) extends Scheme {
+
+  override def eligibility(answers: UserAnswers): Eligibility = {
+    household(answers).map {
+      case SingleHousehold(parent) =>
+        singleEligibility(parent)
+      case JointHousehold(parent, partner) =>
+        partnerEligibility(parent, partner)
+    }.getOrElse(NotDetermined)
+  }
+
+  private def singleEligibility(parent: Parent): Eligibility = {
+    if (parent.hours >= 16) {
+      Eligible
+    } else {
+      NotEligible
+    }
+  }
+
+  private def partnerEligibility(parent: Parent, partner: Parent): Eligibility = {
+
+    val eligibleViaHours: Boolean = {
+
+      val overJointHours = parent.hours + partner.hours >= jointHours
+      val overIndividualHours = parent.hours >= individualHours || partner.hours >= individualHours
+
+      overIndividualHours && overJointHours
+    }
+
+    val eligibleViaBenefits: Boolean = {
+      (parent.hours >= individualHours && partner.benefits.intersect(applicableBenefits).nonEmpty) ||
+        (partner.hours >= individualHours && parent.benefits.intersect(applicableBenefits).nonEmpty)
+    }
+
+    if (eligibleViaHours || eligibleViaBenefits) {
+      Eligible
+    } else {
+      NotEligible
+    }
+  }
+
+
+  private val jointHours: BigDecimal = 24
+
+  private val individualHours: BigDecimal = 16
+
+  private val applicableBenefits: Set[WhichBenefitsEnum.Value] =
+    Set(DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS, CARERSALLOWANCE)
 }

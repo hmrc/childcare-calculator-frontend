@@ -21,7 +21,9 @@ import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.mockito.Mockito._
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
@@ -182,6 +184,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       answers.childrenWithCosts mustNot be(defined)
     }
   }
+
 
   def cacheMap(answers: (String, JsValue)*): CacheMap =
     CacheMap("", Map(answers: _*))
