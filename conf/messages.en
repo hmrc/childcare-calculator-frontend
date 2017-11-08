@@ -76,7 +76,7 @@ location.guidance = Free childcare hours are different between countries in the 
 location.england = England
 location.scotland = Scotland
 location.wales = Wales
-location.northernIreland = Northern Ireland
+location.northern-ireland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
 location.error = You must tell the calculator where you live
 
