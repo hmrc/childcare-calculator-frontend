@@ -16,16 +16,45 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 
+import com.google.inject.ImplementedBy
 import play.api.libs.json._
+import uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts.PensionsCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothBenefitsIncomePYId, YouBenefitsIncomePYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
+
+trait SubCascadeUpsert {
+  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = Map.empty
+
+  def store[A](key:String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
+    cacheMap copy (data = cacheMap.data + (key -> Json.toJson(value)))
+
+  def upsert[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): Option[CacheMap] =
+    Some(funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)})
+}
+
 @Singleton
-class CascadeUpsert {
+class CascadeUpsertImpl (cascadeUpserts: SubCascadeUpsert*) extends CascadeUpsert{
+  @Inject()
+  def this(
+            pensionsCascadeUpserts: PensionsCascadeUpsert) {
+    this(Seq(pensionsCascadeUpserts): _*)
+  }
+
+  override def upsert[A](key: String,
+                         value: A,
+                         originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
+    {
+      cascadeUpserts.map(_.upsert(key, value, originalCacheMap)).reduce(_ orElse _).getOrElse(store(key, value, originalCacheMap))
+    }
+}
+
+@ImplementedBy(classOf[CascadeUpsertImpl])
+trait CascadeUpsert {
 
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
@@ -285,7 +314,7 @@ class CascadeUpsert {
     store(WhoPaysIntoPensionId.toString, value, mapToStore)
   }
 
-private def storeYouPaidPensionPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+  private def storeYouPaidPensionPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore= value match {
       case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchYouPayPensionPYId.toString)
       case _ => cacheMap
@@ -502,7 +531,7 @@ private def storeYouPaidPensionPY(value: JsValue, cacheMap: CacheMap): CacheMap 
     store(BothAnyTheseBenefitsCYId.toString, value, mapToStore)
   }
 
-  def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
+  def upsert[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
     funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}
 
   def addRepeatedValue[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap = {
@@ -510,7 +539,7 @@ private def storeYouPaidPensionPY(value: JsValue, cacheMap: CacheMap): CacheMap 
     originalCacheMap copy(data = originalCacheMap.data + (key -> Json.toJson(values)))
   }
 
-  private def store[A](key:String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
+  def store[A](key:String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
     cacheMap copy (data = cacheMap.data + (key -> Json.toJson(value)))
 
   private def clearIfFalse[A](key: String, value: A, keysToRemove: Set[String], cacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap = {
