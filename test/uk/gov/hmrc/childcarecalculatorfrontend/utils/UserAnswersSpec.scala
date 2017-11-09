@@ -21,7 +21,9 @@ import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.mockito.Mockito._
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
@@ -180,6 +182,56 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
         NoOfChildrenId.toString -> JsNumber(2)
       ))
       answers.childrenWithCosts mustNot be(defined)
+    }
+  }
+
+  ".hasApprovedCosts" must {
+
+    import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
+    import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+
+    val yesNoNotYetPositive: Seq[String] = Seq(YesNoNotYetEnum.YES.toString, YesNoNotYetEnum.NOTYET.toString)
+    val yesNoUnsurePositive: Seq[String] = Seq(YesNoUnsureEnum.YES.toString, YesNoUnsureEnum.NOTSURE.toString)
+
+    for(costs <- yesNoNotYetPositive; provider <- yesNoUnsurePositive) {
+      s"return `true` if user has costs: $costs, and approved costs: $provider" in {
+        val answers = helper(cacheMap(
+          ChildcareCostsId.toString -> JsString(costs),
+          ApprovedProviderId.toString -> JsString(provider)
+        ))
+        answers.hasApprovedCosts.value mustEqual true
+      }
+    }
+
+    "return `false` if a user has no costs" in {
+      val answers = helper(cacheMap(
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NO.toString)
+      ))
+      answers.hasApprovedCosts.value mustEqual false
+    }
+
+    yesNoNotYetPositive.foreach {
+      costs =>
+        s"return `false` if a user has costs: $costs, but they aren't approved" in {
+          val answers = helper(cacheMap(
+            ChildcareCostsId.toString -> JsString(costs),
+            ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.NO.toString)
+          ))
+        }
+    }
+
+    "return `None` if a user has costs but `approvedProvider` is undefined" in {
+      val answers = helper(cacheMap(
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+      ))
+      answers.hasApprovedCosts mustNot be(defined)
+    }
+
+    "return `None` if a user `childcareCosts` is undefined" in {
+      val answers = helper(cacheMap(
+        ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.YES.toString)
+      ))
+      answers.hasApprovedCosts mustNot be(defined)
     }
   }
 

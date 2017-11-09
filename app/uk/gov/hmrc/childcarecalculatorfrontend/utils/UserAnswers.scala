@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
@@ -367,5 +368,16 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
           }
       }
     }
+  }
+
+  def hasApprovedCosts: Option[Boolean] = {
+    for {
+      costs    <- childcareCosts.map(_ != YesNoNotYetEnum.NO.toString)
+      approved <- if (costs) {
+        approvedProvider.map(_ != YesNoUnsureEnum.NO.toString)
+      } else {
+        Some(false)
+      }
+    } yield approved
   }
 }
