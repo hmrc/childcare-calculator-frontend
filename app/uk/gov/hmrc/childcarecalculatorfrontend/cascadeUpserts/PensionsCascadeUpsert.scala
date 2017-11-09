@@ -9,7 +9,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class PensionsCascadeUpsert @Inject()() extends SubCascadeUpsert {
-  override protected val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
+
+  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
     Map(
       YouPaidPensionCYId.toString -> ((v, cm) => storeYouPaidPensionCY(v, cm)),
       PartnerPaidPensionCYId.toString -> ((v, cm) => storePartnerPaidPensionCY(v, cm)),
