@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouKnowYourAdjustedTaxCodeId, HasYourTaxCodeBeenAdjustedId, WhatIsYourTaxCodeId}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -42,7 +43,19 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
     }
   }
 
-  "addRepeatedValue" when {
+
+  "apply method" must {
+    "save the data for the existing key" in {
+      val originalCacheMap = new CacheMap("id",
+        Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
+        WhatIsYourTaxCodeId.toString -> JsString("1100L")))
+
+      val result = getCascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
+      result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(false))
+    }
+  }
+
+ "addRepeatedValue" when {
     "the key doesn't already exist" must {
       "add the key to the cache map and save the value in a sequence" in {
         val originalCacheMap = new CacheMap("id", Map())
@@ -62,6 +75,5 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
     }
 
   }
-
 
 }

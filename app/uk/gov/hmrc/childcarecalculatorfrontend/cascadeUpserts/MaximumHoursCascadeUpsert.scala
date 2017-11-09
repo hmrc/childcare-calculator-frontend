@@ -203,5 +203,4 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(PartnerMinimumEarningsId.toString, value, mapToStore)
   }
 
-
 }
