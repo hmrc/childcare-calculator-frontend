@@ -31,7 +31,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "saving a location of northernIreland" must {
       "remove an existing childAgedTwo key and save the location" in {
         val originalCacheMap = new CacheMap("id", Map(ChildAgedTwoId.toString -> JsBoolean(true)))
-        val cascadeUpsert = getCascadeUpsert
+
         val result = cascadeUpsert(LocationId.toString, "northernIreland", originalCacheMap)
         result.data mustBe Map(LocationId.toString -> JsString("northernIreland"))
       }
@@ -40,7 +40,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "saving a location other than northernIreland" must {
       "save the location and leave an existing childAgedTwo key in place" in {
         val originalCacheMap = new CacheMap("id", Map(ChildAgedTwoId.toString -> JsBoolean(true)))
-        val cascadeUpsert = getCascadeUpsert
+
         val result = cascadeUpsert(LocationId.toString, "england", originalCacheMap)
         result.data mustBe Map(
           ChildAgedTwoId.toString -> JsBoolean(true),

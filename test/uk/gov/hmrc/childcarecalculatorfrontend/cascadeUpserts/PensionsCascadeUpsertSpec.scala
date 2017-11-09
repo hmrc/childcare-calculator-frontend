@@ -30,7 +30,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove howMuchYouPayPension page data when user selects no option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(YouPaidPensionCYId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(YouPaidPensionCYId.toString, false, originalCacheMap)
 
         result.data mustBe Map(YouPaidPensionCYId.toString -> JsBoolean(false))
       }
@@ -38,7 +38,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(YouPaidPensionCYId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(YouPaidPensionCYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(YouPaidPensionCYId.toString.toString -> JsBoolean(true),
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)))
@@ -49,7 +49,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove howMuchPartnerPayPension page data when user selects no option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(PartnerPaidPensionCYId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(PartnerPaidPensionCYId.toString, false, originalCacheMap)
 
         result.data mustBe Map(PartnerPaidPensionCYId.toString -> JsBoolean(false))
       }
@@ -57,7 +57,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(PartnerPaidPensionCYId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(PartnerPaidPensionCYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(PartnerPaidPensionCYId.toString.toString -> JsBoolean(true),
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)))
@@ -73,7 +73,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchBothPayPensionId.toString -> JsNumber(BigDecimal(20)),
           WhoPaysIntoPensionId.toString -> JsString(You)))
 
-        val result = getCascadeUpsert(BothPaidPensionCYId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(BothPaidPensionCYId.toString, false, originalCacheMap)
 
         result.data mustBe Map(BothPaidPensionCYId.toString -> JsBoolean(false))
       }
@@ -83,7 +83,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           WhoPaysIntoPensionId.toString -> JsString(You),
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(BothPaidPensionCYId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(BothPaidPensionCYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(BothPaidPensionCYId.toString.toString -> JsBoolean(true),
           WhoPaysIntoPensionId.toString -> JsString(You),
@@ -99,7 +99,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(WhoPaysIntoPensionId.toString, You, originalCacheMap)
+        val result = cascadeUpsert(WhoPaysIntoPensionId.toString, You, originalCacheMap)
 
         result.data mustBe Map(WhoPaysIntoPensionId.toString -> JsString(You),
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)))
@@ -111,7 +111,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(WhoPaysIntoPensionId.toString, Partner, originalCacheMap)
+        val result = cascadeUpsert(WhoPaysIntoPensionId.toString, Partner, originalCacheMap)
 
         result.data mustBe Map(WhoPaysIntoPensionId.toString -> JsString(Partner),
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)))
@@ -123,7 +123,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20"))))
 
-        val result = getCascadeUpsert(WhoPaysIntoPensionId.toString, Both, originalCacheMap)
+        val result = cascadeUpsert(WhoPaysIntoPensionId.toString, Both, originalCacheMap)
 
         result.data mustBe Map(WhoPaysIntoPensionId.toString -> JsString(Both),
           HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20")))
@@ -135,7 +135,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20"))))
 
-        val result = getCascadeUpsert(WhoPaysIntoPensionId.toString, "invalidvalue", originalCacheMap)
+        val result = cascadeUpsert(WhoPaysIntoPensionId.toString, "invalidvalue", originalCacheMap)
 
         result.data mustBe Map(WhoPaysIntoPensionId.toString -> JsString("invalidvalue"),
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
@@ -151,7 +151,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove howMuchBothPayPensionPY page data when user selects no option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(YouPaidPensionPYId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(YouPaidPensionPYId.toString, false, originalCacheMap)
 
         result.data mustBe Map(YouPaidPensionPYId.toString -> JsBoolean(false))
       }
@@ -159,7 +159,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(YouPaidPensionPYId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(YouPaidPensionPYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(YouPaidPensionPYId.toString.toString -> JsBoolean(true),
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
@@ -171,7 +171,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove howMuchPartnerPayPensionPY page data when user selects no option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(PartnerPaidPensionPYId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(PartnerPaidPensionPYId.toString, false, originalCacheMap)
 
         result.data mustBe Map(PartnerPaidPensionPYId.toString -> JsBoolean(false))
       }
@@ -179,7 +179,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(PartnerPaidPensionPYId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(PartnerPaidPensionPYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(PartnerPaidPensionPYId.toString.toString -> JsBoolean(true),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
@@ -196,7 +196,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           WhoPaidIntoPensionPYId.toString -> JsString(You)))
 
-        val result = getCascadeUpsert(BothPaidPensionPYId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(BothPaidPensionPYId.toString, false, originalCacheMap)
 
         result.data mustBe Map(BothPaidPensionPYId.toString -> JsBoolean(false))
       }
@@ -206,7 +206,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           WhoPaidIntoPensionPYId.toString -> JsString(You),
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20))))
 
-        val result = getCascadeUpsert(BothPaidPensionPYId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(BothPaidPensionPYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(BothPaidPensionPYId.toString.toString -> JsBoolean(true),
           WhoPaidIntoPensionPYId.toString -> JsString(You),
@@ -222,7 +222,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
 
-        val result = getCascadeUpsert(WhoPaidIntoPensionPYId.toString, You, originalCacheMap)
+        val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, You, originalCacheMap)
 
         result.data mustBe Map(WhoPaidIntoPensionPYId.toString -> JsString(You),
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
@@ -234,7 +234,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
 
-        val result = getCascadeUpsert(WhoPaidIntoPensionPYId.toString, Partner, originalCacheMap)
+        val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, Partner, originalCacheMap)
 
         result.data mustBe Map(WhoPaidIntoPensionPYId.toString -> JsString(Partner),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
@@ -246,7 +246,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
 
-        val result = getCascadeUpsert(WhoPaidIntoPensionPYId.toString, Both, originalCacheMap)
+        val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, Both, originalCacheMap)
 
         result.data mustBe Map(WhoPaidIntoPensionPYId.toString -> JsString(Both),
           HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20")))
@@ -258,7 +258,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
 
-        val result = getCascadeUpsert(WhoPaidIntoPensionPYId.toString, "invalidvalue", originalCacheMap)
+        val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, "invalidvalue", originalCacheMap)
 
         result.data mustBe Map(WhoPaidIntoPensionPYId.toString -> JsString("invalidvalue"),
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),

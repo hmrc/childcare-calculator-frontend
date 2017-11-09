@@ -20,7 +20,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CascadeUpsert
 
 trait CascadeUpsertBase {
-  def getCascadeUpsert = new CascadeUpsert(new PensionsCascadeUpsert,
+  def cascadeUpsert = new CascadeUpsert(new PensionsCascadeUpsert,
     new OtherIncomeCascadeUpsert,
     new BenefitsCascadeUpsert,
     new MaximumHoursCascadeUpsert,

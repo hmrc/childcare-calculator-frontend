@@ -28,7 +28,7 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "add the key to the cache map" in {
         val originalCacheMap = new CacheMap("id", Map())
 
-        val result = getCascadeUpsert("key", "value", originalCacheMap)
+        val result = cascadeUpsert("key", "value", originalCacheMap)
         result.data mustBe Map("key" -> JsString("value"))
       }
     }
@@ -37,7 +37,7 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "replace the value held against the key" in {
         val originalCacheMap = new CacheMap("id", Map("key" -> JsString("original value")))
 
-        val result = getCascadeUpsert("key", "new value", originalCacheMap)
+        val result = cascadeUpsert("key", "new value", originalCacheMap)
         result.data mustBe Map("key" -> JsString("new value"))
       }
     }
@@ -50,7 +50,7 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
         WhatIsYourTaxCodeId.toString -> JsString("1100L")))
 
-      val result = getCascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
+      val result = cascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
       result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(false))
     }
   }
@@ -60,7 +60,7 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "add the key to the cache map and save the value in a sequence" in {
         val originalCacheMap = new CacheMap("id", Map())
 
-        val result = getCascadeUpsert.addRepeatedValue("key", "value", originalCacheMap)
+        val result = cascadeUpsert.addRepeatedValue("key", "value", originalCacheMap)
         result.data mustBe Map("key" -> Json.toJson(Seq("value")))
       }
     }
@@ -69,7 +69,7 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "add the new value to the existing sequence" in {
         val originalCacheMap = new CacheMap("id", Map("key" -> Json.toJson(Seq("value"))))
 
-        val result = getCascadeUpsert.addRepeatedValue("key", "new value", originalCacheMap)
+        val result = cascadeUpsert.addRepeatedValue("key", "new value", originalCacheMap)
         result.data mustBe Map("key" -> Json.toJson(Seq("value", "new value")))
       }
     }
