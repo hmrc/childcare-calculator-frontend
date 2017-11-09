@@ -22,6 +22,7 @@ import org.scalatest.{EitherValues, OptionValues}
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with EitherValues {
@@ -29,10 +30,10 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
   val applicableBenefits: Seq[WhichBenefitsEnum.Value] =
     Seq(DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS, CARERSALLOWANCE)
 
-  def taxCredits(household: HouseholdFactory = new HouseholdFactory): TaxCredits = spy(new TaxCredits(household))
+  def taxCredits(household: ModelFactory = new ModelFactory): TaxCredits = spy(new TaxCredits(household))
   
   val answers = mock[UserAnswers]
-  val household = mock[HouseholdFactory]
+  val household = mock[ModelFactory]
 
   ".eligibility" must {
 

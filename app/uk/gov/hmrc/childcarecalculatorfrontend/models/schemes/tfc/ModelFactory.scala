@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
+package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxFreeChildcare @Inject() (factory: ModelFactory) extends Scheme {
+class ModelFactory @Inject() () {
 
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childcareCosts <- answers.childcareCosts
-    } yield if (childcareCosts == "no") {
-      NotEligible
-    } else {
-      NotDetermined
-    }
-  }.getOrElse(NotDetermined)
+  def apply(answers: UserAnswers): Option[Household] = ???
 }

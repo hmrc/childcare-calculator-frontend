@@ -20,9 +20,10 @@ import javax.inject.Inject
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxCredits @Inject() (household: HouseholdFactory) extends Scheme {
+class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
     answers.hasApprovedCosts.flatMap {

@@ -16,45 +16,100 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import play.api.libs.json.JsString
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcareCostsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NotDetermined, NotEligible}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import org.scalatest.mockito.MockitoSugar
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxFreeChildcareSpec extends SchemeSpec {
+class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {
 
-  val taxFreeChildCare = new TaxFreeChildcare
+  val answers: UserAnswers = mock[UserAnswers]
+  val modelFactory: ModelFactory = mock[ModelFactory]
+  val scheme = new TaxFreeChildcare(modelFactory)
 
   ".eligibility" must {
 
-    "return `NotDetermined`" when {
+    "return `NotDetermined` when `hasApprovedCosts` is undefined" in {
+      when(answers.hasApprovedCosts) thenReturn None
+      when(modelFactory(any())) thenReturn Some(SingleHousehold(Parent(true, false, false, false, Set.empty)))
+      scheme.eligibility(answers) mustEqual NotDetermined
+    }
 
-      "the user has not told the calculator that they have costs" in {
-        taxFreeChildCare.eligibility(helper()) mustEqual NotDetermined
+    "return `NotDetermined` when `household` is undefined" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
+      when(modelFactory(any())) thenReturn None
+      scheme.eligibility(answers) mustEqual NotDetermined
+    }
+
+    "return `NotEligible` when `hasApprovedCosts` is false" in {
+      when(answers.hasApprovedCosts) thenReturn Some(false)
+      when(modelFactory(any())) thenReturn Some(SingleHousehold(Parent(true, false, false, false, Set.empty)))
+      scheme.eligibility(answers) mustEqual NotEligible
+    }
+
+    "single household" when {
+
+      "return `Eligible` when they earn over the minimum threshold" in {
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(modelFactory(any())) thenReturn Some(SingleHousehold(Parent(true, false, false, false, Set.empty)))
+        scheme.eligibility(answers) mustEqual Eligible
       }
 
-      "the user has told the calculator that they have costs" in {
-        val answers: UserAnswers = helper(
-          ChildcareCostsId.toString -> JsString("yes")
-        )
-        taxFreeChildCare.eligibility(answers) mustEqual NotDetermined
+      "return `Eligible` when they earn under the minimum threshold but are an apprentice" in {
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(modelFactory(any())) thenReturn Some(SingleHousehold(Parent(false, false, false, true, Set.empty)))
+        scheme.eligibility(answers) mustEqual Eligible
       }
 
-      "the user has told the calculator that they may have costs in the future" in {
-        val answers: UserAnswers = helper(
-          ChildcareCostsId.toString -> JsString("notYet")
-        )
-        taxFreeChildCare.eligibility(answers) mustEqual NotDetermined
+      "return `Eligible` when they earn under the minimum threshold but are self employed" in {
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(modelFactory(any())) thenReturn Some(SingleHousehold(Parent(false, true, false, false, Set.empty)))
+        scheme.eligibility(answers) mustEqual Eligible
+      }
+
+      "return `NotEligible` when they earn over the maximum threshold" in {
+
+      }
+
+      "return `NotEligible` when they earn under the minimum threshold and are not an apprentice or self employed" in {
+
       }
     }
 
-    "return `NotEligible`" when {
+    "joint household" when {
 
-      "the user has told the calculator that they have no costs" in {
-        val answers: UserAnswers = helper(
-          ChildcareCostsId.toString -> JsString("no")
-        )
-        taxFreeChildCare.eligibility(answers) mustEqual NotEligible
+      "return `Eligible` when both parents are eligible" in {
+
+      }
+
+      "return `Eligible` when the user is eligible, their partner is not but claims carers allowance" in {
+
+      }
+
+      "return `Eligible` when the user is ineligible, but claims carers allowance and their partner is eligible" in {
+
+      }
+
+      "return `NotEligible` when the user is eligible but their partner is not, and doesn't claim carers allowance" in {
+
+      }
+
+      "return `NotEligible` when the user is ineligible and doesn't claim carers allowance but their partner is eligible" in {
+
+      }
+
+      "return `NotEligible` when neither parent is eligible" in {
+
+      }
+
+      "return `NotEligible` when neither parent is eligible, and the user claims carers allowance" in {
+
+      }
+
+      "return `NotEligible` when neither parent is eligible, and the user's partner claims carers allowance" in {
+
       }
     }
   }
