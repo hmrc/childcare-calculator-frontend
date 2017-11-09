@@ -51,7 +51,7 @@ class WhichChildrenBlindController @Inject()(
             case None => WhichChildrenBlindForm()
             case Some(value) => WhichChildrenBlindForm().fill(value)
           }
-          Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, mode, values)))
+          Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, mode, options(values))))
       }
   }
 
@@ -60,11 +60,11 @@ class WhichChildrenBlindController @Inject()(
       withValues {
         values =>
           WhichChildrenBlindForm(values.values.toSeq: _*).bindFromRequest().fold(
-            (formWithErrors: Form[Set[String]]) => {
-              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, values)))
+            (formWithErrors: Form[_]) => {
+              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, options(values))))
             },
             (value) => {
-              dataCacheConnector.save[Set[String]](request.sessionId, WhichChildrenBlindId.toString, value).map {
+              dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenBlindId.toString, value).map {
                 cacheMap =>
                   Redirect(navigator.nextPage(WhichChildrenBlindId, mode)(new UserAnswers(cacheMap)))
               }
@@ -73,12 +73,18 @@ class WhichChildrenBlindController @Inject()(
       }
   }
 
-  private def withValues[A](block: Map[String, String] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
+  private def options(values: Map[String, Int]): Map[String, String] =
+    values.map {
+      case (k, v) =>
+        (k, v.toString)
+    }
+
+  private def withValues[A](block: Map[String, Int] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
     request.userAnswers.aboutYourChild.map {
       aboutYourChild =>
-        val values: Map[String, String] = aboutYourChild.map {
+        val values: Map[String, Int] = aboutYourChild.map {
           case (i, model) =>
-            model.name -> i.toString
+            model.name -> i
         }
         block(values)
     }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))

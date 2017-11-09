@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("whosHadBenefitsPY.title"),
@@ -38,7 +38,7 @@
     @helpers.form(action = WhosHadBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_radio(
-            viewModel = InputViewModel[String]("value", form),
+            viewModel = InputViewModel("value", form),
             legend = messages("whosHadBenefitsPY.heading"),
             legendClass = Some("visually-hidden"),
             inputs = WhosHadBenefitsPYForm.options

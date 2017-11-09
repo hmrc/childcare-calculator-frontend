@@ -26,9 +26,11 @@ class WhosHadBenefitsPYViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "whosHadBenefitsPY"
 
-  def createView = () => whosHadBenefitsPY(frontendAppConfig, WhosHadBenefitsPYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () =>
+    whosHadBenefitsPY(frontendAppConfig, WhosHadBenefitsPYForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => whosHadBenefitsPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[_]) =>
+    whosHadBenefitsPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhosHadBenefitsPY view" must {
     behave like normalPage(createView, messageKeyPrefix)

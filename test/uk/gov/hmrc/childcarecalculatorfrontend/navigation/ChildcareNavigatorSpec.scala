@@ -288,7 +288,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       id =>
         s"redirect to `WhichDisabilityBenefits` for the first appropriate child, for id: $id" in {
           val answers: UserAnswers = userAnswers(
-            WhichChildrenDisabilityId.toString -> Json.toJson(Seq(id.toString))
+            WhichChildrenDisabilityId.toString -> Json.toJson(Seq(id))
           )
           val result = navigator.nextPage(WhichChildrenDisabilityId, NormalMode).value(answers)
           result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, id)
@@ -305,7 +305,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Which disability benefits` for the next applicable child, if this is not the last child" in {
       val answers: UserAnswers = userAnswers(
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq("0", "2"))
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2))
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
       result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, 2)
@@ -313,7 +313,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Any children blind` when this is the last applicable child" in {
       val answers: UserAnswers = userAnswers(
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq("0", "2"))
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2))
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(2), NormalMode).value(answers)
       result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)

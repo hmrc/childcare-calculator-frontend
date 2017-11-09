@@ -23,22 +23,26 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 
-class WhichChildrenDisabilityViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
+class WhichChildrenDisabilityViewSpec extends ViewBehaviours with CheckboxViewBehaviours[Int] {
 
   val messageKeyPrefix = "whichChildrenDisability"
 
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values = Map(
-    "Foo" -> "0",
-    "Bar" -> "1"
+  val values: Map[String, Int] = Map(
+    "Foo" -> 0,
+    "Bar" -> 1
   )
 
-  def form: Form[Set[String]] = WhichChildrenDisabilityForm("0", "1")
+  val strValues: Map[String, String] = values.map {
+    case (k, v) => (k, v.toString)
+  }
 
-  def createView(form: Form[Set[String]] = form): Html =
-    whichChildrenDisability(frontendAppConfig, form, values, NormalMode)(fakeRequest, messages)
+  def form: Form[Set[Int]] = WhichChildrenDisabilityForm(0, 1)
+
+  def createView(form: Form[Set[Int]] = form): Html =
+    whichChildrenDisability(frontendAppConfig, form, strValues, NormalMode)(fakeRequest, messages)
 
   "WhichChildrenDisability view" must {
 

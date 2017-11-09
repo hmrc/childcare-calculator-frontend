@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import play.api.data.Form
-import play.api.data.Forms._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 
-object WhichChildrenBlindForm extends FormErrorHelper {
-
-  def apply(options: Int*): Form[Set[Int]] =
-    Form(
-      "value" -> set(number.verifying("error.unknown", options.contains _))
-        .verifying("whichChildrenBlind.error", _.nonEmpty)
-    )
-}
+case class Parent(hours: BigDecimal, benefits: Set[WhichBenefitsEnum.Value])

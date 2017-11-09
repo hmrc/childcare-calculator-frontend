@@ -52,13 +52,13 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
 
         s"populate the view correctly on a GET when the question has previously been answered, $i" in {
           val validData = requiredData(values) + (
-            WhichChildrenBlindId.toString -> Json.toJson(Seq(value))
+            WhichChildrenBlindId.toString -> Json.toJson(Seq(value.toInt))
           )
           val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
           val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-          contentAsString(result) mustEqual viewAsString(WhichChildrenBlindForm().fill(Set(value)), values)
+          contentAsString(result) mustEqual viewAsString(WhichChildrenBlindForm().fill(Set(value.toInt)), values)
         }
 
         s"redirect to the next page when valid data is submitted, $i" in {
@@ -120,7 +120,7 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
 
   val defaultValues = Map("Foo" -> "0", "Bar" -> "1")
   def viewAsString(
-                    form: Form[Set[String]] = WhichChildrenBlindForm("0", "1"),
+                    form: Form[_] = WhichChildrenBlindForm(0, 1),
                     values: Map[String, String] = defaultValues
                   ) =
     whichChildrenBlind(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString

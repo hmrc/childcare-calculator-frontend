@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsPYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhosHadBenefitsPYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefitsPY
 
 class WhosHadBenefitsPYControllerSpec extends ControllerSpecBase {
@@ -36,7 +36,7 @@ class WhosHadBenefitsPYControllerSpec extends ControllerSpecBase {
     new WhosHadBenefitsPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = WhosHadBenefitsPYForm()) = whosHadBenefitsPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = WhosHadBenefitsPYForm()) = whosHadBenefitsPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhosHadBenefitsPY Controller" must {
 
@@ -53,7 +53,7 @@ class WhosHadBenefitsPYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhosHadBenefitsPYForm().fill(WhosHadBenefitsPYForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(WhosHadBenefitsPYForm().fill(YouPartnerBothEnum.YOU))
     }
 
     "redirect to the next page when valid data is submitted" in {

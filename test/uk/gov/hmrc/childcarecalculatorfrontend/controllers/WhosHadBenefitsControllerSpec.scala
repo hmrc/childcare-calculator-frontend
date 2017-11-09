@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhosHadBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefits
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -36,7 +36,7 @@ class WhosHadBenefitsControllerSpec extends ControllerSpecBase {
     new WhosHadBenefitsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = WhosHadBenefitsForm()) = whosHadBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = WhosHadBenefitsForm()) = whosHadBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhosHadBenefits Controller" must {
 
@@ -53,7 +53,7 @@ class WhosHadBenefitsControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhosHadBenefitsForm().fill(WhosHadBenefitsForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(WhosHadBenefitsForm().fill(YouPartnerBothEnum.YOU))
     }
 
     "redirect to the next page when valid data is submitted" in {

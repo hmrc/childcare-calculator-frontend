@@ -23,10 +23,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichChildrenDisabilityForm extends FormErrorHelper {
 
-  def apply(validValues: String*): Form[Set[String]] =
+  def apply(validValues: Int*): Form[Set[Int]] =
     Form(
       "value" -> set(
-        text.verifying("error.invalid", validValues.toSet.contains _)
+        number.verifying("error.invalid", validValues.toSet.contains _)
       )
         .verifying("whichChildrenDisability.error", _.nonEmpty)
     )

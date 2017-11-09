@@ -51,7 +51,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     "Bar" -> "1"
   )
 
-  def viewAsString(form: Form[Set[String]] = WhichChildrenDisabilityForm()): String =
+  def viewAsString(form: Form[_] = WhichChildrenDisabilityForm()): String =
     whichChildrenDisability(frontendAppConfig, form, options, NormalMode)(fakeRequest, messages).toString
 
   "WhichChildrenDisability Controller" must {
@@ -63,12 +63,12 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = requiredData + (WhichChildrenDisabilityId.toString -> JsArray(Seq(JsString("0"))))
+      val validData = requiredData + (WhichChildrenDisabilityId.toString -> JsArray(Seq(JsNumber(0))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustEqual viewAsString(WhichChildrenDisabilityForm(options.values.toSeq: _*).fill(Set("0")))
+      contentAsString(result) mustEqual viewAsString(WhichChildrenDisabilityForm(0, 1).fill(Set(0)))
     }
 
     "redirect to the next page when valid data is submitted" in {
