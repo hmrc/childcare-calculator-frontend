@@ -33,7 +33,7 @@ class BothPaidPensionCYViewSpec extends YesNoViewBehaviours {
 
   "BothPaidPensionCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "tax.year")
 
     behave like pageWithBackLink(createView)
 

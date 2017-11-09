@@ -38,8 +38,6 @@
 
     @helpers.form(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>Select all who get them</p>
-
         @components.input_check_box(
             field = form("value"),
             legend = messages("whichChildrenDisability.heading"),

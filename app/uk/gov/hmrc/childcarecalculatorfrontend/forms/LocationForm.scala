@@ -19,30 +19,29 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object LocationForm extends FormErrorHelper {
 
-  def LocationFormatter = new Formatter[String] {
+  def apply(): Form[Location.Value] =
+    Form(single("value" -> of(LocationFormatter)))
+
+  def options: Seq[InputOption] = Location.values.map {
+    value =>
+      InputOption("location", value.toString)
+  }.toSeq
+
+  private def LocationFormatter = new Formatter[Location.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
+      case Some(s) if optionIsValid(s) => Right(Location.withName(s))
       case None => produceError(key, locationErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
 
-    def unbind(key: String, value: String) = Map(key -> value)
+    def unbind(key: String, value: Location.Value) = Map(key -> value.toString)
   }
 
-  def apply(): Form[String] = 
-    Form(single("value" -> of(LocationFormatter)))
-
-  def options = Seq(
-    InputOption("location", "england"),
-    InputOption("location", "scotland"),
-    InputOption("location", "wales"),
-    InputOption("location", "northernIreland")
-  )
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

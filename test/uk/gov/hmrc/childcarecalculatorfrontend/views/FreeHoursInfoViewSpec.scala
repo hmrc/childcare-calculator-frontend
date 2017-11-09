@@ -18,18 +18,20 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 
 class FreeHoursInfoViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursInfo"
 
-  def createView = () => freeHoursInfo(frontendAppConfig, false, "")(fakeRequest, messages)
+  def createView = () => freeHoursInfo(frontendAppConfig, false, Location.ENGLAND)(fakeRequest, messages)
 
   "FreeHoursInfo view" must {
     behave like normalPage(createView, messageKeyPrefix, "heading2", "guidance", "li.30hours",
       "li.vouchers", "li.tfc", "li.tax_credits")
 
-    Seq("england", "scotland", "wales").foreach { location =>
+    Seq(ENGLAND, SCOTLAND, WALES).foreach { location =>
       s"display correct content when user with location $location and have child aged 2" in {
         val view = freeHoursInfo(frontendAppConfig, true, location)(fakeRequest, messages)
         assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$location"))
@@ -37,7 +39,7 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
       }
     }
 
-    Seq("england", "scotland", "wales", "northernIreland").foreach { location =>
+    Location.values.foreach { location =>
       s"display correct content when user with location $location and don't have child aged 2" in {
         val view = freeHoursInfo(frontendAppConfig, false, location)(fakeRequest, messages)
         val doc = asDocument(view)
