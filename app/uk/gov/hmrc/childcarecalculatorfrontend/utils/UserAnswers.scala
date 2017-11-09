@@ -370,4 +370,14 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     }
   }
 
+  def hasApprovedCosts: Option[Boolean] = {
+    for {
+      costs    <- childcareCosts.map(_ != YesNoNotYetEnum.NO.toString)
+      approved <- if (costs) {
+        approvedProvider.map(_ != YesNoUnsureEnum.NO.toString)
+      } else {
+        Some(false)
+      }
+    } yield approved
+  }
 }

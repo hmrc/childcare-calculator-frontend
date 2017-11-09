@@ -37,16 +37,31 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
   ".eligibility" must {
 
     "return `NotDetermined` if `household` is undefined" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn None
       taxCredits(household).eligibility(answers) mustEqual NotDetermined
     }
 
+    "return `NotDetermined` if `hasApprovedCosts` is undefined" in {
+      when(answers.hasApprovedCosts) thenReturn None
+      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotDetermined
+    }
+
+    "return `NotEligible` if user has no approved costs" in {
+      when(answers.hasApprovedCosts) thenReturn Some(false)
+      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
+    }
+
     "return `Eligible` if a user works 24 hours but their partner doesn't work and neither get benefits" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual Eligible
     }
 
     "return `Eligible` if a user works 16 hours and collectively the household works at least 24 hours and they don't claim benefits" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(8, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual Eligible
     }
@@ -55,57 +70,68 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
       benefit =>
 
         s"return `Eligible` if a user works 16 hours, their partner doesn't work but claims $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(0, Set(benefit))))
           taxCredits(household).eligibility(answers) mustEqual Eligible
         }
 
         s"return `NotEligible` if a user works 16 hours, their partner doesn't work even if the user claims $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set(benefit)), Parent(0, Set.empty)))
           taxCredits(household).eligibility(answers) mustEqual NotEligible
         }
 
         s"return `Eligible` if a user works 16 hours, their partner works but they don't meet the 24 hour threshold, but they claim $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(4, Set(benefit))))
           taxCredits(household).eligibility(answers) mustEqual Eligible
         }
 
         s"return `NotEligible` if a user works 16 hours, their partner works but they don't meet the 24 hour threshold, even if the user claims $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set(benefit)), Parent(4, Set.empty)))
           taxCredits(household).eligibility(answers) mustEqual NotEligible
         }
 
         s"return `Eligible` if a single user works 16 hours and they claim $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(SingleHousehold(Parent(16, Set(benefit))))
           taxCredits(household).eligibility(answers) mustEqual Eligible
         }
 
         s"return `NotEligible` if a single user works less than 16 hours and claims $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(SingleHousehold(Parent(15, Set.empty)))
           taxCredits(household).eligibility(answers) mustEqual NotEligible
         }
 
         s"return `NotEligible` if neither parent works 16 hours, even if they work 24 hours total, even if one of them claims $benefit" in {
+          when(answers.hasApprovedCosts) thenReturn Some(true)
           when(household(any())) thenReturn Some(JointHousehold(Parent(12, Set.empty), Parent(12, Set(benefit))))
           taxCredits(household).eligibility(answers) mustEqual NotEligible
         }
     }
 
     "return `Eligible` if a single user works 16 hours and they don't get benefits" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn Some(SingleHousehold(Parent(16, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual Eligible
     }
 
     "return `NotEligible` if a single user works less than 16 hours and doesn't get benefits" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn Some(SingleHousehold(Parent(15, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual NotEligible
     }
 
     "return `NotEligible` if a user works 16 hours, their partner doesn't work and they don't claim benefits" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(0, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual NotEligible
     }
 
     "return `NotEligible` if neither parent works 16 hours, even if they work 24 hours total, and they don't claim benefits" in {
+      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn Some(JointHousehold(Parent(12, Set.empty), Parent(12, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual NotEligible
     }
