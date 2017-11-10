@@ -486,11 +486,6 @@ POST       /registeredBlind                       uk.gov.hmrc.childcarecalculato
 GET        /changeRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeRegisteredBlind                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode = CheckMode)
 
-GET        /partnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onPageLoad(mode: Mode = NormalMode)
-POST       /partnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onSubmit(mode: Mode = NormalMode)
-GET        /changePartnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onPageLoad(mode: Mode = CheckMode)
-POST       /changePartnerStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPYController.onSubmit(mode: Mode = CheckMode)
-
 GET        /bothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onPageLoad(mode: Mode = NormalMode)
 POST       /bothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onSubmit(mode: Mode = NormalMode)
 GET        /changeBothStatutoryPayPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothStatutoryPayPYController.onPageLoad(mode: Mode = CheckMode)
@@ -565,18 +560,6 @@ GET        /childcarePayFrequency/:id               uk.gov.hmrc.childcarecalcula
 POST       /childcarePayFrequency/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeChildcarePayFrequency/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeChildcarePayFrequency/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(mode: Mode = CheckMode, id: Int)
-
-
-GET        /partnerStatutoryPayAmountPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountPYController.onPageLoad(mode: Mode = NormalMode)
-POST       /partnerStatutoryPayAmountPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountPYController.onSubmit(mode: Mode = NormalMode)
-GET        /changePartnerStatutoryPayAmountPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountPYController.onPageLoad(mode: Mode = CheckMode)
-POST       /changePartnerStatutoryPayAmountPY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayAmountPYController.onSubmit(mode: Mode = CheckMode)
-
-GET        /statutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onPageLoad(mode: Mode = NormalMode)
-POST       /statutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onSubmit(mode: Mode = NormalMode)
-GET        /changeStatutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeStatutoryPayAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.StatutoryPayAmountPYController.onSubmit(mode: Mode = CheckMode)
-
 
 GET        /childrenDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onPageLoad(mode: Mode = NormalMode)
 POST       /childrenDisabilityBenefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onSubmit(mode: Mode = NormalMode)
