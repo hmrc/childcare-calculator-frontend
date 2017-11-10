@@ -24,13 +24,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxFreeChildcare @Inject() (factory: ModelFactory) extends Scheme {
 
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childcareCosts <- answers.childcareCosts
-    } yield if (childcareCosts == "no") {
-      NotEligible
-    } else {
-      NotDetermined
-    }
-  }.getOrElse(NotDetermined)
+  override def eligibility(answers: UserAnswers): Eligibility = NotEligible
+//    for {
+//      childcareCosts <- answers.childcareCosts
+//    } yield if (childcareCosts == "no") {
+//      NotEligible
+//    } else {
+//      NotDetermined
+//    }
+//  }.getOrElse(NotDetermined)
 }
