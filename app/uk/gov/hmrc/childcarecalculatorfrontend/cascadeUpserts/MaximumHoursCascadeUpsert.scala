@@ -50,7 +50,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       cacheMap copy (data = cacheMap.data - PaidEmploymentId.toString - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString -
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
-        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString  - AreYouSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedOrApprenticeId.toString -
+        WhoGetsBenefitsId.toString - YourPartnersAgeId.toString  - PartnerSelfEmployedOrApprenticeId.toString -
         PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
     } else if(value == JsBoolean(true))
       cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
@@ -64,8 +64,12 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString -
         HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
         YourChildcareVouchersId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
-        YourMinimumEarningsId.toString - YourMaximumEarningsId.toString)
-
+        YourMinimumEarningsId.toString - YourMaximumEarningsId.toString - TaxOrUniversalCreditsId.toString -
+        PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
+        HowMuchYouPayPensionId.toString -  YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
+        YouBenefitsIncomeCYId.toString -  PartnerPaidWorkPYId .toString -  ParentEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString -  HowMuchYouPayPensionPYId.toString -  YourOtherIncomeLYId.toString -
+        YouAnyTheseBenefitsPYId.toString -  YouBenefitsIncomePYId.toString)
     } else cacheMap
 
     store(AreYouInPaidWorkId.toString, value, mapToStore)
