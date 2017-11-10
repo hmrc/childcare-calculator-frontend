@@ -92,7 +92,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `Some` when all data is available" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -109,7 +109,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `Some` when users don't work" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(false)
+        when(answers.paidEmployment) thenReturn Some(false)
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -123,7 +123,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `Some` when users don't claim benefits" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -134,7 +134,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
         )
       }
 
-      "return `None` when `areYouInPaidWork` is undefined" in {
+      "return `None` when `paidEmployment` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
@@ -150,7 +150,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `None` when `whoIsInPaidEmployment` is undefined and the user has indicated at least one parent is in work" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
@@ -163,7 +163,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `None` when `parentWorkHours` is undefined and the user is employed" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
@@ -176,7 +176,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `None` when `parentWorkHours` is undefined both the user and their partner are employed" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
@@ -189,7 +189,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `None` when `doYouOrYourPartnerGetBenefits` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -202,7 +202,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
       "return `None` when `whoGetsBenefits` is undefined but the user has indicated that at least one parent claims benefits" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -216,7 +216,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
 
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -230,7 +230,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
 
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -244,7 +244,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
 
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
@@ -258,7 +258,7 @@ class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValue
 
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
