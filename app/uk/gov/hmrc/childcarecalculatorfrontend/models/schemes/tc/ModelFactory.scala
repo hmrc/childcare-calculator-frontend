@@ -29,7 +29,7 @@ class ModelFactory @Inject() () {
 
         for {
 
-          areYouInPaidWork  <- answers.areYouInPaidWork
+          areYouInPaidWork  <- answers.paidEmployment
           anyBenefits <- answers.doYouOrYourPartnerGetAnyBenefits
 
           parentHours <- if (areYouInPaidWork) {
