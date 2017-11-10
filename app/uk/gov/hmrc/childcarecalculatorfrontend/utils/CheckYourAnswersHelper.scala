@@ -54,9 +54,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("childStartEducation.checkYourAnswersLabel", s"$x", false, routes.ChildStartEducationController.onPageLoad(CheckMode, index).url)
   }
 
-  def bothNoWeeksStatPayCY: Option[AnswerRow] = userAnswers.bothNoWeeksStatPayCY map {
-    x => AnswerRow("bothNoWeeksStatPayCY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothNoWeeksStatPayCYController.onPageLoad(CheckMode).url)
-  }
 
   def youNoWeeksStatPayPY: Option[AnswerRow] = userAnswers.youNoWeeksStatPayPY map {
     x => AnswerRow("youNoWeeksStatPayPY.checkYourAnswersLabel", s"$x", false, routes.YouNoWeeksStatPayPYController.onPageLoad(CheckMode).url)

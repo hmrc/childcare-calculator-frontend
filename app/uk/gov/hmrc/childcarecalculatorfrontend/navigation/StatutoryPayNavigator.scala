@@ -47,7 +47,6 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     WhoGetsStatutoryCYId->whoGetsStatutoryRouteCY,
     YouNoWeeksStatPayCYId->youNoWeeksStatutoryPayRouteCY,
     PartnerNoWeeksStatPayCYId->partnerNoWeeksStatutoryPayRouteCY,
-    BothNoWeeksStatPayCYId->bothNoWeeksStatutoryPayRouteCY,
     YourStatutoryPayAmountCYId-> yourStatutoryPayAmountRouteCY,
     PartnerStatutoryPayAmountCYId->partnerStatutoryPayAmountRouteCY,
     StatutoryPayAmountCYId->bothStatutoryPayAmountRouteCY
@@ -78,8 +77,7 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     utils.getCall(answers.whoGetsStatutoryCY) {
       case You => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
       case Partner => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
-      case Both => routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode)
-    }
+   }
 
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
   private def youNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
@@ -88,10 +86,6 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
   private def partnerNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerNoWeeksStatPayCY){ case _ => routes.StatutoryPayAWeekController.onPageLoad(NormalMode)}
-
-  //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
-  private def bothNoWeeksStatutoryPayRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.bothNoWeeksStatPayCY){ case _ => routes.StatutoryPayAWeekController.onPageLoad(NormalMode)}
 
   private def yourStatutoryPayAmountRouteCY(answers: UserAnswers) =
     utils.getCall(answers.yourStatutoryPayAmountCY){ case _ => yourStatutoryPayRouteCYForNoSelection(answers)}

@@ -217,14 +217,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
         }
 
-        "redirect to BothGetsStatutoryCY page when user selects both option" in {
-          val answers = spy(userAnswers())
-          when(answers.whoGetsStatutoryCY) thenReturn Some(Both)
-
-          navigator().nextPage(WhoGetsStatutoryCYId, NormalMode).value(answers) mustBe
-            routes.BothNoWeeksStatPayCYController.onPageLoad(NormalMode)
-        }
-
         "redirect to sessionExpired page when there is no user selection" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsStatutoryCY) thenReturn None
@@ -272,22 +264,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Both No Weeks Stat Pay CY Route" must {
-        "redirect to StatutoryPayAWeek page when user enters valid input" in {
-          val answers = spy(userAnswers())
-          when(answers.bothNoWeeksStatPayCY) thenReturn Some(BothNoWeeksStatPayCY(12, 12))
 
-          //TODO: To be replaced with correct pages for StatutoryPayAWeek for current year, once clarification is got on the same
-          navigator().nextPage(BothNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
-            routes.StatutoryPayAWeekController.onPageLoad(NormalMode)
-        }
-        "redirect to sessionExpired page when there is no value" in {
-          val answers = spy(userAnswers())
-          when(answers.bothNoWeeksStatPayCY) thenReturn None
-
-          navigator().nextPage(BothNoWeeksStatPayCYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
-        }
 
         "Your Statutory Pay Amount CY Route" must {
 
@@ -417,7 +394,7 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
 
       }
     }
-  }
+  
 
   "Previous Year Statutory Pay Route Navigation" when {
 
