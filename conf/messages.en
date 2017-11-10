@@ -1027,9 +1027,7 @@ bothNoWeeksStatPayCY.numeric.error = must be a whole number
 bothNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 bothNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
 
-yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
-yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
-yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
+
 parentStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did you get paid a week
 parentStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
 

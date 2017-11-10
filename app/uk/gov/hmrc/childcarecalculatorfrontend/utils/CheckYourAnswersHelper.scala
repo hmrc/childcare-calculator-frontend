@@ -110,9 +110,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerStatutoryPayAmountPY.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryPayAmountPYController.onPageLoad(CheckMode).url)
   }
 
-  def yourStatutoryPayAmountPY: Option[AnswerRow] = userAnswers.yourStatutoryPayAmountPY map {
-    x => AnswerRow("yourStatutoryPayAmountPY.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryPayAmountPYController.onPageLoad(CheckMode).url)
-  }
 
   def partnerEmploymentIncomeCY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomeCY map {
     x => AnswerRow("partnerEmploymentIncomeCY.checkYourAnswersLabel", s"$x", false, routes.PartnerEmploymentIncomeCYController.onPageLoad(CheckMode).url)

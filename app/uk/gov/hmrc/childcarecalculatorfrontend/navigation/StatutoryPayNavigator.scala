@@ -40,7 +40,6 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
     YouNoWeeksStatPayPYId-> youNoWeeksStatutoryPayRoutePY,
     PartnerNoWeeksStatPayPYId->partnerNoWeeksStatutoryPayRoutePY,
     BothNoWeeksStatPayPYId->bothNoWeeksStatutoryPayRoutePY,
-    YourStatutoryPayAmountPYId->yourStatutoryPayAmountRoutePY,
     PartnerStatutoryPayAmountPYId->partnerStatutoryPayAmountRoutePY,
     StatutoryPayAmountPYId -> bothStatutoryPayAmountRoutePY,
     PartnerStatutoryPayCYId->partnerStatutoryPayRouteCY,
@@ -139,9 +138,6 @@ class StatutoryPayNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends
   //TODO: To be replaced with correct pages for StatutoryPayAWeek for last year, once clarification is got on the same
   private def bothNoWeeksStatutoryPayRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothNoWeeksStatPayPY){case _ => routes.StatutoryPayAWeekLYController.onPageLoad(NormalMode)}
-
-  private def yourStatutoryPayAmountRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.yourStatutoryPayAmountPY){ case _ => routes.MaxFreeHoursResultController.onPageLoad()}
 
   private def partnerStatutoryPayAmountRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerStatutoryPayAmountPY){ case _ => routes.MaxFreeHoursResultController.onPageLoad()}

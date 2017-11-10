@@ -591,23 +591,6 @@ class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Your Statutory Pay Amount PY Route" must {
-        "redirect to MaxFreeHoursResult page when user provides a valid value" in {
-          val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayAmountPY) thenReturn Some(BigDecimal(12))
-
-          navigator().nextPage(YourStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
-            routes.MaxFreeHoursResultController.onPageLoad()
-        }
-
-        "redirect to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayAmountPY) thenReturn None
-
-          navigator().nextPage(YourStatutoryPayAmountPYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
-        }
-      }
 
       "Partner Statutory Pay Amount PY Route" must {
         "redirect to MaxFreeHoursResult page when user provides a valid value" in {
