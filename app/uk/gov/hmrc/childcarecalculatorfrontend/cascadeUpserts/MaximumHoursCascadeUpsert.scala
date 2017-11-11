@@ -84,7 +84,25 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
         DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
         YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
         PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
-        )
+        //Current Year
+        PartnerPaidWorkCYId.toString  - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
+        HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
+        YouBenefitsIncomeCYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
+        PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString -
+        PartnerAnyTheseBenefitsCYId.toString - PartnerBenefitsIncomeCYId.toString - EmploymentIncomeCYId.toString -
+        BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
+        BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
+        BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString -
+        //Previous Year
+        PartnerPaidWorkPYId.toString - ParentEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
+        YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - ParentPaidWorkPYId.toString -
+        PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
+        PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString -
+        EmploymentIncomePYId.toString- BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString -
+        HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString - WhoOtherIncomePYId.toString -
+        OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
+        BothBenefitsIncomePYId.toString)
 
     } else cacheMap
 
