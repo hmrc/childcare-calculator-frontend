@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class WhichBenefitsYouGetFormSpec extends CheckboxBehaviours[String] {
 
@@ -29,5 +30,8 @@ class WhichBenefitsYouGetFormSpec extends CheckboxBehaviours[String] {
 
   "WhichBenefitsYouGet form" must {
     behave like aCheckboxForm(invalid = "error.unknown")
+
+    behave like aMandatoryCheckboxForm(whichBenefitsYouGetErrorKey)
+
   }
 }
