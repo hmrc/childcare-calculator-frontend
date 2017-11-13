@@ -39,7 +39,10 @@ class MaximumHoursNavigator @Inject() (
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
-    WhichBenefitsPartnerGetId -> (_ => routes.YourAgeController.onPageLoad(NormalMode))
+    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute
+
+
+    //WhichBenefitsPartnerGetId -> (_ => routes.YourAgeController.onPageLoad(NormalMode))
   )
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
@@ -221,15 +224,27 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def whichBenefitsYouGetRoute(answers: UserAnswers): Call = {
-    answers.doYouLiveWithPartner.map {
-      doYouLiveWithPartner =>
-        if (doYouLiveWithPartner) {
-          routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-        } else {
-          routes.YourAgeController.onPageLoad(NormalMode)
-        }
-    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+    if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.YOU.toString)) {
+      routes.YourAgeController.onPageLoad(NormalMode)
+
+    } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
+      routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
   }
+
+  private def whichBenefitsPartnerGetRoute(answers: UserAnswers): Call = {
+    if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.PARTNER.toString)) {
+      routes.YourPartnersAgeController.onPageLoad(NormalMode)
+
+    } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
+      routes.YourAgeController.onPageLoad(NormalMode)
+    } else {
+      routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
 
   private def yourAgeRoute(answers: UserAnswers) = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {

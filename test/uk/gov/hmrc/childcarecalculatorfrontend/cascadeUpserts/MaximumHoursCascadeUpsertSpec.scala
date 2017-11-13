@@ -546,7 +546,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20","20")),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
-        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20","20")))) /TODO Add in Statutory Data
+        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20","20")))) //TODO Add in Statutory Data
 
 
       val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, partner, originalCacheMap1)
@@ -619,7 +619,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   }
 
 
-  //////////////////////////////////////////////////////////////
   "saving has your tax code been adjusted" must {
     "remove an existing do you know your adjusted tax code and your tax code when has your tax code been adjusted is no" in {
       val originalCacheMap = new CacheMap("id", Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true), WhatIsYourTaxCodeId.toString -> JsString("1100L")))
