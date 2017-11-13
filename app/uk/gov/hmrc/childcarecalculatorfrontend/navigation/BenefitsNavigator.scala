@@ -63,7 +63,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =
   utils.getCall(answers.bothAnyTheseBenefitsCY) {
     case true => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
-    case false => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+    //case false => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
   }
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
@@ -80,13 +80,16 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-       // case Partner => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+       ???
+        // case Partner => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+       // case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
       }
     }
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.benefitsIncomeCY){ case _ =>  routes.BothStatutoryPayCYController.onPageLoad(NormalMode)}
+    utils.getCall(answers.benefitsIncomeCY){ case _ =>
+      ??? //routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+    }
 
   private def yourBenefitsRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youAnyTheseBenefitsPY) {
@@ -103,7 +106,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def bothBenefitsRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothAnyTheseBenefitsPY) {
       case true => routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
-      case false => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+     // case false => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
    }
 
   private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
@@ -120,13 +123,17 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerBenefitsIncomePY) {case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-       // case Partner => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+       ???
+        // case Partner => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
+        // case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
       }
     }
 
   private def bothBenefitsIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.bothBenefitsIncomePY) { case _ => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)}
+    utils.getCall(answers.bothBenefitsIncomePY) { case _ =>
+      ???
+      //routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+      }
 
   private def getCallForYourBenefitAsPerPaidWorkCY(answers: UserAnswers)=
     if(answers.areYouInPaidWork.nonEmpty) {
@@ -134,7 +141,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => ??? //routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        //case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -145,7 +152,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => ??? //routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+       // case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
