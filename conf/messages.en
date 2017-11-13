@@ -1008,3 +1008,12 @@ expectedChildcareCosts.info.notYet = As you don’t have costs but think you wil
 expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
 expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
 expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99
+
+youStatutoryPay.title = Have you had statutory pay since 6 April 2016?
+youStatutoryPay.heading = Have you had statutory pay since 6 April 2016?
+youStatutoryPay.guidance = Statutory pay is:
+youStatutoryPay.li.maternity = maternity
+youStatutoryPay.li.paternity = paternity
+youStatutoryPay.li.adoption = adoption
+youStatutoryPay.li.shared_parental = shared parental
+youStatutoryPay.guidance_extra = This could also be if you started to get the pay before 6 April 2016 and continued to get it after this date.

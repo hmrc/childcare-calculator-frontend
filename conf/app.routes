@@ -549,3 +549,8 @@ GET        /expectedChildcareCosts/:id               uk.gov.hmrc.childcarecalcul
 POST       /expectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = NormalMode, id: Int)
 GET        /changeExpectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode = CheckMode, id: Int)
 POST       /changeExpectedChildcareCosts/:id               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode = CheckMode, id: Int)
+
+GET        /youStatutoryPay                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouStatutoryPayController.onPageLoad(mode: Mode = NormalMode)
+POST       /youStatutoryPay                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouStatutoryPayController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYouStatutoryPay                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouStatutoryPayController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYouStatutoryPay                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouStatutoryPayController.onSubmit(mode: Mode = CheckMode)
