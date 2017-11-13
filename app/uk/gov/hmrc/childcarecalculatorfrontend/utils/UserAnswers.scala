@@ -23,6 +23,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
+  def whoGotStatutoryPay: Option[String] = cacheMap.getEntry[String](WhoGotStatutoryPayId.toString)
+
 
   def expectedChildcareCosts(index: Int): Option[BigDecimal] =
     expectedChildcareCosts.flatMap(_.get(index))

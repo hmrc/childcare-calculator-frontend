@@ -1008,3 +1008,9 @@ expectedChildcareCosts.info.notYet = As you don’t have costs but think you wil
 expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
 expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
 expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99
+
+whoGotStatutoryPay.title = whoGotStatutoryPay
+whoGotStatutoryPay.heading = whoGotStatutoryPay
+whoGotStatutoryPay.option1 = whoGotStatutoryPay Option 1
+whoGotStatutoryPay.option2 = whoGotStatutoryPay Option 2
+whoGotStatutoryPay.checkYourAnswersLabel = whoGotStatutoryPay
