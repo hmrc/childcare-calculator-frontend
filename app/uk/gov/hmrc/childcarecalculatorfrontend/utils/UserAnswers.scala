@@ -98,8 +98,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def registeredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](RegisteredBlindId.toString)
 
-  def statutoryPayAWeekLY: Option[Boolean] = cacheMap.getEntry[Boolean](StatutoryPayAWeekLYId.toString)
-
   def benefitsIncomeCY: Option[BenefitsIncomeCY] = cacheMap.getEntry[BenefitsIncomeCY](BenefitsIncomeCYId.toString)
 
   def employmentIncomeCY: Option[EmploymentIncomeCY] = cacheMap.getEntry[EmploymentIncomeCY](EmploymentIncomeCYId.toString)
@@ -147,8 +145,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def partnerPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerPaidPensionPYId.toString)
 
   def youPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionPYId.toString)
-
-  def statutoryPayAWeek: Option[Boolean] = cacheMap.getEntry[Boolean](StatutoryPayAWeekId.toString)
 
   def bothPaidWorkPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidWorkPYId.toString)
 

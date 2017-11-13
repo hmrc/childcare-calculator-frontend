@@ -135,10 +135,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
 
-  def statutoryPayAWeekLY: Option[AnswerRow] = userAnswers.statutoryPayAWeekLY map {
-    x => AnswerRow("statutoryPayAWeekLY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekLYController.onPageLoad(CheckMode).url)
-  }
-
   def whosHadBenefitsPY: Option[AnswerRow] = userAnswers.whosHadBenefitsPY map {
     x => AnswerRow("whosHadBenefitsPY.checkYourAnswersLabel", s"whosHadBenefitsPY.$x", true, routes.WhosHadBenefitsPYController.onPageLoad(CheckMode).url)
   }
@@ -187,10 +183,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
   def yourOtherIncomeLY: Option[AnswerRow] = userAnswers.yourOtherIncomeLY map {
     x => AnswerRow("yourOtherIncomeLY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourOtherIncomeLYController.onPageLoad(CheckMode).url)
-  }
-
-  def statutoryPayAWeek: Option[AnswerRow] = userAnswers.statutoryPayAWeek map {
-    x => AnswerRow("statutoryPayAWeek.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.StatutoryPayAWeekController.onPageLoad(CheckMode).url)
   }
 
   def bothPaidPensionPY: Option[AnswerRow] = userAnswers.bothPaidPensionPY map {
