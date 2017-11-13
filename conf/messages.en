@@ -1011,9 +1011,17 @@ expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99
 
 youStatutoryPay.title = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.heading = Have you had statutory pay since 6 April 2016?
-youStatutoryPay.guidance = Statutory pay is:
-youStatutoryPay.li.maternity = maternity
-youStatutoryPay.li.paternity = paternity
-youStatutoryPay.li.adoption = adoption
-youStatutoryPay.li.shared_parental = shared parental
-youStatutoryPay.guidance_extra = This could also be if you started to get the pay before 6 April 2016 and continued to get it after this date.
+youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April 2016?
+
+
+statutoryPay.guidance = Statutory pay is:
+statutoryPay.li.maternity = maternity
+statutoryPay.li.paternity = paternity
+statutoryPay.li.adoption = adoption
+statutoryPay.li.shared_parental = shared parental
+statutoryPay.guidance_extra = This could also be if you started to get the pay before 6 April 2016 and continued to get it after this date.
+
+bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+

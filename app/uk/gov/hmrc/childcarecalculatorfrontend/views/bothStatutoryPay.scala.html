@@ -24,7 +24,7 @@
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("youStatutoryPay.title"),
+    title = messages("bothStatutoryPay.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -32,9 +32,9 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading("youStatutoryPay.heading", "heading-xlarge")
+    @components.heading("bothStatutoryPay.heading", "heading-xlarge")
 
-    <p>@messages("youStatutoryPay.guidance")</p>
+    <p>@messages("statutoryPay.guidance")</p>
 
     <ul class="bullets">
         <li>@messages("statutoryPay.li.maternity")</li>
@@ -45,11 +45,11 @@
 
     <p>@messages("statutoryPay.guidance_extra")</p>
 
-    @helpers.form(action = YouStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = BothStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
-            label = messages("youStatutoryPay.heading"),
+            label = messages("bothStatutoryPay.heading"),
             labelClass = Some("visually-hidden")
         )
 
