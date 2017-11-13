@@ -37,7 +37,7 @@ inputs: Seq[InputOption]
         }
         @for(input <- inputs) {
         <div class="multiple-choice">
-            <input id="@{input.id}" type="radio" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value == Some(input.value)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
+            <input id="@{input.id}" type="radio" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value == Some(input.value)){checked="checked"} @if(trackGa){data-journey-click="legged-up-childcare-frontend:click:@{input.id}"} />
 
             <label class="block-label selection-button-radio" for="@{input.id}">
                 @messages(input.messageKey)
