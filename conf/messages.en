@@ -630,12 +630,6 @@ bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your 
 bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
 bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
 
-partnerStatutoryPayCY.title = Will your partner get statutory pay while on leave for a birth or adoption this year?
-partnerStatutoryPayCY.heading = Will your partner get statutory pay while on leave for a birth or adoption this year?
-partnerStatutoryPayCY.checkYourAnswersLabel = Will your partner get statutory pay while on leave for a birth or adoption this year?
-partnerStatutoryPayCY.hint = This is pay from your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
-partnerStatutoryPayCY.error = You must select yes if your partner will get statutory pay this year
-
 bothStatutoryPayCY.title = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
 bothStatutoryPayCY.heading = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
 bothStatutoryPayCY.checkYourAnswersLabel = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
@@ -896,21 +890,6 @@ bothStatutoryPayPY.checkYourAnswersLabel = Did you, your partner or both get sta
 bothStatutoryPayPY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
 bothStatutoryPayPY.error = You must select yes if you, your partner or both got statutory pay last year
 bothStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
-
-parentStatutoryPayAmount.required = You must tell the calculator what statutory pay will you get paid a week
-parentStatutoryPayAmount.invalid = You must enter a number between 1 and 99
-
-partnerStatutoryPayAmountCY.title = How much statutory pay will your partner get paid a week?
-partnerStatutoryPayAmountCY.heading = How much statutory pay will your partner get paid a week?
-partnerStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will your partner get paid a week?
-partnerStatutoryPayAmount.required = You must tell the calculator what statutory pay will your partner get paid a week
-partnerStatutoryPayAmount.invalid = You must enter a number between 1 and 99
-
-statutoryPayAmountCY.title = How much statutory pay will you or your partner get paid a week?
-statutoryPayAmountCY.heading = How much statutory pay will you or your partner get paid a week?
-statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
-statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
-statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
 
 howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
