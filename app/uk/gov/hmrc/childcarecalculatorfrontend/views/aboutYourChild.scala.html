@@ -53,7 +53,8 @@
 
         @components.input_date(
             field = form("dob"),
-            label = messages("aboutYourChild.dob")
+            label = messages("aboutYourChild.dob"),
+            hint = Some(messages("aboutYourChild.hint"))
         )
 
         @components.submit_button()

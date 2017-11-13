@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import play.api.data.validation.{Invalid, Valid, Constraint}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsYouGetErrorKey}
 
@@ -34,8 +35,18 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
+  private def constraint(): Constraint[Set[String]] = Constraint {
+    case set if set.nonEmpty =>
+      Valid
+    case _ =>
+      Invalid("whichBenefitsYouGet.error")
+  }
+
   def apply(): Form[Set[String]] =
-    Form(single("value" -> set(of(WhichBenefitsYouGetFormatter))))
+    Form(
+        "value" -> set(of(WhichBenefitsYouGetFormatter))
+          .verifying(constraint())
+      )
 
   lazy val options: Map[String, String] = WhichBenefitsEnum.values.map {
     value =>
