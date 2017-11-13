@@ -1031,3 +1031,8 @@ whoGotStatutoryPay.heading = whoGotStatutoryPay
 whoGotStatutoryPay.option1 = whoGotStatutoryPay Option 1
 whoGotStatutoryPay.option2 = whoGotStatutoryPay Option 2
 whoGotStatutoryPay.checkYourAnswersLabel = whoGotStatutoryPay
+
+partnerStatutoryPay.title = Has your partner had statutory pay since 6 April 2016?
+partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April 2016?
+partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay since 6 April 2016?
+partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April 2016 and continued to get it after this date.
