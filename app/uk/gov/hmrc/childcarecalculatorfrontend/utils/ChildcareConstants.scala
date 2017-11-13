@@ -98,9 +98,6 @@ object ChildcareConstants {
   val whosHadBenefitsErrorKey = "whosHadBenefits.error"
   val whosHadBenefitsPYErrorKey = "whosHadBenefitsPY.error"
 
-  val whoGetsStatutoryCYErrorKey = "whoGetsStatutoryCY.error"
-  val whoGetsStatutoryPYErrorKey = "whoGetsStatutoryPY.error"
-
   val parentPaidWorkPYErrorKey = "parentPaidWorkPY.error"
   val partnerPaidWorkPYErrorKey = "partnerPaidWorkPY.error"
   val bothPaidWorkPYErrorKey = "bothPaidWorkPY.error"

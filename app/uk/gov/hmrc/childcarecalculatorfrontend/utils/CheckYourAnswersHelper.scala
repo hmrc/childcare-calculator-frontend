@@ -170,10 +170,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("whoOtherIncomePY.checkYourAnswersLabel", s"whoOtherIncomePY.$x", true, routes.WhoOtherIncomePYController.onPageLoad(CheckMode).url)
   }
 
-  def whoGetsStatutoryPY: Option[AnswerRow] = userAnswers.whoGetsStatutoryPY map {
-    x => AnswerRow("whoGetsStatutoryPY.checkYourAnswersLabel", s"whoGetsStatutoryPY.$x", true, routes.WhoGetsStatutoryPYController.onPageLoad(CheckMode).url)
-  }
-
   def youBenefitsIncomeCY: Option[AnswerRow] = userAnswers.youBenefitsIncomeCY map {
     x => AnswerRow("youBenefitsIncomeCY.checkYourAnswersLabel", s"$x", false, routes.YouBenefitsIncomeCYController.onPageLoad(CheckMode).url)
   }
@@ -220,11 +216,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   def whosHadBenefits: Option[AnswerRow] = userAnswers.whosHadBenefits map {
     x => AnswerRow("whosHadBenefits.checkYourAnswersLabel", s"whosHadBenefits.$x", true, routes.WhosHadBenefitsController.onPageLoad(CheckMode).url)
   }
-
-  def whoGetsStatutoryCY: Option[AnswerRow] = userAnswers.whoGetsStatutoryCY map {
-    x => AnswerRow("whoGetsStatutoryCY.checkYourAnswersLabel", s"whoGetsStatutoryCY.$x", true, routes.WhoGetsStatutoryCYController.onPageLoad(CheckMode).url)
-  }
-
 
   def employmentIncomeCY: Option[AnswerRow] = userAnswers.employmentIncomeCY map {
     x => AnswerRow("employmentIncomeCY.checkYourAnswersLabel", s"${x.parentEmploymentIncome} ${x.partnerEmploymentIncome}", false, routes.EmploymentIncomeCYController.onPageLoad(CheckMode).url)

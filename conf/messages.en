@@ -604,14 +604,6 @@ whosHadBenefits.both = Both
 whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
 whosHadBenefits.error = You must tell the calculator who has had benefits
 
-whoGetsStatutoryCY.title = Who will get statutory pay?
-whoGetsStatutoryCY.heading = Who will get statutory pay?
-whoGetsStatutoryCY.you = You
-whoGetsStatutoryCY.partner = Partner
-whoGetsStatutoryCY.both = Both
-whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
-whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
-
 youPaidPensionPY.title = Did you pay into your work pension last year?
 youPaidPensionPY.heading = Did you pay into your work pension last year?
 youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
@@ -741,14 +733,6 @@ whoOtherIncomePY.partner = Partner
 whoOtherIncomePY.both = Both
 whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
 whoOtherIncomePY.error = You must tell the calculator if you or your partner got other income
-
-whoGetsStatutoryPY.title = Who got statutory pay last year?
-whoGetsStatutoryPY.heading = Who got statutory pay last year?
-whoGetsStatutoryPY.you = You
-whoGetsStatutoryPY.partner = Partner
-whoGetsStatutoryPY.both = Both
-whoGetsStatutoryPY.checkYourAnswersLabel = Who got statutory pay last year?
-whoGetsStatutoryPY.error = You must tell the calculator who got statutory pay last year.
 
 whoPaidIntoPensionPY.title = Who paid into a pension?
 whoPaidIntoPensionPY.heading = Who paid into a pension?

@@ -124,8 +124,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def whoOtherIncomePY: Option[String] = cacheMap.getEntry[String](WhoOtherIncomePYId.toString)
 
-  def whoGetsStatutoryPY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryPYId.toString)
-
   def youBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YouBenefitsIncomeCYId.toString)
 
   def partnerBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerBenefitsIncomeCYId.toString)
@@ -161,8 +159,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionCYId.toString)
 
   def whosHadBenefits: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
-
-  def whoGetsStatutoryCY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryCYId.toString)
 
   def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsCYId.toString)
 
