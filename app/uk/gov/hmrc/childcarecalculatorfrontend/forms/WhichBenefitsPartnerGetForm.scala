@@ -39,7 +39,7 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
     case set if set.nonEmpty =>
       Valid
     case _ =>
-      Invalid("whichBenefitsPartnerGet.error")
+      Invalid(whichBenefitsPartnerGetErrorKey)
   }
 
   def apply(): Form[Set[String]] =

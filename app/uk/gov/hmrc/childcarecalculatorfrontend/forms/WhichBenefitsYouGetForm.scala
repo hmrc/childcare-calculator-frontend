@@ -39,7 +39,7 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
     case set if set.nonEmpty =>
       Valid
     case _ =>
-      Invalid("whichBenefitsYouGet.error")
+      Invalid(whichBenefitsYouGetErrorKey)
   }
 
   def apply(): Form[Set[String]] =
