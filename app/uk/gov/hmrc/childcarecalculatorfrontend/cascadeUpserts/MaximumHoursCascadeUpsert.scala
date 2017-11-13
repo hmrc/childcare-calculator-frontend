@@ -84,6 +84,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
         DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
         YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
         PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
+        TaxOrUniversalCreditsId.toString -
         //Current Year
         PartnerPaidWorkCYId.toString  - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
         HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -

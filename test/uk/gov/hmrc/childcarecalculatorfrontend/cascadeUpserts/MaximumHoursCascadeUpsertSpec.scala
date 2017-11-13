@@ -109,11 +109,11 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   "saving the are you your partner, or both of you in paid work" must {
     "remove an existing who's in paid work, parent work hours, partner work hours, parents adjusted tax code, partners adjusted tax code," +
-      "either child care vouchers, who gets childcare vouchers, your childcare vouchers, partner childcare couchers, do you get benefits, " +
-      "your age, partners age and all you, partner,both pages data in employment, pensions, otherincome, and " +
+      "either child care vouchers, who gets childcare vouchers, your childcare vouchers, partner childcare vouchers, do you get benefits, " +
+      "your age, partners age and all you, partner,both pages data in employment, pensions, other income, and " +
       " benefits flow when paid employment is no" in {
 
-      val originalCacheMap = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("both"), ParentWorkHoursId.toString -> JsString("12"),
+      val originalCacheMap1 = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("both"), ParentWorkHoursId.toString -> JsString("12"),
         PartnerWorkHoursId.toString -> JsString("12"), HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true),
         DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
         WhatIsYourTaxCodeId.toString -> JsString("1100L"), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
@@ -121,26 +121,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"), YourPartnersAgeId.toString -> JsString("under18"),
         YourMinimumEarningsId.toString -> JsBoolean(true), PartnerMinimumEarningsId.toString -> JsBoolean(true),
-        AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-        PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-        YourMaximumEarningsId.toString -> JsBoolean(true), PartnerMaximumEarningsId.toString -> JsBoolean(true),
-        EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
-
-        PartnerPaidWorkCYId.toString -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString -> JsBoolean(true),
-        YouPaidPensionCYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
-        YourOtherIncomeThisYearId.toString -> JsBoolean(true),
-        YouAnyTheseBenefitsIdCY.toString ->JsBoolean(true),
-        YouBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
-
-        ParentPaidWorkCYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomeCYId.toString -> JsBoolean(true),
-        PartnerPaidPensionCYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(true),
-        PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
+        EitherOfYouMaximumEarningsId.toString -> JsBoolean(true), TaxOrUniversalCreditsId.toString-> JsString("tc"),
 
         EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY("20", "20")),
         BothPaidPensionCYId.toString -> JsBoolean(true),
@@ -153,22 +134,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString ->Json.toJson(BenefitsIncomeCY("20","20")),
 
-        PartnerPaidWorkPYId .toString -> JsBoolean(true),
-        ParentEmploymentIncomePYId.toString -> JsBoolean(true),
-        YouPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        YourOtherIncomeLYId.toString -> JsBoolean(true),
-        YouAnyTheseBenefitsPYId.toString ->JsBoolean(true),
-        YouBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)),
-
-        ParentPaidWorkPYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
-        PartnerPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
-        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)),
-
         EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY("20", "20")),
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
@@ -178,11 +143,70 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20","20")),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
-        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20","20"))
-      ))
+        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY("20","20"))))
 
-      val result = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap)
-      result.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+
+      val originalCacheMap2 = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("partner"),
+        PartnerWorkHoursId.toString -> JsString("12"), HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsBoolean(true),
+       DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+       WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L") , PartnerChildcareVouchersId.toString->JsString("yes"),
+        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),  YourPartnersAgeId.toString -> JsString("under18"),
+        PartnerMinimumEarningsId.toString -> JsBoolean(false),
+        PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
+        TaxOrUniversalCreditsId.toString-> JsString("tc"),
+
+        PartnerPaidWorkCYId.toString -> JsBoolean(true),
+        ParentEmploymentIncomeCYId.toString -> JsBoolean(true),
+        YouPaidPensionCYId.toString -> JsBoolean(true),
+        HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
+        YourOtherIncomeThisYearId.toString -> JsBoolean(true),
+        YouAnyTheseBenefitsIdCY.toString ->JsBoolean(true),
+        YouBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
+
+        PartnerPaidWorkPYId .toString -> JsBoolean(true),
+        ParentEmploymentIncomePYId.toString -> JsBoolean(true),
+        YouPaidPensionPYId.toString -> JsBoolean(true),
+        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
+        YourOtherIncomeLYId.toString -> JsBoolean(true),
+        YouAnyTheseBenefitsPYId.toString ->JsBoolean(true),
+        YouBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
+
+
+      val originalCacheMap3 = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("you"), ParentWorkHoursId.toString -> JsString("12"),
+         HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(true), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
+        WhatIsYourTaxCodeId.toString -> JsString("1100L"),   YourChildcareVouchersId.toString -> JsString("yes"),
+        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"),
+        YourMinimumEarningsId.toString -> JsBoolean(false),
+        AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
+        YourMaximumEarningsId.toString -> JsBoolean(true), TaxOrUniversalCreditsId.toString-> JsString("tc"),
+
+        ParentPaidWorkCYId.toString -> JsBoolean(true),
+        PartnerEmploymentIncomeCYId.toString -> JsBoolean(true),
+        PartnerPaidPensionCYId.toString -> JsBoolean(true),
+        HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
+        PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
+        PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(true),
+        PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
+
+        ParentPaidWorkPYId.toString -> JsBoolean(true),
+        PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
+        PartnerPaidPensionPYId.toString -> JsBoolean(true),
+        HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
+        PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
+        PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
+        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
+
+
+      val result1 = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap1)
+      result1.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+
+      val result2 = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap2)
+      result2.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+
+      val result3 = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap3)
+      result3.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
     }
   }
 
