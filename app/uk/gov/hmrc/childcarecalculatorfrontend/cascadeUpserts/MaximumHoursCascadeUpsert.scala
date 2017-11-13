@@ -130,7 +130,16 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
             YourAgeId.toString - YourMinimumEarningsId.toString - AreYouSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString -
-            EitherOfYouMaximumEarningsId.toString)
+            EitherOfYouMaximumEarningsId.toString - EmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString -
+            HowMuchBothPayPensionId.toString - BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
+            BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString -
+            BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString -
+            WhoOtherIncomePYId.toString - OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
+            BothBenefitsIncomePYId.toString )
+
+
+
+
         case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString)
         case _ => cacheMap
       }
