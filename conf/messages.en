@@ -630,12 +630,6 @@ bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your 
 bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
 bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
 
-yourStatutoryPayCY.title = Will you get statutory pay while on leave for a birth or adoption this year?
-yourStatutoryPayCY.heading = Will you get statutory pay while on leave for a birth or adoption this year?
-yourStatutoryPayCY.checkYourAnswersLabel = Will you get statutory pay while on leave for a birth or adoption this year?
-yourStatutoryPayCY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
-yourStatutoryPayCY.error = You must select yes if you will get statutory pay this year
-
 partnerStatutoryPayCY.title = Will your partner get statutory pay while on leave for a birth or adoption this year?
 partnerStatutoryPayCY.heading = Will your partner get statutory pay while on leave for a birth or adoption this year?
 partnerStatutoryPayCY.checkYourAnswersLabel = Will your partner get statutory pay while on leave for a birth or adoption this year?
@@ -896,13 +890,6 @@ youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits las
 youBenefitsIncomePY.invalid = Please only enter a numerical value of up to two decimal places
 youBenefitsIncomePY.required = Please tell the calculator how much you got paid in benefits last year
 
-yourStatutoryPayPY.title = Did you get statutory pay while on leave for a birth or adoption last year?
-yourStatutoryPayPY.heading = Did you get statutory pay while on leave for a birth or adoption last year?
-yourStatutoryPayPY.checkYourAnswersLabel = Did you get statutory pay while on leave for a birth or adoption last year?
-yourStatutoryPayPY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
-yourStatutoryPayPY.error = You must select yes if you got statutory pay last year
-yourStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
-
 bothStatutoryPayPY.title = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
 bothStatutoryPayPY.heading = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
 bothStatutoryPayPY.checkYourAnswersLabel = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
@@ -910,9 +897,6 @@ bothStatutoryPayPY.hint = This is pay from you or your partner’s employer for 
 bothStatutoryPayPY.error = You must select yes if you, your partner or both got statutory pay last year
 bothStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
 
-yourStatutoryPayAmountCY.title = How much statutory pay will you get paid a week?
-yourStatutoryPayAmountCY.heading = How much statutory pay will you get paid a week?
-yourStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you get paid a week?
 parentStatutoryPayAmount.required = You must tell the calculator what statutory pay will you get paid a week
 parentStatutoryPayAmount.invalid = You must enter a number between 1 and 99
 

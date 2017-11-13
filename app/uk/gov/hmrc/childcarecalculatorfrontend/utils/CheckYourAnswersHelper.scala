@@ -106,9 +106,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("aboutYourChild.checkYourAnswersLabel", s"${x.name} ${x.dob}", false, routes.AboutYourChildController.onPageLoad(CheckMode, index).url)
   }
 
-  def yourStatutoryPayPY: Option[AnswerRow] = userAnswers.yourStatutoryPayPY map {
-    x => AnswerRow("yourStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayPYController.onPageLoad(CheckMode).url)
-  }
 
   def bothStatutoryPayPY: Option[AnswerRow] = userAnswers.bothStatutoryPayPY map {
     x => AnswerRow("bothStatutoryPayPY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothStatutoryPayPYController.onPageLoad(CheckMode).url)
@@ -152,10 +149,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def partnerStatutoryPayAmountCY: Option[AnswerRow] = userAnswers.partnerStatutoryPayAmountCY map {
     x => AnswerRow("partnerStatutoryPayAmountCY.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryPayAmountCYController.onPageLoad(CheckMode).url)
-  }
-
-  def yourStatutoryPayAmountCY: Option[AnswerRow] = userAnswers.yourStatutoryPayAmountCY map {
-    x => AnswerRow("yourStatutoryPayAmountCY.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryPayAmountCYController.onPageLoad(CheckMode).url)
   }
 
   def whosHadBenefitsPY: Option[AnswerRow] = userAnswers.whosHadBenefitsPY map {
@@ -242,10 +235,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
   def partnerStatutoryPayCY: Option[AnswerRow] = userAnswers.partnerStatutoryPayCY map {
     x => AnswerRow("partnerStatutoryPayCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerStatutoryPayCYController.onPageLoad(CheckMode).url)
-  }
-
-  def yourStatutoryPayCY: Option[AnswerRow] = userAnswers.yourStatutoryPayCY map {
-    x => AnswerRow("yourStatutoryPayCY.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YourStatutoryPayCYController.onPageLoad(CheckMode).url)
   }
 
   def bothOtherIncomeThisYear: Option[AnswerRow] = userAnswers.bothOtherIncomeThisYear map {
