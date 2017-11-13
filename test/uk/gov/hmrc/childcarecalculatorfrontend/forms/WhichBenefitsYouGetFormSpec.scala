@@ -29,5 +29,8 @@ class WhichBenefitsYouGetFormSpec extends CheckboxBehaviours[String] {
 
   "WhichBenefitsYouGet form" must {
     behave like aCheckboxForm(invalid = "error.unknown")
+
+    behave like aMandatoryCheckboxForm("whichBenefitsYouGet.error")
+
   }
 }
