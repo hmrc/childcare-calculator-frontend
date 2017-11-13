@@ -23,7 +23,7 @@ hint: Option[String] = None
 )(implicit messages: Messages)
 
 <div class="form-field @if(Seq(field, field("day"), field("month"), field("year")).flatMap(_.errors).nonEmpty){form-field--error}">
-    <fieldset>
+    <fieldset id="@field.id">
         <legend>
 
             <span class="form-label @if(legendClass.nonEmpty){@legendClass}">
