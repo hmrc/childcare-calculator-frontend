@@ -30,6 +30,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("youStatutoryPay.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YouStatutoryPayController.onPageLoad(CheckMode).url)
   }
 
+  def whoGotStatutoryPay: Option[AnswerRow] = userAnswers.whoGotStatutoryPay map {
+    x => AnswerRow("whoGotStatutoryPay.checkYourAnswersLabel", s"whoGotStatutoryPay.$x", true, routes.WhoGotStatutoryPayController.onPageLoad(CheckMode).url)
+  }
+
   def expectedChildcareCosts(index: Int): Option[AnswerRow] = userAnswers.expectedChildcareCosts map {
     x => AnswerRow("expectedChildcareCosts.checkYourAnswersLabel", s"$x", false, routes.ExpectedChildcareCostsController.onPageLoad(CheckMode, index).url)
   }

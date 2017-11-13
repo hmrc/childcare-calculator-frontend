@@ -27,6 +27,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def youStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](YouStatutoryPayId.toString)
 
+  def whoGotStatutoryPay: Option[String] = cacheMap.getEntry[String](WhoGotStatutoryPayId.toString)
+
 
   def expectedChildcareCosts(index: Int): Option[BigDecimal] =
     expectedChildcareCosts.flatMap(_.get(index))

@@ -1025,3 +1025,9 @@ bothStatutoryPay.title = Have you, your partner, or both of you had statutory pa
 bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 
+
+whoGotStatutoryPay.title = whoGotStatutoryPay
+whoGotStatutoryPay.heading = whoGotStatutoryPay
+whoGotStatutoryPay.option1 = whoGotStatutoryPay Option 1
+whoGotStatutoryPay.option2 = whoGotStatutoryPay Option 2
+whoGotStatutoryPay.checkYourAnswersLabel = whoGotStatutoryPay
