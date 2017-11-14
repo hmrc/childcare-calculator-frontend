@@ -40,9 +40,6 @@ class MaximumHoursNavigator @Inject() (
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
     WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute
-
-
-    //WhichBenefitsPartnerGetId -> (_ => routes.YourAgeController.onPageLoad(NormalMode))
   )
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
@@ -225,32 +222,23 @@ class MaximumHoursNavigator @Inject() (
 
   private def whichBenefitsYouGetRoute(answers: UserAnswers): Call = {
     if (answers.doYouLiveWithPartner.contains(true)) {
-
       if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
         routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-
       } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.YOU.toString)) {
-
-        if (answers.whoIsInPaidEmployment.contains(You) || answers.whoIsInPaidEmployment.contains(Both)) {
+        if (!answers.whoIsInPaidEmployment.contains(Partner)) {
           routes.YourAgeController.onPageLoad(NormalMode)
-
         } else routes.YourPartnersAgeController.onPageLoad(NormalMode)
-
       } else routes.SessionExpiredController.onPageLoad()
-    }else if(answers.doYouLiveWithPartner.contains(false)){
+    } else if(answers.doYouLiveWithPartner.contains(false)) {
       routes.YourAgeController.onPageLoad(NormalMode)
-    }else routes.SessionExpiredController.onPageLoad()
+    } else routes.SessionExpiredController.onPageLoad()
 
   }
 
   private def whichBenefitsPartnerGetRoute(answers: UserAnswers): Call = {
-    if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.PARTNER.toString)||answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
-      if(answers.whoIsInPaidEmployment.contains(Partner)){
+    if(answers.whoIsInPaidEmployment.contains(Partner)) {
         routes.YourPartnersAgeController.onPageLoad(NormalMode)
-
-      }else routes.YourAgeController.onPageLoad(NormalMode)
-
-    }else routes.SessionExpiredController.onPageLoad()
+      } else routes.YourAgeController.onPageLoad(NormalMode)
   }
 
 
