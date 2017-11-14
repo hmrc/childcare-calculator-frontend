@@ -30,6 +30,18 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerStatutoryPayType.checkYourAnswersLabel", s"partnerStatutoryPayType.$x", true, routes.PartnerStatutoryPayTypeController.onPageLoad(CheckMode).url)
   }
 
+  def partnerStatutoryPay: Option[AnswerRow] = userAnswers.partnerStatutoryPay map {
+    x => AnswerRow("partnerStatutoryPay.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.PartnerStatutoryPayController.onPageLoad(CheckMode).url)
+  }
+
+  def bothStatutoryPay: Option[AnswerRow] = userAnswers.bothStatutoryPay map {
+    x => AnswerRow("bothStatutoryPay.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.BothStatutoryPayController.onPageLoad(CheckMode).url)
+  }
+
+  def youStatutoryPay: Option[AnswerRow] = userAnswers.youStatutoryPay map {
+    x => AnswerRow("youStatutoryPay.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.YouStatutoryPayController.onPageLoad(CheckMode).url)
+  }
+
   def whoGotStatutoryPay: Option[AnswerRow] = userAnswers.whoGotStatutoryPay map {
     x => AnswerRow("whoGotStatutoryPay.checkYourAnswersLabel", s"whoGotStatutoryPay.$x", true, routes.WhoGotStatutoryPayController.onPageLoad(CheckMode).url)
   }

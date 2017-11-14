@@ -1015,7 +1015,35 @@ whoGotStatutoryPay.you = You
 whoGotStatutoryPay.partner = Partner
 whoGotStatutoryPay.both = Both
 whoGotStatutoryPay.error = You must tell the calculator who got statutory pay
+
+
+youStatutoryPay.title = Have you had statutory pay since 6 April 2016?
+youStatutoryPay.heading = Have you had statutory pay since 6 April 2016?
+youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April 2016?
+
+
+statutoryPay.guidance = Statutory pay is:
+statutoryPay.li.maternity = maternity
+statutoryPay.li.paternity = paternity
+statutoryPay.li.adoption = adoption
+statutoryPay.li.shared_parental = shared parental
+statutoryPay.guidance_extra = This could also be if you started to get the pay before 6 April 2016 and continued to get it after this date.
+
+bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+
+
+whoGotStatutoryPay.title = whoGotStatutoryPay
+whoGotStatutoryPay.heading = whoGotStatutoryPay
+whoGotStatutoryPay.option1 = whoGotStatutoryPay Option 1
+whoGotStatutoryPay.option2 = whoGotStatutoryPay Option 2
 whoGotStatutoryPay.checkYourAnswersLabel = whoGotStatutoryPay
+
+partnerStatutoryPay.title = Has your partner had statutory pay since 6 April 2016?
+partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April 2016?
+partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay since 6 April 2016?
+partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April 2016 and continued to get it after this date.
 
 partnerStatutoryPayType.title = partnerStatutoryPayType
 partnerStatutoryPayType.heading = partnerStatutoryPayType
