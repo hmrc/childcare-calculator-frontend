@@ -100,7 +100,7 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def paidEmploymentRoute(answers: UserAnswers): Call = {
-    if(answers.paidEmployment.contains(true)){
+    if (answers.paidEmployment.contains(true)) {
       routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
     } else {
       routes.FreeHoursResultController.onPageLoad()
@@ -108,7 +108,7 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call = {
-    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
+    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
       routes.PartnerWorkHoursController.onPageLoad(NormalMode)
@@ -116,7 +116,7 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def partnerWorkHoursRoute(answers: UserAnswers): Call = {
-    if(answers.whoIsInPaidEmployment.contains(Both)) {
+    if (answers.whoIsInPaidEmployment.contains(Both)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
@@ -124,9 +124,9 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def hasYourTaxCodeBeenAdjusted(answers: UserAnswers): Call = {
-    if(answers.hasYourTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)){
+    if (answers.hasYourTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)) {
       routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
+    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
       routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
@@ -134,9 +134,9 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def doYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers): Call = {
-    if(answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
+    if (answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
       routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
+    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
       routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
@@ -144,7 +144,7 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call = {
-    if(answers.doYouKnowYourPartnersAdjustedTaxCode.contains(true)) {
+    if (answers.doYouKnowYourPartnersAdjustedTaxCode.contains(true)) {
       routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
     } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
       routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
@@ -154,17 +154,17 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
-    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
+    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
       routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
     } else {
       routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 
-  private def hasYourPartnersTaxCodeBeenAdjusted (answers: UserAnswers): Call = {
-    if(answers.hasYourPartnersTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)){
+  private def hasYourPartnersTaxCodeBeenAdjusted(answers: UserAnswers): Call = {
+    if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)) {
       routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
+    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
       routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.EitherGetsVouchersController.onPageLoad(NormalMode)
@@ -186,7 +186,7 @@ class MaximumHoursNavigator @Inject() (
     }
 
   private def eitherGetVouchersRoute(answers: UserAnswers): Call = {
-    if(answers.eitherGetsVouchers.contains(YesNoUnsureEnum.YES.toString)) {
+    if (answers.eitherGetsVouchers.contains(YesNoUnsureEnum.YES.toString)) {
       routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     } else {
       routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
@@ -216,7 +216,7 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
-    if(answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(Partner)) {
+    if (answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(Partner)) {
       routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
     } else {
       routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
@@ -224,25 +224,33 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def whichBenefitsYouGetRoute(answers: UserAnswers): Call = {
-    if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.YOU.toString)) {
-      routes.YourAgeController.onPageLoad(NormalMode)
+    if (answers.doYouLiveWithPartner.contains(true)) {
 
-    } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
-      routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-    } else {
-      routes.SessionExpiredController.onPageLoad()
-    }
+      if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
+        routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
+
+      } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.YOU.toString)) {
+
+        if (answers.whoIsInPaidEmployment.contains(You) || answers.whoIsInPaidEmployment.contains(Both)) {
+          routes.YourAgeController.onPageLoad(NormalMode)
+
+        } else routes.YourPartnersAgeController.onPageLoad(NormalMode)
+
+      } else routes.SessionExpiredController.onPageLoad()
+    }else if(answers.doYouLiveWithPartner.contains(false)){
+      routes.YourAgeController.onPageLoad(NormalMode)
+    }else routes.SessionExpiredController.onPageLoad()
+
   }
 
   private def whichBenefitsPartnerGetRoute(answers: UserAnswers): Call = {
-    if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.PARTNER.toString)) {
-      routes.YourPartnersAgeController.onPageLoad(NormalMode)
+    if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.PARTNER.toString)||answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
+      if(answers.whoIsInPaidEmployment.contains(Partner)){
+        routes.YourPartnersAgeController.onPageLoad(NormalMode)
 
-    } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
-      routes.YourAgeController.onPageLoad(NormalMode)
-    } else {
-      routes.SessionExpiredController.onPageLoad()
-    }
+      }else routes.YourAgeController.onPageLoad(NormalMode)
+
+    }else routes.SessionExpiredController.onPageLoad()
   }
 
 
