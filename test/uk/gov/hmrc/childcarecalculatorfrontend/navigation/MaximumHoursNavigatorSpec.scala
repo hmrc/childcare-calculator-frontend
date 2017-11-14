@@ -373,27 +373,47 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       "go to `Which of you gets benefits` when you answer `yes`" in {
         val answers = spy(userAnswers())
         val schemes = mock[Schemes]
+
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(schemes.allSchemesDetermined(any())) thenReturn false
+
         val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
         result mustEqual routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
       }
 
-      "go to `What's your age` when you answer `no`" in {
+
+      "go to 'what is your age' when you answer 'no'" in {
         val answers = spy(userAnswers())
         val schemes = mock[Schemes]
+
+        when(answers.whoIsInPaidEmployment) thenReturn Some(you)
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
         when(schemes.allSchemesDetermined(any())) thenReturn false
+
         val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
         result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+      }
+
+      "go to 'what is your age' when you answer 'no' and partner in paid employment" in {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+
+        when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+        when(schemes.allSchemesDetermined(any())) thenReturn false
+
+        val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
       }
     }
 
     "go to `Do you get tax credits or universal credits` if all schemes are determined" in {
       val answers = spy(userAnswers())
       val schemes = mock[Schemes]
+
       when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false) thenReturn Some(true)
       when(schemes.allSchemesDetermined(any())) thenReturn true thenReturn true
+
       navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustEqual routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustEqual routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
     }
