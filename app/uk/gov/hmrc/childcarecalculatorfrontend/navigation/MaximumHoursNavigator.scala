@@ -202,7 +202,6 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
-
     if (answers.doYouOrYourPartnerGetAnyBenefits.contains(true)) {
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
     } else if(answers.whoIsInPaidEmployment.contains(Partner)){
@@ -210,7 +209,6 @@ class MaximumHoursNavigator @Inject() (
     }else if(answers.whoIsInPaidEmployment.contains(You)||answers.whoIsInPaidEmployment.contains(Both)){
       routes.YourAgeController.onPageLoad(NormalMode)
     }else routes.SessionExpiredController.onPageLoad()
-
   }
 
   private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
