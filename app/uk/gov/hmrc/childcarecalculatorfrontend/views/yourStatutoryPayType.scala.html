@@ -17,16 +17,15 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGotStatutoryPayForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayTypeForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
-@(appConfig: FrontendAppConfig, form: Form[YouPartnerBothEnum.Value], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("whoGotStatutoryPay.title"),
+    title = messages("yourStatutoryPayType.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -34,15 +33,15 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading("whoGotStatutoryPay.heading", "heading-xlarge")
+    @components.heading("yourStatutoryPayType.heading", "heading-xlarge")
 
-    @helpers.form(action = WhoGotStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = YourStatutoryPayTypeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_radio(
-            viewModel = InputViewModel[YouPartnerBothEnum.Value]("value", form),
-            legend = messages("whoGotStatutoryPay.heading"),
+            viewModel = InputViewModel[String]("value", form),
+            legend = messages("yourStatutoryPayType.heading"),
             legendClass = Some("visually-hidden"),
-            inputs = WhoGotStatutoryPayForm.options
+            inputs = YourStatutoryPayTypeForm.options
         )
 
         @components.submit_button()

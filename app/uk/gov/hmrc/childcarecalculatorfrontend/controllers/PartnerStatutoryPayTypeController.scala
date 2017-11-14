@@ -20,20 +20,19 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGotStatutoryPayForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGotStatutoryPayId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayTypeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryPayTypeId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGotStatutoryPay
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayType
 
 import scala.concurrent.Future
 
-class WhoGotStatutoryPayController @Inject()(
+class PartnerStatutoryPayTypeController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         override val messagesApi: MessagesApi,
                                         dataCacheConnector: DataCacheConnector,
@@ -43,21 +42,21 @@ class WhoGotStatutoryPayController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.whoGotStatutoryPay match {
-        case None => WhoGotStatutoryPayForm()
-        case Some(value) => WhoGotStatutoryPayForm().fill(value)
+      val preparedForm = request.userAnswers.partnerStatutoryPayType match {
+        case None => PartnerStatutoryPayTypeForm()
+        case Some(value) => PartnerStatutoryPayTypeForm().fill(value)
       }
-      Ok(whoGotStatutoryPay(appConfig, preparedForm, mode))
+      Ok(partnerStatutoryPayType(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      WhoGotStatutoryPayForm().bindFromRequest().fold(
-        (formWithErrors: Form[YouPartnerBothEnum.Value]) =>
-          Future.successful(BadRequest(whoGotStatutoryPay(appConfig, formWithErrors, mode))),
+      PartnerStatutoryPayTypeForm().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
+          Future.successful(BadRequest(partnerStatutoryPayType(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[YouPartnerBothEnum.Value](request.sessionId, WhoGotStatutoryPayId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhoGotStatutoryPayId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[String](request.sessionId, PartnerStatutoryPayTypeId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(PartnerStatutoryPayTypeId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

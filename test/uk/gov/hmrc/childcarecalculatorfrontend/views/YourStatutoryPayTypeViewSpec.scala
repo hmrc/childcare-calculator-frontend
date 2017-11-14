@@ -17,43 +17,42 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGotStatutoryPayForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayTypeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGotStatutoryPay
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayType
 
-class WhoGotStatutoryPayViewSpec extends ViewBehaviours {
+class YourStatutoryPayTypeViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "whoGotStatutoryPay"
+  val messageKeyPrefix = "yourStatutoryPayType"
 
-  def createView = () => whoGotStatutoryPay(frontendAppConfig, WhoGotStatutoryPayForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => yourStatutoryPayType(frontendAppConfig, YourStatutoryPayTypeForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[YouPartnerBothEnum]) => whoGotStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  "WhoGotStatutoryPay view" must {
+  "YourStatutoryPayType view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
   }
 
-  "WhoGotStatutoryPay view" when {
+  "YourStatutoryPayType view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(WhoGotStatutoryPayForm()))
-        for (option <- WhoGotStatutoryPayForm.options) {
+        val doc = asDocument(createViewUsingForm(YourStatutoryPayTypeForm()))
+        for (option <- YourStatutoryPayTypeForm.options) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for(option <- WhoGotStatutoryPayForm.options) {
+    for(option <- YourStatutoryPayTypeForm.options) {
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(WhoGotStatutoryPayForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(createViewUsingForm(YourStatutoryPayTypeForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- WhoGotStatutoryPayForm.options.filterNot(o => o == option)) {
+          for(unselectedOption <- YourStatutoryPayTypeForm.options.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

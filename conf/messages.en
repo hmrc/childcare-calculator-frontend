@@ -1009,8 +1009,22 @@ expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare 
 expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
 expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99
 
-whoGotStatutoryPay.title = whoGotStatutoryPay
-whoGotStatutoryPay.heading = whoGotStatutoryPay
-whoGotStatutoryPay.option1 = whoGotStatutoryPay Option 1
-whoGotStatutoryPay.option2 = whoGotStatutoryPay Option 2
+whoGotStatutoryPay.title = Who got statutory pay?
+whoGotStatutoryPay.heading = Who got statutory pay?
+whoGotStatutoryPay.you = You
+whoGotStatutoryPay.partner = Partner
+whoGotStatutoryPay.both = Both
+whoGotStatutoryPay.error = You must tell the calculator who got statutory pay
 whoGotStatutoryPay.checkYourAnswersLabel = whoGotStatutoryPay
+
+partnerStatutoryPayType.title = partnerStatutoryPayType
+partnerStatutoryPayType.heading = partnerStatutoryPayType
+partnerStatutoryPayType.option1 = partnerStatutoryPayType Option 1
+partnerStatutoryPayType.option2 = partnerStatutoryPayType Option 2
+partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
+
+yourStatutoryPayType.title = yourStatutoryPayType
+yourStatutoryPayType.heading = yourStatutoryPayType
+yourStatutoryPayType.option1 = yourStatutoryPayType Option 1
+yourStatutoryPayType.option2 = yourStatutoryPayType Option 2
+yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType

@@ -19,29 +19,27 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object WhoGotStatutoryPayForm extends FormErrorHelper {
+object YourStatutoryPayTypeForm extends FormErrorHelper {
 
-  def WhoGotStatutoryPayFormatter = new Formatter[YouPartnerBothEnum.Value] {
+  def YourStatutoryPayTypeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(YouPartnerBothEnum.withName(s))
-      case None => produceError(key, whoGotStatutoryPayErrorKey)
+      case Some(s) if optionIsValid(s) => Right(s)
+      case None => produceError(key, "error.required")
       case _ => produceError(key, "error.unknown")
     }
 
-    def unbind(key: String, value: YouPartnerBothEnum.Value) = Map(key -> value.toString)
+    def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[YouPartnerBothEnum.Value] =
-    Form(single("value" -> of(WhoGotStatutoryPayFormatter)))
+  def apply(): Form[String] = 
+    Form(single("value" -> of(YourStatutoryPayTypeFormatter)))
 
-  def options: Seq[InputOption] = YouPartnerBothEnum.values.map {
-    value =>
-      InputOption("whoGotStatutoryPay", value.toString)
-  }.toSeq
+  def options = Seq(
+    InputOption("yourStatutoryPayType", "option1"),
+    InputOption("yourStatutoryPayType", "option2")
+  )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
