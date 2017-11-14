@@ -18,19 +18,56 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxFreeChildcare @Inject() (factory: ModelFactory) extends Scheme {
+class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
-  override def eligibility(answers: UserAnswers): Eligibility = NotEligible
-//    for {
-//      childcareCosts <- answers.childcareCosts
-//    } yield if (childcareCosts == "no") {
-//      NotEligible
-//    } else {
-//      NotDetermined
-//    }
-//  }.getOrElse(NotDetermined)
+  override def eligibility(answers: UserAnswers): Eligibility = {
+    answers.hasApprovedCosts.flatMap {
+      case true =>
+        household(answers).map {
+          case SingleHousehold(parent) =>
+            singleEligibility(parent)
+          case JointHousehold(parent, partner) =>
+            jointEligibility(parent, partner)
+        }
+      case false =>
+        Some(NotEligible)
+    }
+  }.getOrElse(NotDetermined)
+
+  private def singleEligibility(parent: Parent): Eligibility = {
+    if ((parent.minEarnings && !parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))) {
+      Eligible
+    } else {
+      NotEligible
+    }
+  }
+
+  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
+
+    val parentEligibility: Boolean =
+      (((parent.minEarnings && !parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed)))
+      )
+
+    val partnerEligibility: Boolean =
+      (((partner.minEarnings && !partner.maxEarnings) || (!partner.minEarnings && (partner.apprentice || partner.selfEmployed)))
+        )
+
+    if ((parentEligibility && (partnerEligibility || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
+      ((partnerEligibility && (parentEligibility || parent.benefits.intersect(applicableBenefits).nonEmpty)) )) {
+      Eligible
+    } else {
+      NotEligible
+    }
+  }
+
+  //Only carer's allowance is considered as benefit to eligible
+  private val applicableBenefits: Set[WhichBenefitsEnum.Value] =
+    Set(CARERSALLOWANCE)
+
+
 }

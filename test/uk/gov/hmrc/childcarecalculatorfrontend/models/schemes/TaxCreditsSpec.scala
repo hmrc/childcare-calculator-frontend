@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with EitherValues {
 
   val applicableBenefits: Seq[WhichBenefitsEnum.Value] =
-    Seq(DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS, CARERSALLOWANCE)
+    Seq(CARERSALLOWANCE)
 
   def taxCredits(household: ModelFactory = new ModelFactory): TaxCredits = spy(new TaxCredits(household))
   

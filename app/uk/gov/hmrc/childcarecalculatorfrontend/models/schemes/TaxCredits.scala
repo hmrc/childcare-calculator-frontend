@@ -32,7 +32,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
           case SingleHousehold(parent) =>
             singleEligibility(parent)
           case JointHousehold(parent, partner) =>
-            partnerEligibility(parent, partner)
+            jointEligibility(parent, partner)
         }
       case false =>
         Some(NotEligible)
@@ -47,7 +47,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
     }
   }
 
-  private def partnerEligibility(parent: Parent, partner: Parent): Eligibility = {
+  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
 
     val eligibleViaHours: Boolean = {
 
@@ -74,6 +74,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
 
   private val individualHours: BigDecimal = 16
 
+  //Only carer's allowance is considered as benefit to eligible
   private val applicableBenefits: Set[WhichBenefitsEnum.Value] =
-    Set(DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS, CARERSALLOWANCE)
+    Set(CARERSALLOWANCE)
 }
