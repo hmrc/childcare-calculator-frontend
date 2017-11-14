@@ -33,7 +33,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       PaidEmploymentId.toString -> ((v, cm) => storePaidEmployment(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
       AreYouInPaidWorkId.toString -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
-      HasYourTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
+     HasYourTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
       DoYouKnowYourAdjustedTaxCodeId.toString -> ((v, cm) => storeDoYouKnowYourAdjustedTaxCode(v, cm)),
       HasYourPartnersTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourPartnersTaxCodeBeenAdjusted(v, cm)),
       DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> ((v, cm) => storeDoYouKnowYourPartnersAdjustedTaxCode(v, cm)),
@@ -156,7 +156,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
   }
 
   private def storeHasYourTaxCodeBeenAdjusted(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(false)) {
+    val mapToStore = if (value == JsString(YesNoUnsureEnum.NO.toString)) {
       cacheMap copy (data = cacheMap.data - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString)
     } else {
       cacheMap

@@ -25,6 +25,10 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
+  lazy val yes: String = YesNoUnsureEnum.YES.toString
+  lazy val no: String = YesNoUnsureEnum.NO.toString
+  lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
+
   "saving the doYouLiveWithPartner" must {
     "remove partner and both pages related data wherever applicable when doYouLiveWithPartner is no " in {
 
@@ -628,11 +632,13 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   "saving has your tax code been adjusted" must {
     "remove an existing do you know your adjusted tax code and your tax code when has your tax code been adjusted is no" in {
+
       val originalCacheMap = new CacheMap("id", Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true), WhatIsYourTaxCodeId.toString -> JsString("1100L")))
 
-      val result = cascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
-      result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(false))
+      val result = cascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, no, originalCacheMap)
+      result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsString(no))
     }
+
   }
 
   "saving do you know your adjusted tax code" must {
