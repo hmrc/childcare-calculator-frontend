@@ -1056,3 +1056,11 @@ yourStatutoryPayType.adoption = Adoption
 yourStatutoryPayType.shared.parental = Shared parental
 yourStatutoryPayType.error = You must tell the calculator what kind of statutory pay you got
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
+
+yourStatutoryWeeks.title = yourStatutoryWeeks
+yourStatutoryWeeks.heading = yourStatutoryWeeks
+yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
+
+partnerStatutoryWeeks.title = partnerStatutoryWeeks
+partnerStatutoryWeeks.heading = partnerStatutoryWeeks
+partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
