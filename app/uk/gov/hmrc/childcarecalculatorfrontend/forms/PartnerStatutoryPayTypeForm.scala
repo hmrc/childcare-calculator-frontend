@@ -20,13 +20,14 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object PartnerStatutoryPayTypeForm extends FormErrorHelper {
 
   def PartnerStatutoryPayTypeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
+      case None => produceError(key, partnerStatutoryPayTypeErrorKey)
       case _ => produceError(key, "error.unknown")
     }
 
@@ -37,8 +38,10 @@ object PartnerStatutoryPayTypeForm extends FormErrorHelper {
     Form(single("value" -> of(PartnerStatutoryPayTypeFormatter)))
 
   def options = Seq(
-    InputOption("partnerStatutoryPayType", "option1"),
-    InputOption("partnerStatutoryPayType", "option2")
+    InputOption("partnerStatutoryPayType", "maternity"),
+    InputOption("partnerStatutoryPayType", "paternity"),
+    InputOption("partnerStatutoryPayType", "adoption"),
+    InputOption("partnerStatutoryPayType", "shared.parental")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

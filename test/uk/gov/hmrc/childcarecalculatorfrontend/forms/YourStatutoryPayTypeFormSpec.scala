@@ -17,6 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 
 class YourStatutoryPayTypeFormSpec extends FormBehaviours {
 
@@ -29,6 +31,6 @@ class YourStatutoryPayTypeFormSpec extends FormBehaviours {
   "YourStatutoryPayType form" must {
     behave like questionForm[String](YourStatutoryPayTypeForm.options.head.value)
 
-    behave like formWithOptionField("value", YourStatutoryPayTypeForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", yourStatutoryPayTypeErrorKey ,YourStatutoryPayTypeForm.options.map{x => x.value}:_*)
   }
 }

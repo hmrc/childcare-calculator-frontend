@@ -1034,25 +1034,25 @@ bothStatutoryPay.heading = Have you, your partner, or both of you had statutory 
 bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 
 
-whoGotStatutoryPay.title = whoGotStatutoryPay
-whoGotStatutoryPay.heading = whoGotStatutoryPay
-whoGotStatutoryPay.option1 = whoGotStatutoryPay Option 1
-whoGotStatutoryPay.option2 = whoGotStatutoryPay Option 2
-whoGotStatutoryPay.checkYourAnswersLabel = whoGotStatutoryPay
-
 partnerStatutoryPay.title = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April 2016 and continued to get it after this date.
 
-partnerStatutoryPayType.title = partnerStatutoryPayType
-partnerStatutoryPayType.heading = partnerStatutoryPayType
-partnerStatutoryPayType.option1 = partnerStatutoryPayType Option 1
-partnerStatutoryPayType.option2 = partnerStatutoryPayType Option 2
+partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
+partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
+partnerStatutoryPayType.maternity = Maternity
+partnerStatutoryPayType.paternity = Paternity
+partnerStatutoryPayType.adoption = Adoption
+partnerStatutoryPayType.shared.parental = Shared parental
+partnerStatutoryPayType.error = You must tell the calculator what kind of statutory pay your partner got
 partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
 
-yourStatutoryPayType.title = yourStatutoryPayType
-yourStatutoryPayType.heading = yourStatutoryPayType
-yourStatutoryPayType.option1 = yourStatutoryPayType Option 1
-yourStatutoryPayType.option2 = yourStatutoryPayType Option 2
+yourStatutoryPayType.title = What kind of statutory pay did you get?
+yourStatutoryPayType.heading = What kind of statutory pay did you get?
+yourStatutoryPayType.maternity = Maternity
+yourStatutoryPayType.paternity = Paternity
+yourStatutoryPayType.adoption = Adoption
+yourStatutoryPayType.shared.parental = Shared parental
+yourStatutoryPayType.error = You must tell the calculator what kind of statutory pay you got
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
