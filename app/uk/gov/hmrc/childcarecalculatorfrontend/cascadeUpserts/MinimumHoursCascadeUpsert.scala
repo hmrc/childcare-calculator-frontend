@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.libs.json.{JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -27,7 +28,8 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
-    Map(LocationId.toString -> ((v, cm) => storeLocation(v, cm)))
+    Map(LocationId.toString -> ((v, cm) => storeLocation(v, cm)),
+      ChildcareCostsId.toString -> ((v, cm) => childcareCosts(v, cm)))
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsString(northernIreland)) {
@@ -36,6 +38,17 @@ class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       cacheMap
 
     store(LocationId.toString, value, mapToStore)
+  }
+
+  private def childcareCosts(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = if(value == JsString(YesNoNotYetEnum.NO.toString) || value == JsString(YesNoNotYetEnum.NOTYET.toString) ||
+      value == JsString(YesNoNotYetEnum.YES.toString)) {
+      cacheMap copy (data = cacheMap.data - ApprovedProviderId.toString)
+    } else {
+      cacheMap
+    }
+
+    store(ChildcareCostsId.toString, value, mapToStore)
   }
 
 }

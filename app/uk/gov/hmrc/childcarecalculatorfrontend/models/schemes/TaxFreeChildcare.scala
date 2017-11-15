@@ -26,21 +26,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    answers.hasApprovedCosts.flatMap {
-      case true =>
+//    answers.hasApprovedCosts.flatMap {
+//      case true =>
         household(answers).map {
           case SingleHousehold(parent) =>
             singleEligibility(parent)
           case JointHousehold(parent, partner) =>
             jointEligibility(parent, partner)
         }
-      case false =>
-        Some(NotEligible)
-    }
+//      case false =>
+//        Some(NotEligible)
+//    }
   }.getOrElse(NotDetermined)
 
   private def singleEligibility(parent: Parent): Eligibility = {
-    if ((parent.minEarnings && !parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))) {
+    if ((parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))) {
       Eligible
     } else {
       NotEligible
@@ -50,10 +50,10 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
   private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
 
     val parentEligibility: Boolean =
-      (parent.minEarnings && !parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
+      (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
 
     val partnerEligibility: Boolean =
-      (partner.minEarnings && !partner.maxEarnings) || (!partner.minEarnings && (partner.apprentice || partner.selfEmployed))
+      (partner.minEarnings && partner.maxEarnings) || (!partner.minEarnings && (partner.apprentice || partner.selfEmployed))
 
     if ((parentEligibility && (partnerEligibility || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
       (partnerEligibility && (parentEligibility || parent.benefits.intersect(applicableBenefits).nonEmpty))) {

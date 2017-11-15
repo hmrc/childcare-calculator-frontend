@@ -33,7 +33,7 @@ class MaximumHoursNavigator @Inject() (
                                         tfc: TaxFreeChildcare
                                       ) extends ResultsNavigator {
 
-  override protected lazy val resultLocation: Call = routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+  override protected lazy val resultLocation: Call = routes.MaxFreeHoursResultController.onPageLoad()
 
   override protected def resultsMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
