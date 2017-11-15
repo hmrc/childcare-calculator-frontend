@@ -32,6 +32,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   }
 
   override protected lazy val resultLocation: Call = routes.FreeHoursResultController.onPageLoad()
+  val No = YesNoUnsureEnum.NO.toString
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
@@ -53,14 +54,13 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   }
 
   private def costRoute(answers: UserAnswers): Call = {
-    val No = YesNoUnsureEnum.NO.toString
     answers.childcareCosts.map {
       childcareCosts =>
         if (childcareCosts == No) {
           if (freeHours.eligibility(answers) == Eligible) {
             routes.FreeHoursInfoController.onPageLoad()
           } else {
-            routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+            routes.FreeHoursResultController.onPageLoad()
           }
         } else {
           routes.ApprovedProviderController.onPageLoad(NormalMode)

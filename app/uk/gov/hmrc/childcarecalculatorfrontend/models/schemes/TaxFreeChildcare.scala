@@ -50,15 +50,13 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
   private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
 
     val parentEligibility: Boolean =
-      (((parent.minEarnings && !parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed)))
-      )
+      (parent.minEarnings && !parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
 
     val partnerEligibility: Boolean =
-      (((partner.minEarnings && !partner.maxEarnings) || (!partner.minEarnings && (partner.apprentice || partner.selfEmployed)))
-        )
+      (partner.minEarnings && !partner.maxEarnings) || (!partner.minEarnings && (partner.apprentice || partner.selfEmployed))
 
     if ((parentEligibility && (partnerEligibility || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
-      ((partnerEligibility && (parentEligibility || parent.benefits.intersect(applicableBenefits).nonEmpty)) )) {
+      (partnerEligibility && (parentEligibility || parent.benefits.intersect(applicableBenefits).nonEmpty))) {
       Eligible
     } else {
       NotEligible
