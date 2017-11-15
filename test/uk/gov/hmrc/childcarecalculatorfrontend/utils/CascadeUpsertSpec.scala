@@ -18,10 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouKnowYourAdjustedTaxCodeId, HasYourTaxCodeBeenAdjustedId, WhatIsYourTaxCodeId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
+
+  lazy val no: String = YesNoUnsureEnum.NO.toString
 
   "using the apply method for a key that has no special function" when {
     "the key doesn't already exists" must {
@@ -47,11 +50,11 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
   "apply method" must {
     "save the data for the existing key" in {
       val originalCacheMap = new CacheMap("id",
-        Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
+        Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsString(no),
         WhatIsYourTaxCodeId.toString -> JsString("1100L")))
 
-      val result = cascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, false, originalCacheMap)
-      result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsBoolean(false))
+      val result = cascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, no, originalCacheMap)
+      result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsString(no))
     }
   }
 
