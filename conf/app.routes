@@ -589,3 +589,8 @@ GET        /partnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorf
 POST       /partnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onSubmit(mode: Mode = CheckMode)

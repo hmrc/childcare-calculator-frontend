@@ -1065,3 +1065,9 @@ yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 partnerStatutoryWeeks.title = partnerStatutoryWeeks
 partnerStatutoryWeeks.heading = partnerStatutoryWeeks
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
+
+yourStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
+yourStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
+yourStatutoryPayBeforeTax.option1 = Yes
+yourStatutoryPayBeforeTax.option2 = No
+yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
