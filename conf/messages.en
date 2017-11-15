@@ -1081,3 +1081,7 @@ partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
+
+partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
