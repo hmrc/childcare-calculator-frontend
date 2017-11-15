@@ -1077,3 +1077,7 @@ partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week b
 partnerStatutoryPayBeforeTax.option1 = Yes
 partnerStatutoryPayBeforeTax.option2 = No
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+
+yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
