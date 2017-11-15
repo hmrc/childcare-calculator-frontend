@@ -1057,8 +1057,9 @@ yourStatutoryPayType.shared.parental = Shared parental
 yourStatutoryPayType.error = You must tell the calculator what kind of statutory pay you got
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
 
-yourStatutoryWeeks.title = yourStatutoryWeeks
-yourStatutoryWeeks.heading = yourStatutoryWeeks
+yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
+yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
+yourStatutoryWeeks.error = You must tell the calculator how many weeks of {0} pay did you take?
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = partnerStatutoryWeeks
