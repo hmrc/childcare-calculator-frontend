@@ -589,3 +589,9 @@ GET        /partnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorf
 POST       /partnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onSubmit(mode: Mode = NormalMode)
 GET        /changePartnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourStatutoryStartDate               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onPageLoad(mode: Mode = NormalMode, statutoryType: String = "")
+GET        /yourStatutoryStartDate/:statutoryType           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode = NormalMode, statutoryType: String)
+POST       /yourStatutoryStartDate/:statutoryType           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode = NormalMode, statutoryType: String)
+GET        /changeYourStatutoryStartDate/:statutoryType     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onPageLoad(mode: Mode = CheckMode, statutoryType: String)
+POST       /changeYourStatutoryStartDate/:statutoryType     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode = CheckMode, statutoryType: String)

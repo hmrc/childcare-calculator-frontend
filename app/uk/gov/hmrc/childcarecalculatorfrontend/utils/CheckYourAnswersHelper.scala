@@ -22,6 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerRow
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers) {
 
+  def yourStatutoryStartDate(statutoryType: String): Option[AnswerRow] = userAnswers.yourStatutoryStartDate map {
+    x => AnswerRow("yourStatutoryStartDate.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryStartDateController.onPageLoad(CheckMode, statutoryType).url)
+  }
+
   def partnerStatutoryWeeks: Option[AnswerRow] = userAnswers.partnerStatutoryWeeks map {
     x => AnswerRow("partnerStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryWeeksController.onPageLoad(CheckMode).url)
   }

@@ -1059,9 +1059,15 @@ yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
 
 yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.error = You must tell the calculator how many weeks of {0} pay did you take?
+yourStatutoryWeeks.error = You must tell the calculator the number of weeks
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = partnerStatutoryWeeks
 partnerStatutoryWeeks.heading = partnerStatutoryWeeks
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
+
+yourStatutoryStartDate.title = When did your {0} pay start?
+yourStatutoryStartDate.heading = When did your {0} pay start?
+yourStatutoryStartDate.error = You must tell the calculator when your statutory pay started
+yourStatutoryStartDate.error.invalid = You must enter correct date
+yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
