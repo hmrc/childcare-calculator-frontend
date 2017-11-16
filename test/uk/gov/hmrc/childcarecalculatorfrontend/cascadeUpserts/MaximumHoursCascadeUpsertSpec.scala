@@ -768,48 +768,105 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       result.data mustBe Map(DoYouGetAnyBenefitsId.toString -> JsBoolean(false))
     }
   }
-val ageRange= "eighteenToTwenty"
-  "saving the you age" must{
-    "removing an existing your minimum earnings when user change the selection to age under18" in {
-      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(eighteenToTwenty), YourMinimumEarningsId.toString->JsBoolean(true),YourMaximumEarningsId.toString -> JsBoolean(false) ))
+
+  "saving the your age" must{
+    "removing an existing yourMinimumEarnings when user change the selection to age under18" in {
+      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(eighteenToTwenty),
+        YourMinimumEarningsId.toString->JsBoolean(true) ))
 
       val result = cascadeUpsert(YourAgeId.toString, under18, originalCacheMap)
       result.data mustBe Map(YourAgeId.toString->JsString(under18))
     }
 
-    "removing an existing your minimum earnings when user change the selection to age 18-20" in {
-      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(under18), YourMinimumEarningsId.toString->JsBoolean(true),YourMaximumEarningsId.toString -> JsBoolean(false) ))
+    "removing an existing yourMinimumEarnings and areYouSelfEmployedOrApprentice when user change the selection to age 18-20" in {
+      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(under18),
+        YourMinimumEarningsId.toString->JsBoolean(false),AreYouSelfEmployedOrApprenticeId.toString -> JsBoolean(false) ))
 
       val result = cascadeUpsert(YourAgeId.toString, eighteenToTwenty, originalCacheMap)
       result.data mustBe Map(YourAgeId.toString->JsString(eighteenToTwenty))
     }
 
-    "removing an existing your minimum earnings when user change the selection to age 20-24" in {
-      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(under18), YourMinimumEarningsId.toString->JsBoolean(true),YourMaximumEarningsId.toString -> JsBoolean(false) ))
+    "removing an existing yourMinimumEarnings areYouSelfEmployedOrApprentice and yourSelfEmployed when user change the selection to age 20-24" in {
+      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(under18),
+        YourMinimumEarningsId.toString->JsBoolean(false),AreYouSelfEmployedOrApprenticeId.toString -> JsBoolean(true),YourSelfEmployedId.toString ->JsBoolean(true) ))
 
       val result = cascadeUpsert(YourAgeId.toString, twentyToTwentyFour, originalCacheMap)
       result.data mustBe Map(YourAgeId.toString->JsString(twentyToTwentyFour))
     }
 
-    "removing an existing your minimum earnings when user change the selection to age over 25" in {
-      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(under18), YourMinimumEarningsId.toString->JsBoolean(true),YourMaximumEarningsId.toString -> JsBoolean(false) ))
+    "removing an existing yourMinimumEarnings  when user change the selection to age over 25" in {
+      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(under18),
+        YourMinimumEarningsId.toString->JsBoolean(true)))
 
       val result = cascadeUpsert(YourAgeId.toString, overTwentyFive, originalCacheMap)
       result.data mustBe Map(YourAgeId.toString->JsString(overTwentyFive))
     }
+
+    " not removing an existing your minimumEarnings  when user change the selection to age 18-20 again" in {
+      val originalCacheMap = new CacheMap("id", Map(YourAgeId.toString->JsString(eighteenToTwenty),
+        YourMinimumEarningsId.toString->JsBoolean(true)))
+
+      val result = cascadeUpsert(YourAgeId.toString, eighteenToTwenty, originalCacheMap)
+      result.data mustBe Map(YourAgeId.toString->JsString(eighteenToTwenty),
+        YourMinimumEarningsId.toString->JsBoolean(true))
+    }
+  }
+
+
+  "saving the partner age" must{
+    "removing an existing partnerMinimumEarnings when user change the selection to age under18" in {
+      val originalCacheMap = new CacheMap("id", Map(YourPartnersAgeId.toString->JsString(eighteenToTwenty),
+        PartnerMinimumEarningsId.toString->JsBoolean(true)))
+
+      val result = cascadeUpsert(YourPartnersAgeId.toString, under18, originalCacheMap)
+      result.data mustBe Map(YourPartnersAgeId.toString->JsString(under18))
+    }
+
+    "removing an existing yourMinimumEarnings ,selfEmployedOrApprentice when user change the selection to age 18-20" in {
+      val originalCacheMap = new CacheMap("id", Map(YourPartnersAgeId.toString->JsString(under18),
+        PartnerMinimumEarningsId.toString->JsBoolean(false),PartnerSelfEmployedOrApprenticeId.toString -> JsBoolean(false) ))
+
+      val result = cascadeUpsert(YourPartnersAgeId.toString, eighteenToTwenty, originalCacheMap)
+      result.data mustBe Map(YourPartnersAgeId.toString->JsString(eighteenToTwenty))
+    }
+
+    "removing an existing yourMinimumEarnings selfEmployedOrApprentice and SelfEmployed when user change the selection to age 20-24" in {
+      val originalCacheMap = new CacheMap("id", Map(YourPartnersAgeId.toString->JsString(under18), PartnerMinimumEarningsId.toString->JsBoolean(false),
+        PartnerSelfEmployedOrApprenticeId.toString -> JsBoolean(true),PartnerSelfEmployedId.toString-> JsBoolean(true) ))
+
+      val result = cascadeUpsert(YourPartnersAgeId.toString, twentyToTwentyFour, originalCacheMap)
+      result.data mustBe Map(YourPartnersAgeId.toString->JsString(twentyToTwentyFour))
+    }
+
+    "removing an existing yourMinimumEarnings, maximumEarnings when user change the selection to age over 25" in {
+      val originalCacheMap = new CacheMap("id", Map(YourPartnersAgeId.toString->JsString(under18),
+        PartnerMinimumEarningsId.toString->JsBoolean(true)))
+
+      val result = cascadeUpsert(YourPartnersAgeId.toString, overTwentyFive, originalCacheMap)
+      result.data mustBe Map(YourPartnersAgeId.toString->JsString(overTwentyFive))
+    }
+
+    "not removing an existing yourMinimumEarnings maximum earnings when user change the selection to age under18 again" in {
+      val originalCacheMap = new CacheMap("id", Map(YourPartnersAgeId.toString->JsString(under18),
+        PartnerMinimumEarningsId.toString->JsBoolean(true)))
+
+      val result = cascadeUpsert(YourPartnersAgeId.toString, under18, originalCacheMap)
+      result.data mustBe Map(YourPartnersAgeId.toString->JsString(under18),
+        PartnerMinimumEarningsId.toString->JsBoolean(true))
+    }
   }
 
   "saving the your minimumEarnings" must {
-    "remove your maximum earnings and either of you max earnings when your minimum earnings is no" in {
-      val originalCacheMap = new CacheMap("id", Map(YourMaximumEarningsId.toString -> JsBoolean(false),
-        EitherOfYouMaximumEarningsId.toString -> JsBoolean(true)))
+    "remove your maximum earnings and either of you max earnings whenparent in paid employment and your minimum earnings is no" in {
+      val originalCacheMap = new CacheMap("id", Map(YourMaximumEarningsId.toString -> JsBoolean(false)))
 
       val result = cascadeUpsert(YourMinimumEarningsId.toString, false, originalCacheMap)
       result.data mustBe Map(YourMinimumEarningsId.toString -> JsBoolean(false))
     }
 
+
     "remove you self employed or apprentice and you self employed less than 12 months when minimum earnings is yes" in {
-      val originalCacheMap = new CacheMap("id", Map(AreYouSelfEmployedOrApprenticeId.toString -> JsBoolean(true))) //TODO Add in self employed less than 12 months
+      val originalCacheMap = new CacheMap("id", Map(AreYouSelfEmployedOrApprenticeId.toString -> JsBoolean(true),YourSelfEmployedId.toString->JsBoolean(true)))
 
       val result = cascadeUpsert(YourMinimumEarningsId.toString, true, originalCacheMap)
       result.data mustBe Map(YourMinimumEarningsId.toString -> JsBoolean(true))
@@ -818,15 +875,21 @@ val ageRange= "eighteenToTwenty"
 
   "saving the your partners minimumEarnings" must {
     "remove partners and either of you maximum earnings when partners minimum earnings is no" in {
-      val originalCacheMap = new CacheMap("id", Map(PartnerMaximumEarningsId.toString -> JsBoolean(false),
-        EitherOfYouMaximumEarningsId.toString -> JsBoolean(true)))
+      val originalCacheMap = new CacheMap("id", Map(PartnerMaximumEarningsId.toString -> JsBoolean(false)))
+
+      val result = cascadeUpsert(PartnerMinimumEarningsId.toString, false, originalCacheMap)
+      result.data mustBe Map(PartnerMinimumEarningsId.toString -> JsBoolean(false))
+    }
+
+    "remove your either of you max earnings when both in paid employment  and your minimum earnings is no" in {
+      val originalCacheMap = new CacheMap("id", Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(true)))
 
       val result = cascadeUpsert(PartnerMinimumEarningsId.toString, false, originalCacheMap)
       result.data mustBe Map(PartnerMinimumEarningsId.toString -> JsBoolean(false))
     }
 
     "remove your partners self employed or apprentice and partners self employed less than 12 months when partners minimum earnings is yes" in {
-      val originalCacheMap = new CacheMap("id", Map(PartnerSelfEmployedOrApprenticeId.toString -> JsBoolean(true))) //TODO Add in self employed less than 12 months
+      val originalCacheMap = new CacheMap("id", Map(PartnerSelfEmployedOrApprenticeId.toString -> JsBoolean(true),PartnerSelfEmployedId.toString->JsBoolean(true)))
 
       val result = cascadeUpsert(PartnerMinimumEarningsId.toString, true, originalCacheMap)
       result.data mustBe Map(PartnerMinimumEarningsId.toString -> JsBoolean(true))

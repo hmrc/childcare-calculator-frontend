@@ -45,6 +45,8 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       WhoGetsBenefitsId.toString -> ((v, cm) => storeWhoGetsBenefits(v, cm)),
       DoYouGetAnyBenefitsId.toString -> ((v, cm) => storeDoYouGetAnyBenefits(v, cm)),
       YourAgeId.toString -> ((v, cm) => storeYourAge(v, cm)),
+      YourPartnersAgeId.toString -> ((v, cm) => storeYourPartnersAge(v, cm)),
+
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
       PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
@@ -255,9 +257,9 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsBoolean(true)) {
-      cacheMap copy (data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString)
+      cacheMap copy (data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString - YourSelfEmployedId.toString)
     } else if (value == JsBoolean(false))
-      cacheMap copy (data = cacheMap.data - YourMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
+      cacheMap copy (data = cacheMap.data - YourMaximumEarningsId.toString )
     else cacheMap
 
     store(YourMinimumEarningsId.toString, value, mapToStore)
@@ -265,7 +267,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storePartnerMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsBoolean(true)) {
-      cacheMap copy (data = cacheMap.data - PartnerSelfEmployedOrApprenticeId.toString)
+      cacheMap copy (data = cacheMap.data - PartnerSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedId.toString)
     } else if (value == JsBoolean(false))
       cacheMap copy (data = cacheMap.data - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
     else cacheMap
@@ -277,11 +279,24 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val originalValue = cacheMap.data.get("yourAge")
     val mapToStore = value match {
         case JsString(_) if !originalValue.contains(value)=> {
-          cacheMap copy (data = cacheMap.data - YourMinimumEarningsId.toString - YourMaximumEarningsId.toString)
+          cacheMap copy (data = cacheMap.data - YourMinimumEarningsId.toString -
+            AreYouSelfEmployedOrApprenticeId.toString - YourSelfEmployedId.toString)
         }
         case _ => cacheMap
     }
     store(YourAgeId.toString, value, mapToStore)
+  }
+
+  private def storeYourPartnersAge(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val originalValue = cacheMap.data.get("yourPartnersAge")
+    val mapToStore = value match {
+      case JsString(_) if !originalValue.contains(value)=> {
+        cacheMap copy (data = cacheMap.data - PartnerMinimumEarningsId.toString -
+          PartnerSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedId.toString)
+      }
+      case _ => cacheMap
+    }
+    store(YourPartnersAgeId.toString, value, mapToStore)
   }
 
 }
