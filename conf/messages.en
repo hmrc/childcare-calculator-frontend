@@ -1072,6 +1072,12 @@ yourStatutoryStartDate.error = You must tell the calculator when your statutory 
 yourStatutoryStartDate.error.invalid = You must enter correct date
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
 
+partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
+partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
+partnerStatutoryStartDate.error = You must tell the calculator when your partner’s statutory pay started
+partnerStatutoryStartDate.error.invalid = You must enter correct date
+partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
+
 yourStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
 yourStatutoryPayBeforeTax.option1 = Yes
@@ -1092,6 +1098,4 @@ partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week 
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 
-partnerStatutoryStartDate.title = partnerStatutoryStartDate
-partnerStatutoryStartDate.heading = partnerStatutoryStartDate
-partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
+

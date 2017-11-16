@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.JsNumber
+import play.api.libs.json.{Json, JsNumber}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -36,32 +37,36 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
     new PartnerStatutoryStartDateController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = PartnerStatutoryStartDateForm()) = partnerStatutoryStartDate(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
-
-  val testNumber = 123
+  def viewAsString(form: Form[LocalDate] = PartnerStatutoryStartDateForm()) =
+    partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, "maternity")(fakeRequest, messages).toString
 
   "PartnerStatutoryStartDate Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad(NormalMode, "maternity")(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerStatutoryStartDateId.toString -> JsNumber(testNumber))
+      val validData = Map(PartnerStatutoryStartDateId.toString -> Json.obj("maternity" -> new LocalDate(2017, 2, 1)))
+
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode, "maternity")(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerStatutoryStartDateForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(PartnerStatutoryStartDateForm())
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(
+        "date.day"   -> "1",
+        "date.month" -> "2",
+        "date.year"  -> "2017"
+      )
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit(NormalMode, "maternity")(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -71,22 +76,22 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = PartnerStatutoryStartDateForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit(NormalMode, "maternity")(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode, "maternity")(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "maternity"))
+      val result = controller(dontGetAnyData).onSubmit(NormalMode, "maternity")(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)

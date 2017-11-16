@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object PartnerStatutoryStartDateId extends Identifier {
+case class PartnerStatutoryStartDateId(statutoryType: String) extends Identifier
+
+object PartnerStatutoryStartDateId {
   override def toString: String = "partnerStatutoryStartDate"
 }

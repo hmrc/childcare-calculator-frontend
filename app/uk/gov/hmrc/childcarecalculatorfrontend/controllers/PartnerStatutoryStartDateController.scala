@@ -18,8 +18,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
+import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Result, RequestHeader}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -38,25 +40,30 @@ class PartnerStatutoryStartDateController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction
+                                      ) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+
+  def onPageLoad(mode: Mode, statutoryType: String) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.partnerStatutoryStartDate match {
         case None => PartnerStatutoryStartDateForm()
         case Some(value) => PartnerStatutoryStartDateForm().fill(value)
       }
-      Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode))
+      Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, statutoryType))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {
     implicit request =>
       PartnerStatutoryStartDateForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode))),
+        (formWithErrors: Form[LocalDate]) =>
+          Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
         (value) =>
-          dataCacheConnector.save[Int](request.sessionId, PartnerStatutoryStartDateId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerStatutoryStartDateId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[LocalDate](request.sessionId, PartnerStatutoryStartDateId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(PartnerStatutoryStartDateId(statutoryType), mode)(new UserAnswers(cacheMap))))
       )
   }
 }
+

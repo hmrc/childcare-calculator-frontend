@@ -24,9 +24,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
-  def partnerStatutoryStartDate: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryStartDateId.toString)
+  def partnerStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](PartnerStatutoryStartDateId.toString)
 
-  def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](ChildStartEducationId.toString)
+  def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](YourStatutoryStartDateId.toString)
 
   def partnerStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryPayPerWeekId.toString)
 

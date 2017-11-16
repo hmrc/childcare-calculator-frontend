@@ -16,28 +16,36 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.joda.time.LocalDate
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.DateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
 
-class PartnerStatutoryStartDateViewSpec extends IntViewBehaviours {
+class PartnerStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "partnerStatutoryStartDate"
 
-  def createView = () => partnerStatutoryStartDate(frontendAppConfig, PartnerStatutoryStartDateForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerStatutoryStartDate(frontendAppConfig, PartnerStatutoryStartDateForm(), NormalMode, "maternity")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryStartDate(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[LocalDate]) => partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, "maternity")(fakeRequest, messages)
 
   val form = PartnerStatutoryStartDateForm()
 
   "PartnerStatutoryStartDate view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      title = messages(s"$messageKeyPrefix.title", "maternity"),
+      heading = Some(messages(s"$messageKeyPrefix.title", "maternity"))
+    )
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryStartDateController.onSubmit(NormalMode).url)
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryStartDateController.onSubmit(NormalMode, "maternity").url)
+
   }
 }

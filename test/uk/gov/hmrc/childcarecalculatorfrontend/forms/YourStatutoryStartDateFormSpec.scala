@@ -28,7 +28,7 @@ class YourStatutoryStartDateFormSpec extends FormSpec {
 
   val form = YourStatutoryStartDateForm()
 
-  "ChildStartEducation Form" must {
+  "YourStatutoryStartDate Form" must {
 
     "successfully bind when the date is valid" in {
       form.bind(validData).get shouldEqual new LocalDate(2017, 2, 1)
