@@ -18,9 +18,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsString, JsValue,JsBoolean}
+import play.api.libs.json.{JsBoolean, JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -36,7 +36,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       PaidEmploymentId.toString -> ((v, cm) => storePaidEmployment(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
       AreYouInPaidWorkId.toString -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
-     HasYourTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
+      HasYourTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
       DoYouKnowYourAdjustedTaxCodeId.toString -> ((v, cm) => storeDoYouKnowYourAdjustedTaxCode(v, cm)),
       HasYourPartnersTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourPartnersTaxCodeBeenAdjusted(v, cm)),
       DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> ((v, cm) => storeDoYouKnowYourPartnersAdjustedTaxCode(v, cm)),
@@ -44,6 +44,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v, cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
       WhoGetsBenefitsId.toString -> ((v, cm) => storeWhoGetsBenefits(v, cm)),
       DoYouGetAnyBenefitsId.toString -> ((v, cm) => storeDoYouGetAnyBenefits(v, cm)),
+      YourAgeId.toString -> ((v, cm) => storeYourAge(v, cm)),
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
       PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
@@ -270,6 +271,17 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
     else cacheMap
 
     store(PartnerMinimumEarningsId.toString, value, mapToStore)
+  }
+
+  private def storeYourAge(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val originalValue = cacheMap.data.get("yourAge")
+    val mapToStore = value match {
+        case JsString(_) if !originalValue.contains(value)=> {
+          cacheMap copy (data = cacheMap.data - YourMinimumEarningsId.toString - YourMaximumEarningsId.toString)
+        }
+        case _ => cacheMap
+    }
+    store(YourAgeId.toString, value, mapToStore)
   }
 
 }
