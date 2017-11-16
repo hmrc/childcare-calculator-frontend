@@ -18,25 +18,20 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.CARERSALLOWANCE
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-//    answers.hasApprovedCosts.flatMap {
-//      case true =>
-        household(answers).map {
-          case SingleHousehold(parent) =>
-            singleEligibility(parent)
-          case JointHousehold(parent, partner) =>
-            jointEligibility(parent, partner)
-        }
-//      case false =>
-//        Some(NotEligible)
-//    }
+    household(answers).map {
+      case SingleHousehold(parent) =>
+        singleEligibility(parent)
+      case JointHousehold(parent, partner) =>
+        jointEligibility(parent, partner)
+    }
   }.getOrElse(NotDetermined)
 
   private def singleEligibility(parent: Parent): Eligibility = {

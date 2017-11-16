@@ -88,14 +88,14 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad()
     }
 
-    "go to `Do you have a partner` if you are not eligible for free hours and not all schemes have been determined" in {
+    "go to `result` if you are not eligible for free hours and not all schemes have been determined" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
       when(answers.childcareCosts) thenReturn Some("no")
       when(schemes.allSchemesDetermined(any())) thenReturn false
       when(freeHours.eligibility(any())) thenReturn NotEligible
-      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
     }
 
     "go to `Session Expired` if there's no answer for `childcareCosts`" in {

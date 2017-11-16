@@ -337,12 +337,14 @@ class MaximumHoursNavigator @Inject() (
     if (schemes.allSchemesDetermined(answers)) {
       if (taxCredits.eligibility(answers) == NotEligible && tfc.eligibility(answers) == NotEligible) {
         routes.MaxFreeHoursResultController.onPageLoad()
-      } else {
+      } else if(answers.hasApprovedCosts.contains(true)) {
         if (maxHours.eligibility(answers) == Eligible) {
           routes.MaxFreeHoursInfoController.onPageLoad()
         } else {
           routes.NoOfChildrenController.onPageLoad(NormalMode)
         }
+      } else {
+        routes.MaxFreeHoursResultController.onPageLoad()
       }
     } else {
       routes.SessionExpiredController.onPageLoad()

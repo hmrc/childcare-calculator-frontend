@@ -25,10 +25,8 @@ class FreeHours extends Scheme {
     for {
       childAgedThreeOrFour <- answers.childAgedThreeOrFour
     } yield if (childAgedThreeOrFour) {
-      println(s"**************************free hours eligible")
       Eligible
     } else {
-      println(s"**************************free hours not eligible")
       NotEligible
     }
   }.getOrElse(NotDetermined)

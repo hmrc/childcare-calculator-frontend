@@ -355,7 +355,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
         noOfChildren =>
           if (noOfChildren == 1) {
             childcareCosts.map {
-              // TODO fix this when the enums are used properly
               value =>
               if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
                 Set(0)

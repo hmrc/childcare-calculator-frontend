@@ -38,21 +38,8 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
   ".eligibility" must {
 
     "return `NotDetermined` if `household` is undefined" in {
-      when(answers.hasApprovedCosts) thenReturn Some(true)
       when(household(any())) thenReturn None
       taxCredits(household).eligibility(answers) mustEqual NotDetermined
-    }
-
-    "return `NotDetermined` if `hasApprovedCosts` is undefined" in {
-      when(answers.hasApprovedCosts) thenReturn None
-      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
-      taxCredits(household).eligibility(answers) mustEqual NotDetermined
-    }
-
-    "return `NotEligible` if user has no approved costs" in {
-      when(answers.hasApprovedCosts) thenReturn Some(false)
-      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
-      taxCredits(household).eligibility(answers) mustEqual NotEligible
     }
 
     "return `Eligible` if a user works 24 hours but their partner doesn't work and neither get benefits" in {

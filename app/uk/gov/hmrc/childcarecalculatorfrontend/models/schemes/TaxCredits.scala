@@ -26,17 +26,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-//    answers.hasApprovedCosts.flatMap {
-//      case true =>
-        household(answers).map {
-          case SingleHousehold(parent) =>
-            singleEligibility(parent)
-          case JointHousehold(parent, partner) =>
-            jointEligibility(parent, partner)
-        }
-//      case false =>
-//        Some(NotEligible)
-//    }
+    household(answers).map {
+      case SingleHousehold(parent) =>
+        singleEligibility(parent)
+      case JointHousehold(parent, partner) =>
+        jointEligibility(parent, partner)
+    }
   }.getOrElse(NotDetermined)
 
   private def singleEligibility(parent: Parent): Eligibility = {

@@ -47,20 +47,20 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       }
     }
 
-    "clear the selection of approved childcare provider if there is change from yes to no in childcare costs" in {
-      val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString("yes")))
-
-      val result = cascadeUpsert(ChildcareCostsId.toString, "no", originalCacheMap)
-      result.data mustBe Map(ChildcareCostsId.toString -> JsString("no"))
-    }
-
-    "keep the selection of approved childcare provider if there is change from yes to not yet in childcare costs" in {
-      val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString("yes")))
-
-      val result = cascadeUpsert(ChildcareCostsId.toString, "notYet", originalCacheMap)
-      result.data mustBe Map(ChildcareCostsId.toString -> JsString("notYet"),
-        ApprovedProviderId.toString -> JsString("yes"))
-    }
+//    "clear the selection of approved childcare provider if there is change from yes to no in childcare costs" in {
+//      val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString("yes")))
+//
+//      val result = cascadeUpsert(ChildcareCostsId.toString, "no", originalCacheMap)
+//      result.data mustBe Map(ChildcareCostsId.toString -> JsString("no"))
+//    }
+//
+//    "keep the selection of approved childcare provider if there is change from yes to not yet in childcare costs" in {
+//      val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString("yes")))
+//
+//      val result = cascadeUpsert(ChildcareCostsId.toString, "notYet", originalCacheMap)
+//      result.data mustBe Map(ChildcareCostsId.toString -> JsString("notYet"),
+//        ApprovedProviderId.toString -> JsString("yes"))
+//    }
 
   }
 
