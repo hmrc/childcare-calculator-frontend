@@ -1071,3 +1071,23 @@ yourStatutoryStartDate.heading = When did your {0} pay start?
 yourStatutoryStartDate.error = You must tell the calculator when your statutory pay started
 yourStatutoryStartDate.error.invalid = You must enter correct date
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
+
+yourStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
+yourStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
+yourStatutoryPayBeforeTax.option1 = Yes
+yourStatutoryPayBeforeTax.option2 = No
+yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+
+partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
+partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
+partnerStatutoryPayBeforeTax.option1 = Yes
+partnerStatutoryPayBeforeTax.option2 = No
+partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+
+yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
+
+partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?

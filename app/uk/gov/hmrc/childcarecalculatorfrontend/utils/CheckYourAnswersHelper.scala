@@ -26,6 +26,22 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("yourStatutoryStartDate.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryStartDateController.onPageLoad(CheckMode, statutoryType).url)
   }
 
+  def partnerStatutoryPayPerWeek: Option[AnswerRow] = userAnswers.partnerStatutoryPayPerWeek map {
+    x => AnswerRow("partnerStatutoryPayPerWeek.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryPayPerWeekController.onPageLoad(CheckMode).url)
+  }
+
+  def yourStatutoryPayPerWeek: Option[AnswerRow] = userAnswers.yourStatutoryPayPerWeek map {
+    x => AnswerRow("yourStatutoryPayPerWeek.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryPayPerWeekController.onPageLoad(CheckMode).url)
+  }
+
+  def partnerStatutoryPayBeforeTax: Option[AnswerRow] = userAnswers.partnerStatutoryPayBeforeTax map {
+    x => AnswerRow("partnerStatutoryPayBeforeTax.checkYourAnswersLabel", s"partnerStatutoryPayBeforeTax.$x", true, routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(CheckMode).url)
+  }
+
+  def yourStatutoryPayBeforeTax: Option[AnswerRow] = userAnswers.yourStatutoryPayBeforeTax map {
+    x => AnswerRow("yourStatutoryPayBeforeTax.checkYourAnswersLabel", s"yourStatutoryPayBeforeTax.$x", true, routes.YourStatutoryPayBeforeTaxController.onPageLoad(CheckMode).url)
+  }
+
   def partnerStatutoryWeeks: Option[AnswerRow] = userAnswers.partnerStatutoryWeeks map {
     x => AnswerRow("partnerStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryWeeksController.onPageLoad(CheckMode).url)
   }

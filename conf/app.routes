@@ -595,3 +595,23 @@ GET        /yourStatutoryStartDate/:statutoryType           uk.gov.hmrc.childcar
 POST       /yourStatutoryStartDate/:statutoryType           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode = NormalMode, statutoryType: String)
 GET        /changeYourStatutoryStartDate/:statutoryType     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onPageLoad(mode: Mode = CheckMode, statutoryType: String)
 POST       /changeYourStatutoryStartDate/:statutoryType     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode = CheckMode, statutoryType: String)
+
+GET        /yourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayBeforeTaxController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayBeforeTaxController.onSubmit(mode: Mode = CheckMode)
+
+GET        /yourStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onPageLoad(mode: Mode = NormalMode)
+POST       /yourStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onSubmit(mode: Mode = NormalMode)
+GET        /changeYourStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeYourStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onSubmit(mode: Mode = CheckMode)
+
+GET        /partnerStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onSubmit(mode: Mode = NormalMode)
+GET        /changePartnerStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePartnerStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onSubmit(mode: Mode = CheckMode)
