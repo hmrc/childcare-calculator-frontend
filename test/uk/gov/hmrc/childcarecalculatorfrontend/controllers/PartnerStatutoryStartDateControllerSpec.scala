@@ -50,13 +50,13 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerStatutoryStartDateId.toString -> Json.obj("maternity" -> new LocalDate(2017, 2, 1)))
+      val validData = Map(PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode, "maternity")(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerStatutoryStartDateForm())
+      contentAsString(result) mustBe viewAsString(PartnerStatutoryStartDateForm().fill(new LocalDate(2017, 2, 1)))
     }
 
     "redirect to the next page when valid data is submitted" in {
