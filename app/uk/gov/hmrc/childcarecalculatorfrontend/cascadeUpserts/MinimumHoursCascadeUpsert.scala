@@ -26,9 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
-
   lazy val no: String = YesNoUnsureEnum.NO.toString
-  lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
@@ -47,7 +45,7 @@ class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
 
   private def storeChildcareCosts(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsString(no)|| value == JsString(notSure)) {
+    val mapToStore = if (value == JsString(no)) {
       cacheMap copy (data = cacheMap.data - ApprovedProviderId.toString)
     } else
       cacheMap

@@ -24,9 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
-
   lazy val no: String = YesNoUnsureEnum.NO.toString
-  lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
   "MinimumHoursCascadeUpsert" when {
 
@@ -59,14 +57,6 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
         result.data mustBe Map(
           ChildcareCostsId.toString -> JsString(no))
-      }
-
-      "remove the approvedProvider data when  childcareCosts is 'Not yet but maybe in the future' " in {
-        val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString(yes)))
-
-        val result = cascadeUpsert(ChildcareCostsId.toString, notSure, originalCacheMap)
-        result.data mustBe Map(
-          ChildcareCostsId.toString -> JsString(notSure))
       }
     }
   }
