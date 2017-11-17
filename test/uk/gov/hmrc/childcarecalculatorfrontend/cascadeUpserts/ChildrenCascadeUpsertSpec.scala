@@ -39,7 +39,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   lazy val monthly: String = ChildcarePayFrequency.MONTHLY.toString
 
 
-  "Children" when {
+  "Children Journey" when {
     "Save noOfChildren data " must {
       "remove relevant data in child journey when noOfChildren value is changed" in {
 

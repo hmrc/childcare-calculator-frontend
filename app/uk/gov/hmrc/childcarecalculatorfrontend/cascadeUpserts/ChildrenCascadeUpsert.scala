@@ -33,10 +33,10 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     )
 
   private def storeNoOfChildren(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val originalData = cacheMap.data.get("noOfChildren")
+    val originalDataSet = cacheMap.data.get("noOfChildren")
 
     val mapToStore= value match {
-      case JsString(_) if !originalData.contains(value) => cacheMap copy (data = cacheMap.data - AboutYourChildId.toString - ChildApprovedEducationId.toString -
+      case JsString(_) if !originalDataSet.contains(value) => cacheMap copy (data = cacheMap.data - AboutYourChildId.toString - ChildApprovedEducationId.toString -
         ChildStartEducationId.toString - ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
         ChildRegisteredBlindId.toString - WhichChildrenBlindId.toString - ChildRegisteredBlindId.toString - WhichBenefitsYouGetId.toString -
         ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString
@@ -45,6 +45,5 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
     store(NoOfChildrenId.toString, value, mapToStore)
   }
-
 
 }
