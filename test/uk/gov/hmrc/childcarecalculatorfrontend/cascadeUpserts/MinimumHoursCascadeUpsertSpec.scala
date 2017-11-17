@@ -18,11 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import play.api.libs.json.{JsBoolean, JsString}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
-
+  lazy val no: String = YesNoUnsureEnum.NO.toString
 
   "MinimumHoursCascadeUpsert" when {
 
@@ -47,21 +49,15 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       }
     }
 
-//    "clear the selection of approved childcare provider if there is change from yes to no in childcare costs" in {
-//      val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString("yes")))
-//
-//      val result = cascadeUpsert(ChildcareCostsId.toString, "no", originalCacheMap)
-//      result.data mustBe Map(ChildcareCostsId.toString -> JsString("no"))
-//    }
-//
-//    "keep the selection of approved childcare provider if there is change from yes to not yet in childcare costs" in {
-//      val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString("yes")))
-//
-//      val result = cascadeUpsert(ChildcareCostsId.toString, "notYet", originalCacheMap)
-//      result.data mustBe Map(ChildcareCostsId.toString -> JsString("notYet"),
-//        ApprovedProviderId.toString -> JsString("yes"))
-//    }
+    "saving childcareCosts " must {
+      "remove the approvedProvider data when childcareCosts is 'no'" in {
+        val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString(yes)))
 
+        val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
+        result.data mustBe Map(
+          ChildcareCostsId.toString -> JsString(no))
+      }
+    }
   }
 
 }
