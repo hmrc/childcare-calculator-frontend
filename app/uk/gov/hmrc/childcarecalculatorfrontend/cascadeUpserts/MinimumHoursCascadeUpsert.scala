@@ -27,7 +27,6 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
-
   lazy val no: String = YesNoUnsureEnum.NO.toString
   lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
@@ -55,5 +54,4 @@ class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     store(ChildcareCostsId.toString, value, mapToStore)
   }
-
 }

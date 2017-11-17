@@ -25,8 +25,6 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
-
-  lazy val yes: String = YesNoUnsureEnum.YES.toString
   lazy val no: String = YesNoUnsureEnum.NO.toString
   lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
@@ -54,8 +52,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       }
     }
 
-
-    "saving a childcareCosts " must {
+    "saving childcareCosts " must {
       "remove the approvedProvider data when  childcareCosts is 'no'" in {
         val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString(yes)))
 
