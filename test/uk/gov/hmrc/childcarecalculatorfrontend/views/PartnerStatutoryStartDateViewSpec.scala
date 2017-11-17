@@ -28,9 +28,11 @@ class PartnerStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "partnerStatutoryStartDate"
 
-  def createView = () => partnerStatutoryStartDate(frontendAppConfig, PartnerStatutoryStartDateForm(), NormalMode, "maternity")(fakeRequest, messages)
+  val statutoryType = "maternity"
 
-  def createViewUsingForm = (form: Form[LocalDate]) => partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, "maternity")(fakeRequest, messages)
+  def createView = () => partnerStatutoryStartDate(frontendAppConfig, PartnerStatutoryStartDateForm(), NormalMode, statutoryType)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[LocalDate]) => partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   val form = PartnerStatutoryStartDateForm()
 
@@ -39,13 +41,13 @@ class PartnerStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
     behave like normalPageWithTitleAsString(
       createView,
       messageKeyPrefix,
-      title = messages(s"$messageKeyPrefix.title", "maternity"),
-      heading = Some(messages(s"$messageKeyPrefix.title", "maternity"))
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
     )
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryStartDateController.onSubmit(NormalMode, "maternity").url)
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryStartDateController.onSubmit(NormalMode, statutoryType).url)
 
   }
 }

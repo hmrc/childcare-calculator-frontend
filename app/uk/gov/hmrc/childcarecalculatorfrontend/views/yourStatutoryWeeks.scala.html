@@ -20,10 +20,10 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode, statutoryType: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("yourStatutoryWeeks.title"),
+    title = messages("yourStatutoryWeeks.title", statutoryType),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -31,9 +31,9 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading("yourStatutoryWeeks.heading", "heading-xlarge")
+    @components.heading(messages("yourStatutoryWeeks.heading", statutoryType), "heading-xlarge")
 
-    @helpers.form(action = YourStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = YourStatutoryWeeksController.onSubmit(mode, statutoryType), 'autoComplete -> "off") {
 
         @components.input_number(InputViewModel[Int]("value", form), label = messages("yourStatutoryWeeks.heading"), labelClass=Some("visually-hidden"))
 

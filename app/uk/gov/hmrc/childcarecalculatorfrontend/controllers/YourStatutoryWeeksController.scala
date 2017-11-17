@@ -40,20 +40,20 @@ class YourStatutoryWeeksController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode, statutoryType: String) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.yourStatutoryWeeks match {
         case None => YourStatutoryWeeksForm()
         case Some(value) => YourStatutoryWeeksForm().fill(value)
       }
-      Ok(yourStatutoryWeeks(appConfig, preparedForm, mode))
+      Ok(yourStatutoryWeeks(appConfig, preparedForm, mode, statutoryType))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {
     implicit request =>
       YourStatutoryWeeksForm().bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(yourStatutoryWeeks(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yourStatutoryWeeks(appConfig, formWithErrors, mode, statutoryType))),
         (value) =>
           dataCacheConnector.save[Int](request.sessionId, YourStatutoryWeeksId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourStatutoryWeeksId, mode)(new UserAnswers(cacheMap))))

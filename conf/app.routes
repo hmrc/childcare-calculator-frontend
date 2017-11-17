@@ -580,10 +580,11 @@ POST       /partnerStatutoryPay                       uk.gov.hmrc.childcarecalcu
 GET        /changePartnerStatutoryPay                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePartnerStatutoryPay                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayController.onSubmit(mode: Mode = CheckMode)
 
-GET        /yourStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onPageLoad(mode: Mode = NormalMode)
-POST       /yourStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onSubmit(mode: Mode = NormalMode)
-GET        /changeYourStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeYourStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onSubmit(mode: Mode = CheckMode)
+GET        /yourStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onPageLoad(mode: Mode = NormalMode, statutoryType: String)
+GET        /yourStatutoryWeeks/:statutoryType              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onPageLoad(mode: Mode = NormalMode, statutoryType: String)
+POST       /yourStatutoryWeeks/:statutoryType               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onSubmit(mode: Mode = NormalMode, statutoryType: String)
+GET        /changeYourStatutoryWeeks/:statutoryType               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onPageLoad(mode: Mode = CheckMode, statutoryType: String)
+POST       /changeYourStatutoryWeeks/:statutoryType               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onSubmit(mode: Mode = CheckMode, statutoryType: String)
 
 GET        /partnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onPageLoad(mode: Mode = NormalMode)
 POST       /partnerStatutoryWeeks               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryWeeksController.onSubmit(mode: Mode = NormalMode)

@@ -31,6 +31,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
 class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
+  val statutoryType = "maternity"
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
@@ -38,13 +40,13 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       dataRetrievalAction, new DataRequiredActionImpl)
 
   def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm()) =
-    yourStatutoryStartDate(frontendAppConfig, form, NormalMode, "maternity")(fakeRequest, messages).toString
+    yourStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
 
   "YourStatutoryStartDate Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode, "maternity")(fakeRequest)
+      val result = controller().onPageLoad(NormalMode, statutoryType)(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -54,7 +56,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode, "maternity")(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm().fill(new LocalDate(2017, 2, 1)))
     }
@@ -66,7 +68,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
         "date.year"  -> "2017"
       )
 
-      val result = controller().onSubmit(NormalMode, "maternity")(postRequest)
+      val result = controller().onSubmit(NormalMode, statutoryType)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -76,7 +78,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = YourStatutoryStartDateForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode, "maternity")(postRequest)
+      val result = controller().onSubmit(NormalMode, statutoryType)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
@@ -91,7 +93,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "maternity"))
-      val result = controller(dontGetAnyData).onSubmit(NormalMode, "maternity")(postRequest)
+      val result = controller(dontGetAnyData).onSubmit(NormalMode, statutoryType)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)

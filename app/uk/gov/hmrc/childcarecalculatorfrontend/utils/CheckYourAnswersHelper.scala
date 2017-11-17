@@ -50,8 +50,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.PartnerStatutoryWeeksController.onPageLoad(CheckMode).url)
   }
 
-  def yourStatutoryWeeks: Option[AnswerRow] = userAnswers.yourStatutoryWeeks map {
-    x => AnswerRow("yourStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryWeeksController.onPageLoad(CheckMode).url)
+  def yourStatutoryWeeks(statutoryType: String): Option[AnswerRow] = userAnswers.yourStatutoryWeeks map {
+    x => AnswerRow("yourStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryWeeksController.onPageLoad(CheckMode, statutoryType).url)
   }
 
   def yourStatutoryPayType: Option[AnswerRow] = userAnswers.yourStatutoryPayType map {
