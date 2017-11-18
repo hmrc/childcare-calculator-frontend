@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
@@ -27,18 +26,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 import scala.language.implicitConversions
 
-class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar with GeneratorDrivenPropertyChecks {
+class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {
 
   def tfc(tfcHousehold: ModelFactory = new ModelFactory): TaxFreeChildcare = spy(new TaxFreeChildcare(tfcHousehold))
 
-  val applicableBenefits: Seq[WhichBenefitsEnum.Value] =
-    Seq(CARERSALLOWANCE)
+  val applicableBenefits: Seq[WhichBenefitsEnum.Value] = Seq(CARERSALLOWANCE)
 
   val answers: UserAnswers = mock[UserAnswers]
   val modelFactory: ModelFactory = mock[ModelFactory]
   val household = mock[ModelFactory]
 
-  ".eligibility" must {
+  "eligibility" must {
 
     "return `NotDetermined` if `household` is undefined" in {
       when(household(any())) thenReturn None

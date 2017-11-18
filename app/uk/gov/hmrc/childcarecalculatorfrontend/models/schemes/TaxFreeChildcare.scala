@@ -27,15 +27,13 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
     household(answers).map {
-      case SingleHousehold(parent) =>
-        singleEligibility(parent)
-      case JointHousehold(parent, partner) =>
-        jointEligibility(parent, partner)
+      case SingleHousehold(parent) => singleEligibility(parent)
+      case JointHousehold(parent, partner) => jointEligibility(parent, partner)
     }
   }.getOrElse(NotDetermined)
 
   private def singleEligibility(parent: Parent): Eligibility = {
-    if ((parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))) {
+    if (isEligible(parent)) {
       Eligible
     } else {
       NotEligible
@@ -44,14 +42,8 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
   private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
 
-    val parentEligibility: Boolean =
-      (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
-
-    val partnerEligibility: Boolean =
-      (partner.minEarnings && partner.maxEarnings) || (!partner.minEarnings && (partner.apprentice || partner.selfEmployed))
-
-    if ((parentEligibility && (partnerEligibility || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
-      (partnerEligibility && (parentEligibility || parent.benefits.intersect(applicableBenefits).nonEmpty))) {
+    if ((isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
+      (isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefits).nonEmpty))) {
       Eligible
     } else {
       NotEligible
@@ -59,8 +51,10 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
   }
 
   //Only carer's allowance is considered as benefit to eligible
-  private val applicableBenefits: Set[WhichBenefitsEnum.Value] =
-    Set(CARERSALLOWANCE)
+  private val applicableBenefits: Set[WhichBenefitsEnum.Value] = Set(CARERSALLOWANCE)
+
+  private def isEligible(parent: Parent): Boolean =
+    (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
 
 
 }
