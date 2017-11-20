@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{AnyContent, RequestHeader, Result}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -27,7 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayPerWeekForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryPayPerWeekId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
 
 import scala.concurrent.Future
@@ -40,23 +42,41 @@ class YourStatutoryPayPerWeekController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
+
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
-    implicit request =>
+    implicit request => {
+
+      val test: DataRequest[AnyContent] = request
+
+     val statutoryType =  request.userAnswers.yourStatutoryPayType.getOrElse("")
+
+      println("****************** In onPageLoad YourStatutoryPayPerWeekController ***** statutoryType :::  "+statutoryType)
+
       val preparedForm = request.userAnswers.yourStatutoryPayPerWeek match {
         case None => YourStatutoryPayPerWeekForm()
         case Some(value) => YourStatutoryPayPerWeekForm().fill(value)
       }
-      Ok(yourStatutoryPayPerWeek(appConfig, preparedForm, mode))
+      Ok(yourStatutoryPayPerWeek(appConfig, preparedForm, mode, statutoryType))
+    }
+
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      YourStatutoryPayPerWeekForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(yourStatutoryPayPerWeek(appConfig, formWithErrors, mode))),
-        (value) =>
-          dataCacheConnector.save[Int](request.sessionId, YourStatutoryPayPerWeekId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YourStatutoryPayPerWeekId, mode)(new UserAnswers(cacheMap))))
-      )
+      {
+        val statutoryType =  request.userAnswers.yourStatutoryPayType.getOrElse("")
+
+        YourStatutoryPayPerWeekForm().bindFromRequest().fold(
+          (formWithErrors: Form[Int]) =>
+            Future.successful(BadRequest(yourStatutoryPayPerWeek(appConfig, formWithErrors, mode, statutoryType))),
+          (value) =>
+            dataCacheConnector.save[Int](request.sessionId, YourStatutoryPayPerWeekId.toString, value).map(cacheMap =>
+              Redirect(navigator.nextPage(YourStatutoryPayPerWeekId(statutoryType), mode)(new UserAnswers(cacheMap))))
+        )
+      }
+
   }
 }

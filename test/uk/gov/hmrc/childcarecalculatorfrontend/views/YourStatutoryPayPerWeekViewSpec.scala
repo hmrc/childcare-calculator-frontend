@@ -27,17 +27,34 @@ class YourStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "yourStatutoryPayPerWeek"
 
-  def createView = () => yourStatutoryPayPerWeek(frontendAppConfig, YourStatutoryPayPerWeekForm(), NormalMode)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Int]) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  val statutoryType = "maternity"
 
   val form = YourStatutoryPayPerWeekForm()
 
+  def createView = () => yourStatutoryPayPerWeek(frontendAppConfig, YourStatutoryPayPerWeekForm(), NormalMode, statutoryType)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[Int]) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+
+  def createViewWithStatutoryType = (statutoryType: String) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+
+
   "YourStatutoryPayPerWeek view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+      )
 
     behave like pageWithBackLink(createView)
 
     behave like intPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url)
+  }
+
+  "show correct statutory pay type" in {
+    val doc = asDocument(createViewWithStatutoryType(statutoryType))
+
+    assertContainsText(doc, messagesApi(s"$messageKeyPrefix.hint"))
+    assertContainsText(doc, messagesApi(s"$messageKeyPrefix.heading", statutoryType))
   }
 }

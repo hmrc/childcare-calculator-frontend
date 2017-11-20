@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import org.scalatest.mockito.MockitoSugar
 import play.api.data.Form
 import play.api.libs.json.JsNumber
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -25,18 +28,29 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayPerWeekForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryPayPerWeekId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.ENGLAND
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{yourStatutoryPayPerWeek, yourStatutoryPayType}
 
-class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
+class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with MockitoSugar{
+
+  val statutoryType = "maternity"
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourStatutoryPayPerWeekController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new YourStatutoryPayPerWeekController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = YourStatutoryPayPerWeekForm()) = yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = YourStatutoryPayPerWeekForm()) =
+    yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+
 
   val testNumber = 123
 
@@ -52,7 +66,6 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(YourStatutoryPayPerWeekId.toString -> JsNumber(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(YourStatutoryPayPerWeekForm().fill(testNumber))
@@ -60,7 +73,7 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
-
+      setUpMock()
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -70,7 +83,7 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = YourStatutoryPayPerWeekForm().bind(Map("value" -> "invalid value"))
-
+      setUpMock()
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
@@ -79,7 +92,7 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
-
+      setUpMock()
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
@@ -87,9 +100,13 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
-
+      setUpMock()
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
+  }
+
+  private def setUpMock() = {
+
   }
 }
