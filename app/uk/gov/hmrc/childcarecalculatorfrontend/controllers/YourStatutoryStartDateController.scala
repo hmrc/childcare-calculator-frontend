@@ -53,7 +53,7 @@ class YourStatutoryStartDateController @Inject()(
         case None => YourStatutoryStartDateForm()
         case Some(value) => YourStatutoryStartDateForm().fill(value)
       }
-      Ok(yourStatutoryStartDate(appConfig, preparedForm, mode, statutoryType))
+      Ok(yourStatutoryStartDate(appConfig, preparedForm, mode, request.userAnswers.yourStatutoryPayType.get))
   }
 
   def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {

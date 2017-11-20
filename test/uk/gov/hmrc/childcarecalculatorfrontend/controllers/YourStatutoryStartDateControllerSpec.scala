@@ -18,14 +18,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.{Json, JsNumber}
+import play.api.libs.json.{JsString, JsBoolean, Json, JsNumber}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryStartDateId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{YourStatutoryPayTypeForm, BooleanForm, YourStatutoryStartDateForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryStartDateId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
@@ -60,6 +60,28 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
       contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm().fill(new LocalDate(2017, 2, 1)))
     }
+
+    "populate the view correctly on a GET request" in {
+      val validData = Map(YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
+
+      contentAsString(result) must include("maternity")
+    }
+
+    "redirect to Session Expired for a POST if there is no answer for statutory type" in {
+      val validData = Map(YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(
+        "date.day"   -> "1",
+        "date.month" -> "2",
+        "date.year"  -> "2017"
+      )
+      val result = controller(getRelevantData).onSubmit(NormalMode, statutoryType)(postRequest)
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+  }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
