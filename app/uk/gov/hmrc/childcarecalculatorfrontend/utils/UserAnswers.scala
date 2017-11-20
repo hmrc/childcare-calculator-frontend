@@ -44,7 +44,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def bothNoWeeksStatPayPY: Option[BothNoWeeksStatPayPY] = cacheMap.getEntry[BothNoWeeksStatPayPY](BothNoWeeksStatPayPYId.toString)
 
-  def partnerNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](PartnerNoWeeksStatPayPYId.toString)
+  def partnerNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](partnerNoWeeksStatPayPY.toString)
 
   def childStartEducation(index: Int): Option[LocalDate] = {
     childStartEducation.flatMap(_.get(index))

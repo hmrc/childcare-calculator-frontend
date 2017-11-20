@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsBoolean, JsString, JsValue}
+import play.api.libs.json.{JsBoolean, JsString, JsValue,JsNumber}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
@@ -34,13 +34,14 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeNoOfChildren(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val originalDataSet = cacheMap.data.get("noOfChildren")
-
     val mapToStore= value match {
-      case JsString(_) if !originalDataSet.contains(value) => cacheMap copy (data = cacheMap.data - AboutYourChildId.toString - ChildApprovedEducationId.toString -
-        ChildStartEducationId.toString - ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
-        ChildRegisteredBlindId.toString - WhichChildrenBlindId.toString - ChildRegisteredBlindId.toString - WhichBenefitsYouGetId.toString -
-        ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString
-        )
+      case JsNumber(_) if !originalDataSet.contains(value) => {
+        println("in first case.....")
+        cacheMap copy (data = cacheMap.data - AboutYourChildId.toString - ChildApprovedEducationId.toString -
+          ChildStartEducationId.toString - ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
+          ChildRegisteredBlindId.toString - WhichChildrenBlindId.toString - ChildRegisteredBlindId.toString - WhichBenefitsYouGetId.toString -
+          ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString)
+      }
       case _ => cacheMap
     }
     store(NoOfChildrenId.toString, value, mapToStore)

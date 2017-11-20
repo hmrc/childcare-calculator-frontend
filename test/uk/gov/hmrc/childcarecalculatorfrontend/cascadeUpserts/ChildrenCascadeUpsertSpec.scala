@@ -44,13 +44,13 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       "remove relevant data in child journey when noOfChildren value is changed" in {
 
         val originalCacheMap = new CacheMap("id", Map(
-          NoOfChildrenId.toString -> JsString("3"),
+          NoOfChildrenId.toString -> JsNumber(5),
           AboutYourChildId.toString -> Json.obj(
             "0" -> Json.toJson(AboutYourChild("Foo", over19)),
             "1" -> Json.toJson(AboutYourChild("Bar", over16)),
             "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
             "3" -> Json.toJson(AboutYourChild("Baz", under16)),
-            "4" -> Json.toJson(AboutYourChild("Baz", under16))),
+            "4" -> Json.toJson(AboutYourChild("Raz", under16))),
           ChildApprovedEducationId.toString -> Json.obj(
             "0" -> true,
             "1" -> true
@@ -78,9 +78,10 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
             "4" -> JsNumber(224))
         ))
 
-        val result = cascadeUpsert(NoOfChildrenId.toString, "4", originalCacheMap)
+        val result = cascadeUpsert(NoOfChildrenId.toString, 4, originalCacheMap)
 
-        result.data mustBe Map(NoOfChildrenId.toString -> JsString("4"))
+        result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
+
       }
     }
   }
