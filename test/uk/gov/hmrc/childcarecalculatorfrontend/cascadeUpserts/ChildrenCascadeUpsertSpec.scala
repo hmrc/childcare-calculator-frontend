@@ -66,9 +66,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ),
           ChildRegisteredBlindId.toString -> JsBoolean(true),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-          ChildRegisteredBlindId.toString -> JsBoolean(true),
-
-          WhichBenefitsYouGetId.toString -> Json.toJson(Seq(3, 4)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
           ChildcarePayFrequencyId.toString -> Json.obj(
             "0" -> monthly,
             "2" -> weekly
@@ -83,7 +81,413 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
 
       }
+
+
+      "remove relevant data in child journey when noOfChildren value is changed from single child" in {
+
+        val originalCacheMap = new CacheMap("id", Map(
+          NoOfChildrenId.toString -> JsNumber(1),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+
+          ChildApprovedEducationId.toString -> Json.obj(
+            "0" -> true
+          ),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits,higherRateDisabilityBenefits)),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(0)),
+            WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123))
+
+        )))
+
+        val result = cascadeUpsert(NoOfChildrenId.toString, 4, originalCacheMap)
+
+        result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
+
+      }
     }
+
+    "Save aboutYourChild data " must {
+      "remove child education data when there is no child age above 16" in {
+
+        val aboutChildrenMap= Map(
+          "0" -> Json.toJson(AboutYourChild("Foo", under16)),
+          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+          "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
+          "3" -> Json.toJson(AboutYourChild("Baz", under16)),
+          "4" -> Json.toJson(AboutYourChild("Raz", under16)))
+
+        val originalCacheMap = new CacheMap("id", Map(
+
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+            "1" -> Json.toJson(AboutYourChild("Bar", over19)),
+            "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
+            "3" -> Json.toJson(AboutYourChild("Baz", under16)),
+            "4" -> Json.toJson(AboutYourChild("Raz", under16))),
+
+          ChildApprovedEducationId.toString -> Json.obj(
+            "0" -> true,
+            "1" -> true
+          ),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "3" -> JsNumber(123),
+            "4" -> JsNumber(224))
+        ))
+
+
+
+        val result = cascadeUpsert(AboutYourChildId.toString, aboutChildrenMap, originalCacheMap)
+
+        result.data mustBe Map(AboutYourChildId.toString -> Json.toJson(aboutChildrenMap),ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "3" -> JsNumber(123),
+            "4" -> JsNumber(224))
+        )
+
+      }
+
+
+      "remove the child education data when the child above 16 are changed" in {
+
+        val aboutChildrenMap= Map(
+          "0" -> Json.toJson(AboutYourChild("Foo", under16)),
+          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+          "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
+          "3" -> Json.toJson(AboutYourChild("Baz", over19)),
+          "4" -> Json.toJson(AboutYourChild("Raz", over19)))
+
+        val originalCacheMap = new CacheMap("id", Map(
+
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+            "1" -> Json.toJson(AboutYourChild("Bar", over19)),
+            "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
+            "3" -> Json.toJson(AboutYourChild("Baz", under16)),
+            "4" -> Json.toJson(AboutYourChild("Raz", under16))),
+
+          ChildApprovedEducationId.toString -> Json.obj(
+            "0" -> true,
+            "1" -> true
+          ),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "3" -> JsNumber(123),
+            "4" -> JsNumber(224))
+        ))
+
+
+
+        val result = cascadeUpsert(AboutYourChildId.toString, aboutChildrenMap, originalCacheMap)
+
+        result.data mustBe Map(AboutYourChildId.toString -> Json.toJson(aboutChildrenMap),ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "3" -> JsNumber(123),
+            "4" -> JsNumber(224))
+        )
+
+      }
+    }
+
+    "Save childApprovedEducation data " must {
+        "remove childEducationStartDate data when children with age above 19 and below 20 selects no for childApprovedEducation" in {
+
+          val originalCacheMap = new CacheMap("id", Map(
+            NoOfChildrenId.toString -> JsNumber(3),
+            AboutYourChildId.toString -> Json.obj(
+              "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+              "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+              "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+
+                ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
+            ChildStartEducationId.toString -> Json.obj(
+              "0" -> childStartEducationDate
+            ),
+            ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+            WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+            WhichDisabilityBenefitsId.toString -> Json.obj(
+              "0" -> Seq(disabilityBenefits),
+              "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+            ),
+            ChildRegisteredBlindId.toString -> JsBoolean(true),
+            WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+            WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+            ChildcarePayFrequencyId.toString -> Json.obj(
+              "0" -> monthly,
+              "2" -> weekly
+            ),
+            ExpectedChildcareCostsId.toString -> Json.obj(
+              "0" -> JsNumber(123),
+              "2" -> JsNumber(224))
+          ))
+
+          val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> true)), originalCacheMap)
+
+          result.data mustBe Map(
+            NoOfChildrenId.toString -> JsNumber(3),
+            AboutYourChildId.toString -> Json.obj(
+              "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+              "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+              "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+
+              ChildApprovedEducationId.toString -> Json.obj("0" -> false, "1" -> true),
+
+            ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+
+            WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+
+            WhichDisabilityBenefitsId.toString -> Json.obj(
+              "0" -> Seq(disabilityBenefits),
+              "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+            ),
+            ChildRegisteredBlindId.toString -> JsBoolean(true),
+            WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+            WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+            ChildcarePayFrequencyId.toString -> Json.obj(
+              "0" -> monthly,
+              "2" -> weekly
+            ),
+            ExpectedChildcareCostsId.toString -> Json.obj(
+              "0" -> JsNumber(123),
+              "2" -> JsNumber(224)))
+        }
+      }
+
+
+    "Save childrenDisabilityBenefits data " must {
+      "remove whichChildrenDisability and whichDisabilityBenefits data when childrenDisabilityBenefits is no" in {
+
+        val originalCacheMap = new CacheMap("id", Map(
+          NoOfChildrenId.toString -> JsNumber(3),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+            "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123),
+            "2" -> JsNumber(224))
+        ))
+
+        val result = cascadeUpsert(ChildrenDisabilityBenefitsId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(
+          NoOfChildrenId.toString -> JsNumber(3),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+            "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123),
+            "2" -> JsNumber(224)))
+      }
+    }
+
+    "Save childDisabilityBenefits data " must {
+      "remove whichDisabilityBenefits data when childDisabilityBenefits is no" in {
+
+        val originalCacheMap = new CacheMap("id", Map(
+          NoOfChildrenId.toString -> JsNumber(1),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19))),
+
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildDisabilityBenefitsId.toString -> JsBoolean(true),
+            WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits)),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123))))
+
+        val result = cascadeUpsert(ChildDisabilityBenefitsId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(
+          NoOfChildrenId.toString -> JsNumber(1),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19))),
+
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildDisabilityBenefitsId.toString -> JsBoolean(false),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123)))
+      }
+    }
+
+
+
+    "Save whichChildrenDisability data " must {
+      "remove whichDisabilityBenefits data when childrenDisabilityBenefits is no" in {
+
+        val originalCacheMap = new CacheMap("id", Map(
+          NoOfChildrenId.toString -> JsNumber(3),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+            "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123),
+            "2" -> JsNumber(224))
+        ))
+
+        val result = cascadeUpsert( WhichChildrenDisabilityId.toString ,Json.toJson(Seq(0, 1)), originalCacheMap)
+
+        result.data mustBe Map(
+          NoOfChildrenId.toString -> JsNumber(3),
+          AboutYourChildId.toString -> Json.obj(
+            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
+            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+            "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
+          ChildStartEducationId.toString -> Json.obj(
+            "0" -> childStartEducationDate
+          ),
+          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 1)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits),
+            "1" -> Seq(higherRateDisabilityBenefits)
+          ),
+          ChildRegisteredBlindId.toString -> JsBoolean(true),
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+          ChildcarePayFrequencyId.toString -> Json.obj(
+            "0" -> monthly,
+            "2" -> weekly
+          ),
+          ExpectedChildcareCostsId.toString -> Json.obj(
+            "0" -> JsNumber(123),
+            "2" -> JsNumber(224)))
+      }
+    }
+
+
   }
 
 }
