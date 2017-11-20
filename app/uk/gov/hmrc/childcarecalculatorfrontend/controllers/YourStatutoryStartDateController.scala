@@ -53,7 +53,11 @@ class YourStatutoryStartDateController @Inject()(
         case None => YourStatutoryStartDateForm()
         case Some(value) => YourStatutoryStartDateForm().fill(value)
       }
-      Ok(yourStatutoryStartDate(appConfig, preparedForm, mode, request.userAnswers.yourStatutoryPayType.get))
+
+      request.userAnswers.yourStatutoryPayType match {
+        case Some(x) => Ok (yourStatutoryStartDate (appConfig, preparedForm, mode, x) )
+        case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+      }
   }
 
   def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {

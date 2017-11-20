@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.{YourStatutoryPayTypeForm, BooleanForm, YourStatutoryStartDateForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryStartDateId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
 class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
@@ -46,16 +46,18 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
   "YourStatutoryStartDate Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode, statutoryType)(fakeRequest)
-
+      val validData = Map(YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)))
+      val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+        YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value)
+      )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-
       val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm().fill(new LocalDate(2017, 2, 1)))
@@ -70,15 +72,10 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       contentAsString(result) must include("maternity")
     }
 
-    "redirect to Session Expired for a POST if there is no answer for statutory type" in {
-      val validData = Map(YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value))
+    "redirect to Session Expired for page load if there is no answer for statutory type" in {
+      val validData = Map(LOCATION.toString -> JsString(Location.ENGLAND.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val postRequest = fakeRequest.withFormUrlEncodedBody(
-        "date.day"   -> "1",
-        "date.month" -> "2",
-        "date.year"  -> "2017"
-      )
-      val result = controller(getRelevantData).onSubmit(NormalMode, statutoryType)(postRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
   }

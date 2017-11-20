@@ -34,7 +34,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   override protected def routeMap = Map(
     BothStatutoryPayId -> (_ => routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)),
     WhoGotStatutoryPayId -> (_ => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)),
-    YourStatutoryPayTypeId -> (_ => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)),
+    YourStatutoryPayTypeId -> (_ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode, "maternity")),
     YourStatutoryStartDateId -> (_ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode, "maternity")),
     YourStatutoryWeeksId -> (_ => routes.YourStatutoryPayBeforeTaxController.onPageLoad(NormalMode)),
     YourStatutoryPayBeforeTaxId -> (_ => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)),
