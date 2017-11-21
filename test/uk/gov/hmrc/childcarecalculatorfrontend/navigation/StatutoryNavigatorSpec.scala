@@ -40,27 +40,27 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
     "in Normal mode" must {
 
       "Both Statutory Pay route" must {
-        "redirects to resuls page when user selects no" in {
+        "redirects to result page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.YouPaidPensionCY) thenReturn Some(true)
+          when(answers.bothStatutoryPay) thenReturn Some(false)
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe
-            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(BothStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
         }
 
         "redirects to whoGotStatutoryPay page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.YouPaidPensionCY) thenReturn Some(true)
+          when(answers.bothStatutoryPay) thenReturn Some(true)
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe
-            routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+          navigator.nextPage(BothStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.YouPaidPensionCY) thenReturn None
+          when(answers.bothStatutoryPay) thenReturn None
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(BothStatutoryPayId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }

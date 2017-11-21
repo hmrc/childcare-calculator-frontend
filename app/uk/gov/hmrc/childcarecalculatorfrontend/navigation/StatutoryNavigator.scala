@@ -32,7 +32,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends SubNavigator {
 
   override protected def routeMap = Map(
-    BothStatutoryPayId -> (_ => routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)),
+    BothStatutoryPayId -> bothStatutoryPayRouteCY,
     WhoGotStatutoryPayId -> (_ => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)),
     YourStatutoryPayTypeId -> (_ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)),
     YourStatutoryStartDateId -> (_ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)),
@@ -44,6 +44,14 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     PartnerStatutoryWeeksId -> (_ => routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)),
     PartnerStatutoryPayBeforeTaxId -> (_ => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode))
   )
+
+  private def bothStatutoryPayRouteCY(answers: UserAnswers) = {
+    utils.getCall(answers.bothStatutoryPay) {
+      case true => routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)
+      case false =>  routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+    }
+  }
+
 //
 //  private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
 //    utils.getCall(answers.yourStatutoryPayCY) {
@@ -59,12 +67,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 //    }
 //  }
 //
-//  private def bothStatutoryPayRouteCY(answers: UserAnswers) = {
-//    utils.getCall(answers.bothStatutoryPayCY) {
-//      case true => routes.WhoGetsStatutoryCYController.onPageLoad(NormalMode)
-//      case false => statutoryPayRouteCYForNoSelection(answers)
-//    }
-//  }
+
 //
 //  private def whoGetsStatutoryRouteCY(answers: UserAnswers) =
 //    utils.getCall(answers.whoGetsStatutoryCY) {
