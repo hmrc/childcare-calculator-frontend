@@ -471,6 +471,9 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ),
           ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
           WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 1)),
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            "0" -> Seq(disabilityBenefits)
+          ),
           ChildRegisteredBlindId.toString -> JsBoolean(true),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
           WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
