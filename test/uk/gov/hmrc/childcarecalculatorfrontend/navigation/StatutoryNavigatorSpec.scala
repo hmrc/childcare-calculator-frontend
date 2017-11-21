@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{HouseholdFactory, TaxCredits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -49,12 +49,12 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
         }
 
-        "redirects to yourStatutoryWeeks page when user selects yes" in {
+        "redirects to yourStatutoryPayType page when user selects yes" in {
           val answers = spy(userAnswers())
           when(answers.youStatutoryPay) thenReturn Some(true)
 
           navigator.nextPage(YouStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
+            routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -90,6 +90,41 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.bothStatutoryPay) thenReturn None
 
           navigator.nextPage(BothStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+
+      "Who Got Statutory Pay route" must {
+        "redirects to yourStatutoryPayType page when user selects you option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
+
+          navigator.nextPage(WhoGotStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects partner option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
+
+          navigator.nextPage(WhoGotStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
+        "redirects to TBD page when user selects both option" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
+
+          navigator.nextPage(WhoGotStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.whoGotStatutoryPay) thenReturn None
+
+          navigator.nextPage(WhoGotStatutoryPayId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }

@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
@@ -34,7 +34,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   override protected def routeMap = Map(
     BothStatutoryPayId -> bothStatutoryPayRoute,
     YouStatutoryPayId -> yourStatutoryPayRoute,
-    WhoGotStatutoryPayId -> (_ => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)),
+    WhoGotStatutoryPayId -> whoGotStatutoryPayRoute,
     YourStatutoryPayTypeId -> (_ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)),
     YourStatutoryStartDateId -> (_ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)),
     YourStatutoryWeeksId -> (_ => routes.YourStatutoryPayBeforeTaxController.onPageLoad(NormalMode)),
@@ -56,10 +56,17 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
   private def yourStatutoryPayRoute(answers: UserAnswers) = {
     utils.getCall(answers.youStatutoryPay) {
-      case true => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
+      case true => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
       case false => routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
     }
   }
+
+  private def whoGotStatutoryPayRoute(answers: UserAnswers) =
+      utils.getCall(answers.whoGotStatutoryPay) {
+        case YouPartnerBothEnum.YOU => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+        case YouPartnerBothEnum.PARTNER => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        case YouPartnerBothEnum.BOTH => routes.SessionExpiredController.onPageLoad()//TODO: to be replaced by correct page
+      }
 
 //  private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
 //    utils.getCall(answers.partnerStatutoryPayCY) {
