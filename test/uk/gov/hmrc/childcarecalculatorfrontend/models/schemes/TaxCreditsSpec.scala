@@ -131,7 +131,7 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with GeneratorDrivenPr
     maxDiscardedFactor = 100.0)
 
   implicit val genBenefits: Gen[Set[WhichBenefitsEnum.Value]] =
-    Gen.containerOf[Set, WhichBenefitsEnum.Value](Gen.oneOf(WhichBenefitsEnum.values.toSeq))
+    Gen.containerOf[Set, WhichBenefitsEnum.Value](Gen.oneOf(Seq(CARERSALLOWANCE)))
 
   implicit val genParent: Gen[Parent] = {
 

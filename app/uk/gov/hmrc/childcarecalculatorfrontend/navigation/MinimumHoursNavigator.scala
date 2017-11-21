@@ -60,7 +60,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
           if (freeHours.eligibility(answers) == Eligible) {
             routes.FreeHoursInfoController.onPageLoad()
           } else {
-            routes.FreeHoursResultController.onPageLoad()
+            routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
           }
         } else {
           routes.ApprovedProviderController.onPageLoad(NormalMode)
