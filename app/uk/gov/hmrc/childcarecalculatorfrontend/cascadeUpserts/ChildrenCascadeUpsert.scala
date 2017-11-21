@@ -99,19 +99,28 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     val originalDataSet = cacheMap.data.get("whichChildrenDisability")
 
-    println("originalDataSet"+originalDataSet)
-
-    println("value"+value)
-    println("!originalDataSet.contains(value)"+originalDataSet.contains(value))
-
     val mapToStore= value match {
-      case JsObject(_)  if !originalDataSet.contains(value)  => {
-        println("in...................")
-        cacheMap copy (data = cacheMap.data - WhichChildrenDisabilityId.toString)
+      case JsArray(_)  if !originalDataSet.contains(value)  => {
+        cacheMap copy (data = cacheMap.data - WhichDisabilityBenefitsId.toString)
       }
       case _ => cacheMap
     }
     store(WhichChildrenDisabilityId.toString, value, mapToStore)
   }
+
+
+  /*private def test(value: JsValue, cacheMap: CacheMap): CacheMap ={
+    val originalDataSet = cacheMap.data.get("whichChildrenDisability")
+
+
+    println("originalDataSet \t"+originalDataSet)
+
+    println("value\t"+value)
+
+    println(" originalDataSet.get\t"+ originalDataSet.get)
+
+
+    cacheMap
+  }*/
 
 }
