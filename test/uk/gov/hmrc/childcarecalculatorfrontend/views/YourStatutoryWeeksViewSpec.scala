@@ -45,6 +45,6 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
     )
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryWeeksController.onSubmit(NormalMode, statutoryType).url)
+    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryWeeksController.onSubmit(NormalMode).url)
   }
 }

@@ -27,7 +27,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def yourStatutoryStartDate(statutoryType: String): Option[AnswerRow] = userAnswers.yourStatutoryStartDate map {
-    x => AnswerRow("yourStatutoryStartDate.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryStartDateController.onPageLoad(CheckMode, statutoryType).url)
+    x => AnswerRow("yourStatutoryStartDate.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryStartDateController.onPageLoad(CheckMode).url)
   }
 
   def partnerStatutoryPayPerWeek: Option[AnswerRow] = userAnswers.partnerStatutoryPayPerWeek map {
@@ -51,7 +51,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def yourStatutoryWeeks(statutoryType: String): Option[AnswerRow] = userAnswers.yourStatutoryWeeks map {
-    x => AnswerRow("yourStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryWeeksController.onPageLoad(CheckMode, statutoryType).url)
+    x => AnswerRow("yourStatutoryWeeks.checkYourAnswersLabel", s"$x", false, routes.YourStatutoryWeeksController.onPageLoad(CheckMode).url)
   }
 
   def yourStatutoryPayType: Option[AnswerRow] = userAnswers.yourStatutoryPayType map {

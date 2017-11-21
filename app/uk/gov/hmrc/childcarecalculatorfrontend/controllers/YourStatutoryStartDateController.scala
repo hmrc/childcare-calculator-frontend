@@ -47,7 +47,7 @@ class YourStatutoryStartDateController @Inject()(
     Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
 
 
-  def onPageLoad(mode: Mode, statutoryType: String) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.yourStatutoryStartDate match {
         case None => YourStatutoryStartDateForm()
@@ -60,8 +60,11 @@ class YourStatutoryStartDateController @Inject()(
       }
   }
 
-  def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+
+      val statutoryType = request.userAnswers.yourStatutoryPayType.getOrElse("")
+
       YourStatutoryStartDateForm().bindFromRequest().fold(
         (formWithErrors: Form[LocalDate]) =>
           Future.successful(BadRequest(yourStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),

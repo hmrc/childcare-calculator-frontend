@@ -80,9 +80,9 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-       ???
-        // case Partner => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-       // case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+//        case Partner => routes.SessionExpiredController.onPageLoad() //routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+//        case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
 
@@ -123,9 +123,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerBenefitsIncomePY) {case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-       ???
         // case Partner => routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
-        // case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+        case Both => routes.BothStatutoryPayController.onPageLoad(NormalMode)
       }
     }
 
@@ -152,7 +151,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => ??? //routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
-       // case Both => routes.BothStatutoryPayPYController.onPageLoad(NormalMode)
+        case Both => routes.BothStatutoryPayController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

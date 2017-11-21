@@ -40,8 +40,11 @@ class YourStatutoryWeeksController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode, statutoryType: String) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+
+      val statutoryType = request.userAnswers.yourStatutoryPayType.getOrElse("")
+
       val preparedForm = request.userAnswers.yourStatutoryWeeks match {
         case None => YourStatutoryWeeksForm()
         case Some(value) => YourStatutoryWeeksForm().fill(value)
@@ -49,8 +52,11 @@ class YourStatutoryWeeksController @Inject()(
       Ok(yourStatutoryWeeks(appConfig, preparedForm, mode, statutoryType))
   }
 
-  def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+
+      val statutoryType = request.userAnswers.yourStatutoryPayType.getOrElse("")
+
       YourStatutoryWeeksForm().bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
           Future.successful(BadRequest(yourStatutoryWeeks(appConfig, formWithErrors, mode, statutoryType))),

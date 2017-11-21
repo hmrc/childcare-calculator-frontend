@@ -48,7 +48,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
     "return OK and the correct view for a GET" in {
       val validData = Map(YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
@@ -58,7 +58,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
         YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm().fill(new LocalDate(2017, 2, 1)))
     }
@@ -67,7 +67,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val validData = Map(YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
       contentAsString(result) must include("maternity")
     }
@@ -75,7 +75,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
     "redirect to Session Expired for page load if there is no answer for statutory type" in {
       val validData = Map(LOCATION.toString -> JsString(Location.ENGLAND.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(getRelevantData).onPageLoad(NormalMode, statutoryType)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
   }
@@ -87,7 +87,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
         "date.year"  -> "2017"
       )
 
-      val result = controller().onSubmit(NormalMode, statutoryType)(postRequest)
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -97,14 +97,14 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = YourStatutoryStartDateForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode, statutoryType)(postRequest)
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode, "maternity")(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
@@ -112,7 +112,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "maternity"))
-      val result = controller(dontGetAnyData).onSubmit(NormalMode, statutoryType)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
