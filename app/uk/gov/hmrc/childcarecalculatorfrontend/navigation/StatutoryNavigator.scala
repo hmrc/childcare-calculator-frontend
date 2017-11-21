@@ -32,7 +32,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends SubNavigator {
 
   override protected def routeMap = Map(
-    BothStatutoryPayId -> bothStatutoryPayRouteCY,
+    BothStatutoryPayId -> bothStatutoryPayRoute,
+    YouStatutoryPayId -> yourStatutoryPayRoute,
     WhoGotStatutoryPayId -> (_ => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)),
     YourStatutoryPayTypeId -> (_ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)),
     YourStatutoryStartDateId -> (_ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)),
@@ -45,21 +46,21 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     PartnerStatutoryPayBeforeTaxId -> (_ => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode))
   )
 
-  private def bothStatutoryPayRouteCY(answers: UserAnswers) = {
+  private def bothStatutoryPayRoute(answers: UserAnswers) = {
     utils.getCall(answers.bothStatutoryPay) {
       case true => routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)
       case false =>  routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
     }
   }
 
-//
-//  private def yourStatutoryPayRouteCY(answers: UserAnswers) = {
-//    utils.getCall(answers.yourStatutoryPayCY) {
-//      case true => routes.YouNoWeeksStatPayCYController.onPageLoad(NormalMode)
-//      case false => yourStatutoryPayRouteCYForNoSelection(answers)
-//    }
-//  }
-//
+
+  private def yourStatutoryPayRoute(answers: UserAnswers) = {
+    utils.getCall(answers.youStatutoryPay) {
+      case true => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
+      case false => routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+    }
+  }
+
 //  private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
 //    utils.getCall(answers.partnerStatutoryPayCY) {
 //      case true => routes.PartnerNoWeeksStatPayCYController.onPageLoad(NormalMode)
