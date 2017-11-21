@@ -48,13 +48,17 @@ class YourStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url)
+    behave like intPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url,
+      messageDynamicValue = Some(statutoryType))
   }
 
   "show correct statutory pay type" in {
     val doc = asDocument(createViewWithStatutoryType(statutoryType))
 
-    assertContainsText(doc, messagesApi(s"$messageKeyPrefix.hint"))
+    //assertContainsText(doc, messagesApi(s"$messageKeyPrefix.hint"))
     assertContainsText(doc, messagesApi(s"$messageKeyPrefix.heading", statutoryType))
   }
 }

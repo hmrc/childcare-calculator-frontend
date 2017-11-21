@@ -29,11 +29,11 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val statutoryType = "maternity"
 
-  def createView = () => yourStatutoryWeeks(frontendAppConfig, YourStatutoryWeeksForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  val form = YourStatutoryWeeksForm()
+
+  def createView = () => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Int]) => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
-
-  val form = YourStatutoryWeeksForm()
 
   "YourStatutoryWeeks view" must {
 
@@ -45,6 +45,11 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
     )
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryWeeksController.onSubmit(NormalMode).url)
+    behave like intPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.YourStatutoryWeeksController.onSubmit(NormalMode).url,
+      messageDynamicValue = Some("maternity")
+     )
   }
 }

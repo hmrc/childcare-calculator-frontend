@@ -17,42 +17,48 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
+import play.api.libs.json.{JsNumber, JsString}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryWeeksId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryWeeksId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
 class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
-  val statutoryType = "maternity"
+  private val statutoryType = "maternity"
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  private def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
+
+  private def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YourStatutoryWeeksController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
   def viewAsString(form: Form[Int] = YourStatutoryWeeksForm()) = yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+
+  private def buildFakeRequest(x: Map[String, JsString]) = {
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
+  }
 
   val testNumber = 123
 
   "YourStatutoryWeeks Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(YourStatutoryWeeksId.toString -> JsNumber(testNumber))
+      val validData = Map(YourStatutoryWeeksId.toString -> JsNumber(testNumber)) ++ statutoryTypeNameValuePair
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -70,10 +76,11 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
+
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = YourStatutoryWeeksForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
