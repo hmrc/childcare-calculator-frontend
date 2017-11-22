@@ -42,18 +42,24 @@ class PartnerStatutoryPayPerWeekController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+
+      val statutoryType = request.userAnswers.partnerStatutoryPayType.getOrElse("")
+
       val preparedForm = request.userAnswers.partnerStatutoryPayPerWeek match {
         case None => PartnerStatutoryPayPerWeekForm()
         case Some(value) => PartnerStatutoryPayPerWeekForm().fill(value)
       }
-      Ok(partnerStatutoryPayPerWeek(appConfig, preparedForm, mode))
+      Ok(partnerStatutoryPayPerWeek(appConfig, preparedForm, mode, statutoryType))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+
+      val statutoryType = request.userAnswers.partnerStatutoryPayType.getOrElse("")
+
       PartnerStatutoryPayPerWeekForm().bindFromRequest().fold(
         (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(partnerStatutoryPayPerWeek(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerStatutoryPayPerWeek(appConfig, formWithErrors, mode, statutoryType))),
         (value) =>
           dataCacheConnector.save[Int](request.sessionId, PartnerStatutoryPayPerWeekId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerStatutoryPayPerWeekId, mode)(new UserAnswers(cacheMap))))
