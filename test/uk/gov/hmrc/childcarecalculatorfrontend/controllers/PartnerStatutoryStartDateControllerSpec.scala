@@ -35,12 +35,18 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType))
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerStatutoryStartDateController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
   def viewAsString(form: Form[LocalDate] = PartnerStatutoryStartDateForm()) =
     partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+
+  private def buildFakeRequest(x: Map[String, JsString]) = {
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
+  }
 
   "PartnerStatutoryStartDate Controller" must {
 
@@ -83,7 +89,7 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = PartnerStatutoryStartDateForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
