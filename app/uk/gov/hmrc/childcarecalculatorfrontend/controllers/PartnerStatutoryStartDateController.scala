@@ -46,17 +46,26 @@ class PartnerStatutoryStartDateController @Inject()(
   private def sessionExpired(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
 
-  def onPageLoad(mode: Mode, statutoryType: String) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.partnerStatutoryStartDate match {
         case None => PartnerStatutoryStartDateForm()
         case Some(value) => PartnerStatutoryStartDateForm().fill(value)
       }
-      Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, statutoryType))
+
+      request.userAnswers.partnerStatutoryPayType match {
+        case Some(x) => Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, x))
+        case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+      }
+
+
   }
 
-  def onSubmit(mode: Mode, statutoryType: String) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+
+      val statutoryType = request.userAnswers.partnerStatutoryPayType.getOrElse("")
+
       PartnerStatutoryStartDateForm().bindFromRequest().fold(
         (formWithErrors: Form[LocalDate]) =>
           Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),

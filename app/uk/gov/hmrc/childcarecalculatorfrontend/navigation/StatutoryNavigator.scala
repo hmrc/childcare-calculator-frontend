@@ -22,9 +22,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 /**
  * Contains the navigation for current and previous year statutory pay pages
@@ -36,11 +35,11 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     YouStatutoryPayId -> yourStatutoryPayRoute,
     WhoGotStatutoryPayId -> whoGotStatutoryPayRoute,
     YourStatutoryPayTypeId -> yourStatutoryPayTypeRoute,
+    PartnerStatutoryPayTypeId -> partnerStatutoryPayTypeRoute,
     YourStatutoryStartDateId -> (_ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)),
     YourStatutoryWeeksId -> (_ => routes.YourStatutoryPayBeforeTaxController.onPageLoad(NormalMode)),
     YourStatutoryPayBeforeTaxId -> (_ => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)),
     YourStatutoryPayPerWeekId -> (_ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)),
-    PartnerStatutoryPayTypeId -> (_ => routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode, "paternity")),
     PartnerStatutoryStartDateId -> (_ => routes.PartnerStatutoryWeeksController.onPageLoad(NormalMode)),
     PartnerStatutoryWeeksId -> (_ => routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)),
     PartnerStatutoryPayBeforeTaxId -> (_ => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode))
@@ -70,6 +69,10 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
   private def yourStatutoryPayTypeRoute(answers: UserAnswers)  =
     utils.getCall(answers.yourStatutoryPayType) { case _ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)}
+
+  private def partnerStatutoryPayTypeRoute(answers: UserAnswers)  =
+    utils.getCall(answers.partnerStatutoryPayType) { case _ => routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)}
+
 
   //  private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
 //    utils.getCall(answers.partnerStatutoryPayCY) {
