@@ -34,11 +34,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
       ChildApprovedEducationId.toString -> ((v, cm) => storeChildApprovedEducation(v, cm)),
         ChildrenDisabilityBenefitsId.toString -> ((v, cm) => storeChildrenDisabilityBenefits(v, cm)),
           ChildDisabilityBenefitsId.toString -> ((v, cm) => storeChildDisabilityBenefits(v, cm)),
-      WhichChildrenDisabilityId.toString -> ((v, cm) => storeWhichChildrenDisability(v, cm)),
-        RegisteredBlindId.toString -> ((v, cm) => storeRegisteredBlind(v, cm)),
-          WhoHasChildcareCostsId.toString -> ((v, cm) => storeWhoHasChildcareCosts(v, cm))
-
-
+      WhichChildrenDisabilityId.toString -> ((v, cm) => storeWhichChildrenDisability(v, cm))
     )
 
   private def storeNoOfChildren(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -98,19 +94,17 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
   }
 
   private def storeWhichChildrenDisability(value: JsValue, cacheMap: CacheMap): CacheMap = {
-
-    val originalDataSet = cacheMap.data.get(WhichChildrenDisabilityId.toString)
-
-    val mapToStore= value match {
-      case JsArray(_)  if !originalDataSet.contains(value) && originalDataSet.nonEmpty  => {
-
-        val valuesToDelete = originalDataSet.get.as[Set[Int]].filterNot(value.as[Set[Int]])
-        val updatedCacheMap = valuesToDelete.foldLeft(cacheMap.data(WhichDisabilityBenefitsId.toString))((data: JsValue, element: Int) => data.as[JsObject] - element.toString)
-
-        cacheMap copy (data = cacheMap.data + (WhichDisabilityBenefitsId.toString -> updatedCacheMap))
+    val mapToStore = value.validate[Set[Int]].fold(_ => cacheMap, newData => {
+        cacheMap.data.get(WhichChildrenDisabilityId.toString) match {
+        case Some(originalValues) => {
+          val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
+          val updatedValues = valuesToDelete.foldLeft(cacheMap.data(WhichDisabilityBenefitsId.toString))((dataObject, element) => dataObject.as[JsObject] - element.toString)
+          store(WhichDisabilityBenefitsId.toString,updatedValues,cacheMap)
+        }
+        case _ => cacheMap
       }
-      case _ => cacheMap
-    }
+    })
+
     store(WhichChildrenDisabilityId.toString, value, mapToStore)
   }
 
