@@ -54,25 +54,32 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
 
   private def costRoute(answers: UserAnswers): Call = {
     val No = YesNoUnsureEnum.NO.toString
-    answers.childcareCosts.map {
-      childcareCosts =>
-        if (childcareCosts == No) {
-          if (freeHours.eligibility(answers) == Eligible) {
-            routes.FreeHoursInfoController.onPageLoad()
-          } else {
-            routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
-          }
-        } else {
-          routes.ApprovedProviderController.onPageLoad(NormalMode)
-        }
-    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+    if(answers.childcareCosts.contains(No)) {
+      if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
+      }
+    } else {
+      routes.ApprovedProviderController.onPageLoad(NormalMode)
+    }
   }
 
   private def approvedChildCareRoute(answers: UserAnswers): Call = {
-    if (freeHours.eligibility(answers) == Eligible) {
-      routes.FreeHoursInfoController.onPageLoad()
+    val No = YesNoUnsureEnum.NO.toString
+    if(answers.approvedProvider.contains(No)) {
+      if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else {
+        routes.FreeHoursResultController.onPageLoad()
+      }
     } else {
-      routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      if (freeHours.eligibility(answers) == Eligible) {
+        routes.FreeHoursInfoController.onPageLoad()
+      } else {
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
     }
   }
+
 }

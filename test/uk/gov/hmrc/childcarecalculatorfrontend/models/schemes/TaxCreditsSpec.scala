@@ -18,146 +18,97 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import org.scalacheck.{Arbitrary, Gen}
-import Arbitrary.arbitrary
+import org.scalatest.{EitherValues, OptionValues}
 import org.scalatest.mockito.MockitoSugar
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxCreditsSpec extends SchemeSpec with MockitoSugar with GeneratorDrivenPropertyChecks {
+class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with EitherValues {
+
+  val applicableBenefits: Seq[WhichBenefitsEnum.Value] =
+    Seq(CARERSALLOWANCE)
+
+  def taxCredits(household: ModelFactory = new ModelFactory): TaxCredits = spy(new TaxCredits(household))
 
   val answers = mock[UserAnswers]
-  val modelFactory = mock[ModelFactory]
-  val scheme = new TaxCredits(modelFactory)
+  val household = mock[ModelFactory]
 
-  "eligibility" must {
+  ".eligibility" must {
 
-    "return `NotDetermined` if household data is missing" in {
-
-      implicit val household: Arbitrary[Option[Household]] =
-        Arbitrary(Gen.oneOf(Gen.const(None), genHousehold.map(Some.apply)))
-
-      forAll ("household") {
-        (household: Option[Household]) =>
-          whenever(household.isEmpty) {
-            when(modelFactory(any())) thenReturn household
-            scheme.eligibility(answers) mustEqual NotDetermined
-          }
-      }
+    "return `NotDetermined` if `household` is undefined" in {
+      when(household(any())) thenReturn None
+      taxCredits(household).eligibility(answers) mustEqual NotDetermined
     }
 
-    "single household" when {
-
-      "return `NotEligible` when the parent is not eligible" in {
-
-        forAll("parent") {
-          (parent: Parent) =>
-            whenever(!eligible(parent)) {
-              when(modelFactory(any())) thenReturn Some(SingleHousehold(parent))
-              scheme.eligibility(answers) mustEqual NotEligible
-            }
-        }
-      }
-
-      "return `Eligible` when the parent is eligible" in {
-
-        forAll("parent") {
-          (parent: Parent) =>
-            whenever(eligible(parent)) {
-              when(modelFactory(any())) thenReturn Some(SingleHousehold(parent))
-              scheme.eligibility(answers) mustEqual Eligible
-            }
-        }
-      }
-
+    "return `Eligible` if a user works 24 hours but their partner doesn't work and neither get benefits" in {
+      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual Eligible
     }
 
-    "joint household" when {
-
-      "return `NotEligible` when either user is not eligible" in {
-        forAll("parent", "partner") {
-          (parent: Parent, partner: Parent) =>
-
-            whenever(!jointEligible(parent, partner)) {
-              when(modelFactory(any())) thenReturn Some(JointHousehold(parent, partner))
-              scheme.eligibility(answers) mustEqual NotEligible
-            }
-        }
-      }
-
-      "return `Eligible` when both parents are eligible" in {
-
-        forAll("parent", "partner") {
-          (parent: Parent, partner: Parent) =>
-
-            whenever(jointEligible(parent, partner)) {
-              when(modelFactory(any())) thenReturn Some(JointHousehold(parent, partner))
-              scheme.eligibility(answers) mustEqual Eligible
-            }
-        }
-      }
-
-      "return `Eligible` when one parent is eligible, the other is not but claims carers allowance" in {
-        forAll("parent", "partner") {
-          (parent: Parent, partner: Parent) =>
-
-            whenever(
-              (eligible(parent) && !eligible(partner) && partner.benefits.contains(CARERSALLOWANCE)) ||
-                (eligible(partner) && !eligible(parent) && parent.benefits.contains(CARERSALLOWANCE))
-            ) {
-              when(modelFactory(any())) thenReturn Some(JointHousehold(parent, partner))
-              scheme.eligibility(answers) mustEqual Eligible
-            }
-        }
-      }
-
+    "return `Eligible` if a user works 16 hours and collectively the household works at least 24 hours and they don't claim benefits" in {
+      when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(8, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual Eligible
     }
 
+    applicableBenefits.foreach {
+      benefit =>
+
+        s"return `Eligible` if a user works 16 hours, their partner doesn't work but claims $benefit" in {
+          when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(0, Set(benefit))))
+          taxCredits(household).eligibility(answers) mustEqual Eligible
+        }
+
+        s"return `NotEligible` if a user works 16 hours, their partner doesn't work even if the user claims $benefit" in {
+          when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set(benefit)), Parent(0, Set.empty)))
+          taxCredits(household).eligibility(answers) mustEqual NotEligible
+        }
+
+        s"return `Eligible` if a user works 16 hours, their partner works but they don't meet the 24 hour threshold, but they claim $benefit" in {
+          when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(4, Set(benefit))))
+          taxCredits(household).eligibility(answers) mustEqual Eligible
+        }
+
+        s"return `NotEligible` if a user works 16 hours, their partner works but they don't meet the 24 hour threshold, even if the user claims $benefit" in {
+          when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set(benefit)), Parent(4, Set.empty)))
+          taxCredits(household).eligibility(answers) mustEqual NotEligible
+        }
+
+        s"return `Eligible` if a single user works 16 hours and they claim $benefit" in {
+          when(household(any())) thenReturn Some(SingleHousehold(Parent(16, Set(benefit))))
+          taxCredits(household).eligibility(answers) mustEqual Eligible
+        }
+
+        s"return `NotEligible` if a single user works less than 16 hours and claims $benefit" in {
+          when(household(any())) thenReturn Some(SingleHousehold(Parent(15, Set.empty)))
+          taxCredits(household).eligibility(answers) mustEqual NotEligible
+        }
+
+        s"return `NotEligible` if neither parent works 16 hours, even if they work 24 hours total, even if one of them claims $benefit" in {
+          when(household(any())) thenReturn Some(JointHousehold(Parent(12, Set.empty), Parent(12, Set(benefit))))
+          taxCredits(household).eligibility(answers) mustEqual NotEligible
+        }
+    }
+
+    "return `Eligible` if a single user works 16 hours and they don't get benefits" in {
+      when(household(any())) thenReturn Some(SingleHousehold(Parent(16, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual Eligible
+    }
+
+    "return `NotEligible` if a single user works less than 16 hours and doesn't get benefits" in {
+      when(household(any())) thenReturn Some(SingleHousehold(Parent(15, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
+    }
+
+    "return `NotEligible` if a user works 16 hours, their partner doesn't work and they don't claim benefits" in {
+      when(household(any())) thenReturn Some(JointHousehold(Parent(16, Set.empty), Parent(0, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
+    }
+
+    "return `NotEligible` if neither parent works 16 hours, even if they work 24 hours total, and they don't claim benefits" in {
+      when(household(any())) thenReturn Some(JointHousehold(Parent(12, Set.empty), Parent(12, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
+    }
   }
-
-  private val jointHours: BigDecimal = 24.0
-  private val individualHours: BigDecimal = 16.0
-
-  private def eligible(parent: Parent): Boolean = parent.hours >= individualHours
-
-  private def jointEligible(parent: Parent, partner: Parent): Boolean =
-    (eligible(parent) || eligible(partner)) && (parent.hours + partner.hours >= jointHours)
-
-  implicit override val generatorDrivenConfig = PropertyCheckConfiguration(
-    minSuccessful = 10,
-    maxDiscardedFactor = 100.0)
-
-  implicit val genBenefits: Gen[Set[WhichBenefitsEnum.Value]] =
-    Gen.containerOf[Set, WhichBenefitsEnum.Value](Gen.oneOf(Seq(CARERSALLOWANCE)))
-
-  implicit val genParent: Gen[Parent] = {
-
-    for {
-      hours  <- arbitrary[BigDecimal]
-      benefits     <- genBenefits
-    } yield Parent(hours, benefits)
-  }
-
-  implicit val genSingle: Gen[SingleHousehold] =
-    for {
-      parent <- genParent
-    } yield SingleHousehold(parent)
-
-  implicit val genJoint: Gen[JointHousehold] =
-    for {
-      parent <- genParent
-      partner <- genParent
-    } yield JointHousehold(parent, partner)
-
-  implicit val genHousehold: Gen[Household] =
-    Gen.oneOf(genSingle, genJoint)
-
-  implicit def genOpt[A](implicit gen: Gen[A]): Gen[Option[A]] =
-    Gen.oneOf(Gen.const(None), gen.map(Some.apply))
-
-  implicit def arb[A](implicit gen: Gen[A]): Arbitrary[A] = Arbitrary(gen)
-
 }
