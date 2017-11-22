@@ -41,7 +41,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     YourStatutoryWeeksId -> yourStatutoryWeeksRoute,
     PartnerStatutoryWeeksId -> partnerStatutoryWeeksRoute,
 
-    YourStatutoryPayBeforeTaxId -> (_ => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)),
+    YourStatutoryPayBeforeTaxId -> YourStatutoryPayBeforeTaxRoute,
     YourStatutoryPayPerWeekId -> (_ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)),
 
 
@@ -87,6 +87,29 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
   private def partnerStatutoryWeeksRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerStatutoryWeeks) { case _ => routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)}
+
+  private def YourStatutoryPayBeforeTaxRoute(answers: UserAnswers) = {
+    utils.getCall(answers.yourStatutoryPayBeforeTax) {
+      case "true" => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
+      case "false" =>  nextPageForYourStatutoryPayBeforeTaxNoSelection(answers)
+    }
+  }
+
+  private def nextPageForYourStatutoryPayBeforeTaxNoSelection(answers: UserAnswers) = {
+
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = answers.whoGotStatutoryPay
+
+    if(hasPartner){
+      utils.getCall(whoGotStatutoryPay){
+        case YouPartnerBothEnum.YOU => routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+      }
+    }else{
+      routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+    }
+
+  }
 
   //  private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
 //    utils.getCall(answers.partnerStatutoryPayCY) {

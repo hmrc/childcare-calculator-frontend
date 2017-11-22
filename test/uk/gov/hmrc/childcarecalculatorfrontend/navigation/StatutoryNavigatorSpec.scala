@@ -280,6 +280,16 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and both get statutory page" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
 
           navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
