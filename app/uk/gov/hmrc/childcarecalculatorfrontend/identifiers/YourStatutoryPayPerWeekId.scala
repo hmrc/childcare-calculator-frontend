@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case class YourStatutoryPayPerWeekId(statutoryType: String) extends Identifier
-
-  object YourStatutoryPayPerWeekId {
+object YourStatutoryPayPerWeekId extends Identifier{
     override def toString: String = "yourStatutoryPayPerWeek"
   }
 

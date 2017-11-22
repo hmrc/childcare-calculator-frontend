@@ -53,8 +53,6 @@ class YourStatutoryPayPerWeekController @Inject()(
 
      val statutoryType =  request.userAnswers.yourStatutoryPayType.getOrElse("")
 
-      println("****************** In onPageLoad YourStatutoryPayPerWeekController ***** statutoryType :::  "+statutoryType)
-
       val preparedForm = request.userAnswers.yourStatutoryPayPerWeek match {
         case None => YourStatutoryPayPerWeekForm()
         case Some(value) => YourStatutoryPayPerWeekForm().fill(value)
@@ -74,7 +72,7 @@ class YourStatutoryPayPerWeekController @Inject()(
             Future.successful(BadRequest(yourStatutoryPayPerWeek(appConfig, formWithErrors, mode, statutoryType))),
           (value) =>
             dataCacheConnector.save[Int](request.sessionId, YourStatutoryPayPerWeekId.toString, value).map(cacheMap =>
-              Redirect(navigator.nextPage(YourStatutoryPayPerWeekId(statutoryType), mode)(new UserAnswers(cacheMap))))
+              Redirect(navigator.nextPage(YourStatutoryPayPerWeekId, mode)(new UserAnswers(cacheMap))))
         )
       }
 

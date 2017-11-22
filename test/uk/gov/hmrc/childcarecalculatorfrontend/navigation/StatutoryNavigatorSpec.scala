@@ -341,6 +341,58 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Your Statutory Pay Per Week route" must {
+        "redirects to results page when user selects some value and there is no partner in the system" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
+          navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+
+        }
+
+        "redirects to results page when user selects some value,has partner and partner does not get statutory pay" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
+
+          navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects some value,has partner and partner get statutory pay" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
+
+          navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects some value,has partner and both get statutory pay" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
+
+          navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayPerWeek) thenReturn None
+
+          navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
 
       "Partner Statutory Pay Per Week route" must {
         "redirects to results page when user selects some value" in {
