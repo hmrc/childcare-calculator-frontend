@@ -97,23 +97,11 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
   }
 
   private def storeWhichChildrenDisability(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = removeDependencies(value, cacheMap, WhichChildrenDisabilityId.toString, WhichDisabilityBenefitsId.toString)
+    val mapToStore = removeDependenciesOnAnObject(value, cacheMap, WhichChildrenDisabilityId.toString, WhichDisabilityBenefitsId.toString)
 
     store(WhichChildrenDisabilityId.toString, value, mapToStore)
   }
 
-  private def removeDependencies(value: JsValue, cacheMap: CacheMap, parentKey: String, elementToDeleteKey: String) = {
-    value.validate[Set[Int]].fold(_ => cacheMap, newData => {
-      cacheMap.data.get(parentKey) match {
-        case Some(originalValues) => {
-          val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
-          val updatedValues = valuesToDelete.foldLeft(cacheMap.data(elementToDeleteKey))((dataObject, element) => dataObject.as[JsObject] - element.toString)
-          store(elementToDeleteKey, updatedValues, cacheMap)
-        }
-        case _ => cacheMap
-      }
-    })
-  }
 
   private def storeRegisteredBlind(value: JsValue, cacheMap: CacheMap): CacheMap = {
 
@@ -127,8 +115,8 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
 
  private def storeWhoHasChildcareCosts(value: JsValue, cacheMap: CacheMap): CacheMap = {
-   val updatedChildcarePayFrequency = removeDependencies(value, cacheMap, WhoHasChildcareCostsId.toString, ChildcarePayFrequencyId.toString)
-   val updatedExpectedChildCareCosts = removeDependencies(value, updatedChildcarePayFrequency, WhoHasChildcareCostsId.toString, ExpectedChildcareCostsId.toString)
+   val updatedChildcarePayFrequency = removeDependenciesOnAnObject(value, cacheMap, WhoHasChildcareCostsId.toString, ChildcarePayFrequencyId.toString)
+   val updatedExpectedChildCareCosts = removeDependenciesOnAnObject(value, updatedChildcarePayFrequency, WhoHasChildcareCostsId.toString, ExpectedChildcareCostsId.toString)
 
    store(WhoHasChildcareCostsId.toString, value, updatedExpectedChildCareCosts)
  }
