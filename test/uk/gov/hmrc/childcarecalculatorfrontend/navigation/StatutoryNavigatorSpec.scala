@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
@@ -129,7 +130,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Your Statutory Pay Type" must {
+      "Your Statutory Pay Type route" must {
         "redirects to yourStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.yourStatutoryPayType) thenReturn
@@ -154,7 +155,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Partner Statutory Pay Type" must {
+      "Partner Statutory Pay Type route" must {
         "redirects to partnerStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.partnerStatutoryPayType) thenReturn
@@ -180,6 +181,26 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
       }
 
+
+
+      "Your Statutory Start Date route" must {
+        "redirects to yourStatutoryWeeks page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(2017, 2, 1))
+
+          navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryStartDate) thenReturn None
+
+          navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
 
 
     }
