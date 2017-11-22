@@ -25,6 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.util.parsing.json.JSONObject
+
 class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
@@ -66,19 +68,12 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
   }
 
   private def storeChildApprovedEducation(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val originalDataSet = cacheMap.data.get("childApprovedEducation")
 
-    println("originalDataSet"+originalDataSet)
-    println("value"+value)
+    val mapToStore = value.validate[Map[String,Boolean]].fold(_ => cacheMap, newValues => {
+      val updatedValues = newValues.filter(!_._2).foldLeft(cacheMap.data(ChildStartEducationId.toString))((dataObject, element) => dataObject.as[JsObject] - element._1)
+      store(ChildStartEducationId.toString, updatedValues, cacheMap)
+    })
 
-
-    val mapToStore= value match {
-
-
-      case JsObject(_)  if !originalDataSet.contains(value)  =>
-        cacheMap copy (data = cacheMap.data - ChildStartEducationId.toString)
-      case _ => cacheMap
-    }
     store(ChildApprovedEducationId.toString, value, mapToStore)
   }
 
