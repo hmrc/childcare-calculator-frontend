@@ -102,7 +102,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val originalDataSet = cacheMap.data.get(WhichChildrenDisabilityId.toString)
 
     val mapToStore= value match {
-      case JsArray(_)  if !originalDataSet.contains(value) & originalDataSet.nonEmpty  => {
+      case JsArray(_)  if !originalDataSet.contains(value) && originalDataSet.nonEmpty  => {
 
         val valuesToDelete = originalDataSet.get.as[Set[Int]].filterNot(value.as[Set[Int]])
         val updatedCacheMap = valuesToDelete.foldLeft(cacheMap.data(WhichDisabilityBenefitsId.toString))((data: JsValue, element: Int) => data.as[JsObject] - element.toString)
@@ -114,7 +114,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(WhichChildrenDisabilityId.toString, value, mapToStore)
   }
 
-  private def storeRegisteredBlind(value: JsValue, cacheMap: CacheMap): CacheMap = {
+  /*private def storeRegisteredBlind(value: JsValue, cacheMap: CacheMap): CacheMap = {
 
     val mapToStore= value match {
       case JsBoolean(false)   =>
@@ -130,10 +130,10 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val originalDataSet = cacheMap.data.get(WhoHasChildcareCostsId.toString)
 
     val mapToStore= value match {
-      case JsArray(_)  if !originalDataSet.contains(value) & originalDataSet.nonEmpty  => {
+      case JsArray(_)  if !originalDataSet.contains(value) && originalDataSet.nonEmpty  => {
 
         val valuesToDelete = originalDataSet.get.as[Set[Int]].filterNot(value.as[Set[Int]])
-        val updatedCacheMap = valuesToDelete.foldLeft(cacheMap.data(WhichDisabilityBenefitsId.toString))((data: JsValue, element: Int) => data.as[JsObject] - element.toString)
+        val updatedCacheMap = valuesToDelete.foldLeft(cacheMap.data(WhoHasChildcareCostsId.toString))((data: JsValue, element: Int) => data.as[JsObject] - element.toString)
 
         cacheMap copy (data = cacheMap.data + (ChildcarePayFrequencyId.toString -> updatedCacheMap) + (ExpectedChildcareCostsId.toString -> updatedCacheMap))
       }
@@ -141,7 +141,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
     store(WhoHasChildcareCostsId.toString, value, mapToStore)
   }
-
+*/
 
 
 }
