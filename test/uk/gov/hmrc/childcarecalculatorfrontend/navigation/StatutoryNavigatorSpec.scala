@@ -129,6 +129,32 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Your Statutory Pay Type" must {
+        "redirects to yourStatutoryStartDate page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayType) thenReturn
+            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayType) thenReturn None
+
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+      }
+
 
     }
   }
