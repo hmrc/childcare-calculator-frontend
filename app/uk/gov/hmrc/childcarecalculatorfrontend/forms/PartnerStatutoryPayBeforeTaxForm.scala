@@ -37,8 +37,8 @@ object PartnerStatutoryPayBeforeTaxForm extends FormErrorHelper {
     Form(single("value" -> of(PartnerStatutoryPayBeforeTaxFormatter)))
 
   def options = Seq(
-    InputOption("partnerStatutoryPayBeforeTax", "option1"),
-    InputOption("partnerStatutoryPayBeforeTax", "option2")
+    InputOption("partnerStatutoryPayBeforeTax", "true"),
+    InputOption("partnerStatutoryPayBeforeTax", "false")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
