@@ -67,7 +67,14 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeChildApprovedEducation(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val originalDataSet = cacheMap.data.get("childApprovedEducation")
+
+    println("originalDataSet"+originalDataSet)
+    println("value"+value)
+
+
     val mapToStore= value match {
+
+
       case JsObject(_)  if !originalDataSet.contains(value)  =>
         cacheMap copy (data = cacheMap.data - ChildStartEducationId.toString)
       case _ => cacheMap

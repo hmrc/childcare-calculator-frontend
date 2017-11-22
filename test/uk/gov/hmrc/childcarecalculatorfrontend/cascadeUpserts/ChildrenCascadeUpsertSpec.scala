@@ -257,15 +257,20 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       "remove childEducationStartDate data when children with age above 19 and below 20 selects no for childApprovedEducation" in {
 
         val originalCacheMap = new CacheMap("id", Map(
-          NoOfChildrenId.toString -> JsNumber(3),
+          NoOfChildrenId.toString -> JsNumber(5),
           AboutYourChildId.toString -> Json.obj(
             "0" -> Json.toJson(AboutYourChild("Foo", over19)),
-            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+            "1" -> Json.toJson(AboutYourChild("Bar", over19)),
+            "2" -> Json.toJson(AboutYourChild("Bar", over19)),
+            "3" -> Json.toJson(AboutYourChild("Bar", over16)),
+            "4" -> Json.toJson(AboutYourChild("Quux", under16))),
 
-          ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
+          ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true,"2" -> true,"3" -> true),
           ChildStartEducationId.toString -> Json.obj(
-            "0" -> childStartEducationDate
+            "0" -> childStartEducationDate,
+            "1" -> childStartEducationDate,
+            "2" -> childStartEducationDate
+
           ),
           ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
           WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
@@ -285,16 +290,21 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
             "2" -> JsNumber(224))
         ))
 
-        val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> true)), originalCacheMap)
+        val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> false)), originalCacheMap)
 
         result.data mustBe Map(
-          NoOfChildrenId.toString -> JsNumber(3),
+          NoOfChildrenId.toString -> JsNumber(5),
           AboutYourChildId.toString -> Json.obj(
             "0" -> Json.toJson(AboutYourChild("Foo", over19)),
-            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", under16))),
+            "1" -> Json.toJson(AboutYourChild("Bar", over19)),
+            "2" -> Json.toJson(AboutYourChild("Bar", over19)),
+            "3" -> Json.toJson(AboutYourChild("Bar", over16)),
+            "4" -> Json.toJson(AboutYourChild("Quux", under16))),
 
-          ChildApprovedEducationId.toString -> Json.obj("0" -> false, "1" -> true),
+          ChildApprovedEducationId.toString -> Json.obj("0" -> false, "1" -> false),
+          ChildStartEducationId.toString -> Json.obj(
+            "2" -> childStartEducationDate
+          ),
 
           ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
 
