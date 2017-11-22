@@ -42,7 +42,7 @@ object YourStatutoryPayTypeForm extends FormErrorHelper {
     InputOption("yourStatutoryPayType", "maternity"),
     InputOption("yourStatutoryPayType", "paternity"),
     InputOption("yourStatutoryPayType", "adoption"),
-    InputOption("yourStatutoryPayType", "shared parental")
+    InputOption("yourStatutoryPayType", "shared-parental")
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

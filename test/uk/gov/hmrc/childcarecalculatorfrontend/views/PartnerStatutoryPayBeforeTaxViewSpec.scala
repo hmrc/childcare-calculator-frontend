@@ -26,12 +26,19 @@ class PartnerStatutoryPayBeforeTaxViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayBeforeTax"
 
-  def createView = () => partnerStatutoryPayBeforeTax(frontendAppConfig, PartnerStatutoryPayBeforeTaxForm(), NormalMode)(fakeRequest, messages)
+  val statutoryType = "maternity"
 
-  def createViewUsingForm = (form: Form[String]) => partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => partnerStatutoryPayBeforeTax(frontendAppConfig, PartnerStatutoryPayBeforeTaxForm(), NormalMode, statutoryType)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[String]) => partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   "PartnerStatutoryPayBeforeTax view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+    )
 
     behave like pageWithBackLink(createView)
   }

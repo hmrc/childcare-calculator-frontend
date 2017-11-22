@@ -35,7 +35,9 @@
 
     @helpers.form(action = PartnerStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_number(InputViewModel[Int]("value", form), label = messages("partnerStatutoryPayPerWeek.heading", statutoryType), labelClass=Some("visually-hidden"))
+        @components.input_number(InputViewModel[Int]("value", form),
+            label = messages("partnerStatutoryPayPerWeek.heading", statutoryType),
+                labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

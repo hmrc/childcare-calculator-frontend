@@ -24,31 +24,39 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayBeforeTaxForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryPayBeforeTaxId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayBeforeTaxId, PartnerStatutoryPayTypeId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayBeforeTax
 
 class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
 
+  private val statutoryType = "maternity"
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+
+  private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerStatutoryPayBeforeTaxController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = PartnerStatutoryPayBeforeTaxForm()) = partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = PartnerStatutoryPayBeforeTaxForm()) = partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+
+  private def buildFakeRequest(x: Map[String, JsString]) = {
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
+  }
 
   "PartnerStatutoryPayBeforeTax Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerStatutoryPayBeforeTaxId.toString -> JsString(PartnerStatutoryPayBeforeTaxForm.options.head.value))
+      val validData = Map(PartnerStatutoryPayBeforeTaxId.toString -> JsString(PartnerStatutoryPayBeforeTaxForm.options.head.value)) ++ statutoryTypeNameValuePair
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -69,7 +77,7 @@ class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = PartnerStatutoryPayBeforeTaxForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
