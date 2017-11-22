@@ -237,6 +237,24 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Partner Statutory Weeks route" must {
+        "redirects to partnerStatutoryPayBeforeTax page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryWeeks) thenReturn Some(12)
+
+          navigator.nextPage(PartnerStatutoryWeeksId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryWeeks) thenReturn None
+
+          navigator.nextPage(PartnerStatutoryWeeksId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
 
     }
   }
