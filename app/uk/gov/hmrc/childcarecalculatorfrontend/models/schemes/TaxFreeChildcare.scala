@@ -18,18 +18,43 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.CARERSALLOWANCE
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxFreeChildcare @Inject() () extends Scheme {
+class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childcareCosts <- answers.childcareCosts
-    } yield if (childcareCosts == "no") {
-      NotEligible
-    } else {
-      NotDetermined
+    household(answers).map {
+      case SingleHousehold(parent) => singleEligibility(parent)
+      case JointHousehold(parent, partner) => jointEligibility(parent, partner)
     }
   }.getOrElse(NotDetermined)
+
+  private def singleEligibility(parent: Parent): Eligibility = {
+    if (isEligible(parent)) {
+      Eligible
+    } else {
+      NotEligible
+    }
+  }
+
+  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
+
+    if ((isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
+      (isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefits).nonEmpty))) {
+      Eligible
+    } else {
+      NotEligible
+    }
+  }
+
+  //Only carer's allowance is considered as benefit to eligible
+  private val applicableBenefits: Set[WhichBenefitsEnum.Value] = Set(CARERSALLOWANCE)
+
+  private def isEligible(parent: Parent): Boolean =
+    (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
+
+
 }

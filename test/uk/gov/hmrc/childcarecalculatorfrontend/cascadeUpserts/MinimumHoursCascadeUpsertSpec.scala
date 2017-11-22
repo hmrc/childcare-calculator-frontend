@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import play.api.libs.json.{JsBoolean, JsString}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -44,14 +44,13 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         val result = cascadeUpsert(LocationId.toString, "england", originalCacheMap)
         result.data mustBe Map(
           ChildAgedTwoId.toString -> JsBoolean(true),
-          LocationId.toString -> JsString("england" +
-            "")
+          LocationId.toString -> JsString("england" + "")
         )
       }
     }
 
     "saving childcareCosts " must {
-      "remove the approvedProvider data when  childcareCosts is 'no'" in {
+      "remove the approvedProvider data when childcareCosts is 'no'" in {
         val originalCacheMap = new CacheMap("id", Map(ApprovedProviderId.toString -> JsString(yes)))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)

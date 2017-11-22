@@ -48,7 +48,7 @@ class SchemesSpec extends SchemeSpec {
 
     "return `false`" when {
 
-      "any scheme is `NotDetermined`" in {
+      "any tfcScheme is `NotDetermined`" in {
         new Schemes(notDetermined, eligible, notEligible).allSchemesDetermined(helper()) mustEqual false
       }
     }
