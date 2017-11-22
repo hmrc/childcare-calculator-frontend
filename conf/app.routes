@@ -595,11 +595,10 @@ POST       /yourStatutoryStartDate           uk.gov.hmrc.childcarecalculatorfron
 GET        /changeYourStatutoryStartDate     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeYourStatutoryStartDate     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /partnerStatutoryStartDate               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onPageLoad(mode: Mode = NormalMode, statutoryType: String = "")
-GET        /partnerStatutoryStartDate/:statutoryType           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onSubmit(mode: Mode = NormalMode, statutoryType: String)
-POST       /partnerStatutoryStartDate/:statutoryType           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onSubmit(mode: Mode = NormalMode, statutoryType: String)
-GET        /partnerStatutoryStartDate/:statutoryType     uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onPageLoad(mode: Mode = CheckMode, statutoryType: String)
-POST       /partnerStatutoryStartDate/:statutoryType     uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onSubmit(mode: Mode = CheckMode, statutoryType: String)
+GET        /partnerStatutoryStartDate           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /partnerStatutoryStartDate           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onSubmit(mode: Mode = NormalMode)
+GET        /partnerStatutoryStartDate     uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /partnerStatutoryStartDate     uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryStartDateController.onSubmit(mode: Mode = CheckMode)
 
 
 GET        /yourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onPageLoad(mode: Mode = NormalMode)

@@ -70,7 +70,7 @@ class YourStatutoryStartDateController @Inject()(
           Future.successful(BadRequest(yourStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
         (value) =>
           dataCacheConnector.save[LocalDate](request.sessionId, YourStatutoryStartDateId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YourStatutoryStartDateId(statutoryType), mode)(new UserAnswers(cacheMap))))
+            Redirect(navigator.nextPage(YourStatutoryStartDateId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
@@ -112,12 +113,12 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
-        "redirects to TBD page when user selects both option" in {
+        "redirects to yourStatutoryPayType page when user selects both option" in {
           val answers = spy(userAnswers())
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
 
           navigator.nextPage(WhoGotStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -129,6 +130,189 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Your Statutory Pay Type route" must {
+        "redirects to yourStatutoryStartDate page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayType) thenReturn
+            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayType) thenReturn None
+
+          navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner Statutory Pay Type route" must {
+        "redirects to partnerStatutoryStartDate page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPayType) thenReturn
+            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+
+          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPayType) thenReturn None
+
+          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Your Statutory Start Date route" must {
+        "redirects to yourStatutoryWeeks page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(2017, 2, 1))
+
+          navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryStartDate) thenReturn None
+
+          navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner Statutory Start Date route" must {
+        "redirects to partnerStatutoryWeeks page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(2017, 2, 1))
+
+          navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryWeeksController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryStartDate) thenReturn None
+
+          navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Your Statutory Weeks route" must {
+        "redirects to yourStatutoryPayBeforeTax page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryWeeks) thenReturn Some(12)
+
+          navigator.nextPage(YourStatutoryWeeksId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryWeeks) thenReturn None
+
+          navigator.nextPage(YourStatutoryWeeksId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner Statutory Weeks route" must {
+        "redirects to partnerStatutoryPayBeforeTax page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryWeeks) thenReturn Some(12)
+
+          navigator.nextPage(PartnerStatutoryWeeksId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryWeeks) thenReturn None
+
+          navigator.nextPage(PartnerStatutoryWeeksId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Your Statutory Pay Before Tax route" must {
+        "redirects to result page when user selects no and there is no partner in the system" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        }
+
+        "redirects to result page when user selects no, there is partner in the system and partner does not get statutory page" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and partner gets statutory page" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and both get statutory page" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
+        "redirects to yourStatutoryPayPerWeek page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("true")
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
+        }
+
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn None
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
 
     }
   }

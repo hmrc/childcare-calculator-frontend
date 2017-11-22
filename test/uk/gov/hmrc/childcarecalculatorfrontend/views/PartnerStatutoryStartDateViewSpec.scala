@@ -47,7 +47,7 @@ class PartnerStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryStartDateController.onSubmit(NormalMode, statutoryType).url)
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryStartDateController.onSubmit(NormalMode).url)
 
   }
 }
