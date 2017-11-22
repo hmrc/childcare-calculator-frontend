@@ -618,16 +618,15 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
 
     "Save whoHasChildcareCosts data " must {
-      "remove childcarePayFrequency data accordingly when whoHasChildcareCosts is changed " in {
+      "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed " in {
 
         val originalCacheMap = new CacheMap("id", Map(
           NoOfChildrenId.toString -> JsNumber(3),
           AboutYourChildId.toString -> Json.obj(
             "0" -> Json.toJson(AboutYourChild("Foo", over19)),
             "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
-            "3" -> Json.toJson(AboutYourChild("Baz", under16)),
-            "4" -> Json.toJson(AboutYourChild("Raz", under16))),
+            "2" -> Json.toJson(AboutYourChild("Quux", exact15))),
+
           ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
           ChildStartEducationId.toString -> Json.obj(
             "0" -> childStartEducationDate
@@ -640,30 +639,24 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ),
           RegisteredBlindId.toString -> JsBoolean(true),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(0, 1)),
-          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 1, 3, 4)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 1)),
           ChildcarePayFrequencyId.toString -> Json.obj(
             "0" -> monthly,
-            "1" -> weekly,
-            "3" -> weekly,
-            "4" -> weekly
+            "1" -> weekly
           ),
           ExpectedChildcareCostsId.toString -> Json.obj(
             "0" -> JsNumber(123),
-            "1" -> JsNumber(224),
-            "3" -> JsNumber(500),
-            "4" -> JsNumber(340))
-        ))
+            "1" -> JsNumber(224))))
 
-        val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1, 2, 3)), originalCacheMap)
+        val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 2)), originalCacheMap)
 
         result.data mustBe Map(
           NoOfChildrenId.toString -> JsNumber(3),
           AboutYourChildId.toString -> Json.obj(
             "0" -> Json.toJson(AboutYourChild("Foo", over19)),
             "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
-            "3" -> Json.toJson(AboutYourChild("Baz", under16)),
-            "4" -> Json.toJson(AboutYourChild("Raz", under16))),
+            "2" -> Json.toJson(AboutYourChild("Quux", exact15))),
+
           ChildApprovedEducationId.toString -> Json.obj("0" -> true, "1" -> true),
           ChildStartEducationId.toString -> Json.obj(
             "0" -> childStartEducationDate
@@ -676,20 +669,14 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ),
           RegisteredBlindId.toString -> JsBoolean(true),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(0, 1)),
-          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 1, 2, 3)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
           ChildcarePayFrequencyId.toString -> Json.obj(
-            "0" -> monthly,
-            "1" -> weekly,
-            "3" -> weekly
-          ),
+            "0" -> monthly),
           ExpectedChildcareCostsId.toString -> Json.obj(
-            "0" -> JsNumber(123),
-            "1" -> JsNumber(224),
-            "3" -> JsNumber(500))
-        )
+            "0" -> JsNumber(123)))
       }
 
-      "remove childcarePayFrequency  and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed " in {
+      "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed for 5 children " in {
 
         val originalCacheMap = new CacheMap("id", Map(
           NoOfChildrenId.toString -> JsNumber(3),
@@ -725,7 +712,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
             "4" -> JsNumber(340))
         ))
 
-        val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1, 2, 3)), originalCacheMap)
+        val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 4)), originalCacheMap)
 
         result.data mustBe Map(
           NoOfChildrenId.toString -> JsNumber(3),
@@ -747,16 +734,14 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ),
           RegisteredBlindId.toString -> JsBoolean(true),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(0, 1)),
-          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 1, 2, 3)),
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 4)),
           ChildcarePayFrequencyId.toString -> Json.obj(
             "0" -> monthly,
-            "1" -> weekly,
-            "3" -> weekly
+            "4" -> weekly
           ),
           ExpectedChildcareCostsId.toString -> Json.obj(
             "0" -> JsNumber(123),
-            "1" -> JsNumber(224),
-            "3" -> JsNumber(500))
+            "4" -> JsNumber(340))
         )
       }
     }
