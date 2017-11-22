@@ -685,7 +685,8 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
            ExpectedChildcareCostsId.toString -> Json.obj(
              "0" -> JsNumber(123),
              "1" -> JsNumber(224),
-             "3" -> JsNumber(500))
+             "3" -> JsNumber(500),
+             "4" -> JsNumber(340))
          )
        }
      }
