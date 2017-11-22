@@ -112,12 +112,12 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
-        "redirects to TBD page when user selects both option" in {
+        "redirects to yourStatutoryPayType page when user selects both option" in {
           val answers = spy(userAnswers())
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
 
           navigator.nextPage(WhoGotStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {

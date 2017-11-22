@@ -65,7 +65,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
       utils.getCall(answers.whoGotStatutoryPay) {
         case YouPartnerBothEnum.YOU => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
         case YouPartnerBothEnum.PARTNER => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
-        case YouPartnerBothEnum.BOTH => routes.SessionExpiredController.onPageLoad()//TODO: to be replaced by correct page
+        case YouPartnerBothEnum.BOTH => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
       }
 
 //  private def partnerStatutoryPayRouteCY(answers: UserAnswers) = {
