@@ -42,18 +42,24 @@ class YourStatutoryPayBeforeTaxController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+
+      val statutoryType = request.userAnswers.yourStatutoryPayType.getOrElse("")
+
       val preparedForm = request.userAnswers.yourStatutoryPayBeforeTax match {
         case None => YourStatutoryPayBeforeTaxForm()
         case Some(value) => YourStatutoryPayBeforeTaxForm().fill(value)
       }
-      Ok(yourStatutoryPayBeforeTax(appConfig, preparedForm, mode))
+      Ok(yourStatutoryPayBeforeTax(appConfig, preparedForm, mode, statutoryType))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+
+      val statutoryType = request.userAnswers.yourStatutoryPayType.getOrElse("")
+
       YourStatutoryPayBeforeTaxForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(yourStatutoryPayBeforeTax(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yourStatutoryPayBeforeTax(appConfig, formWithErrors, mode, statutoryType))),
         (value) =>
           dataCacheConnector.save[String](request.sessionId, YourStatutoryPayBeforeTaxId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourStatutoryPayBeforeTaxId, mode)(new UserAnswers(cacheMap))))
