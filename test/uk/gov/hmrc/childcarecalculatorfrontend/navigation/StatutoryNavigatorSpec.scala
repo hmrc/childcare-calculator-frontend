@@ -256,6 +256,54 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "Your Statutory Pay Before Tax route" must {
+        "redirects to result page when user selects no and there is no partner in the system" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        }
+
+        "redirects to result page when user selects no, there is partner in the system and partner does not get statutory page" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        }
+
+        "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and partner gets statutory page" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
+        "redirects to yourStatutoryPayPerWeek page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("true")
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
+        }
+
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayBeforeTax) thenReturn None
+
+          navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
     }
   }
 
