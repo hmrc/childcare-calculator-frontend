@@ -59,4 +59,17 @@ class CascadeUpsert @Inject()(pensions: PensionsCascadeUpsert,
 abstract class SubCascadeUpsert {
   def store[A](key:String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
     cacheMap copy (data = cacheMap.data + (key -> Json.toJson(value)))
+
+  def removeDependenciesOnAnObject(value: JsValue, cacheMap: CacheMap, parentKey: String, elementToDeleteKey: String) = {
+    value.validate[Set[Int]].fold(_ => cacheMap, newData => {
+      cacheMap.data.get(parentKey) match {
+        case Some(originalValues) => {
+          val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
+          val updatedValues = valuesToDelete.foldLeft(cacheMap.data(elementToDeleteKey))((dataObject, element) => dataObject.as[JsObject] - element.toString)
+          store(elementToDeleteKey, updatedValues, cacheMap)
+        }
+        case _ => cacheMap
+      }
+    })
+  }
 }
