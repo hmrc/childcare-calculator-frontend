@@ -178,10 +178,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
       }
-
-
 
       "Your Statutory Start Date route" must {
         "redirects to yourStatutoryWeeks page when user selects some value" in {
@@ -198,6 +195,25 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourStatutoryStartDate) thenReturn None
 
           navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+      }
+
+      "Partner Statutory Start Date route" must {
+        "redirects to partnerStatutoryWeeks page when user selects some value" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(2017, 2, 1))
+
+          navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryWeeksController.onPageLoad(NormalMode)
+
+        }
+
+        "redirects to sessionExpired page when there is no value for user selection" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryStartDate) thenReturn None
+
+          navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
