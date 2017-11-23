@@ -17,13 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend
 
 import org.joda.time.LocalDate
-import play.api.libs.json.{JsBoolean, JsNumber, Json}
+import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-object ChildBase {
+case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert{
+  def overWriteObject(objectName: String, properties: JsValue) : DataGenerator = {
+    DataGenerator(sample.copy(data = sample.data + (objectName -> properties)))
+  }
+}
 
+object DataGenerator {
   val over19 = LocalDate.now.minusYears(19).minusDays(1)
   val over16 = LocalDate.now.minusYears(16).minusDays(1)
   val exact15 = LocalDate.now.minusYears(15).plusMonths(1)
@@ -69,9 +75,5 @@ object ChildBase {
       "4" -> JsNumber(224))
   ))
 
-  /*def removePropertiesFromJSONObject(objectName: String, idsToDelete: Set[Int]) : CacheMap = {
-    idsToDelete.foldLeft(sample)
-
-    sample.copy()
-  }*/
+  def apply() :DataGenerator = DataGenerator(sample)
 }
