@@ -16,27 +16,32 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.{Inject, Singleton}
-
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-@Singleton
-class LocationForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+object LocationForm extends FormErrorHelper {
 
-  type LocationFormType = Option[String]
+  def apply(): Form[Location.Value] =
+    Form(single("value" -> of(LocationFormatter)))
 
-  val form = Form[LocationFormType](
-    single(
-      locationKey -> optional(text).verifying(
-        Messages("location.radio.not.selected.error"),
-        location =>
-          LocationEnum.values.exists(_.toString == location.getOrElse(""))
-      )
-    )
-  )
+  def options: Seq[InputOption] = Location.values.map {
+    value =>
+      InputOption("location", value.toString)
+  }.toSeq
 
+  private def LocationFormatter = new Formatter[Location.Value] {
+    def bind(key: String, data: Map[String, String]) = data.get(key) match {
+      case Some(s) if optionIsValid(s) => Right(Location.withName(s))
+      case None => produceError(key, locationErrorKey)
+      case _ => produceError(key, unknownErrorKey)
+    }
+
+    def unbind(key: String, value: Location.Value) = Map(key -> value.toString)
+  }
+
+  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

@@ -1,0 +1,1167 @@
+date.day = Day
+date.month = Month
+date.year = Year
+
+error.boolean = Please give an answer
+error.invalid_date = Give a correct date
+error.date.day_blank = Enter a day
+error.date.day_invalid = Give a correct day using numbers 1 to 31
+error.date.month_blank = Enter a month
+error.date.month_invalid = Give a correct month using numbers 1 to 12
+error.date.year_blank = Enter a year
+error.date.year_invalid = Give a correct year
+error.integer = Give an answer in whole numbers
+error.non_numeric = Give a value using only numbers
+error.number = Please enter a valid number
+error.required = Please enter a value
+error.summary.title = There is a problem
+error.summary.text = Check you have answered the question correctly
+
+nth.0 = first
+nth.1 = second
+nth.2 = third
+nth.3 = fourth
+nth.4 = fifth
+nth.5 = sixth
+nth.6 = seventh
+nth.7 = eighth
+nth.8 = ninth
+nth.9 = tenth
+nth.10 = eleventh
+nth.11 = twelfth
+nth.12 = thirteenth
+nth.13 = fourteenth
+nth.14 = fifteenth
+nth.15 = sixteenth
+nth.16 = seventeenth
+nth.17 = eighteenth
+nth.18 = nineteenth
+
+session_expired.title = For your security, this service has been reset
+session_expired.heading = For your security, this service has been reset
+session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
+
+site.back = Back
+site.delete = Remove
+site.edit = Change
+site.hidden-delete = Delete {0}
+site.hidden-edit = Change {0}
+site.no = No
+site.yes = Yes
+site.save_and_continue = Continue
+site.service_name = Childcare calculator
+site.textarea.char_limit = (Limit is {0} characters)
+
+unauthorised.title = You can’t access this service with this account
+unauthorised.heading = You can’t access this service with this account
+
+checkYourAnswers.title = Check Your Answers
+checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.guidance = Guidance for check your answers
+
+whatToTellTheCalculator.title = What to tell the calculator
+whatToTellTheCalculator.heading = What to tell the calculator
+whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
+whatToTellTheCalculator.li.childcare_costs = estimated childcare costs
+whatToTellTheCalculator.li.pay = weeks and pay taken while on leave for a birth or an adoption
+whatToTellTheCalculator.text = For a more accurate result, you can give your:
+whatToTellTheCalculator.li.known = known childcare costs
+whatToTellTheCalculator.li.tax_code = personal tax code
+whatToTellTheCalculator.li.pension = pension contributions
+whatToTellTheCalculator.minutes = It should take around 5 minutes to complete.
+
+location.title = Where do you live?
+location.heading = Where do you live?
+location.guidance = Free childcare hours are different between countries in the UK.
+location.england = England
+location.scotland = Scotland
+location.wales = Wales
+location.northern-ireland = Northern Ireland
+location.checkYourAnswersLabel = Where do you live?
+location.error = You must tell the calculator where you live
+
+childAgedTwo.title = Do you have a child aged 2?
+childAgedTwo.heading = Do you have a child aged 2?
+childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time (487 hours a year).
+childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+childAgedTwo.checkYourAnswersLabel = Do you have a child aged 2?
+childAgedTwo.error = You must answer yes if you have a child aged 2
+
+childAgedThreeOrFour.title = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.heading = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.guidance.england = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
+childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
+childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
+childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
+childAgedThreeOrFour.error = You must answer yes if you have any children aged 3 or 4
+
+childcareCosts.title = Do you have childcare costs?
+childcareCosts.heading = Do you have childcare costs?
+childcareCosts.yes = Yes
+childcareCosts.no = No
+childcareCosts.notYet = Not yet but maybe in the future
+childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
+childcareCosts.error = You must tell the calculator if you expect to have childcare costs
+
+approvedProvider.title = Are your childcare costs with an approved provider?
+approvedProvider.heading = Are your childcare costs with an approved provider?
+approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It could be a school, childminder, playscheme, nursery or an out of school club.
+approvedProvider.yes = Yes
+approvedProvider.no = No
+approvedProvider.notSure = Not sure
+approvedProvider.checkYourAnswersLabel = approvedProvider
+approvedProvider.error = You must answer yes if your childcare costs will be with an approved provider
+
+freeHoursInfo.title = It looks like you’re eligible for free hours
+freeHoursInfo.heading = It looks like you’re eligible for free hours
+freeHoursInfo.para1.england = You can get a minimum of 15 hours free early education and childcare a week in term time (570 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para1.scotland = You can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time (390 hours a year) for your 3 or 4 year old.
+freeHoursInfo.para1.northernIreland = You can get 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 3 or 4 year old.
+freeHoursInfo.heading2 = Still to check
+freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible for help from:
+freeHoursInfo.li.30hours = 30 hours free childcare
+freeHoursInfo.li.vouchers = Childcare vouchers
+freeHoursInfo.li.tfc = Tax-Free Childcare
+freeHoursInfo.li.tax_credits = Tax credits
+freeHoursInfo.li.2year = Free hours for your 2 year old
+freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs in the future. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you will have approved childcare costs or that your not sure. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+
+
+freeHoursResult.title = Your eligibility for childcare support
+freeHoursResult.heading = Your eligibility for childcare support
+freeHoursResult.notEligibleInfo = Based on the information you’ve given, you’re not eligible for:
+freeHoursResult.info.freHours = Free hours
+freeHoursResult.info.entitled.england = 15 free hours
+freeHoursResult.info.entitled.scotland = 16 Free hours
+freeHoursResult.info.entitled.wales = 10 free hours
+freeHoursResult.info.entitled.northernIreland = 12 and a half free hours
+freeHoursResult.info.esc = Childcare vouchers
+freeHoursResult.info.tfc = Tax-Free Childcare
+freeHoursResult.info.tc = Tax credits
+freeHoursResult.notEligible.heading = Why you’re not eligible for any of the schemes
+freeHoursResult.notEligible.info = You‘re currently not eligible for any free hours because you don’t have a child aged 2 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.notEligible.info.northern-ireland = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4. Also, because you don’t currently have or expect to have any approved childcare costs, you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+
+freeHoursResult.partialEligible.guidance.england = <<Need to get content and eligibility criteria>>
+freeHoursResult.partialEligible.guidance.scotland = Based on the information you’ve given so far, you can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.guidance.wales = Based on the information you’ve given so far, you can get 10 hours of free early learning and childcare a week in term time (390 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.guidance.northernIreland = Based on the information you’ve given so far, you can get 12 and a half hours of free early learning and childcare a week in term time (525 hours a year) for your 3 or 4 year old.
+freeHoursResult.partialEligible.info1 = As you don’t currently have or expect to have any approved childcare costs, you would not be eligible for any further support other than free hours.
+freeHoursResult.toBeEligible.heading = To be eligible
+freeHoursResult.toBeEligible.info1.start = To get free hours, you need to have a child aged 3 or 4. (if we know they have a 2 yr old) Children are eligible for schemes 16 weeks before their 3rd birthday, so you can
+freeHoursResult.toBeEligible.info1.end = to see what you could get.
+freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
+freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info2.start  = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you
+freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursResult.toBeEligible.info2.link.text = expect to have childcare costs.
+freeHoursResult.summary.heading = What you told the calculator
+freeHoursResult.summary.info = You can go back and change your answers and see what you could get.
+freeHoursResult.summary.table.header = General
+freeHoursResult.summary.table.child.age2 = Child aged 2
+freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
+freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs
+
+doYouLiveWithPartner.title = Do you have a partner that you live with?
+doYouLiveWithPartner.heading = Do you have a partner that you live with?
+doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
+doYouLiveWithPartner.error = You must tell the calculator if you have a partner you live with
+
+areYouInPaidWork.title = Are you in paid work?
+areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
+areYouInPaidWork.error = You must answer yes if you are in paid work
+
+paidEmployment.title = Are you, your partner, or both of you in paid work?
+paidEmployment.heading = Are you, your partner, or both of you in paid work?
+paidEmployment.checkYourAnswersLabel = Are you, your partner, or both of you in paid work?
+paidEmployment.error = You must answer yes if you, your partner, or both of you are in paid work
+
+whoIsInPaidEmployment.title = Who’s in paid work?
+whoIsInPaidEmployment.heading = Who’s in paid work?
+whoIsInPaidEmployment.para1 = Paid work includes sick, maternity, paternity, shared parental and adoption leave.
+whoIsInPaidEmployment.you = You
+whoIsInPaidEmployment.partner = Partner
+whoIsInPaidEmployment.both = Both
+whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
+whoIsInPaidEmployment.error = You must tell the calculator if you or your partner is in paid work
+
+workHours.blank = You must enter a number between 1 and 99.5
+workHours.invalid = You must enter a number with no more than 2 digits and 1 decimal place
+parentWorkHours.title = How many hours a week do you usually work?
+parentWorkHours.heading = How many hours a week do you usually work?
+parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
+parentWorkHours.para1 = This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on sick, maternity, paternity, shared parental or adoption leave, it’s your usual hours before you went off work.
+
+partnerWorkHours.title = How many hours a week does your partner usually work?
+partnerWorkHours.heading = How many hours a week does your partner usually work?
+partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
+partnerWorkHours.para1 = This is the hours worked in all their paid jobs, ’zero hours’ contracts and self-employment. If they’re on sick, maternity, paternity, shared parental or adoption leave, it’s their usual hours before they went off work.
+
+hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.yes = Yes
+hasYourTaxCodeBeenAdjusted.no = No
+hasYourTaxCodeBeenAdjusted.notSure = Not sure
+hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
+hasYourTaxCodeBeenAdjusted.info = It would be adjusted if you have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, you’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
+hasYourTaxCodeBeenAdjusted.error = You must answer yes if your tax code has been adjusted
+
+doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
+doYouKnowYourAdjustedTaxCode.error = You must tell the calculator if you know your adjusted tax code
+
+whatIsYourTaxCode.title = What’s your tax code?
+whatIsYourTaxCode.heading = What’s your tax code?
+whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
+whatIsYourTaxCode.blank = You must tell the calculator what your tax code is
+taxCode.invalid = You must enter a valid tax code
+
+hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.info = It would be adjusted if they have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, they’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
+hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
+hasYourPartnersTaxCodeBeenAdjusted.yes = Yes
+hasYourPartnersTaxCodeBeenAdjusted.no = No
+hasYourPartnersTaxCodeBeenAdjusted.notSure = Not sure
+hasYourPartnersTaxCodeBeenAdjusted.error = You must answer yes if your partner’s tax code has been adjusted
+
+doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.heading = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = Do you know your partner’s adjusted tax code?
+doYouKnowYourPartnersAdjustedTaxCode.error = You must tell the calculator if you know your partner’s tax code
+
+whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
+whatIsYourPartnersTaxCode.heading = What’s your partner’s tax code?
+whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax code?
+whatIsYourPartnersTaxCode.blank = You must tell the calculator what your partner’s tax code is
+
+yourChildcareVouchers.title = Does your employer offer childcare vouchers?
+yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
+yourChildcareVouchers.yes = Yes
+yourChildcareVouchers.no = No
+yourChildcareVouchers.notSure = Not Sure
+yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
+yourChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
+
+partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.yes = Yes
+partnerChildcareVouchers.no = No
+partnerChildcareVouchers.notSure = Not Sure
+partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
+partnerChildcareVouchers.error = You must tell the calculator if your partner's employer offers childcare vouchers
+
+eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
+eitherGetsVouchers.yes = Yes
+eitherGetsVouchers.no = No
+eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.checkYourAnswersLabel = vouchers
+eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
+
+whoGetsVouchers.title = Who’s employer offers childcare vouchers?
+whoGetsVouchers.heading = Who’s employer offers childcare vouchers?
+whoGetsVouchers.you = Yours
+whoGetsVouchers.partner = Partner’s
+whoGetsVouchers.both = Both
+whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
+whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
+
+doYouGetAnyBenefits.title = Do you get any of these benefits?
+doYouGetAnyBenefits.heading = Do you get any of these benefits?
+doYouGetAnyBenefits.checkYourAnswersLabel = Do you get any of these benefits?
+doYouGetAnyBenefits.error = You must answer yes if you get any benefits
+doYouGetAnyBenefits.li.incomeSupport = Income support
+doYouGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
+doYouGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
+doYouGetAnyBenefits.li.pensionCredit = Pension Credit
+doYouGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
+doYouGetAnyBenefits.li.attendanceAllowance = Attendance allowance
+doYouGetAnyBenefits.li.independencePayment = Personal Independence Payment
+doYouGetAnyBenefits.li.carersAllowance = Carer’s Allowance
+
+doYouOrYourPartnerGetAnyBenefits.title = Do you or your partner get any of these benefits?
+doYouOrYourPartnerGetAnyBenefits.heading = Do you or your partner get any of these benefits?
+doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel = Do you or your partner get any of these benefits?
+doYouOrYourPartnerGetAnyBenefits.error = You must answer yes if you or your partner get any benefits
+doYouOrYourPartnerGetAnyBenefits.li.incomeSupport = Income support
+doYouOrYourPartnerGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
+doYouOrYourPartnerGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
+doYouOrYourPartnerGetAnyBenefits.li.pensionCredit = Pension Credit
+doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
+doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance = Attendance allowance
+doYouOrYourPartnerGetAnyBenefits.li.independencePayment = Personal Independence Payment
+doYouOrYourPartnerGetAnyBenefits.li.carersAllowance = Carer’s Allowance
+
+whoGetsBenefits.title = Who gets benefits?
+whoGetsBenefits.heading = Who gets benefits?
+whoGetsBenefits.you = You
+whoGetsBenefits.partner = Partner
+whoGetsBenefits.both = Both
+whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
+whoGetsBenefits.error = You must tell the calculator who gets benefits
+
+whichBenefitsYouGet.title = Which benefits do you get?
+whichBenefitsYouGet.heading = Which benefits do you get?
+whichBenefitsYouGet.incomeBenefits = Income benefits
+whichBenefitsYouGet.disabilityBenefits = Disability benefits
+whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
+whichBenefitsYouGet.carersAllowance = Carer’s Allowance
+whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
+whichBenefitsYouGet.error = You must tell the calculator which benefits you get
+whichBenefits.select.all = Select all that apply.
+
+whichBenefitsPartnerGet.title = Which benefits does your partner get?
+whichBenefitsPartnerGet.heading = Which benefits does your partner get?
+whichBenefitsPartnerGet.incomeBenefits = Income benefits
+whichBenefitsPartnerGet.disabilityBenefits = Disability benefits
+whichBenefitsPartnerGet.highRateDisabilityBenefits = High rate disability benefits
+whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
+whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
+whichBenefitsPartnerGet.error = You must tell the calculator which benefits your partner gets
+
+whichBenefitsList.typeof.income.benefits = Types of income benefits
+whichBenefitsList.typeof.income.support = Income Support
+whichBenefitsList.typeof.jobseeker.allowance = Income-based Jobseeker’s Allowance
+whichBenefitsList.typeof.employer.support.allowance = Income-related Employment and Support Allowance
+whichBenefitsList.typeof.pension.credit = Pension Credit
+
+whichBenefitsList.typeof.disability.benefits = Types of disability benefits
+whichBenefitsList.typeof.disability.benefit.living.allowance = Disability Living Allowance
+whichBenefitsList.typeof.disability.benefit.attendance.allowance = Attendance Allowance
+whichBenefitsList.typeof.disability.benefit.personal.allowance = Personal Independence Payment
+
+whichBenefitsList.typeof.higher.rate.benefits = Types of higher rate disability benefits
+whichBenefitsList.typeof.higher.rate.benefit.living.allowance = Disability Living Allowance (highest rate care component)
+whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance = Attendance Allowance (higher rate)
+whichBenefitsList.typeof.higher.rate.benefit.personal.payment = Personal Independence Payment (enhanced daily living component)
+whichBenefitsList.typeof.higher.rate.benefit.independent.payment = Armed Forces Independence Payment
+
+
+yourPartnersAge.title = What’s your partner’s age?
+yourPartnersAge.heading = What’s your partner’s age?
+yourPartnersAge.UNDER18 = Under 18
+yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
+yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourPartnersAge.OVERTWENTYFOUR = 25 or over
+yourPartnersAge.error = You must tell the calculator what your partner’s age is
+yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
+
+yourAge.title = What’s your age?
+yourAge.heading = What’s your age?
+yourAge.UNDER18 = Under 18
+yourAge.EIGHTEENTOTWENTY = 18 to 20
+yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
+yourAge.OVERTWENTYFOUR = 25 or over
+yourAge.error = You must tell the calculator what your age is
+yourAge.checkYourAnswersLabel = What’s your age?
+
+yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
+yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
+yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
+
+partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
+partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
+partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
+
+areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.heading = Are you self-employed or an apprentice?
+areYouSelfEmployedOrApprentice.selfEmployed = Self-employed
+areYouSelfEmployedOrApprentice.apprentice = Apprentice
+areYouSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
+areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
+areYouSelfEmployedOrApprentice.error = You must tell the calculator if you are self-employed or an apprentice
+
+partnerSelfEmployedOrApprentice.title = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.heading = Is your partner an apprentice or self-employed?
+partnerSelfEmployedOrApprentice.selfEmployed = Self-employed
+partnerSelfEmployedOrApprentice.apprentice = Apprentice
+partnerSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
+partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
+partnerSelfEmployedOrApprentice.error = You must tell the calculator if your partner is an apprentice or self-employed
+
+partnerSelfEmployed.title = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.heading = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.checkYourAnswersLabel = Has your partner been self-employed less than 12 months?
+partnerSelfEmployed.error = You must select yes if your partner has been self-employed less than 12 months
+
+yourSelfEmployed.title = Have you been self-employed less than 12 months?
+yourSelfEmployed.heading = Have you been self-employed less than 12 months?
+yourSelfEmployed.checkYourAnswersLabel = Have you been self-employed less than 12 months?
+yourSelfEmployed.error = You must select yes if you’ve been self-employed less than 12 months
+
+yourMaximumEarnings.title = Will you earn more than £100,000 a year?
+yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
+yourMaximumEarnings.hint = This is your salary with any pension and gift aid contributions taken off.
+yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
+yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
+
+partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
+partnerMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
+partnerMaximumEarnings.error = You must select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
+
+eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.para1 = This is your salary with personal tax allowances, pension and gift aid contributions taken off.
+eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
+
+taxOrUniversalCredits.title = Do you get tax credits or Universal Credit?
+taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
+taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
+taxOrUniversalCredits.uc = Universal Credit
+taxOrUniversalCredits.none = None of these
+taxOrUniversalCredits.error = You must tell the calculator if you get tax credits or Universal Credit
+taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
+
+
+noOfChildren.title = How many children do you have?
+noOfChildren.heading = How many children do you have?
+noOfChildren.hint.text = Only include children under the age of 20 that you’re responsible for.
+noOfChildren.error = You must enter a number that's not below 1 or above 19
+noOfChildren.required = You m
+noOfChildren.checkYourAnswersLabel = noOfChildren
+
+maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
+maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
+maxFreeHoursInfo.could.get.max.hours = Based on the information you’ve given so far, you’d be eligible for a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
+maxFreeHoursInfo.what.else.you.could.get = What else you could get
+maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
+maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
+maxFreeHoursInfo.still.to.check = Still to check
+maxFreeHoursInfo.give.more.info = Give the calculator more information to see if you’re eligible for help from tax credits.
+
+maxFreeHoursResult.title = maxFreeHoursResult
+maxFreeHoursResult.heading = maxFreeHoursResult
+
+yourOtherIncomeThisYear.title = Will you get any other income this year?
+yourOtherIncomeThisYear.heading = Will you get any other income this year?
+yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+yourOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
+yourOtherIncomeThisYear.error = Select yes if you will get any other income this year
+
+yourIncomeInfo.title = Your income this year
+yourIncomeInfo.heading = Your income this year
+yourIncomeInfo.tax_year = This year is 6 April 2017 to 5 April 2018.
+yourIncomeInfo.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfo.li.income_paid_work = income from paid work
+yourIncomeInfo.li.pensions = pension contributions
+yourIncomeInfo.li.other_income = other income
+yourIncomeInfo.li.benefits_income = income from benefits
+yourIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfo.checkYourAnswersLabel = Your income this year
+
+partnerIncomeInfo.title = Your partner’s income this year
+partnerIncomeInfo.heading = Your partner’s income this year
+partnerIncomeInfo.tax_year = This year is 6 April 2017 to 5 April 2018.
+partnerIncomeInfo.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfo.li.income_paid_work = income from paid work
+partnerIncomeInfo.li.pensions = pension contributions
+partnerIncomeInfo.li.other_income = other income
+partnerIncomeInfo.li.benefits_income = income from benefits
+partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this year
+partnerIncomeInfo.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+parentEmploymentIncomeCY.title = How much will you get paid this year?
+parentEmploymentIncomeCY.heading = How much will you get paid this year?
+parentEmploymentIncomeCY.hint= This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
+
+partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
+partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
+partnerEmploymentIncomeCY.hint= This is your partner's total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
+
+employmentIncome.invalid=You must enter a number between 0 and 999999.99
+partnerEmploymentIncome.blank= You must tell the calculator what your partner will get paid this year
+parentEmploymentIncome.blank= You must tell the calculator what you will get paid this year
+employmentIncomeCY.tax_year= This year is 6 April 2017 to 5 April 2018.
+
+parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.error = You must tell the calculator if you had any paid work this year
+parentPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+
+partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
+partnerPaidWorkCY.error = You must tell the calculator if your partner had any paid work this year
+partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+
+bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
+bothPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+
+whoPaysIntoPension.title = Who pays into a pension?
+whoPaysIntoPension.heading = Who pays into a pension?
+whoPaysIntoPension.you = You
+whoPaysIntoPension.partner = Partner
+whoPaysIntoPension.both = Both
+whoPaysIntoPension.error = You must tell the calculator who pays into a pension
+whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
+
+whoGetsOtherIncomeCY.title = Who will get other income?
+whoGetsOtherIncomeCY.heading = Who will get other income?
+whoGetsOtherIncomeCY.you = You
+whoGetsOtherIncomeCY.partner = Partner
+whoGetsOtherIncomeCY.both = Both
+whoGetsOtherIncomeCY.checkYourAnswersLabel = Who will get other income?
+whoGetsOtherIncomeCY.error = You must tell the calculator if you or your partner will get other income
+
+youAnyTheseBenefitsCY.title = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.heading = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+youAnyTheseBenefitsCY.li.income_support = Income support
+youAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsCY.li.pensions = Pension Credit
+youAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsCY.li.attendance = Attendance allowance
+youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
+youAnyTheseBenefitsCY.error = You must tell the calculator if you had any of these benefits this year
+
+partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
+partnerAnyTheseBenefitsCY.heading = Has your partner had any of these benefits this year?
+partnerAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+partnerAnyTheseBenefitsCY.li.income_support = Income support
+partnerAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+partnerAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+partnerAnyTheseBenefitsCY.li.pensions = Pension Credit
+partnerAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+partnerAnyTheseBenefitsCY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
+partnerAnyTheseBenefitsCY.error = You must tell the calculator if your partner had any of these benefits this year
+
+bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
+bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
+bothAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+bothAnyTheseBenefitsCY.li.income_support = Income support
+bothAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsCY.li.pensions = Pension Credit
+bothAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsCY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
+bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
+
+partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
+partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year
+
+bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
+bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?
+bothOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+bothOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
+bothOtherIncomeThisYear.error = Select yes if you, your partner, or both of you will get any other income this year
+
+YouPaidPensionCY.title = Have you paid into a work pension this year?
+YouPaidPensionCY.heading = Have you paid into a work pension this year?
+YouPaidPensionCY.checkYourAnswersLabel = YouPaidPensionCY
+YouPaidPensionCY.error = You must answer yes if you have paid into a pension through payroll this year
+
+PartnerPaidPensionCY.title = Has your partner paid into a work pension this year?
+PartnerPaidPensionCY.heading = Has your partner paid into a work pension this year?
+PartnerPaidPensionCY.checkYourAnswersLabel = Has your partner paid into a work pension this year?
+PartnerPaidPensionCY.error = You must answer yes if your partner has paid into a pension through payroll this year
+
+bothPaidPensionCY.title = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.heading = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.error = You must answer yes if you, your partner, or both have paid into a pension through payroll this year
+bothPaidPensionCY.tax.year = This year is 6 April 2017 to 5 April 2018.
+
+whosHadBenefits.title = Who’s had benefits?
+whosHadBenefits.heading = Who’s had benefits?
+whosHadBenefits.you = You
+whosHadBenefits.partner = Partner
+whosHadBenefits.both = Both
+whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
+whosHadBenefits.error = You must tell the calculator who has had benefits
+
+whoGetsStatutoryCY.title = Who will get statutory pay?
+whoGetsStatutoryCY.heading = Who will get statutory pay?
+whoGetsStatutoryCY.you = You
+whoGetsStatutoryCY.partner = Partner
+whoGetsStatutoryCY.both = Both
+whoGetsStatutoryCY.checkYourAnswersLabel = Who will get statutory pay?
+whoGetsStatutoryCY.error = You must tell the calculator who will get statutory pay this year.
+
+statutoryPayAWeek.title = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.heading = Will this pay be more than £100 a week before tax?
+statutoryPayAWeek.checkYourAnswersLabel = statutoryPayAWeek
+
+youPaidPensionPY.title = Did you pay into your work pension last year?
+youPaidPensionPY.heading = Did you pay into your work pension last year?
+youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
+youPaidPensionPY.error = You must answer yes if you have paid into a pension through payroll this year
+partnerPaidPensionPY.title = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.heading = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
+partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
+
+bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
+
+yourStatutoryPayCY.title = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.heading = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.checkYourAnswersLabel = Will you get statutory pay while on leave for a birth or adoption this year?
+yourStatutoryPayCY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+yourStatutoryPayCY.error = You must select yes if you will get statutory pay this year
+
+partnerStatutoryPayCY.title = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.heading = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.checkYourAnswersLabel = Will your partner get statutory pay while on leave for a birth or adoption this year?
+partnerStatutoryPayCY.hint = This is pay from your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+partnerStatutoryPayCY.error = You must select yes if your partner will get statutory pay this year
+
+bothStatutoryPayCY.title = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.heading = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.checkYourAnswersLabel = Will you, your partner or both get statutory pay while on leave for a birth or adoption this year?
+bothStatutoryPayCY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+bothStatutoryPayCY.error = You must select yes if you, your partner or both get statutory pay this year
+
+parentPaidWorkPY.title = You are not working now, but have you had any paid work last year
+parentPaidWorkPY.heading = You are not working now, but have you had any paid work last year
+parentPaidWorkPY.checkYourAnswersLabel = You are not working now, but have you had any paid work last year
+parentPaidWorkPY.error = You must tell the calculator if you had any paid work last year
+parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work last year?
+partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work last year?
+partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work last year?
+partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work last year
+partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+bothPaidWorkPY.title = You and your partner isn’t working now, but have they had any paid work last year?
+bothPaidWorkPY.heading = You and your partner isn’t working now, but have they had any paid work last year?
+bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work last year?
+bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work last year
+bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+
+partnerAnyOtherIncomeLY.title = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.heading = Did your partner get any other income last year?
+partnerAnyOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
+partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income last year
+
+yourOtherIncomeLY.title = Did you get any other income last year?
+yourOtherIncomeLY.heading = Did you get any other income last year?
+yourOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+yourOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
+yourOtherIncomeLY.error = Select yes if you got any other income last year
+
+partnerBenefitsIncomeCY.title = How much will your partner get in benefits this year?
+partnerBenefitsIncomeCY.heading = How much will your partner get in benefits this year?
+partnerBenefitsIncomeCY.info = Partner’s benefits income
+partnerBenefitsIncomeCY.error = You must tell the calculator how much your partner got paid in benefits this year
+partnerBenefitsIncomeCY.checkYourAnswersLabel = How much will your partner get in benefits this year?
+
+youBenefitsIncomeCY.title = How much will you get in benefits this year?
+youBenefitsIncomeCY.heading = How much will you get in benefits this year?
+youBenefitsIncomeCY.info = Your benefits income
+youBenefitsIncomeCY.error = You must tell the calculator how much you got paid in benefits this year
+youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
+youBenefitsIncomeCY.invalid = Please only enter a numerical value of up to two decimal places
+youBenefitsIncomeCY.required = Please tell the calculator how much you got paid in benefits this year
+
+howMuchYouPayPension.title = How much do you pay into your pension a month?
+howMuchYouPayPension.heading = How much do you pay into your pension a month?
+howMuchYouPayPension.error = You must tell the calculator how much you pay into your pension a month
+howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
+howMuchYouPayPension.invalid = Please only enter a numerical value of up to two decimal places
+howMuchYouPayPension.required = Please tell the calculator how much you pay into your pension a month
+
+howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.heading = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.error = You must tell the calculator how much your partner pays into their pension a month
+howMuchPartnerPayPension.required = Please tell the calculator how much your partner pays into their pension a month
+howMuchPartnerPayPension.invalid = Please only enter a numerical value of up to two decimal places
+
+howMuchBothPayPension.title = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.heading = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.yourPension = Your pension
+howMuchBothPayPension.partnerPension = Partner’s pension
+howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPension.required = Please tell the calculator how much you both pay into your pensions a month
+
+benefitsIncomeCY.title = How much will you and your partner get in benefits this year?
+benefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
+benefitsIncomeCY.parentBenefitsIncome = Your benefits income
+benefitsIncomeCY.partnerBenefitsIncome = Partner’s benefits income
+benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get in benefits this year?
+
+parentBenefitsIncome.required = You must tell the calculator how much you got paid in benefits this year
+partnerBenefitsIncome.required = You must tell the calculator how much your partner got paid in benefits this year
+parentBenefitsIncome.invalid = Please enter a valid numerical value
+partnerBenefitsIncome.invalid = Please enter a valid numerical value
+
+yourIncomeInfoPY.title = Your income last year
+yourIncomeInfoPY.heading = Your income last year
+yourIncomeInfoPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.guidance = We’ll now ask questions about your income, including:
+yourIncomeInfoPY.li.income_paid_work = income from paid work
+yourIncomeInfoPY.li.pensions = pension contributions
+yourIncomeInfoPY.li.other_income = other income
+yourIncomeInfoPY.li.benefits_income = income from benefits
+yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
+
+partnerIncomeInfoPY.title = Your partner’s income last year
+partnerIncomeInfoPY.heading = Your partner’s income last year
+partnerIncomeInfoPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerIncomeInfoPY.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfoPY.li.income_paid_work = income from paid work
+partnerIncomeInfoPY.li.pensions = pension contributions
+partnerIncomeInfoPY.li.other_income = other income
+partnerIncomeInfoPY.li.benefits_income = income from benefits
+partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
+partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+
+bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income last year?
+bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income last year?
+bothOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+bothOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
+bothOtherIncomeLY.error = Select yes if you, your partner, or both of you got any other income last year
+
+whoOtherIncomePY.title = Who got other income last year?
+whoOtherIncomePY.heading = Who got other income last year?
+whoOtherIncomePY.you = You
+whoOtherIncomePY.partner = Partner
+whoOtherIncomePY.both = Both
+whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
+whoOtherIncomePY.error = You must tell the calculator if you or your partner got other income
+
+whoGetsStatutoryPY.title = Who got statutory pay last year?
+whoGetsStatutoryPY.heading = Who got statutory pay last year?
+whoGetsStatutoryPY.you = You
+whoGetsStatutoryPY.partner = Partner
+whoGetsStatutoryPY.both = Both
+whoGetsStatutoryPY.checkYourAnswersLabel = Who got statutory pay last year?
+whoGetsStatutoryPY.error = You must tell the calculator who got statutory pay last year.
+
+whoPaidIntoPensionPY.title = Who paid into a pension?
+whoPaidIntoPensionPY.heading = Who paid into a pension?
+whoPaidIntoPensionPY.you = You
+whoPaidIntoPensionPY.partner = Partner
+whoPaidIntoPensionPY.both = Both
+whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
+whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
+
+whosHadBenefitsPY.title = Who’s had benefits last year?
+whosHadBenefitsPY.heading = Who’s had benefits last year?
+whosHadBenefitsPY.you = You
+whosHadBenefitsPY.partner = Partner
+whosHadBenefitsPY.both = Both
+whosHadBenefitsPY.checkYourAnswersLabel = Who’s had benefits last year?
+whosHadBenefitsPY.error = You must tell the calculator who had benefits last year
+
+otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
+otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?
+otherIncomeAmountCY.parentOtherIncome = Your other income
+otherIncomeAmountCY.partnerOtherIncome = Partner’s other income
+otherIncomeAmountCY.checkYourAnswersLabel = How much will you and your partner’s other income be this year?
+
+yourOtherIncomeAmountCY.title = How much will your other income be this year?
+yourOtherIncomeAmountCY.heading = How much will your other income be this year?
+yourOtherIncomeAmountCY.checkYourAnswersLabel = How much will your other income be this year?
+parentOtherIncome.required = You must tell the calculator how much your other income will be
+parentOtherIncome.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountCY.title = How much will your partner other income be this year?
+partnerOtherIncomeAmountCY.heading = How much will your partner other income be this year?
+partnerOtherIncomeAmountCY.checkYourAnswersLabel = How much will your partner other income be this year?
+partnerOtherIncome.required = You must tell the calculator how much your partner’s other income will be
+partnerOtherIncome.invalid = You must enter a number between 0 and 999999.9
+
+employmentIncomeCY.title = How much will you and your partner get paid this year?
+employmentIncomeCY.heading = How much will you and your partner get paid this year?
+employmentIncomeCY.parentEmploymentIncome = Your income
+employmentIncomeCY.partnerEmploymentIncome = Partner’s income
+employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
+employmentIncomeCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+employmentIncomeCY.hint = This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+
+parentEmploymentIncome.required = You must tell the calculator what you will get paid this year
+parentEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
+
+partnerEmploymentIncome.required = You must tell the calculator what your partner will get paid this year
+partnerEmploymentIncome.invalid = You must enter a number between 0 and 999999.9
+
+youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.heading = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+youAnyTheseBenefitsPY.li.income_support = Income support
+youAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+youAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+youAnyTheseBenefitsPY.li.pensions = Pension Credit
+youAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+youAnyTheseBenefitsPY.li.attendance = Attendance allowance
+youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits last year?
+youAnyTheseBenefitsPY.error = You must tell the calculator if you had any of these benefits last year
+
+partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerAnyTheseBenefitsPY.li.income_support = Income support
+partnerAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+partnerAnyTheseBenefitsPY.li.pensions = Pension Credit
+partnerAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
+partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
+
+bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+bothAnyTheseBenefitsPY.li.income_support = Income support
+bothAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
+bothAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
+bothAnyTheseBenefitsPY.li.pensions = Pension Credit
+bothAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
+bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
+bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
+bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
+
+bothBenefitsIncomePY.title = How much did you and your partner get in benefits last year?
+bothBenefitsIncomePY.heading = How much did you and your partner get in benefits last year?
+bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income last year
+bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income last year
+bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner get in benefits last year?
+
+parentBenefitsIncomePY.required = You must tell the calculator how much you got paid in benefits last year
+partnerBenefitsIncomePY.required = You must tell the calculator how much your partner got paid in benefits last year
+parentBenefitsIncomePY.invalid = Please enter a valid numerical value
+partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
+
+statutoryPayAWeekLY.title = Was this pay be more than £100 a week before tax?
+statutoryPayAWeekLY.heading = Was this pay be more than £100 a week before tax?
+statutoryPayAWeekLY.checkYourAnswersLabel = statutoryPayAWeekLY
+
+youNoWeeksStatPayCY.title = How many weeks will you take this year?
+youNoWeeksStatPayCY.heading = How many weeks will you take this year?
+youNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will you take this year?
+youNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+youNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
+youNoWeeksStatPayCY.numeric.error = must be a whole number
+youNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+youNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41 for your number of Statutory weeks pay
+
+registeredBlind.title = Are any of your children registered blind?
+registeredBlind.heading = Are any of your children registered blind?
+registeredBlind.error = You must tell the calculator if your children are registered blind
+registeredBlind.checkYourAnswersLabel = registeredBlind
+
+partnerBenefitsIncomePY.title = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.heading = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.info = Partner’s benefits income
+partnerBenefitsIncomePY.error = You must tell the calculator how much your partner got paid in benefits last year
+partnerBenefitsIncomePY.checkYourAnswersLabel = How much did your partner get in benefits last year?
+
+youBenefitsIncomePY.title = How much did you get in benefits last year?
+youBenefitsIncomePY.heading = How much did you get in benefits last year?
+youBenefitsIncomePY.info = Your benefits income
+youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
+youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
+youBenefitsIncomePY.invalid = Please only enter a numerical value of up to two decimal places
+youBenefitsIncomePY.required = Please tell the calculator how much you got paid in benefits last year
+
+yourStatutoryPayPY.title = Did you get statutory pay while on leave for a birth or adoption last year?
+yourStatutoryPayPY.heading = Did you get statutory pay while on leave for a birth or adoption last year?
+yourStatutoryPayPY.checkYourAnswersLabel = Did you get statutory pay while on leave for a birth or adoption last year?
+yourStatutoryPayPY.hint = This is pay from your employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+yourStatutoryPayPY.error = You must select yes if you got statutory pay last year
+yourStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
+
+partnerStatutoryPayPY.title = Did your partner get statutory pay while on leave for a birth or adoption last year?
+partnerStatutoryPayPY.heading = Did your partner get statutory pay while on leave for a birth or adoption last year?
+partnerStatutoryPayPY.checkYourAnswersLabel = Did your partner get statutory pay while on leave for a birth or adoption last year?
+partnerStatutoryPayPY.hint = This is pay from your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+partnerStatutoryPayPY.error = You must select yes if your partner got statutory pay last year
+partnerStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
+
+bothStatutoryPayPY.title = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
+bothStatutoryPayPY.heading = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
+bothStatutoryPayPY.checkYourAnswersLabel = Did you, your partner or both get statutory pay while on leave for a birth or adoption last year?
+bothStatutoryPayPY.hint = This is pay from you or your partner’s employer for maternity, paternity, shared paternity or adoption leave – not maternity allowance.
+bothStatutoryPayPY.error = You must select yes if you, your partner or both got statutory pay last year
+bothStatutoryPayPY.startEndDate = Last year is 6 April 2016 to 5 April 2017.
+
+yourStatutoryPayAmountCY.title = How much statutory pay will you get paid a week?
+yourStatutoryPayAmountCY.heading = How much statutory pay will you get paid a week?
+yourStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you get paid a week?
+parentStatutoryPayAmount.required = You must tell the calculator what statutory pay will you get paid a week
+parentStatutoryPayAmount.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountCY.title = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmountCY.heading = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will your partner get paid a week?
+partnerStatutoryPayAmount.required = You must tell the calculator what statutory pay will your partner get paid a week
+partnerStatutoryPayAmount.invalid = You must enter a number between 1 and 99
+
+statutoryPayAmountCY.title = How much statutory pay will you or your partner get paid a week?
+statutoryPayAmountCY.heading = How much statutory pay will you or your partner get paid a week?
+statutoryPayAmountCY.parentStatutoryPayAmount = Your Statutory Pay
+statutoryPayAmountCY.partnerStatutoryPayAmount = Your Partner’s Statutory Pay
+statutoryPayAmountCY.checkYourAnswersLabel = How much statutory pay will you or your partner get paid a week?
+
+howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.yourPension = You
+howMuchBothPayPensionPY.partnerPension = Partner
+howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
+howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
+
+howMuchYouPayPensionPY.title = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
+howMuchYouPayPensionPY.yourPension = You
+howMuchYouPayPensionPY.required = Please tell the calculator how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
+howMuchPartnerPayPensionPY.partnerPension = Partner
+howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+
+childDisabilityBenefits.title = Does your child get any of these disability benefits?
+childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
+childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
+childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
+childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
+childDisabilityBenefits.error = You must answer yes if {0} get disability benefits
+
+childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay for {0}’s childcare?
+childcarePayFrequency.weekly = Weekly
+childcarePayFrequency.monthly = Monthly
+childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
+childcarePayFrequency.error = You must tell the calculator how often you expect to pay for {0}’s childcare
+
+yourOtherIncomeAmountPY.title = How much was your other income?
+yourOtherIncomeAmountPY.heading = How much was your other income?
+yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
+parentOtherIncomeAmountPY.required = You must tell the calculator how much your other income was
+parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+
+partnerOtherIncomeAmountPY.required = You must tell the calculator how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
+partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
+
+otherIncomeAmountPY.title = How much was you and your partner’s other income?
+otherIncomeAmountPY.heading = How much was you and your partner’s other income?
+otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
+otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
+otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
+
+partnerNoWeeksStatPayCY.title = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.heading = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks will your partner take this year?
+partnerNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
+partnerNoWeeksStatPayCY.error = You must tell the calculator how many weeks your partner will take this year
+partnerNoWeeksStatPayCY.numeric.error = must be a whole number
+partnerNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
+
+youNoWeeksStatPayPY.title = How many weeks did you take last year?
+youNoWeeksStatPayPY.heading = How many weeks did you take last year?
+youNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did you take last year?
+youNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+youNoWeeksStatPayPY.error = You must tell the calculator how many weeks you took last year
+youNoWeeksStatPayPY.numeric.error = must be a whole number
+youNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
+youNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
+
+bothNoWeeksStatPayCY.title = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.heading = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.youStatPayCY = Your weeks
+bothNoWeeksStatPayCY.partnerStatPayCY = Partners weeks
+bothNoWeeksStatPayCY.checkYourAnswersLabel = How many weeks did you and your partner take this year?
+bothNoWeeksStatPayCY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+bothNoWeeksStatPayCY.error = You must tell the calculator how many weeks you will take this year
+bothNoWeeksStatPayCY.numeric.error = must be a whole number
+bothNoWeeksStatPayCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+bothNoWeeksStatPayCY.invalid = You must enter a number between 1 and 41
+
+yourStatutoryPayAmountPY.title = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.heading = How much statutory pay did you get paid a week?
+yourStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you get paid a week?
+parentStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did you get paid a week
+parentStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+partnerStatutoryPayAmountPY.title = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.heading = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did your partner get paid a week?
+partnerStatutoryPayAmountPY.required = You must tell the calculator what statutory pay did your partner get paid a week
+partnerStatutoryPayAmountPY.invalid = You must enter a number between 1 and 99
+
+statutoryPayAmountPY.title = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.heading = How much statutory pay did you or your partner get paid a week?
+statutoryPayAmountPY.parentStatutoryPayAmountPY = Your Statutory Pay
+statutoryPayAmountPY.partnerStatutoryPayAmountPY = Your Partner’s Statutory Pay
+statutoryPayAmountPY.checkYourAnswersLabel = How much statutory pay did you or your partner get paid a week?
+
+childrenDisabilityBenefits.title = Do any of your children get any of these disability benefits?
+childrenDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
+childrenDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
+childrenDisabilityBenefits.personal.independence.payment = Personal Independence Payment
+childrenDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
+childrenDisabilityBenefits.error = You must answer yes if your children get disability benefits
+
+parentEmploymentIncomePY.title = How much did you get paid last year?
+parentEmploymentIncomePY.heading = How much did you get paid last year?
+parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
+parentEmploymentIncomePY.required = You must tell the calculator what did you get paid last year
+parentEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
+parentEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+parentEmploymentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+
+partnerEmploymentIncomePY.title = How much did your partner get paid last year?
+partnerEmploymentIncomePY.heading = How much did your partner get paid last year?
+partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid last year?
+partnerEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+partnerEmploymentIncomePY.required = You must tell the calculator what did your partner get paid last year
+partnerEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
+
+employmentIncomePY.title = How much did you and your partner get paid last year?
+employmentIncomePY.heading = How much did you and your partner get paid last year?
+employmentIncomePY.parentEmploymentIncomePY = Your income
+employmentIncomePY.partnerEmploymentIncomePY = Partner’s income
+employmentIncomePY.checkYourAnswersLabel = How much did you and your partner get paid last year?
+employmentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+employmentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+
+aboutYourChild.title = About your child
+aboutYourChild.title.nth = About your {0} child
+aboutYourChild.heading = About your child
+aboutYourChild.heading.nth = About your {0} child
+aboutYourChild.lede = Names are only used to make your questions and results clear. The calculator will not store or share them with anyone.
+aboutYourChild.name = What’s their first name?
+aboutYourChild.dob = What’s their date of birth?
+aboutYourChild.hint = For example, 31 3 2015
+aboutYourChild.checkYourAnswersLabel = About your child
+aboutYourChild.error.name = You must enter your child’s name
+aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
+aboutYourChild.error.future = You must enter a date less than 12 months in the future
+aboutYourChild.error.past = You must enter a date less than 20 years in the past
+
+childApprovedEducation.title = Is your child in approved education or training?
+childApprovedEducation.heading = Is your child {0} in approved education or training?
+childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
+childApprovedEducation.error = You must answer yes if your child {0} is in approved education or training
+
+childRegisteredBlind.title = Is {0} registered blind?
+childRegisteredBlind.heading = Is {0} registered blind?
+childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
+childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
+
+childStartEducation.title = When did your child start their education or training
+childStartEducation.heading = When did {0} start their education or training
+childStartEducation.checkYourAnswersLabel = When did your child start their education or training
+childStartEducation.error = You must tell the calculator when your child started their approved education or training
+childStartEducation.error.invalid = You must enter a date in the correct format
+
+partnerNoWeeksStatPayPY.title = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.heading = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did your partner take last year?
+partnerNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so their weeks may go from one year to the next.
+partnerNoWeeksStatPayPY.error = You must tell the calculator how many weeks your partner took last year
+partnerNoWeeksStatPayPY.numeric.error = must be a whole number
+partnerNoWeeksStatPayPY.year.start.end.date = Last year is 6 April 2016 to 5 April 2017.
+partnerNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41 for your partners number of Statutory weeks pay
+
+bothNoWeeksStatPayPY.title = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.heading = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.youStatPayPY = Your weeks
+bothNoWeeksStatPayPY.partnerStatPayPY = Partners weeks
+bothNoWeeksStatPayPY.checkYourAnswersLabel = How many weeks did you and your partner take last year?
+bothNoWeeksStatPayPY.hint = This is usually taken as 41 weeks in total, so your weeks may go from one year to the next.
+bothNoWeeksStatPayPY.error = You must tell the calculator how many weeks you will take last year
+bothNoWeeksStatPayPY.numeric.error = must be a whole number
+bothNoWeeksStatPayPY.year.start.end.date = This year is 6 April 2016 to 5 April 2017.
+bothNoWeeksStatPayPY.invalid = You must enter a number between 1 and 41
+
+whichChildrenDisability.title = Who gets disability benefits?
+whichChildrenDisability.heading = Who gets disability benefits?
+whichChildrenDisability.checkYourAnswersLabel = Who gets disability benefits?
+whichChildrenDisability.summary = Help with benefits
+whichChildrenDisability.selectAll = Select all who get them.
+whichChildrenDisability.error = You must tell the calculator who gets disability benefits
+
+whichChildrenBlind.title = Who’s registered blind?
+whichChildrenBlind.heading = Who’s registered blind?
+whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
+whichChildrenBlind.error = You must tell the calculator who is registered blind
+
+whoHasChildcareCosts.title = Who has childcare costs?
+whoHasChildcareCosts.heading = Who has childcare costs?
+whoHasChildcareCosts.checkYourAnswersLabel = Who has childcare costs?
+whoHasChildcareCosts.error = You must tell the calculator who has childcare costs
+
+whichDisabilityBenefits.title = Which disability benefits does your child get?
+whichDisabilityBenefits.heading = Which disability benefits does {0} get?
+whichDisabilityBenefits.checkYourAnswersLabel = Which disability benefits does {0} get?
+whichDisabilityBenefits.disability-benefits = Disability benefits
+whichDisabilityBenefits.higher-disability-benefit = Higher rate disability benefits
+whichDisabilityBenefits.help = Help with benefits
+whichDisabilityBenefits.types = Types of disability benefits
+whichDisabilityBenefits.dla = Disability Living Allowance
+whichDisabilityBenefits.pip = Personal Independence Payment
+whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
+whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
+whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
+whichDisabilityBenefits.error = You must tell the calculator if {0} gets benefits
+
+expectedChildcareCosts.title = What are your expected childcare costs?
+expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
+expectedChildcareCosts.heading.notYet = What will your expected {0} childcare costs be for {1}?
+expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
+expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
+expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
+expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
+expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99

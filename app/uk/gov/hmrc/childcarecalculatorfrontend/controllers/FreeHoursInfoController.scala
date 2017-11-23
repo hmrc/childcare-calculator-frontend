@@ -16,39 +16,31 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.PageObjects
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
-import scala.concurrent.Future
+class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
+                                        override val messagesApi: MessagesApi,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-@Singleton
-class FreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
+    implicit request =>
+      val isChildAgedTwo = request.userAnswers.childAgedTwo.getOrElse(false)
+      val locationOption = request.userAnswers.location
 
-  val keystore: KeystoreService = KeystoreService
-
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) =>
-        Ok(freeHoursInfo(pageObjects.expectChildcareCosts.getOrElse(false), pageObjects.childAgedTwo.getOrElse(false), pageObjects.household.location))
-      case _ =>
-        Logger.warn("PageObjects object is missing in FreeHoursInfoController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from FreeHoursInfoController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
+      locationOption match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(NormalMode))
+        case Some(location) =>
+          Ok(freeHoursInfo(appConfig, isChildAgedTwo, location))
+      }
   }
-
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    Future(Redirect(routes.LivingWithPartnerController.onPageLoad()))
-  }
-
 }

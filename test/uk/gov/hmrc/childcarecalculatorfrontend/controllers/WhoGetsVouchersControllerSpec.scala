@@ -16,333 +16,78 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.mockito.Matchers._
-import org.mockito.Mockito._
-import org.scalatest.BeforeAndAfterEach
-import play.api.i18n.Messages.Implicits._
-import play.api.libs.json.{Format, Reads}
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.play.http.HeaderCarrier
+import play.api.data.Form
+import play.api.libs.json.JsString
+import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import scala.concurrent.Future
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsVouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsVouchersId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsVouchers
 
-/**
- * Created by user on 01/09/17.
- */
-class WhoGetsVouchersControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+class WhoGetsVouchersControllerSpec extends ControllerSpecBase {
 
-  val sut = new WhoGetsVouchersController(applicationMessagesApi) {
-    override val keystore: KeystoreService = mock[KeystoreService]
-  }
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(sut.keystore)
-  }
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+    new WhoGetsVouchersController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl)
 
-  validateUrl(whoGetsVouchersPath)
+  def viewAsString(form: Form[String] = WhoGetsVouchersForm()) = whoGetsVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  def buildPageObjects(youOrPartner: Option[YouPartnerBothEnum] = None): PageObjects = PageObjects(
-    whoGetsVouchers = youOrPartner,
-    getVouchers = Some(YesNoUnsureEnum.YES),
-    expectChildcareCosts = Some(true),
-    livingWithPartner = Some(true),
-    paidOrSelfEmployed = Some(true),
-    whichOfYouInPaidEmployment = Some(YouPartnerBothEnum.BOTH),
-    household = Household(
-      location = LocationEnum.ENGLAND,
-      parent = Claimant(),
-      partner = Some(Claimant())
-    )
-  )
+  "WhoGetsVouchers Controller" must {
 
-  "WhoGetsVouchersController" when {
+    "return OK and the correct view for a GET" in {
+      val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
-    "onPageLoad is called" should {
-
-      "load template successfully if there is no data in keystore for current page object" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(youOrPartner = None))
-            )
-          )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
-      }
-
-      "load template successfully if there is data in keystore" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
-            )
-          )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
-      }
-
-      "redirect to error page if can't connect with keystore" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
-
-      "redirect to error page if there is no pageObject in keystore" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-            Future.successful(
-              None
-            )
-          )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
+      status(result) mustBe OK
+      contentAsString(result) mustBe viewAsString()
     }
 
-    "onSubmit is called" when {
+    "populate the view correctly on a GET when the question has previously been answered" in {
+      val validData = Map(WhoGetsVouchersId.toString -> JsString(WhoGetsVouchersForm.options.head.value))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      "there are errors" should {
-        "load same template and return BAD_REQUEST" in {
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = None))
-              )
-            )
+      contentAsString(result) mustBe viewAsString(WhoGetsVouchersForm().fill(WhoGetsVouchersForm.options.head.value))
+    }
 
-          val result = await(
-            sut.onSubmit(
-              request
-                .withFormUrlEncodedBody(whoGetsVouchersKey -> "")
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe BAD_REQUEST
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-        }
+    "redirect to the next page when valid data is submitted" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhoGetsVouchersForm.options.head.value))
 
-        "redirect to error page if there is no pageObject in keystore" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-              Future.successful(
-                None
-              )
-            )
-          val result = await(
-            sut.onSubmit(
-              request
-                .withFormUrlEncodedBody(whoGetsVouchersKey -> YouPartnerBothEnum.YOU.toString)
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
-      "saving in keystore is successful" should {
-        s"go to ${whoGetsBenefitsPath}" when {
-          "user selects 'YOU'" should {
-            "keep vouchers for parent but delete partner's" in {
-              val initialObject: PageObjects = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH))
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  parent = initialObject.household.parent.copy(
-                    escVouchers = Some(YesNoUnsureEnum.YES)
-                  ),
-                  partner = Some(
-                    initialObject.household.partner.get.copy(
-                      escVouchers = None
-                    )
-                  )
-                )
-              )
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(onwardRoute.url)
+    }
 
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                  Future.successful(
-                    Some(keystoreObject)
-                  )
-                )
+    "return a Bad Request and errors when invalid data is submitted" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val boundForm = WhoGetsVouchersForm().bind(Map("value" -> "invalid value"))
 
-              val modifiedObject = keystoreObject.copy(
-                household = keystoreObject.household.copy(
-                  partner = Some(
-                    keystoreObject.household.partner.get.copy(
-                      escVouchers = None
-                    )
-                  )
-                ),
-                whoGetsVouchers = Some(YouPartnerBothEnum.YOU)
-              )
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
-              when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                  Future.successful(
-                    Some(modifiedObject)
-                  )
-                )
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) mustBe viewAsString(boundForm)
+    }
 
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(whoGetsVouchersKey -> YouPartnerBothEnum.YOU.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe getBenefitsPath
-            }
-          }
-        }
-        s"go to ${whoGetsBenefitsPath}" when {
-          "user selects 'PARTNER'" should {
-            "keep vouchers for partner but delete parents's" in {
-              val initialObject: PageObjects = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH))
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  parent = initialObject.household.parent.copy(
-                    escVouchers = None
-                  ),
-                  partner = Some(
-                    initialObject.household.partner.get.copy(
-                      escVouchers = Some(YesNoUnsureEnum.YES)
-                    )
-                  )
-                )
-              )
+    "redirect to Session Expired for a GET if no existing data is found" in {
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                  Future.successful(
-                    Some(keystoreObject)
-                  )
-                )
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
 
-              val modifiedObject = keystoreObject.copy(
-                household = keystoreObject.household.copy(
-                  parent = keystoreObject.household.parent.copy(
-                    escVouchers = None
-                  )
-                ),
-                whoGetsVouchers = Some(YouPartnerBothEnum.PARTNER)
-              )
+    "redirect to Session Expired for a POST if no existing data is found" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhoGetsVouchersForm.options.head.value))
+      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
-              when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(modifiedObject))(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                  Future.successful(
-                    Some(modifiedObject)
-                  )
-                )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(whoGetsVouchersKey -> YouPartnerBothEnum.PARTNER.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe getBenefitsPath
-            }
-          }
-
-          "user selects 'BOTH'" should {
-            "keep vouchers for parent and partner" in {
-              val initialObject: PageObjects = buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.BOTH))
-              val keystoreObject: PageObjects = initialObject.copy(
-                household = initialObject.household.copy(
-                  parent = initialObject.household.parent.copy(
-                    escVouchers = Some(YesNoUnsureEnum.YES)
-                  ),
-                  partner = Some(
-                    initialObject.household.partner.get.copy(
-                      escVouchers = Some(YesNoUnsureEnum.YES)
-                    )
-                  )
-                )
-              )
-
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                  Future.successful(
-                    Some(keystoreObject)
-                  )
-                )
-
-              when(
-                sut.keystore.cache[PageObjects](org.mockito.Matchers.eq(keystoreObject))(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                  Future.successful(
-                    Some(keystoreObject)
-                  )
-                )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(whoGetsVouchersKey -> YouPartnerBothEnum.BOTH.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe getBenefitsPath
-            }
-          }
-        }
-      }
-
-      "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-              Future.successful(
-                Some(buildPageObjects(youOrPartner = Some(YouPartnerBothEnum.YOU)))
-              )
-            )
-
-          when(
-            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-              Future.failed(new RuntimeException)
-            )
-
-          val result = await(
-            sut.onSubmit(
-              request
-                .withFormUrlEncodedBody(whoGetsVouchersKey -> YouPartnerBothEnum.YOU.toString)
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
-
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
   }
 }

@@ -1,0 +1,32 @@
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.$pluralName;format="lower"$.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, $className$}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
+
+@(index: Int, $className;format="decap"$: $className$, appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("$pluralName;format="decap"$.delete.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
+
+    @helpers.form(action = Delete$className;format="cap"$Controller.onSubmit(index, mode), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("$pluralName;format="decap"$.delete.heading")
+
+        @components.input_yes_no(
+            InputViewModel[Boolean]("value", form),
+            label = messages("$pluralName;format="decap"$.delete.heading"),
+            labelClass = Some("visually-hidden")
+        )
+
+        @components.submit_button()
+    }
+}

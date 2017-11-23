@@ -16,29 +16,33 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.{Inject, Singleton}
-
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{Messages, I18nSupport, MessagesApi}
+import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-/**
- * Created by user on 31/08/17.
- */
-@Singleton
-class WhoGetsVouchersForm @Inject()(val messagesApi: MessagesApi) extends I18nSupport with CCConstants {
+object WhoGetsVouchersForm extends FormErrorHelper {
 
-  type WhoGetsVouchersFormType = Option[String]
+  def WhoGetsVouchersFormatter = new Formatter[String] {
+    def bind(key: String, data: Map[String, String]) = data.get(key) match {
+      case Some(s) if optionIsValid(s) => Right(s)
+      case None => produceError(key, whoGetsVouchersErrorKey)
+      case _ => produceError(key, unknownErrorKey)
+    }
 
-  val form = Form[WhoGetsVouchersFormType](
-    single(
-      whoGetsVouchersKey -> optional(text).verifying(
-        Messages("who.gets.vouchers.not.selected.error"),
-        youOrPartner =>
-          YouPartnerBothEnum.values.exists(_.toString == youOrPartner.getOrElse(""))
-      )
-    )
+    def unbind(key: String, value: String) = Map(key -> value)
+  }
+
+  def apply(): Form[String] = 
+    Form(single("value" -> of(WhoGetsVouchersFormatter)))
+
+  def options = Seq(
+    InputOption("whoGetsVouchers", YouPartnerBothEnum.YOU.toString),
+    InputOption("whoGetsVouchers", YouPartnerBothEnum.PARTNER.toString),
+    InputOption("whoGetsVouchers", YouPartnerBothEnum.BOTH.toString)
   )
+
+  def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

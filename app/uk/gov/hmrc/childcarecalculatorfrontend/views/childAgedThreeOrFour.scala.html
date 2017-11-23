@@ -14,41 +14,37 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-
-@(form: Form[Option[Boolean]], backUrl: Call, location: LocationEnum)(implicit request: Request[_], messages: Messages)
-
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@ccMain(
-    header = messages("child.aged.three.or.four.header"),
-    backLink = Some(backUrl)
-) {
-    @helpers.form(
-        action = routes.ChildAgedThreeOrFourController.onSubmit,
-        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
-        @error.ccErrorSummary(form)
+@main_template(
+    title = messages("childAgedThreeOrFour.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-        <p>@messages(s"child.aged.three.or.four.info.${location.toString}")</p>
+    @components.back_link()
 
-        @radio.ccRadioOptions(
-            field = form(CCConstants.childAgedThreeOrFourKey),
-            fieldForm = form,
-            radioOptions = Seq(
-                ("true", messages("radio.yes")),
-                ("false", messages("radio.no"))
-            ),
-            args = '_groupClass -> "form-group inline",
-                '_radioClass -> "block-label",
-                '_legendClass -> "visuallyhidden",
-                '_legend -> messages("child.aged.three.or.four.header"),
-                '_globalErrorKey -> messages("child.aged.three.or.four.yes.no.not.selected.error")
+    @components.error_summary(form.errors)
+
+    @components.heading("childAgedThreeOrFour.heading", "heading-xlarge")
+
+    @helpers.form(action = ChildAgedThreeOrFourController.onSubmit(mode), 'autoComplete -> "off") {
+
+        <p>@messages(s"childAgedThreeOrFour.guidance.$location")</p>
+
+        @components.input_yes_no(
+            InputViewModel[Boolean]("value", form),
+            label = messages("childAgedThreeOrFour.heading"),
+            labelClass = Some("visually-hidden")
         )
-        @buttons.nextButton()
+
+        @components.submit_button()
     }
 }

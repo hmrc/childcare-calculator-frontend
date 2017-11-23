@@ -19,20 +19,19 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
-
-import scala.concurrent.Future
-
 @Singleton
-class MaxFreeHoursInfoController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
+                                           val messagesApi: MessagesApi,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    Future(Ok(maxFreeHoursInfo()))
-  }
-
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    Future(Redirect(routes.HowManyChildrenController.onPageLoad()))
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
+    Ok(maxFreeHoursInfo(appConfig))
   }
 }

@@ -16,45 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.libs.json.{Format, Reads}
 import play.api.test.Helpers._
-import uk.gov.hmrc.play.http.HeaderCarrier
-import scala.concurrent.Future
-import org.mockito.Matchers._
-import org.mockito.Mockito._
-import org.scalatest.BeforeAndAfterEach
-import play.api.i18n.Messages.Implicits._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{LocationEnum, Household, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
+class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase {
 
-/**
- * Created by user on 18/09/17.
- */
-class MaxFreeHoursInfoControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+    new MaxFreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
 
-  val maxFreeHoursInfoController = new MaxFreeHoursInfoController(applicationMessagesApi)
-
-
-  "MaxFreeHoursInfoController" should {
-    "load successfully template " in {
-
-      val result = await(maxFreeHoursInfoController.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/html; charset=utf-8"
+  "MaxFreeHoursInfo Controller" must {
+    "return OK and the correct view for a GET" in {
+      val result = controller().onPageLoad()(fakeRequest)
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig)(fakeRequest, messages).toString
     }
 
+    "redirect to Session Expired for a GET if no existing data is found" in {
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
-    "redirect successfully to next page" when {
-      "next button is clicked then go to how many children page" in {
-        val result = await(maxFreeHoursInfoController.onSubmit(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe howManyChildrenPath
-      }
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
   }
-
-  validateUrl(maxFreeHoursInfoPath)
-
 }

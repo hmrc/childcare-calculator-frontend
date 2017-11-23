@@ -16,100 +16,76 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, when}
-import org.scalatest.BeforeAndAfterEach
-import play.api.i18n.Messages.Implicits._
+import play.api.libs.json.{JsBoolean, JsString}
+import play.api.mvc.Call
+import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedTwoId, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
-import scala.concurrent.Future
+class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
-class FreeHoursInfoControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  val sut = new FreeHoursInfoController(applicationMessagesApi) {
-    override val keystore: KeystoreService = mock[KeystoreService]
-  }
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+    new FreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(sut.keystore)
-  }
+  "FreeHoursInfo Controller" must {
 
-  validateUrl(freeHoursInfoPath)
+    Seq(ENGLAND, WALES, SCOTLAND).foreach { location =>
+      s"return OK with childAgedTwo as true and location $location and the correct view for a GET" in {
+        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(true), LocationId.toString -> JsString(location.toString))
+        val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
-  "FreeHoursInfoController" should {
-    "load successfully template when data in keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(),any())
-      ).thenReturn(
-        Future.successful(
-          Some(
-            PageObjects(
-              household = Household(location = LocationEnum.ENGLAND),
-              expectChildcareCosts = Some(true),
-              childAgedTwo = Some(true)
-            )
-          )
-        )
-      )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/html; charset=utf-8"
-    }
-
-    "load successfully template when no data in keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(),any())
-      ).thenReturn(
-        Future.successful(
-          Some(
-            PageObjects(
-              household = Household(location = LocationEnum.ENGLAND),
-              expectChildcareCosts = None,
-              childAgedTwo = None
-            )
-          )
-        )
-      )
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe OK
-      result.body.contentType.get shouldBe "text/html; charset=utf-8"
-    }
-
-    "redirect to error page if there is no data keystore for pageObjects object" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.successful(None)
-      )
-
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe technicalDifficultiesPath
-    }
-
-    "redirect to error page if can't connect with keystore" in {
-      when(
-        sut.keystore.fetch[PageObjects]()(any(), any())
-      ).thenReturn(
-        Future.failed(new RuntimeException)
-      )
-
-      val result = await(sut.onPageLoad(request.withSession(validSession)))
-      status(result) shouldBe SEE_OTHER
-      result.header.headers("Location") shouldBe technicalDifficultiesPath
-    }
-
-    s"redirect successfully to next page (${livingWithPartnerPath})" when {
-      "onSubmit is called" in {
-        val result = await(sut.onSubmit(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe livingWithPartnerPath
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true, location)(fakeRequest, messages).toString
       }
     }
-  }
 
+    Seq(ENGLAND, WALES, SCOTLAND).foreach { location =>
+      s"return OK with childAgedTwo as false, location $location and the correct view for a GET" in {
+        val validData = Map(ChildAgedTwoId.toString -> JsBoolean(false), LocationId.toString -> JsString(location.toString))
+        val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
+
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, location)(fakeRequest, messages).toString
+      }
+    }
+
+    "return OK with childAgedTwo as false, location Northern Ireland and the correct view for a GET" in {
+      val location = NORTHERN_IRELAND
+      val validData = Map(LocationId.toString -> JsString(location.toString))
+      val childAgedTwoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false, location)(fakeRequest, messages).toString
+    }
+
+    "redirect to Session Expired for a GET if no existing data is found" in {
+      val result = controller(dontGetAnyData).onPageLoad(fakeRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
+
+    "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
+      val result = controller(getEmptyCacheMap).onPageLoad(fakeRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad(NormalMode).url)
+    }
+
+  }
 }
+
+
+
+

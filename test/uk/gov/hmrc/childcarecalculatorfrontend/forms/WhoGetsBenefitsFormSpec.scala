@@ -16,47 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.i18n.Messages.Implicits._
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class WhoGetsBenefitsFormSpec extends UnitSpec with FakeCCApplication {
+class WhoGetsBenefitsFormSpec extends FormBehaviours {
 
-  "WhoGetsBeneftsForm" should {
+  val validData: Map[String, String] = Map(
+    "value" -> WhoGetsBenefitsForm.options.head.value
+  )
 
-    "accept valid values" when {
-      YouPartnerBothEnum.values.foreach { youOrPartner =>
-        s"'${youOrPartner}' is given" in {
-          val result = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
-            Map(
-              whoGetsBenefitsKey -> youOrPartner.toString
-            )
-          )
-          result.hasErrors shouldBe false
-          result.value.get.get shouldBe youOrPartner.toString
-        }
-      }
-    }
+  val form = WhoGetsBenefitsForm()
 
-    s"display error '${applicationMessages.messages("who.gets.benefits.not.selected.error")}'" when {
-      val invalidValues: List[String] = List("", "abcd", "123", "[*]")
-      invalidValues.foreach { invalidValue =>
-        s"invalid value '${invalidValue}' is given" in {
-          val result = new WhoGetsBenefitsForm(applicationMessagesApi).form.bind(
-            Map(
-              whoGetsBenefitsKey -> invalidValue
-            )
-          )
-          result.hasErrors shouldBe true
-          result.errors.length shouldBe 1
-          result.errors.head.message shouldBe applicationMessages.messages("who.gets.benefits.not.selected.error")
-          result.errors.head.message should not be "who.gets.benefits.not.selected.error"
-          result.value shouldBe None
-        }
-      }
-    }
+  "WhoGetsBenefits form" must {
+    behave like questionForm[String](WhoGetsBenefitsForm.options.head.value)
 
+    behave like formWithOptionFieldError("value", whoGetsBenefitsErrorKey , WhoGetsBenefitsForm.options.map{x => x.value}:_*)
   }
-
 }

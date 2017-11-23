@@ -16,45 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.i18n.Messages.Implicits._
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class LocationFormSpec extends UnitSpec with FakeCCApplication {
+class LocationFormSpec extends FormBehaviours {
 
-  "LocationForm" should {
-    "accept valid value" when {
-      LocationEnum.values.foreach { loc => {
-        val locationValue = loc.toString
-        s"${locationValue} is selected" in {
-          val result = new LocationForm(applicationMessagesApi).form.bind(Map(
-            locationKey -> locationValue
-          ))
-          result.hasErrors shouldBe false
-          result.value.get.get shouldBe locationValue
-        }
-      }
-      }
-    }
+  val validData: Map[String, String] = Map(
+    "value" -> LocationForm.options.head.value
+  )
 
-    "throw error" when {
-      val invalidValues = List("", "abcd", "123")
+  val form = LocationForm()
 
-      invalidValues.foreach { invalidValue =>
-        s"'${invalidValue}' is selected" in {
-          val result = new LocationForm(applicationMessagesApi).form.bind(Map(
-            locationKey -> invalidValue
-          ))
-          result.hasErrors shouldBe true
-          result.errors.length shouldBe 1
-          result.errors.head.message shouldBe applicationMessages.messages("location.radio.not.selected.error")
-          result.errors.head.message should not be "location.radio.not.selected.error"
-          result.value shouldBe None
-        }
-      }
-    }
+  "Location form" must {
 
+    behave like questionForm[Location.Value](Location(0))
+
+    behave like formWithOptionFieldError("value", locationErrorKey, LocationForm.options.map{x => x.value}:_*)
   }
-
 }
