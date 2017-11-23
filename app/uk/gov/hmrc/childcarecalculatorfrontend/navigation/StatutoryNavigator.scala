@@ -49,7 +49,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   private def bothStatutoryPayRoute(answers: UserAnswers) = {
     utils.getCall(answers.bothStatutoryPay) {
       case true => routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)
-      case false =>  routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+      case false =>  routes.MaxFreeHoursResultController.onPageLoad()
     }
   }
 
@@ -57,7 +57,7 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   private def yourStatutoryPayRoute(answers: UserAnswers) = {
     utils.getCall(answers.youStatutoryPay) {
       case true => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-      case false => routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+      case false => routes.MaxFreeHoursResultController.onPageLoad()
     }
   }
 
@@ -100,18 +100,18 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
     if(hasPartner){
       utils.getCall(whoGotStatutoryPay){
-        case YouPartnerBothEnum.YOU => routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        case YouPartnerBothEnum.YOU => routes.MaxFreeHoursResultController.onPageLoad()
         case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
       }
     }else{
-      routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+      routes.MaxFreeHoursResultController.onPageLoad()
     }
   }
 
   private def partnerStatutoryPayBeforeTaxRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerStatutoryPayBeforeTax) {
       case "true" => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode)
-      case "false" =>  routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+      case "false" =>  routes.MaxFreeHoursResultController.onPageLoad()
     }
 
   private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) =
@@ -123,17 +123,19 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
     if(hasPartner){
       utils.getCall(whoGotStatutoryPay){
-        case YouPartnerBothEnum.YOU => routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+        case YouPartnerBothEnum.YOU => routes.MaxFreeHoursResultController.onPageLoad()
         case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
       }
     }else{
-      routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+      routes.MaxFreeHoursResultController.onPageLoad()
     }
 
   }
 
 
   private def partnerStatutoryPayPerWeekRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerStatutoryPayPerWeek) { case _ => routes.SessionExpiredController.onPageLoad()} //TODO: to be replaced by Results page
+    utils.getCall(answers.partnerStatutoryPayPerWeek) {
+      case _ => routes.MaxFreeHoursResultController.onPageLoad()
+    }
 
 }

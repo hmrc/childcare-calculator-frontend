@@ -47,7 +47,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.youStatutoryPay) thenReturn Some(false)
 
           navigator.nextPage(YouStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to yourStatutoryPayType page when user selects yes" in {
@@ -75,7 +75,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.bothStatutoryPay) thenReturn Some(false)
 
           navigator.nextPage(BothStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to whoGotStatutoryPay page when user selects yes" in {
@@ -263,7 +263,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to result page when user selects no, there is partner in the system and partner does not get statutory page" in {
@@ -273,7 +273,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
 
           navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and partner gets statutory page" in {
@@ -320,7 +320,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerStatutoryPayBeforeTax) thenReturn Some("false")
 
           navigator.nextPage(PartnerStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to partnerStatutoryPayPerWeek page when user selects yes" in {
@@ -348,7 +348,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
 
         }
 
@@ -359,7 +359,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
 
           navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
 
         }
 
@@ -400,7 +400,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerStatutoryPayPerWeek) thenReturn Some(12)
 
           navigator.nextPage(PartnerStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad() //TODO: to be replaced by Results page
+            routes.MaxFreeHoursResultController.onPageLoad()
 
         }
 
