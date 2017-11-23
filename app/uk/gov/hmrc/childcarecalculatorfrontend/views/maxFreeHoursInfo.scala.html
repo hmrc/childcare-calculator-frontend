@@ -14,20 +14,34 @@
  * limitations under the License.
  *@
 
-@()(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
-@import uk.gov.hmrc.play.views.html._
+@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
-@ccMain(
-    header = messages("max.free.hours.info.header"),
-    backLink = Some(routes.CreditsController.onPageLoad)
-) {
+@main_template(
+    title = messages("maxFreeHoursInfo.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-    <p>@messages("max.free.hours.info.can.get.maximum.hours.paragraph")</p>
+    @components.back_link()
 
-    <a class="button" id="next-button" href="@routes.HowManyChildrenController.onPageLoad">
-        @messages("next.button")
-    </a>
+    @components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
+
+    <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
+
+    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.what.else.you.could.get")</h2>
+
+    <p>@messages("maxFreeHoursInfo.could.get.tfc")</p>
+
+    <p>@messages("maxFreeHoursInfo.could.get.esc")</p>
+
+    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
+
+    <p>@messages("maxFreeHoursInfo.give.more.info")</p>
+
+    @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+
+
 }

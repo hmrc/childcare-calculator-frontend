@@ -16,14 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.scalatest.mock.MockitoSugar
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.play.test.UnitSpec
 
-class EnumUtilsSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
+class EnumUtilsSpec extends UnitSpec {
 
   "EnumerationUtil" should {
 
@@ -34,9 +32,9 @@ class EnumUtilsSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
           | "enum" : "something"
           |}
         """.stripMargin)
-      json.validate[LocationEnum] match {
+      json.validate[Location.Value] match {
         case JsSuccess(v, _) =>
-          !v.isInstanceOf[LocationEnum]
+          !v.isInstanceOf[Location.Value]
         case JsError(errors) =>
           errors.head._2.head.message shouldBe "String value expected"
       }
@@ -47,11 +45,12 @@ class EnumUtilsSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
         """
           |"something"
         """.stripMargin)
-      json.validate[LocationEnum] match {
+      json.validate[Location.Value] match {
         case JsSuccess(v, _) =>
-          !v.isInstanceOf[LocationEnum]
+          !v.isInstanceOf[Location.Value]
         case JsError(errors) =>
-          errors.head._2.head.message shouldBe "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum$', but it does not appear to contain the value: 'something'"
+          errors.head._2.head.message shouldBe
+            "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.Location$', but it does not appear to contain the value: 'something'"
       }
     }
 
@@ -60,16 +59,16 @@ class EnumUtilsSpec extends UnitSpec with FakeCCApplication with MockitoSugar {
         """
           |"england"
         """.stripMargin)
-      json.validate[LocationEnum] match {
+      json.validate[Location.Value] match {
         case JsSuccess(v, _) =>
-          v.isInstanceOf[LocationEnum] shouldBe true
+          v.isInstanceOf[Location.Value] shouldBe true
         case JsError(errors) =>
           errors.head._2.head.message shouldBe ""
       }
     }
 
     "return valid json when the object is written" in {
-      val res: JsValue = Json.toJson(LocationEnum.ENGLAND)
+      val res: JsValue = Json.toJson(Location.ENGLAND)
       res.toString() shouldBe "\"england\""
     }
 

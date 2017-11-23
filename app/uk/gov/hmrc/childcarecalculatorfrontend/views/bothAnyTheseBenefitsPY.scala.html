@@ -1,0 +1,60 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("bothAnyTheseBenefitsPY.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
+
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("bothAnyTheseBenefitsPY.heading", "heading-xlarge")
+
+    @helpers.form(action = BothAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
+
+        <p>@messages("bothAnyTheseBenefitsPY.tax_year")</p>
+
+        <ul class="bullets">
+            <li>@messages("bothAnyTheseBenefitsPY.li.income_support")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.employment_support")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.pensions")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.disability")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.attendance")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.independance")</li>
+            <li>@messages("bothAnyTheseBenefitsPY.li.carers")</li>
+        </ul>
+
+        @components.input_yes_no(
+            InputViewModel[Boolean]("value", form),
+            label = messages("bothAnyTheseBenefitsPY.heading"),
+            labelClass = Some("visually-hidden")
+        )
+
+        @components.submit_button()
+    }
+}

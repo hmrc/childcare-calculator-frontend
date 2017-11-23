@@ -14,41 +14,34 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[Boolean]], hasPartner: Boolean)(implicit request: Request[_], messages: Messages)
-
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models._
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@familyStatus = @{ CCConstants.getFamilyStatus(hasPartner) }
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@ccMain(
-    header = messages(s"paid.employment.header.${familyStatus}"),
-    backLink = Some(routes.LivingWithPartnerController.onPageLoad())
-    ) {
+@main_template(
+    title = messages("paidEmployment.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-    @helpers.form(
-        action = routes.PaidEmploymentController.onSubmit,
-        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+    @components.back_link()
 
-        @error.ccErrorSummary(form)
+    @components.error_summary(form.errors)
 
-        @radio.ccRadioOptions(
-            field = form(CCConstants.paidEmploymentKey),
-            fieldForm = form,
-            radioOptions = Seq(
-                ("true", messages("radio.yes")),
-                ("false", messages("radio.no"))
-            ),
-            args = '_groupClass -> "form-group inline",
-                '_radioClass -> "block-label",
-                '_legendClass -> "visuallyhidden",
-                '_legend -> messages(s"paid.employment.header.${familyStatus}"),
-                '_globalErrorKey -> messages(s"paid.employment.not.selected.error.${familyStatus}")
-            )
-        @buttons.nextButton()
+    @components.heading("paidEmployment.heading", "heading-xlarge")
+
+    @helpers.form(action = PaidEmploymentController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.input_yes_no(
+            InputViewModel[Boolean]("value", form),
+            label = messages("paidEmployment.heading"),
+            labelClass = Some("visually-hidden")
+        )
+
+        @components.submit_button()
     }
 }

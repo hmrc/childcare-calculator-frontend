@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.Logger
 import play.api.libs.json._
+import scala.language.implicitConversions
 
 object EnumUtils {
 
@@ -47,5 +48,5 @@ object EnumUtils {
     new Writes[E#Value] {
       def writes(v: E#Value): JsValue = JsString(v.toString)
     }
-
 }
+

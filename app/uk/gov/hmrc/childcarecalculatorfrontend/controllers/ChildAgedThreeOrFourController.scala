@@ -16,92 +16,57 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
-import play.api.Logger
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildAgedThreeOrFourForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildAgedThreeOrFourId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-@Singleton
-class ChildAgedThreeOrFourController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class ChildAgedThreeOrFourController @Inject()(appConfig: FrontendAppConfig,
+                                         override val messagesApi: MessagesApi,
+                                         dataCacheConnector: DataCacheConnector,
+                                         navigator: Navigator,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  val keystore: KeystoreService = KeystoreService
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+    implicit request =>
+      request.userAnswers.location match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(mode))
 
-  private def getBackUrl(summary: Boolean, hasChildAgedTwo: Option[Boolean])(implicit hc: HeaderCarrier): Call = {
-    if(summary) {
-      routes.FreeHoursResultsController.onPageLoad()
-    } else {
-      if(hasChildAgedTwo.isDefined) {
-        routes.ChildAgedTwoController.onPageLoad(false)
-      } else {
-        routes.LocationController.onPageLoad()
-      }
-    }
-  }
-
-
-  def onPageLoad(summary: Boolean = false): Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) =>
-        Ok(
-          childAgedThreeOrFour(
-            new ChildAgedThreeOrFourForm(messagesApi).form.fill(pageObjects.household.childAgedThreeOrFour),
-            getBackUrl(summary, pageObjects.childAgedTwo),
-            pageObjects.household.location
-          )
-        )
-      case _ =>
-        Logger.warn("PageObjects object is missing in ChildAgedThreeOrFourController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from ChildAgedThreeOrFourController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
-  }
-
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) =>
-        new ChildAgedThreeOrFourForm(messagesApi).form.bindFromRequest().fold(
-          errors =>
-            Future(
-              BadRequest(
-                childAgedThreeOrFour(
-                  errors,
-                  getBackUrl(false, pageObjects.childAgedTwo),
-                  pageObjects.household.location
-
-                )
-              )
-            ),
-          success => {
-            val modifiedPageObjects = pageObjects.copy(household = pageObjects.household.copy(
-              childAgedThreeOrFour = success
-            ))
-            keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(routes.ExpectChildcareCostsController.onPageLoad(false))
-            } recover {
-              case ex: Exception =>
-                Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")
-                Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-            }
+        case Some(location) =>
+          val preparedForm = request.userAnswers.childAgedThreeOrFour match {
+            case None => BooleanForm()
+            case Some(value) => BooleanForm().fill(value)
           }
+          Ok(childAgedThreeOrFour(appConfig, preparedForm, mode, location))
+      }
+  }
+
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+    implicit request =>
+
+      if (request.userAnswers.location.isEmpty) {
+        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      } else {
+        BooleanForm("childAgedThreeOrFour.error").bindFromRequest().fold(
+          (formWithErrors: Form[Boolean]) =>
+            Future.successful(BadRequest(childAgedThreeOrFour(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
+          (value) =>
+            dataCacheConnector.save[Boolean](request.sessionId, ChildAgedThreeOrFourId.toString, value).map(cacheMap =>
+              Redirect(navigator.nextPage(ChildAgedThreeOrFourId, mode)(new UserAnswers(cacheMap))))
         )
-      case _ =>
-        Logger.warn("PageObjects object is missing in ChildAgedThreeOrFourController.onSubmit")
-        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from ChildAgedThreeOrFourController.onSubmit: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
+      }
   }
 }

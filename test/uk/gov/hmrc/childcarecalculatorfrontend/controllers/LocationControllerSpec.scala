@@ -16,253 +16,79 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.scalatest.BeforeAndAfterEach
-import org.mockito.Matchers._
-import org.mockito.Mockito._
-import play.api.i18n.Messages.Implicits.applicationMessagesApi
-import play.api.libs.json.{Format, Reads}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.ControllersValidator
-import uk.gov.hmrc.play.http.HeaderCarrier
+import play.api.data.Form
+import play.api.libs.json.JsString
+import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
-import scala.concurrent.Future
+class LocationControllerSpec extends ControllerSpecBase {
 
-class LocationControllerSpec extends ControllersValidator with BeforeAndAfterEach {
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  val sut = new LocationController(applicationMessagesApi) {
-    override val keystore: KeystoreService = mock[KeystoreService]
-  }
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+    new LocationController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl)
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(sut.keystore)
-  }
+  def viewAsString(form: Form[_] = LocationForm()) = location(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  validateUrl(locationPath)
+  "Location Controller" must {
 
-  def buildPageObjects(location: LocationEnum = LocationEnum.ENGLAND): PageObjects = PageObjects(household = Household(
-    location = location)
-  )
+    "return OK and the correct view for a GET" in {
+      val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
-  "LocationController" when {
-
-    "onPageLoad is called" should {
-
-      "load template successfully if there is no data in keystore" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            None
-          )
-        )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
-      }
-
-      "load template successfully if there is data in keystore" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.successful(
-            Some(buildPageObjects(location = LocationEnum.ENGLAND))
-          )
-        )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe OK
-        result.body.contentType.get shouldBe "text/html; charset=utf-8"
-      }
-
-      "redirect to error page if can't connect with keystore" in {
-        when(
-          sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-        ).thenReturn(
-          Future.failed(new RuntimeException)
-        )
-        val result = await(sut.onPageLoad(request.withSession(validSession)))
-        status(result) shouldBe SEE_OTHER
-        result.header.headers("Location") shouldBe technicalDifficultiesPath
-      }
+      status(result) mustBe OK
+      contentAsString(result) mustBe viewAsString()
     }
 
-    "onSubmit is called" when {
+    "populate the view correctly on a GET when the question has previously been answered" in {
+      val validData = Map(LocationId.toString -> JsString(LocationForm.options.head.value))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      "there are errors" should {
-        "load same template and return BAD_REQUEST" in {
-          val result = await(
-            sut.onSubmit(
-              request
-                .withFormUrlEncodedBody(locationKey -> "")
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe BAD_REQUEST
-          result.body.contentType.get shouldBe "text/html; charset=utf-8"
-        }
-      }
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      "saving in keystore is successful" should {
-        s"go to ${childAgedTwoPath}" when {
-          val childAgeTwoLocations = List(
-            LocationEnum.ENGLAND,
-            LocationEnum.SCOTLAND,
-            LocationEnum.WALES
-          )
-          childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected if there is no data in keystore for PageObjects object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  None
-                )
-              )
+      contentAsString(result) mustBe viewAsString(LocationForm().fill(Location(0)))
+    }
 
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = loc))
-                )
-              )
+    "redirect to the next page when valid data is submitted" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value))
 
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedTwoPath
-            }
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
-            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
-                )
-              )
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(onwardRoute.url)
+    }
 
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = loc))
-                )
-              )
+    "return a Bad Request and errors when invalid data is submitted" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val boundForm = LocationForm().bind(Map("value" -> "invalid value"))
 
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedTwoPath
-            }
-          }
-        }
+      val result = controller().onSubmit(NormalMode)(postRequest)
 
-        s"go to '3 or 4 years old page' ${childAgedThreeOrFourPath}" when {
-          val childAgeTwoLocations = List(
-            LocationEnum.NORTHERNIRELAND
-          )
-          childAgeTwoLocations.foreach { loc =>
-            s"${loc.toString} is selected if there is no data in keystore for Househild object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any(), any())
-              ).thenReturn(
-                Future.successful(
-                  None
-                )
-              )
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) mustBe viewAsString(boundForm)
+    }
 
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = loc))
-                )
-              )
+    "return OK and the correct view for a GET if no existing data is found" in {
+      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
-            }
+      status(result) mustBe OK
+      contentAsString(result) mustBe viewAsString()
+    }
 
-            s"${loc.toString} is selected if there is data in keystore for PageObjects object" in {
-              when(
-                sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = LocationEnum.ENGLAND))
-                )
-              )
+    "redirect to the next page when valid data is submitted and no existing data is found" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value))
+      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
-              when(
-                sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-              ).thenReturn(
-                Future.successful(
-                  Some(buildPageObjects(location = loc))
-                )
-              )
-
-              val result = await(
-                sut.onSubmit(
-                  request
-                    .withFormUrlEncodedBody(locationKey -> loc.toString)
-                    .withSession(validSession)
-                )
-              )
-              status(result) shouldBe SEE_OTHER
-              result.header.headers("Location") shouldBe childAgedThreeOrFourPath
-            }
-          }
-        }
-      }
-
-      "connecting with keystore fails" should {
-        s"redirect to ${technicalDifficultiesPath}" in {
-          when(
-            sut.keystore.fetch[PageObjects]()(any[HeaderCarrier], any[Reads[PageObjects]])
-          ).thenReturn(
-            Future.successful(
-              Some(buildPageObjects(location = LocationEnum.ENGLAND))
-            )
-          )
-
-          when(
-            sut.keystore.cache[PageObjects](any[PageObjects])(any[HeaderCarrier], any[Format[PageObjects]])
-          ).thenReturn(
-            Future.failed(new RuntimeException)
-          )
-
-          val result = await(
-            sut.onSubmit(
-              request
-                .withFormUrlEncodedBody(locationKey -> LocationEnum.ENGLAND.toString)
-                .withSession(validSession)
-            )
-          )
-          status(result) shouldBe SEE_OTHER
-          result.header.headers("Location") shouldBe technicalDifficultiesPath
-        }
-      }
-
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(onwardRoute.url)
     }
   }
 }

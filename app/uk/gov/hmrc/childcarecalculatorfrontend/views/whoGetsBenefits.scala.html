@@ -14,40 +14,36 @@
  * limitations under the License.
  *@
 
-@(form: Form[Option[String]])(implicit request: Request[_], messages: Messages)
-
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common.buttons._
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models._
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.CCConstants
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsBenefitsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@ccMain(
-        header = messages("who.gets.benefits.header"),
-        backLink = Some(routes.GetBenefitsController.onPageLoad())
-) {
-    @helpers.form(
-        action = routes.WhoGetsBenefitsController.onSubmit,
-        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-        @error.ccErrorSummary(form)
+@main_template(
+    title = messages("whoGetsBenefits.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-        @radio.ccRadioOptions(
-            field = form(CCConstants.whoGetsBenefitsKey),
-            fieldForm = form,
-            radioOptions = Seq(
-                (YouPartnerBothEnum.YOU.toString, messages("radio.you")),
-                (YouPartnerBothEnum.PARTNER.toString, messages("radio.partner")),
-                (YouPartnerBothEnum.BOTH.toString, messages("radio.both"))
-            ),
-            args = '_groupClass -> "form-group",
-                '_radioClass -> "block-label",
-                '_legendClass -> "visuallyhidden",
-                '_legend -> messages("who.gets.benefits.header"),
-                '_globalErrorKey -> messages("who.gets.benefits.not.selected.error")
+    @components.back_link()
+
+    @components.error_summary(form.errors)
+
+    @components.heading("whoGetsBenefits.heading", "heading-xlarge")
+
+    @helpers.form(action = WhoGetsBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.input_radio(
+            viewModel = InputViewModel[String]("value", form),
+            legend = messages("whoGetsBenefits.heading"),
+            legendClass = Some("visually-hidden"),
+            inputs = WhoGetsBenefitsForm.options
         )
-        @buttons.nextButton()
+
+        @components.submit_button()
     }
 }

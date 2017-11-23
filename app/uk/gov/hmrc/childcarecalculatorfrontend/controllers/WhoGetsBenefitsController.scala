@@ -16,134 +16,48 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Singleton, Inject}
-import play.api.Logger
+import javax.inject.Inject
+
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, AnyContent, Action}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsBenefitsId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsBenefits
 
 import scala.concurrent.Future
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-@Singleton
-class WhoGetsBenefitsController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class WhoGetsBenefitsController @Inject()(
+                                        appConfig: FrontendAppConfig,
+                                        override val messagesApi: MessagesApi,
+                                        dataCacheConnector: DataCacheConnector,
+                                        navigator: Navigator,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  val keystore: KeystoreService = KeystoreService
-
-
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObject)  =>
-        val selection: Option[YouPartnerBothEnum] = getSelection(pageObject.household.parent.benefits,
-                                                                 pageObject.household.partner.fold[Option[Benefits]](None)(_.benefits))
-
-        Ok(whoGetsBenefits(new WhoGetsBenefitsForm(messagesApi).form.fill(selection.map(_.toString))))
-
-      case _ =>
-        Logger.warn("Invalid PageObjects in WhoGetsBenefitsController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }.recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from WhoGetsBenefitsController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
-  }
-
-
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    new WhoGetsBenefitsForm(messagesApi).form.bindFromRequest().fold(
-      errors => {
-        Future(
-          BadRequest(
-            whoGetsBenefits(errors)
-          )
-        )
-      },
-      success => {
-        keystore.fetch[PageObjects]().flatMap {
-          case Some(pageObject) =>
-            val selectedWhoGetsBenefits: YouPartnerBothEnum = YouPartnerBothEnum.withName(success.get)
-            val modifiedPageObject: PageObjects = modifyPageObject(pageObject, selectedWhoGetsBenefits)
-            keystore.cache(modifiedPageObject).map { result =>
-              Redirect(getNextPage(selectedWhoGetsBenefits))
-            }
-          case _ =>
-            Logger.warn("Invalid PageObjects in WhoGetsBenefitsController.onSubmit")
-            Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-        }.recover {
-          case ex: Exception =>
-            Logger.warn(s"Exception from WhoGetsBenefitsController.onSubmit: ${ex.getMessage}")
-            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-        }
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+    implicit request =>
+      val preparedForm = request.userAnswers.whoGetsBenefits match {
+        case None => WhoGetsBenefitsForm()
+        case Some(value) => WhoGetsBenefitsForm().fill(value)
       }
-    )
+      Ok(whoGetsBenefits(appConfig, preparedForm, mode))
   }
 
-  private def modifyPageObject(pageObject: PageObjects,
-                               selectedWhoGetsBenefits: YouPartnerBothEnum): PageObjects = {
-
-    if(getSelection(pageObject.household.parent.benefits,
-                    pageObject.household.partner.fold[Option[Benefits]](None)(_.benefits)).contains(selectedWhoGetsBenefits)) {
-      pageObject
-    }
-    else {
-      selectedWhoGetsBenefits match {
-        case YouPartnerBothEnum.YOU => pageObject.copy(
-          household = pageObject.household.copy(
-            parent = pageObject.household.parent.copy(
-              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
-            ),
-            partner = Some(
-              pageObject.household.partner.fold(Claimant())(_.copy(benefits = None)
-              )
-            )
-          )
-        )
-
-        case YouPartnerBothEnum.PARTNER => pageObject.copy(
-          household = pageObject.household.copy(
-            parent = pageObject.household.parent.copy(benefits = None),
-            partner = Some(
-              pageObject.household.partner.fold(Claimant(benefits = Some(Benefits())))( x => x.copy(
-                benefits = Some(x.benefits.getOrElse(Benefits()))
-              )
-            )
-          )
-        ))
-
-        case YouPartnerBothEnum.BOTH => pageObject.copy(
-          household = pageObject.household.copy(
-            parent = pageObject.household.parent.copy(
-              benefits = Some(pageObject.household.parent.benefits.getOrElse(Benefits()))
-            ),
-            partner = Some(
-              pageObject.household.partner.fold(Claimant(benefits = Some(Benefits())))( x => x.copy(
-                benefits = Some(x.benefits.getOrElse(Benefits()))
-              )
-              )
-            )
-          )
-        )
-      }
-    }
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+    implicit request =>
+      WhoGetsBenefitsForm().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
+          Future.successful(BadRequest(whoGetsBenefits(appConfig, formWithErrors, mode))),
+        (value) =>
+          dataCacheConnector.save[String](request.sessionId, WhoGetsBenefitsId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(WhoGetsBenefitsId, mode)(new UserAnswers(cacheMap))))
+      )
   }
-
-  private def getSelection(parentBenefits: Option[Benefits],
-                           partnerBenefits: Option[Benefits]): Option[YouPartnerBothEnum] = {
-    (parentBenefits, partnerBenefits) match {
-      case (None, None) => None
-      case (Some(_), None) => Some(YouPartnerBothEnum.YOU)
-      case (None, Some(_)) => Some(YouPartnerBothEnum.PARTNER)
-      case (Some(_), Some(_)) => Some(YouPartnerBothEnum.BOTH)
-    }
-  }
-
-
-  private def getNextPage(selectedWhoGetsBenefits: YouPartnerBothEnum): Call = {
-    routes.WhichBenefitsDoYouGetController.onPageLoad(selectedWhoGetsBenefits == YouPartnerBothEnum.PARTNER)
-  }
-
 }

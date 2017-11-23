@@ -16,134 +16,47 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
-import play.api.Logger
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Call, Action, AnyContent}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.PaidEmploymentForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, Claimant, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CCConstants, HelperManager}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PaidEmploymentId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
 
 import scala.concurrent.Future
 
-@Singleton
-class PaidEmploymentController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class PaidEmploymentController @Inject()(appConfig: FrontendAppConfig,
+                                         override val messagesApi: MessagesApi,
+                                         dataCacheConnector: DataCacheConnector,
+                                         navigator: Navigator,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  val keystore: KeystoreService = KeystoreService
-
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) =>
-
-        val hasPartner = HelperManager.isLivingWithPartner(pageObjects, CCConstants.paidEmploymentControllerId)
-
-        Ok(
-          paidEmployment(
-            new PaidEmploymentForm(hasPartner, messagesApi).form.fill(pageObjects.paidOrSelfEmployed),
-            hasPartner
-          )
-        )
-      case _ =>
-        Logger.warn("Invalid PageObjects in PaidEmploymentController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from PaidEmploymentController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
-  }
-
-
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects].flatMap {
-      case Some(pageObjects) =>
-
-        val hasPartner = HelperManager.isLivingWithPartner(pageObjects, CCConstants.paidEmploymentControllerId)
-
-        new PaidEmploymentForm(hasPartner, messagesApi).form.bindFromRequest().fold(
-          errors =>
-            Future(
-              BadRequest(
-                paidEmployment(
-                  errors, hasPartner
-                )
-              )
-            ),
-          success => {
-            val modifiedPageObjects = updatePageObjects(pageObjects, success.get)
-            keystore.cache(modifiedPageObjects).map { result =>
-              Redirect(getNextPage(hasPartner, success.get))
-            }
-          }
-        )
-      case _ =>
-        Logger.warn("Invalid PageObjects in PaidEmploymentController.onSubmit")
-        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from PaidEmploymentController.onSubmit: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
-  }
-
-  private def updatePageObjects(oldPageObjects: PageObjects,
-                                newPaidOrSelfEmployed: Boolean): PageObjects = {
-
-    if(oldPageObjects.paidOrSelfEmployed.contains(newPaidOrSelfEmployed)) {
-      oldPageObjects
-    }
-    else {
-      newPaidOrSelfEmployed match {
-        case false => {
-          oldPageObjects.copy(
-            paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-            whichOfYouInPaidEmployment = None,
-            getVouchers = None,
-            household = oldPageObjects.household.copy(
-              parent = Claimant(),
-              partner = None
-            )
-          )
-        }
-        case _ => {
-          val hasPartner = HelperManager.isLivingWithPartner(oldPageObjects, CCConstants.paidEmploymentControllerId)
-
-          if(hasPartner){
-            oldPageObjects.copy(
-              paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-              whichOfYouInPaidEmployment = None,
-              getVouchers = None
-            )
-
-          }else{
-            oldPageObjects.copy(
-              paidOrSelfEmployed = Some(newPaidOrSelfEmployed),
-              whichOfYouInPaidEmployment = None,
-              getVouchers = None,
-              household = oldPageObjects.household.copy(parent = oldPageObjects.household.parent,
-                                                        partner = None)
-            )
-          }
-
-        }
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+    implicit request =>
+      val preparedForm = request.userAnswers.paidEmployment match {
+        case None => BooleanForm()
+        case Some(value) => BooleanForm().fill(value)
       }
-
-    }
+      Ok(paidEmployment(appConfig, preparedForm, mode))
   }
 
-  private def getNextPage(hasPartner: Boolean, newPaidEmployment: Boolean): Call = {
-    if(newPaidEmployment) {
-      if(hasPartner) {
-        routes.WhichOfYouInPaidEmploymentController.onPageLoad()
-      } else {
-        routes.HoursController.onPageLoad(isPartner = false)
-      }
-    } else {
-      //TODO - redirect to result page when prototype is ready
-      routes.ChildCareBaseController.underConstruction()
-    }
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+    implicit request =>
+      BooleanForm(paidEmploymentErrorKey).bindFromRequest().fold(
+        (formWithErrors: Form[Boolean]) =>
+          Future.successful(BadRequest(paidEmployment(appConfig, formWithErrors, mode))),
+        (value) =>
+          dataCacheConnector.save[Boolean](request.sessionId, PaidEmploymentId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(PaidEmploymentId, mode)(new UserAnswers(cacheMap))))
+      )
   }
 }

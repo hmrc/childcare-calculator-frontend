@@ -14,42 +14,45 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum.LocationEnum
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.LocationEnum
-@(haveCost: Boolean, isChild2: Boolean, location: LocationEnum)(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.common._
-@import uk.gov.hmrc.play.views.html._
+@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
-@ccMain(
-    header = messages("free.hours.info.header"),
-    backLink = Some(routes.ExpectChildcareCostsController.onPageLoad(false))
-) {
-    @helpers.form(
-        action = routes.FreeHoursInfoController.onSubmit,
-        args = 'class -> "form", 'autocomplete -> "off", 'novalidate -> "") {
+@main_template(
+    title = messages("freeHoursInfo.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-        <div id="free-hours-entitled-info">
-            <p>@messages(s"free.hours.entitled.info.${location}")</p>
-            @if(isChild2) {
-                <p>@messages(s"free.hours.entitled.2.info.${location}")</p>
-            }
-            <!--@if(!haveCost) {
-                <div class="panel-indent panel-border-wide">
-                    <p>@messages("free.hours.results.entitled.info.no.costs")</p>
-                </div>
-            }-->
-        </div>
+    @components.back_link()
 
-        <h2>@messages("free.hours.info.sub.heading")</h2>
-        <p id="free-hours-info-info">@messages("free.hours.info.info")</p>
-        <ul class="list list-bullet">
-            <li>@messages("free.hours.info.esc")</li>
-            <li>@messages("free.hours.info.tfc")</li>
-            <li>@messages("free.hours.info.tc")</li>
-        </ul>
+    @components.heading("freeHoursInfo.heading", "heading-xlarge")
 
-        @buttons.nextButton()
-    }
+    <p>@messages(s"freeHoursInfo.para1.$location")</p>
+
+    <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
+    <p>@messages(s"freeHoursInfo.guidance")</p>
+
+    <ul class="bullets">
+        <li>@messages("freeHoursInfo.li.30hours")</li>
+        @if(isChildAgedTwo) {
+            <li>@messages("freeHoursInfo.li.2year")</li>
+        }
+        <li>@messages("freeHoursInfo.li.vouchers")</li>
+        <li>@messages("freeHoursInfo.li.tfc")</li>
+        <li>@messages("freeHoursInfo.li.tax_credits")</li>
+
+    </ul>
+
+    <!-- One of tHese 2 messages should show if the user either has no costs, or no approved costs -->
+    <p>@messages("freeHoursInfo.no.childcare.para")</p>
+    <p>@messages("freeHoursInfo.no.approved.para")</p>
+    <!-- / end of meesages to include -->
+
+    @components.button_link(
+        messageKey = "site.save_and_continue",
+        href = DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+    )
 }

@@ -16,123 +16,47 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
-import play.api.Logger
+import javax.inject.Inject
+
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Action}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsVouchersForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsVouchersId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsVouchers
 
 import scala.concurrent.Future
 
-/**
- * Created by user on 31/08/17.
- */
-@Singleton
-class WhoGetsVouchersController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class WhoGetsVouchersController @Inject()(
+                                        appConfig: FrontendAppConfig,
+                                        override val messagesApi: MessagesApi,
+                                        dataCacheConnector: DataCacheConnector,
+                                        navigator: Navigator,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  val keystore: KeystoreService = KeystoreService
-
-  private def validatePageObjects(pageObjects: PageObjects): Boolean = {
-    pageObjects.livingWithPartner.isDefined
-  }
-
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        Ok(whoGetsVouchers(
-          new WhoGetsVouchersForm(messagesApi).form.fill(pageObjects.whoGetsVouchers.map(_.toString))
-        )
-      )
-      case _ =>
-        Logger.warn("Invalid PageObjects in WhoGetsVouchersController.onPageLoad")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }.recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from WhoGetsVouchersController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
-  }
-
-  private def modifyPageObject(oldPageObject: PageObjects, newWhoGetsVouchers: String): PageObjects = {
-    val gettingVouchers: YouPartnerBothEnum = YouPartnerBothEnum.withName(newWhoGetsVouchers)
-    if(oldPageObject.whoGetsVouchers == Some(gettingVouchers)) {
-      oldPageObject
-    }
-    else {
-      val modified = oldPageObject.copy(
-        whoGetsVouchers = Some(gettingVouchers),
-        household = oldPageObject.household.copy(
-          parent = oldPageObject.household.parent.copy(
-            escVouchers = Some(YesNoUnsureEnum.YES)
-          ),
-          partner = Some(
-            oldPageObject.household.partner.get.copy(
-              escVouchers = Some(YesNoUnsureEnum.YES)
-            )
-          )
-        )
-      )
-      gettingVouchers match {
-        case YouPartnerBothEnum.PARTNER => modified.copy(
-          household = modified.household.copy(
-            partner = Some(
-              modified.household.partner.get.copy(
-                escVouchers = Some(YesNoUnsureEnum.YES)
-              )
-            ),
-            parent = modified.household.parent.copy(
-              escVouchers = None
-            )
-          )
-        )
-        case YouPartnerBothEnum.YOU => modified.copy(
-          household = modified.household.copy(
-            parent = modified.household.parent.copy(
-              escVouchers = Some(YesNoUnsureEnum.YES)
-            ),
-            partner = Some(
-              modified.household.partner.get.copy(
-                escVouchers = None
-              )
-            )
-          )
-        )
-        case YouPartnerBothEnum.BOTH => modified
+  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+    implicit request =>
+      val preparedForm = request.userAnswers.whoGetsVouchers match {
+        case None => WhoGetsVouchersForm()
+        case Some(value) => WhoGetsVouchersForm().fill(value)
       }
-    }
-  }
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().flatMap {
-      case Some(pageObjects) if validatePageObjects(pageObjects) =>
-        new WhoGetsVouchersForm(messagesApi).form.bindFromRequest().fold(
-          errors =>
-            Future(
-              BadRequest(
-                whoGetsVouchers(errors)
-              )
-            ),
-          success => {
-            val modifiedPageObjects = modifyPageObject(pageObjects, success.get)
-            keystore.cache(modifiedPageObjects).map {
-              result =>
-                Redirect(
-                  routes.GetBenefitsController.onPageLoad()
-                )
-            }
-          }
-        )
-      case _ =>
-        Logger.warn("Invalid PageObjects in WhoGetsVouchersController.onSubmit")
-        Future(Redirect(routes.ChildCareBaseController.onTechnicalDifficulties()))
-    } recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from WhoGetsVouchersController.onSubmit: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
+      Ok(whoGetsVouchers(appConfig, preparedForm, mode))
   }
 
+  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+    implicit request =>
+      WhoGetsVouchersForm().bindFromRequest().fold(
+        (formWithErrors: Form[String]) =>
+          Future.successful(BadRequest(whoGetsVouchers(appConfig, formWithErrors, mode))),
+        (value) =>
+          dataCacheConnector.save[String](request.sessionId, WhoGetsVouchersId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(WhoGetsVouchersId, mode)(new UserAnswers(cacheMap))))
+      )
+  }
 }

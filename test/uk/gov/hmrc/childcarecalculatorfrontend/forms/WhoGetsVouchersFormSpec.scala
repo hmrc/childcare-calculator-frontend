@@ -16,46 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.scalatest.prop.TableDrivenPropertyChecks._
-import play.api.i18n.Messages.Implicits._
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeCCApplication
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 
-/**
- * Created by user on 31/08/17.
- */
-class WhoGetsVouchersFormSpec extends UnitSpec with FakeCCApplication {
-  "who gets vouchers form" should {
-    "accept valid value" when {
-      val whoGetsVouchers = List("YOU", "PARTNER", "BOTH")
-      whoGetsVouchers.foreach { who => {
-        s"${who} is selected" in {
-          val result = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(Map(
-            whoGetsVouchersKey -> who
-          ))
-          result.hasErrors shouldBe false
-          result.value.get.get shouldBe who
-        }
-      }
-      }
-    }
+class WhoGetsVouchersFormSpec extends FormBehaviours {
 
-    "throw error" when {
-      val invalidValues = List("", "abcd", "123")
+  val validData: Map[String, String] = Map(
+    "value" -> WhoGetsVouchersForm.options.head.value
+  )
 
-      invalidValues.foreach { invalidValue =>
-        s"'${invalidValue}' is selected" in {
-          val result = new WhoGetsVouchersForm(applicationMessagesApi).form.bind(Map(
-            whoGetsVouchersKey -> invalidValue
-          ))
-          result.hasErrors shouldBe true
-          result.errors.length shouldBe 1
-          result.errors.head.message shouldBe applicationMessages.messages("who.gets.vouchers.not.selected.error")
-          result.errors.head.message should not be "who.gets.vouchers.not.selected.error"
-          result.value shouldBe None
-        }
-      }
-    }
+  val form = WhoGetsVouchersForm()
 
+  "WhoGetsVouchers form" must {
+    behave like questionForm[String](WhoGetsVouchersForm.options.head.value)
+
+    behave like formWithOptionFieldError("value", "whoGetsVouchers.error", WhoGetsVouchersForm.options.map{x => x.value}:_*)
   }
 }

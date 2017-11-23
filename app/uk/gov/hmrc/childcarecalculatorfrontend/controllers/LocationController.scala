@@ -16,87 +16,47 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
-import play.api.Logger
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
-import play.api.mvc.{Action, AnyContent, Call, Result}
-
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, LocationEnum, PageObjects}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.KeystoreService
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-@Singleton
-class LocationController @Inject()(val messagesApi: MessagesApi) extends I18nSupport with BaseController {
+class LocationController @Inject()(
+                                        appConfig: FrontendAppConfig,
+                                        override val messagesApi: MessagesApi,
+                                        dataCacheConnector: DataCacheConnector,
+                                        navigator: Navigator,
+                                        getData: DataRetrievalAction,
+                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  val keystore: KeystoreService = KeystoreService
-
-  def onPageLoad: Action[AnyContent] = withSession { implicit request =>
-    keystore.fetch[PageObjects]().map { pageObjects =>
-      Ok(location(new LocationForm(messagesApi).form.fill(pageObjects.map(_.household.location.toString))))
-    }.recover {
-      case ex: Exception =>
-        Logger.warn(s"Exception from LocationController.onPageLoad: ${ex.getMessage}")
-        Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-    }
-  }
-
-  private def getModifiedPageObjects(pageObjects: Option[PageObjects], selectedLocation: String): PageObjects = {
-    pageObjects match {
-      case Some(po) =>
-        val modifiedChildAgedTwo = if(selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-          None
-        } else {
-          po.childAgedTwo
-        }
-
-        val modifiedHousehold = po.household.copy(location = LocationEnum.withName(selectedLocation))
-
-        po.copy(household = modifiedHousehold, childAgedTwo = modifiedChildAgedTwo)
-
-      case _ =>
-        PageObjects(
-          household = Household(
-            location = LocationEnum.withName(selectedLocation)
-          )
-        )
-    }
-  }
-
-  private def saveAndGoToNextPage(pageObjects: Option[PageObjects], selectedLocation: String)(implicit hc: HeaderCarrier): Future[Result] = {
-    val modifiedPageObjects: PageObjects = getModifiedPageObjects(pageObjects, selectedLocation)
-
-    keystore.cache(modifiedPageObjects).map { res =>
-      if (selectedLocation == LocationEnum.NORTHERNIRELAND.toString) {
-        Redirect(routes.ChildAgedThreeOrFourController.onPageLoad(false))
-      } else {
-        Redirect(routes.ChildAgedTwoController.onPageLoad(false))
+  def onPageLoad(mode: Mode) = getData {
+    implicit request =>
+      val preparedForm = request.userAnswers.flatMap(x => x.location) match {
+        case None => LocationForm()
+        case Some(value) => LocationForm().fill(value)
       }
-    }
+      Ok(location(appConfig, preparedForm, mode))
   }
 
-  def onSubmit: Action[AnyContent] = withSession { implicit request =>
-    new LocationForm(messagesApi).form.bindFromRequest().fold(
-      errors => {
-        Future(BadRequest(location(errors)))
-      },
-      success => {
-        val selectedLocation = success.get
-        keystore.fetch[PageObjects]().flatMap { pageObjects =>
-          saveAndGoToNextPage(pageObjects, selectedLocation)
-        } recover {
-          case ex: Exception =>
-            Logger.warn(s"Exception from LocationController.onSubmit: ${ex.getMessage}")
-            Redirect(routes.ChildCareBaseController.onTechnicalDifficulties())
-        }
-      }
-    )
+  def onSubmit(mode: Mode) = getData.async {
+    implicit request =>
+      LocationForm().bindFromRequest().fold(
+        (formWithErrors: Form[_]) =>
+          Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
+        (value) =>
+          dataCacheConnector.save[Location.Value](request.sessionId, LocationId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
+      )
   }
-
 }

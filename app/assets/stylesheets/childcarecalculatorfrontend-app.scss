@@ -1,0 +1,60 @@
+@import 'partials/_variables';
+@import 'partials/_base';
+
+@import 'partials/_forms';
+@import 'partials/_tabular-data';
+@import 'partials/_typography';
+
+@import 'partials/_utilities';
+
+@import 'partials/_shame';
+
+.panel-border-wide {
+  border-left-width: 10px;
+}
+
+.green {
+    border-color: #006435;
+}
+
+.red {
+    border-color: #b10e1e;
+}
+
+.green, .red, .orange, .grassgreen {
+    border-left-width: 18px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/*
+IE8: Fix wrapping of crown on Gov.UK in header
+*/
+
+.lte-ie8 #logo img {
+    max-width: none;
+}
+
+.link-back, .js-visible p {
+    margin-top: 0;
+}
+
+/*
+IE8: Hide back button as it doesn't work in IE8
+*/
+
+.lte-ie8 #back-link {
+    display: none;
+}
+
+
+/* Fix's for some styling - Please put in the more appropriate place */
+
+.button {
+    padding: .526315em .789473em .263157em;
+}
+
+
+.panel-indent {
+  margin-bottom: 40px;
+}
