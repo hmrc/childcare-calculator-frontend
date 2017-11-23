@@ -25,19 +25,29 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
 class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
 
+  val statutoryType = "maternity"
+
   val messageKeyPrefix = "partnerStatutoryWeeks"
 
-  def createView = () => partnerStatutoryWeeks(frontendAppConfig, PartnerStatutoryWeeksForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerStatutoryWeeks(frontendAppConfig, PartnerStatutoryWeeksForm(), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   val form = PartnerStatutoryWeeksForm()
 
   "PartnerStatutoryWeeks view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPageWithTitleAsString(
+      createView,
+      messageKeyPrefix,
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+    )
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryWeeksController.onSubmit(NormalMode).url)
+    behave like intPage(createViewUsingForm,
+      messageKeyPrefix,
+      routes.PartnerStatutoryWeeksController.onSubmit(NormalMode).url,
+      messageDynamicValue = Some(statutoryType))
   }
 }
