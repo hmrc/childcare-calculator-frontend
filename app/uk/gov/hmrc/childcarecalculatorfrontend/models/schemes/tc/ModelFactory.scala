@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
+package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc
 
 import javax.inject.Inject
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{WhichBenefitsEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-sealed trait Household
-case class SingleHousehold(parent: Parent) extends Household
-case class JointHousehold(parent: Parent, partner: Parent) extends Household
-
-class HouseholdFactory @Inject() () {
+class ModelFactory @Inject() () {
 
   def apply(answers: UserAnswers): Option[Household] = {
     answers.doYouLiveWithPartner.flatMap {

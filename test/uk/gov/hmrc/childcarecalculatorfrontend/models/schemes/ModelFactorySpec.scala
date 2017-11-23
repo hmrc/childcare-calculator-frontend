@@ -20,10 +20,11 @@ import org.mockito.Mockito._
 import org.scalatest.{MustMatchers, OptionValues}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 
-class HouseholdFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
+class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
   
-  val factory = new HouseholdFactory
+  val factory = new ModelFactory
 
   ".apply" must {
 

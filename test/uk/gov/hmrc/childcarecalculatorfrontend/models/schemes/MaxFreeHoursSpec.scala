@@ -20,12 +20,13 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.ModelFactory
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
 
-  def maxFreeHours(freeHours: FreeHours = new FreeHours, tfc: TaxFreeChildcare = new TaxFreeChildcare) =
+  def maxFreeHours(freeHours: FreeHours = new FreeHours, tfc: TaxFreeChildcare = new TaxFreeChildcare(new ModelFactory)) =
     new MaxFreeHours(freeHours, tfc)
 
   ".eligibility" must {

@@ -23,7 +23,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {

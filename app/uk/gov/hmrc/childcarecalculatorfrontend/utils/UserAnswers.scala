@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Parent
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
@@ -355,7 +355,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
         noOfChildren =>
           if (noOfChildren == 1) {
             childcareCosts.map {
-              // TODO fix this when the enums are used properly
               value =>
               if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
                 Set(0)

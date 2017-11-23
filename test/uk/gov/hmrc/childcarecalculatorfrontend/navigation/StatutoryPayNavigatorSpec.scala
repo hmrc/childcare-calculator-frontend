@@ -23,22 +23,23 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{HouseholdFactory, TaxCredits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class StatutoryPayNavigatorSpec extends SpecBase with MockitoSugar {
 
-  def eligibleScheme: TaxCredits = new TaxCredits(mock[HouseholdFactory]) {
+  def eligibleScheme: TaxCredits = new TaxCredits(mock[ModelFactory]) {
     override def eligibility(answers: UserAnswers) = Eligible
   }
 
-  def notEligibleScheme: TaxCredits = new TaxCredits(mock[HouseholdFactory]) {
+  def notEligibleScheme: TaxCredits = new TaxCredits(mock[ModelFactory]) {
     override def eligibility(answers: UserAnswers) = NotEligible
   }
 
-  def notDeterminedScheme: TaxCredits = new TaxCredits(mock[HouseholdFactory]) {
+  def notDeterminedScheme: TaxCredits = new TaxCredits(mock[ModelFactory]) {
     override def eligibility(answers: UserAnswers) = NotDetermined
   }
 
