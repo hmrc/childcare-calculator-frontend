@@ -21,7 +21,7 @@ import org.joda.time.LocalDate
 import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
+import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, ChildBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
@@ -42,49 +42,13 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   "Children Journey" when {
     "Save noOfChildren data " must {
       "remove relevant data in child journey when noOfChildren value is changed" in {
-
-        val originalCacheMap = new CacheMap("id", Map(
-          NoOfChildrenId.toString -> JsNumber(5),
-          AboutYourChildId.toString -> Json.obj(
-            "0" -> Json.toJson(AboutYourChild("Foo", over19)),
-            "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
-            "3" -> Json.toJson(AboutYourChild("Baz", under16)),
-            "4" -> Json.toJson(AboutYourChild("Raz", under16))),
-          ChildApprovedEducationId.toString -> Json.obj(
-            "0" -> true,
-            "1" -> true
-          ),
-          ChildStartEducationId.toString -> Json.obj(
-            "0" -> childStartEducationDate
-          ),
-          ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
-          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
-          WhichDisabilityBenefitsId.toString -> Json.obj(
-            "0" -> Seq(disabilityBenefits),
-            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
-          ),
-          RegisteredBlindId.toString -> JsBoolean(true),
-          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
-          ChildcarePayFrequencyId.toString -> Json.obj(
-            "0" -> monthly,
-            "2" -> weekly
-          ),
-          ExpectedChildcareCostsId.toString -> Json.obj(
-            "3" -> JsNumber(123),
-            "4" -> JsNumber(224))
-        ))
-
-        val result = cascadeUpsert(NoOfChildrenId.toString, 4, originalCacheMap)
+        val result = cascadeUpsert(NoOfChildrenId.toString, 4, ChildBase.sample)
 
         result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
-
       }
 
 
       "remove relevant data in child journey when noOfChildren value is changed from single child" in {
-
         val originalCacheMap = new CacheMap("id", Map(
           NoOfChildrenId.toString -> JsNumber(1),
           AboutYourChildId.toString -> Json.obj(
@@ -110,7 +74,6 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
               "0" -> JsNumber(123))
 
           )))
-
         val result = cascadeUpsert(NoOfChildrenId.toString, 4, originalCacheMap)
 
         result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
