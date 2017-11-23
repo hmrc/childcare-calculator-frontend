@@ -30,8 +30,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayPer
 
 class PartnerStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
 
-  private val statutoryType = "maternity"
-
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType))
@@ -41,10 +39,6 @@ class PartnerStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
       dataRetrievalAction, new DataRequiredActionImpl)
 
   def viewAsString(form: Form[Int] = PartnerStatutoryPayPerWeekForm()) = partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
-
-  private def buildFakeRequest(x: Map[String, JsString]) = {
-    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
-  }
 
   val testNumber = 123
 

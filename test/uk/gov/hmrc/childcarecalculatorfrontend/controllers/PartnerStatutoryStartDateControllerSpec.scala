@@ -31,8 +31,6 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
-  val statutoryType = "maternity"
-
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType))
@@ -43,10 +41,6 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
   def viewAsString(form: Form[LocalDate] = PartnerStatutoryStartDateForm()) =
     partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
-
-  private def buildFakeRequest(x: Map[String, JsString]) = {
-    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
-  }
 
   "PartnerStatutoryStartDate Controller" must {
 

@@ -31,8 +31,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
 class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
-  val statutoryType = "maternity"
-
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
@@ -43,10 +41,6 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
   def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm()) =
     yourStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
-
-  private def buildFakeRequest(x: Map[String, JsString]) = {
-    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
-  }
 
   "YourStatutoryStartDate Controller" must {
 
