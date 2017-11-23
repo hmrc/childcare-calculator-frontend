@@ -1080,8 +1080,8 @@ partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
 
 yourStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
-yourStatutoryPayBeforeTax.option1 = Yes
-yourStatutoryPayBeforeTax.option2 = No
+yourStatutoryPayBeforeTax.true = Yes
+yourStatutoryPayBeforeTax.false = No
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
