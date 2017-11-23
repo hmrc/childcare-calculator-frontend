@@ -57,74 +57,92 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
   "from childcare costs" when {
 
-    "go to expect approved childcare cost when you have childcare cost or not yet decided" in {
+    "go to `expect approved childcare cost` when you have childcare cost or not yet decided" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
-      when(answers.childcareCosts) thenReturn Some("yes") thenReturn Some("notYet")
-      when(schemes.allSchemesDetermined(any())) thenReturn false thenReturn false
-      when(freeHours.eligibility(any())) thenReturn NotDetermined thenReturn NotDetermined
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString) thenReturn Some(YesNoNotYetEnum.NOTYET.toString)
+      when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(freeHours.eligibility(any())) thenReturn NotDetermined
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ApprovedProviderController.onPageLoad(NormalMode)
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ApprovedProviderController.onPageLoad(NormalMode)
     }
 
-    "go to results page when user's eligibility for all schemes is determined" in {
+    "go to `free hours results page` when user's eligibility for all schemes is determined" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
-      when(answers.childcareCosts) thenReturn Some("no")
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(freeHours.eligibility(any())) thenReturn NotEligible
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
     }
 
-    "go to free hours info page if you are eligible for free hours but not all schemes have been determined" in {
+    "go to `free hours result page` if you are eligible for free hours but not all schemes have been determined" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
-      when(answers.childcareCosts) thenReturn Some("no")
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
+      when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(freeHours.eligibility(any())) thenReturn Eligible
+      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
+    }
+
+    "go to `free hours info page` if you are eligible for free hours and in England but not all schemes have been determined" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
       when(schemes.allSchemesDetermined(any())) thenReturn false
       when(freeHours.eligibility(any())) thenReturn Eligible
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad()
     }
 
-    "go to `Do you have a partner` if you are not eligible for free hours and not all schemes have been determined" in {
+    "go to `result page` if you are not eligible for free hours and not all schemes have been determined" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
-      when(answers.childcareCosts) thenReturn Some("no")
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
       when(schemes.allSchemesDetermined(any())) thenReturn false
       when(freeHours.eligibility(any())) thenReturn NotEligible
-      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
     }
 
-    "go to `Session Expired` if there's no answer for `childcareCosts`" in {
-      val answers = spy(userAnswers())
-      val freeHours = mock[FreeHours]
-      val schemes = mock[Schemes]
-      when(schemes.allSchemesDetermined(any())) thenReturn false
-      when(freeHours.eligibility(any())) thenReturn NotEligible
-      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.SessionExpiredController.onPageLoad()
-    }
   }
 
   "Will your childcare costs be with an approved provider" when {
 
-    "go to results page when user's eligibility for all schemes is determined" in {
+    "go to `free hours results page` when user's eligibility for all schemes is determined" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
       when(schemes.allSchemesDetermined(any())) thenReturn true
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
       when(freeHours.eligibility(any())) thenReturn NotEligible
       navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
     }
 
-    "go to free hours info page if you are eligible for free hours but not all schemes have been determined" in {
+    "go to `free hours info page` if you are eligible for free hours but not all schemes have been determined" in {
       val answers = spy(userAnswers())
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
       when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
       when(freeHours.eligibility(any())) thenReturn Eligible
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad()
+    }
+
+    "go to `free hours info` if you are eligible for free hours and in England and not all schemes have been determined" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.YES.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(freeHours.eligibility(any())) thenReturn Eligible
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad()
       navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad()
     }
 
@@ -133,7 +151,10 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
       when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.YES.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+      when(answers.location) thenReturn Some(Location.SCOTLAND)
       when(freeHours.eligibility(any())) thenReturn NotEligible
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
     }
   }

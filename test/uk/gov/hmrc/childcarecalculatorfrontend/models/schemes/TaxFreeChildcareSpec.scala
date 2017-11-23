@@ -16,46 +16,113 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import play.api.libs.json.JsString
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcareCostsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NotDetermined, NotEligible}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import org.scalatest.mockito.MockitoSugar
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxFreeChildcareSpec extends SchemeSpec {
+import scala.language.implicitConversions
 
-  val taxFreeChildCare = new TaxFreeChildcare
+class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {
 
-  ".eligibility" must {
+  def tfc(tfcHousehold: ModelFactory = new ModelFactory): TaxFreeChildcare = spy(new TaxFreeChildcare(tfcHousehold))
 
-    "return `NotDetermined`" when {
+  val applicableBenefits: Seq[WhichBenefitsEnum.Value] = Seq(CARERSALLOWANCE)
 
-      "the user has not told the calculator that they have costs" in {
-        taxFreeChildCare.eligibility(helper()) mustEqual NotDetermined
+  val answers: UserAnswers = mock[UserAnswers]
+  val modelFactory: ModelFactory = mock[ModelFactory]
+  val household = mock[ModelFactory]
+
+  "eligibility" must {
+
+    "return `NotDetermined` if `household` is undefined" in {
+      when(household(any())) thenReturn None
+      tfc(household).eligibility(answers) mustEqual NotDetermined
+    }
+
+    "single household" when {
+
+      "return `NotEligible` when minimum earnings not satisfied" in {
+        when(household(any())) thenReturn Some(SingleHousehold(Parent(false, false, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual NotEligible
       }
 
-      "the user has told the calculator that they have costs" in {
-        val answers: UserAnswers = helper(
-          ChildcareCostsId.toString -> JsString("yes")
-        )
-        taxFreeChildCare.eligibility(answers) mustEqual NotDetermined
+      "return `NotEligible` when parent earns over maximum earnings" in {
+        when(household(any())) thenReturn Some(SingleHousehold(Parent(true, false, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual NotEligible
       }
 
-      "the user has told the calculator that they may have costs in the future" in {
-        val answers: UserAnswers = helper(
-          ChildcareCostsId.toString -> JsString("notYet")
-        )
-        taxFreeChildCare.eligibility(answers) mustEqual NotDetermined
+      "return `Eligible` when parent satisfies minimum earnings and maximum earnings" in {
+        when(household(any())) thenReturn Some(SingleHousehold(Parent(true, true, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      "return `Eligible` when parent is an apprentice" in {
+        when(household(any())) thenReturn Some(SingleHousehold(Parent(false, false, false, true, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      "return `Eligible` when parent is self employed" in {
+        when(household(any())) thenReturn Some(SingleHousehold(Parent(false, false, true, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
       }
     }
 
-    "return `NotEligible`" when {
+    "joint household" when {
 
-      "the user has told the calculator that they have no costs" in {
-        val answers: UserAnswers = helper(
-          ChildcareCostsId.toString -> JsString("no")
-        )
-        taxFreeChildCare.eligibility(answers) mustEqual NotEligible
+      "return `NotEligible` when parent satisfy and partner not satisfy minimum earnings" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(false, false, true, false, Set.empty), Parent(false, true, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual NotEligible
+      }
+
+      "return `NotEligible` when partner satisfy and parent not satisfy minimum earnings" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(false, true, false, false, Set.empty), Parent(true, false, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual NotEligible
+      }
+
+      "return `Eligible` when parent and partner satisfy minimum and maximum earnings" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(true, true, false, false, Set.empty), Parent(true, true, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      "return `Eligible` when parent satify min and max earnings and partner is an apprentice" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(true, true, false, false, Set.empty), Parent(false, false, false, true, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      "return `Eligible` when partner satify min and max earnings and parent is an apprentice" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(false, false, false, true, Set.empty), Parent(true, true, false, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      "return `Eligible` when parent is self employed and partner is an apprentice" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(false, false, true, false, Set.empty), Parent(false, false, false, true, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      "return `Eligible` when partner is self employed and parent is an apprentice" in {
+        when(household(any())) thenReturn Some(JointHousehold(Parent(false, false, false, true, Set.empty), Parent(false, false, true, false, Set.empty)))
+        tfc(household).eligibility(answers) mustEqual Eligible
+      }
+
+      applicableBenefits.foreach {
+        benefit =>
+
+          s"return `Eligible` when parent satisfy min and max earnings and partner is getting $benefit" in {
+            when(household(any())) thenReturn Some(JointHousehold(Parent(true, true, false, false, Set.empty), Parent(false, false, false, false, Set(benefit))))
+            tfc(household).eligibility(answers) mustEqual Eligible
+          }
+
+          s"return `Eligible` when partner satisfy min and max earnings and parent is getting $benefit" in {
+            when(household(any())) thenReturn Some(JointHousehold(Parent(false, false, false, false, Set(benefit)), Parent(true, true, false, false, Set.empty)))
+            tfc(household).eligibility(answers) mustEqual Eligible
+          }
+
       }
     }
   }
+
 }

@@ -20,21 +20,17 @@ import javax.inject.Inject
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxCredits @Inject() (household: HouseholdFactory) extends Scheme {
+class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    answers.hasApprovedCosts.flatMap {
-      case true =>
-        household(answers).map {
-          case SingleHousehold(parent) =>
-            singleEligibility(parent)
-          case JointHousehold(parent, partner) =>
-            partnerEligibility(parent, partner)
-        }
-      case false =>
-        Some(NotEligible)
+    household(answers).map {
+      case SingleHousehold(parent) =>
+        singleEligibility(parent)
+      case JointHousehold(parent, partner) =>
+        jointEligibility(parent, partner)
     }
   }.getOrElse(NotDetermined)
 
@@ -46,7 +42,7 @@ class TaxCredits @Inject() (household: HouseholdFactory) extends Scheme {
     }
   }
 
-  private def partnerEligibility(parent: Parent, partner: Parent): Eligibility = {
+  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
 
     val eligibleViaHours: Boolean = {
 
@@ -73,6 +69,7 @@ class TaxCredits @Inject() (household: HouseholdFactory) extends Scheme {
 
   private val individualHours: BigDecimal = 16
 
+  //Only carer's allowance is considered as benefit to eligible
   private val applicableBenefits: Set[WhichBenefitsEnum.Value] =
-    Set(DISABILITYBENEFITS, HIGHRATEDISABILITYBENEFITS, CARERSALLOWANCE)
+    Set(CARERSALLOWANCE)
 }

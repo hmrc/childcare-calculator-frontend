@@ -18,6 +18,7 @@ private object AppDependencies {
   private val playUiVersion = "7.8.0"
   private val hmrcTestVersion = "3.0.0"
   private val scalaTestVersion = "3.0.1"
+  private val scalaCheckVersion = "1.13.4"
   private val scalaTestPlusPlayVersion = "2.0.1"
   private val pegdownVersion = "1.6.0"
   private val mockitoAllVersion = "1.10.19"
@@ -53,7 +54,8 @@ private object AppDependencies {
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
         "org.jsoup" % "jsoup" % "1.10.3" % scope,
         "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-        "org.mockito" % "mockito-all" % mockitoAllVersion % scope
+        "org.mockito" % "mockito-all" % mockitoAllVersion % scope,
+        "org.scalacheck" %% "scalacheck" % scalaCheckVersion % scope
       )
     }.test
   }
