@@ -1062,8 +1062,8 @@ yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.error = You must tell the calculator the number of weeks
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
-partnerStatutoryWeeks.title = partnerStatutoryWeeks
-partnerStatutoryWeeks.heading = partnerStatutoryWeeks
+partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
+partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
 yourStatutoryStartDate.title = When did your {0} pay start?
