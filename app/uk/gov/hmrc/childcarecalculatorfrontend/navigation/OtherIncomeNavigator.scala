@@ -21,14 +21,15 @@ import javax.inject.Inject
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
   * Contains the navigation for current and previous year other income pages
   */
-class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
+class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) extends SubNavigator {
 
   override protected def routeMap = Map(
     YourOtherIncomeThisYearId -> yourOtherIncomeRouteCY,
@@ -50,19 +51,40 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def yourOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true =>  routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false =>  routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case false => {
+        if (taxCredits.eligibility(answers) == NotEligible) {
+          routes.YouStatutoryPayController.onPageLoad(NormalMode)
+        }
+        else {
+          routes.YourIncomeInfoPYController.onPageLoad()
+        }
+      }
     }
 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
       case true =>  routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false =>  routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case false => {
+        if (taxCredits.eligibility(answers) == NotEligible) {
+          routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+        }
+        else{
+          routes.PartnerIncomeInfoPYController.onPageLoad()
+        }
+      }
     }
 
   private def bothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.bothOtherIncomeThisYear) {
       case true =>  routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
-      case false =>  routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case false =>  {
+        if (taxCredits.eligibility(answers) == NotEligible) {
+          routes.BothStatutoryPayController.onPageLoad(NormalMode)
+        }
+        else{
+          routes.YourIncomeInfoPYController.onPageLoad()
+        }
+      }
     }
 
   private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
@@ -89,19 +111,19 @@ class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def yourOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeLY) {
       case true =>  routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case false =>  routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+      case false =>  routes.YouStatutoryPayController.onPageLoad(NormalMode)
     }
 
   private def partnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeLY) {
       case true =>  routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case false =>  routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+      case false =>  routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
     }
 
   private def bothOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothOtherIncomeLY) {
       case true =>  routes.WhoOtherIncomePYController.onPageLoad(NormalMode)
-      case false =>  routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+      case false =>  routes.BothStatutoryPayController.onPageLoad(NormalMode)
     }
 
   private def whoGetsOtherIncomeRoutePY(answers: UserAnswers) =
