@@ -95,7 +95,15 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
     }
 
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeAmountCY) { case _=> getCallForYourOtherIncomeAsPerPaidWorkCY(answers)}
+    utils.getCall(answers.yourOtherIncomeAmountCY) {
+      case _=> {
+        if (taxCredits.eligibility(answers) == NotEligible){
+          routes.YouStatutoryPayController.onPageLoad(NormalMode)
+        } else {
+          routes.YourIncomeInfoPYController.onPageLoad()
+        }
+      }
+    }
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountCY) { case _ =>
