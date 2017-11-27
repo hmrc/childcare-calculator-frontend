@@ -55,8 +55,11 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
         if (taxCredits.eligibility(answers) == NotEligible) {
           routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
-        else {
+        else if (taxCredits.eligibility(answers) == Eligible) {
           routes.YourIncomeInfoPYController.onPageLoad()
+        }
+        else {
+          routes.SessionExpiredController.onPageLoad()
         }
       }
     }
@@ -68,8 +71,11 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
         if (taxCredits.eligibility(answers) == NotEligible) {
           routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
         }
-        else{
+        else if (taxCredits.eligibility(answers) == Eligible) {
           routes.PartnerIncomeInfoPYController.onPageLoad()
+        }
+        else{
+          routes.SessionExpiredController.onPageLoad()
         }
       }
     }
@@ -81,8 +87,11 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
         if (taxCredits.eligibility(answers) == NotEligible) {
           routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
-        else{
+        else if (taxCredits.eligibility(answers) == Eligible){
           routes.YourIncomeInfoPYController.onPageLoad()
+        }
+        else {
+          routes.SessionExpiredController.onPageLoad()
         }
       }
     }
@@ -106,11 +115,18 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
     }
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.partnerOtherIncomeAmountCY) { case _ =>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-      }
+      utils.getCall(answers.partnerOtherIncomeAmountCY) { case _ =>
+        utils.getCall(answers.whoIsInPaidEmployment) {
+          case Partner => {
+            if (taxCredits.eligibility(answers) == Eligible) {
+              routes.PartnerIncomeInfoPYController.onPageLoad()
+            }
+            else {
+              routes.SessionExpiredController.onPageLoad()
+            }
+          }
+          case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
     }
 
   private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
