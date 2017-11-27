@@ -115,17 +115,26 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
     }
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
-      utils.getCall(answers.partnerOtherIncomeAmountCY) { case _ =>
-        utils.getCall(answers.whoIsInPaidEmployment) {
+      utils.getCall(answers.partnerOtherIncomeAmountCY) {
+        case _ =>  utils.getCall(answers.whoIsInPaidEmployment) {
           case Partner => {
             if (taxCredits.eligibility(answers) == Eligible) {
               routes.PartnerIncomeInfoPYController.onPageLoad()
             }
-            else {
+            else if (taxCredits.eligibility(answers) == NotEligible){
+              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+            }
+             else {
               routes.SessionExpiredController.onPageLoad()
             }
           }
-          case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+          case Both => {
+            if (taxCredits.eligibility(answers) == Eligible) {
+              routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+            }else {
+              routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+            }
+          }
         }
     }
 
