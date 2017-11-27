@@ -73,7 +73,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.SessionExpiredController.onPageLoad()
+              routes.YouStatutoryPayController.onPageLoad(NormalMode)
           }
         }
 
@@ -122,7 +122,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
           }
         }
 
@@ -170,7 +170,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.SessionExpiredController.onPageLoad()
+                routes.BothStatutoryPayController.onPageLoad(NormalMode)
             }
           }
         }
@@ -242,7 +242,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.SessionExpiredController.onPageLoad()
+              routes.YouStatutoryPayController.onPageLoad(NormalMode)
           }
         }
       }
@@ -443,7 +443,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.SessionExpiredController.onPageLoad()
+              routes.BothStatutoryPayController.onPageLoad(NormalMode)
           }
         }
       }
@@ -477,7 +477,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.SessionExpiredController.onPageLoad()
+              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
           }
         }
 

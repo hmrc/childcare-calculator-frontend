@@ -59,7 +59,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
           routes.YourIncomeInfoPYController.onPageLoad()
         }
         else {
-          routes.SessionExpiredController.onPageLoad()
+          routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
       }
     }
@@ -75,7 +75,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
           routes.PartnerIncomeInfoPYController.onPageLoad()
         }
         else{
-          routes.SessionExpiredController.onPageLoad()
+          routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
         }
       }
     }
@@ -91,7 +91,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
           routes.PartnerIncomeInfoPYController.onPageLoad()
         }
         else {
-          routes.SessionExpiredController.onPageLoad()
+          routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
       }
     }
@@ -112,7 +112,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
             routes.YourIncomeInfoPYController.onPageLoad()
         }
         else{
-          routes.SessionExpiredController.onPageLoad()
+          routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
       }
     }
@@ -127,7 +127,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
               routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
             }
              else {
-              routes.SessionExpiredController.onPageLoad()
+              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
             }
           }
         }
@@ -143,7 +143,7 @@ class OtherIncomeNavigator @Inject() (utils: Utils,taxCredits: TaxCredits) exten
           routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
         else {
-          routes.SessionExpiredController.onPageLoad()
+          routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
       }
   }
