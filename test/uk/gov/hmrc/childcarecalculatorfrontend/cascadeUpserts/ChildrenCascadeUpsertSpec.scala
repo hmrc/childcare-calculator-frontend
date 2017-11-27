@@ -63,8 +63,15 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
 
     "Save childApprovedEducation data " must {
+      "not remove anything if object is not present" in {
+        val data = DataGenerator().deleteObject(ChildStartEducationId.toString)
+
+        val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> false)), data.sample)
+
+        result.data.get(ChildStartEducationId.toString) mustBe None
+      }
       "remove childEducationStartDate data when children with age above 19 and below 20 selects no for childApprovedEducation" in {
-        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(),Json.obj("0" -> Json.toJson(AboutYourChild("Foo", over19)), "1" -> Json.toJson(AboutYourChild("Bar", over19)),
+        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", over19)), "1" -> Json.toJson(AboutYourChild("Bar", over19)),
           "2" -> Json.toJson(AboutYourChild("Raz", over19)), "3" -> Json.toJson(AboutYourChild("Baz", over16)), "4" -> Json.toJson(AboutYourChild("Quux", under16))))
           .overWriteObject(ChildStartEducationId.toString, Json.obj("0" -> childStartEducationDate, "1" -> childStartEducationDate, "2" -> childStartEducationDate))
 
@@ -105,59 +112,55 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj("0" -> Seq(disabilityBenefits)))
       }
 
-/////////////////////////////////
       "Save whichChildrenDisability data " must {
-        "when user clicks on back button from  WhichDisabilityBenefits page must navigate to whichChildrenDisability " +
-          "and on continue must redirect to WhichDisabilityBenefits" in {
-
-          val data = DataGenerator().overWriteObject(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 2)))
-            .overWriteObject(WhichDisabilityBenefitsId.toString, Json.obj())
+        "not remove anything if there is no object" in {
+          val data = DataGenerator().deleteObject(WhichDisabilityBenefitsId.toString)
 
           val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 2)), data.sample)
 
-          result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj())
+          result.data.get(WhichDisabilityBenefitsId.toString) mustBe None
         }
 
-//////////////////////////////
         "remove whichDisabilityBenefits data accordingly when childrenDisabilityBenefits is changed for 5 children " in {
-        val data = DataGenerator().overWriteObject(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 1, 2, 4)))
-          .overWriteObject(WhichDisabilityBenefitsId.toString, Json.obj("0" -> Seq(disabilityBenefits), "1" -> Seq(higherRateDisabilityBenefits),
-            "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits), "4" -> Seq(higherRateDisabilityBenefits)))
+          val data = DataGenerator().overWriteObject(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 1, 2, 4)))
+            .overWriteObject(WhichDisabilityBenefitsId.toString, Json.obj("0" -> Seq(disabilityBenefits), "1" -> Seq(higherRateDisabilityBenefits),
+              "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits), "4" -> Seq(higherRateDisabilityBenefits)))
 
-        val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 3)), data.sample)
-        result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj("0" -> Seq(disabilityBenefits)))
-      }
-    }
-
-    "Save registeredBlind data " must {
-      "remove whichChildrenBlind data when registeredBlind is false" in {
-        val originalCacheMap = DataGenerator().overWriteObject(WhichChildrenBlindId.toString, Json.toJson(Seq(0, 2)))
-
-        val result = cascadeUpsert(RegisteredBlindId.toString, false, originalCacheMap.sample)
-        result.data.get(WhichChildrenBlindId.toString) mustBe None
-      }
-    }
-
-
-    "Save whoHasChildcareCosts data " must {
-      "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed " in {
-        val originalCacheMap = DataGenerator().overWriteObject(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1)))
-          .overWriteObject(ChildcarePayFrequencyId.toString, Json.obj("0" -> monthly, "1" -> weekly))
-          .overWriteObject(ExpectedChildcareCostsId.toString, Json.obj("0" -> JsNumber(123), "1" -> JsNumber(224)))
-
-        val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 2)), originalCacheMap.sample)
-        result.data.get(ChildcarePayFrequencyId.toString) mustBe Some(Json.obj("0" -> monthly))
-        result.data.get(ExpectedChildcareCostsId.toString) mustBe Some(Json.obj("0" -> JsNumber(123)))
+          val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 3)), data.sample)
+          result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj("0" -> Seq(disabilityBenefits)))
+        }
       }
 
-      "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed for 5 children " in {
-        val originalCacheMap = DataGenerator().overWriteObject(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1, 3, 4)))
-          .overWriteObject(ChildcarePayFrequencyId.toString, Json.obj("0" -> monthly, "1" -> weekly, "3" -> weekly, "4" -> weekly))
-          .overWriteObject(ExpectedChildcareCostsId.toString, Json.obj("0" -> JsNumber(123), "1" -> JsNumber(224), "3" -> JsNumber(500), "4" -> JsNumber(340)))
+      "Save registeredBlind data " must {
+        "remove whichChildrenBlind data when registeredBlind is false" in {
+          val originalCacheMap = DataGenerator().overWriteObject(WhichChildrenBlindId.toString, Json.toJson(Seq(0, 2)))
 
-        val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 4)), originalCacheMap.sample)
-        result.data.get(ChildcarePayFrequencyId.toString) mustBe Some(Json.obj("0" -> monthly, "4" -> weekly))
-        result.data.get(ExpectedChildcareCostsId.toString) mustBe Some(Json.obj("0" -> JsNumber(123), "4" -> JsNumber(340)))
+          val result = cascadeUpsert(RegisteredBlindId.toString, false, originalCacheMap.sample)
+          result.data.get(WhichChildrenBlindId.toString) mustBe None
+        }
+      }
+
+
+      "Save whoHasChildcareCosts data " must {
+        "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed " in {
+          val originalCacheMap = DataGenerator().overWriteObject(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1)))
+            .overWriteObject(ChildcarePayFrequencyId.toString, Json.obj("0" -> monthly, "1" -> weekly))
+            .overWriteObject(ExpectedChildcareCostsId.toString, Json.obj("0" -> JsNumber(123), "1" -> JsNumber(224)))
+
+          val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 2)), originalCacheMap.sample)
+          result.data.get(ChildcarePayFrequencyId.toString) mustBe Some(Json.obj("0" -> monthly))
+          result.data.get(ExpectedChildcareCostsId.toString) mustBe Some(Json.obj("0" -> JsNumber(123)))
+        }
+
+        "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed for 5 children " in {
+          val originalCacheMap = DataGenerator().overWriteObject(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1, 3, 4)))
+            .overWriteObject(ChildcarePayFrequencyId.toString, Json.obj("0" -> monthly, "1" -> weekly, "3" -> weekly, "4" -> weekly))
+            .overWriteObject(ExpectedChildcareCostsId.toString, Json.obj("0" -> JsNumber(123), "1" -> JsNumber(224), "3" -> JsNumber(500), "4" -> JsNumber(340)))
+
+          val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 4)), originalCacheMap.sample)
+          result.data.get(ChildcarePayFrequencyId.toString) mustBe Some(Json.obj("0" -> monthly, "4" -> weekly))
+          result.data.get(ExpectedChildcareCostsId.toString) mustBe Some(Json.obj("0" -> JsNumber(123), "4" -> JsNumber(340)))
+        }
       }
     }
   }

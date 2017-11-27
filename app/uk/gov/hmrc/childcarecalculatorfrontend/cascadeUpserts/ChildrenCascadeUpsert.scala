@@ -66,8 +66,13 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeChildApprovedEducation(value: JsValue, cacheMap: CacheMap): CacheMap = {
 
     val mapToStore = value.validate[Map[String, Boolean]].fold(_ => cacheMap, newValues => {
-      val updatedValues = newValues.filter(!_._2).foldLeft(cacheMap.data(ChildStartEducationId.toString))((dataObject, element) => dataObject.as[JsObject] - element._1)
-      store(ChildStartEducationId.toString, updatedValues, cacheMap)
+      cacheMap.data.get(ChildStartEducationId.toString) match {
+        case Some(elementToDelete) => {
+          val updatedValues = newValues.filter(!_._2).foldLeft(elementToDelete)((dataObject, element) => dataObject.as[JsObject] - element._1)
+          store(ChildStartEducationId.toString, updatedValues, cacheMap)
+        }
+        case _ => cacheMap
+      }
     })
 
     store(ChildApprovedEducationId.toString, value, mapToStore)
@@ -120,9 +125,14 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     value.validate[Set[Int]].fold(_ => cacheMap, newData => {
       cacheMap.data.get(parentKey) match {
         case Some(originalValues) => {
-          val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
-          val updatedValues = valuesToDelete.foldLeft(cacheMap.data(elementToDeleteKey))((dataObject, element) => dataObject.as[JsObject] - element.toString)
-          store(elementToDeleteKey, updatedValues, cacheMap)
+          cacheMap.data.get(elementToDeleteKey) match {
+            case Some(elementToDelete) => {
+              val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
+              val updatedValues = valuesToDelete.foldLeft(elementToDelete)((dataObject, element) => dataObject.as[JsObject] - element.toString)
+              store(elementToDeleteKey, updatedValues, cacheMap)
+            }
+            case _ => cacheMap
+          }
         }
         case _ => cacheMap
       }
