@@ -105,8 +105,21 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj("0" -> Seq(disabilityBenefits)))
       }
 
+/////////////////////////////////
+      "Save whichChildrenDisability data " must {
+        "when user clicks on back button from  WhichDisabilityBenefits page must navigate to whichChildrenDisability " +
+          "and on continue must redirect to WhichDisabilityBenefits" in {
 
-      "remove whichDisabilityBenefits data accordingly when childrenDisabilityBenefits is changed for 5 children " in {
+          val data = DataGenerator().overWriteObject(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 2)))
+            .overWriteObject(WhichDisabilityBenefitsId.toString, Json.obj())
+
+          val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 2)), data.sample)
+
+          result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj())
+        }
+
+//////////////////////////////
+        "remove whichDisabilityBenefits data accordingly when childrenDisabilityBenefits is changed for 5 children " in {
         val data = DataGenerator().overWriteObject(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 1, 2, 4)))
           .overWriteObject(WhichDisabilityBenefitsId.toString, Json.obj("0" -> Seq(disabilityBenefits), "1" -> Seq(higherRateDisabilityBenefits),
             "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits), "4" -> Seq(higherRateDisabilityBenefits)))

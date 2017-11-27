@@ -44,7 +44,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
       case JsNumber(_) if !originalDataSet.contains(value) => {
         cacheMap copy (data = cacheMap.data - AboutYourChildId.toString - ChildApprovedEducationId.toString -
           ChildStartEducationId.toString - ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
-          ChildRegisteredBlindId.toString - RegisteredBlindId.toString - WhichChildrenBlindId.toString - WhichBenefitsYouGetId.toString -
+          ChildRegisteredBlindId.toString - RegisteredBlindId.toString - WhichChildrenBlindId.toString -
           WhoHasChildcareCostsId.toString - ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString)
       }
       case _ => cacheMap
