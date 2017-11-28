@@ -40,7 +40,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
 
   "saving the doYouLiveWithPartner" must {
-    "remove partner and both pages related data wherever applicable when doYouLiveWithPartner is no " in {
+    "remove partner and both pages related data wherever applicable  and whichBenefitsDoYouGet data when doYouLiveWithPartner is no " in {
 
       val originalCacheMap1 = new CacheMap("id", Map(
         WhoIsInPaidEmploymentId.toString -> JsString(partner), PartnerWorkHoursId.toString -> JsString("12"),
@@ -75,7 +75,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),HasYourTaxCodeBeenAdjustedId.toString ->  JsString(yes),
         WhatIsYourTaxCodeId.toString -> JsString("1100L"),
         YourChildcareVouchersId.toString -> JsString("yes"),
-        WhichBenefitsYouGetId.toString-> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString))),
         YourAgeId.toString -> JsString("under18"), YourMinimumEarningsId.toString -> JsBoolean(false),
         AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString))
     }
