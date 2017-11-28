@@ -15,6 +15,7 @@ trait MicroService {
   import TestPhases._
   import uk.gov.hmrc.SbtAutoBuildPlugin
   import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
+  import uk.gov.hmrc.versioning.SbtGitVersioning
 
   val appName: String
   val appVersion: String
@@ -24,26 +25,24 @@ trait MicroService {
   lazy val playSettings : Seq[Setting[_]] = Seq.empty
 
   lazy val scoverageSettings: Seq[Def.Setting[_]] = {
-    import scoverage.ScoverageSbtPlugin.ScoverageKeys
+    import scoverage._
     Seq(
       ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*models.*;" +
         ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;.*DataCacheConnector;" +
         ".*ControllerConfiguration;.*LanguageSwitchController;.*repositories.*",
       ScoverageKeys.coverageMinimum := 90,
       ScoverageKeys.coverageFailOnMinimum := true,
-      ScoverageKeys.coverageHighlighting := true,
-      parallelExecution in Test := false
+      ScoverageKeys.coverageHighlighting := true
     )
   }
 
   lazy val microservice = Project(appName, file("."))
-    .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin) ++ plugins : _*)
+    .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin) ++ plugins : _*)
     .settings(playSettings : _*)
     .settings(version := appVersion)
     .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.childcarecalculatorfrontend.models._"))
     .settings(scalaSettings: _*)
     .settings(publishingSettings: _*)
-    .settings(Repositories.playPublishingSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(scoverageSettings)
     .settings(
@@ -63,8 +62,7 @@ trait MicroService {
       parallelExecution in IntegrationTest := false)
       .settings(resolvers ++= Seq(
         Resolver.bintrayRepo("hmrc", "releases"),
-        Resolver.jcenterRepo,
-        Resolver.bintrayRepo("emueller", "maven")
+        Resolver.jcenterRepo
       ))
     .settings(
       // concatenate js
@@ -87,18 +85,4 @@ private object TestPhases {
     tests map {
       test => new Group(test.name, Seq(test), SubProcess(ForkOptions(runJVMOptions = Seq("-Dtest.name=" + test.name))))
     }
-}
-
-private object Repositories {
-
-  import uk.gov.hmrc._
-  import PublishingSettings._
-  import NexusPublishing._
-
-  lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
-    sbtrelease.ReleasePlugin.releaseSettings ++ Seq(
-      credentials += SbtCredentials,
-      publishArtifact in(Compile, packageDoc) := false,
-      publishArtifact in(Compile, packageSrc) := false
-    ) ++ publishAllArtefacts ++ nexusPublishingSettings
 }
