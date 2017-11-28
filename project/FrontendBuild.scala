@@ -2,7 +2,7 @@ import sbt._
 
 object FrontendBuild extends Build with MicroService {
 
-  val appName = "legged-up-childcare-frontend"
+  val appName = "childcare-calculator-frontend"
 
   override lazy val appDependencies: Seq[ModuleID] = AppDependencies()
 }
