@@ -28,3 +28,5 @@ addSbtPlugin("uk.gov.hmrc" % "sbt-distributables" % "1.0.0")
 addSbtPlugin("uk.gov.hmrc" % "sbt-git-versioning" % "0.9.0")
 
 addSbtPlugin("uk.gov.hmrc" % "hmrc-resolvers" % "0.4.0")
+
+addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.1")
