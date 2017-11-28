@@ -98,15 +98,6 @@ object ChildcareConstants {
   val whosHadBenefitsErrorKey = "whosHadBenefits.error"
   val whosHadBenefitsPYErrorKey = "whosHadBenefitsPY.error"
 
-  val whoGetsStatutoryCYErrorKey = "whoGetsStatutoryCY.error"
-  val whoGetsStatutoryPYErrorKey = "whoGetsStatutoryPY.error"
-  val yourStatutoryPayCYErrorKey = "yourStatutoryPayCY.error"
-  val partnerStatutoryPayCYErrorKey = "partnerStatutoryPayCY.error"
-  val bothStatutoryPayCYErrorKey = "bothStatutoryPayCY.error"
-  val yourStatutoryPayPYErrorKey = "yourStatutoryPayPY.error"
-  val partnerStatutoryPayPYErrorKey = "partnerStatutoryPayPY.error"
-  val bothStatutoryPayPYErrorKey = "bothStatutoryPayPY.error"
-
   val parentPaidWorkPYErrorKey = "parentPaidWorkPY.error"
   val partnerPaidWorkPYErrorKey = "partnerPaidWorkPY.error"
   val bothPaidWorkPYErrorKey = "bothPaidWorkPY.error"
@@ -121,10 +112,6 @@ object ChildcareConstants {
   val howMuchPartnerPayPensionRequiredErrorKey = "howMuchPartnerPayPension.required"
   val howMuchBothPayPensionInvalidErrorKey = "howMuchBothPayPension.invalid"
   val howMuchBothPayPensionRequiredErrorKey = "howMuchBothPayPension.required"
-
-  val youNoWeeksStatPayCYErrorKey = "youNoWeeksStatPayCY.error"
-  val youNoWeeksStatPayCYInvalidErrorKey = "youNoWeeksStatPayCY.invalid"
-  val youNoWeeksStatPayCYNumericErrorKey = "youNoWeeksStatPayCY.numeric.error"
 
   val howMuchYouPayPensionPYInvalidErrorKey = "howMuchYouPayPensionPY.invalid"
   val howMuchYouPayPensionPYRequiredErrorKey = "howMuchYouPayPensionPY.required"
@@ -149,17 +136,6 @@ object ChildcareConstants {
   val parentOtherIncomePYInvalidErrorKey = "parentOtherIncomePY.invalid"
   val partnerOtherIncomePYRequiredErrorKey = "partnerOtherIncomePY.required"
   val partnerOtherIncomePYInvalidErrorKey = "partnerOtherIncomePY.invalid"
-  val parentStatutoryPayAmountRequiredErrorKey = "parentStatutoryPayAmount.required"
-  val parentStatutoryPayAmountInvalidErrorKey = "parentStatutoryPayAmount.invalid"
-  val partnerStatutoryPayAmountRequiredErrorKey = "partnerStatutoryPayAmount.required"
-  val partnerStatutoryPayAmountInvalidErrorKey = "partnerStatutoryPayAmount.invalid"
-  val partnerNoWeeksStatPayCYErrorKey = "partnerNoWeeksStatPayCY.error"
-  val partnerNoWeeksStatPayCYInvalidErrorKey = "partnerNoWeeksStatPayCY.invalid"
-  val partnerNoWeeksStatPayCYNumericErrorKey = "partnerNoWeeksStatPayCY.numeric.error"
-
-  val youNoWeeksStatPayPYErrorKey = "youNoWeeksStatPayPY.error"
-  val youNoWeeksStatPayPYInvalidErrorKey = "youNoWeeksStatPayPY.invalid"
-  val youNoWeeksStatPayPYNumericErrorKey = "youNoWeeksStatPayPY.numeric.error"
 
   val childcareCostsErrorKey = "childcareCosts.error"
 
@@ -188,17 +164,15 @@ object ChildcareConstants {
   val partnerOtherIncomeAmountPYRequiredErrorKey = "partnerOtherIncomeAmountPY.required"
   val partnerOtherIncomeAmountPYInvalidErrorKey = "partnerOtherIncomeAmountPY.invalid"
 
-  val parentStatutoryPayAmountPYRequiredErrorKey = "parentStatutoryPayAmountPY.required"
-  val parentStatutoryPayAmountPYInvalidErrorKey = "parentStatutoryPayAmountPY.invalid"
-  val partnerStatutoryPayAmountPYRequiredErrorKey = "partnerStatutoryPayAmountPY.required"
-  val partnerStatutoryPayAmountPYInvalidErrorKey = "partnerStatutoryPayAmountPY.invalid"
   val parentEmploymentIncomePYRequiredErrorKey = "parentEmploymentIncomePY.required"
   val parentEmploymentIncomePYInvalidErrorKey = "parentEmploymentIncomePY.invalid"
   val partnerEmploymentIncomePYRequiredErrorKey = "partnerEmploymentIncomePY.required"
   val partnerEmploymentIncomePYInvalidErrorKey = "partnerEmploymentIncomePY.invalid"
-  val bothNoWeeksStatPayCYInvalidErrorKey = "bothNoWeeksStatPayCY.invalid"
-  val bothNoWeeksStatPayPYInvalidErrorKey = "bothNoWeeksStatPayPY.invalid"
-  val partnerNoWeeksStatPayPYErrorKey = "partnerNoWeeksStatPayPY.error"
-  val partnerNoWeeksStatPayPYInvalidErrorKey = "partnerNoWeeksStatPayPY.invalid"
-  val partnerNoWeeksStatPayPYNumericErrorKey = "partnerNoWeeksStatPayPY.numeric.error"
+
+  val whoGotStatutoryPayErrorKey = "whoGotStatutoryPay.error"
+
+  val yourStatutoryPayTypeErrorKey = "yourStatutoryPayType.error"
+  val partnerStatutoryPayTypeErrorKey = "partnerStatutoryPayType.error"
+
+
 }

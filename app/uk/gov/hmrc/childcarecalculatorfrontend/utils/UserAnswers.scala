@@ -18,11 +18,39 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.Parent
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
+  def partnerStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](PartnerStatutoryStartDateId.toString)
+
+  def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](YourStatutoryStartDateId.toString)
+
+  def partnerStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryPayPerWeekId.toString)
+
+  def yourStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](YourStatutoryPayPerWeekId.toString)
+
+  def partnerStatutoryPayBeforeTax: Option[String] = cacheMap.getEntry[String](PartnerStatutoryPayBeforeTaxId.toString)
+
+  def yourStatutoryPayBeforeTax: Option[String] = cacheMap.getEntry[String](YourStatutoryPayBeforeTaxId.toString)
+
+  def partnerStatutoryWeeks: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryWeeksId.toString)
+
+  def yourStatutoryWeeks: Option[Int] = cacheMap.getEntry[Int](YourStatutoryWeeksId.toString)
+
+  def yourStatutoryPayType: Option[String] = cacheMap.getEntry[String](YourStatutoryPayTypeId.toString)
+
+  def partnerStatutoryPayType: Option[String] = cacheMap.getEntry[String](PartnerStatutoryPayTypeId.toString)
+
+  def whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhoGotStatutoryPayId.toString)
+  
+  def partnerStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayId.toString)
+
+  def bothStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](BothStatutoryPayId.toString)
+
+  def youStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](YouStatutoryPayId.toString)
 
   def expectedChildcareCosts(index: Int): Option[BigDecimal] =
     expectedChildcareCosts.flatMap(_.get(index))
@@ -41,10 +69,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def whichChildrenBlind: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenBlindId.toString)
 
   def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenDisabilityId.toString)
-
-  def bothNoWeeksStatPayPY: Option[BothNoWeeksStatPayPY] = cacheMap.getEntry[BothNoWeeksStatPayPY](BothNoWeeksStatPayPYId.toString)
-
-  def partnerNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](PartnerNoWeeksStatPayPYId.toString)
 
   def childStartEducation(index: Int): Option[LocalDate] = {
     childStartEducation.flatMap(_.get(index))
@@ -80,18 +104,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def howMuchBothPayPensionPY: Option[HowMuchBothPayPensionPY] = cacheMap.getEntry[HowMuchBothPayPensionPY](HowMuchBothPayPensionPYId.toString)
 
-  def statutoryPayAmountPY: Option[StatutoryPayAmountPY] = cacheMap.getEntry[StatutoryPayAmountPY](StatutoryPayAmountPYId.toString)
-
-  def partnerStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayAmountPYId.toString)
-
-  def yourStatutoryPayAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayAmountPYId.toString)
-
-  def bothNoWeeksStatPayCY: Option[BothNoWeeksStatPayCY] = cacheMap.getEntry[BothNoWeeksStatPayCY](BothNoWeeksStatPayCYId.toString)
-
-  def youNoWeeksStatPayPY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayPYId.toString)
-
-  def partnerNoWeeksStatPayCY: Option[Int] = cacheMap.getEntry[Int](PartnerNoWeeksStatPayCYId.toString)
-
   def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildDisabilityBenefitsId.toString)
 
   def otherIncomeAmountPY: Option[OtherIncomeAmountPY] = cacheMap.getEntry[OtherIncomeAmountPY](OtherIncomeAmountPYId.toString)
@@ -99,14 +111,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def partnerOtherIncomeAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerOtherIncomeAmountPYId.toString)
 
   def yourOtherIncomeAmountPY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourOtherIncomeAmountPYId.toString)
-
-  def statutoryPayAmountCY: Option[StatutoryPayAmountCY] = cacheMap.getEntry[StatutoryPayAmountCY](StatutoryPayAmountCYId.toString)
-
-  def yourStatutoryPayPY: Option[Boolean] = cacheMap.getEntry[Boolean](YourStatutoryPayPYId.toString)
-
-  def bothStatutoryPayPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothStatutoryPayPYId.toString)
-
-  def partnerStatutoryPayPY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayPYId.toString)
 
   def youBenefitsIncomePY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YouBenefitsIncomePYId.toString)
 
@@ -122,13 +126,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def registeredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](RegisteredBlindId.toString)
 
-  def statutoryPayAWeekLY: Option[Boolean] = cacheMap.getEntry[Boolean](StatutoryPayAWeekLYId.toString)
-
   def benefitsIncomeCY: Option[BenefitsIncomeCY] = cacheMap.getEntry[BenefitsIncomeCY](BenefitsIncomeCYId.toString)
-
-  def partnerStatutoryPayAmountCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayAmountCYId.toString)
-
-  def yourStatutoryPayAmountCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayAmountCYId.toString)
 
   def employmentIncomeCY: Option[EmploymentIncomeCY] = cacheMap.getEntry[EmploymentIncomeCY](EmploymentIncomeCYId.toString)
 
@@ -154,8 +152,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def whoOtherIncomePY: Option[String] = cacheMap.getEntry[String](WhoOtherIncomePYId.toString)
 
-  def whoGetsStatutoryPY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryPYId.toString)
-
   def youBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YouBenefitsIncomeCYId.toString)
 
   def partnerBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerBenefitsIncomeCYId.toString)
@@ -170,27 +166,17 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
   }
 
-  def youNoWeeksStatPayCY: Option[Int] = cacheMap.getEntry[Int](YouNoWeeksStatPayCYId.toString)
-
   def bothPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidPensionPYId.toString)
 
   def partnerPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerPaidPensionPYId.toString)
 
   def youPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionPYId.toString)
 
-  def statutoryPayAWeek: Option[Boolean] = cacheMap.getEntry[Boolean](StatutoryPayAWeekId.toString)
-
   def bothPaidWorkPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidWorkPYId.toString)
 
   def partnerPaidWorkPY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerPaidWorkPYId.toString)
 
   def parentPaidWorkPY: Option[Boolean] = cacheMap.getEntry[Boolean](ParentPaidWorkPYId.toString)
-
-  def bothStatutoryPayCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothStatutoryPayCYId.toString)
-
-  def partnerStatutoryPayCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayCYId.toString)
-
-  def yourStatutoryPayCY: Option[Boolean] = cacheMap.getEntry[Boolean](YourStatutoryPayCYId.toString)
 
   def bothOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothOtherIncomeThisYearId.toString)
 
@@ -201,8 +187,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionCYId.toString)
 
   def whosHadBenefits: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
-
-  def whoGetsStatutoryCY: Option[String] = cacheMap.getEntry[String](WhoGetsStatutoryCYId.toString)
 
   def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsCYId.toString)
 

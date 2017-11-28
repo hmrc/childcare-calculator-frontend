@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import play.api.libs.json.JsString
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.FakeDataRetrievalAction
@@ -29,4 +30,10 @@ trait ControllerSpecBase extends SpecBase {
   def getEmptyCacheMap = new FakeDataRetrievalAction(Some(emptyCacheMap))
 
   def dontGetAnyData = new FakeDataRetrievalAction(None)
+
+  val statutoryType = "maternity"
+
+  def buildFakeRequest(x: Map[String, JsString]) = {
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
+  }
 }
