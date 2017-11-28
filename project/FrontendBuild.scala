@@ -3,7 +3,6 @@ import sbt._
 object FrontendBuild extends Build with MicroService {
 
   val appName = "legged-up-childcare-frontend"
-  val appVersion = sys.env.getOrElse("CHILDCARE_CALCULATOR_FRONTEND_VERSION", "999-SNAPSHOT")
 
   override lazy val appDependencies: Seq[ModuleID] = AppDependencies()
 }
