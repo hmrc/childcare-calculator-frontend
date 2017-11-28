@@ -28,3 +28,5 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.2")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.3")
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-distributables" % "1.0.0")
+
+addSbtPlugin("uk.gov.hmrc" % "hmrc-resolvers" % "0.4.0")
