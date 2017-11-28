@@ -27,6 +27,10 @@ case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert{
   def overWriteObject(objectName: String, properties: JsValue) : DataGenerator = {
     DataGenerator(sample.copy(data = sample.data + (objectName -> properties)))
   }
+
+  def deleteObject(objectName: String) : DataGenerator = {
+    DataGenerator(sample.copy(data = sample.data - objectName))
+  }
 }
 
 object DataGenerator {
