@@ -157,6 +157,15 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "Partner Statutory Pay Type route" must {
+
+        "redirects to partnerStatutoryPayType page when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerStatutoryPay) thenReturn Some(true)
+
+          navigator.nextPage(PartnerStatutoryPayId, NormalMode).value(answers) mustBe
+            routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+
         "redirects to partnerStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.partnerStatutoryPayType) thenReturn
