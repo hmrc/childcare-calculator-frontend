@@ -1,21 +1,14 @@
-credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
+resolvers += Resolver.url("hmrc-sbt-plugin-releases", url("https://dl.bintray.com/hmrc/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
 
-val hmrcRepoHost = java.lang.System.getProperty("hmrc.repo.host", "https://nexus-preview.tax.service.gov.uk")
+resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
 
-resolvers ++= Seq(
-  "hmrc-snapshots" at hmrcRepoHost + "/content/repositories/hmrc-snapshots",
-  "hmrc-releases" at hmrcRepoHost + "/content/repositories/hmrc-releases",
-  "typesafe-releases" at hmrcRepoHost + "/content/repositories/typesafe-releases",
-  Resolver.url("hmrc-sbt-plugin-releases", url("https://dl.bintray.com/hmrc/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
-)
-
-addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "1.6.0")
+addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "1.7.0")
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.12")
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0")
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.2.0")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.3")
 
 addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.9")
 
@@ -29,4 +22,6 @@ addSbtPlugin("com.github.gseitz" % "sbt-release" % "0.8.3")
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-distributables" % "1.0.0")
 
-addSbtPlugin("uk.gov.hmrc" % "hmrc-resolvers" % "0.4.0")
+addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.1")
+
+addSbtPlugin("uk.gov.hmrc" % "sbt-git-versioning" % "0.9.0")
