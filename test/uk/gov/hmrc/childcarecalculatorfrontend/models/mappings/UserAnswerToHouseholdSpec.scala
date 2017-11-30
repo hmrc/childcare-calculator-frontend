@@ -21,7 +21,7 @@ import org.scalatest.{EitherValues, OptionValues}
 import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, Location}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{CreditsEnum, Household, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 import play.api.libs.json.JsValue
@@ -45,12 +45,13 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Option
         UserAnswerToHousehold.convert(answers) mustEqual household
       }
 
-    "given a user answer with location and credits" in {
+    "given a user answer with location and no credits" in {
 
       val household = Household(location = Location.ENGLAND)
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.taxOrUniversalCredits) thenReturn Some(CreditsEnum.NONE.toString)
 
       UserAnswerToHousehold.convert(answers) mustEqual household
     }

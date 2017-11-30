@@ -25,10 +25,111 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
+case class StatutoryIncome(
+                            statutoryWeeks: Double = 0.00,
+                            statutoryAmount: Option[BigDecimal] = None
+                          )
+
+object StatutoryIncome {
+  implicit val formatStatutoryIncome = Json.format[StatutoryIncome]
+}
+
+case class Income(
+                   employmentIncome: Option[BigDecimal] = None,
+                   pension: Option[BigDecimal] = None,
+                   otherIncome: Option[BigDecimal] = None,
+                   benefits: Option[BigDecimal] = None,
+                   statutoryIncome: Option[StatutoryIncome] = None,
+                   taxCode: Option[String] = None
+                 )
+
+object Income {
+  implicit val formatIncome = Json.format[Income]
+}
+
+case class Benefits(
+                     disabilityBenefits: Boolean = false,
+                     highRateDisabilityBenefits: Boolean =   false,
+                     incomeBenefits: Boolean =   false,
+                     carersAllowance: Boolean = false
+                   )
+
+object Benefits {
+  implicit val formatBenefits = Json.format[Benefits]
+}
+
+case class MinimumEarnings(
+                            amount: BigDecimal = 0.00,
+                            employmentStatus: Option[EmploymentStatusEnum] = None,
+                            selfEmployedIn12Months: Option[Boolean] = None
+                          )
+
+object MinimumEarnings {
+  implicit val formatMinimumEarnings = Json.format[MinimumEarnings]
+}
+
+case class Disability(
+                       disabled: Boolean,
+                       severelyDisabled: Boolean,
+                       blind: Boolean
+                     )
+
+object Disability {
+  implicit val formatDisability = Json.format[Disability]
+}
+
+case class ChildCareCost(
+                          amount: Option[BigDecimal] = None,
+                          period: Option[PeriodEnum] = None
+                        )
+
+object ChildCareCost {
+  implicit val formatChildCareCost = Json.format[ChildCareCost]
+}
+
+case class Education(
+                      inEducation: Boolean = false,
+                      startDate: Option[LocalDate] = None
+                    )
+
+object Education {
+  implicit val formatEducation = Json.format[Education]
+}
+
+case class Child(
+                  id: Short,
+                  name: String,
+                  dob: Option[LocalDate] = None,
+                  disability: Option[Disability] = None,
+                  childcareCost: Option[ChildCareCost] = None,
+                  education: Option[Education] = None
+                )
+
+object Child {
+  implicit val formatChild = Json.format[Child]
+}
+
+case class Claimant(
+                     ageRange: Option[AgeEnum] = None,
+                     benefits: Option[Benefits] = None,
+                     lastYearlyIncome: Option[Income] =   None,
+                     currentYearlyIncome: Option[Income] = None,
+                     hours: Option[BigDecimal] = None,
+                     minimumEarnings: Option[MinimumEarnings] = None,
+                     escVouchers: Option[YesNoUnsureEnum] = None,
+                     maximumEarnings: Option[Boolean] = None
+                   )
+
+object Claimant {
+  implicit val formatClaimant = Json.format[Claimant]
+}
 
 case class Household(
                       credits: Option[String] = None,
-                      location: Location
+                      location: Location,
+                      children: List[Child] = List.empty,
+                      parent: Claimant = Claimant(),
+                      partner: Option[Claimant] = None
                     )
 
 object Household {
