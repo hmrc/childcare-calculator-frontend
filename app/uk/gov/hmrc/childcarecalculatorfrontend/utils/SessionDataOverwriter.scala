@@ -25,13 +25,13 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 object SessionDataOverwrite extends SubCascadeUpsert {
   def applyRules(userData: CacheMap) : CacheMap = {
-    val childCareCostsIfNotYetThenYes = SessionDataOverwrite.overwrite[YesNoNotYetEnum](_:CacheMap, ChildcareCostsId.toString, YesNoNotYetEnum.NOTYET, YesNoNotYetEnum.YES)
-    val approvedProviderIfNotSureThenYes = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, ApprovedProviderId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
-    val yourAdjustedTaxCodeIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, DoYouKnowYourAdjustedTaxCodeId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.NO)
-    val partnerAdjustedTaxCodeIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, DoYouKnowYourPartnersAdjustedTaxCodeId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.NO)
-    val partnerChildcarePartnerIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, PartnerChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
-    val yourChildcareVouchersIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, YourChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
-    val eitherChildcareVouchersIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap,EitherGetsVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
+    val childCareCostsIfNotYetThenYes = overwrite[YesNoNotYetEnum](_:CacheMap, ChildcareCostsId.toString, YesNoNotYetEnum.NOTYET, YesNoNotYetEnum.YES)
+    val approvedProviderIfNotSureThenYes = overwrite[YesNoUnsureEnum](_:CacheMap, ApprovedProviderId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
+    val yourAdjustedTaxCodeIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, DoYouKnowYourAdjustedTaxCodeId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.NO)
+    val partnerAdjustedTaxCodeIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, DoYouKnowYourPartnersAdjustedTaxCodeId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.NO)
+    val partnerChildcarePartnerIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, PartnerChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
+    val yourChildcareVouchersIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, YourChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
+    val eitherChildcareVouchersIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap,EitherGetsVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
 
     (childCareCostsIfNotYetThenYes andThen  approvedProviderIfNotSureThenYes andThen
       yourAdjustedTaxCodeIfNotSureThenNo andThen partnerAdjustedTaxCodeIfNotSureThenNo andThen
