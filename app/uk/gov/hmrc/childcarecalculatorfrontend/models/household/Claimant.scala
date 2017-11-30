@@ -21,6 +21,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 case class Claimant(
                      lastYearlyIncome: Option[Income] = None,
@@ -53,7 +54,7 @@ object Claimant {
         val diffBetCyAndStartDateYear = cy - startDateYear
 
         if(diffBetCyAndStartDateYear == 1) {
-          val taxYearEndDatePY = new LocalDate(cy, 4, 5)
+          val taxYearEndDatePY = new LocalDate(cy, lastMonthOfTaxYear, lastDayOfTaxYear)
           val noOfStatWeeks = getNoOfStatWeeks(answers, partnerMode)
           val payPerWeek = getPayPerWeek(answers, partnerMode)
 
@@ -102,7 +103,7 @@ object Claimant {
 
     startDateOfStatPay match {
       case Some(date) => {
-        val taxYearEndDate = new LocalDate(getYear(date), 4, 5)
+        val taxYearEndDate = new LocalDate(getYear(date), lastMonthOfTaxYear, lastDayOfTaxYear)
         val totalWeeksInCY = Weeks.weeksBetween(date, taxYearEndDate).getWeeks
 
         val statsPayableWeeksInCY = if(noOfStatWeeks >= totalWeeksInCY) totalWeeksInCY else noOfStatWeeks
@@ -145,14 +146,14 @@ object Claimant {
     val monthOfTheYear = date.getMonthOfYear
     val year = date.getYear
 
-    if(monthOfTheYear > 4) {
-      year+1
+    if(monthOfTheYear > lastMonthOfTaxYear) {
+      year + 1
     } else {
-      if(monthOfTheYear < 4) {
+      if(monthOfTheYear < lastMonthOfTaxYear) {
         year
       } else {
         val day = date.getDayOfMonth
-        if(day > 5) year+1 else year
+        if(day > lastDayOfTaxYear) year + 1 else year
       }
     }
   }
