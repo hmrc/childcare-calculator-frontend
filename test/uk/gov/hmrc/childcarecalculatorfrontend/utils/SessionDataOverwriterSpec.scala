@@ -72,7 +72,8 @@ class SessionDataOverwriterSpec extends PlaySpec {
           DoYouKnowYourAdjustedTaxCodeId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString),
           DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString),
           PartnerChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString),
-          YourChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString)))
+          YourChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString),
+          EitherGetsVouchersId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString)))
 
         val result = SessionDataOverwrite.applyRules(data)
 
@@ -82,6 +83,7 @@ class SessionDataOverwriterSpec extends PlaySpec {
         result.data(DoYouKnowYourPartnersAdjustedTaxCodeId.toString).as[YesNoUnsureEnum] mustBe YesNoUnsureEnum.NO
         result.data(PartnerChildcareVouchersId.toString).as[YesNoUnsureEnum] mustBe YesNoUnsureEnum.YES
         result.data(YourChildcareVouchersId.toString).as[YesNoUnsureEnum] mustBe YesNoUnsureEnum.YES
+        result.data(EitherGetsVouchersId.toString).as[YesNoUnsureEnum] mustBe YesNoUnsureEnum.YES
       }
     }
   }

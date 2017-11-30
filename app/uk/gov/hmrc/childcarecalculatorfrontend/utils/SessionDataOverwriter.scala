@@ -31,8 +31,11 @@ object SessionDataOverwrite extends SubCascadeUpsert {
     val partnerAdjustedTaxCodeIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, DoYouKnowYourPartnersAdjustedTaxCodeId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.NO)
     val partnerChildcarePartnerIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, PartnerChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
     val yourChildcareVouchersIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap, YourChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
+    val eitherChildcareVouchersIfNotSureThenNo = SessionDataOverwrite.overwrite[YesNoUnsureEnum](_:CacheMap,EitherGetsVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
 
-    (childCareCostsIfNotYetThenYes andThen  approvedProviderIfNotSureThenYes andThen yourAdjustedTaxCodeIfNotSureThenNo andThen partnerAdjustedTaxCodeIfNotSureThenNo andThen partnerChildcarePartnerIfNotSureThenNo andThen yourChildcareVouchersIfNotSureThenNo)(userData)
+    (childCareCostsIfNotYetThenYes andThen  approvedProviderIfNotSureThenYes andThen
+      yourAdjustedTaxCodeIfNotSureThenNo andThen partnerAdjustedTaxCodeIfNotSureThenNo andThen
+      partnerChildcarePartnerIfNotSureThenNo andThen yourChildcareVouchersIfNotSureThenNo andThen eitherChildcareVouchersIfNotSureThenNo)(userData)
   }
 
   def overwrite[T: Format](userSelections: CacheMap, elementToOverwrite: String, valueToReplace: T, valueToReplaceWith: T): CacheMap = {
