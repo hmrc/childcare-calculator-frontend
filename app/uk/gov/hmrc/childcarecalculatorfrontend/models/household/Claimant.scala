@@ -32,7 +32,6 @@ object Claimant {
             partnerMode: Boolean): Claimant =
 
     tcScheme.eligibility(answers) match {
-
       case Eligible => getClaimantForTCEligibility(answers, partnerMode)
       case NotEligible => Claimant(currentYearlyIncome = getCurrentYearlyIncome(answers, partnerMode))
       case _ => Claimant()
