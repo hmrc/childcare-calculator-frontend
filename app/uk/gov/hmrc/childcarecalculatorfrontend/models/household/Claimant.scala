@@ -54,7 +54,7 @@ object Claimant {
         val diffBetCyAndStartDateYear = cy - startDateYear
 
         if(diffBetCyAndStartDateYear == 1) {
-          val taxYearEndDatePY = new LocalDate(cy, lastMonthOfTaxYear, lastDayOfTaxYear)
+          val taxYearEndDatePY = getTaxYearDate(cy)
           val noOfStatWeeks = getNoOfStatWeeks(answers, partnerMode)
           val payPerWeek = getPayPerWeek(answers, partnerMode)
 
@@ -103,7 +103,7 @@ object Claimant {
 
     startDateOfStatPay match {
       case Some(date) => {
-        val taxYearEndDate = new LocalDate(getYear(date), lastMonthOfTaxYear, lastDayOfTaxYear)
+        val taxYearEndDate = getTaxYearDate(getYear(date))
         val totalWeeksInCY = Weeks.weeksBetween(date, taxYearEndDate).getWeeks
 
         val statsPayableWeeksInCY = if(noOfStatWeeks >= totalWeeksInCY) totalWeeksInCY else noOfStatWeeks
@@ -157,6 +157,8 @@ object Claimant {
       }
     }
   }
+
+  private def getTaxYearDate(year: Int) = new LocalDate(year, lastMonthOfTaxYear, lastDayOfTaxYear)
 
   implicit val formatClaimant = Json.format[Claimant]
 }
