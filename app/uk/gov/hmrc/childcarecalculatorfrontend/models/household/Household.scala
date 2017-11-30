@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.household
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-
 
 case class Household(parent: Claimant,
                      partner: Option[Claimant] = None)
@@ -35,10 +34,12 @@ object Household {
                          tcScheme: TaxCredits) =
     if (answers.doYouLiveWithPartner.getOrElse(false)) {
       Some(Claimant(answers, tcScheme, true))
-    } else None
+    } else {
+      None
+    }
 
   private def getParent(answers: UserAnswers,
                         tcScheme: TaxCredits) = Claimant(answers, tcScheme, false)
 
-  implicit val formatHousehold = Json.format[Household]
+  implicit val formatHousehold: OFormat[Household] = Json.format[Household]
 }

@@ -16,17 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.household
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-case class Income(
-                   employmentIncome: Option[BigDecimal] = None,
+case class Income(employmentIncome: Option[BigDecimal] = None,
                    pension: Option[BigDecimal] = None,
                    otherIncome: Option[BigDecimal] = None,
                    benefits: Option[BigDecimal] = None,
                    statutoryIncome: Option[StatutoryIncome] = None,
-                   taxCode: Option[String] = None
-                 )
+                   taxCode: Option[String] = None)
 
 object Income {
 
@@ -36,5 +34,5 @@ object Income {
     Income(statutoryIncome = statsIncome)
   }
 
-  implicit val formatIncome = Json.format[Income]
+  implicit val formatIncome: OFormat[Income] = Json.format[Income]
 }

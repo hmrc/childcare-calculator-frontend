@@ -17,16 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.household
 
 import org.joda.time.{LocalDate, Weeks}
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-case class Claimant(
-                     lastYearlyIncome: Option[Income] = None,
-                     currentYearlyIncome: Option[Income] = None
-                   )
+case class Claimant(lastYearlyIncome: Option[Income] = None,
+                    currentYearlyIncome: Option[Income] = None)
 
 object Claimant {
   def apply(answers: UserAnswers,
@@ -40,11 +38,10 @@ object Claimant {
       case _ => Claimant()
     }
 
-
   private def getClaimantForTCEligibility(answers: UserAnswers,
                                           partnerMode: Boolean) = {
 
-   getStartDateOfStatPay(answers, partnerMode) match {
+    getStartDateOfStatPay(answers, partnerMode) match {
       case Some(date) => {
 
         val currentTaxYear = getTaxYear(LocalDate.now)
@@ -52,17 +49,17 @@ object Claimant {
         val taxYearStartDateCY = getTaxYearStartDate(currentTaxYear - 1)
         val taxYearEndDateCY = getTaxYearEndDate(currentTaxYear)
 
-        val taxYearStartDatePY = getTaxYearStartDate(currentTaxYear-2)
-        val taxYearEndDatePY = getTaxYearEndDate(currentTaxYear-1)
+        val taxYearStartDatePY = getTaxYearStartDate(currentTaxYear - 2)
+        val taxYearEndDatePY = getTaxYearEndDate(currentTaxYear - 1)
 
-        if(isDateBetweenInterval(date, taxYearStartDatePY, taxYearEndDatePY)){
+        if (isDateBetweenInterval(date, taxYearStartDatePY, taxYearEndDatePY)) {
 
           val noOfStatWeeks = getNoOfStatWeeks(answers, partnerMode)
           val payPerWeek = getPayPerWeek(answers, partnerMode)
 
           val remainingWeeksInPY = Weeks.weeksBetween(date, taxYearEndDatePY).getWeeks
 
-          if(remainingWeeksInPY >= noOfStatWeeks) {
+          if (remainingWeeksInPY >= noOfStatWeeks) {
             val statIncomeLY = Some(StatutoryIncome(noOfStatWeeks, noOfStatWeeks * payPerWeek))
 
             Claimant(lastYearlyIncome = getLastYearlyIncome(answers, statIncomeLY),
@@ -77,7 +74,7 @@ object Claimant {
               currentYearlyIncome = Some(Income(answers, statIncomeCY)))
           }
 
-        } else if(isDateBetweenInterval(date, taxYearStartDateCY, taxYearEndDateCY)) {
+        } else if (isDateBetweenInterval(date, taxYearStartDateCY, taxYearEndDateCY)) {
           Claimant(currentYearlyIncome = getCurrentYearlyIncome(answers, partnerMode))
 
         } else {
@@ -102,7 +99,7 @@ object Claimant {
     Some(Income(answers, statIncome))
 
   private def getCurrentYearlyIncome(answers: UserAnswers,
-                                     partnerMode: Boolean = false):Option[Income] = {
+                                     partnerMode: Boolean = false): Option[Income] = {
 
     val noOfStatWeeks = getNoOfStatWeeks(answers, partnerMode)
     val startDateOfStatPay = getStartDateOfStatPay(answers, partnerMode)
@@ -113,7 +110,7 @@ object Claimant {
         val taxYearEndDate = getTaxYearEndDate(getTaxYear(date))
         val totalWeeksInCY = Weeks.weeksBetween(date, taxYearEndDate).getWeeks
 
-        val statsPayableWeeksInCY = if(noOfStatWeeks >= totalWeeksInCY) totalWeeksInCY else noOfStatWeeks
+        val statsPayableWeeksInCY = if (noOfStatWeeks >= totalWeeksInCY) totalWeeksInCY else noOfStatWeeks
         val statsPayableAmount = statsPayableWeeksInCY * payPerWeek
 
         Some(Income(answers, Some(StatutoryIncome(statsPayableWeeksInCY, statsPayableAmount))))
@@ -125,7 +122,7 @@ object Claimant {
 
   private def getNoOfStatWeeks(answers: UserAnswers,
                                partnerMode: Boolean = false) =
-    if(partnerMode) {
+    if (partnerMode) {
       answers.partnerStatutoryWeeks.getOrElse(0)
     } else {
       answers.yourStatutoryWeeks.getOrElse(0)
@@ -133,7 +130,7 @@ object Claimant {
 
   private def getStartDateOfStatPay(answers: UserAnswers,
                                     partnerMode: Boolean = false) =
-    if(partnerMode) {
+    if (partnerMode) {
       answers.partnerStatutoryStartDate
     } else {
       answers.yourStatutoryStartDate
@@ -141,24 +138,24 @@ object Claimant {
 
   private def getPayPerWeek(answers: UserAnswers,
                             partnerMode: Boolean = false) =
-    if(partnerMode) {
+    if (partnerMode) {
       answers.partnerStatutoryPayPerWeek.getOrElse(0)
     } else {
       answers.yourStatutoryPayPerWeek.getOrElse(0)
     }
 
-  private def getTaxYear(date: LocalDate)  = {
+  private def getTaxYear(date: LocalDate) = {
     val monthOfTheYear = date.getMonthOfYear
     val year = date.getYear
 
-    if(monthOfTheYear > lastMonthOfTaxYear) {
+    if (monthOfTheYear > lastMonthOfTaxYear) {
       year + 1
     } else {
-      if(monthOfTheYear < lastMonthOfTaxYear) {
+      if (monthOfTheYear < lastMonthOfTaxYear) {
         year
       } else {
         val day = date.getDayOfMonth
-        if(day > lastDayOfTaxYear) year + 1 else year
+        if (day > lastDayOfTaxYear) year + 1 else year
       }
     }
   }
@@ -167,5 +164,5 @@ object Claimant {
 
   private def getTaxYearStartDate(year: Int) = new LocalDate(year, firstMonthOfTaxYear, startDayOfTaxYear)
 
-  implicit val formatClaimant = Json.format[Claimant]
+  implicit val formatClaimant: OFormat[Claimant] = Json.format[Claimant]
 }

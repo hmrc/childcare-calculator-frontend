@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.household
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
-case class StatutoryIncome(
-                            statutoryWeeks: Double = 0.00,
-                            statutoryAmount: BigDecimal = 0.00
-                          )
+case class StatutoryIncome(statutoryWeeks: Double = 0.00,
+                            statutoryAmount: BigDecimal = 0.00)
 
 object StatutoryIncome {
-  implicit val formatStatutoryIncome = Json.format[StatutoryIncome]
+  implicit val formatStatutoryIncome: OFormat[StatutoryIncome] = Json.format[StatutoryIncome]
 }
