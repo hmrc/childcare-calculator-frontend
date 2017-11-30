@@ -132,3 +132,36 @@ object ChildcarePayFrequency extends Enumeration {
 
   implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(ChildcarePayFrequency)
 }
+
+object CreditsEnum extends Enumeration {
+  type CreditsEnum = Value
+  val TAXCREDITS, UNIVERSALCREDIT, NONE = Value
+
+  val enumReads: Reads[CreditsEnum] = EnumUtils.enumReads(CreditsEnum)
+
+  val enumWrites: Writes[CreditsEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[CreditsEnum] = EnumUtils.enumFormat(CreditsEnum)
+}
+
+object PeriodEnum extends Enumeration {
+  type PeriodEnum = Value
+  val DAILY, WEEKLY, FORTNIGHTLY, MONTHLY, QUARTERLY, YEARLY, INVALID = Value
+
+  val enumReads: Reads[PeriodEnum] = EnumUtils.enumReads(PeriodEnum)
+
+  val enumWrites: Writes[PeriodEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
+}
+
+object EmploymentStatusEnum extends Enumeration {
+  type EmploymentStatusEnum = Value
+  val SELFEMPLOYED, APPRENTICE, NEITHER = Value
+
+  val enumReads: Reads[EmploymentStatusEnum] = EnumUtils.enumReads(EmploymentStatusEnum)
+
+  val enumWrites: Writes[EmploymentStatusEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[EmploymentStatusEnum] = EnumUtils.enumFormat(EmploymentStatusEnum)
+}
