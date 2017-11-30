@@ -55,8 +55,7 @@ object Claimant {
         val taxYearStartDatePY = getTaxYearStartDate(currentTaxYear-2)
         val taxYearEndDatePY = getTaxYearEndDate(currentTaxYear-1)
 
-        if((date.isEqual(taxYearStartDatePY) || date.isAfter(taxYearStartDatePY))
-          && (date.isEqual(taxYearEndDatePY) || date.isBefore(taxYearEndDatePY))) {
+        if(isDateBetweenInterval(date, taxYearStartDatePY, taxYearEndDatePY)){
 
           val noOfStatWeeks = getNoOfStatWeeks(answers, partnerMode)
           val payPerWeek = getPayPerWeek(answers, partnerMode)
@@ -78,8 +77,7 @@ object Claimant {
               currentYearlyIncome = Some(Income(answers, statIncomeCY)))
           }
 
-        } else if((date.isEqual(taxYearStartDateCY) || date.isAfter(taxYearStartDateCY))
-          && (date.isEqual(taxYearEndDateCY) || date.isBefore(taxYearEndDateCY))) {
+        } else if(isDateBetweenInterval(date, taxYearStartDateCY, taxYearEndDateCY)) {
           Claimant(currentYearlyIncome = getCurrentYearlyIncome(answers, partnerMode))
 
         } else {
@@ -93,6 +91,11 @@ object Claimant {
     }
   }
 
+  private def isDateBetweenInterval(date: LocalDate,
+                                    startDate: LocalDate,
+                                    endDate: LocalDate) =
+    ((date.isEqual(startDate) || date.isAfter(startDate))
+      && (date.isEqual(endDate) || date.isBefore(endDate)))
 
   private def getLastYearlyIncome(answers: UserAnswers,
                                   statIncome: Option[StatutoryIncome]): Option[Income] =
@@ -130,7 +133,6 @@ object Claimant {
 
   private def getStartDateOfStatPay(answers: UserAnswers,
                                     partnerMode: Boolean = false) =
-
     if(partnerMode) {
       answers.partnerStatutoryStartDate
     } else {
@@ -139,7 +141,6 @@ object Claimant {
 
   private def getPayPerWeek(answers: UserAnswers,
                             partnerMode: Boolean = false) =
-
     if(partnerMode) {
       answers.partnerStatutoryPayPerWeek.getOrElse(0)
     } else {
