@@ -332,6 +332,25 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
 
     }
 
+    ////////////////////////////////////////
+    "Create the Household model with statutory income for CY and PY when single user is eligible for TC and " +
+      "statutory income weeks span over current and previous year but stat pay start date is before previous tax year" in  {
+      val answers = spy(userAnswers())
+      val taxCredits = mock[TaxCredits]
+
+      when(taxCredits.eligibility(any())) thenReturn Eligible
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
+      when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 2, 20))
+      when(answers.yourStatutoryWeeks) thenReturn Some(32)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+
+      Household(answers, taxCredits) mustBe Household(parent = new Claimant(
+        currentYearlyIncome = Some(Income(statutoryIncome = None)),
+        lastYearlyIncome = Some(Income(statutoryIncome = None))
+      ))
+
+    }
+
     "Create the Household model with statutory income for CY when user is not eligible for TC and single user " in  {
       val answers = spy(userAnswers())
       val taxCredits = mock[TaxCredits]

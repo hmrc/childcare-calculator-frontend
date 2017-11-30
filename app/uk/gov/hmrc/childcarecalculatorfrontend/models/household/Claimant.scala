@@ -44,17 +44,20 @@ object Claimant {
   private def getClaimantForTCEligibility(answers: UserAnswers,
                                           partnerMode: Boolean) = {
 
-    val startDateOfStatPay = getStartDateOfStatPay(answers, partnerMode)
-
-    startDateOfStatPay match {
+   getStartDateOfStatPay(answers, partnerMode) match {
       case Some(date) => {
 
-        val startDateYear = date.getYear
-        val cy = LocalDate.now.getYear
-        val diffBetCyAndStartDateYear = cy - startDateYear
+        val currentTaxYear = getTaxYear(LocalDate.now)
 
-        if(diffBetCyAndStartDateYear == 1) {
-          val taxYearEndDatePY = getTaxYearDate(cy)
+        val taxYearStartDateCY = getTaxYearStartDate(currentTaxYear - 1)
+        val taxYearEndDateCY = getTaxYearEndDate(currentTaxYear)
+
+        val taxYearStartDatePY = getTaxYearStartDate(currentTaxYear-2)
+        val taxYearEndDatePY = getTaxYearEndDate(currentTaxYear-1)
+
+        if((date.isEqual(taxYearStartDatePY) || date.isAfter(taxYearStartDatePY))
+          && (date.isEqual(taxYearEndDatePY) || date.isBefore(taxYearEndDatePY))) {
+
           val noOfStatWeeks = getNoOfStatWeeks(answers, partnerMode)
           val payPerWeek = getPayPerWeek(answers, partnerMode)
 
@@ -75,13 +78,13 @@ object Claimant {
               currentYearlyIncome = Some(Income(answers, statIncomeCY)))
           }
 
-        } else if(diffBetCyAndStartDateYear > 1) {
-
-          Claimant(lastYearlyIncome = Some(Income(statutoryIncome = None)),
-            currentYearlyIncome = Some(Income(statutoryIncome = None)))
+        } else if((date.isEqual(taxYearStartDateCY) || date.isAfter(taxYearStartDateCY))
+          && (date.isEqual(taxYearEndDateCY) || date.isBefore(taxYearEndDateCY))) {
+          Claimant(currentYearlyIncome = getCurrentYearlyIncome(answers, partnerMode))
 
         } else {
-          Claimant(currentYearlyIncome = getCurrentYearlyIncome(answers, partnerMode))
+          Claimant(lastYearlyIncome = Some(Income(statutoryIncome = None)),
+            currentYearlyIncome = Some(Income(statutoryIncome = None)))
         }
 
       }
@@ -90,14 +93,6 @@ object Claimant {
     }
   }
 
-  private def getTest(answers: UserAnswers,
-                      partnerMode: Boolean) = {
-
-    val startDateOfStatPay = getStartDateOfStatPay(answers, partnerMode)
-
-
-
-  }
 
   private def getLastYearlyIncome(answers: UserAnswers,
                                   statIncome: Option[StatutoryIncome]): Option[Income] =
@@ -112,7 +107,7 @@ object Claimant {
 
     startDateOfStatPay match {
       case Some(date) => {
-        val taxYearEndDate = getTaxYearDate(getTaxYear(date))
+        val taxYearEndDate = getTaxYearEndDate(getTaxYear(date))
         val totalWeeksInCY = Weeks.weeksBetween(date, taxYearEndDate).getWeeks
 
         val statsPayableWeeksInCY = if(noOfStatWeeks >= totalWeeksInCY) totalWeeksInCY else noOfStatWeeks
@@ -167,7 +162,9 @@ object Claimant {
     }
   }
 
-  private def getTaxYearDate(year: Int) = new LocalDate(year, lastMonthOfTaxYear, lastDayOfTaxYear)
+  private def getTaxYearEndDate(year: Int) = new LocalDate(year, lastMonthOfTaxYear, lastDayOfTaxYear)
+
+  private def getTaxYearStartDate(year: Int) = new LocalDate(year, firstMonthOfTaxYear, startDayOfTaxYear)
 
   implicit val formatClaimant = Json.format[Claimant]
 }
