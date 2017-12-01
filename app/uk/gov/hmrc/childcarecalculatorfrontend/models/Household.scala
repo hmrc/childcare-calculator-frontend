@@ -60,7 +60,7 @@ object Benefits {
 
 case class MinimumEarnings(
                             amount: BigDecimal = 0.00,
-                            employmentStatus: Option[EmploymentStatusEnum] = None,
+                            employmentStatus: Option[String] = None,
                             selfEmployedIn12Months: Option[Boolean] = None
                           )
 
@@ -110,7 +110,7 @@ object Child {
 }
 
 case class Claimant(
-                     ageRange: Option[AgeEnum] = None,
+                     ageRange: Option[String] = None,
                      benefits: Option[Benefits] = None,
                      lastYearlyIncome: Option[Income] =   None,
                      currentYearlyIncome: Option[Income] = None,
