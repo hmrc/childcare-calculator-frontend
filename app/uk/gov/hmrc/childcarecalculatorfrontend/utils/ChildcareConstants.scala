@@ -31,6 +31,12 @@ object ChildcareConstants {
   val no = "no"
   val yes = "yes"
 
+  val firstMonthOfTaxYear = 4
+  val startDayOfTaxYear = 6
+
+  val lastMonthOfTaxYear = 4
+  val lastDayOfTaxYear = 5
+
   val unknownErrorKey = "error.unknown"
 
   val locationErrorKey = "location.error"
