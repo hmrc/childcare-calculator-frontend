@@ -34,7 +34,7 @@ object Claimant {
     tcScheme.eligibility(answers) match {
       case Eligible => getClaimantForTCEligibility(answers, partnerMode)
       case NotEligible => Claimant(currentYearlyIncome = getCurrentYearlyIncome(answers, partnerMode))
-      case _ => Claimant()
+      case _ => Claimant(lastYearlyIncome = Some(Income(answers,None)), currentYearlyIncome = Some(Income(answers,None)))
     }
 
   private def getClaimantForTCEligibility(answers: UserAnswers,
@@ -87,12 +87,6 @@ object Claimant {
     }
   }
 
-  private def isDateBetweenInterval(date: LocalDate,
-                                    startDate: LocalDate,
-                                    endDate: LocalDate) =
-    ((date.isEqual(startDate) || date.isAfter(startDate))
-      && (date.isEqual(endDate) || date.isBefore(endDate)))
-
   private def getLastYearlyIncome(answers: UserAnswers,
                                   statIncome: Option[StatutoryIncome]): Option[Income] =
     Some(Income(answers, statIncome))
@@ -119,25 +113,28 @@ object Claimant {
     }
   }
 
+  private def isDateBetweenInterval(date: LocalDate,
+                                    startDate: LocalDate,
+                                    endDate: LocalDate) =
+    ((date.isEqual(startDate) || date.isAfter(startDate))
+      && (date.isEqual(endDate) || date.isBefore(endDate)))
+
   private def getNoOfStatWeeks(answers: UserAnswers,
-                               partnerMode: Boolean = false) =
-    if (partnerMode) {
+                               partnerMode: Boolean = false) = if (partnerMode) {
       answers.partnerStatutoryWeeks.getOrElse(0)
     } else {
       answers.yourStatutoryWeeks.getOrElse(0)
     }
 
   private def getStartDateOfStatPay(answers: UserAnswers,
-                                    partnerMode: Boolean = false) =
-    if (partnerMode) {
+                                    partnerMode: Boolean = false) =  if (partnerMode) {
       answers.partnerStatutoryStartDate
     } else {
       answers.yourStatutoryStartDate
     }
 
   private def getPayPerWeek(answers: UserAnswers,
-                            partnerMode: Boolean = false) =
-    if (partnerMode) {
+                            partnerMode: Boolean = false) = if (partnerMode) {
       answers.partnerStatutoryPayPerWeek.getOrElse(0)
     } else {
       answers.yourStatutoryPayPerWeek.getOrElse(0)

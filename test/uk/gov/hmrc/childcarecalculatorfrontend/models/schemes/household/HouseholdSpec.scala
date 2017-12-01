@@ -524,6 +524,22 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
 
     }
 
+    "Create the Household model with statutory income for CY and PY as None when TC eligibility is NotDetermined" in  {
+      val answers = spy(userAnswers())
+      val taxCredits = mock[TaxCredits]
+
+      when(taxCredits.eligibility(any())) thenReturn NotDetermined
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
+      when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
+      when(answers.yourStatutoryWeeks) thenReturn Some(32)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+
+      Household(answers, taxCredits) mustBe Household(parent = new Claimant(
+        currentYearlyIncome = Some(Income(statutoryIncome = None)),
+        lastYearlyIncome = Some(Income(statutoryIncome = None))))
+
+    }
+
   }
 
 }
