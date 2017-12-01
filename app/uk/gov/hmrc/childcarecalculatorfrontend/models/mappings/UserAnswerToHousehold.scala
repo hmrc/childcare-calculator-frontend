@@ -34,26 +34,30 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
   private def createClaimant(answers: UserAnswers): Claimant = {
     val isParent = !answers.doYouLiveWithPartner.getOrElse(false)
+    val hours = if(isParent) answers.parentWorkHours else answers.partnerWorkHours
+    val benefits = if(isParent) answers.whichBenefitsYouGet else answers.whichBenefitsPartnerGet
+    val vouchers = if(isParent) answers.yourChildcareVouchers else answers.partnerChildcareVouchers
     val selfEmployedOrApprentice = if(isParent) answers.areYouSelfEmployedOrApprentice else answers.partnerSelfEmployedOrApprentice
     val selfEmployed = if(isParent) answers.yourSelfEmployed else answers.partnerSelfEmployed
     val age = if(isParent) answers.yourAge else answers.yourPartnersAge
     val amt = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, age)
+    val minEarnings = if(amt > 0) Some(createMinEarnings(amt, selfEmployedOrApprentice, selfEmployed)) else None
+    val maxEarnings = if(isParent) answers.yourMaximumEarnings else answers.partnerMaximumEarnings
 
     println(s"*********************isParent>>>>>>>$isParent")
     println(s"*********************selfEmployedOrApprentice>>>>>>>$selfEmployedOrApprentice")
     println(s"*********************selfEmployed>>>>>>>$selfEmployed")
-    println(s"*********************age1>>>>>>>${answers.yourAge}")
     println(s"*********************age>>>>>>>$age")
     println(s"*********************amt>>>>>>>$amt")
     val claimant = Claimant(
       ageRange = age,
-//      benefits = None,
+      benefits = None,
 //      lastYearlyIncome =   None,
 //      currentYearlyIncome = None,
-      hours = if(isParent) answers.parentWorkHours else answers.partnerWorkHours,
-      minimumEarnings = if(amt > 0) Some(createMinEarnings(amt, selfEmployedOrApprentice, selfEmployed)) else None,
-      escVouchers = None,
-      maximumEarnings = if(isParent) answers.yourMaximumEarnings else answers.partnerMaximumEarnings
+      hours = hours,
+      minimumEarnings = minEarnings,
+      escVouchers = vouchers,
+      maximumEarnings = maxEarnings
     )
     println(s"*******claimant>>>>>>$claimant")
     claimant

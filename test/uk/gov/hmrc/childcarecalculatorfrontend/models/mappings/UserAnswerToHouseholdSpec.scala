@@ -63,6 +63,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "given a user input with parent" in {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
+        escVouchers = Some(YesNoUnsureEnum.NO.toString),
         ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
         minimumEarnings = Some(MinimumEarnings(120.0)),
         maximumEarnings = Some(false)
@@ -80,6 +81,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
       when(answers.location) thenReturn Some(Location.SCOTLAND)
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
+      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
       when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
       when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(true)
