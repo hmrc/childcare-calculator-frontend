@@ -77,6 +77,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(false)
 
+         // TODO: To be uncommented once benefits navigation is done. Same for rest of the comments.
          /* navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe
             routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)*/
         }
