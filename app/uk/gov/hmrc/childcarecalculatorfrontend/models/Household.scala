@@ -56,6 +56,10 @@ case class Benefits(
 
 object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
+
+  def populateFromRawData(data: Option[Set[String]]) : Benefits = {
+    Benefits(incomeBenefits = true)
+  }
 }
 
 case class MinimumEarnings(
