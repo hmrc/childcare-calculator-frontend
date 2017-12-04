@@ -47,12 +47,12 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to yourStatutoryPayCY page when user selects no" in {
+        "redirects to YourOtherIncomeThisYear page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.youAnyTheseBenefits) thenReturn Some(false)
 
-          /*navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe
-            routes.YourStatutoryPayCYController.onPageLoad(NormalMode)*/
+          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe
+            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
