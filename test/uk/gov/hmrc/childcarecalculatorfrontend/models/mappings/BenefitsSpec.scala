@@ -23,12 +23,45 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 
 class BenefitsSpec extends PlaySpec {
   "Benefits" must {
+
+    
     "Populate correctly from a Set of Strings" when {
       "We have income benefits" in {
          val rawBenefits = Some(Set(INCOMEBENEFITS.toString))
          val mappedBenefits : Benefits = Benefits.populateFromRawData(rawBenefits)
 
          mappedBenefits.incomeBenefits mustBe true
+      }
+
+      "We have disability benefits" in {
+        val rawBenefits = Some(Set(DISABILITYBENEFITS.toString))
+        val mappedBenefits : Benefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.disabilityBenefits mustBe true
+      }
+
+      "We have high rate disability benefits" in {
+        val rawBenefits = Some(Set(HIGHRATEDISABILITYBENEFITS.toString))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.highRateDisabilityBenefits mustBe true
+      }
+
+      "We have carers allowance benefits" in {
+        val rawBenefits = Some(Set(CARERSALLOWANCE.toString))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.carersAllowance mustBe true
+      }
+
+      "We have all benefits" in {
+        val rawBenefits = Some(Set(CARERSALLOWANCE.toString,HIGHRATEDISABILITYBENEFITS.toString,DISABILITYBENEFITS.toString,INCOMEBENEFITS.toString))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.carersAllowance mustBe true
+        mappedBenefits.highRateDisabilityBenefits mustBe true
+        mappedBenefits.disabilityBenefits mustBe true
+        mappedBenefits.incomeBenefits mustBe true
       }
     }
   }

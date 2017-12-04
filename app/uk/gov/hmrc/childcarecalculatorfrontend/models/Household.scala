@@ -22,6 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
@@ -58,7 +59,14 @@ object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
 
   def populateFromRawData(data: Option[Set[String]]) : Benefits = {
-    Benefits(incomeBenefits = true)
+    data.get.foldLeft(Benefits())((benefits,currentBenefit) => {
+      currentBenefit match {
+        case "incomeBenefits" => benefits.copy(incomeBenefits = true)
+        case "disabilityBenefits" => benefits.copy(disabilityBenefits = true)
+        case "highRateDisabilityBenefits" => benefits.copy(highRateDisabilityBenefits = true)
+        case "carersAllowance" => benefits.copy(carersAllowance = true)
+      }
+    })
   }
 }
 
