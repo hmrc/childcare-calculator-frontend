@@ -23,7 +23,7 @@ import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito._
 import org.scalatestplus.play.PlaySpec
 import play.api.inject.Injector
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -33,11 +33,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
-  val mockUtils = mock[Utils]
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
+  val utils = mock[Utils]
+  val taxCredits = mock[TaxCredits]
 
-  val cy: Int = LocalDate.now.getYear
-  def userAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, mockUtils)
+//  val cy: Int = LocalDate.now.getYear
+  def userAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
   "UserAnswerToHousehold" must {
 
@@ -66,18 +67,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         escVouchers = Some(YesNoUnsureEnum.NO.toString),
         ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
         minimumEarnings = Some(MinimumEarnings(120.0)),
-        maximumEarnings = Some(false)
+        maximumEarnings = Some(false),
+        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
       )
       val household = Household(location = Location.SCOTLAND, parent = parent)
       val answers = spy(userAnswers())
-      //      ageRange: Option[AgeEnum] = None,
-      //      benefits: Option[Benefits] = None,
-      //      lastYearlyIncome: Option[Income] =   None,
-      //      currentYearlyIncome: Option[Income] = None,
-      //      hours: Option[BigDecimal] = None,
-      //      minimumEarnings: Option[MinimumEarnings] = None,
-      //      escVouchers: Option[YesNoUnsureEnum] = None,
-      //      maximumEarnings: Option[Boolean] = None
 
       when(answers.location) thenReturn Some(Location.SCOTLAND)
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -86,10 +80,55 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(true)
       when(answers.yourMaximumEarnings) thenReturn Some(false)
-      when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }
+
+//    "given a user input with parent and partner" in {
+//      val parent = Claimant(
+//        hours = Some(BigDecimal(32.1)),
+//        escVouchers = Some(YesNoUnsureEnum.NOTSURE.toString),
+//        ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString),
+//        minimumEarnings = Some(MinimumEarnings(112.0)),
+//        maximumEarnings = Some(true),
+//        lastYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(21000.0)))),
+//        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(72000.0))))
+//      )
+//      val partner = Claimant(
+//        hours = Some(BigDecimal(46.0)),
+//        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+//        ageRange = Some(AgeEnum.EIGHTEENTOTWENTY.toString),
+//        minimumEarnings = Some(MinimumEarnings(89.0)),
+//        maximumEarnings = Some(false),
+//        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+//      )
+//      val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+//      val answers = spy(userAnswers())
+//
+//      when(answers.location) thenReturn Some(Location.WALES)
+//      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+//
+//      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+//      when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+//      when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+//      when(answers.yourMinimumEarnings) thenReturn Some(true)
+//      when(answers.yourMaximumEarnings) thenReturn Some(true)
+//      when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(21000.0))
+//      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(72000.0))
+//      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(112)
+//
+//      when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+//      when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+//      when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+//      when(answers.partnerMinimumEarnings) thenReturn Some(true)
+//      when(answers.partnerMaximumEarnings) thenReturn Some(false)
+//      when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+//      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(89)
+//
+//      userAnswerToHousehold.convert(answers) mustEqual household
+//    }
 
 
   }
