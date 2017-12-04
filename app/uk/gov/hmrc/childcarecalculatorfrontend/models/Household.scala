@@ -59,14 +59,14 @@ object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
 
   def populateFromRawData(data: Option[Set[String]]) : Benefits = {
-    data.get.foldLeft(Benefits())((benefits,currentBenefit) => {
+    data.fold(Benefits())(benefits => benefits.foldLeft(Benefits())((benefits,currentBenefit) => {
       currentBenefit match {
         case "incomeBenefits" => benefits.copy(incomeBenefits = true)
         case "disabilityBenefits" => benefits.copy(disabilityBenefits = true)
         case "highRateDisabilityBenefits" => benefits.copy(highRateDisabilityBenefits = true)
         case "carersAllowance" => benefits.copy(carersAllowance = true)
       }
-    })
+    }))
   }
 }
 
