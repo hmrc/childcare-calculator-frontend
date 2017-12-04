@@ -958,7 +958,7 @@ childApprovedEducation.heading = Is your child {0} in approved education or trai
 childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
 childApprovedEducation.error = You must answer yes if your child {0} is in approved education or training
 
-childRegisteredBlind.title = Is {0} registered blind?
+childRegisteredBlind.title = Is your child registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
 childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
