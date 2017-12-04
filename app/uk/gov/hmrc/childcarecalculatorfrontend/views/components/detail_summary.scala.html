@@ -22,7 +22,7 @@
 
 @* http://hmrc.github.io/assets-frontend/section-details.html *@
 <div class="form-group">
-    <details>
+    <details role="group">
         <summary class="@summaryClasses.mkString(" ")">@summary</summary>
         <div @if(detailsInner) { class="panel-indent"}>
             @content
