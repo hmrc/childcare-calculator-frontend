@@ -50,7 +50,7 @@ class ModelFactory @Inject() () {
 
     answers.doYouLiveWithPartner.flatMap {
       case true => {
-        val test: Option[JointHousehold] = for {
+        for {
           youOrPartnerInPaidWork <- answers.paidEmployment
 
           parentMinEarnings <- if (youOrPartnerInPaidWork) {
@@ -125,8 +125,6 @@ class ModelFactory @Inject() () {
             Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits.map(WhichBenefitsEnum.withName))
           )
         }
-
-        test
       }
       case false =>
         for {
