@@ -49,9 +49,9 @@ class ModelFactory @Inject() () {
     }
 
     answers.doYouLiveWithPartner.flatMap {
-      case true =>
-        for {
-          youOrPartnerInPaidWork  <- answers.paidEmployment
+      case true => {
+        val test: Option[JointHousehold] = for {
+          youOrPartnerInPaidWork <- answers.paidEmployment
 
           parentMinEarnings <- if (youOrPartnerInPaidWork) {
             answers.whoIsInPaidEmployment.flatMap {
@@ -68,8 +68,8 @@ class ModelFactory @Inject() () {
             answers.whoIsInPaidEmployment.flatMap {
               case str if str != You =>
                 answers.partnerMinimumEarnings
-              case _ =>
-                Some(false)
+
+              case _ => Some(false)
             }
           } else {
             Some(false)
@@ -83,14 +83,16 @@ class ModelFactory @Inject() () {
 
           partnerSelfEmployed = checkMinEarnings(partnerMinEarnings, answers.partnerSelfEmployedOrApprentice, TRUE).getOrElse(false)
 
+
           parentMaxEarnings <- if (parentMinEarnings) {
-            answers.yourMaximumEarnings
+            answers.eitherOfYouMaximumEarnings.fold(answers.yourMaximumEarnings)(x => Some(x))
           } else {
             Some(false)
           }
 
           partnerMaxEarnings <- if (partnerMinEarnings) {
-            answers.partnerMaximumEarnings
+            answers.eitherOfYouMaximumEarnings.fold(answers.partnerMaximumEarnings)(x => Some(x))
+
           } else {
             Some(false)
           }
@@ -117,10 +119,15 @@ class ModelFactory @Inject() () {
           } else {
             Some(Set.empty)
           }
-        } yield JointHousehold(
-          Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits.map(WhichBenefitsEnum.withName)),
-          Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits.map(WhichBenefitsEnum.withName))
-        )
+        } yield {
+          JointHousehold(
+            Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits.map(WhichBenefitsEnum.withName)),
+            Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits.map(WhichBenefitsEnum.withName))
+          )
+        }
+
+        test
+      }
       case false =>
         for {
           areYouInPaidWork <- answers.areYouInPaidWork
