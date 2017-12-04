@@ -55,10 +55,8 @@ class ModelFactory @Inject() () {
 
           parentMinEarnings <- if (youOrPartnerInPaidWork) {
             answers.whoIsInPaidEmployment.flatMap {
-              case str if str != Partner =>
-                answers.yourMinimumEarnings
-              case _ =>
-                Some(false)
+              case str if str != Partner => answers.yourMinimumEarnings
+              case _ => Some(false)
             }
           } else {
             Some(false)
@@ -66,9 +64,7 @@ class ModelFactory @Inject() () {
 
           partnerMinEarnings <- if (youOrPartnerInPaidWork) {
             answers.whoIsInPaidEmployment.flatMap {
-              case str if str != You =>
-                answers.partnerMinimumEarnings
-
+              case str if str != You => answers.partnerMinimumEarnings
               case _ => Some(false)
             }
           } else {
@@ -119,12 +115,10 @@ class ModelFactory @Inject() () {
           } else {
             Some(Set.empty)
           }
-        } yield {
-          JointHousehold(
+        } yield JointHousehold(
             Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits.map(WhichBenefitsEnum.withName)),
             Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits.map(WhichBenefitsEnum.withName))
           )
-        }
       }
       case false =>
         for {
