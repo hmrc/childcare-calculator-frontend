@@ -37,28 +37,20 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       parent = createClaimant(answers), partner = partner, children = Nil)
   }
 
-  private def getMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
-//    println(s"****************age>>>>>>>$age")
-//    println(s"****************selfEmployedOrApprentice>>>>>>>$selfEmployedOrApprentice")
-//    println(s"****************selfEmployedOrApprentice>>>>>>>$selfEmployedOrApprentice")
-//    println(s"****************selfEmployed>>>>>>>$selfEmployed")
-    val amt = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, age)
-//    println(s"****************amt>>>>>>>$amt")
-    if (amt > 0) Some(createMinEarnings(amt, selfEmployedOrApprentice, selfEmployed)) else None
-  }
-
-  private def checkMinEarnings(isParent: Boolean, answers: UserAnswers, selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]):
-      (Option[String], Option[MinimumEarnings]) =
+  private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]):
+      Option[MinimumEarnings] =
   {
-    if (isParent) {
-      val yourAge = answers.yourAge
+    val amt: Option[BigDecimal] = if(age.isDefined) {
+      Some(utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, age))
+    } else { None }
 
-      (yourAge, getMinEarnings(yourAge, selfEmployedOrApprentice, selfEmployed))
-    } else {
-      val partnersAge = answers.yourPartnersAge
-
-      (partnersAge, getMinEarnings(partnersAge, selfEmployedOrApprentice, selfEmployed))
-    }
+    if (amt.isDefined || selfEmployedOrApprentice.isDefined || selfEmployed.isDefined) {
+      Some(MinimumEarnings(
+        amount = amt.getOrElse(0.0),
+        employmentStatus = selfEmployedOrApprentice,
+        selfEmployedIn12Months = selfEmployed)
+      )
+    } else { None }
   }
 
   private def createClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
@@ -68,6 +60,8 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val selfEmployedOrApprentice = if (isParent) answers.areYouSelfEmployedOrApprentice else answers.partnerSelfEmployedOrApprentice
     val selfEmployed = if (isParent) answers.yourSelfEmployed else answers.partnerSelfEmployed
     val maxEarnings = if (isParent) answers.yourMaximumEarnings else answers.partnerMaximumEarnings
+    val age = if (isParent) answers.yourAge else answers.yourPartnersAge
+    val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
 
     val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
     val taxCode = if (isParent) answers.whatIsYourTaxCode else answers.whatIsYourPartnersTaxCode
@@ -79,8 +73,8 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       escVouchers = vouchers,
       lastYearlyIncome = getLastYearIncome(isParent, answers, taxCode, statPay),
       currentYearlyIncome = getCurrentYearIncome(isParent, answers, taxCode, statPay),
-      ageRange = checkMinEarnings(isParent, answers, selfEmployedOrApprentice, selfEmployed)._1,
-      minimumEarnings = checkMinEarnings(isParent, answers, selfEmployedOrApprentice, selfEmployed)._2,
+      ageRange = age,
+      minimumEarnings = minEarnings,
       maximumEarnings = maxEarnings
     )
 
@@ -146,19 +140,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         None
       }
 
-    }
-
-  }
-
-  private def createMinEarnings(amt: Int, employedOrAppren: Option[String], selfEmployed: Option[Boolean]): MinimumEarnings = {
-    if (amt > 0) {
-      MinimumEarnings(
-        amount = amt,
-        employmentStatus = employedOrAppren,
-        selfEmployedIn12Months = selfEmployed
-      )
-    } else {
-      MinimumEarnings( )
     }
 
   }

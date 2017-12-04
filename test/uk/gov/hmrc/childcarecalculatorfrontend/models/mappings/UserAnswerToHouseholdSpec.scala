@@ -37,7 +37,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
   val utils = mock[Utils]
   val taxCredits = mock[TaxCredits]
 
-//  val cy: Int = LocalDate.now.getYear
   def userAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
   "UserAnswerToHousehold" must {
@@ -61,7 +60,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       userAnswerToHousehold.convert(answers) mustEqual household
     }
 
-    "given a user input with parent" in {
+    "given a user input with parent with minimum earnings" in {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.NO.toString),
@@ -86,50 +85,128 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       userAnswerToHousehold.convert(answers) mustEqual household
     }
 
-//    "given a user input with parent and partner" in {
-//      val parent = Claimant(
-//        hours = Some(BigDecimal(32.1)),
-//        escVouchers = Some(YesNoUnsureEnum.NOTSURE.toString),
-//        ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString),
-//        minimumEarnings = Some(MinimumEarnings(112.0)),
-//        maximumEarnings = Some(true),
-//        lastYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(21000.0)))),
-//        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(72000.0))))
-//      )
-//      val partner = Claimant(
-//        hours = Some(BigDecimal(46.0)),
-//        escVouchers = Some(YesNoUnsureEnum.YES.toString),
-//        ageRange = Some(AgeEnum.EIGHTEENTOTWENTY.toString),
-//        minimumEarnings = Some(MinimumEarnings(89.0)),
-//        maximumEarnings = Some(false),
-//        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
-//      )
-//      val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
-//      val answers = spy(userAnswers())
-//
-//      when(answers.location) thenReturn Some(Location.WALES)
-//      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-//
-//      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
-//      when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
-//      when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
-//      when(answers.yourMinimumEarnings) thenReturn Some(true)
-//      when(answers.yourMaximumEarnings) thenReturn Some(true)
-//      when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(21000.0))
-//      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(72000.0))
-//      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(112)
-//
-//      when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
-//      when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
-//      when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
-//      when(answers.partnerMinimumEarnings) thenReturn Some(true)
-//      when(answers.partnerMaximumEarnings) thenReturn Some(false)
-//      when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
-//      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(89)
-//
-//      userAnswerToHousehold.convert(answers) mustEqual household
-//    }
+    "given a user input with parent with apprentice" in {
+      val parent = Claimant(
+        hours = Some(BigDecimal(54.9)),
+        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        ageRange = Some(AgeEnum.UNDER18.toString),
+        minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE.toString))),
+        maximumEarnings = Some(false),
+        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+      )
+      val household = Household(location = Location.NORTHERN_IRELAND, parent = parent)
+      val answers = spy(userAnswers())
 
+      when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
+      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+      when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+      when(answers.yourAge) thenReturn Some(AgeEnum.UNDER18.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(EmploymentStatusEnum.APPRENTICE.toString)
+      when(answers.yourMaximumEarnings) thenReturn Some(false)
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+
+      userAnswerToHousehold.convert(answers) mustEqual household
+    }
+
+    "given a user input with parent with self employed" in {
+      val parent = Claimant(
+        hours = Some(BigDecimal(54.9)),
+        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
+        minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED.toString), selfEmployedIn12Months = Some(true))),
+        maximumEarnings = Some(false),
+        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+      )
+      val household = Household(location = Location.SCOTLAND, parent = parent)
+      val answers = spy(userAnswers())
+
+      when(answers.location) thenReturn Some(Location.SCOTLAND)
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
+      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+      when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+      when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(EmploymentStatusEnum.SELFEMPLOYED.toString)
+      when(answers.yourSelfEmployed) thenReturn Some(true)
+      when(answers.yourMaximumEarnings) thenReturn Some(false)
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+
+      userAnswerToHousehold.convert(answers) mustEqual household
+    }
+
+    "given a user input with parent with neither self employed or apprentice" in {
+      val parent = Claimant(
+        hours = Some(BigDecimal(54.9)),
+        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        ageRange = Some(AgeEnum.UNDER18.toString),
+        minimumEarnings = Some(MinimumEarnings(employmentStatus = None)),
+        maximumEarnings = Some(false),
+        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+      )
+      val household = Household(location = Location.NORTHERN_IRELAND, parent = parent)
+      val answers = spy(userAnswers())
+
+      when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
+      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+      when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+      when(answers.yourAge) thenReturn Some(AgeEnum.UNDER18.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(answers.areYouSelfEmployedOrApprentice) thenReturn None
+      when(answers.yourMaximumEarnings) thenReturn Some(false)
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+      when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+
+      userAnswerToHousehold.convert(answers) mustEqual household
+    }
+
+    "given a user input with parent and partner" in {
+      val parent = Claimant(
+        hours = Some(BigDecimal(32.1)),
+        escVouchers = Some(YesNoUnsureEnum.NOTSURE.toString),
+        ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString),
+        minimumEarnings = Some(MinimumEarnings(112.0)),
+        maximumEarnings = Some(true),
+        lastYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(21000.0)))),
+        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(72000.0))))
+      )
+      val partner = Claimant(
+        hours = Some(BigDecimal(46.0)),
+        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        ageRange = Some(AgeEnum.EIGHTEENTOTWENTY.toString),
+        minimumEarnings = Some(MinimumEarnings(89.0)),
+        maximumEarnings = Some(false),
+        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+      )
+      val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+      val answers = spy(userAnswers())
+
+      when(answers.location) thenReturn Some(Location.WALES)
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+      when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+      when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+      when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(true)
+      when(answers.yourMaximumEarnings) thenReturn Some(true)
+      when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(21000.0))
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(72000.0))
+
+      when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+      when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+      when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+      when(answers.partnerMinimumEarnings) thenReturn Some(true)
+      when(answers.partnerMaximumEarnings) thenReturn Some(false)
+      when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+      when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn(89) thenReturn(112)
+
+      userAnswerToHousehold.convert(answers) mustEqual household
+    }
 
   }
+
 }
