@@ -27,19 +27,62 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits) {
 
   def convert(answers: UserAnswers): Household = {
-    //    val children = createChildren(answers)
+    val children = if(answers.noOfChildren.isDefined) createChildren(answers) else List.empty
     val partner = if(answers.doYouLiveWithPartner.contains(true)) {
       Some(createClaimant(answers, isParent = false))
     } else {
       None
     }
     Household(credits = answers.taxOrUniversalCredits, location = answers.location.getOrElse(Location.ENGLAND),
-      parent = createClaimant(answers), partner = partner, children = Nil)
+      parent = createClaimant(answers), partner = partner, children = children)
   }
 
-  private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]):
-      Option[MinimumEarnings] =
-  {
+  private def createChildren(answers: UserAnswers): List[Child] = {
+    val totalChildren: Int = answers.noOfChildren.getOrElse(0)
+    var childList: List[Child] = List()
+    for(i <- 0 to totalChildren) {
+      val (childName, childDob): (String, LocalDate) = if(answers.aboutYourChild(i).isDefined) {
+        (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
+      } else {
+        ("", LocalDate.now())
+      }
+      val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
+      val childcarePeriod: Option[ChildcarePayFrequency.Value] = answers.childcarePayFrequency(i)
+      val childcareCost = if(childcareAmt.isDefined) {
+        Some(ChildCareCost(childcareAmt, childcarePeriod))
+      } else {
+        None
+      }
+
+      val childInEducation = answers.childApprovedEducation(i).getOrElse(false)
+      val childStartDate = answers.childStartEducation(i)
+      val childEducation = if(childInEducation) {
+        Some(Education(childInEducation, childStartDate))
+      } else {
+        None
+      }
+      //      val childDisability = answers.whichDisabilityBenefits(i)
+      //      val disability = if(childDisability.isDefined) {
+      //        Disability(childDisability)
+      //      } else {
+      //        None
+      //      }
+      val child = Child(
+        id = i.toShort,
+        name = childName,
+        dob = childDob,
+        disability = None,
+        childcareCost = childcareCost,
+        education = childEducation
+      )
+
+      childList ::= child
+    }
+
+    childList
+  }
+
+  private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
     val amt: Option[BigDecimal] = if(age.isDefined) {
       Some(utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, age))
     } else { None }

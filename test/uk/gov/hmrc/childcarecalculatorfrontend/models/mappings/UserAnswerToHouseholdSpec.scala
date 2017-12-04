@@ -38,11 +38,29 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
   val taxCredits = mock[TaxCredits]
 
   def userAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
+  val todaysDate = LocalDate.now()
 
   "UserAnswerToHousehold" must {
 
     "given a user input with location" in {
       val household = Household(location = Location.ENGLAND)
+      val answers = spy(userAnswers())
+
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+
+      userAnswerToHousehold.convert(answers) mustEqual household
+    }
+
+    "given a user input with child" in {
+      val child1 = Child(
+        id = 0,
+        name = "Patrick",
+        dob = todaysDate.minusYears(7),
+        disability = None,
+        childcareCost = None,
+        education = None)
+
+      val household = Household(location = Location.ENGLAND, children = List(child1))
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.ENGLAND)
