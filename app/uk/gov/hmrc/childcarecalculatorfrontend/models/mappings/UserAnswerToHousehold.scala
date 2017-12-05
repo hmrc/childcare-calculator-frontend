@@ -67,7 +67,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = Disability.populateFromRawData(i,answers.whichChildrenDisability,answers.whichDisabilityBenefits,answers.whichChildrenBlind),
+        disability = Disability.populateFromRawData(i,answers.whichDisabilityBenefits,answers.whichChildrenBlind),
         childcareCost = childcareCost,
         education = childEducation
       )

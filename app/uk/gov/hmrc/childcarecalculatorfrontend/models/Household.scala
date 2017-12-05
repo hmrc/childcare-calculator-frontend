@@ -77,19 +77,17 @@ object MinimumEarnings {
 }
 
 case class Disability(
-                       disabled: Boolean,
-                       severelyDisabled: Boolean,
-                       blind: Boolean
+                       disabled: Boolean = false,
+                       severelyDisabled: Boolean = false,
+                       blind: Boolean = false
                      )
 
 object Disability {
   implicit val formatDisability = Json.format[Disability]
 
-  def populateFromRawData(currentIndex: Int,whichChildrenDisability : Option[Set[Int]], disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
-    val noDisability = Disability(false,false,false)
-
-    disabilities.map(_.get(currentIndex).fold(noDisability)(disabilities => {
-      disabilities.foldLeft(noDisability)((disabilities,currentDisability) => {
+  def populateFromRawData(currentIndex: Int,disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
+    disabilities.map(_.get(currentIndex).fold(Disability())(disabilities => {
+      disabilities.foldLeft(Disability())((disabilities,currentDisability) => {
         val childrenDisabilities = currentDisability match {
           case DisabilityBenefits.DISABILITY_BENEFITS => disabilities.copy(disabled = true)
           case DisabilityBenefits.HIGHER_DISABILITY_BENEFITS => disabilities.copy(severelyDisabled = true)
