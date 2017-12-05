@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{DisabilityBenefits, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
@@ -38,9 +38,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createChildren(answers: UserAnswers): List[Child] = {
+
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
-    for(i <- 1 to totalChildren) {
+
+    for(i <- 0 to totalChildren-1) {
       val (childName, childDob): (String, LocalDate) = if(answers.aboutYourChild.isDefined || answers.aboutYourChild(i).isDefined) {
         (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
       } else {
@@ -65,7 +67,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = None, //TODO - to implement
+        disability = Disability.populateFromRawData(i,answers.whichChildrenDisability,answers.whichDisabilityBenefits,answers.whichChildrenBlind),
         childcareCost = childcareCost,
         education = childEducation
       )
