@@ -21,6 +21,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Disability, DisabilityBen
 
 class DisabilitySpec extends PlaySpec {
   "Disability" must {
+    "Return no disabilities" when {
+      "There is no disabilities" in {
+         val mappedDisability = Disability.populateFromRawData(1,None,None,None)
+
+        mappedDisability mustBe None
+      }
+    }
+
     "Map correctly from raw data" when {
       "Disability is true for first child" in {
          val rawWhichChildrenWithDisability : Option[Set[Int]] = Some(Set(0))
@@ -44,7 +52,7 @@ class DisabilitySpec extends PlaySpec {
         val rawWhichDisabilityBenefits : Option[Map[Int, Set[DisabilityBenefits.Value]]] = Some(Map(1-> Set(DisabilityBenefits.DISABILITY_BENEFITS)))
         val mappedDisability = Disability.populateFromRawData(0,rawWhichChildrenWithDisability,rawWhichDisabilityBenefits)
 
-        mappedDisability.get.disabled mustBe false
+        mappedDisability mustBe None
       }
 
       "Child is severely disabled" in {

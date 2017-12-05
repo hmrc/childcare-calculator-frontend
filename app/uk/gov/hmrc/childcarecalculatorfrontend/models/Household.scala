@@ -88,7 +88,7 @@ object Disability {
   def populateFromRawData(currentIndex: Int,whichChildrenDisability : Option[Set[Int]], disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
     val noDisability = Disability(false,false,false)
 
-    disabilities.map(_.get(currentIndex).fold(noDisability)( disabilities => {
+    disabilities.map(_.get(currentIndex).fold(noDisability)(disabilities => {
       disabilities.foldLeft(noDisability)((disabilities,currentDisability) => {
         val childrenDisabilities = currentDisability match {
           case DisabilityBenefits.DISABILITY_BENEFITS => disabilities.copy(disabled = true)
@@ -99,7 +99,10 @@ object Disability {
           childrenWithBlindDisability.find(childIndex=> childIndex == currentIndex).fold(childrenDisabilities)(_ => childrenDisabilities.copy(blind = true))
         })
       })
-    }))
+    })) match {
+      case Some(Disability(false,false,false)) => None
+      case disabilities => disabilities
+    }
   }
 }
 
