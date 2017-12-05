@@ -53,8 +53,8 @@ case class Benefits(
 object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
 
-  def populateFromRawData(data: Option[Set[String]]): Benefits = {
-    data.fold(Benefits())(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
+  def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
+    data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
       currentBenefit match {
         case "incomeBenefits" => benefits.copy(incomeBenefits = true)
         case "disabilityBenefits" => benefits.copy(disabilityBenefits = true)
@@ -62,8 +62,7 @@ object Benefits {
         case "carersAllowance" => benefits.copy(carersAllowance = true)
         case _ => benefits
       }
-    })
-    )
+    }))
   }
 }
 

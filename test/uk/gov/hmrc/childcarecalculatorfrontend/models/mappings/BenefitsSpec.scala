@@ -26,52 +26,49 @@ class BenefitsSpec extends PlaySpec {
       "We have no income benefits" in {
         val mappedBenefits = Benefits.populateFromRawData(None)
 
-        mappedBenefits.carersAllowance mustBe false
-        mappedBenefits.highRateDisabilityBenefits mustBe false
-        mappedBenefits.disabilityBenefits mustBe false
-        mappedBenefits.incomeBenefits mustBe false
+        mappedBenefits mustBe None
       }
     }
 
     "Populate correctly from a Set of Strings" when {
       "We have income benefits" in {
         val rawBenefits = Some(Set(INCOMEBENEFITS.toString))
-        val mappedBenefits: Benefits = Benefits.populateFromRawData(rawBenefits)
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.incomeBenefits mustBe true
+        mappedBenefits.get.incomeBenefits mustBe true
       }
 
       "We have disability benefits" in {
         val rawBenefits = Some(Set(DISABILITYBENEFITS.toString))
-        val mappedBenefits: Benefits = Benefits.populateFromRawData(rawBenefits)
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.disabilityBenefits mustBe true
+        mappedBenefits.get.disabilityBenefits mustBe true
       }
 
       "We have high rate disability benefits" in {
         val rawBenefits = Some(Set(HIGHRATEDISABILITYBENEFITS.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.highRateDisabilityBenefits mustBe true
+        mappedBenefits.get.highRateDisabilityBenefits mustBe true
       }
 
       "We have carers allowance benefits" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.carersAllowance mustBe true
+        mappedBenefits.get.carersAllowance mustBe true
       }
 
       "We have a known benefit and an unkonwn benefit" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString,"unknown benefit"))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.carersAllowance mustBe true
+        mappedBenefits.get.carersAllowance mustBe true
       }
 
       "We have all benefits" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits).get
 
         mappedBenefits.carersAllowance mustBe true
         mappedBenefits.highRateDisabilityBenefits mustBe true
