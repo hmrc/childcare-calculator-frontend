@@ -51,13 +51,13 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def yourBenefitsRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.youAnyTheseBenefits) {
       case true =>  routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+      //case false => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
     }
 
   private def partnerBenefitsRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyTheseBenefitsCY) {
       case true => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-     // case false => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode) //TODO: To be uncommented once benefits navigation is done. Same for rest of the comments.
+     // case false => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
     }
 
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =
