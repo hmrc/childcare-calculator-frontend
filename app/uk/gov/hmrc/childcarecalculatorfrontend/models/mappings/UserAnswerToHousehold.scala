@@ -40,11 +40,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   private def createChildren(answers: UserAnswers): List[Child] = {
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
-    for(i <- 0 to totalChildren) {
-      val (childName, childDob): (String, LocalDate) = if(answers.aboutYourChild(i).isDefined) {
+    for(i <- 1 to totalChildren) {
+      val (childName, childDob): (String, LocalDate) = if(answers.aboutYourChild.isDefined || answers.aboutYourChild(i).isDefined) {
         (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
       } else {
-        ("", LocalDate.now())
+        ("", null)
       }
       val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
       val childcarePeriod: Option[ChildcarePayFrequency.Value] = answers.childcarePayFrequency(i)
@@ -61,17 +61,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       } else {
         None
       }
-      //      val childDisability = answers.whichDisabilityBenefits(i)
-      //      val disability = if(childDisability.isDefined) {
-      //        Disability(childDisability)
-      //      } else {
-      //        None
-      //      }
       val child = Child(
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = None,
+        disability = None, //TODO - to implement
         childcareCost = childcareCost,
         education = childEducation
       )
@@ -79,7 +73,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       childList ::= child
     }
 
-    childList
+    childList.sortWith(_.id < _.id)
   }
 
   private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
@@ -99,6 +93,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   private def createClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
     val hours = if (isParent) answers.parentWorkHours else answers.partnerWorkHours
     val benefits = if (isParent) answers.whichBenefitsYouGet else answers.whichBenefitsPartnerGet
+    val getBenefits = if(benefits.isDefined) Some(Benefits.populateFromRawData(benefits)) else None
     val vouchers = if (isParent) answers.yourChildcareVouchers else answers.partnerChildcareVouchers
     val selfEmployedOrApprentice = if (isParent) answers.areYouSelfEmployedOrApprentice else answers.partnerSelfEmployedOrApprentice
     val selfEmployed = if (isParent) answers.yourSelfEmployed else answers.partnerSelfEmployed
@@ -112,7 +107,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
     Claimant(
       hours = hours,
-      benefits = None, //TODO - Benefits to populate as Benefits object
+      benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = getLastYearIncome(isParent, answers, taxCode, statPay),
       currentYearlyIncome = getCurrentYearIncome(isParent, answers, taxCode, statPay),

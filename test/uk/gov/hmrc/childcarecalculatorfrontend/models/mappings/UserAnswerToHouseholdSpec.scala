@@ -18,17 +18,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
 import org.joda.time.LocalDate
 import org.mockito.Matchers.any
-import org.scalatest.{EitherValues, OptionValues}
-import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito._
-import org.scalatestplus.play.PlaySpec
-import play.api.inject.Injector
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
@@ -51,28 +49,68 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       userAnswerToHousehold.convert(answers) mustEqual household
     }
 
-    "given a user input with child" in {
+    "given a user input with 1 child" in {
       val child1 = Child(
-        id = 0,
+        id = 1,
         name = "Patrick",
         dob = todaysDate.minusYears(7),
         disability = None,
-        childcareCost = None,
-        education = None)
+        childcareCost = Some(ChildCareCost(Some(200.0), Some(ChildcarePayFrequency.MONTHLY))),
+        education = Some(Education(inEducation = true, startDate = Some(todaysDate.minusMonths(6)))))
 
       val household = Household(location = Location.ENGLAND, children = List(child1))
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.noOfChildren) thenReturn Some(1)
+      when(answers.childApprovedEducation(1)) thenReturn Some(true)
+      when(answers.childStartEducation(1)) thenReturn Some(todaysDate.minusMonths(6))
+      when(answers.expectedChildcareCosts(1)) thenReturn Some(BigDecimal(200.0))
+      when(answers.childcarePayFrequency(1)) thenReturn Some(ChildcarePayFrequency.MONTHLY)
+      when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Patrick", todaysDate.minusYears(7)))
+
+      userAnswerToHousehold.convert(answers) mustEqual household
+    }
+
+    "given a user input with 2 children" in {
+      val child1 = Child(
+        id = 1,
+        name = "Kamal",
+        dob = todaysDate.minusYears(7),
+        disability = None,
+        childcareCost = None,
+        education = None)
+      val child2 = Child(
+        id = 2,
+        name = "Jagan",
+        dob = todaysDate.minusYears(2),
+        disability = None,
+        childcareCost = None,
+        education = None)
+
+      val household = Household(location = Location.ENGLAND, children = List(child1, child2))
+      val answers = spy(userAnswers())
+
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.noOfChildren) thenReturn Some(2)
+      when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Kamal", todaysDate.minusYears(7)))
+      when(answers.aboutYourChild(2)) thenReturn Some(AboutYourChild("Jagan", todaysDate.minusYears(2)))
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }
 
     "given a user input with location and tax credits" in {
-      val household = Household(credits = Some(CreditsEnum.TAXCREDITS.toString), location = Location.SCOTLAND)
+      val parent = Claimant(
+        hours = Some(BigDecimal(54.9)),
+        benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true))
+      )
+
+      val household = Household(credits = Some(CreditsEnum.TAXCREDITS.toString), location = Location.SCOTLAND, parent = parent)
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.SCOTLAND)
+      when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+      when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, CARERSALLOWANCE.toString))
       when(answers.taxOrUniversalCredits) thenReturn Some(CreditsEnum.TAXCREDITS.toString)
 
       userAnswerToHousehold.convert(answers) mustEqual household
