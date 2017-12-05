@@ -18,12 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
@@ -50,23 +46,25 @@ object Income {
 
 case class Benefits(
                      disabilityBenefits: Boolean = false,
-                     highRateDisabilityBenefits: Boolean =   false,
-                     incomeBenefits: Boolean =   false,
+                     highRateDisabilityBenefits: Boolean = false,
+                     incomeBenefits: Boolean = false,
                      carersAllowance: Boolean = false
                    )
 
 object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
 
-  def populateFromRawData(data: Option[Set[String]]) : Benefits = {
-    data.fold(Benefits())(benefits => benefits.foldLeft(Benefits())((benefits,currentBenefit) => {
+  def populateFromRawData(data: Option[Set[String]]): Benefits = {
+    data.fold(Benefits())(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
       currentBenefit match {
         case "incomeBenefits" => benefits.copy(incomeBenefits = true)
         case "disabilityBenefits" => benefits.copy(disabilityBenefits = true)
         case "highRateDisabilityBenefits" => benefits.copy(highRateDisabilityBenefits = true)
         case "carersAllowance" => benefits.copy(carersAllowance = true)
+        case _ => benefits
       }
-    }))
+    })
+    )
   }
 }
 
@@ -124,7 +122,7 @@ object Child {
 case class Claimant(
                      ageRange: Option[String] = None,
                      benefits: Option[Benefits] = None,
-                     lastYearlyIncome: Option[Income] =   None,
+                     lastYearlyIncome: Option[Income] = None,
                      currentYearlyIncome: Option[Income] = None,
                      hours: Option[BigDecimal] = None,
                      minimumEarnings: Option[MinimumEarnings] = None,

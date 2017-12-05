@@ -63,6 +63,13 @@ class BenefitsSpec extends PlaySpec {
         mappedBenefits.carersAllowance mustBe true
       }
 
+      "We have a known benefit and an unkonwn benefit" in {
+        val rawBenefits = Some(Set(CARERSALLOWANCE.toString,"unknown benefit"))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.carersAllowance mustBe true
+      }
+
       "We have all benefits" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
