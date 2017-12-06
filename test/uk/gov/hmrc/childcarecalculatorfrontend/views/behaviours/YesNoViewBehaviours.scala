@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 
 trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
-  val form = BooleanForm()
+  val form = BooleanForm("yourMinimumEarnings.error", 0)
 
   def yesNoPage(createView: (Form[Boolean]) => HtmlFormat.Appendable,
                 messageKeyPrefix: String,
@@ -32,26 +32,26 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
     "behave like a page with a Yes/No question" when {
       "rendered" must {
         "contain a legend for the question" in {
-          val doc = asDocument(createView(BooleanForm()))
+          val doc = asDocument(createView(form))
           val legends = doc.getElementsByTag("legend")
           legends.size mustBe 1
           legends.first.text mustBe legend.getOrElse(messages(s"$messageKeyPrefix.heading"))
         }
 
         "contain an input for the value" in {
-          val doc = asDocument(createView(BooleanForm()))
+          val doc = asDocument(createView(form))
           assertRenderedById(doc, "value-yes")
           assertRenderedById(doc, "value-no")
         }
 
         "have no values checked when rendered with no form" in {
-          val doc = asDocument(createView(BooleanForm()))
+          val doc = asDocument(createView(form))
           assert(!doc.getElementById("value-yes").hasAttr("checked"))
           assert(!doc.getElementById("value-no").hasAttr("checked"))
         }
 
         "not render an error summary" in {
-          val doc = asDocument(createView(BooleanForm()))
+          val doc = asDocument(createView(form))
           assertNotRenderedById(doc, "error-summary_header")
         }
       }
@@ -66,12 +66,12 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
       "rendered with an error" must {
         "show an error summary" in {
-          val doc = asDocument(createView(BooleanForm().withError(error)))
+          val doc = asDocument(createView(form.withError(error)))
           assertRenderedById(doc, "error-summary-heading")
         }
 
         "show an error in the value field's label" in {
-          val doc = asDocument(createView(BooleanForm().withError(error)))
+          val doc = asDocument(createView(form.withError(error)))
           val errorSpan = doc.getElementsByClass("error-notification").first
           errorSpan.text mustBe messages(errorMessage)
         }
