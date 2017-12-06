@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@(
-    summary: String = "",
-    detailsInner: Boolean = true,
-    summaryClasses: Seq[String] = Seq("summary")
-)(content: Html)(implicit lang:Lang,  m: Messages)
+package uk.gov.hmrc.childcarecalculatorfrontend.models.household
 
-@* http://hmrc.github.io/assets-frontend/section-details.html *@
-<div class="form-group">
-    <details>
-        <summary class="@summaryClasses.mkString(" ")">@summary</summary>
-        <div @if(detailsInner) { class="panel-indent"}>
-            @content
-        </div>
-    </details>
-</div>
+import play.api.libs.json.{Json, OFormat}
+
+case class StatutoryIncome(statutoryWeeks: Double = 0.00,
+                           statutoryAmount: BigDecimal = 0.00)
+
+object StatutoryIncome {
+  implicit val formatStatutoryIncome: OFormat[StatutoryIncome] = Json.format[StatutoryIncome]
+}
