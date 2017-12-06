@@ -23,8 +23,8 @@ class ParentWorkHoursFormSpec extends FormSpec {
 
   val parentWorkHoursForm: Form[BigDecimal] = new ParentWorkHoursForm(frontendAppConfig).apply()
 
-  val errorKeyBlank = workHoursBlankErrorKey
-  val errorKeyInvalid = workHoursInvalidErrorKey
+  val errorKeyBlank = parentWorkHoursBlankErrorKey
+  val errorKeyInvalid = parentWorkHoursInvalidErrorKey
 
   "ParentWorkHours Form" must {
 

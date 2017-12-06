@@ -21,11 +21,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class PartnerWorkHoursFormSpec extends FormSpec {
 
-  val partnerWorkHoursForm: Form[BigDecimal] = new ParentWorkHoursForm(frontendAppConfig).apply()
-  val errorKeyBlank = workHoursBlankErrorKey
-  val errorKeyInvalid = workHoursInvalidErrorKey
+  val partnerWorkHoursForm: Form[BigDecimal] = new PartnerWorkHoursForm(frontendAppConfig).apply()
+  val errorKeyBlank = partnerWorkHoursBlankErrorKey
+  val errorKeyInvalid = partnerWorkHoursInvalidErrorKey
 
-  "ParentWorkHours Form" must {
+  "PartnerWorkHours Form" must {
 
     Seq("12", "000012").foreach{ value =>
       s"bind positive whole number $value" in {
