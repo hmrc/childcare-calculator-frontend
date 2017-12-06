@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 import org.mockito.Mockito._
 import org.scalatest.{MustMatchers, OptionValues}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 
 class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
@@ -145,6 +145,25 @@ class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+        factory(answers).value mustEqual JointHousehold(
+          Parent(110, Set.empty),
+          Parent(120, Set.empty)
+        )
+      }
+
+      "return `Some` when both are in paid employment and no one has max earnings" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.paidEmployment) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.eitherGetsVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.eitherOfYouMaximumEarnings) thenReturn Some(false)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+
         factory(answers).value mustEqual JointHousehold(
           Parent(110, Set.empty),
           Parent(120, Set.empty)

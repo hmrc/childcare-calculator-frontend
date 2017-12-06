@@ -59,6 +59,8 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
+
+
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
           when(answers.youStatutoryPay) thenReturn None
@@ -360,6 +362,15 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
             routes.MaxFreeHoursResultController.onPageLoad()
 
+        }
+
+        "redirects to results page when user selects some value and they have a partner" in {
+          val answers = spy(userAnswers())
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
+            routes.MaxFreeHoursResultController.onPageLoad()
         }
 
         "redirects to results page when user selects some value,has partner and partner does not get statutory pay" in {
