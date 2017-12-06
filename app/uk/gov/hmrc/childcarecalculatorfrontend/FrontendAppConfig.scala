@@ -31,6 +31,8 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   private lazy val contactHost = configuration.getString("contact-frontend.host").getOrElse("")
   private val contactFormServiceIdentifier = "childcarecalculatorfrontend"
 
+  lazy val eligibilityUrl = baseUrl("cc-eligibility") + configuration.getString("microservice.services.cc-eligibility.url")
+
   lazy val analyticsToken = loadConfig(s"google-analytics.token")
   lazy val analyticsHost = loadConfig(s"google-analytics.host")
   lazy val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"

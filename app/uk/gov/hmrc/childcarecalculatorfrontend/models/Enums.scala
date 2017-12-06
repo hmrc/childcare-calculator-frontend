@@ -154,3 +154,17 @@ object EmploymentStatusEnum extends Enumeration {
 
   implicit def enumFormats: Format[EmploymentStatusEnum] = EnumUtils.enumFormat(EmploymentStatusEnum)
 }
+
+object SchemeEnum extends Enumeration {
+  type SchemeEnum = Value
+  val TFCELIGIBILITY = Value("tfcEligibility")
+  val TCELIGIBILITY = Value("tcEligibility")
+  val ESCELIGIBILITY = Value("escEligibility")
+
+  val enumReads: Reads[SchemeEnum] = EnumUtils.enumReads(SchemeEnum)
+
+  val enumWrites: Writes[SchemeEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[SchemeEnum] = EnumUtils.enumFormat(SchemeEnum)
+}
+
