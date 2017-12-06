@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import play.api.libs.json.{Reads, Writes, Format}
+import play.api.libs.json.{Format, Reads, Writes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
 object Location extends Enumeration {
@@ -131,4 +131,26 @@ object ChildcarePayFrequency extends Enumeration {
   val writes: Writes[Value] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(ChildcarePayFrequency)
+}
+
+object CreditsEnum extends Enumeration {
+  type CreditsEnum = Value
+  val TAXCREDITS, UNIVERSALCREDIT, NONE = Value
+
+  val enumReads: Reads[CreditsEnum] = EnumUtils.enumReads(CreditsEnum)
+
+  val enumWrites: Writes[CreditsEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[CreditsEnum] = EnumUtils.enumFormat(CreditsEnum)
+}
+
+object EmploymentStatusEnum extends Enumeration {
+  type EmploymentStatusEnum = Value
+  val SELFEMPLOYED, APPRENTICE, NEITHER = Value
+
+  val enumReads: Reads[EmploymentStatusEnum] = EnumUtils.enumReads(EmploymentStatusEnum)
+
+  val enumWrites: Writes[EmploymentStatusEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[EmploymentStatusEnum] = EnumUtils.enumFormat(EmploymentStatusEnum)
 }

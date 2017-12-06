@@ -20,11 +20,11 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 case class Income(employmentIncome: Option[BigDecimal] = None,
-                   pension: Option[BigDecimal] = None,
-                   otherIncome: Option[BigDecimal] = None,
-                   benefits: Option[BigDecimal] = None,
-                   statutoryIncome: Option[StatutoryIncome] = None,
-                   taxCode: Option[String] = None)
+                  pension: Option[BigDecimal] = None,
+                  otherIncome: Option[BigDecimal] = None,
+                  benefits: Option[BigDecimal] = None,
+                  statutoryIncome: Option[StatutoryIncome] = None,
+                  taxCode: Option[String] = None)
 
 object Income {
 
