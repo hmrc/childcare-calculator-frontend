@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits._
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
@@ -94,8 +95,8 @@ object Disability {
 
     def checkDisabilityType(disabilityType: DisabilityBenefits.Value, childDisabilities: Disability) : Disability = {
       disabilityType match {
-        case DisabilityBenefits.DISABILITY_BENEFITS => childDisabilities.copy(disabled = true)
-        case DisabilityBenefits.HIGHER_DISABILITY_BENEFITS => childDisabilities.copy(severelyDisabled = true)
+        case DISABILITY_BENEFITS => childDisabilities.copy(disabled = true)
+        case HIGHER_DISABILITY_BENEFITS => childDisabilities.copy(severelyDisabled = true)
       }
     }
 
