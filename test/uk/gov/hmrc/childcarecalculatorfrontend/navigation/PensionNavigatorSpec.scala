@@ -100,12 +100,12 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
             routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothOtherIncomeThisYear page when user selects no" in {
+        "redirects to BothAnyTheseBenefitsCY page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.bothPaidPensionCY) thenReturn Some(false)
 
           navigator.nextPage(BothPaidPensionCYId, NormalMode).value(answers) mustBe
-            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -243,12 +243,12 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Both Pay Pension CY Route" must {
-        "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
+        "redirects to benefits page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
 
           navigator.nextPage(HowMuchBothPayPensionId, NormalMode).value(answers) mustBe
-            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {

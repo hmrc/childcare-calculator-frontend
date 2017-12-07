@@ -63,7 +63,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =
   utils.getCall(answers.bothAnyTheseBenefitsCY) {
     case true => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
-    //case false => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+    case false => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
   }
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
@@ -87,8 +87,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.benefitsIncomeCY){ case _ =>
-      ??? //routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+    utils.getCall(answers.benefitsIncomeCY){ case _ => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
 
   private def yourBenefitsRoutePY(answers: UserAnswers) =
