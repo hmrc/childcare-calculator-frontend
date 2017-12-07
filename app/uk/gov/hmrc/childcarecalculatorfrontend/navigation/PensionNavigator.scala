@@ -103,7 +103,7 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def bothPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothPaidPensionPY) {
       case true =>  routes.WhoPaidIntoPensionPYController.onPageLoad(NormalMode)
-      case false =>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+      case false =>  routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     }
 
   private def whoPaysPensionRoutePY(answers: UserAnswers) =
@@ -145,7 +145,8 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

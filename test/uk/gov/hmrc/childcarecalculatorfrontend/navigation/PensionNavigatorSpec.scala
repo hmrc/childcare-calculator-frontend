@@ -328,12 +328,12 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
             routes.WhoPaidIntoPensionPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to bothOtherIncomeLY page when user selects no" in {
+        "redirects to benefits page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.bothPaidPensionPY) thenReturn Some(false)
 
           navigator.nextPage(BothPaidPensionPYId, NormalMode).value(answers) mustBe
-            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+            routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -400,24 +400,24 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to sessionExpired page when user provides valid input,lives with partner  and" +
+        "redirects to benefits page when user provides valid input,lives with partner  and" +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
           when(answers.howMuchYouPayPensionPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionPYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothOtherIncomeLY page when user provides valid input,lives with partner  and" +
+        "redirects to benefits page when user provides valid input,lives with partner  and" +
           "both in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.howMuchYouPayPensionPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionPYId, NormalMode).value(answers) mustBe
-            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+            routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
 
