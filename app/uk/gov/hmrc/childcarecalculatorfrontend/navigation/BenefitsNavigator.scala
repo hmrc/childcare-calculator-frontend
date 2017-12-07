@@ -82,7 +82,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
         case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode) //routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-        case Both => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case You => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -123,8 +124,9 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerBenefitsIncomePY) {case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-         case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayController.onPageLoad(NormalMode)
+         case Partner => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+         case You => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
       }
     }
 

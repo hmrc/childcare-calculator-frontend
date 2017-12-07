@@ -226,7 +226,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
