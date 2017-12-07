@@ -85,19 +85,35 @@ case class Disability(
 object Disability {
   implicit val formatDisability = Json.format[Disability]
 
-  def populateFromRawData(currentIndex: Int,disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
-    disabilities.map(_.get(currentIndex).fold(Disability())(disabilities => {
-      disabilities.foldLeft(Disability())((disabilities,currentDisability) => {
-        val childrenDisabilities = currentDisability match {
-          case DisabilityBenefits.DISABILITY_BENEFITS => disabilities.copy(disabled = true)
-          case DisabilityBenefits.HIGHER_DISABILITY_BENEFITS => disabilities.copy(severelyDisabled = true)
-        }
-
-        blindChildren.fold(childrenDisabilities)(childrenWithBlindDisability => {
-          childrenWithBlindDisability.find(childIndex=> childIndex == currentIndex).fold(childrenDisabilities)(_ => childrenDisabilities.copy(blind = true))
-        })
+  def populateFromRawData(currentChildIndex: Int, disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
+    def checkIfBlind(blindChildren: Option[Set[Int]],childDisabilities: Disability) : Disability = {
+      blindChildren.fold(childDisabilities)(childrenWithBlindDisability => {
+        childrenWithBlindDisability.find(childIndex=> childIndex == currentChildIndex).fold(childDisabilities)(_ => childDisabilities.copy(blind = true))
       })
-    })) match {
+    }
+
+    def checkDisabilityType(disabilityType: DisabilityBenefits.Value, childDisabilities: Disability) : Disability = {
+      disabilityType match {
+        case DisabilityBenefits.DISABILITY_BENEFITS => childDisabilities.copy(disabled = true)
+        case DisabilityBenefits.HIGHER_DISABILITY_BENEFITS => childDisabilities.copy(severelyDisabled = true)
+      }
+    }
+
+    def checkDisabilities(disabilities: Set[DisabilityBenefits.Value]) = {
+      disabilities.foldLeft(Disability())((disabilities,currentDisability) => {
+        ((checkDisabilityType(currentDisability,_ : Disability)) andThen (checkIfBlind(blindChildren,_ : Disability)))(disabilities)
+      })
+    }
+
+    def checkIfCurrentChildHasDisabilities(childrenWithDisabilities: Map[Int, Set[DisabilityBenefits.Value]]): Disability = {
+      childrenWithDisabilities.get(currentChildIndex) match {
+        case Some(disabilities) => checkDisabilities(disabilities)
+        case _=> Disability()
+      }
+    }
+
+
+    disabilities map checkIfCurrentChildHasDisabilities match {
       case Some(Disability(false,false,false)) => None
       case disabilities => disabilities
     }
