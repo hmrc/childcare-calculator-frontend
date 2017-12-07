@@ -57,6 +57,6 @@ class ParentWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends FormE
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = workHoursBlankErrorKey, errorKeyInvalid: String = workHoursInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = parentWorkHoursBlankErrorKey, errorKeyInvalid: String = parentWorkHoursInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(parentWorkHoursFormatter(errorKeyBlank, errorKeyInvalid))))
 }
