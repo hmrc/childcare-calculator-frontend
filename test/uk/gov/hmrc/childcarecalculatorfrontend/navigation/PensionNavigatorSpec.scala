@@ -152,14 +152,14 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much You Pay Pension CY Route" must {
-        "redirects to YourOtherIncomeThisYear page when user provides valid input, lives with partner and" +
+        "redirects to benefits page when user provides valid input, lives with partner and" +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+            routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
 
@@ -173,24 +173,24 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
               routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
           }
 
-        "redirects to sessionExpired page when user provides valid input, lives with partner and" +
+        "redirects to benefits page when user provides valid input, lives with partner and" +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothOtherIncomeThisYear page when user provides valid input, lives with partner and" +
+        "redirects to benefits page when user provides valid input, lives with partner and" +
           "both in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe
-            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+            routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -275,12 +275,12 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
             routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to yourOtherIncomeLY page when user selects no" in {
+        "redirects to benefits income page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.youPaidPensionPY) thenReturn Some(false)
 
           navigator.nextPage(YouPaidPensionPYId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+            routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -380,24 +380,24 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much You Pay Pension PY Route" must {
-        "redirects to yourOtherIncomeLY page when user provides valid input,lives with partner and " +
+        "redirects to YouAnyTheseBenefitsPY page when user provides valid input,lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
           when(answers.howMuchYouPayPensionPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionPYId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+            routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to YourOtherIncomeLY page when user provides valid input,does not lives with partner and" +
+        "redirects to benefits page when user provides valid input,does not lives with partner and" +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.howMuchYouPayPensionPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(HowMuchYouPayPensionPYId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+            routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when user provides valid input,lives with partner  and" +

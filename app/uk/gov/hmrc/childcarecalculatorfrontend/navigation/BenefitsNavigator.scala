@@ -81,7 +81,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
         case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode) //routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-        //case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case Both => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -93,7 +93,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def yourBenefitsRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youAnyTheseBenefitsPY) {
       case true => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
-     // case false => routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
+      case false => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
     }
 
  /* private def partnerBenefitsRoutePY(answers: UserAnswers) =
@@ -138,18 +138,19 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => ??? //routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
-        //case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case You => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
 
   private def getCallForYourBenefitAsPerPaidWorkPY(answers: UserAnswers)=
     if(answers.areYouInPaidWork.nonEmpty) {
-      ??? //routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
+      routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => ??? //routes.YourStatutoryPayPYController.onPageLoad(NormalMode)
+        case You => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
         case Both => routes.BothStatutoryPayController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
