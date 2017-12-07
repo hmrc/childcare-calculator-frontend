@@ -99,7 +99,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.WhosHadBenefitsController.onPageLoad(NormalMode)
         }
 
-        "redirects to bothStatutoryPayCY page when user selects no" in {
+        "redirects to other income page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.bothAnyTheseBenefitsCY) thenReturn Some(false)
 
