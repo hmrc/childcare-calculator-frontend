@@ -101,7 +101,8 @@ object Disability {
 
     def checkDisabilities(disabilities: Set[DisabilityBenefits.Value]) = {
       disabilities.foldLeft(Disability())((disabilities,currentDisability) => {
-        ((checkDisabilityType(currentDisability,_ : Disability)) andThen (checkIfBlind(blindChildren,_ : Disability)))(disabilities)
+        val childDisabilities = checkDisabilityType(currentDisability,disabilities)
+        checkIfBlind(blindChildren,childDisabilities)
       })
     }
 
