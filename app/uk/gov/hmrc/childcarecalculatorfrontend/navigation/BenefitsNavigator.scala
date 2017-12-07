@@ -51,13 +51,13 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def yourBenefitsRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.youAnyTheseBenefits) {
       case true =>  routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      //case false => routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
+      case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
 
   private def partnerBenefitsRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyTheseBenefitsCY) {
       case true => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-     // case false => routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+      case false => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
 
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =
@@ -80,8 +80,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-//        case Partner => routes.SessionExpiredController.onPageLoad() //routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-//        case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode) //routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
+        //case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -136,7 +136,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def getCallForYourBenefitAsPerPaidWorkCY(answers: UserAnswers)=
     if(answers.areYouInPaidWork.nonEmpty) {
-      ??? //routes.YourStatutoryPayCYController.onPageLoad(NormalMode)
+      routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => ??? //routes.YourStatutoryPayCYController.onPageLoad(NormalMode)

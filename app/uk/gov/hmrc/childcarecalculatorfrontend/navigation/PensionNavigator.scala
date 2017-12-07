@@ -63,7 +63,7 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def bothPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.bothPaidPensionCY) {
       case true =>  routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
-      case false =>  routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case false =>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
 
   private def whoPaysPensionRouteCY(answers: UserAnswers): Call =
@@ -74,19 +74,19 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = {
-    utils.getCall(answers.howMuchYouPayPension){case _ => getCallForYourPensionAsPerPaidWorkCY(answers)}
-  }
+      utils.getCall(answers.howMuchYouPayPension){case _ => getCallForYourPensionAsPerPaidWorkCY(answers)}
+    }
 
   private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.howMuchPartnerPayPension) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
         case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
       }
     }
 
   private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
-    utils.getCall(answers.howMuchBothPayPension) {case _ =>  routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)}
+    utils.getCall(answers.howMuchBothPayPension) {case _ =>  routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)}
 
   private def yourPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youPaidPensionPY) {
@@ -132,8 +132,8 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case You => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
