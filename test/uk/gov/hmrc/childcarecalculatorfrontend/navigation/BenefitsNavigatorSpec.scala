@@ -295,13 +295,13 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
         }
 
-       /* "redirects to partnerStatutoryPayCY page when user selects no" in {
+      "redirects to PartnerAnyOtherIncomeLY page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.partnerAnyTheseBenefitsPY) thenReturn Some(false)
 
           navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
-        }*/
+            routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
+        }
 
         "redirects to sessionExpired page when there is no value for user selection" ignore {
           val answers = spy(userAnswers())
@@ -422,14 +422,14 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "Partner Benefits Income PY Route" must {
-       /* "redirects to partnerStatutoryPayPY page when user provides valid input" in {
+        "redirects to PartnerAnyTheseBenefitsPY page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
           when(answers.partnerBenefitsIncomePY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerBenefitsIncomePYId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayPYController.onPageLoad(NormalMode)
-        }*/
+            routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
 
         "redirects to BothStatutoryPayPY page when user provides valid input" in {
           val answers = spy(userAnswers())
