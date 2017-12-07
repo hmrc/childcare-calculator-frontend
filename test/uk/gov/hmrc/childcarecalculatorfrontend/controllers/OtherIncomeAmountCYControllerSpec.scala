@@ -49,12 +49,12 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY("value 1", "value 2")))
+      val validData = Map(OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(form.fill(OtherIncomeAmountCY("value 1", "value 2")))
+      contentAsString(result) mustBe viewAsString(form.fill(OtherIncomeAmountCY(1, 2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -84,7 +84,7 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "value 1"), ("partnerOtherIncome", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "1"), ("partnerOtherIncome", "2"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

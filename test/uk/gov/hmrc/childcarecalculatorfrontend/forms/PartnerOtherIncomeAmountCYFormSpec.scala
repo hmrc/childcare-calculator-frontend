@@ -26,11 +26,6 @@ class PartnerOtherIncomeAmountCYFormSpec extends FormSpec {
 
   "PartnerOtherIncomeAmountCY Form" must {
 
-    "bind zero" in {
-      val form = partnerOtherIncomeAmountCYForm.bind(Map("value" -> "0.0"))
-      form.get shouldBe 0.0
-    }
-
     "bind positive numbers" in {
       val form = partnerOtherIncomeAmountCYForm.bind(Map("value" -> "1.0"))
       form.get shouldBe 1.0
@@ -41,7 +36,7 @@ class PartnerOtherIncomeAmountCYFormSpec extends FormSpec {
       form.get shouldBe 10.80
     }
 
-    Seq("9999999.99", "10000000").foreach { value =>
+    Seq("0.9", "9999999.99", "10000000").foreach { value =>
       s"fail to bind number $value not within the range" in {
         val expectedError = error("value", errorKeyInvalid)
         checkForError(partnerOtherIncomeAmountCYForm, Map("value" -> value), expectedError)
