@@ -39,7 +39,12 @@ class PartnerMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerMinimumEarningsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.PartnerMinimumEarningsController.onSubmit(NormalMode).url,
+      legend = Some(messages(s"$messageKeyPrefix.heading", 0))
+    )
 
     "show correct hint text and value of minimum earnings" in {
 

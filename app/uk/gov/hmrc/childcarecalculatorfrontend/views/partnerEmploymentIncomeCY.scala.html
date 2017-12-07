@@ -38,7 +38,11 @@
         <p>@messages("employmentIncomeCY.tax_year")</p>
         <p>@messages("partnerEmploymentIncomeCY.hint")</p>
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("partnerEmploymentIncomeCY.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            label = messages("partnerEmploymentIncomeCY.heading"),
+            labelClass=Some("visually-hidden"),
+            currencySymbol = Some(true))
 
         @components.submit_button()
     }

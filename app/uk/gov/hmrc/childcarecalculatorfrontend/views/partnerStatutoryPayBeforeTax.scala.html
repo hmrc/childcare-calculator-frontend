@@ -39,7 +39,7 @@
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
-            legend = messages("partnerStatutoryPayBeforeTax.heading"),
+            legend = messages("partnerStatutoryPayBeforeTax.heading", statutoryType),
             legendClass = Some("visually-hidden"),
             inputs = PartnerStatutoryPayBeforeTaxForm.options
         )

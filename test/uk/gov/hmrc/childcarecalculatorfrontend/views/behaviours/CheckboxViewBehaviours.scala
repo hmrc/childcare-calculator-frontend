@@ -32,7 +32,7 @@ trait CheckboxViewBehaviours[A] extends ViewSpecBase {
   def messageKeyPrefix: String
   lazy val error = FormError(fieldKey, errorMessage)
 
-  def checkboxPage(): Unit = {
+  def checkboxPage(legend: Option[String] = None): Unit = {
 
     "rendered" must {
 
@@ -40,7 +40,7 @@ trait CheckboxViewBehaviours[A] extends ViewSpecBase {
         val doc = asDocument(createView())
         val legends = doc.getElementsByTag("legend")
         legends.size mustBe 1
-        legends.first.text mustBe messages(s"$messageKeyPrefix.heading")
+        legends.first.text mustBe legend.getOrElse(messages(s"$messageKeyPrefix.heading"))
       }
 
       "contain an input for the value" in {

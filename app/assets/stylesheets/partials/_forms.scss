@@ -198,12 +198,13 @@ Currency symbol alignment
 
 .currencySymbol {
     line-height: 2em;
-    float: left;
 }
 
 .currencyInput {
         margin-left: 0.3em;
-        float: none;
+        @media screen and (max-width: 640px) {
+            width: 93%;
+        }
 }
 
 /*

@@ -59,7 +59,7 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
 
     behave like pageWithBackLink(createView)
 
-    behave like checkboxPage()
+    behave like checkboxPage(legend = Some(messages(s"$messageKeyPrefix.heading", "Foo")))
 
     cases.foreach {
       case (index, name) =>

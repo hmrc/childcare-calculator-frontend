@@ -42,6 +42,12 @@ class ChildRegisteredBlindViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.RegisteredBlindController.onSubmit(NormalMode).url)
+    behave like yesNoPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.RegisteredBlindController.onSubmit(NormalMode).url,
+      legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    )
+
   }
 }

@@ -38,7 +38,11 @@
         <p>@messages("parentEmploymentIncomePY.tax_year")</p>
         <p>@messages("parentEmploymentIncomePY.hint")</p>
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("parentEmploymentIncomePY.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            label = messages("parentEmploymentIncomePY.heading"),
+            labelClass=Some("visually-hidden"),
+            currencySymbol = Some(true))
 
         @components.submit_button()
     }

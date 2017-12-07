@@ -40,7 +40,7 @@
 
         @components.input_radio(
             viewModel = InputViewModel[ChildcarePayFrequency.Value]("value", form),
-            legend = messages("childcarePayFrequency.heading"),
+            legend = messages("childcarePayFrequency.heading", name),
             legendClass = Some("visually-hidden"),
             inputs = ChildcarePayFrequencyForm.options
         )
