@@ -91,7 +91,7 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def yourPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youPaidPensionPY) {
       case true =>  routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
-      case false =>  routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+      case false =>  routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     }
 
   private def partnerPensionRoutePY(answers: UserAnswers) =
@@ -132,18 +132,19 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
 
   private def getCallForYourPensionAsPerPaidWorkPY(answers: UserAnswers) =
     if (answers.areYouInPaidWork.nonEmpty) {
-      routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+      routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+        case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
