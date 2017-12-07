@@ -47,12 +47,12 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to yourStatutoryPayCY page when user selects no" in {
+        "redirects to your other income cy page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.youAnyTheseBenefits) thenReturn Some(false)
 
-          /*navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe
-            routes.YourStatutoryPayCYController.onPageLoad(NormalMode)*/
+          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe
+            routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -161,14 +161,14 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourStatutoryPayCYController.onPageLoad(NormalMode)*/
         }
 
-        "redirects to YourStatutoryPayCY page when user provides valid input, does not live with partner and " +
+        "redirects to Your other income page when user provides valid input, does not live with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
 
-         /* navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
-            routes.YourStatutoryPayCYController.onPageLoad(NormalMode)*/
+          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
         "redirects to SessionExpired page when user provides valid input, lives with partner and " +
