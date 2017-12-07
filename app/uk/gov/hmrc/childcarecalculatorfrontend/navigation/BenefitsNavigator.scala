@@ -81,7 +81,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
         case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode) //routes.PartnerStatutoryPayCYController.onPageLoad(NormalMode)
-        //case Both => routes.BothStatutoryPayCYController.onPageLoad(NormalMode)
+        case Both => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

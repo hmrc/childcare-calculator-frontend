@@ -210,13 +210,13 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothStatutoryPayCY page when user provides valid input" in {
+        "redirects to other income page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
 
-        /*  navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayCYController.onPageLoad(NormalMode)*/
+          navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe
+            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to SessionExpired page when user provides valid input and " +
