@@ -178,6 +178,7 @@ doYouLiveWithPartner.error = You must tell the calculator if you have a partner 
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
 areYouInPaidWork.error = You must answer yes if you are in paid work
 
