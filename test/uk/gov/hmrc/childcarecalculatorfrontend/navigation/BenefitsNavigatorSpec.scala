@@ -171,7 +171,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
-        "redirects to other income page when user provides valid input, lives with partner and " +
+        "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -179,7 +179,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
 
 
             navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe
-              routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+              routes.SessionExpiredController.onPageLoad()
         }
 
         "redirects to other income page when user provides valid input, live with partner" in {
@@ -216,7 +216,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe
-            routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to SessionExpired page when user provides valid input and " +
@@ -288,7 +288,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "Partner Benefits PY Route" must {
-        "redirects to partnerBenefitsIncomePY page when user selects yes" ignore {
+        "redirects to partnerBenefitsIncomePY page when user selects yes" in {
           val answers = spy(userAnswers())
           when(answers.partnerAnyTheseBenefitsPY) thenReturn Some(true)
 
@@ -304,7 +304,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
-        "redirects to sessionExpired page when there is no value for user selection" ignore {
+        "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
           when(answers.partnerAnyTheseBenefitsPY) thenReturn None
 
@@ -322,12 +322,12 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to bothStatutoryPayPY page when user selects no" in {
+        "redirects to BothOtherIncomeLY page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.bothAnyTheseBenefitsPY) thenReturn Some(false)
 
-          /*navigator.nextPage(BothAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayPYController.onPageLoad(NormalMode)*/
+          navigator.nextPage(BothAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -404,13 +404,13 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
 
-        "redirects to BothStatutoryPayPY page when user provides valid input, lives with partner" in {
+        "redirects to BothOtherIncomeLY page when user provides valid input, lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.youBenefitsIncomePY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YouBenefitsIncomePYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayController.onPageLoad(NormalMode)
+            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -429,19 +429,19 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerBenefitsIncomePY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerBenefitsIncomePYId, NormalMode).value(answers) mustBe
-            routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+            routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothStatutoryPayPY page when user provides valid input" in {
+        "redirects to BothOtherIncomeLY page when user provides valid input" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
           when(answers.partnerBenefitsIncomePY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerBenefitsIncomePYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayController.onPageLoad(NormalMode)
+            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
-        "redirects to SessionExpired page when user provides valid input and " +
+        "redirects to SessionExpiredController page when user provides valid input and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(You)
@@ -465,8 +465,8 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothBenefitsIncomePY) thenReturn Some(BothBenefitsIncomePY("23", "23"))
 
-          /*navigator.nextPage(BothBenefitsIncomePYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayPYController.onPageLoad(NormalMode)*/
+          navigator.nextPage(BothBenefitsIncomePYId, NormalMode).value(answers) mustBe
+            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
