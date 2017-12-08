@@ -115,7 +115,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true))
       )
 
-      val household = Household(credits = Some(CreditsEnum.TAXCREDITS.toString), location = Location.SCOTLAND, parent = parent)
+      val household = Household(credits = Some(CreditsEnum.TAXCREDITS), location = Location.SCOTLAND, parent = parent)
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.SCOTLAND)
@@ -268,7 +268,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
       when(answers.partnerMaximumEarnings) thenReturn Some(false)
       when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
-      when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn(89) thenReturn(112)
+      when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }

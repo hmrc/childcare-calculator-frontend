@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
@@ -152,7 +153,7 @@ object Claimant {
 }
 
 case class Household(
-                      credits: Option[String] = None,
+                      credits: Option[CreditsEnum] = None,
                       location: Location,
                       children: List[Child] = List.empty,
                       parent: Claimant = Claimant(),

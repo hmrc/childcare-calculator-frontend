@@ -20,12 +20,24 @@ import javax.inject.Inject
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits) {
+
+  private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {
+    case Some(x) => {
+      x.toUpperCase match {
+        case "TAXCREDITS" => Some(CreditsEnum.TAXCREDITS)
+        case "UNIVERSALCREDIT" => Some(CreditsEnum.UNIVERSALCREDIT)
+        case _ => Some(CreditsEnum.NONE)
+      }
+    }
+    case _ => None
+  }
 
   def convert(answers: UserAnswers): Household = {
     val children = if (answers.noOfChildren.isDefined) createChildren(answers) else List.empty
@@ -34,7 +46,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     } else {
       None
     }
-    Household(credits = answers.taxOrUniversalCredits, location = answers.location.getOrElse(Location.ENGLAND),
+    Household(credits = stringToCreditsEnum(answers.taxOrUniversalCredits), location = answers.location.getOrElse(Location.ENGLAND),
       parent = createClaimant(answers), partner = partner, children = children)
   }
 
@@ -109,8 +121,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         case _ => Some(YesNoUnsureEnum.YES)
       }
     }
-    case _ =>
-      None
+    case _ => None
   }
 
   private def createClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
