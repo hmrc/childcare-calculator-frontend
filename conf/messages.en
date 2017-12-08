@@ -441,14 +441,14 @@ noOfChildren.error = You must enter a number that's not below 1 or above 19
 noOfChildren.required = You m
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
-maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
-maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
-maxFreeHoursInfo.could.get.max.hours = Based on the information you’ve given so far, you’d be eligible for a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
-maxFreeHoursInfo.what.else.you.could.get = What else you could get
+maxFreeHoursInfo.title = You’re eligible for 30 hours free childcare
+maxFreeHoursInfo.heading = You’re eligible for 30 hours free childcare
+maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services.
+maxFreeHoursInfo.info = If you're here only to find out about 30 hours free childcare, you can read more information before applying for it.
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
 maxFreeHoursInfo.still.to.check = Still to check
-maxFreeHoursInfo.give.more.info = Give the calculator more information to see if you’re eligible for help from tax credits.
+maxFreeHoursInfo.give.more.info = You’re also eligible for Tax-Free Childcare, tax credits and childcare vouchers. Give the calculator more information to see how much you could get or save from these schemes.
 
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
