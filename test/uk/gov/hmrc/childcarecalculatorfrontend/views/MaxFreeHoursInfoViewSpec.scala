@@ -28,18 +28,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
   "MaxFreeHoursInfo view" must {
 
 
-    behave like normalPage(view, messageKeyPrefix, "what.else.you.could.get", "still.to.check")
-  }
-
-
-  "MaxFreeHoursInfo view " must {
-      s"display correct content when loaded" in {
-        val view = maxFreeHoursInfo(frontendAppConfig)(fakeRequest, messages)
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.could.get.max.hours"))
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.could.get.tfc"))
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.could.get.esc"))
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
-      }
+    behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "still.to.check")
   }
 
 }

@@ -34,6 +34,8 @@
 
     @components.heading("areYouInPaidWork.heading", "heading-xlarge")
 
+    <p>@messages("areYouInPaidWork.para1")</p>
+
     @helpers.form(action = AreYouInPaidWorkController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_yes_no(

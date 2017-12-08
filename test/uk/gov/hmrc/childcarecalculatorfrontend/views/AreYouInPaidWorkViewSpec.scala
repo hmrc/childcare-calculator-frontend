@@ -33,7 +33,7 @@ class AreYouInPaidWorkViewSpec extends YesNoViewBehaviours {
 
   "AreYouInPaidWork view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "heading", "para1" )
 
     behave like pageWithBackLink(createView)
 

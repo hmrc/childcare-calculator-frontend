@@ -178,6 +178,7 @@ doYouLiveWithPartner.error = Select yes if you have a partner that you live with
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
 areYouInPaidWork.error = Select yes if you are in paid work
 
@@ -200,7 +201,7 @@ parentWorkHours.invalid = How many hours a week you usually work must be a numbe
 parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
 parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
-parentWorkHours.para1 = This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on sick, maternity, paternity, shared parental or adoption leave, it’s your usual hours before you went off work.
+parentWorkHours.para1 = This is the hours worked in all your paid jobs, zero hours contracts and self-employment.
 
 partnerWorkHours.blank = Enter how many hours a week your partner usually works
 partnerWorkHours.invalid = How many hours a week your partner usually works must be a number from 1 to 99.9
@@ -225,6 +226,7 @@ doYouKnowYourAdjustedTaxCode.error = Select yes if you know your adjusted tax co
 
 whatIsYourTaxCode.title = What’s your tax code?
 whatIsYourTaxCode.heading = What’s your tax code?
+whatIsYourTaxCode.hint = For example, 1150W1
 whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
 whatIsYourTaxCode.blank = Enter your tax code
 whatIsYourTaxCode.invalid = Your tax code must have either 3 or 4 numbers followed by 1 or 2 letters
@@ -410,7 +412,7 @@ yourSelfEmployed.error = You must select yes if you’ve been self-employed less
 
 yourMaximumEarnings.title = Will you earn more than £100,000 a year?
 yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
-yourMaximumEarnings.hint = This is your salary with any pension and gift aid contributions taken off.
+yourMaximumEarnings.hint = This is the total pay from all your jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
 yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
 yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
@@ -442,14 +444,14 @@ noOfChildren.error = You must enter a number that's not below 1 or above 19
 noOfChildren.required = You m
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
-maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
-maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
-maxFreeHoursInfo.could.get.max.hours = Based on the information you’ve given so far, you’d be eligible for a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
-maxFreeHoursInfo.what.else.you.could.get = What else you could get
+maxFreeHoursInfo.title = You’re eligible for 30 hours free childcare
+maxFreeHoursInfo.heading = You’re eligible for 30 hours free childcare
+maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services.
+maxFreeHoursInfo.info = If you're here only to find out about 30 hours free childcare, you can read more information before applying for it.
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
 maxFreeHoursInfo.still.to.check = Still to check
-maxFreeHoursInfo.give.more.info = Give the calculator more information to see if you’re eligible for help from tax credits.
+maxFreeHoursInfo.give.more.info = You’re also eligible for Tax-Free Childcare, tax credits and childcare vouchers. Give the calculator more information to see how much you could get or save from these schemes.
 
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
