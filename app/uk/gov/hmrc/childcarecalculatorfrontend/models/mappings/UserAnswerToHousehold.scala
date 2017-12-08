@@ -21,6 +21,7 @@ import javax.inject.Inject
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
@@ -29,13 +30,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits) {
 
   private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {
-    case Some(x) => {
+    case Some(x) =>
       x.toUpperCase match {
-        case "TAXCREDITS" => Some(CreditsEnum.TAXCREDITS)
-        case "UNIVERSALCREDIT" => Some(CreditsEnum.UNIVERSALCREDIT)
+        case "TC" => Some(CreditsEnum.TAXCREDITS)
+        case "UC" => Some(CreditsEnum.UNIVERSALCREDIT)
         case _ => Some(CreditsEnum.NONE)
       }
-    }
+
     case _ => None
   }
 
@@ -50,13 +51,19 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       parent = createClaimant(answers), partner = partner, children = children)
   }
 
+  private def ccFrequencyToPeriod(x: Option[ChildcarePayFrequency.Value]): Option[PeriodEnum] = x match {
+    case Some(ChildcarePayFrequency.MONTHLY) => Some(PeriodEnum.MONTHLY)
+    case Some(ChildcarePayFrequency.WEEKLY) => Some(PeriodEnum.WEEKLY)
+    case _ => None
+  }
+
   private def createChildren(answers: UserAnswers): List[Child] = {
 
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
 
     var childList: List[Child] = List()
 
-     for(i <- 0 until totalChildren ) {
+    for(i <- 0 until totalChildren ) {
       val (childName, childDob): (String, LocalDate) =
         if(answers.aboutYourChild(i).isDefined) {
           (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
@@ -65,7 +72,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         }
 
       val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
-      val childcarePeriod: Option[ChildcarePayFrequency.Value] = answers.childcarePayFrequency(i)
+      val childcarePeriod: Option[PeriodEnum] = ccFrequencyToPeriod(answers.childcarePayFrequency(i))
       val childcareCost = if (childcareAmt.isDefined) {
         Some(ChildCareCost(childcareAmt, childcarePeriod))
       } else {
@@ -113,14 +120,12 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def stringToYesNoUnsureEnum(x: Option[String]): Option[YesNoUnsureEnum] = x match {
-    case Some(x) => {
+    case Some(x) =>
       x.toLowerCase match {
         case "yes" => Some(YesNoUnsureEnum.YES)
         case "no" => Some(YesNoUnsureEnum.NO)
-        case "notsure" => Some(YesNoUnsureEnum.NOTSURE)
-        case _ => Some(YesNoUnsureEnum.YES)
+        case _ => Some(YesNoUnsureEnum.NOTSURE)
       }
-    }
     case _ => None
   }
 

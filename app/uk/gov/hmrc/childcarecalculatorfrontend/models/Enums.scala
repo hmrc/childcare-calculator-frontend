@@ -167,3 +167,15 @@ object SchemeEnum extends Enumeration {
   implicit def enumFormats: Format[SchemeEnum] = EnumUtils.enumFormat(SchemeEnum)
 }
 
+object PeriodEnum extends Enumeration {
+  type PeriodEnum = Value
+  val WEEKLY, FORTNIGHTLY, MONTHLY, QUARTERLY, YEARLY, INVALID = Value
+  val enumReads: Reads[PeriodEnum] = EnumUtils.enumReads(PeriodEnum)
+
+  val enumWrites: Writes[PeriodEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
+}
+
+
+

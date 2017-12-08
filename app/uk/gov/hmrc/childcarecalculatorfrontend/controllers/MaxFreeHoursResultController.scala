@@ -37,6 +37,7 @@ class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
 
     eligibilityService.eligibility(request.userAnswers).map {
       results => {
+        println(s"*******RESULTS>>>>>>>>$results")
         results
       }
     }
