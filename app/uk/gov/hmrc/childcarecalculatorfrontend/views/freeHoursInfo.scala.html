@@ -31,10 +31,12 @@
     @components.heading("freeHoursInfo.heading", "heading-xlarge")
 
     <p>@messages(s"freeHoursInfo.para1.$location")</p>
+    <p>@messages(s"freeHoursInfo.moreinfo")</p>
 
     <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
     <p>@messages(s"freeHoursInfo.guidance")</p>
 
+    <!-- These lists need to have logic around to only show certain ones if no costs or not approved costs -->
     <ul class="bullets">
         <li>@messages("freeHoursInfo.li.30hours")</li>
         @if(isChildAgedTwo) {
@@ -47,8 +49,8 @@
     </ul>
 
     <!-- One of tHese 2 messages should show if the user either has no costs, or no approved costs -->
-    <p>@messages("freeHoursInfo.no.childcare.para")</p>
-    <p>@messages("freeHoursInfo.no.approved.para")</p>
+    <!--<p>@messages("freeHoursInfo.no.childcare.para")</p>-->
+    <!--<p>@messages("freeHoursInfo.no.approved.para")</p>-->
     <!-- / end of meesages to include -->
 
     @components.button_link(
