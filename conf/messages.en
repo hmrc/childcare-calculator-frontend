@@ -229,7 +229,7 @@ whatIsYourTaxCode.heading = What’s your tax code?
 whatIsYourTaxCode.hint = For example, 1150W1
 whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
 whatIsYourTaxCode.blank = Enter your tax code
-whatIsYourTaxCode.invalid = Your tax code must have either 3 or 4 numbers followed by 1 or 2 letters
+whatIsYourTaxCode.invalid = Your tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
@@ -249,7 +249,7 @@ whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.heading = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
-whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must have 3 or 4 numbers followed by 1 or 2 letters
+whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
