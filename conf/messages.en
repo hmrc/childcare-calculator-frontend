@@ -229,7 +229,7 @@ whatIsYourTaxCode.heading = What’s your tax code?
 whatIsYourTaxCode.hint = For example, 1150W1
 whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
 whatIsYourTaxCode.blank = Enter your tax code
-whatIsYourTaxCode.invalid = Your tax code must have either 3 or 4 numbers followed by 1 or 2 letters
+whatIsYourTaxCode.invalid = Your tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
@@ -249,7 +249,7 @@ whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.heading = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
-whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must have 3 or 4 numbers followed by 1 or 2 letters
+whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
@@ -275,12 +275,12 @@ eitherGetsVouchers.notSure = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = Who’s employer offers childcare vouchers?
-whoGetsVouchers.heading = Who’s employer offers childcare vouchers?
+whoGetsVouchers.title = Whose employer offers childcare vouchers?
+whoGetsVouchers.heading = Whose employer offers childcare vouchers?
 whoGetsVouchers.you = Yours
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
-whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
+whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
 doYouGetAnyBenefits.title = Do you get any of these benefits?
@@ -315,7 +315,7 @@ whoGetsBenefits.you = You
 whoGetsBenefits.partner = Partner
 whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
-whoGetsBenefits.error = You must tell the calculator who gets benefits
+whoGetsBenefits.error = Select who gets benefits
 
 whichBenefitsYouGet.title = Which benefits do you get?
 whichBenefitsYouGet.heading = Which benefits do you get?
@@ -324,7 +324,7 @@ whichBenefitsYouGet.disabilityBenefits = Disability benefits
 whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsYouGet.error = You must tell the calculator which benefits you get
+whichBenefitsYouGet.error = Select which benefits you get
 whichBenefits.select.all = Select all that apply.
 
 whichBenefitsPartnerGet.title = Which benefits does your partner get?
@@ -334,7 +334,7 @@ whichBenefitsPartnerGet.disabilityBenefits = Disability benefits
 whichBenefitsPartnerGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
 whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsPartnerGet.error = You must tell the calculator which benefits your partner gets
+whichBenefitsPartnerGet.error = Select which benefits your partner gets
 
 whichBenefitsList.typeof.income.benefits = Types of income benefits
 whichBenefitsList.typeof.income.support = Income Support
@@ -360,7 +360,7 @@ yourPartnersAge.UNDER18 = Under 18
 yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
 yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
 yourPartnersAge.OVERTWENTYFOUR = 25 or over
-yourPartnersAge.error = You must tell the calculator what your partner’s age is
+yourPartnersAge.error = Select your partner’s age
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
 
 yourAge.title = What’s your age?
@@ -369,19 +369,19 @@ yourAge.UNDER18 = Under 18
 yourAge.EIGHTEENTOTWENTY = 18 to 20
 yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
 yourAge.OVERTWENTYFOUR = 25 or over
-yourAge.error = You must tell the calculator what your age is
+yourAge.error = Select your age
 yourAge.checkYourAnswersLabel = What’s your age?
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
-yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
+yourMinimumEarnings.error = Select yes if you will earn an average of £{0} or more a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
-partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
+partnerMinimumEarnings.error = Select yes if your partner will earn an average of £{0} or more a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
 areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
@@ -419,12 +419,12 @@ yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a 
 partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
 partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
 partnerMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
-partnerMaximumEarnings.error = You must select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.error = Select yes if your partner will earn more than £100,000 a year
 partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
 
 eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
 eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
-eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.error = Select yes if either of you will earn more than £100,000 a year
 eitherOfYouMaximumEarnings.para1 = This is your salary with personal tax allowances, pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
@@ -433,7 +433,7 @@ taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
 taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
 taxOrUniversalCredits.uc = Universal Credit
 taxOrUniversalCredits.none = None of these
-taxOrUniversalCredits.error = You must tell the calculator if you get tax credits or Universal Credit
+taxOrUniversalCredits.error = Select if you get Tax Credits or Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
 
