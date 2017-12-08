@@ -54,7 +54,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         id = 0,
         name = "Patrick",
         dob = todaysDate.minusYears(7),
-        disability = None,
+        disability = Some(Disability(true,true,true)),
         childcareCost = Some(ChildCareCost(Some(200.0), Some(ChildcarePayFrequency.MONTHLY))),
         education = Some(Education(inEducation = true, startDate = Some(todaysDate.minusMonths(6)))))
 
@@ -69,6 +69,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       when(answers.childcarePayFrequency(0)) thenReturn Some(ChildcarePayFrequency.MONTHLY)
       when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("Patrick", todaysDate.minusYears(7)))
 
+      when(answers.whichChildrenDisability) thenReturn Some(Set(0))
+      when(answers.whichDisabilityBenefits) thenReturn Some(Map(0-> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS,DisabilityBenefits.DISABILITY_BENEFITS)))
+      when(answers.whichChildrenBlind) thenReturn Some(Set(0))
+
+
       userAnswerToHousehold.convert(answers) mustEqual household
     }
 
@@ -77,14 +82,14 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         id = 0,
         name = "Kamal",
         dob = todaysDate.minusYears(7),
-        disability = None,
+        disability = Some(Disability(true,true,false)),
         childcareCost = None,
         education = None)
       val child2 = Child(
         id = 1,
         name = "Jagan",
         dob = todaysDate.minusYears(2),
-        disability = None,
+        disability = Some(Disability(true,false,true)),
         childcareCost = None,
         education = None)
 
@@ -95,6 +100,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       when(answers.noOfChildren) thenReturn Some(2)
       when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("Kamal", todaysDate.minusYears(7)))
       when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Jagan", todaysDate.minusYears(2)))
+
+      when(answers.whichChildrenDisability) thenReturn Some(Set(0,1))
+      when(answers.whichDisabilityBenefits) thenReturn Some(Map(0-> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS,DisabilityBenefits.DISABILITY_BENEFITS),
+        1-> Set(DisabilityBenefits.DISABILITY_BENEFITS)))
+      when(answers.whichChildrenBlind) thenReturn Some(Set(1))
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }

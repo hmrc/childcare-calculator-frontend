@@ -37,7 +37,11 @@
 
         <p>How much do you pay into your pension a month?</p>
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), currencySymbol=Some("true"), label = messages("howMuchYouPayPension.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            currencySymbol=Some("true"),
+            label = messages("howMuchYouPayPension.heading"),
+            labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

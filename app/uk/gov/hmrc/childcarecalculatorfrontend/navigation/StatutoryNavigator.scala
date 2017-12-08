@@ -26,8 +26,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBot
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
- * Contains the navigation for current and previous year statutory pay pages
- */
+  * Contains the navigation for current and previous year statutory pay pages
+  */
 class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends SubNavigator {
 
   override protected def routeMap = Map(
@@ -70,11 +70,11 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   }
 
   private def whoGotStatutoryPayRoute(answers: UserAnswers) =
-      utils.getCall(answers.whoGotStatutoryPay) {
-        case YouPartnerBothEnum.YOU => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-        case YouPartnerBothEnum.PARTNER => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
-        case YouPartnerBothEnum.BOTH => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-      }
+    utils.getCall(answers.whoGotStatutoryPay) {
+      case YouPartnerBothEnum.YOU => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+      case YouPartnerBothEnum.PARTNER => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+      case YouPartnerBothEnum.BOTH => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+    }
 
   private def yourStatutoryPayTypeRoute(answers: UserAnswers)  =
     utils.getCall(answers.yourStatutoryPayType) { case _ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)}
@@ -132,22 +132,23 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
       case "false" =>  routes.MaxFreeHoursResultController.onPageLoad()
     }
 
-  private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) =
+  private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) = {
     utils.getCall(answers.yourStatutoryPayPerWeek) { case _ => nextPageYourStatutoryPayPerWeek(answers)}
+  }
+
 
   private def nextPageYourStatutoryPayPerWeek(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = answers.whoGotStatutoryPay
 
-    if(hasPartner){
-      utils.getCall(whoGotStatutoryPay){
-        case YouPartnerBothEnum.YOU => routes.MaxFreeHoursResultController.onPageLoad()
-        case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
-      }
-    }else{
-      routes.MaxFreeHoursResultController.onPageLoad()
+    whoGotStatutoryPay match {
+      case Some(_) if hasPartner =>
+        utils.getCall(whoGotStatutoryPay){
+          case YouPartnerBothEnum.YOU => routes.MaxFreeHoursResultController.onPageLoad()
+          case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
+        }
+      case None => routes.MaxFreeHoursResultController.onPageLoad()
     }
-
   }
 
 

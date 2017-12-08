@@ -43,6 +43,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
 
     var childList: List[Child] = List()
+
      for(i <- 0 until totalChildren ) {
       val (childName, childDob): (String, LocalDate) =
         if(answers.aboutYourChild(i).isDefined) {
@@ -70,7 +71,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = None, //TODO - to implement
+        disability = Disability.populateFromRawData(i,answers.whichDisabilityBenefits,answers.whichChildrenBlind),
         childcareCost = childcareCost,
         education = childEducation
       )
@@ -115,7 +116,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   private def createClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
     val hours = if (isParent) answers.parentWorkHours else answers.partnerWorkHours
     val benefits = if (isParent) answers.whichBenefitsYouGet else answers.whichBenefitsPartnerGet
-    val getBenefits = if (benefits.isDefined) Some(Benefits.populateFromRawData(benefits)) else None
+    val getBenefits = Benefits.populateFromRawData(benefits)
 
     val vouchersString = if (isParent) answers.yourChildcareVouchers else answers.partnerChildcareVouchers
     val vouchers = stringToYesNoUnsureEnum(vouchersString)

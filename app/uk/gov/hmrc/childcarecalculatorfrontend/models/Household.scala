@@ -54,8 +54,8 @@ case class Benefits(
 object Benefits {
   implicit val formatBenefits = Json.format[Benefits]
 
-  def populateFromRawData(data: Option[Set[String]]): Benefits = {
-    data.fold(Benefits())(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
+  def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
+    data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
       currentBenefit match {
         case "incomeBenefits" => benefits.copy(incomeBenefits = true)
         case "disabilityBenefits" => benefits.copy(disabilityBenefits = true)
@@ -63,8 +63,7 @@ object Benefits {
         case "carersAllowance" => benefits.copy(carersAllowance = true)
         case _ => benefits
       }
-    })
-    )
+    }))
   }
 }
 
@@ -79,13 +78,31 @@ object MinimumEarnings {
 }
 
 case class Disability(
-                       disabled: Boolean,
-                       severelyDisabled: Boolean,
-                       blind: Boolean
+                       disabled: Boolean = false,
+                       severelyDisabled: Boolean = false,
+                       blind: Boolean = false
                      )
 
 object Disability {
   implicit val formatDisability = Json.format[Disability]
+
+  def populateFromRawData(currentIndex: Int,disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
+    disabilities.map(_.get(currentIndex).fold(Disability())(disabilities => {
+      disabilities.foldLeft(Disability())((disabilities,currentDisability) => {
+        val childrenDisabilities = currentDisability match {
+          case DisabilityBenefits.DISABILITY_BENEFITS => disabilities.copy(disabled = true)
+          case DisabilityBenefits.HIGHER_DISABILITY_BENEFITS => disabilities.copy(severelyDisabled = true)
+        }
+
+        blindChildren.fold(childrenDisabilities)(childrenWithBlindDisability => {
+          childrenWithBlindDisability.find(childIndex=> childIndex == currentIndex).fold(childrenDisabilities)(_ => childrenDisabilities.copy(blind = true))
+        })
+      })
+    })) match {
+      case Some(Disability(false,false,false)) => None
+      case disabilities => disabilities
+    }
+  }
 }
 
 case class ChildCareCost(
