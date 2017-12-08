@@ -81,7 +81,7 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.howMuchPartnerPayPension) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
         case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
       }
     }
 
@@ -120,12 +120,12 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.howMuchPartnerPayPensionPY) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
         case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
       }
     }
 
   private def howMuchBothPayPensionRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.howMuchBothPayPensionPY) {case _=>  routes.BothOtherIncomeLYController.onPageLoad(NormalMode)}
+    utils.getCall(answers.howMuchBothPayPensionPY) {case _=>  routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)}
 
   private def getCallForYourPensionAsPerPaidWorkCY(answers: UserAnswers) =
     if (answers.areYouInPaidWork.nonEmpty) {
@@ -134,7 +134,6 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -146,7 +145,6 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
       utils.getCall(answers.whoIsInPaidEmployment) {
         case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
