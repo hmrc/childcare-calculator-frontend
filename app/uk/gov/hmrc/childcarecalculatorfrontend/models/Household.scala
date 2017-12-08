@@ -71,7 +71,7 @@ object Benefits {
 
 case class MinimumEarnings(
                             amount: BigDecimal = 0.00,
-                            employmentStatus: Option[String] = None,
+                            employmentStatus: Option[String] = None, //TODO - covert to EmploymentStatusEnum type
                             selfEmployedIn12Months: Option[Boolean] = None
                           )
 
@@ -139,7 +139,7 @@ object Child {
 }
 
 case class Claimant(
-                     ageRange: Option[String] = None,
+                     ageRange: Option[String] = None, //TODO - convert to AgeRangeEnum type
                      benefits: Option[Benefits] = None,
                      lastYearlyIncome: Option[Income] = None,
                      currentYearlyIncome: Option[Income] = None,
