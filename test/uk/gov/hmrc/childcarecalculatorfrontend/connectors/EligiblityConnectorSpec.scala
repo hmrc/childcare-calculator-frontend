@@ -42,6 +42,7 @@ class EligiblityConnectorSpec extends UnitSpec with MockitoSugar {
     "get eligibility result" in {
 
       val schemesResult = mock[SchemeResults]
+
       when(
         mockHttp.POST[Household, SchemeResults](anyString(), any(),any())(any(), any(), any(), any())
       ).thenReturn(Future.successful(schemesResult))

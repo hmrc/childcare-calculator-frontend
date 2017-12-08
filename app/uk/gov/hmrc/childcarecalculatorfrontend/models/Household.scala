@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
@@ -142,7 +143,7 @@ case class Claimant(
                      currentYearlyIncome: Option[Income] = None,
                      hours: Option[BigDecimal] = None,
                      minimumEarnings: Option[MinimumEarnings] = None,
-                     escVouchers: Option[String] = None,
+                     escVouchers: Option[YesNoUnsureEnum] = None,
                      maximumEarnings: Option[Boolean] = None
                    )
 

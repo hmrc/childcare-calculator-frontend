@@ -20,18 +20,27 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.SubmissionService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
                                       getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                      requireData: DataRequiredAction,
+                                      eligibilityService: SubmissionService) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
+
+    eligibilityService.eligibility(request.userAnswers).map {
+      results => {
+        results
+      }
+    }
+
     Ok(maxFreeHoursResult(appConfig))
   }
 }

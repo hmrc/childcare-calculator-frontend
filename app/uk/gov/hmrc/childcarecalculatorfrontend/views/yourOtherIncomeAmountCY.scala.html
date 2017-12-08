@@ -35,7 +35,11 @@
 
     @helpers.form(action = YourOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("yourOtherIncomeAmountCY.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            label = messages("yourOtherIncomeAmountCY.heading"),
+            labelClass=Some("visually-hidden"),
+            currencySymbol = Some(true))
 
         @components.submit_button()
     }

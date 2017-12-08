@@ -18,12 +18,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
+import uk.gov.hmrc.childcarecalculatorfrontend.services.SubmissionService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class MaxFreeHoursResultControllerSpec extends ControllerSpecBase {
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new MaxFreeHoursResultController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
+                 submissionService: SubmissionService = FakeSuccessfulSubmissionService) =
+    new MaxFreeHoursResultController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl,
+      submissionService)
 
   "MaxFreeHoursResult Controller" must {
     "return OK and the correct view for a GET" in {
@@ -40,3 +49,11 @@ class MaxFreeHoursResultControllerSpec extends ControllerSpecBase {
     }
   }
 }
+
+
+object FakeSuccessfulSubmissionService extends SubmissionService {
+  override def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
+    Future(SchemeResults(Nil, false, false))
+  }
+}
+

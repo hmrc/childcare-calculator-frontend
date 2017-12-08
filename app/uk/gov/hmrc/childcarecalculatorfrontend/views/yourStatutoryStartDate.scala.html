@@ -38,7 +38,8 @@
 
         @components.input_date(
             field = form("date"),
-            label = messages("yourStatutoryStartDate.heading", statutoryType)
+            label = messages("yourStatutoryStartDate.heading", statutoryType),
+            hint = Some(messages("yourStatutoryStartDate.hint"))
         )
         @components.submit_button()
     }

@@ -37,7 +37,11 @@
 
         <p>@messages("partnerBenefitsIncomeCY.info")</p>
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("partnerBenefitsIncomeCY.heading"), labelClass=Some("visually-hidden"))
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
+            label = messages("partnerBenefitsIncomeCY.heading"),
+            labelClass=Some("visually-hidden"),
+            currencySymbol = Some(true))
 
         @components.submit_button()
     }
