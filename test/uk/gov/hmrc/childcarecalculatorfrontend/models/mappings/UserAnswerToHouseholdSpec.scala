@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsNumber, JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -51,7 +51,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
     "given a user input with 1 child" in {
       val child1 = Child(
-        id = 1,
+        id = 0,
         name = "Patrick",
         dob = todaysDate.minusYears(7),
         disability = None,
@@ -63,25 +63,25 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
       when(answers.location) thenReturn Some(Location.ENGLAND)
       when(answers.noOfChildren) thenReturn Some(1)
-      when(answers.childApprovedEducation(1)) thenReturn Some(true)
-      when(answers.childStartEducation(1)) thenReturn Some(todaysDate.minusMonths(6))
-      when(answers.expectedChildcareCosts(1)) thenReturn Some(BigDecimal(200.0))
-      when(answers.childcarePayFrequency(1)) thenReturn Some(ChildcarePayFrequency.MONTHLY)
-      when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Patrick", todaysDate.minusYears(7)))
+      when(answers.childApprovedEducation(0)) thenReturn Some(true)
+      when(answers.childStartEducation(0)) thenReturn Some(todaysDate.minusMonths(6))
+      when(answers.expectedChildcareCosts(0)) thenReturn Some(BigDecimal(200.0))
+      when(answers.childcarePayFrequency(0)) thenReturn Some(ChildcarePayFrequency.MONTHLY)
+      when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("Patrick", todaysDate.minusYears(7)))
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }
 
     "given a user input with 2 children" in {
       val child1 = Child(
-        id = 1,
+        id = 0,
         name = "Kamal",
         dob = todaysDate.minusYears(7),
         disability = None,
         childcareCost = None,
         education = None)
       val child2 = Child(
-        id = 2,
+        id = 1,
         name = "Jagan",
         dob = todaysDate.minusYears(2),
         disability = None,
@@ -93,8 +93,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
       when(answers.location) thenReturn Some(Location.ENGLAND)
       when(answers.noOfChildren) thenReturn Some(2)
-      when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Kamal", todaysDate.minusYears(7)))
-      when(answers.aboutYourChild(2)) thenReturn Some(AboutYourChild("Jagan", todaysDate.minusYears(2)))
+      when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("Kamal", todaysDate.minusYears(7)))
+      when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Jagan", todaysDate.minusYears(2)))
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }
@@ -119,7 +119,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "given a user input with parent with minimum earnings" in {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
-        escVouchers = Some(YesNoUnsureEnum.NO.toString),
+        escVouchers = Some(YesNoUnsureEnum.NO),
         ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
         minimumEarnings = Some(MinimumEarnings(120.0)),
         maximumEarnings = Some(false),
@@ -144,7 +144,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "given a user input with parent with apprentice" in {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
-        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        escVouchers = Some(YesNoUnsureEnum.YES),
         ageRange = Some(AgeEnum.UNDER18.toString),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE.toString))),
         maximumEarnings = Some(false),
@@ -170,7 +170,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "given a user input with parent with self employed" in {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
-        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        escVouchers = Some(YesNoUnsureEnum.YES),
         ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED.toString), selfEmployedIn12Months = Some(true))),
         maximumEarnings = Some(false),
@@ -197,7 +197,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "given a user input with parent with neither self employed or apprentice" in {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
-        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        escVouchers = Some(YesNoUnsureEnum.YES),
         ageRange = Some(AgeEnum.UNDER18.toString),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = None)),
         maximumEarnings = Some(false),
@@ -223,7 +223,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "given a user input with parent and partner" in {
       val parent = Claimant(
         hours = Some(BigDecimal(32.1)),
-        escVouchers = Some(YesNoUnsureEnum.NOTSURE.toString),
+        escVouchers = Some(YesNoUnsureEnum.NOTSURE),
         ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString),
         minimumEarnings = Some(MinimumEarnings(112.0)),
         maximumEarnings = Some(true),
@@ -232,7 +232,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       )
       val partner = Claimant(
         hours = Some(BigDecimal(46.0)),
-        escVouchers = Some(YesNoUnsureEnum.YES.toString),
+        escVouchers = Some(YesNoUnsureEnum.YES),
         ageRange = Some(AgeEnum.EIGHTEENTOTWENTY.toString),
         minimumEarnings = Some(MinimumEarnings(89.0)),
         maximumEarnings = Some(false),

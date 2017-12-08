@@ -48,15 +48,14 @@ object YouPartnerBothEnum extends Enumeration {
 
 object YesNoUnsureEnum extends Enumeration {
   type YesNoUnsureEnum = Value
-  val YES = Value("yes")
-  val NO = Value("no")
-  val NOTSURE = Value("notSure")
-
+  val YES, NO, NOTSURE = Value
   val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
+
   val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
 }
+
 
 object YesNoNotYetEnum extends Enumeration {
   type YesNoNotYetEnum = Value
