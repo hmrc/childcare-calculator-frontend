@@ -73,7 +73,7 @@ object Benefits {
 
 case class MinimumEarnings(
                             amount: BigDecimal = 0.00,
-                            employmentStatus: Option[EmploymentStatusEnum] = None, //TODO - covert to EmploymentStatusEnum type
+                            employmentStatus: Option[EmploymentStatusEnum] = None,
                             selfEmployedIn12Months: Option[Boolean] = None
                           )
 
