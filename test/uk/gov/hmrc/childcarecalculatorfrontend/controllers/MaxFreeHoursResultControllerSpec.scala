@@ -53,7 +53,7 @@ class MaxFreeHoursResultControllerSpec extends ControllerSpecBase {
 
 object FakeSuccessfulSubmissionService extends SubmissionService {
   override def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
-    Future(SchemeResults(Nil, false, false))
+    Future(SchemeResults(Nil))
   }
 }
 

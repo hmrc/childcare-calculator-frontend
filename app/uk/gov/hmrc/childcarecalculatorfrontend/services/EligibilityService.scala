@@ -35,7 +35,7 @@ trait SubmissionService {
 
 class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits, connector: EligibilityConnector) extends SubmissionService {
 
-  def userAnswerToHousehold = new UserAnswerToHousehold(appConfig, utils, tc)
+  def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(appConfig, utils, tc)
 
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
 
