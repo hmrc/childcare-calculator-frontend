@@ -22,6 +22,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -59,9 +60,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createChildren(answers: UserAnswers): List[Child] = {
-
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
-
     var childList: List[Child] = List()
 
     for(i <- 0 until totalChildren ) {
@@ -112,7 +111,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     if (amt.isDefined || selfEmployedOrApprentice.isDefined || selfEmployed.isDefined) {
       Some(MinimumEarnings(
         amount = amt.getOrElse(0.0),
-        employmentStatus = selfEmployedOrApprentice,
+        employmentStatus = stringToEmploymentStatusEnum(selfEmployedOrApprentice),
         selfEmployedIn12Months = selfEmployed)
       )
     } else {
@@ -137,6 +136,16 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         case "EIGHTEENTOTWENTY" => Some(AgeEnum.EIGHTEENTOTWENTY)
         case "TWENTYONETOTWENTYFOUR" => Some(AgeEnum.TWENTYONETOTWENTYFOUR)
         case "OVERTWENTYFOUR" => Some(AgeEnum.OVERTWENTYFOUR)
+      }
+    case _ => None
+  }
+
+  private def stringToEmploymentStatusEnum(x: Option[String]): Option[EmploymentStatusEnum] = x match {
+    case Some(x) =>
+      x.toLowerCase match {
+        case "selfemployed" => Some(EmploymentStatusEnum.SELFEMPLOYED)
+        case "apprentice" => Some(EmploymentStatusEnum.APPRENTICE)
+        case "neither" => Some(EmploymentStatusEnum.NEITHER)
       }
     case _ => None
   }

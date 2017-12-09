@@ -156,7 +156,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.YES),
         ageRange = Some(AgeEnum.UNDER18),
-        minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE.toString))),
+        minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
       )
@@ -182,7 +182,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.YES),
         ageRange = Some(AgeEnum.OVERTWENTYFOUR),
-        minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED.toString), selfEmployedIn12Months = Some(true))),
+        minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED), selfEmployedIn12Months = Some(true))),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
       )
