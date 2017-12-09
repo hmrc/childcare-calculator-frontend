@@ -44,24 +44,30 @@ class YourMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+
+      val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)
+
       val preparedForm = request.userAnswers.yourMinimumEarnings match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+        case None => BooleanForm(yourMinimumEarningsErrorKey, earningsForAge)
+        case Some(value) => BooleanForm(yourMinimumEarningsErrorKey, earningsForAge).fill(value)
       }
       Ok(yourMinimumEarnings(appConfig,
         preparedForm,
         mode,
-        utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)))
+        earningsForAge))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(yourMinimumEarningsErrorKey).bindFromRequest().fold(
+
+      val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)
+
+      BooleanForm(yourMinimumEarningsErrorKey, earningsForAge).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(yourMinimumEarnings(appConfig,
             formWithErrors,
             mode,
-            utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)))),
+            earningsForAge))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, YourMinimumEarningsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourMinimumEarningsId, mode)(new UserAnswers(cacheMap))))

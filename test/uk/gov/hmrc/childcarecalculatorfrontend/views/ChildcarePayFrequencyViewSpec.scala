@@ -52,6 +52,13 @@ class ChildcarePayFrequencyViewSpec extends ViewBehaviours {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
+
+      "have hidden legend text with child name" in {
+        val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo")))
+        val legends = doc.getElementsByTag("legend")
+        legends.size mustBe 1
+        legends.first.text mustBe messages(s"$messageKeyPrefix.heading", "Foo")
+      }
     }
 
     for(option <- ChildcarePayFrequencyForm.options) {

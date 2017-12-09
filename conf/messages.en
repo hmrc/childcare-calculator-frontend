@@ -59,16 +59,19 @@ checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
-whatToTellTheCalculator.title = What to tell the calculator
-whatToTellTheCalculator.heading = What to tell the calculator
-whatToTellTheCalculator.guidance = To get an estimate, you’ll give information around employment, income and benefits for you and your partner (if you have one) including any:
-whatToTellTheCalculator.li.childcare_costs = estimated childcare costs
-whatToTellTheCalculator.li.pay = weeks and pay taken while on leave for a birth or an adoption
-whatToTellTheCalculator.text = For a more accurate result, you can give your:
-whatToTellTheCalculator.li.known = known childcare costs
-whatToTellTheCalculator.li.tax_code = personal tax code
-whatToTellTheCalculator.li.pension = pension contributions
-whatToTellTheCalculator.minutes = It should take around 5 minutes to complete.
+whatToTellTheCalculator.title = What you’ll need
+whatToTellTheCalculator.heading = What you’ll need
+whatToTellTheCalculator.guidance = You’ll need to know information for this year about you and your partner (if you have one). You may be asked the same information for the previous year, including:
+whatToTellTheCalculator.li.benefits = how much your family gets in benefits
+whatToTellTheCalculator.li.pay = your working hours and how much you get paid
+whatToTellTheCalculator.li.childvouchers = if your employer offers childcare vouchers
+whatToTellTheCalculator.li.weeks = how many weeks you took off work for statutory maternity, paternity, shared parental or adoption and how much you got paid
+whatToTellTheCalculator.para2 = You’ll also need to give information about your children, such as:
+whatToTellTheCalculator.li.costs = what you think your weekly or monthly approved childcare costs might be or what they are
+whatToTellTheCalculator.li.benefits.child = any benefits they get
+whatToTellTheCalculator.li.ages = their age and any dates they may have started further education or training
+whatToTellTheCalculator.para3 = You can give approximate figures to see what you’re eligible for or be exact to get an accurate result. You can change your answers as many times as you like to recalculate and compare your results.
+whatToTellTheCalculator.minutes = It should take around 8 minutes to complete.
 
 location.title = Where do you live?
 location.heading = Where do you live?
@@ -82,18 +85,18 @@ location.error = Select where you live
 
 childAgedTwo.title = Do you have a child aged 2?
 childAgedTwo.heading = Do you have a child aged 2?
-childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
-childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time (487 hours a year).
-childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
+childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to 15 hours free childcare a week in term time - 570 hours a year.
+childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time - 487 hours a year.
+childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours free childcare a week in term time - 600 hours a year.
 childAgedTwo.checkYourAnswersLabel = Do you have a child aged 2?
 childAgedTwo.error = Select yes if you have a child aged 2
 
 childAgedThreeOrFour.title = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.heading = Do you have any children aged 3 or 4?
-childAgedThreeOrFour.guidance.england = All 3 and 4 year olds in England are entitled to 15 hours of free early education and childcare a week in term time (570 hours a year).
-childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time (600 hours a year).
-childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time (390 hours a year).
-childAgedThreeOrFour.guidance.northernIreland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
+childAgedThreeOrFour.guidance.england = All 3 and 4 year olds in England are entitled to 15 hours free childcare a week in term time - 570 hours a year.
+childAgedThreeOrFour.guidance.scotland = All 3 and 4 year olds in Scotland are entitled to 16 hours of free early learning and childcare a week in term time - 600 hours a year.
+childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time - 390 hours a year.
+childAgedThreeOrFour.guidance.northern-ireland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time.
 childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.error = Select yes if you have any children aged 3 or 4
 
@@ -114,18 +117,20 @@ approvedProvider.NOTSURE = Not sure
 approvedProvider.checkYourAnswersLabel = approvedProvider
 approvedProvider.error = Select yes if your childcare costs are with an approved provider
 
-freeHoursInfo.title = It looks like you’re eligible for free hours
-freeHoursInfo.heading = It looks like you’re eligible for free hours
-freeHoursInfo.para1.england = You can get a minimum of 15 hours free early education and childcare a week in term time (570 hours a year) for your 3 or 4 year old.
-freeHoursInfo.para1.scotland = You can get 16 hours of free early learning and childcare a week in term time (600 hours a year) for your 3 or 4 year old.
-freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time (390 hours a year) for your 3 or 4 year old.
-freeHoursInfo.para1.northernIreland = You can get 12 and a half hours of free preschool education a week in term time (525 hours a year) for your 3 or 4 year old.
+freeHoursInfo.title = You’re eligible for free hours
+freeHoursInfo.heading = You’re eligible for free hours
+freeHoursInfo.para1.england = You can get 15 hours free childcare a week in term time with an approved provider - 570 hours a year for your 3 or 4 year old.
+freeHoursInfo.para1.scotland = You can get 16 hours of free early learning and childcare a week in term time with an approved provider - 600 hours a year for your 3 or 4 year old.
+freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time with an approved provider - 390 hours a year for your 3 or 4 year old.
+freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free preschool education a week in term time with an approved provider - 525 hours a year for your 3 or 4 year old.
 freeHoursInfo.heading2 = Still to check
 freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible for help from:
+freeHoursInfo.moreinfo = If you’re here only to find out about your free hours entitlement, you can read more information before talking to your childcare provider about it.
+
 freeHoursInfo.li.30hours = 30 hours free childcare
-freeHoursInfo.li.vouchers = Childcare vouchers
+freeHoursInfo.li.vouchers = childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
-freeHoursInfo.li.tax_credits = Tax credits
+freeHoursInfo.li.tax_credits = tax credits
 freeHoursInfo.li.2year = Free hours for your 2 year old
 freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs in the future. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you will have approved childcare costs or that your not sure. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
@@ -173,6 +178,7 @@ doYouLiveWithPartner.error = Select yes if you have a partner that you live with
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
+areYouInPaidWork.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
 areYouInPaidWork.error = Select yes if you are in paid work
 
@@ -195,7 +201,7 @@ parentWorkHours.invalid = How many hours a week you usually work must be a numbe
 parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
 parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
-parentWorkHours.para1 = This is the hours worked in all your paid jobs, ’zero hours’ contracts and self-employment. If you’re on sick, maternity, paternity, shared parental or adoption leave, it’s your usual hours before you went off work.
+parentWorkHours.para1 = This is the hours worked in all your paid jobs, zero hours contracts and self-employment.
 
 partnerWorkHours.blank = Enter how many hours a week your partner usually works
 partnerWorkHours.invalid = How many hours a week your partner usually works must be a number from 1 to 99.9
@@ -220,9 +226,10 @@ doYouKnowYourAdjustedTaxCode.error = Select yes if you know your adjusted tax co
 
 whatIsYourTaxCode.title = What’s your tax code?
 whatIsYourTaxCode.heading = What’s your tax code?
+whatIsYourTaxCode.hint = For example, 1150W1
 whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
 whatIsYourTaxCode.blank = Enter your tax code
-whatIsYourTaxCode.invalid = Your tax code must have either 3 or 4 numbers followed by 1 or 2 letters
+whatIsYourTaxCode.invalid = Your tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
 hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
@@ -242,7 +249,7 @@ whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.heading = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax code?
 whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
-whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must have 3 or 4 numbers followed by 1 or 2 letters
+whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
@@ -268,12 +275,12 @@ eitherGetsVouchers.notSure = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = Who’s employer offers childcare vouchers?
-whoGetsVouchers.heading = Who’s employer offers childcare vouchers?
+whoGetsVouchers.title = Whose employer offers childcare vouchers?
+whoGetsVouchers.heading = Whose employer offers childcare vouchers?
 whoGetsVouchers.you = Yours
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
-whoGetsVouchers.error = You must tell the calculator which of you is offered childcare vouchers
+whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
 doYouGetAnyBenefits.title = Do you get any of these benefits?
@@ -308,7 +315,7 @@ whoGetsBenefits.you = You
 whoGetsBenefits.partner = Partner
 whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
-whoGetsBenefits.error = You must tell the calculator who gets benefits
+whoGetsBenefits.error = Select who gets benefits
 
 whichBenefitsYouGet.title = Which benefits do you get?
 whichBenefitsYouGet.heading = Which benefits do you get?
@@ -317,7 +324,7 @@ whichBenefitsYouGet.disabilityBenefits = Disability benefits
 whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsYouGet.error = You must tell the calculator which benefits you get
+whichBenefitsYouGet.error = Select which benefits you get
 whichBenefits.select.all = Select all that apply.
 
 whichBenefitsPartnerGet.title = Which benefits does your partner get?
@@ -327,7 +334,7 @@ whichBenefitsPartnerGet.disabilityBenefits = Disability benefits
 whichBenefitsPartnerGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
 whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsPartnerGet.error = You must tell the calculator which benefits your partner gets
+whichBenefitsPartnerGet.error = Select which benefits your partner gets
 
 whichBenefitsList.typeof.income.benefits = Types of income benefits
 whichBenefitsList.typeof.income.support = Income Support
@@ -353,7 +360,7 @@ yourPartnersAge.UNDER18 = Under 18
 yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
 yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
 yourPartnersAge.OVERTWENTYFOUR = 25 or over
-yourPartnersAge.error = You must tell the calculator what your partner’s age is
+yourPartnersAge.error = Select your partner’s age
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
 
 yourAge.title = What’s your age?
@@ -362,19 +369,19 @@ yourAge.UNDER18 = Under 18
 yourAge.EIGHTEENTOTWENTY = 18 to 20
 yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
 yourAge.OVERTWENTYFOUR = 25 or over
-yourAge.error = You must tell the calculator what your age is
+yourAge.error = Select your age
 yourAge.checkYourAnswersLabel = What’s your age?
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
-yourMinimumEarnings.error = You must answer yes if you will earn an average of more than £{0} a week
+yourMinimumEarnings.error = Select yes if you will earn an average of £{0} or more a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
-partnerMinimumEarnings.error = You must answer yes if your partner will earn an average of more than £{0} a week
+partnerMinimumEarnings.error = Select yes if your partner will earn an average of £{0} or more a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
 areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
@@ -405,19 +412,19 @@ yourSelfEmployed.error = You must select yes if you’ve been self-employed less
 
 yourMaximumEarnings.title = Will you earn more than £100,000 a year?
 yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
-yourMaximumEarnings.hint = This is your salary with any pension and gift aid contributions taken off.
+yourMaximumEarnings.hint = This is the total pay from all your jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
 yourMaximumEarnings.error = You must select yes if you will earn more than £100,000 a year
 yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
 partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
 partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
 partnerMaximumEarnings.hint = This is with any pension and gift aid contributions taken off.
-partnerMaximumEarnings.error = You must select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.error = Select yes if your partner will earn more than £100,000 a year
 partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
 
 eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
 eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
-eitherOfYouMaximumEarnings.error = You must select yes if either you or your partner will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.error = Select yes if either of you will earn more than £100,000 a year
 eitherOfYouMaximumEarnings.para1 = This is your salary with personal tax allowances, pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
@@ -426,7 +433,7 @@ taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
 taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
 taxOrUniversalCredits.uc = Universal Credit
 taxOrUniversalCredits.none = None of these
-taxOrUniversalCredits.error = You must tell the calculator if you get tax credits or Universal Credit
+taxOrUniversalCredits.error = Select if you get Tax Credits or Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
 
@@ -437,14 +444,14 @@ noOfChildren.error = You must enter a number that's not below 1 or above 19
 noOfChildren.required = You m
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
-maxFreeHoursInfo.title = It looks like you’re eligible for the maximum free hours
-maxFreeHoursInfo.heading = It looks like you’re eligible for the maximum free hours
-maxFreeHoursInfo.could.get.max.hours = Based on the information you’ve given so far, you’d be eligible for a maximum of 30 hours free early education and childcare a week in term time (1,160 hours a year) for your 3 or 4 year old.
-maxFreeHoursInfo.what.else.you.could.get = What else you could get
+maxFreeHoursInfo.title = You’re eligible for 30 hours free childcare
+maxFreeHoursInfo.heading = You’re eligible for 30 hours free childcare
+maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services.
+maxFreeHoursInfo.info = If you're here only to find out about 30 hours free childcare, you can read more information before applying for it.
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
 maxFreeHoursInfo.still.to.check = Still to check
-maxFreeHoursInfo.give.more.info = Give the calculator more information to see if you’re eligible for help from tax credits.
+maxFreeHoursInfo.give.more.info = You’re also eligible for Tax-Free Childcare, tax credits and childcare vouchers. Give the calculator more information to see how much you could get or save from these schemes.
 
 maxFreeHoursResult.title = maxFreeHoursResult
 maxFreeHoursResult.heading = maxFreeHoursResult
@@ -961,7 +968,7 @@ childApprovedEducation.heading = Is your child {0} in approved education or trai
 childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
 childApprovedEducation.error = You must answer yes if your child {0} is in approved education or training
 
-childRegisteredBlind.title = Is {0} registered blind?
+childRegisteredBlind.title = Is your child registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
 childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind

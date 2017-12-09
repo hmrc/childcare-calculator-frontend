@@ -35,7 +35,7 @@
 
     @helpers.form(action = WhatIsYourTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_text(InputViewModel[String]("value", form), label = messages("whatIsYourTaxCode.heading"), labelClass=Some("visually-hidden"))
+        @components.input_text(InputViewModel[String]("value", form), label = messages("whatIsYourTaxCode.heading"), hint = Some(messages("whatIsYourTaxCode.hint")), labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

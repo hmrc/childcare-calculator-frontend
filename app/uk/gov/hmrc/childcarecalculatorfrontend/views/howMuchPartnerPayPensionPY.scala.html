@@ -35,9 +35,8 @@
 
     @helpers.form(action = HowMuchPartnerPayPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>How much did your partner pay into their pension a month?</p>
-
-        @components.input_number(InputViewModel[BigDecimal]("value", form),
+        @components.input_number(
+            InputViewModel[BigDecimal]("value", form),
             currencySymbol=Some("true"),
             label = messages("howMuchPartnerPayPensionPY.heading"),
             labelClass=Some("visually-hidden"))
