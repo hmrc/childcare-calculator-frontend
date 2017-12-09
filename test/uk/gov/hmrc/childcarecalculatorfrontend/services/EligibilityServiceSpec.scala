@@ -39,23 +39,37 @@ class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutu
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  val utils = mock[Utils]
-  val taxCredits = mock[TaxCredits]
-  val connector = mock[EligibilityConnector]
+  val utils: Utils = mock[Utils]
+  val taxCredits: TaxCredits = mock[TaxCredits]
+  val connector: EligibilityConnector = mock[EligibilityConnector]
   implicit val hc = HeaderCarrier()
   implicit val ec = ExecutionContext
-  implicit val req = mock[Request[_]]
+  implicit val req: Request[_] = mock[Request[_]]
 
-  def eligibilityService = new EligibilityService(frontendAppConfig, utils, taxCredits, connector)
-  val todaysDate = LocalDate.now()
+  def eligibilityService: EligibilityService = new EligibilityService(frontendAppConfig, utils, taxCredits, connector)
+  val todaysDate: LocalDate = LocalDate.now()
 
   "EligibilityService" should {
 
-    "return a SchemeResults object when given minimum data" in {
-      val schemeResults = SchemeResults(Nil, false, false)
+    "return a SchemeResults object when given minimum data and no scheme eligible" in {
+      val schemeResults = SchemeResults(schemes = Nil)
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(connector.getEligibility(any())(any())) thenReturn Future(schemeResults)
+
+      val futureResult = eligibilityService.eligibility(answers)
+      whenReady(futureResult) { result =>
+        result mustBe schemeResults
+      }
+    }
+
+    "return a SchemeResults object when given minimum data" in {
+      val schemeResults = SchemeResults(schemes = Nil, tfcRollout = false, thirtyHrsRollout = true)
+      val answers = spy(userAnswers())
+
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.childAgedThreeOrFour) thenReturn Some(true)
       when(connector.getEligibility(any())(any())) thenReturn Future(schemeResults)
 
       val futureResult = eligibilityService.eligibility(answers)

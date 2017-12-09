@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
-import play.api.libs.json.{JsNumber, JsString, JsValue}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -32,11 +32,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  val utils = mock[Utils]
-  val taxCredits = mock[TaxCredits]
+  val utils: Utils = mock[Utils]
+  val taxCredits: TaxCredits = mock[TaxCredits]
 
-  def userAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
-  val todaysDate = LocalDate.now()
+  def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
+  val todaysDate: LocalDate = LocalDate.now()
 
   "UserAnswerToHousehold" must {
 
@@ -54,7 +54,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         id = 0,
         name = "Patrick",
         dob = todaysDate.minusYears(7),
-        disability = Some(Disability(true,true,true)),
+        disability = Some(Disability(disabled = true, severelyDisabled = true, blind = true)),
         childcareCost = Some(ChildCareCost(Some(200.0), Some(PeriodEnum.MONTHLY))),
         education = Some(Education(inEducation = true, startDate = Some(todaysDate.minusMonths(6)))))
 
@@ -70,9 +70,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("Patrick", todaysDate.minusYears(7)))
 
       when(answers.whichChildrenDisability) thenReturn Some(Set(0))
-      when(answers.whichDisabilityBenefits) thenReturn Some(Map(0-> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS,DisabilityBenefits.DISABILITY_BENEFITS)))
+      when(answers.whichDisabilityBenefits) thenReturn Some(Map(0-> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS, DisabilityBenefits.DISABILITY_BENEFITS)))
       when(answers.whichChildrenBlind) thenReturn Some(Set(0))
-
 
       userAnswerToHousehold.convert(answers) mustEqual household
     }
@@ -82,14 +81,14 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         id = 0,
         name = "Kamal",
         dob = todaysDate.minusYears(7),
-        disability = Some(Disability(true,true,false)),
+        disability = Some(Disability(disabled = true, severelyDisabled = true)),
         childcareCost = None,
         education = None)
       val child2 = Child(
         id = 1,
         name = "Jagan",
         dob = todaysDate.minusYears(2),
-        disability = Some(Disability(true,false,true)),
+        disability = Some(Disability(disabled = true, blind = true)),
         childcareCost = None,
         education = None)
 
@@ -102,7 +101,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("Jagan", todaysDate.minusYears(2)))
 
       when(answers.whichChildrenDisability) thenReturn Some(Set(0,1))
-      when(answers.whichDisabilityBenefits) thenReturn Some(Map(0-> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS,DisabilityBenefits.DISABILITY_BENEFITS),
+      when(answers.whichDisabilityBenefits) thenReturn Some(Map(0-> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS, DisabilityBenefits.DISABILITY_BENEFITS),
         1-> Set(DisabilityBenefits.DISABILITY_BENEFITS)))
       when(answers.whichChildrenBlind) thenReturn Some(Set(1))
 
@@ -133,7 +132,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         ageRange = Some(AgeEnum.OVERTWENTYFOUR),
         minimumEarnings = Some(MinimumEarnings(120.0)),
         maximumEarnings = Some(false),
-        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+        currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
       )
       val household = Household(location = Location.SCOTLAND, parent = parent)
       val answers = spy(userAnswers())
@@ -158,7 +157,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         ageRange = Some(AgeEnum.UNDER18),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))),
         maximumEarnings = Some(false),
-        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+        currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
       )
       val household = Household(location = Location.NORTHERN_IRELAND, parent = parent)
       val answers = spy(userAnswers())
@@ -184,7 +183,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         ageRange = Some(AgeEnum.OVERTWENTYFOUR),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED), selfEmployedIn12Months = Some(true))),
         maximumEarnings = Some(false),
-        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+        currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
       )
       val household = Household(location = Location.SCOTLAND, parent = parent)
       val answers = spy(userAnswers())
@@ -211,7 +210,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         ageRange = Some(AgeEnum.UNDER18),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = None)),
         maximumEarnings = Some(false),
-        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+        currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
       )
       val household = Household(location = Location.NORTHERN_IRELAND, parent = parent)
       val answers = spy(userAnswers())
@@ -237,8 +236,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
         minimumEarnings = Some(MinimumEarnings(112.0)),
         maximumEarnings = Some(true),
-        lastYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(21000.0)))),
-        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(72000.0))))
+        lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+        currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
       )
       val partner = Claimant(
         hours = Some(BigDecimal(46.0)),
@@ -246,7 +245,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
         minimumEarnings = Some(MinimumEarnings(89.0)),
         maximumEarnings = Some(false),
-        currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
+        currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
       )
       val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
       val answers = spy(userAnswers())
