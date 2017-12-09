@@ -22,9 +22,12 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
 import uk.gov.hmrc.childcarecalculatorfrontend.services.SubmissionService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+
+import scala.concurrent.Future
 
 @Singleton
 class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
@@ -35,13 +38,13 @@ class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
 
-    eligibilityService.eligibility(request.userAnswers).map {
+    val schemesResult: Future[SchemeResults] = eligibilityService.eligibility(request.userAnswers).map {
       results => {
         println(s"*******RESULTS>>>>>>>>$results")
         results
       }
     }
 
-    Ok(maxFreeHoursResult(appConfig))
+    Ok(result(appConfig, schemesResult))
   }
 }

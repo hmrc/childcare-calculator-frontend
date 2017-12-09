@@ -1026,11 +1026,9 @@ whoGotStatutoryPay.partner = Partner
 whoGotStatutoryPay.both = Both
 whoGotStatutoryPay.error = You must tell the calculator who got statutory pay
 
-
 youStatutoryPay.title = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.heading = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April 2016?
-
 
 statutoryPay.guidance = Statutory pay is:
 statutoryPay.li.maternity = maternity
@@ -1042,7 +1040,6 @@ statutoryPay.guidance_extra = This could also be if you started to get the pay b
 bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
-
 
 partnerStatutoryPay.title = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April 2016?
@@ -1110,4 +1107,7 @@ partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week 
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 
+result.title = What help you could get with your childcare
+result.heading = What help you could get with your childcare
+result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 

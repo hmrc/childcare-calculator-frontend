@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import com.google.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
@@ -33,7 +34,7 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
                                           utils: Utils,
                                           freeHours: FreeHours) extends FrontendController with I18nSupport {
 
-  def onPageLoad() = (getData andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
 
       val location = utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
