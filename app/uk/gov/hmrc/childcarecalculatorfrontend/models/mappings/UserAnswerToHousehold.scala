@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
@@ -129,6 +130,17 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
+  private def stringToAgeEnum(x: Option[String]): Option[AgeEnum] = x match {
+    case Some(x) =>
+      x.toUpperCase match {
+        case "UNDER18" => Some(AgeEnum.UNDER18)
+        case "EIGHTEENTOTWENTY" => Some(AgeEnum.EIGHTEENTOTWENTY)
+        case "TWENTYONETOTWENTYFOUR" => Some(AgeEnum.TWENTYONETOTWENTYFOUR)
+        case "OVERTWENTYFOUR" => Some(AgeEnum.OVERTWENTYFOUR)
+      }
+    case _ => None
+  }
+
   private def createClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
     val hours = if (isParent) answers.parentWorkHours else answers.partnerWorkHours
     val benefits = if (isParent) answers.whichBenefitsYouGet else answers.whichBenefitsPartnerGet
@@ -153,7 +165,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       escVouchers = vouchers,
       lastYearlyIncome = getLastYearIncome(isParent, answers, taxCode, statPay),
       currentYearlyIncome = getCurrentYearIncome(isParent, answers, taxCode, statPay),
-      ageRange = age,
+      ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
       maximumEarnings = maxEarnings
     )

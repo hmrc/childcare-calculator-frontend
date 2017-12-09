@@ -130,7 +130,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.NO),
-        ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
+        ageRange = Some(AgeEnum.OVERTWENTYFOUR),
         minimumEarnings = Some(MinimumEarnings(120.0)),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
@@ -155,7 +155,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.YES),
-        ageRange = Some(AgeEnum.UNDER18.toString),
+        ageRange = Some(AgeEnum.UNDER18),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE.toString))),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
@@ -181,7 +181,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.YES),
-        ageRange = Some(AgeEnum.OVERTWENTYFOUR.toString),
+        ageRange = Some(AgeEnum.OVERTWENTYFOUR),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED.toString), selfEmployedIn12Months = Some(true))),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
@@ -208,7 +208,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       val parent = Claimant(
         hours = Some(BigDecimal(54.9)),
         escVouchers = Some(YesNoUnsureEnum.YES),
-        ageRange = Some(AgeEnum.UNDER18.toString),
+        ageRange = Some(AgeEnum.UNDER18),
         minimumEarnings = Some(MinimumEarnings(employmentStatus = None)),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))
@@ -234,7 +234,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       val parent = Claimant(
         hours = Some(BigDecimal(32.1)),
         escVouchers = Some(YesNoUnsureEnum.NOTSURE),
-        ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString),
+        ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
         minimumEarnings = Some(MinimumEarnings(112.0)),
         maximumEarnings = Some(true),
         lastYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(21000.0)))),
@@ -243,7 +243,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       val partner = Claimant(
         hours = Some(BigDecimal(46.0)),
         escVouchers = Some(YesNoUnsureEnum.YES),
-        ageRange = Some(AgeEnum.EIGHTEENTOTWENTY.toString),
+        ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
         minimumEarnings = Some(MinimumEarnings(89.0)),
         maximumEarnings = Some(false),
         currentYearlyIncome = Some(Income(employmentIncome=Some(BigDecimal(32000.0))))

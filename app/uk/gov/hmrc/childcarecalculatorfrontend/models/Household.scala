@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
@@ -139,7 +140,7 @@ object Child {
 }
 
 case class Claimant(
-                     ageRange: Option[String] = None, //TODO - convert to AgeRangeEnum type
+                     ageRange: Option[AgeEnum] = None,
                      benefits: Option[Benefits] = None,
                      lastYearlyIncome: Option[Income] = None,
                      currentYearlyIncome: Option[Income] = None,
