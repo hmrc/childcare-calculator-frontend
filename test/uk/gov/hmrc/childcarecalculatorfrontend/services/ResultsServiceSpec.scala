@@ -44,7 +44,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         val resultService = new ResultsService(eligibilityService, answers)
         val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
 
-        values mustBe Some(ResultsViewModel(Some(500)))
+        values mustBe ResultsViewModel(Some(500))
       }
     }
 
@@ -60,7 +60,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         val resultService = new ResultsService(eligibilityService,answers)
         val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
 
-        values mustBe Some(ResultsViewModel(None))
+        values mustBe ResultsViewModel(None)
       }
     }
   }

@@ -27,13 +27,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ResultsService @Inject()(eligibilityService: EligibilityService, answers: UserAnswers) {
-  def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[Option[ResultsViewModel]] = {
-
+  def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
     val result = eligibilityService.eligibility(answers)
 
     result.map(results => {
-      val baseResult = Some(ResultsViewModel())
-      results.schemes.foldLeft(baseResult)((result, scheme) => {
+      results.schemes.foldLeft(ResultsViewModel())((result, scheme) => {
         scheme.name match {
           case SchemeEnum.TCELIGIBILITY => setTCSchemeInViewModel(scheme, result)
         }
@@ -41,12 +39,12 @@ class ResultsService @Inject()(eligibilityService: EligibilityService, answers: 
     })
   }
 
-  private def setTCSchemeInViewModel(scheme: Scheme, resultViewModel: Option[ResultsViewModel]) = {
+  private def setTCSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel): ResultsViewModel = {
     if (scheme.amount > 0) {
-      Some(resultViewModel.get.copy(tc = Some(scheme.amount)))
+      resultViewModel.copy(tc = Some(scheme.amount))
     }
     else {
-      Some(resultViewModel.get.copy(tc = None))
+      resultViewModel.copy(tc = None)
     }
   }
 }
