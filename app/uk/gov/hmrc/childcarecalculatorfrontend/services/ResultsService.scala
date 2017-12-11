@@ -44,7 +44,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService, answers: 
       resultViewModel.copy(tc = Some(scheme.amount))
     }
     else {
-      resultViewModel.copy(tc = None)
+      resultViewModel
     }
   }
 }
