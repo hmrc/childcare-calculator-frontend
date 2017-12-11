@@ -16,15 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
+import javax.inject.Inject
+
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Scheme, SchemeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ResultsService(eligibilityService: EligibilityService, answers: UserAnswers) {
+class ResultsService @Inject()(eligibilityService: EligibilityService, answers: UserAnswers) {
   def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[Option[ResultsViewModel]] = {
 
     val result = eligibilityService.eligibility(answers)
