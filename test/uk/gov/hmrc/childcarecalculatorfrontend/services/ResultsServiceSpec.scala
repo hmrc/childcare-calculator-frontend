@@ -36,7 +36,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
       }
     }
 
-    "Return None" when {
+    "Return View Model with TC None" when {
       "It is not eligible for TC scheme" in {
         val scheme = Scheme(name = SchemeEnum.TCELIGIBILITY,0,None,Some(TaxCreditsEligibility(true,true)))
         val schemeResults = SchemeResults(List(scheme))
