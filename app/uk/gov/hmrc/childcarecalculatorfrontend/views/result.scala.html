@@ -19,9 +19,9 @@
 @(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("maxFreeHoursResult.title"),
+    title = messages("result.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
-    <h1 class="heading-xlarge">@messages("maxFreeHoursResult.heading")</h1>
+    <h1 class="heading-xlarge">@messages("result.heading")</h1>
 }

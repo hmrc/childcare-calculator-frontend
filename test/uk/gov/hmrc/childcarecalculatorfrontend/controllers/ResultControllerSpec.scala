@@ -27,9 +27,9 @@ class ResultControllerSpec extends ControllerSpecBase {
 
   "Result Controller" must {
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad()(fakeRequest)
-      status(result) mustBe OK
-      contentAsString(result) mustBe result(frontendAppConfig)(fakeRequest, messages).toString
+      val resultPage = controller().onPageLoad()(fakeRequest)
+      status(resultPage) mustBe OK
+      contentAsString(resultPage) mustBe result(frontendAppConfig)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
