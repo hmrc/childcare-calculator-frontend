@@ -89,7 +89,7 @@ object Disability {
   def populateFromRawData(currentChildIndex: Int, disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
    disabilities.map(childrenWithDisabilities => checkIfChildHasDisabilities(currentChildIndex, blindChildren, childrenWithDisabilities)) match {
      case Some(Disability(false,false,false)) => None
-     case disabilities => disabilities
+     case childDisabilities => childDisabilities
    }
   }
 
