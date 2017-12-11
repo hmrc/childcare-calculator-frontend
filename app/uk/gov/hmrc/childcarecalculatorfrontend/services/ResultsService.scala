@@ -60,28 +60,18 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
 
     freeHoursEligibility match {
       case Eligible if maxFreeHoursEligibility == Eligible => resultViewModel.copy(freeHours = Some(eligibleMaxFreeHours))
-      case Eligible =>  {
-        if(location.contains(Location.ENGLAND)) {
-          resultViewModel.copy(freeHours = Some(freeHoursForEngland))
-        } else if(location.contains(Location.SCOTLAND)) {
-          resultViewModel.copy(freeHours = Some(freeHoursForScotland))
-        } else if(location.contains(Location.WALES)) {
-          resultViewModel.copy(freeHours = Some(freeHoursForWales))
-        } else {
-          resultViewModel.copy(freeHours = Some(freeHoursForNI))
-        }
-      }
+      case Eligible =>  getFreeHoursForLocation(location, resultViewModel)
       case _ => resultViewModel
 
     }
   }
 
-  private def setFreeHoursForLocation(location: Location.Value, resultViewModel: ResultsViewModel)  =
-    location match {
-      case Location.ENGLAND => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
-      case Location.SCOTLAND => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
-      case Location.WALES => resultViewModel.copy(freeHours = Some(freeHoursForWales))
-      case _ => resultViewModel.copy(freeHours = Some(freeHoursForNI))
+  private def getFreeHoursForLocation(optionLocation: Option[Location.Value], resultViewModel: ResultsViewModel)  =
+    optionLocation.fold(resultViewModel){
+          case Location.ENGLAND => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
+          case Location.SCOTLAND => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
+          case Location.WALES => resultViewModel.copy(freeHours = Some(freeHoursForWales))
+          case _ => resultViewModel.copy(freeHours = Some(freeHoursForNI))
     }
 
 }
