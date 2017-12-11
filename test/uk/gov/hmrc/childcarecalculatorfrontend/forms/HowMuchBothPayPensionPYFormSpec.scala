@@ -29,8 +29,12 @@ class HowMuchBothPayPensionPYFormSpec extends FormBehaviours {
   val form = HowMuchBothPayPensionPYForm()
 
   "HowMuchBothPayPensionPY form" must {
-    behave like questionForm(HowMuchBothPayPensionPY("1", "2"))
+    behave like questionForm(HowMuchBothPayPensionPY(1, 2))
 
-    behave like formWithMandatoryTextFields("howMuchYouPayPensionPY", "howMuchPartnerPayPensionPY")
+    behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchYouPayPensionPY",
+      "howMuchYouPayPensionPY.required", "howMuchYouPayPensionPY.required")
+
+    behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchPartnerPayPensionPY",
+      "howMuchPartnerPayPensionPY.required", "howMuchPartnerPayPensionPY.required")
   }
 }

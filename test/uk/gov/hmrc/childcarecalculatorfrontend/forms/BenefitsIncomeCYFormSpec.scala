@@ -29,8 +29,12 @@ class BenefitsIncomeCYFormSpec extends FormBehaviours {
   val form = BenefitsIncomeCYForm()
 
   "BenefitsIncomeCY form" must {
-    behave like questionForm(BenefitsIncomeCY("1", "2"))
+    behave like questionForm(BenefitsIncomeCY(1, 2))
 
-    behave like formWithMandatoryTextFields("parentBenefitsIncome", "partnerBenefitsIncome")
+    behave like formWithMandatoryTextFieldWithErrorMsgs("parentBenefitsIncome",
+      "parentBenefitsIncome.required", "parentBenefitsIncome.required")
+
+    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerBenefitsIncome",
+      "partnerBenefitsIncome.required", "partnerBenefitsIncome.required")
   }
 }
