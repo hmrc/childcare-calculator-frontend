@@ -41,6 +41,9 @@ class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, t
 
     val household = userAnswerToHousehold.convert(answers)
 
+
+    println(s"*******HOUSEHOLD>>>>>>>>${household.toString}")
+
     connector.getEligibility(household).map {
       results => {
         results
