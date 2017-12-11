@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.views
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
-
-class MaxFreeHoursResultViewSpec extends ViewBehaviours {
-
-  def view = () => maxFreeHoursResult(frontendAppConfig)(fakeRequest, messages)
-
-  "MaxFreeHoursResult view" must {
-
-    behave like normalPage(view, "maxFreeHoursResult")
-  }
+case object ResultId extends Identifier {
+  override def toString: String = "result"
 }
