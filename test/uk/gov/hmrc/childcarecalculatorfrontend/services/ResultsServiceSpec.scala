@@ -21,7 +21,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
   "Result Service" must {
-    "Return TC values" when {
+    "Return View Model with TC values" when {
       "It is eligible" in {
         val scheme = Scheme(name = SchemeEnum.TCELIGIBILITY,500,None,Some(TaxCreditsEligibility(true,true)))
         val schemeResults = SchemeResults(List(scheme))
@@ -30,9 +30,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService, answers)
-        val values = Await.result(resultService.getTCValues(),Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
 
-        values.get mustBe 500
+        values mustBe Some(ResultsViewModel(Some(500)))
       }
     }
 
@@ -46,9 +46,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,answers)
-        val values = Await.result(resultService.getTCValues(),Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
 
-        values mustBe empty
+        values mustBe Some(ResultsViewModel(None))
       }
     }
   }
@@ -56,7 +56,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
   val eligibilityService = mock[EligibilityService]
 
   class ResultsService(eligibilityService: EligibilityService, answers: UserAnswers) {
-    def getTCValues()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier) : Future[Option[BigDecimal]] = {
+    def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier) : Future[Option[ResultsViewModel]] = {
 
       val result = eligibilityService.eligibility(answers)
 
@@ -65,10 +65,10 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         scheme match {
           case Some(scheme) => {
             if (scheme.amount > 0) {
-              Some(scheme.amount)
+              Some(ResultsViewModel(Some(scheme.amount)))
             }
             else{
-              None
+              Some(ResultsViewModel())
             }
           }
           case _ => None
@@ -76,6 +76,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
       })
     }
   }
+
+  case class ResultsViewModel(tc: Option[BigDecimal] = None)
 }
 
 
