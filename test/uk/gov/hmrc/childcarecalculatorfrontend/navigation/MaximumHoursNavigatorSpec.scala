@@ -415,8 +415,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false) thenReturn Some(true)
       when(schemes.allSchemesDetermined(any())) thenReturn true thenReturn true
 
-      navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustEqual routes.MaxFreeHoursResultController.onPageLoad()
-      navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+      navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
+      navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
     }
 
     "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" in {
@@ -459,7 +459,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
        when(schemes.allSchemesDetermined(any())) thenReturn true
        val result = navigator(schemes).nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
-       result mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+       result mustEqual routes.ResultController.onPageLoad()
     }
 
     "go to 'Session expired' when there is no answer for 'Do you get any benefits" in {
@@ -709,7 +709,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(schemes.allSchemesDetermined(any())) thenReturn true
 
       val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+      result mustEqual routes.ResultController.onPageLoad()
     }
 
     "redirect to `Max free hours result` when all schemes are determined and user has a partner" in {
@@ -719,7 +719,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(schemes.allSchemesDetermined(any())) thenReturn true
 
       val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+      result mustEqual routes.ResultController.onPageLoad()
     }
 
     "redirect to `SessionExpired` when `doYouLiveWithPartner` is undefined" in {
@@ -775,7 +775,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val schemes = mock[Schemes]
       when(schemes.allSchemesDetermined(any())) thenReturn true
       val result = navigator(schemes).nextPage(WhichBenefitsPartnerGetId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+      result mustEqual routes.ResultController.onPageLoad()
     }
   }
 
@@ -1215,7 +1215,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(taxCredits.eligibility(any())) thenReturn NotEligible
       when(tfc.eligibility(any())) thenReturn NotEligible
       val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+      result mustEqual routes.ResultController.onPageLoad()
     }
 
     "redirect to `Max Hours Info` if the user is eligible for Max Free Hours and Tax Credits and TFC" in {
@@ -1246,7 +1246,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(taxCredits.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn NotEligible
       val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursResultController.onPageLoad()
+      result mustEqual routes.ResultController.onPageLoad()
     }
 
     "redirect to `Max Hours Info` if the user is eligible for Max Free Hours and TFC, but not Tax Credits" in {

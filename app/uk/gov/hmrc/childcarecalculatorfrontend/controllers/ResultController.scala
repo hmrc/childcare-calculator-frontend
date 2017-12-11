@@ -23,15 +23,15 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
 @Singleton
-class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
+class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(maxFreeHoursResult(appConfig))
+    Ok(result(appConfig))
   }
 }
