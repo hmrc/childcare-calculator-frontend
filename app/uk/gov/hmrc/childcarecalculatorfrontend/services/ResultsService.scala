@@ -31,37 +31,17 @@ class ResultsService @Inject()(eligibilityService: EligibilityService, answers: 
     val result = eligibilityService.eligibility(answers)
 
     result.map(results => {
-      results.schemes.foldLeft(ResultsViewModel())((result, scheme) => {
-        scheme.name match {
-          case SchemeEnum.TCELIGIBILITY => setTCSchemeInViewModel(scheme, result)
-          case SchemeEnum.TFCELIGIBILITY => setTFCSchemeInViewModel(scheme, result)
-          case SchemeEnum.ESCELIGIBILITY => setESCSchemeInViewModel(scheme, result)
-        }
-      })
+      results.schemes.foldLeft(ResultsViewModel())((result, scheme) => setSchemeInViewModel(scheme,result))
     })
   }
 
-  private def setTCSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel): ResultsViewModel = {
+  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
-      resultViewModel.copy(tc = Some(scheme.amount))
-    }
-    else {
-      resultViewModel
-    }
-  }
-
-  private def setTFCSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel): ResultsViewModel = {
-    if (scheme.amount > 0) {
-      resultViewModel.copy(tfc = Some(scheme.amount))
-    }
-    else {
-      resultViewModel
-    }
-  }
-
-  private def setESCSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel): ResultsViewModel = {
-    if (scheme.amount > 0) {
-      resultViewModel.copy(esc = Some(scheme.amount))
+      scheme.name match {
+        case SchemeEnum.TCELIGIBILITY => resultViewModel.copy(tc = Some(scheme.amount))
+        case SchemeEnum.TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
+        case SchemeEnum.ESCELIGIBILITY =>resultViewModel.copy(esc = Some(scheme.amount))
+      }
     }
     else {
       resultViewModel
