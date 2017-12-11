@@ -25,7 +25,7 @@ class DisabilitySpec extends PlaySpec {
       "There is no disabilities" in {
          val mappedDisability = Disability.populateFromRawData(1,None,None)
 
-        mappedDisability mustBe None
+         mappedDisability mustBe None
       }
     }
 
