@@ -63,6 +63,38 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         values mustBe ResultsViewModel(None)
       }
     }
+
+    "Return View Model with TFC values" when {
+      "It is eligible" in {
+        val scheme = Scheme(name = SchemeEnum.TFCELIGIBILITY,500,None,None)
+        val schemeResults = SchemeResults(List(scheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService, answers)
+        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
+
+        values mustBe ResultsViewModel(tc = None, tfc = Some(500))
+      }
+    }
+
+    "Return View Model with TFC as None" when {
+      "It is not eligible for TC scheme" in {
+        val scheme = Scheme(name = SchemeEnum.TFCELIGIBILITY,0,None,None)
+        val schemeResults = SchemeResults(List(scheme))
+        val answers = spy(userAnswers())
+
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,answers)
+        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
+
+        values mustBe ResultsViewModel(None)
+      }
+    }
+
   }
 
   val eligibilityService = mock[EligibilityService]
