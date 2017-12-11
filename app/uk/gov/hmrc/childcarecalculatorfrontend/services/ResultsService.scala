@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Scheme, SchemeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
-
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -30,17 +30,15 @@ class ResultsService @Inject()(eligibilityService: EligibilityService, answers: 
   def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
     val result = eligibilityService.eligibility(answers)
 
-    result.map(results => {
-      results.schemes.foldLeft(ResultsViewModel())((result, scheme) => setSchemeInViewModel(scheme,result))
-    })
+    result.map(results => results.schemes.foldLeft(ResultsViewModel())((result, scheme) => setSchemeInViewModel(scheme,result)))
   }
 
   private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case SchemeEnum.TCELIGIBILITY => resultViewModel.copy(tc = Some(scheme.amount))
-        case SchemeEnum.TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
-        case SchemeEnum.ESCELIGIBILITY =>resultViewModel.copy(esc = Some(scheme.amount))
+        case TCELIGIBILITY => resultViewModel.copy(tc = Some(scheme.amount))
+        case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
+        case ESCELIGIBILITY =>resultViewModel.copy(esc = Some(scheme.amount))
       }
     }
     else {
