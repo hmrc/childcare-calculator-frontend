@@ -18,11 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Scheme, SchemeEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Scheme
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
