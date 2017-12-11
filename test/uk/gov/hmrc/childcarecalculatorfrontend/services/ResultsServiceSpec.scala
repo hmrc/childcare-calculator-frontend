@@ -61,18 +61,19 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
       val result = eligibilityService.eligibility(answers)
 
       result.map(results => {
-        val scheme: Option[Scheme] = results.schemes.find(scheme=> scheme.name == SchemeEnum.TCELIGIBILITY)
-        scheme match {
-          case Some(scheme) => {
-            if (scheme.amount > 0) {
-              Some(ResultsViewModel(Some(scheme.amount)))
-            }
-            else{
-              Some(ResultsViewModel())
+        val test2 : Option[ResultsViewModel] = Some(ResultsViewModel())
+        results.schemes.foldLeft(test2)((result, scheme) => {
+          scheme.name match {
+            case SchemeEnum.TCELIGIBILITY => {
+              if (scheme.amount > 0) {
+                Some(result.get.copy(tc =Some(scheme.amount)))
+              }
+              else{
+                Some(result.get.copy(tc =None))
+              }
             }
           }
-          case _ => None
-        }
+        })
       })
     }
   }
