@@ -235,9 +235,9 @@ hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been ad
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.info = It would be adjusted if they have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, they’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.yes = Yes
-hasYourPartnersTaxCodeBeenAdjusted.no = No
-hasYourPartnersTaxCodeBeenAdjusted.notSure = Not sure
+hasYourPartnersTaxCodeBeenAdjusted.YES = Yes
+hasYourPartnersTaxCodeBeenAdjusted.NO = No
+hasYourPartnersTaxCodeBeenAdjusted.NOTSURE = Not sure
 hasYourPartnersTaxCodeBeenAdjusted.error = Select yes if your partner’s tax code has been adjusted
 
 doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
@@ -269,9 +269,9 @@ partnerChildcareVouchers.error = You must tell the calculator if your partner's 
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
-eitherGetsVouchers.yes = Yes
-eitherGetsVouchers.no = No
-eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.YES = Yes
+eitherGetsVouchers.NO = No
+eitherGetsVouchers.NOTSURE = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
