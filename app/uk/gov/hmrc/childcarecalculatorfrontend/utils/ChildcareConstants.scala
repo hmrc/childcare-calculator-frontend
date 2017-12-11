@@ -37,6 +37,12 @@ object ChildcareConstants {
   val lastMonthOfTaxYear = 4
   val lastDayOfTaxYear = 5
 
+  val freeHoursForEngland = 15
+  val freeHoursForScotland = 16
+  val freeHoursForWales = 10
+  val freeHoursForNI = 12.5
+  val eligibleMaxFreeHours = 30
+
   val unknownErrorKey = "error.unknown"
 
   val locationErrorKey = "location.error"
