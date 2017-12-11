@@ -23,10 +23,11 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.JsValue
 import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Scheme, SchemeEnum, SchemeResults, TaxCreditsEligibility}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
+
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
@@ -42,7 +43,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService, answers)
-        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
 
         values mustBe ResultsViewModel(Some(500))
       }
@@ -57,14 +58,14 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,answers)
-        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
 
         values mustBe ResultsViewModel(None)
       }
     }
 
     "Return View Model with TFC values" when {
-      "It is eligible" in {
+      "It is eligible for TFC scheme" in {
         val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true,true)))
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme))
@@ -73,7 +74,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService, answers)
-        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = Some(500))
       }
@@ -89,9 +90,45 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,answers)
-        val values = Await.result(resultService.getResultsViewModel(),Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None)
+      }
+    }
+
+    "Return View Model with ESC values" when {
+      "It is eligible for ESC scheme" in {
+        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true,true)))
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
+        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)) , None)
+
+        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService, answers)
+        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+
+        values mustBe ResultsViewModel(tc = Some(500), tfc = Some(500), esc = Some(600))
+      }
+    }
+
+    "Return View Model with ESC as None" when {
+      "It is not eligible for ESC scheme" in {
+        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true,true)))
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
+
+        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,answers)
+        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+
+        values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None)
       }
     }
 

@@ -35,6 +35,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService, answers: 
         scheme.name match {
           case SchemeEnum.TCELIGIBILITY => setTCSchemeInViewModel(scheme, result)
           case SchemeEnum.TFCELIGIBILITY => setTFCSchemeInViewModel(scheme, result)
+          case SchemeEnum.ESCELIGIBILITY => setESCSchemeInViewModel(scheme, result)
         }
       })
     })
@@ -52,6 +53,15 @@ class ResultsService @Inject()(eligibilityService: EligibilityService, answers: 
   private def setTFCSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel): ResultsViewModel = {
     if (scheme.amount > 0) {
       resultViewModel.copy(tfc = Some(scheme.amount))
+    }
+    else {
+      resultViewModel
+    }
+  }
+
+  private def setESCSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel): ResultsViewModel = {
+    if (scheme.amount > 0) {
+      resultViewModel.copy(esc = Some(scheme.amount))
     }
     else {
       resultViewModel
