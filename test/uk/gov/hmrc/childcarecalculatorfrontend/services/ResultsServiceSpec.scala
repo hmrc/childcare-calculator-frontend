@@ -56,25 +56,27 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
   val eligibilityService = mock[EligibilityService]
 
   class ResultsService(eligibilityService: EligibilityService, answers: UserAnswers) {
-    def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier) : Future[Option[ResultsViewModel]] = {
+    def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[Option[ResultsViewModel]] = {
 
       val result = eligibilityService.eligibility(answers)
 
       result.map(results => {
-        val test2 : Option[ResultsViewModel] = Some(ResultsViewModel())
-        results.schemes.foldLeft(test2)((result, scheme) => {
+        val baseResult = Some(ResultsViewModel())
+        results.schemes.foldLeft(baseResult)((result, scheme) => {
           scheme.name match {
-            case SchemeEnum.TCELIGIBILITY => {
-              if (scheme.amount > 0) {
-                Some(result.get.copy(tc =Some(scheme.amount)))
-              }
-              else{
-                Some(result.get.copy(tc =None))
-              }
-            }
+            case SchemeEnum.TCELIGIBILITY => setTCSchemeInViewModel(scheme, result)
           }
         })
       })
+    }
+
+    private def setTCSchemeInViewModel(scheme: Scheme, resultViewModel: Option[ResultsViewModel]) = {
+      if (scheme.amount > 0) {
+        Some(resultViewModel.get.copy(tc = Some(scheme.amount)))
+      }
+      else {
+        Some(resultViewModel.get.copy(tc = None))
+      }
     }
   }
 
