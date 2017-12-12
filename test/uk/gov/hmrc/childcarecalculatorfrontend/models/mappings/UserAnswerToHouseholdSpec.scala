@@ -159,7 +159,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           ageRange = Some(AgeEnum.UNDER18),
           minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))),
           maximumEarnings = Some(false),
-          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            pension = Some(BigDecimal(200.0))
+            )
+          )
         )
         val household = Household(location = Location.NORTHERN_IRELAND, parent = parent)
         val answers = spy(userAnswers())
@@ -173,6 +177,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(EmploymentStatusEnum.APPRENTICE.toString)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(200.0))
         when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
 
         userAnswerToHousehold.convert(answers) mustEqual household
