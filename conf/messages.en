@@ -61,7 +61,7 @@ checkYourAnswers.guidance = Guidance for check your answers
 
 whatToTellTheCalculator.title = What you’ll need
 whatToTellTheCalculator.heading = What you’ll need
-whatToTellTheCalculator.guidance = You’ll need to know information for this year about you and your partner (if you have one). You may be asked the same information for the previous year, including:
+whatToTellTheCalculator.guidance = You’ll need to know information for this year about you and your partner (if you have one). You may be asked the same questions for the previous year, including:
 whatToTellTheCalculator.li.benefits = how much your family gets in benefits
 whatToTellTheCalculator.li.pay = your working hours and how much you get paid
 whatToTellTheCalculator.li.childvouchers = if your employer offers childcare vouchers
