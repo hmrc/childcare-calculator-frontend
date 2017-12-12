@@ -32,9 +32,13 @@ class EmploymentIncomePYFormSpec extends FormBehaviours {
   val form = new EmploymentIncomePYForm(frontendAppConfig).apply()
 
   "EmploymentIncomePY form" must {
-    behave like questionForm(EmploymentIncomePY("1", "2"))
+    behave like questionForm(EmploymentIncomePY(1, 2))
 
-    behave like formWithMandatoryTextFields("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+    behave like formWithMandatoryTextFieldWithErrorMsgs("parentEmploymentIncomePY",
+      "parentEmploymentIncomePY.required", "parentEmploymentIncomePY.required")
+
+    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerEmploymentIncomePY",
+      "partnerEmploymentIncomePY.required", "partnerEmploymentIncomePY.required")
 
     behave like formWithDecimalField("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
 

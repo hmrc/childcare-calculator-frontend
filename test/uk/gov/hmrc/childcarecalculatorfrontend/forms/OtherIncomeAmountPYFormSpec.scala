@@ -26,15 +26,19 @@ class OtherIncomeAmountPYFormSpec extends FormBehaviours {
     "partnerOtherIncomeAmountPY" -> "2"
   )
 
-  override val maxValue: BigDecimal = 999999.99
-  override val minValue: BigDecimal = 0
+  override val maxValue: BigDecimal = 100000
+  override val minValue: BigDecimal = 1
 
   val form = new OtherIncomeAmountPYForm(frontendAppConfig).apply()
 
   "OtherIncomeAmountPY form" must {
-    behave like questionForm(OtherIncomeAmountPY("1", "2"))
+    behave like questionForm(OtherIncomeAmountPY(1, 2))
 
-    behave like formWithMandatoryTextFields("parentOtherIncomeAmountPY", "partnerOtherIncomeAmountPY")
+    behave like formWithMandatoryTextFieldWithErrorMsgs("parentOtherIncomeAmountPY",
+      "parentOtherIncomeAmountPY.required", "parentOtherIncomeAmountPY.required")
+
+    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerOtherIncomeAmountPY",
+      "partnerOtherIncomeAmountPY.required", "partnerOtherIncomeAmountPY.required")
 
     behave like formWithDecimalField("parentOtherIncomeAmountPY", "partnerOtherIncomeAmountPY")
 
