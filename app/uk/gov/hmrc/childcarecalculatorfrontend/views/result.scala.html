@@ -25,5 +25,5 @@
     bodyClasses = None) {
 
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
-    <p>@model.freeHours.fold(BigDecimal(0))(identity)</p>
+    <p>@model.freeHours.getOrElse("Not entitled to free hours")</p>
 }

@@ -21,11 +21,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
 class ResultViewSpec extends ViewBehaviours {
-
-  def view = () => result(frontendAppConfig,ResultsViewModel())(fakeRequest, messages)
-
+  
   "Result view" must {
 
-    behave like normalPage(view, "result")
+    behave like normalPage(() => result(frontendAppConfig,ResultsViewModel())(fakeRequest, messages), "result")
+
+    "Contain results" when {
+      "We have free hours value" in {
+        val model = ResultsViewModel(freeHours = Some(15))
+        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "15")
+      }
+
+      "We don't have free hours value" in {
+        val model = ResultsViewModel(freeHours = None)
+        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "Not entitled to free hours")
+      }
+    }
   }
 }
