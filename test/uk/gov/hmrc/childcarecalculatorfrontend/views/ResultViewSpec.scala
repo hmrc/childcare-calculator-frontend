@@ -40,6 +40,61 @@ class ResultViewSpec extends ViewBehaviours {
 
         assertContainsMessages(view, "Not entitled to free hours")
       }
+
+      "User is eligible for TC scheme" in {
+        val model = ResultsViewModel(tc = Some(500))
+        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "500")
+      }
+
+      "User is not eligible for TC scheme" in {
+        val modelWithNoneValue = ResultsViewModel(tc = None)
+        val modelWithTCValueZero = ResultsViewModel(tc = Some(0))
+
+        val viewWithNoneValue = asDocument(result(frontendAppConfig, modelWithNoneValue)(fakeRequest, messages))
+        val viewWithTCValueZero = asDocument(result(frontendAppConfig, modelWithTCValueZero)(fakeRequest, messages))
+
+        assertContainsMessages(viewWithNoneValue, "Not entitled for TC scheme")
+        assertContainsMessages(viewWithTCValueZero, "Not entitled for TC scheme")
+      }
+
+      "User is eligible for TFC scheme" in {
+        val model = ResultsViewModel(tfc = Some(600))
+        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "600")
+      }
+
+      "User is not eligible for TFC scheme" in {
+        val modelWithNoneValue = ResultsViewModel(tfc = None)
+        val modelWithTFCValueZero = ResultsViewModel(tfc = Some(0))
+
+        val viewWithNoneValue = asDocument(result(frontendAppConfig, modelWithNoneValue)(fakeRequest, messages))
+        val viewWithTFCValueZero = asDocument(result(frontendAppConfig, modelWithTFCValueZero)(fakeRequest, messages))
+
+        assertContainsMessages(viewWithNoneValue, "Not entitled for TFC scheme")
+        assertContainsMessages(viewWithTFCValueZero, "Not entitled for TFC scheme")
+      }
+
+      "User is eligible for ESC scheme" in {
+        val model = ResultsViewModel(esc = Some(1000))
+        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "1000")
+      }
+
+      "User is not eligible for ESC scheme" in {
+        val modelWithNoneValue = ResultsViewModel(esc = None)
+        val modelWithESCValueZero = ResultsViewModel(esc = Some(0))
+
+        val viewWithNoneValue = asDocument(result(frontendAppConfig, modelWithNoneValue)(fakeRequest, messages))
+        val viewWithESCValueZero = asDocument(result(frontendAppConfig, modelWithESCValueZero)(fakeRequest, messages))
+
+        assertContainsMessages(viewWithNoneValue, "Not entitled for ESC scheme")
+        assertContainsMessages(viewWithESCValueZero, "Not entitled for ESC scheme")
+      }
+
     }
   }
 }

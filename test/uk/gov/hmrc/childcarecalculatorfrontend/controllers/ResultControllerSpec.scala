@@ -32,7 +32,7 @@ import scala.concurrent.Future
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
-                 resultService: ResultsService) =
+                 resultService: ResultsService): ResultController =
     new ResultController(frontendAppConfig,
       messagesApi,
       dataRetrievalAction,
@@ -41,12 +41,16 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
-      when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future(ResultsViewModel(freeHours = Some(15)))
+      when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future(
+        ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000)))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
       val resultPage = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
       status(resultPage) mustBe OK
       contentAsString(resultPage) must include("15")
+      contentAsString(resultPage) must include("500")
+      contentAsString(resultPage) must include("600")
+      contentAsString(resultPage) must include("1000")
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

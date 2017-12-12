@@ -25,5 +25,24 @@
     bodyClasses = None) {
 
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
+
     <p>@model.freeHours.getOrElse("Not entitled to free hours")</p>
+
+    <p>@{model.tc match {
+        case Some(tcAmount) => if(tcAmount > 0) tcAmount else "Not entitled for TC scheme"
+        case _ => "Not entitled for TC scheme"
+        }}
+    </p>
+
+    <p>@{model.tfc match {
+        case Some(tfcAmount) => if(tfcAmount > 0) tfcAmount else "Not entitled for TFC scheme"
+        case _ => "Not entitled for TFC scheme"
+        }}
+    </p>
+
+    <p>@{model.esc match {
+        case Some(escAmount) => if(escAmount > 0) escAmount else "Not entitled for ESC scheme"
+        case _ => "Not entitled for ESC scheme"
+        }}
+    </p>
 }
