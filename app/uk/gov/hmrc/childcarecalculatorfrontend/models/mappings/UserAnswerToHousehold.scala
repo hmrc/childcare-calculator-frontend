@@ -325,7 +325,7 @@ sealed trait OverallIncome {
 
 
   private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    BigDecimal(x.parentEmploymentIncomePY)
+    x.parentEmploymentIncomePY
   }
 
   private def parentEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
@@ -337,7 +337,7 @@ sealed trait OverallIncome {
   }
 
   private def partnerEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    BigDecimal(x.partnerEmploymentIncomePY)
+    x.partnerEmploymentIncomePY
   }
 
   private def determineIncomeValue[A](s: Option[BigDecimal], multipleIncome: Option[A], f: A => BigDecimal): Option[BigDecimal] = s match {

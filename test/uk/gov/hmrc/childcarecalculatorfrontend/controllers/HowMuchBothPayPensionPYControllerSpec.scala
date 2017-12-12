@@ -48,12 +48,12 @@ class HowMuchBothPayPensionPYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("1", "2")))
+      val validData = Map(HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(HowMuchBothPayPensionPYForm().fill(HowMuchBothPayPensionPY("1", "2")))
+      contentAsString(result) mustBe viewAsString(HowMuchBothPayPensionPYForm().fill(HowMuchBothPayPensionPY(1, 2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
