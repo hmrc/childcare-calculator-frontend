@@ -32,9 +32,13 @@ class OtherIncomeAmountCYFormSpec extends FormBehaviours {
   val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
   "OtherIncomeAmountCY form" must {
-    behave like questionForm(OtherIncomeAmountCY("1", "2"))
+    behave like questionForm(OtherIncomeAmountCY(1, 2))
 
-    behave like formWithMandatoryTextFields("parentOtherIncome", "partnerOtherIncome")
+    behave like formWithMandatoryTextFieldWithErrorMsgs("parentOtherIncome",
+      "parentOtherIncome.required", "parentOtherIncome.required")
+
+    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerOtherIncome",
+      "partnerOtherIncome.required", "partnerOtherIncome.required")
 
     behave like formWithDecimalField("parentOtherIncome", "partnerOtherIncome")
 

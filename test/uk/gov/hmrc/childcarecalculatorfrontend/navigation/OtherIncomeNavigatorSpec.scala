@@ -419,7 +419,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "both eligible for tax credits" in {
             val answers = spy(userAnswers())
             when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY("5","5"))
+            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
@@ -429,7 +429,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "both not eligible for tax credits" in {
             val answers = spy(userAnswers())
             when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY("5","5"))
+            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
@@ -439,7 +439,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "cannot determine if they can have tax credits" in {
             val answers = spy(userAnswers())
             when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY("5","5"))
+            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe

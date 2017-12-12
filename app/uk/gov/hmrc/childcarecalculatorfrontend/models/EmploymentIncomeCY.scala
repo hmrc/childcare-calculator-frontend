@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import play.api.libs.json._
 
-case class EmploymentIncomeCY (parentEmploymentIncome: String, partnerEmploymentIncome: String)
+case class EmploymentIncomeCY (parentEmploymentIncomeCY: BigDecimal, partnerEmploymentIncomeCY: BigDecimal)
 
 object EmploymentIncomeCY {
   implicit val format = Json.format[EmploymentIncomeCY]
