@@ -23,14 +23,9 @@ class PartnerEmploymentIncomeCYFormSpec extends FormSpec {
   val partnerEmploymentIncomeCYForm: Form[BigDecimal] = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()
 
   val errorKeyBlank = partnerEmploymentIncomeBlankErrorKey
-  val errorKeyInvalid = employmentIncomeInvalidErrorKey
+  val errorKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
 
   "PartnerEmploymentIncomeCY Form" must {
-
-    "bind zero" in {
-      val form = partnerEmploymentIncomeCYForm.bind(Map("value" -> "0.0"))
-      form.get shouldBe 0.0
-    }
 
     "bind positive numbers" in {
       val form = partnerEmploymentIncomeCYForm.bind(Map("value" -> "1.0"))
@@ -62,5 +57,14 @@ class PartnerEmploymentIncomeCYFormSpec extends FormSpec {
       checkForError(partnerEmploymentIncomeCYForm, emptyForm, expectedError)
     }
 
+    "fail to bind numbers below the threshold" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(partnerEmploymentIncomeCYForm, Map("value" -> "0.9"), expectedError)
+    }
+
+    "fail to bind numbers above the threshold" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(partnerEmploymentIncomeCYForm, Map("value" -> "100000.1"), expectedError)
+    }
   }
 }

@@ -39,6 +39,9 @@ object PartnerBenefitsIncomeCYForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = partnerBenefitsIncomeCYRequiredErrorKey, errorKeyInvalid: String = partnerBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(partnerBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(errorKeyBlank: String = partnerBenefitsIncomeCYRequiredErrorKey,
+            errorKeyInvalid: String = partnerBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(partnerBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))
+      .verifying(maximumValue[BigDecimal](9999.99, errorKeyInvalid))
+      .verifying(minimumValue[BigDecimal](1, errorKeyInvalid))))
 }
