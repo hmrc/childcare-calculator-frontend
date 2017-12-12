@@ -29,14 +29,17 @@ class OtherIncomeAmountPYForm @Inject()(appConfig: FrontendAppConfig) extends Fo
   val minValue: Double = appConfig.minIncome
   val maxValue: Double = appConfig.maxIncome
 
+  private val parentIncomeInvalidKey = "parentOtherIncomeAmountPY.invalid"
+  private val partnerIncomeInvalidKey = "partnerOtherIncomeAmountPY.invalid"
+
   def apply(): Form[OtherIncomeAmountPY] = Form(
     mapping(
-      "parentOtherIncomeAmountPY" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("parentOtherIncomeAmountPY.required"),
-        validateDecimalInRange("parentOtherIncomeAmountPY.invalid", minValue, maxValue))),
-      "partnerOtherIncomeAmountPY" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("partnerOtherIncomeAmountPY.required"),
-        validateDecimalInRange("partnerOtherIncomeAmountPY.invalid", minValue, maxValue)))
+      "parentOtherIncomeAmountPY" ->
+        decimal("parentOtherIncomeAmountPY.required", parentIncomeInvalidKey)
+          .verifying(inRange[BigDecimal](minValue, maxValue, parentIncomeInvalidKey)),
+      "partnerOtherIncomeAmountPY" ->
+        decimal("partnerOtherIncomeAmountPY.required", partnerIncomeInvalidKey)
+          .verifying(inRange[BigDecimal](minValue, maxValue, partnerIncomeInvalidKey))
     )(OtherIncomeAmountPY.apply)(OtherIncomeAmountPY.unapply)
   )
 }

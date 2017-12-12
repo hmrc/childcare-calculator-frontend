@@ -183,7 +183,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def bothBenefitsIncomePY: Option[AnswerRow] = userAnswers.bothBenefitsIncomePY map {
-    x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
+    x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.parentBenefitsIncomePY} ${x.partnerBenefitsIncomePY}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
   }
 
   def registeredBlind: Option[AnswerRow] = userAnswers.registeredBlind map {
