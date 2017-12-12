@@ -52,6 +52,6 @@ class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) ext
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey, errorKeyInvalid: String = employmentIncomeInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey, errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(partnerEmploymentIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
 }

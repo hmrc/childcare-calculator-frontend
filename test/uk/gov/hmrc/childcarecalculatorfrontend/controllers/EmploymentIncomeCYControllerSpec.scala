@@ -49,16 +49,16 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY("1", "2")))
+      val validData = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(form.fill(EmploymentIncomeCY("1", "2")))
+      contentAsString(result) mustBe viewAsString(form.fill(EmploymentIncomeCY(1, 2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncome", "1"), ("partnerEmploymentIncome", "2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

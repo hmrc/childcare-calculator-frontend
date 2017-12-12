@@ -39,6 +39,9 @@ object HowMuchYouPayPensionForm extends FormErrorHelper {
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = howMuchYouPayPensionRequiredErrorKey, errorKeyInvalid: String = howMuchYouPayPensionInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(howMuchYouPayPensionFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(errorKeyBlank: String = howMuchYouPayPensionRequiredErrorKey,
+            errorKeyInvalid: String = howMuchYouPayPensionInvalidErrorKey): Form[BigDecimal] =
+    Form(single("value" -> of(howMuchYouPayPensionFormatter(errorKeyBlank, errorKeyInvalid))
+      .verifying(minimumValue[BigDecimal](1, howMuchYouPayPensionInvalidErrorKey))
+      .verifying(maximumValue[BigDecimal](9999.99, howMuchYouPayPensionInvalidErrorKey))))
 }
