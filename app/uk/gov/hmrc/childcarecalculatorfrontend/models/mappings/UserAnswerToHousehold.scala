@@ -307,7 +307,7 @@ sealed trait OverallIncome {
 
 
   private def parentPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    BigDecimal(x.howMuchYouPayPensionPY)
+    x.howMuchYouPayPensionPY
   }
 
   private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
@@ -319,10 +319,8 @@ sealed trait OverallIncome {
   }
 
   private def partnerPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    BigDecimal(x.howMuchPartnerPayPensionPY)
+    x.howMuchPartnerPayPensionPY
   }
-
-
 
   private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
     x.parentEmploymentIncomePY
@@ -344,7 +342,9 @@ sealed trait OverallIncome {
     case Some(x) => s
     case None =>
       multipleIncome.fold(Option.empty[BigDecimal]) {
-        income => Some(f(income))
+        income =>
+          val value = f(income)
+          if(value > 0) Some(value) else None
       }
   }
 

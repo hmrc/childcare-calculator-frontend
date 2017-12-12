@@ -37,7 +37,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                       eligibilityService: SubmissionService) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-
+    
     val schemesResult: Future[SchemeResults] = eligibilityService.eligibility(request.userAnswers).map {
       results => {
         println(s"*******RESULTS>>>>>>>>$results")

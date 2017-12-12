@@ -445,10 +445,10 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(true)
         when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0,32000.0))
-        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY("21000.0", "21000.0"))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
 
         when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension(250.0,200.0))
-        when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY("300.0", "100.0"))
+        when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY(300.0, 100.0))
 
         when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
@@ -504,7 +504,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(true)
         when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0,32000.0))
-        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY("21000.0", "21000.0"))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
         when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension(250.0,200.0))
         when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
@@ -560,8 +560,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(true)
         when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0,32000.0))
-        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY("21000.0", "21000.0"))
-        when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY("300.0", "100.0"))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY(300.0, 100.0))
         when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
         when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
@@ -573,7 +573,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
-      "has a parent containing current year and a partner containing previous year pensions" ignore {
+      "has a parent containing current year and a partner containing previous year pensions" in {
         val parent = Claimant(
           hours = Some(BigDecimal(32.1)),
           escVouchers = Some(YesNoUnsureEnum.NOTSURE),
@@ -616,10 +616,10 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(true)
         when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0,32000.0))
-        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY("21000.0", "21000.0"))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
 
         when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension(250.0,0))
-        when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY("0", "100.0"))
+        when(answers.howMuchBothPayPensionPY) thenReturn Some(HowMuchBothPayPensionPY(0, 100.0))
 
         when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
