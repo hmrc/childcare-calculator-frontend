@@ -146,7 +146,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
       }
     }
 
-    "Return View Model with FreeHours as 16" when {      "User is eligible for free hours, lives in Scotland and not eligible for max free hours" in {
+    "Return View Model with FreeHours as 16" when {
+      "User is eligible for free hours, lives in Scotland and not eligible for max free hours" in {
         val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true,true)))
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
         val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
@@ -228,7 +229,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
       }
     }
 
-    "Return View Model with FreeHours as 0" when {
+    "Return View Model with FreeHours as None" when {
       "User is not eligible for free hours" in {
         val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true,true)))
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
