@@ -30,10 +30,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ResultsService @Inject()(eligibilityService: EligibilityService,
-                               answers: UserAnswers,
                                freeHours: FreeHours,
                                maxFreeHours: MaxFreeHours) {
-  def getResultsViewModel()(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
+  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
     val result = eligibilityService.eligibility(answers)
 
     result.map(results => {

@@ -43,8 +43,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(Some(500))
       }
@@ -58,9 +58,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
 
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = Some(500))
       }
@@ -75,8 +75,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = Some(500), esc = Some(600))
       }
@@ -90,8 +90,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(None)
       }
@@ -104,8 +104,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None)
       }
@@ -120,8 +120,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None)
       }
@@ -141,8 +141,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHpurs.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None, freeHours = Some(15))
       }
@@ -161,8 +161,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHpurs.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None, freeHours = Some(16))
       }
@@ -181,8 +181,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHpurs.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None, freeHours = Some(10))
       }
@@ -201,8 +201,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHpurs.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None, freeHours = Some(12.5))
       }
@@ -219,8 +219,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(maxFreeHpurs.eligibility(any())) thenReturn Eligible
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None, freeHours = Some(30))
       }
@@ -239,8 +239,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(freeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, answers, freeHours, maxFreeHpurs)
-        val values = Await.result(resultService.getResultsViewModel(), Duration.Inf)
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHpurs)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values mustBe ResultsViewModel(tc = Some(500), tfc = None, esc = None, freeHours = None)
       }
