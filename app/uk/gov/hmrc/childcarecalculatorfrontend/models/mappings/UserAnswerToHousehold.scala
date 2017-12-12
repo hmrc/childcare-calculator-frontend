@@ -229,13 +229,15 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountPY, answers.otherIncomeAmountPY, parentOtherIncomePY)
 
+    val benefits =  determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
           pension = pensionValue,
           otherIncome = otherIncome,
-          benefits = answers.youBenefitsIncomePY,
+          benefits = benefits,
           statutoryIncome = statPay,
           taxCode = taxCode)
         )
@@ -251,13 +253,15 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountPY, answers.otherIncomeAmountPY, partnerOtherIncomePY)
 
+    val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
           pension = pensionValue,
           otherIncome = otherIncome,
-          benefits = answers.partnerBenefitsIncomePY,
+          benefits = benefits,
           statutoryIncome = statPay,
           taxCode = taxCode)
         )
@@ -274,13 +278,15 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountCY, answers.otherIncomeAmountCY, parentOtherIncomeCY)
 
+    val benefits =  determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
           pension = pensionValue,
           otherIncome = otherIncome,
-          benefits = answers.youBenefitsIncomeCY,
+          benefits = benefits,
           statutoryIncome = statPay,
           taxCode = taxCode)
         )
@@ -297,13 +303,15 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountCY, answers.otherIncomeAmountCY, partnerOtherIncomeCY)
 
+    val benefits =  determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
           pension = pensionValue,
           otherIncome = otherIncome,
-          benefits = answers.partnerBenefitsIncomeCY,
+          benefits = benefits,
           statutoryIncome = statPay,
           taxCode = taxCode)
         )
@@ -313,12 +321,20 @@ sealed trait OverallIncome {
 
   }
 
-  private def parentPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    x.howMuchYouPayPensionPY
+  private def parentBenefitsPY(x: BothBenefitsIncomePY) : BigDecimal = {
+    x.parentBenefitsIncomePY
   }
 
-  private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
-    x.howMuchYouPayPension
+  private def partnerBenefitsPY(x: BothBenefitsIncomePY) : BigDecimal = {
+    x.partnerBenefitsIncomePY
+  }
+
+  private def parentBenefitsCY(x: BenefitsIncomeCY) : BigDecimal = {
+    x.parentBenefitsIncome
+  }
+
+  private def partnerBenefitsCY(x: BenefitsIncomeCY) : BigDecimal = {
+    x.partnerBenefitsIncome
   }
 
   private def parentOtherIncomePY(x: OtherIncomeAmountPY) : BigDecimal = {
@@ -343,6 +359,14 @@ sealed trait OverallIncome {
 
   private def partnerPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
     x.howMuchPartnerPayPensionPY
+  }
+
+  private def parentPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
+    x.howMuchYouPayPensionPY
+  }
+
+  private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
+    x.howMuchYouPayPension
   }
 
   private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
