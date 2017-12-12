@@ -245,7 +245,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
       "How Much Both Pay Pension CY Route" must {
         "redirects to benefits page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension("23", "23"))
+          when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension(23, 23))
 
           navigator.nextPage(HowMuchBothPayPensionId, NormalMode).value(answers) mustBe
             routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)

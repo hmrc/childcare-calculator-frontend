@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{FormError, Mapping}
+import play.api.data.FormError
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class FormErrorHelper {
+class FormErrorHelper extends Mappings {
 
   val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
   def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))

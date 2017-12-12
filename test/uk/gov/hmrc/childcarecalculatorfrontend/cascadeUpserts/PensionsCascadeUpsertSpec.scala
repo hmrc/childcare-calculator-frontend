@@ -121,26 +121,26 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         val originalCacheMap = new CacheMap("id", Map(
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20"))))
+          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension(20, 20))))
 
         val result = cascadeUpsert(WhoPaysIntoPensionId.toString, Both, originalCacheMap)
 
         result.data mustBe Map(WhoPaysIntoPensionId.toString -> JsString(Both),
-          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20")))
+          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension(20, 20)))
       }
 
       "return original cache map when there is any invalid value for the input" in {
         val originalCacheMap = new CacheMap("id", Map(
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20"))))
+          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension(20, 20))))
 
         val result = cascadeUpsert(WhoPaysIntoPensionId.toString, "invalidvalue", originalCacheMap)
 
         result.data mustBe Map(WhoPaysIntoPensionId.toString -> JsString("invalidvalue"),
           HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension("20", "20")))
+          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension(20, 20)))
       }
     }
 

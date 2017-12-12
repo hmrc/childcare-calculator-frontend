@@ -120,7 +120,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
       "Parent and Partner Employment Income CY Route" must {
         "redirects to both paid pension CY when when user provides valid values" in {
           val answers = spy(userAnswers())
-          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY("12", "20"))
+          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(12, 20))
 
           navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)

@@ -29,7 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits) {
+class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
+  extends OverallIncome {
 
   private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {
     case Some(x) =>
@@ -45,12 +46,12 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   def convert(answers: UserAnswers): Household = {
     val children = if (answers.noOfChildren.isDefined) createChildren(answers) else List.empty
     val partner = if (answers.doYouLiveWithPartner.contains(true)) {
-      Some(createClaimant(answers, isParent = false))
+      Some(createPartnerClaimant(answers))
     } else {
       None
     }
     Household(credits = stringToCreditsEnum(answers.taxOrUniversalCredits), location = answers.location.getOrElse(Location.ENGLAND),
-      parent = createClaimant(answers), partner = partner, children = children)
+      parent = createParentClaimant(answers), partner = partner, children = children)
   }
 
   private def ccFrequencyToPeriod(x: Option[ChildcarePayFrequency.Value]): Option[PeriodEnum] = x match {
@@ -63,9 +64,9 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
 
-    for(i <- 0 until totalChildren ) {
+    for (i <- 0 until totalChildren) {
       val (childName, childDob): (String, LocalDate) =
-        if(answers.aboutYourChild(i).isDefined) {
+        if (answers.aboutYourChild(i).isDefined) {
           (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
         } else {
           ("", null)
@@ -90,7 +91,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = Disability.populateFromRawData(i,answers.whichDisabilityBenefits,answers.whichChildrenBlind),
+        disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, answers.whichChildrenBlind),
         childcareCost = childcareCost,
         education = childEducation
       )
@@ -150,30 +151,66 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
-  private def createClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
-    val hours = if (isParent) answers.parentWorkHours else answers.partnerWorkHours
-    val benefits = if (isParent) answers.whichBenefitsYouGet else answers.whichBenefitsPartnerGet
+  private def createParentClaimant(answers: UserAnswers): Claimant = {
+    val hours = answers.parentWorkHours
+    val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
 
-    val vouchersString = if (isParent) answers.yourChildcareVouchers else answers.partnerChildcareVouchers
+    val vouchersString = answers.yourChildcareVouchers
     val vouchers = stringToYesNoUnsureEnum(vouchersString)
 
-    val selfEmployedOrApprentice = if (isParent) answers.areYouSelfEmployedOrApprentice else answers.partnerSelfEmployedOrApprentice
-    val selfEmployed = if (isParent) answers.yourSelfEmployed else answers.partnerSelfEmployed
-    val maxEarnings = if (isParent) answers.yourMaximumEarnings else answers.partnerMaximumEarnings
-    val age = if (isParent) answers.yourAge else answers.yourPartnersAge
+    val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
+    val selfEmployed = answers.yourSelfEmployed
+    val maxEarnings = answers.yourMaximumEarnings
+    val age = answers.yourAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
 
     val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
-    val taxCode = if (isParent) answers.whatIsYourTaxCode else answers.whatIsYourPartnersTaxCode
+    val taxCode = answers.whatIsYourTaxCode
     val statPay = None //TODO - to be implemented
+
+    val currentYearIncome = getParentCurrentYearIncome(answers, taxCode, statPay)
+    val previousYearIncome = getParentPreviousYearIncome(answers, taxCode, statPay)
 
     Claimant(
       hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
-      lastYearlyIncome = getLastYearIncome(isParent, answers, taxCode, statPay),
-      currentYearlyIncome = getCurrentYearIncome(isParent, answers, taxCode, statPay),
+      lastYearlyIncome = previousYearIncome,
+      currentYearlyIncome = currentYearIncome,
+      ageRange = stringToAgeEnum(age),
+      minimumEarnings = minEarnings,
+      maximumEarnings = maxEarnings
+    )
+  }
+
+  private def createPartnerClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
+    val hours = answers.partnerWorkHours
+    val benefits = answers.whichBenefitsPartnerGet
+    val getBenefits = Benefits.populateFromRawData(benefits)
+
+    val vouchersString = answers.partnerChildcareVouchers
+    val vouchers = stringToYesNoUnsureEnum(vouchersString)
+
+    val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
+    val selfEmployed = answers.partnerSelfEmployed
+    val maxEarnings = answers.partnerMaximumEarnings
+    val age = answers.yourPartnersAge
+    val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
+
+    val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
+    val taxCode = answers.whatIsYourPartnersTaxCode
+    val statPay = None //TODO - to be implemented
+
+    val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode, statPay)
+    val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode, statPay)
+
+    Claimant(
+      hours = hours,
+      benefits = getBenefits,
+      escVouchers = vouchers,
+      lastYearlyIncome = previousYearIncome,
+      currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
       maximumEarnings = maxEarnings
@@ -181,69 +218,107 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
   }
 
-  private def getCurrentYearIncome(isParent: Boolean, answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
-    if (isParent) {
-      if (answers.parentEmploymentIncomeCY.isDefined) {
-        Some(Income(
-          employmentIncome = answers.parentEmploymentIncomeCY,
-          pension = answers.howMuchYouPayPension,
-          otherIncome = answers.yourOtherIncomeAmountCY,
-          benefits = answers.youBenefitsIncomeCY,
-          statutoryIncome = statPay,
-          taxCode = taxCode)
-        )
-      } else {
-        None
-      }
-    } else {
-      if (answers.partnerEmploymentIncomeCY.isDefined) {
-        Some(Income(
-          employmentIncome = answers.partnerEmploymentIncomeCY,
-          pension = answers.howMuchPartnerPayPension,
-          otherIncome = answers.partnerOtherIncomeAmountCY,
-          benefits = answers.partnerBenefitsIncomeCY,
-          statutoryIncome = statPay,
-          taxCode = taxCode)
-        )
-      } else {
-        None
-      }
-    }
+}
 
-  }
+sealed trait OverallIncome {
 
-  private def getLastYearIncome(isParent: Boolean, answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
-    if (isParent) {
-      if (answers.parentEmploymentIncomePY.isDefined) {
+  def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+    val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
+
+    incomeValue match {
+      case Some(x) if x > 0 =>
         Some(Income(
-          employmentIncome = answers.parentEmploymentIncomePY,
+          employmentIncome = incomeValue,
           pension = answers.howMuchYouPayPensionPY,
           otherIncome = answers.yourOtherIncomeAmountPY,
           benefits = answers.youBenefitsIncomePY,
           statutoryIncome = statPay,
           taxCode = taxCode)
         )
-      } else {
-        None
-      }
+      case _ => None
+    }
 
-    } else {
-      if (answers.partnerEmploymentIncomePY.isDefined) {
+  }
+
+  def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+    val incomeValue = determineIncomeValue(answers.parentEmploymentIncomeCY, answers.employmentIncomeCY, parentEmploymentIncomeCY)
+
+    incomeValue match {
+      case Some(x) if x > 0 =>
         Some(Income(
-          employmentIncome = answers.partnerEmploymentIncomePY,
+          employmentIncome = incomeValue,
+          pension = answers.howMuchYouPayPension,
+          otherIncome = answers.yourOtherIncomeAmountCY,
+          benefits = answers.youBenefitsIncomeCY,
+          statutoryIncome = statPay,
+          taxCode = taxCode)
+        )
+      case _ =>
+        None
+    }
+
+  }
+
+  def getPartnerCurrentYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+    val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomeCY, answers.employmentIncomeCY, partnerEmploymentIncomeCY)
+
+    incomeValue match {
+      case Some(x) if x > 0 =>
+        Some(Income(
+          employmentIncome = incomeValue,
+          pension = answers.howMuchPartnerPayPension,
+          otherIncome = answers.partnerOtherIncomeAmountCY,
+          benefits = answers.partnerBenefitsIncomeCY,
+          statutoryIncome = statPay,
+          taxCode = taxCode)
+        )
+      case _ =>
+        None
+    }
+
+  }
+
+  def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+    val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
+
+    incomeValue match {
+      case Some(x) if x > 0 =>
+        Some(Income(
+          employmentIncome = incomeValue,
           pension = answers.howMuchPartnerPayPensionPY,
           otherIncome = answers.partnerOtherIncomeAmountPY,
           benefits = answers.partnerBenefitsIncomePY,
           statutoryIncome = statPay,
           taxCode = taxCode)
         )
-      } else {
+      case _ =>
         None
-      }
-
     }
 
   }
 
-}
+  private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
+    BigDecimal(x.parentEmploymentIncomePY)
+  }
 
+  private def parentEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
+    x.parentEmploymentIncomeCY
+  }
+
+  private def partnerEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
+    x.partnerEmploymentIncomeCY
+  }
+
+  private def partnerEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
+    BigDecimal(x.partnerEmploymentIncomePY)
+  }
+
+  private def determineIncomeValue[A](s: Option[BigDecimal], multipleIncome: Option[A], f: A => BigDecimal): Option[BigDecimal] = s match {
+    case Some(x) => s
+    case None =>
+      multipleIncome.fold(Some(BigDecimal(0))) {
+        income => Some(f(income))
+      }
+  }
+
+}

@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import play.api.libs.json._
 
-case class HowMuchBothPayPension (field1: String, field2: String)
+case class HowMuchBothPayPension (howMuchYouPayPension: BigDecimal, howMuchPartnerPayPension: BigDecimal)
 
 object HowMuchBothPayPension {
   implicit val format = Json.format[HowMuchBothPayPension]

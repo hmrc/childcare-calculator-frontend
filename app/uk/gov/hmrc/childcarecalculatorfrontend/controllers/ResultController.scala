@@ -24,13 +24,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
 import uk.gov.hmrc.childcarecalculatorfrontend.services.SubmissionService
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-
 import scala.concurrent.Future
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+
 
 @Singleton
-class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
+class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
@@ -45,6 +45,7 @@ class MaxFreeHoursResultController @Inject()(val appConfig: FrontendAppConfig,
       }
     }
 
-    Ok(maxFreeHoursResult(appConfig))
+    Ok(result(appConfig))
+
   }
 }

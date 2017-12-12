@@ -24,11 +24,6 @@ class ParentEmploymentIncomePYFormSpec extends FormSpec {
 
   "ParentEmploymentIncomePY Form" must {
 
-    "bind zero" in {
-      val form = parentEmploymentIncomeForm.bind(Map("value" -> "0.0"))
-      form.get shouldBe 0.0
-    }
-
     "bind positive numbers" in {
       val form = parentEmploymentIncomeForm.bind(Map("value" -> "1.0"))
       form.get shouldBe 1.0
@@ -39,7 +34,7 @@ class ParentEmploymentIncomePYFormSpec extends FormSpec {
       form.get shouldBe 10.80
     }
 
-    Seq("10000000", "9999999.99").foreach { value =>
+    Seq("0.9", "10000000", "9999999.99").foreach { value =>
       s"fail to bind number $value not within the range" in {
         val expectedError = error("value", errorKeyInvalid)
         checkForError(parentEmploymentIncomeForm, Map("value" -> value), expectedError)
