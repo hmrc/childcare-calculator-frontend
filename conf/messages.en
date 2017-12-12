@@ -453,8 +453,8 @@ maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employer
 maxFreeHoursInfo.still.to.check = Still to check
 maxFreeHoursInfo.give.more.info = You’re also eligible for Tax-Free Childcare, tax credits and childcare vouchers. Give the calculator more information to see how much you could get or save from these schemes.
 
-maxFreeHoursResult.title = maxFreeHoursResult
-maxFreeHoursResult.heading = maxFreeHoursResult
+result.title = maxFreeHoursResult
+result.heading = maxFreeHoursResult
 
 yourOtherIncomeThisYear.title = Will you get any other income this year?
 yourOtherIncomeThisYear.heading = Will you get any other income this year?
