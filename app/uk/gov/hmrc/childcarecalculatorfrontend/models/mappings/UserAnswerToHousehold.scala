@@ -225,11 +225,13 @@ sealed trait OverallIncome {
   def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
+    val pensionValue = determineIncomeValue(answers.howMuchYouPayPensionPY, answers.howMuchBothPayPensionPY, parentPensionPY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
-          pension = answers.howMuchYouPayPensionPY,
+          pension = pensionValue,
           otherIncome = answers.yourOtherIncomeAmountPY,
           benefits = answers.youBenefitsIncomePY,
           statutoryIncome = statPay,
@@ -243,11 +245,13 @@ sealed trait OverallIncome {
   def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomeCY, answers.employmentIncomeCY, parentEmploymentIncomeCY)
 
+    val pensionValue = determineIncomeValue(answers.howMuchYouPayPension, answers.howMuchBothPayPension, parentPensionCY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
-          pension = answers.howMuchYouPayPension,
+          pension = pensionValue,
           otherIncome = answers.yourOtherIncomeAmountCY,
           benefits = answers.youBenefitsIncomeCY,
           statutoryIncome = statPay,
@@ -262,11 +266,13 @@ sealed trait OverallIncome {
   def getPartnerCurrentYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomeCY, answers.employmentIncomeCY, partnerEmploymentIncomeCY)
 
+    val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPension, answers.howMuchBothPayPension, partnerPensionCY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
-          pension = answers.howMuchPartnerPayPension,
+          pension = pensionValue,
           otherIncome = answers.partnerOtherIncomeAmountCY,
           benefits = answers.partnerBenefitsIncomeCY,
           statutoryIncome = statPay,
@@ -281,11 +287,13 @@ sealed trait OverallIncome {
   def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
 
+    val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPensionPY, answers.howMuchBothPayPensionPY, partnerPensionPY)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
-          pension = answers.howMuchPartnerPayPensionPY,
+          pension = pensionValue,
           otherIncome = answers.partnerOtherIncomeAmountPY,
           benefits = answers.partnerBenefitsIncomePY,
           statutoryIncome = statPay,
@@ -296,6 +304,25 @@ sealed trait OverallIncome {
     }
 
   }
+
+
+  private def parentPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
+    BigDecimal(x.howMuchYouPayPensionPY)
+  }
+
+  private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
+    x.howMuchYouPayPension
+  }
+
+  private def partnerPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
+    x.howMuchPartnerPayPension
+  }
+
+  private def partnerPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
+    BigDecimal(x.howMuchPartnerPayPensionPY)
+  }
+
+
 
   private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
     BigDecimal(x.parentEmploymentIncomePY)
@@ -316,7 +343,7 @@ sealed trait OverallIncome {
   private def determineIncomeValue[A](s: Option[BigDecimal], multipleIncome: Option[A], f: A => BigDecimal): Option[BigDecimal] = s match {
     case Some(x) => s
     case None =>
-      multipleIncome.fold(Some(BigDecimal(0))) {
+      multipleIncome.fold(Option.empty[BigDecimal]) {
         income => Some(f(income))
       }
   }
