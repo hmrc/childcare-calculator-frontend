@@ -18,13 +18,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible, Location, Scheme, SchemeEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, Scheme}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFreeHours}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -43,9 +44,9 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
   private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case SchemeEnum.TCELIGIBILITY => resultViewModel.copy(tc = Some(scheme.amount))
-        case SchemeEnum.TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
-        case SchemeEnum.ESCELIGIBILITY =>resultViewModel.copy(esc = Some(scheme.amount))
+        case TCELIGIBILITY => resultViewModel.copy(tc = Some(scheme.amount))
+        case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
+        case ESCELIGIBILITY =>resultViewModel.copy(esc = Some(scheme.amount))
       }
     }
     else {
@@ -62,16 +63,14 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       case Eligible if maxFreeHoursEligibility == Eligible => resultViewModel.copy(freeHours = Some(eligibleMaxFreeHours))
       case Eligible =>  getFreeHoursForLocation(location, resultViewModel)
       case _ => resultViewModel
-
     }
   }
 
   private def getFreeHoursForLocation(optionLocation: Option[Location.Value], resultViewModel: ResultsViewModel)  =
     optionLocation.fold(resultViewModel){
-          case Location.ENGLAND => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
-          case Location.SCOTLAND => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
-          case Location.WALES => resultViewModel.copy(freeHours = Some(freeHoursForWales))
-          case _ => resultViewModel.copy(freeHours = Some(freeHoursForNI))
+          case ENGLAND => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
+          case SCOTLAND => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
+          case WALES => resultViewModel.copy(freeHours = Some(freeHoursForWales))
+          case NORTHERN_IRELAND => resultViewModel.copy(freeHours = Some(freeHoursForNI))
     }
-
 }
