@@ -21,26 +21,28 @@ import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
-object AboutYourChildForm {
+object AboutYourChildForm extends Mappings {
 
   def apply(): Form[AboutYourChild] = Form(
     mapping(
-      "name" -> nonEmptyText
-        .replaceError("error.required", "aboutYourChild.error.name"),
-      "dob" -> localDateMapping(
-        "day" -> number,
-        "month" -> number,
-        "year" -> number
-      )
-        .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
-        .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
-        .replaceError("error.invalidDate", "aboutYourChild.error.dob")
-        .replaceError(FormError("day", "error.required"), FormError("", "aboutYourChild.error.dob"))
-        .replaceError(FormError("month", "error.required"), FormError("", "aboutYourChild.error.dob"))
-        .replaceError(FormError("year", "error.required"), FormError("", "aboutYourChild.error.dob"))
-        .replaceError(FormError("day", "error.number"), FormError("", "aboutYourChild.error.dob"))
-        .replaceError(FormError("month", "error.number"), FormError("", "aboutYourChild.error.dob"))
-        .replaceError(FormError("year", "error.number"), FormError("", "aboutYourChild.error.dob"))
+      "name" ->
+        string("aboutYourChild.error.name")
+          .verifying(maxLength(35, "aboutYourChild.error.maxLength")),
+      "dob" ->
+        localDateMapping(
+          "day" -> number,
+          "month" -> number,
+          "year" -> number
+        )
+          .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
+          .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
+          .replaceError("error.invalidDate", "aboutYourChild.error.dob")
+          .replaceError(FormError("day", "error.required"), FormError("", "aboutYourChild.error.dob"))
+          .replaceError(FormError("month", "error.required"), FormError("", "aboutYourChild.error.dob"))
+          .replaceError(FormError("year", "error.required"), FormError("", "aboutYourChild.error.dob"))
+          .replaceError(FormError("day", "error.number"), FormError("", "aboutYourChild.error.dob"))
+          .replaceError(FormError("month", "error.number"), FormError("", "aboutYourChild.error.dob"))
+          .replaceError(FormError("year", "error.number"), FormError("", "aboutYourChild.error.dob"))
     )(AboutYourChild.apply)(AboutYourChild.unapply)
   )
 }

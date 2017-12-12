@@ -26,7 +26,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
 
     val testForm: Form[BigDecimal] =
       Form(
-        "value" -> decimal()
+        "value" -> decimal("error.required", "error.invalid")
       )
 
     "bind a valid integer" in {

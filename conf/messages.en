@@ -440,8 +440,8 @@ taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 noOfChildren.title = How many children do you have?
 noOfChildren.heading = How many children do you have?
 noOfChildren.hint.text = Only include children under the age of 20 that you’re responsible for.
-noOfChildren.error = You must enter a number that's not below 1 or above 19
-noOfChildren.required = You m
+noOfChildren.error = How many children you have must be a number from 1 to 19
+noOfChildren.required = Enter how many children you have
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
 maxFreeHoursInfo.title = You’re eligible for 30 hours free childcare
@@ -843,7 +843,7 @@ partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
-registeredBlind.error = You must tell the calculator if your children are registered blind
+registeredBlind.error = Select yes if any of your children are registered blind
 registeredBlind.checkYourAnswersLabel = registeredBlind
 
 partnerBenefitsIncomePY.title = How much did your partner get in benefits last year?
@@ -887,14 +887,14 @@ childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
 childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
-childDisabilityBenefits.error = You must answer yes if {0} get disability benefits
+childDisabilityBenefits.error = Select yes if {0} gets any of these disability benefits
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.heading = How often do you pay or expect to pay for {0}’s childcare?
 childcarePayFrequency.weekly = Weekly
 childcarePayFrequency.monthly = Monthly
 childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
-childcarePayFrequency.error = You must tell the calculator how often you expect to pay for {0}’s childcare
+childcarePayFrequency.error = Select how often you pay or expect to pay for childcare costs
 
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
@@ -919,7 +919,7 @@ childrenDisabilityBenefits.heading = Do any of your children get any of these di
 childrenDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
 childrenDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childrenDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
-childrenDisabilityBenefits.error = You must answer yes if your children get disability benefits
+childrenDisabilityBenefits.error = Select yes if any of your children get any of these disability benefits
 
 parentEmploymentIncomePY.title = How much did you get paid last year?
 parentEmploymentIncomePY.heading = How much did you get paid last year?
@@ -954,43 +954,45 @@ aboutYourChild.name = What’s their first name?
 aboutYourChild.dob = What’s their date of birth?
 aboutYourChild.hint = For example, 31 3 2015
 aboutYourChild.checkYourAnswersLabel = About your child
-aboutYourChild.error.name = You must enter your child’s name
+aboutYourChild.error.name = Enter their first name
+aboutYourChild.error.maxLength = Their first name must be 35 characters or less
 aboutYourChild.error.dob = You must enter your child’s date of birth in the correct format
-aboutYourChild.error.future = You must enter a date less than 12 months in the future
-aboutYourChild.error.past = You must enter a date less than 20 years in the past
+aboutYourChild.error.future = Date of birth must be no more than 12 months in the future
+aboutYourChild.error.past = Date of birth must not be more than 20 years in the past
 
 childApprovedEducation.title = Is your child in approved education or training?
 childApprovedEducation.heading = Is your child {0} in approved education or training?
 childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
-childApprovedEducation.error = You must answer yes if your child {0} is in approved education or training
+childApprovedEducation.error = Select yes if {0} is in approved education or training
 
 childRegisteredBlind.title = Is your child registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
-childRegisteredBlind.error = You must tell the calculator if {0} is registered blind
+childRegisteredBlind.error = Select yes if {0} is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
 
 childStartEducation.title = When did your child start their education or training
 childStartEducation.heading = When did {0} start their education or training
 childStartEducation.checkYourAnswersLabel = When did your child start their education or training
-childStartEducation.error = You must tell the calculator when your child started their approved education or training
-childStartEducation.error.invalid = You must enter a date in the correct format
+childStartEducation.error = Enter the date they started their education or training
+childStartEducation.error.past = Date they started must be in the past
+childStartEducation.error.after16 = Date they started cannot be before {0}’s 16th birthday
 
 whichChildrenDisability.title = Who gets disability benefits?
 whichChildrenDisability.heading = Who gets disability benefits?
 whichChildrenDisability.checkYourAnswersLabel = Who gets disability benefits?
 whichChildrenDisability.summary = Help with benefits
 whichChildrenDisability.selectAll = Select all who get them.
-whichChildrenDisability.error = You must tell the calculator who gets disability benefits
+whichChildrenDisability.error = Select who gets disability benefits
 
 whichChildrenBlind.title = Who’s registered blind?
 whichChildrenBlind.heading = Who’s registered blind?
 whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
-whichChildrenBlind.error = You must tell the calculator who is registered blind
+whichChildrenBlind.error = Select who’s registered blind
 
 whoHasChildcareCosts.title = Who has childcare costs?
 whoHasChildcareCosts.heading = Who has childcare costs?
 whoHasChildcareCosts.checkYourAnswersLabel = Who has childcare costs?
-whoHasChildcareCosts.error = You must tell the calculator who has childcare costs
+whoHasChildcareCosts.error = Select who has childcare costs
 
 whichDisabilityBenefits.title = Which disability benefits does your child get?
 whichDisabilityBenefits.heading = Which disability benefits does {0} get?
@@ -1004,7 +1006,7 @@ whichDisabilityBenefits.pip = Personal Independence Payment
 whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
 whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
-whichDisabilityBenefits.error = You must tell the calculator if {0} gets benefits
+whichDisabilityBenefits.error = Select yes if {0} gets any of these disability benefits
 
 expectedChildcareCosts.title = What are your expected childcare costs?
 expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
@@ -1012,8 +1014,8 @@ expectedChildcareCosts.heading.notYet = What will your expected {0} childcare co
 expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
 expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
 expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
-expectedChildcareCosts.error = You must tell the calculator what your expected {0} childcare costs are
-expectedChildcareCosts.invalid = You must enter a number between 1 and 999.99
+expectedChildcareCosts.error = Enter your {0} childcare costs for {1}
+expectedChildcareCosts.invalid = Your expected {0} childcare costs for {1} must be a number from 1 to 9999.99
 
 whoGotStatutoryPay.title = Who got statutory pay?
 whoGotStatutoryPay.heading = Who got statutory pay?

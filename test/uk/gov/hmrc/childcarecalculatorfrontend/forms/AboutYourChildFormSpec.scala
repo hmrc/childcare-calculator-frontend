@@ -35,6 +35,11 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
     behave like questionForm(AboutYourChild("Foo", new LocalDate(2017, 2, 1)))
 
+    "bind when name is 35 chars long" in {
+      val data = validData + ("name" -> "a" * 35)
+      form.bind(data).get shouldBe AboutYourChild("a" * 35, new LocalDate(2017, 2, 1))
+    }
+
     "fail to bind when name is omitted" in {
       val data = validData - "name"
       val expectedError = error("name", "aboutYourChild.error.name")
@@ -44,6 +49,12 @@ class AboutYourChildFormSpec extends FormBehaviours {
     "fail to bind when name is blank" in {
       val data = validData + ("name" -> "")
       val expectedError = error("name", "aboutYourChild.error.name")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when name is more than 35 chars" in {
+      val data = validData + ("name" -> "a" * 36)
+      val expectedError = error("name", "aboutYourChild.error.maxLength")
       checkForError(form, data, expectedError)
     }
 
