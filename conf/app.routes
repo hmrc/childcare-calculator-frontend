@@ -207,7 +207,7 @@ GET         /change-no-of-children                             uk.gov.hmrc.child
 POST        /change-no-of-children                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onSubmit(mode: Mode = CheckMode)
 
 GET         /max-free-hours-info                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad()
-GET         /max-free-hours-result                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursResultController.onPageLoad()
+GET         /result                                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.ResultController.onPageLoad()
 
 GET         /your-other-income-cy                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode = NormalMode)
 POST        /your-other-income-cy                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode = NormalMode)

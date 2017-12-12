@@ -241,7 +241,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       "Both Benefits Income CY Route" must {
         "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY("23", "23"))
+          when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY(23, 23))
 
           navigator.nextPage(BenefitsIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
@@ -463,7 +463,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       "Both Benefits Income PY Route" must {
         "redirects to bothStatutoryPayPY page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.bothBenefitsIncomePY) thenReturn Some(BothBenefitsIncomePY("23", "23"))
+          when(answers.bothBenefitsIncomePY) thenReturn Some(BothBenefitsIncomePY(23, 23))
 
           navigator.nextPage(BothBenefitsIncomePYId, NormalMode).value(answers) mustBe
             routes.BothOtherIncomeLYController.onPageLoad(NormalMode)

@@ -135,7 +135,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def howMuchBothPayPensionPY: Option[AnswerRow] = userAnswers.howMuchBothPayPensionPY map {
-    x => AnswerRow("howMuchBothPayPensionPY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.HowMuchBothPayPensionPYController.onPageLoad(CheckMode).url)
+    x => AnswerRow("howMuchBothPayPensionPY.checkYourAnswersLabel", s"${x.howMuchYouPayPensionPY} ${x.howMuchPartnerPayPensionPY}", false, routes.HowMuchBothPayPensionPYController.onPageLoad(CheckMode).url)
   }
 
   def partnerEmploymentIncomeCY: Option[AnswerRow] = userAnswers.partnerEmploymentIncomeCY map {
@@ -163,7 +163,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def howMuchBothPayPension: Option[AnswerRow] = userAnswers.howMuchBothPayPension map {
-    x => AnswerRow("howMuchBothPayPension.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.HowMuchBothPayPensionController.onPageLoad(CheckMode).url)
+    x => AnswerRow("howMuchBothPayPension.checkYourAnswersLabel", s"${x.howMuchYouPayPension} ${x.howMuchPartnerPayPension}", false, routes.HowMuchBothPayPensionController.onPageLoad(CheckMode).url)
   }
 
   def howMuchPartnerPayPension: Option[AnswerRow] = userAnswers.howMuchPartnerPayPension map {
@@ -183,7 +183,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def bothBenefitsIncomePY: Option[AnswerRow] = userAnswers.bothBenefitsIncomePY map {
-    x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.field1} ${x.field2}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
+    x => AnswerRow("bothBenefitsIncomePY.checkYourAnswersLabel", s"${x.parentBenefitsIncomePY} ${x.partnerBenefitsIncomePY}", false, routes.BothBenefitsIncomePYController.onPageLoad(CheckMode).url)
   }
 
   def registeredBlind: Option[AnswerRow] = userAnswers.registeredBlind map {
@@ -274,7 +274,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def employmentIncomeCY: Option[AnswerRow] = userAnswers.employmentIncomeCY map {
-    x => AnswerRow("employmentIncomeCY.checkYourAnswersLabel", s"${x.parentEmploymentIncome} ${x.partnerEmploymentIncome}", false, routes.EmploymentIncomeCYController.onPageLoad(CheckMode).url)
+    x => AnswerRow("employmentIncomeCY.checkYourAnswersLabel", s"${x.parentEmploymentIncomeCY} ${x.partnerEmploymentIncomeCY}", false, routes.EmploymentIncomeCYController.onPageLoad(CheckMode).url)
   }
 
   def partnerOtherIncomeAmountCY: Option[AnswerRow] = userAnswers.partnerOtherIncomeAmountCY map {

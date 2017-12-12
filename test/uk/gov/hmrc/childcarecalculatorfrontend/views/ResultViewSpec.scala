@@ -16,15 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursResult
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
-class MaxFreeHoursResultViewSpec extends ViewBehaviours {
+class ResultViewSpec extends ViewBehaviours {
 
-  def view = () => maxFreeHoursResult(frontendAppConfig)(fakeRequest, messages)
+  def view = () => result(frontendAppConfig,ResultsViewModel())(fakeRequest, messages)
 
-  "MaxFreeHoursResult view" must {
+  "Result view" must {
 
-    behave like normalPage(view, "maxFreeHoursResult")
+    behave like normalPage(view, "result")
   }
 }

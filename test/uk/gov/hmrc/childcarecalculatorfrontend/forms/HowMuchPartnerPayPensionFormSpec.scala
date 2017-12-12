@@ -25,19 +25,24 @@ class HowMuchPartnerPayPensionFormSpec extends FormSpec {
 
   "HowMuchPartnerPayPension Form" must {
 
-    "bind zero" in {
-      val form = HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "0.0"))
-      form.get shouldBe 0.0
-    }
-
     "bind positive numbers" in {
       val form = HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "1.0"))
       form.get shouldBe 1.0
     }
 
-    "bind positive decimal number" in {
-      val form = HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "10.80"))
-      form.get shouldBe 10.80
+    "bind positive decimal numbers up to the threshold of 9999.99" in {
+      val form = HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "9999.99"))
+      form.get shouldBe 9999.99
+    }
+
+    "fail to bind numbers below the threshold of 1" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "0.9"), expectedError)
+    }
+
+    "fail to bind numbers above the threshold of 9999.99" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "10000"), expectedError)
     }
 
     "fail to bind negative numbers" in {
@@ -59,6 +64,5 @@ class HowMuchPartnerPayPensionFormSpec extends FormSpec {
       val expectedError = error("value", errorKeyBlank)
       checkForError(HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid), emptyForm, expectedError)
     }
-
   }
 }

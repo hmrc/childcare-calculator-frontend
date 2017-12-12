@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("maxFreeHoursResult.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
-
-    <h1 class="heading-xlarge">@messages("maxFreeHoursResult.heading")</h1>
+case object ResultId extends Identifier {
+  override def toString: String = "result"
 }

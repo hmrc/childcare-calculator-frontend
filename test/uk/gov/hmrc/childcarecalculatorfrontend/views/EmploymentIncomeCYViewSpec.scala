@@ -39,6 +39,10 @@ class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncome
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.EmploymentIncomeCYController.onSubmit(NormalMode).url, "parentEmploymentIncome", "partnerEmploymentIncome")
+    behave like pageWithTextFields(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.EmploymentIncomeCYController.onSubmit(NormalMode).url,
+      "parentEmploymentIncomeCY", "partnerEmploymentIncomeCY")
   }
 }

@@ -28,14 +28,19 @@ class EmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends For
   val minValue: Double = appConfig.minIncome
   val maxValue: Double = appConfig.maxIncome
 
+  private val parentIncomeInvalidKey = "parentEmploymentIncomeCY.invalid"
+  private val partnerIncomeInvalidKey = "partnerEmploymentIncomeCY.invalid"
+
   def apply(): Form[EmploymentIncomeCY] = Form(
     mapping(
-      "parentEmploymentIncome" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("parentEmploymentIncome.required"),
-        validateDecimalInRange("parentEmploymentIncome.invalid", minValue, maxValue))),
-      "partnerEmploymentIncome" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("partnerEmploymentIncome.required"),
-        validateDecimalInRange("partnerEmploymentIncome.invalid", minValue, maxValue)))
+      "parentEmploymentIncomeCY" ->
+        decimal("parentEmploymentIncomeCY.blank", parentIncomeInvalidKey)
+          .verifying(minimumValue[BigDecimal](minValue, parentIncomeInvalidKey))
+          .verifying(maximumValue[BigDecimal](maxValue, parentIncomeInvalidKey)),
+      "partnerEmploymentIncomeCY" ->
+        decimal("partnerEmploymentIncomeCY.blank", partnerIncomeInvalidKey)
+          .verifying(minimumValue[BigDecimal](minValue, partnerIncomeInvalidKey))
+          .verifying(maximumValue[BigDecimal](maxValue, partnerIncomeInvalidKey))
     )(EmploymentIncomeCY.apply)(EmploymentIncomeCY.unapply)
   )
 }
