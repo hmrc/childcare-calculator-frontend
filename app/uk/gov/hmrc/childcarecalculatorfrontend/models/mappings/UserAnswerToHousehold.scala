@@ -265,9 +265,7 @@ sealed trait OverallIncome {
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
-          employmentIncome = answers.employmentIncomeCY.fold(answers.partnerEmploymentIncomeCY) {
-            income => Some(BigDecimal(income.partnerEmploymentIncome))
-          },
+          employmentIncome = incomeValue,
           pension = answers.howMuchPartnerPayPension,
           otherIncome = answers.partnerOtherIncomeAmountCY,
           benefits = answers.partnerBenefitsIncomeCY,
@@ -304,11 +302,11 @@ sealed trait OverallIncome {
   }
 
   private def parentEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
-    BigDecimal(x.parentEmploymentIncome)
+    x.parentEmploymentIncomeCY
   }
 
   private def partnerEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
-    BigDecimal(x.partnerEmploymentIncome)
+    x.partnerEmploymentIncomeCY
   }
 
   private def partnerEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
