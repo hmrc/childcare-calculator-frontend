@@ -16,41 +16,55 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.mockito.Matchers.any
+import org.scalatest.mockito.MockitoSugar
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedThreeOrFourId, ChildAgedTwoId, ChildcareCostsId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
-import uk.gov.hmrc.childcarecalculatorfrontend.services.SubmissionService
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{ResultsService, SubmissionService}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+import uk.gov.hmrc.http.cache.client.CacheMap
+import org.mockito.Mockito._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 
 
-class ResultControllerSpec extends ControllerSpecBase {
+class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
-                 submissionService: SubmissionService = FakeSuccessfulSubmissionService) =
-    new ResultController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl,
-      submissionService)
+                 resultService: ResultsService) =
+    new ResultController(frontendAppConfig,
+      messagesApi,
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      resultService)
 
   "Result Controller" must {
-    "return OK and the correct view for a GET" in {
-      val resultPage = controller().onPageLoad()(fakeRequest)
+    "return OK and with ResultViewModel for a GET" in {
+      when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future(ResultsViewModel(freeHours = Some(15)))
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
+      val resultPage = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
       status(resultPage) mustBe OK
-      contentAsString(resultPage) mustBe result(frontendAppConfig)(fakeRequest, messages).toString
+      contentAsString(resultPage) must include("15")
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
+      val result = controller(dontGetAnyData, resultService).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
   }
+
+  val resultService: ResultsService = mock[ResultsService]
 }
 
 

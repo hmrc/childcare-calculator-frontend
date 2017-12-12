@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
 class ResultViewSpec extends ViewBehaviours {
 
-  def view = () => result(frontendAppConfig)(fakeRequest, messages)
+  def view = () => result(frontendAppConfig,ResultsViewModel())(fakeRequest, messages)
 
   "Result view" must {
 

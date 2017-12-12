@@ -16,7 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@(appConfig: FrontendAppConfig, model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("result.title"),
@@ -24,4 +25,5 @@
     bodyClasses = None) {
 
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
+    <p>@model.freeHours.fold(BigDecimal(0))(identity)</p>
 }

@@ -19,14 +19,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
-import uk.gov.hmrc.childcarecalculatorfrontend.services.SubmissionService
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import scala.concurrent.Future
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+
+import scala.concurrent.{Await, Future}
 
 
 @Singleton
@@ -34,18 +35,9 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
-                                      eligibilityService: SubmissionService) extends FrontendController with I18nSupport {
+                                      resultsService: ResultsService) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-
-    val schemesResult: Future[SchemeResults] = eligibilityService.eligibility(request.userAnswers).map {
-      results => {
-        println(s"*******RESULTS>>>>>>>>$results")
-        results
-      }
-    }
-
-    Ok(result(appConfig))
-
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+    resultsService.getResultsViewModel(request.userAnswers).map(model=> Ok(result(appConfig,model)))
   }
 }
