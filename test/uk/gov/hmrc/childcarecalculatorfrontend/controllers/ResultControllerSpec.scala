@@ -17,26 +17,19 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.mockito.Matchers.any
+import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
-import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedThreeOrFourId, ChildAgedTwoId, ChildcareCostsId, LocationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{ResultsService, SubmissionService}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.http.HeaderCarrier
-
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
-import uk.gov.hmrc.http.cache.client.CacheMap
-import org.mockito.Mockito._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
+import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
-
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
                  resultService: ResultsService) =
@@ -66,11 +59,3 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   val resultService: ResultsService = mock[ResultsService]
 }
-
-
-object FakeSuccessfulSubmissionService extends SubmissionService {
-  override def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
-    Future(SchemeResults(Nil))
-  }
-}
-
