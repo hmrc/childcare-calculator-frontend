@@ -22,14 +22,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPensionPY
 
 object HowMuchBothPayPensionPYForm extends FormErrorHelper {
 
+  private val youPayInvalidKey = "howMuchYouPayPensionPY.invalid"
+  private val partnerPayInvalidKey = "howMuchPartnerPayPensionPY.invalid"
+
   def apply(): Form[HowMuchBothPayPensionPY] = Form(
     mapping(
-      "howMuchYouPayPensionPY" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("howMuchYouPayPensionPY.required"),
-        validateDecimal("howMuchYouPayPensionPY.invalid"))),
-      "howMuchPartnerPayPensionPY" -> text.verifying(returnOnFirstFailure(
-        valueNonEmpty("howMuchPartnerPayPensionPY.required"),
-        validateDecimal("howMuchPartnerPayPensionPY.invalid")))
+      "howMuchYouPayPensionPY" ->
+        decimal("howMuchYouPayPensionPY.required", youPayInvalidKey),
+      "howMuchPartnerPayPensionPY" ->
+        decimal("howMuchPartnerPayPensionPY.required", partnerPayInvalidKey)
     )(HowMuchBothPayPensionPY.apply)(HowMuchBothPayPensionPY.unapply)
   )
 }

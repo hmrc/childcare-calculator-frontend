@@ -220,7 +220,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         val originalCacheMap = new CacheMap("id", Map(
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
+          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(20, 20))))
 
         val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, You, originalCacheMap)
 
@@ -232,7 +232,7 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         val originalCacheMap = new CacheMap("id", Map(
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
+          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(20, 20))))
 
         val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, Partner, originalCacheMap)
 
@@ -244,26 +244,26 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         val originalCacheMap = new CacheMap("id", Map(
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
+          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(20, 20))))
 
         val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, Both, originalCacheMap)
 
         result.data mustBe Map(WhoPaidIntoPensionPYId.toString -> JsString(Both),
-          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20")))
+          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(20, 20)))
       }
 
       "return original cache map when there is any invalid value for the input" in {
         val originalCacheMap = new CacheMap("id", Map(
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20"))))
+          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(20, 20))))
 
         val result = cascadeUpsert(WhoPaidIntoPensionPYId.toString, "invalidvalue", originalCacheMap)
 
         result.data mustBe Map(WhoPaidIntoPensionPYId.toString -> JsString("invalidvalue"),
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY("20", "20")))
+          HowMuchBothPayPensionPYId.toString -> Json.toJson(HowMuchBothPayPensionPY(20, 20)))
       }
     }
 

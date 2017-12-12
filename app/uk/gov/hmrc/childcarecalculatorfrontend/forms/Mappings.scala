@@ -58,6 +58,15 @@ trait Mappings {
       Map(key -> value.toString)
   }
 
+  protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
+    Constraint {
+      input =>
+        constraints
+          .map(_.apply(input))
+          .find(_ != Valid)
+          .getOrElse(Valid)
+    }
+
   protected def minimumValue[A](minimum: A, errorKey: String, errorArgs: Any*)(implicit ev: Ordering[A]): Constraint[A] =
     Constraint {
       input =>
@@ -83,6 +92,12 @@ trait Mappings {
           Invalid(errorKey, errorArgs:_*)
         }
     }
+
+  protected def inRange[A : Ordering](minimum: A, maximum: A, errorKey: String, errorArgs: Any*): Constraint[A] =
+    firstError(
+      minimumValue[A](minimum, errorKey, errorArgs: _*),
+      maximumValue[A](maximum, errorKey, errorArgs: _*)
+    )
 
   protected def decimal(requiredKey: String = "error.required",
                         invalidKey: String = "error.invalid"): FieldMapping[BigDecimal] =

@@ -110,7 +110,7 @@ class OtherIncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove YourOtherIncomeAmountPY and OtherIncomeAmountPY page data when user selects partner option" in {
         val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
-          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20", "20"))))
+          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20))))
 
         val result = cascadeUpsert(WhoOtherIncomePYId.toString, Partner, originalCacheMap)
 
@@ -121,25 +121,25 @@ class OtherIncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove PartnerOtherIncomeAmountPY and YourOtherIncomeAmountPY page data when user selects both option" in {
         val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
-          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20", "20"))))
+          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20))))
 
         val result = cascadeUpsert(WhoOtherIncomePYId.toString, Both, originalCacheMap)
 
         result.data mustBe Map(WhoOtherIncomePYId.toString -> JsString(Both),
-          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20", "20")))
+          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20)))
       }
 
       "return original cache map when there is any invalid value for the input" in {
         val originalCacheMap = new CacheMap("id", Map(YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
-          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20", "20"))))
+          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20))))
 
         val result = cascadeUpsert(WhoOtherIncomePYId.toString, "invalidvalue", originalCacheMap)
 
         result.data mustBe Map(WhoOtherIncomePYId.toString -> JsString("invalidvalue"),
           YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)),
-          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY("20", "20")))
+          OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20)))
       }
     }
 
