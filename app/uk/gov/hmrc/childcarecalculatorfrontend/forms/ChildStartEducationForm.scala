@@ -22,21 +22,26 @@ import play.api.data.{Form, FormError}
 
 object ChildStartEducationForm extends FormErrorHelper {
 
-  def apply(): Form[LocalDate] = Form(
+  val requiredKey = "childStartEducation.error.blank"
+  val invalidKey = "childStartEducation.error.invalid"
+  val before16Key = "childStartEducation.error.before16"
+
+  def apply(dateOfBirth: LocalDate): Form[LocalDate] = Form(
     single(
       "date" -> localDateMapping(
-        "day" -> number,
-        "month" -> number,
-        "year" -> number
+        "day" -> int(requiredKey, invalidKey),
+        "month" -> int(requiredKey, invalidKey),
+        "year" -> int(requiredKey, invalidKey)
       )
-        .verifying("childStartEducation.error.invalid", _.isBefore(LocalDate.now.plusDays(1)))
-        .replaceError("error.invalidDate", "childStartEducation.error.invalid")
-        .replaceError(FormError("day", "error.required"), FormError("", "childStartEducation.error"))
-        .replaceError(FormError("month", "error.required"), FormError("", "childStartEducation.error"))
-        .replaceError(FormError("year", "error.required"), FormError("", "childStartEducation.error"))
-        .replaceError(FormError("day", "error.number"), FormError("", "childStartEducation.error"))
-        .replaceError(FormError("month", "error.number"), FormError("", "childStartEducation.error"))
-        .replaceError(FormError("year", "error.number"), FormError("", "childStartEducation.error"))
+        .verifying(invalidKey, _.isBefore(LocalDate.now.plusDays(1)))
+        .verifying(before16Key, _.isAfter(dateOfBirth.plusYears(16)))
+        .replaceError(FormError("", "error.invalidDate"), FormError("", invalidKey))
+        .replaceError(FormError("day", requiredKey), FormError("", requiredKey))
+        .replaceError(FormError("month", requiredKey), FormError("", requiredKey))
+        .replaceError(FormError("year", requiredKey), FormError("", requiredKey))
+        .replaceError(FormError("day", invalidKey), FormError("", invalidKey))
+        .replaceError(FormError("month", invalidKey), FormError("", invalidKey))
+        .replaceError(FormError("year", invalidKey), FormError("", invalidKey))
     )
   )
 }
