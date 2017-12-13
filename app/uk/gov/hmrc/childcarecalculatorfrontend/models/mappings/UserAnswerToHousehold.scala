@@ -151,15 +151,26 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
+  private def checkEitherVouchers(eitherVouchers: Option[String]) = {
+    if(eitherVouchers.contains(YesNoUnsureEnum.NOTSURE.toString) || eitherVouchers.contains(YesNoUnsureEnum.YES.toString)) {
+      true
+    } else {
+      false
+    }
+
+  }
+
   private def createParentClaimant(answers: UserAnswers): Claimant = {
     val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     ///TODO: THis isn't getting set properly on a parent AND partner journey
-    val vouchersString = answers.yourChildcareVouchers
+    val vouchersString = if(checkEitherVouchers(answers.eitherGetsVouchers)) {
+      if(!answers.whoGetsVouchers.contains("partner")) Some("yes") else Some("no")
+    } else answers.yourChildcareVouchers
     val vouchers = stringToYesNoUnsureEnum(vouchersString)
 
-    println(s"PARENT VOUCHER - ${vouchers}")
+    println(s"PARENT VOUCHER - $vouchers")
 
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
@@ -192,7 +203,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val getBenefits = Benefits.populateFromRawData(benefits)
 
     ///TODO: THis isn't getting set properly on a parent AND partner journey
-    val vouchersString = answers.partnerChildcareVouchers
+
+    val vouchersString = if(checkEitherVouchers(answers.eitherGetsVouchers)) {
+      if(!answers.whoGetsVouchers.contains("parent")) Some("yes") else Some("no")
+    } else answers.partnerChildcareVouchers
+
     val vouchers = stringToYesNoUnsureEnum(vouchersString)
 
     println(s"PARTNER VOUCHER - ${vouchers}")
