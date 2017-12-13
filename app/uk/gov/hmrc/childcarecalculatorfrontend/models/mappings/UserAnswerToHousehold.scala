@@ -155,9 +155,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-
+    ///TODO: THis isn't getting set properly on a parent AND partner journey
     val vouchersString = answers.yourChildcareVouchers
     val vouchers = stringToYesNoUnsureEnum(vouchersString)
+
+    println(s"PARENT VOUCHER - ${vouchers}")
 
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
@@ -189,8 +191,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
 
+    ///TODO: THis isn't getting set properly on a parent AND partner journey
     val vouchersString = answers.partnerChildcareVouchers
     val vouchers = stringToYesNoUnsureEnum(vouchersString)
+
+    println(s"PARTNER VOUCHER - ${vouchers}")
 
     val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
     val selfEmployed = answers.partnerSelfEmployed
