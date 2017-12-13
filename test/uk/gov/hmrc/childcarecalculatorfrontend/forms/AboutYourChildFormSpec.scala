@@ -75,12 +75,24 @@ class AboutYourChildFormSpec extends FormBehaviours {
       checkForError(form, data, expectedError)
     }
 
-    "fail to bind when an invalid date is supplied" in {
+    "fail to bind when non numerics supplied" in {
       val data = Map(
         "name"      -> "Foo",
         "dob.day"   -> "not a number",
         "dob.month" -> "not a number",
         "dob.year"  -> "not a number"
+      )
+
+      val expectedError = error("dob", "aboutYourChild.error.dob.invalid")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when an invalid date is supplied" in {
+      val data = Map(
+        "name"      -> "Foo",
+        "dob.day"   -> "31",
+        "dob.month" -> "2",
+        "dob.year"  -> "2000"
       )
 
       val expectedError = error("dob", "aboutYourChild.error.dob.invalid")

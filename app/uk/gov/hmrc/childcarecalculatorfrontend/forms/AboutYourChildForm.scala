@@ -39,6 +39,7 @@ object AboutYourChildForm extends Mappings {
         )
           .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
           .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
+          .replaceError(FormError("", "error.invalidDate"), FormError("", invalidKey))
           .replaceError(FormError("day", requiredKey), FormError("", requiredKey))
           .replaceError(FormError("month", requiredKey), FormError("", requiredKey))
           .replaceError(FormError("year", requiredKey), FormError("", requiredKey))

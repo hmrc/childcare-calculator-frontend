@@ -32,7 +32,7 @@ labelClass: Option[String] = None
     }
 
     @if(viewModel.errorKey.nonEmpty){
-    <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
+    <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey, viewModel.args:_*)</span>
     }
 
     <div class="form-control-wrapper">
