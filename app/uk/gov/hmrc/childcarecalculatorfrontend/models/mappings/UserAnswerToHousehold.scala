@@ -249,7 +249,7 @@ sealed trait OverallIncome {
 
     val benefits =  determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
 
-    val statutoryPay = buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks)
+//    val statutoryPay = buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks)
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -258,7 +258,7 @@ sealed trait OverallIncome {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
+          statutoryIncome = statPay,
           taxCode = taxCode)
         )
       case _ => None
