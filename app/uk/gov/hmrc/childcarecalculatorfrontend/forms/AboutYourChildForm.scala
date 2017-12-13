@@ -23,6 +23,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
 object AboutYourChildForm extends Mappings {
 
+  val requiredKey = "aboutYourChild.error.dob.blank"
+  val invalidKey = "aboutYourChild.error.dob.invalid"
+
   def apply(): Form[AboutYourChild] = Form(
     mapping(
       "name" ->
@@ -30,19 +33,18 @@ object AboutYourChildForm extends Mappings {
           .verifying(maxLength(35, "aboutYourChild.error.maxLength")),
       "dob" ->
         localDateMapping(
-          "day" -> number,
-          "month" -> number,
-          "year" -> number
+          "day" -> int(requiredKey, invalidKey),
+          "month" -> int(requiredKey, invalidKey),
+          "year" -> int(requiredKey, invalidKey)
         )
           .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
           .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
-          .replaceError("error.invalidDate", "aboutYourChild.error.dob")
-          .replaceError(FormError("day", "error.required"), FormError("", "aboutYourChild.error.dob"))
-          .replaceError(FormError("month", "error.required"), FormError("", "aboutYourChild.error.dob"))
-          .replaceError(FormError("year", "error.required"), FormError("", "aboutYourChild.error.dob"))
-          .replaceError(FormError("day", "error.number"), FormError("", "aboutYourChild.error.dob"))
-          .replaceError(FormError("month", "error.number"), FormError("", "aboutYourChild.error.dob"))
-          .replaceError(FormError("year", "error.number"), FormError("", "aboutYourChild.error.dob"))
+          .replaceError(FormError("day", requiredKey), FormError("", requiredKey))
+          .replaceError(FormError("month", requiredKey), FormError("", requiredKey))
+          .replaceError(FormError("year", requiredKey), FormError("", requiredKey))
+          .replaceError(FormError("day", invalidKey), FormError("", invalidKey))
+          .replaceError(FormError("month", invalidKey), FormError("", invalidKey))
+          .replaceError(FormError("year", invalidKey), FormError("", invalidKey))
     )(AboutYourChild.apply)(AboutYourChild.unapply)
   )
 }
