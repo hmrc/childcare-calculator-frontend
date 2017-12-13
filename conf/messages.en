@@ -496,7 +496,7 @@ partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.blank = Enter how much your partner will get paid this year
 partnerEmploymentIncomeCY.invalid = Enter numbers between 1 and 99999.99 for how much your partner will get paid this year
-partnerEmploymentIncomeCY.hint= This is your partner's total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay they’ve had.
 partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 
 employmentIncome.invalid=You must enter a number between 0 and 999999.99
@@ -505,7 +505,7 @@ parentEmploymentIncome.blank= You must tell the calculator what you will get pai
 employmentIncomeCY.tax_year= This year is 6 April 2017 to 5 April 2018.
 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
-parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.error = Select yes if you had any paid work this year
 parentPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
@@ -890,7 +890,7 @@ childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childDisabilityBenefits.error = You must answer yes if {0} get disability benefits
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
-childcarePayFrequency.heading = How often do you pay or expect to pay for {0}’s childcare?
+childcarePayFrequency.heading = How often do you pay or expect to pay {0}’s childcare costs?
 childcarePayFrequency.weekly = Weekly
 childcarePayFrequency.monthly = Monthly
 childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
