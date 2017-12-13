@@ -65,5 +65,13 @@ IE8: Hide back button as it doesn't work in IE8
   margin-bottom: 40px;
 }
 
+#wrapper {
+  padding-bottom: 0;
+}
 
+@media (min-width: 641px) {
+.content__body {
+  width: 66.666667%;
+}
+}
 
