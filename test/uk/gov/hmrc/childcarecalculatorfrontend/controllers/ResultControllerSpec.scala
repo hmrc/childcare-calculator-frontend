@@ -53,7 +53,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       contentAsString(resultPage) must include("1000")
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" when {
+    "redirect to Session Expired" when {
       "we do a GET and no data is found" in {
         val result = controller(dontGetAnyData, resultService).onPageLoad()(fakeRequest)
 
@@ -62,7 +62,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       }
 
       "we try to get the view model and something goes wrong" in {
-        when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future.failed(new IllegalArgumentException)
+        when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future.failed(new RuntimeException)
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
         val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
