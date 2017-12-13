@@ -222,6 +222,24 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
 sealed trait OverallIncome {
 
+  private val defaultStatutoryPay: Int = 100
+
+  //TODO: Test this after statutory pay journey has been fixed
+  private def buildStatutoryPay(value: Option[Int], weeks: Option[Int]): Option[StatutoryIncome] = (value, weeks) match {
+    case (Some(v), Some(w)) =>
+      Some(StatutoryIncome(
+        statutoryWeeks = w.toDouble,
+        statutoryAmount = if(w > 0) Some(BigDecimal(v)) else None
+      ))
+    case (None, Some(w)) =>
+      Some(StatutoryIncome(
+        statutoryWeeks = w.toDouble,
+        statutoryAmount = if(w > 0) Some(BigDecimal(defaultStatutoryPay)) else None
+      ))
+    case _ =>
+      None
+  }
+
   def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
@@ -231,6 +249,8 @@ sealed trait OverallIncome {
 
     val benefits =  determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
 
+    val statutoryPay = buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks)
+
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -238,7 +258,7 @@ sealed trait OverallIncome {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statPay,
+          statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ => None
