@@ -36,5 +36,8 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
     resultsService.getResultsViewModel(request.userAnswers).map(model=> Ok(result(appConfig,model)))
+      .recover{
+      case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+    }
   }
 }

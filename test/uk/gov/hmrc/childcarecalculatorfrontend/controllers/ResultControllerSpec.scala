@@ -41,7 +41,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
-      when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future(
+      when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000)))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
@@ -53,11 +53,23 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       contentAsString(resultPage) must include("1000")
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData, resultService).onPageLoad()(fakeRequest)
+    "redirect to Session Expired for a GET if no existing data is found" when {
+      "we do a GET and no data is found" in {
+        val result = controller(dontGetAnyData, resultService).onPageLoad()(fakeRequest)
 
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      }
+
+      "we try to get the view model and something goes wrong" in {
+        when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future.failed(new IllegalArgumentException)
+
+        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
+        val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
+
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      }
     }
   }
 
