@@ -29,6 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
+import scala.math.BigDecimal.RoundingMode
+
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
   extends OverallIncome {
 
@@ -157,21 +159,32 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     } else {
       false
     }
+  }
 
+  private def getVoucherValue(eitherGetsVouchers: Option[String], whoGetsVouchers: Option[String], who: String, default: Option[String]): Option[YesNoUnsureEnum] = {
+
+    val vouchers: Option[String] =
+
+      if(eitherGetsVouchers.contains(YesNoUnsureEnum.YES.toString)) {
+
+        if(!whoGetsVouchers.contains(who)) Some("yes") else Some("no")
+
+      } else if(eitherGetsVouchers.contains(YesNoUnsureEnum.NOTSURE.toString) || eitherGetsVouchers.contains(YesNoUnsureEnum.NO.toString)) {
+        eitherGetsVouchers
+      }
+      else
+      {
+        default
+      }
+
+    stringToYesNoUnsureEnum(vouchers)
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
     val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-    ///TODO: THis isn't getting set properly on a parent AND partner journey
-    val vouchersString = if(checkEitherVouchers(answers.eitherGetsVouchers)) {
-      if(!answers.whoGetsVouchers.contains("partner")) Some("yes") else Some("no")
-    } else answers.yourChildcareVouchers
-    val vouchers = stringToYesNoUnsureEnum(vouchersString)
-
-    println(s"PARENT VOUCHER - $vouchers")
-
+    val vouchers = getVoucherValue(answers.eitherGetsVouchers, answers.whoGetsVouchers, "partner", answers.yourChildcareVouchers)
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
     val maxEarnings = answers.yourMaximumEarnings
@@ -201,17 +214,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-
-    ///TODO: THis isn't getting set properly on a parent AND partner journey
-
-    val vouchersString = if(checkEitherVouchers(answers.eitherGetsVouchers)) {
-      if(!answers.whoGetsVouchers.contains("parent")) Some("yes") else Some("no")
-    } else answers.partnerChildcareVouchers
-
-    val vouchers = stringToYesNoUnsureEnum(vouchersString)
-
-    println(s"PARTNER VOUCHER - ${vouchers}")
-
+    val vouchers = getVoucherValue(answers.eitherGetsVouchers, answers.whoGetsVouchers, "parent", answers.partnerChildcareVouchers)
     val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
     val selfEmployed = answers.partnerSelfEmployed
     val maxEarnings = answers.partnerMaximumEarnings
@@ -260,6 +263,13 @@ sealed trait OverallIncome {
       None
   }
 
+  private def yearToMonth(yearlyValue: Option[BigDecimal]): Option[BigDecimal] = yearlyValue match {
+    case Some(yearlyValue) =>
+    val monthlyValue: BigDecimal = yearlyValue/12
+      Some(monthlyValue.setScale(2, RoundingMode.HALF_EVEN))
+    case None => None
+  }
+
   def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
@@ -267,9 +277,12 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountPY, answers.otherIncomeAmountPY, parentOtherIncomePY)
 
-    val benefits =  determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
+    val benefits = yearToMonth(
+      determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
+    )
 
-//    val statutoryPay = buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks)
+    //TODO: Implement statutoryPay
+    //val statutoryPay = buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks)
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -293,7 +306,9 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountPY, answers.otherIncomeAmountPY, partnerOtherIncomePY)
 
-    val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
+    val benefits =  yearToMonth(
+      determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
+    )
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -318,7 +333,9 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountCY, answers.otherIncomeAmountCY, parentOtherIncomeCY)
 
-    val benefits =  determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
+    val benefits =  yearToMonth(
+      determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
+    )
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -343,7 +360,9 @@ sealed trait OverallIncome {
 
     val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountCY, answers.otherIncomeAmountCY, partnerOtherIncomeCY)
 
-    val benefits =  determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
+    val benefits = yearToMonth(
+      determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
+    )
 
     incomeValue match {
       case Some(x) if x > 0 =>
