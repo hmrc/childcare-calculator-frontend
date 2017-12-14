@@ -374,13 +374,13 @@ yourAge.checkYourAnswersLabel = What’s your age?
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
-yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age.
+yourMinimumEarnings.hint = This is the weekly National Minimum Wage or Living Wage for someone your age. If you’re off work for maternity, paternity, adoption or sick pay, it’s how much you earned before that.
 yourMinimumEarnings.error = Select yes if you will earn an average of £{0} or more a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
-partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age.
+partnerMinimumEarnings.hint = This is the National Minimum Wage or National Living Wage a week for someone your partner’s age. If they’re off work for maternity, paternity, adoption or sick pay, it’s how much they earned before that.
 partnerMinimumEarnings.error = Select yes if your partner will earn an average of £{0} or more a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
