@@ -23,22 +23,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object YouBenefitsIncomePYForm extends FormErrorHelper {
 
-  def youBenefitsIncomePYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  val errorKeyBlank = parentBenefitsIncomePYRequiredErrorKey
+  val errorKeyInvalid = parentBenefitsIncomePYInvalidErrorKey
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-
-    def bind(key: String, data: Map[String, String]) = {
-      data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
-        case _ => produceError(key, errorKeyInvalid)
-      }
-    }
-
-    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-  }
-
-  def apply(errorKeyBlank: String = parentBenefitsIncomePYRequiredErrorKey, errorKeyInvalid: String = parentBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(youBenefitsIncomePYFormatter(errorKeyBlank, errorKeyInvalid))))
+  def apply(): Form[BigDecimal] =
+    Form(
+      "value" ->
+        decimal(errorKeyBlank, errorKeyInvalid)
+          .verifying(inRange[BigDecimal](1, 9999.99, errorKeyInvalid)))
 }

@@ -36,5 +36,31 @@ class HowMuchBothPayPensionPYFormSpec extends FormBehaviours {
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchPartnerPayPensionPY",
       "howMuchPartnerPayPensionPY.required", "howMuchPartnerPayPensionPY.required")
+
+    "fail to bind if either value is below the threshold of 1" in {
+      val data = Map(
+        "howMuchYouPayPensionPY" -> "0.9",
+        "howMuchPartnerPayPensionPY" -> "0.9"
+      )
+
+      val expectedErrors =
+        error("howMuchYouPayPensionPY", "howMuchYouPayPensionPY.invalid") ++
+          error("howMuchPartnerPayPensionPY", "howMuchPartnerPayPensionPY.invalid")
+
+      checkForError(form, data, expectedErrors)
+    }
+
+    "fail to bind if either value is above the threshold of 9999.99" in {
+      val data = Map(
+        "howMuchYouPayPensionPY" -> "10000",
+        "howMuchPartnerPayPensionPY" -> "10000"
+      )
+
+      val expectedErrors =
+        error("howMuchYouPayPensionPY", "howMuchYouPayPensionPY.invalid") ++
+          error("howMuchPartnerPayPensionPY", "howMuchPartnerPayPensionPY.invalid")
+
+      checkForError(form, data, expectedErrors)
+    }
   }
 }

@@ -28,9 +28,11 @@ object HowMuchBothPayPensionPYForm extends FormErrorHelper {
   def apply(): Form[HowMuchBothPayPensionPY] = Form(
     mapping(
       "howMuchYouPayPensionPY" ->
-        decimal("howMuchYouPayPensionPY.required", youPayInvalidKey),
+        decimal("howMuchYouPayPensionPY.required", youPayInvalidKey)
+            .verifying(inRange[BigDecimal](1, 9999.99, youPayInvalidKey)),
       "howMuchPartnerPayPensionPY" ->
         decimal("howMuchPartnerPayPensionPY.required", partnerPayInvalidKey)
+          .verifying(inRange[BigDecimal](1, 9999.99, partnerPayInvalidKey))
     )(HowMuchBothPayPensionPY.apply)(HowMuchBothPayPensionPY.unapply)
   )
 }

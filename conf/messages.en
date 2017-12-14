@@ -621,16 +621,17 @@ whosHadBenefits.error = Select who’s had benefits
 youPaidPensionPY.title = Did you pay into your work pension last year?
 youPaidPensionPY.heading = Did you pay into your work pension last year?
 youPaidPensionPY.checkYourAnswersLabel = Did you pay into your work pension last year?
-youPaidPensionPY.error = You must answer yes if you have paid into a pension through payroll this year
+youPaidPensionPY.error = Select yes if you paid into your work pension in the previous year
+
 partnerPaidPensionPY.title = Did your partner pay into a work pension last year?
 partnerPaidPensionPY.heading = Did your partner pay into a work pension last year?
 partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
-partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
+partnerPaidPensionPY.error = Select yes if your partner paid into a work pension in the previous year
 
 bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
 bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
 bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
-bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
+bothPaidPensionPY.error = Select yes if you, your partner, or both of you paid into a work pension in the previous year
 
 parentPaidWorkPY.title = You are not working now, but have you had any paid work last year
 parentPaidWorkPY.heading = You are not working now, but have you had any paid work last year
@@ -751,7 +752,7 @@ whoPaidIntoPensionPY.heading = Who paid into a pension?
 whoPaidIntoPensionPY.you = You
 whoPaidIntoPensionPY.partner = Partner
 whoPaidIntoPensionPY.both = Both
-whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
+whoPaidIntoPensionPY.error = Select who paid into a pension
 whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
 whosHadBenefitsPY.title = Who’s had benefits last year?
@@ -800,7 +801,7 @@ youAnyTheseBenefitsPY.li.attendance = Attendance allowance
 youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits last year?
-youAnyTheseBenefitsPY.error = You must tell the calculator if you had any of these benefits last year
+youAnyTheseBenefitsPY.error = Select yes if you had any of these benefits in the previous year
 
 partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits last year?
 partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits last year?
@@ -814,7 +815,7 @@ partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
 partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
-partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
+partnerAnyTheseBenefitsPY.error = Select yes if your partner had any of these benefits in the previous year
 
 bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
@@ -828,7 +829,7 @@ bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
 bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
-bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
+bothAnyTheseBenefitsPY.error = Select yes if you or your partner had any of these benefits in the previous year
 
 bothBenefitsIncomePY.title = How much did you and your partner get in benefits last year?
 bothBenefitsIncomePY.heading = How much did you and your partner get in benefits last year?
@@ -836,10 +837,10 @@ bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income last year
 bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income last year
 bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner get in benefits last year?
 
-parentBenefitsIncomePY.required = You must tell the calculator how much you got paid in benefits last year
-partnerBenefitsIncomePY.required = You must tell the calculator how much your partner got paid in benefits last year
-parentBenefitsIncomePY.invalid = Please enter a valid numerical value
-partnerBenefitsIncomePY.invalid = Please enter a valid numerical value
+parentBenefitsIncomePY.required = Enter how much your benefits income was in the previous year
+partnerBenefitsIncomePY.required = Enter how much your partner’s benefits income was in the previous year
+parentBenefitsIncomePY.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
+partnerBenefitsIncomePY.invalid = Enter numbers from 1 to 9999.99 for your partner’s benefits income in the previous year
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
@@ -849,38 +850,32 @@ registeredBlind.checkYourAnswersLabel = registeredBlind
 partnerBenefitsIncomePY.title = How much did your partner get in benefits last year?
 partnerBenefitsIncomePY.heading = How much did your partner get in benefits last year?
 partnerBenefitsIncomePY.info = Partner’s benefits income
-partnerBenefitsIncomePY.error = You must tell the calculator how much your partner got paid in benefits last year
 partnerBenefitsIncomePY.checkYourAnswersLabel = How much did your partner get in benefits last year?
 
 youBenefitsIncomePY.title = How much did you get in benefits last year?
 youBenefitsIncomePY.heading = How much did you get in benefits last year?
 youBenefitsIncomePY.info = Your benefits income
-youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
-youBenefitsIncomePY.invalid = Please only enter a numerical value of up to two decimal places
-youBenefitsIncomePY.required = Please tell the calculator how much you got paid in benefits last year
 
 howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.yourPension = You
 howMuchBothPayPensionPY.partnerPension = Partner
 howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
-howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
-howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
 
 howMuchYouPayPensionPY.title = How much did you pay into your pension a month?
 howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
 howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
 howMuchYouPayPensionPY.yourPension = You
-howMuchYouPayPensionPY.required = Please tell the calculator how much you paid into your pension a month
-howMuchYouPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchYouPayPensionPY.required = Enter how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much you paid into your pension a month
 
 howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.partnerPension = Partner
-howMuchPartnerPayPensionPY.required = Please tell the calculator how much your partner paid into their pension a month
-howMuchPartnerPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
+howMuchPartnerPayPensionPY.required = Enter how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into your pension a month
 
 childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
@@ -899,11 +894,11 @@ childcarePayFrequency.error = Select how often you pay or expect to pay for chil
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
-parentOtherIncomeAmountPY.required = You must tell the calculator how much your other income was
-parentOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+parentOtherIncomeAmountPY.required = Enter how much your other income was in the previous year
+parentOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your other income in the previous year
 
-partnerOtherIncomeAmountPY.required = You must tell the calculator how much ’s’s other income was
-partnerOtherIncomeAmountPY.invalid = You must enter a number between 0 and 999999.9
+partnerOtherIncomeAmountPY.required = Enter how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income
 partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
@@ -924,8 +919,8 @@ childrenDisabilityBenefits.error = Select yes if any of your children get any of
 parentEmploymentIncomePY.title = How much did you get paid last year?
 parentEmploymentIncomePY.heading = How much did you get paid last year?
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
-parentEmploymentIncomePY.required = You must tell the calculator what did you get paid last year
-parentEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
+parentEmploymentIncomePY.required = Enter how much you got paid in the previous year
+parentEmploymentIncomePY.invalid = Enter numbers from 1 to 99999.99 for how much you got paid last year
 parentEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
 parentEmploymentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 
@@ -934,8 +929,8 @@ partnerEmploymentIncomePY.heading = How much did your partner get paid last year
 partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid last year?
 partnerEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
 partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
-partnerEmploymentIncomePY.required = You must tell the calculator what did your partner get paid last year
-partnerEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
+partnerEmploymentIncomePY.required = Enter how much your partner got paid in the previous year
+partnerEmploymentIncomePY.invalid = Enter numbers from 1 to 99999.99 for how much your partner got paid last year
 
 employmentIncomePY.title = How much did you and your partner get paid last year?
 employmentIncomePY.heading = How much did you and your partner get paid last year?

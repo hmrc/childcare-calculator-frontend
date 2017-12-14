@@ -70,7 +70,7 @@ class PartnerBenefitsIncomePYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerBenefitsIncomePYForm(partnerBenefitsIncomePYRequiredErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = PartnerBenefitsIncomePYForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
