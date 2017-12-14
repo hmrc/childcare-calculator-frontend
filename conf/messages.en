@@ -522,8 +522,8 @@ bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now,
 bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
 bothPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
 
-whoPaysIntoPension.title = Who pays into a pension?
-whoPaysIntoPension.heading = Who pays into a pension?
+whoPaysIntoPension.title = Who’s paying into a pension?
+whoPaysIntoPension.heading = Who’s paying into a pension?
 whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
@@ -604,14 +604,14 @@ PartnerPaidPensionCY.heading = Has your partner paid into a work pension this ye
 PartnerPaidPensionCY.checkYourAnswersLabel = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.error = Select yes if your partner is paying into a work pension this year
 
-bothPaidPensionCY.title = Have you, your partner, or both of you paid into a work pension this year?
-bothPaidPensionCY.heading = Have you, your partner, or both of you paid into a work pension this year?
+bothPaidPensionCY.title = Are you, your partner, or both of you paying into a work pension this year?
+bothPaidPensionCY.heading = Are you, your partner, or both of you paying into a work pension this year?
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.error = Select yes if you, your partner, or both of you are paying into a work pension this year
 bothPaidPensionCY.tax.year = This year is 6 April 2017 to 5 April 2018.
 
-whosHadBenefits.title = Who’s had benefits?
-whosHadBenefits.heading = Who’s had benefits?
+whosHadBenefits.title = Who had benefits?
+whosHadBenefits.heading = Who had benefits?
 whosHadBenefits.you = You
 whosHadBenefits.partner = Partner
 whosHadBenefits.both = Both
@@ -690,8 +690,8 @@ howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay 
 howMuchPartnerPayPension.required = Enter how much your partner pays into their pension a month
 howMuchPartnerPayPension.invalid = Enter numbers between 1 and 9999.99 for how much your partner pays into their pension a month
 
-howMuchBothPayPension.title = How much do you and your partner pay into your pension a month?
-howMuchBothPayPension.heading = How much do you and your partner pay into your pension a month?
+howMuchBothPayPension.title = How much do you and your partner pay into your pensions a month?
+howMuchBothPayPension.heading = How much do you and your partner pay into your pensions a month?
 howMuchBothPayPension.yourPension = Your pension
 howMuchBothPayPension.partnerPension = Partner’s pension
 howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
@@ -782,11 +782,11 @@ partnerOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your 
 
 employmentIncomeCY.title = How much will you and your partner get paid this year?
 employmentIncomeCY.heading = How much will you and your partner get paid this year?
-employmentIncomeCY.parentEmploymentIncome = Your income
-employmentIncomeCY.partnerEmploymentIncome = Partner’s income
+employmentIncomeCY.parentEmploymentIncome = Your pay
+employmentIncomeCY.partnerEmploymentIncome = Partner’s pay
 employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
 employmentIncomeCY.tax_year = This year is 6 April 2017 to 5 April 2018.
-employmentIncomeCY.hint = This is your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+employmentIncomeCY.hint = This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
 
 youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
 youAnyTheseBenefitsPY.heading = Did you get any of these benefits last year?
