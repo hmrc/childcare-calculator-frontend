@@ -627,8 +627,8 @@ partnerPaidPensionPY.heading = Did your partner pay into a work pension last yea
 partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension last year?
 partnerPaidPensionPY.error = You must answer yes if your partner paid into a pension through payroll this year
 
-bothPaidPensionPY.title = Did you, your partner, or both of you pay into your work pension last year?
-bothPaidPensionPY.heading = Did you, your partner, or both of you pay into your work pension last year?
+bothPaidPensionPY.title = Did you, your partner, or both of you pay into a work pension in the previous year?
+bothPaidPensionPY.heading = Did you, your partner, or both of you pay into a work pension in the previous year?
 bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension last year?
 bothPaidPensionPY.error = ou must answer yes if you, your partner, or both of you paid into a pension through payroll this year
 
@@ -862,8 +862,8 @@ youBenefitsIncomePY.required = Please tell the calculator how much you got paid 
 
 howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
-howMuchBothPayPensionPY.yourPension = You
-howMuchBothPayPensionPY.partnerPension = Partner
+howMuchBothPayPensionPY.yourPension = Your pension
+howMuchBothPayPensionPY.partnerPension = Partner’s pension
 howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.invalid = Please only enter a numerical value of up to two decimal places
 howMuchBothPayPensionPY.required = Please tell the calculator how much you both paid into your pensions a month
@@ -937,13 +937,13 @@ partnerEmploymentIncomePY.hint = This was your partner’s total earnings from a
 partnerEmploymentIncomePY.required = You must tell the calculator what did your partner get paid last year
 partnerEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
 
-employmentIncomePY.title = How much did you and your partner get paid last year?
-employmentIncomePY.heading = How much did you and your partner get paid last year?
-employmentIncomePY.parentEmploymentIncomePY = Your income
-employmentIncomePY.partnerEmploymentIncomePY = Partner’s income
+employmentIncomePY.title = How much did you and your partner get paid in the previous year?
+employmentIncomePY.heading = How much did you and your partner get paid in the previous year?
+employmentIncomePY.parentEmploymentIncomePY = Your pay
+employmentIncomePY.partnerEmploymentIncomePY = Partner’s pay
 employmentIncomePY.checkYourAnswersLabel = How much did you and your partner get paid last year?
-employmentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
-employmentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
+employmentIncomePY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+employmentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
 aboutYourChild.title = About your child
 aboutYourChild.title.nth = About your {0} child

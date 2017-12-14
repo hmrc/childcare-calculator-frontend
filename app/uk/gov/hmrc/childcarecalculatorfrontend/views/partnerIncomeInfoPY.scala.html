@@ -29,7 +29,10 @@ nextPage: Call)(implicit request: Request[_], messages: Messages)
 
         @components.heading("partnerIncomeInfoPY.heading", "heading-xlarge")
 
-        <p>@messages("partnerIncomeInfoPY.tax_year")</p>
+        <div class="panel-indent panel-border-wide">
+            <p>@messages("partnerIncomeInfoPY.tax_year")</p>
+        </div>
+
         <p>@messages("partnerIncomeInfoPY.guidance")</p>
 
 
