@@ -52,7 +52,7 @@ class PartnerBenefitsIncomePYController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      PartnerBenefitsIncomePYForm(partnerBenefitsIncomePYRequiredErrorKey).bindFromRequest().fold(
+      PartnerBenefitsIncomePYForm().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerBenefitsIncomePY(appConfig, formWithErrors, mode))),
         (value) =>

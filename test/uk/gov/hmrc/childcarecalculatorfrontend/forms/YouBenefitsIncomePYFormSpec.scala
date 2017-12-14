@@ -20,44 +20,49 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class YouBenefitsIncomePYFormSpec extends FormSpec {
 
-  val errorKeyBlank = youBenefitsIncomePYRequiredErrorKey
-  val errorKeyInvalid = youBenefitsIncomePYInvalidErrorKey
+  val errorKeyBlank = parentBenefitsIncomePYRequiredErrorKey
+  val errorKeyInvalid = parentBenefitsIncomePYInvalidErrorKey
 
   "YouBenefitsIncomePY Form" must {
 
-    "bind zero" in {
-      val form = YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "0.0"))
-      form.get shouldBe 0.0
-    }
-
     "bind positive numbers" in {
-      val form = YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "1.0"))
+      val form = YouBenefitsIncomePYForm().bind(Map("value" -> "1.0"))
       form.get shouldBe 1.0
     }
 
     "bind positive decimal number" in {
-      val form = YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "10.80"))
+      val form = YouBenefitsIncomePYForm().bind(Map("value" -> "10.80"))
       form.get shouldBe 10.80
+    }
+
+    "fail to bind numbers below the threshold of 1" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(YouBenefitsIncomePYForm(), Map("value" -> "0.9"), expectedError)
+    }
+
+    "fail to bind numbers above the threshold of 9999.99" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(YouBenefitsIncomePYForm(), Map("value" -> "10000"), expectedError)
     }
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "-1"), expectedError)
+      checkForError(YouBenefitsIncomePYForm(), Map("value" -> "-1"), expectedError)
     }
 
     "fail to bind non-numerics" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "not a number"), expectedError)
+      checkForError(YouBenefitsIncomePYForm(), Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid), Map("value" -> ""), expectedError)
+      checkForError(YouBenefitsIncomePYForm(), Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
       val expectedError = error("value", errorKeyBlank)
-      checkForError(YouBenefitsIncomePYForm(errorKeyBlank, errorKeyInvalid), emptyForm, expectedError)
+      checkForError(YouBenefitsIncomePYForm(), emptyForm, expectedError)
     }
 
   }
