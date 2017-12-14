@@ -104,7 +104,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(false)
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "they are eligible for tax credits" in {
@@ -122,7 +122,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+            routes.ResultController.onPageLoad()
           }
         }
 
@@ -219,7 +219,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Your Other Income CY Route" must {
-        "redirect to right page when user" when {
+        "redirect to right page when single user" when {
           "is not eligible for tax credits" in {
             val answers = spy(userAnswers())
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
@@ -448,7 +448,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "How Much Partner Other Income PY Route" must {
+      "How Much Partner Other Income CY Route" must {
         "redirect to right page when user provides valid input" when {
           "partner is eligible for tax credits" in {
             val answers = spy(userAnswers())
@@ -467,7 +467,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "partners eligibility for tax credits is not determined" in {
@@ -477,7 +477,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
 
