@@ -40,7 +40,6 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
     
     val schemesResult: Future[SchemeResults] = eligibilityService.eligibility(request.userAnswers).map {
       results => {
-        println(s"*******RESULTS>>>>>>>>$results")
         results
       }
     }
