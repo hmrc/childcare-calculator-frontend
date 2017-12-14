@@ -48,15 +48,14 @@ object YouPartnerBothEnum extends Enumeration {
 
 object YesNoUnsureEnum extends Enumeration {
   type YesNoUnsureEnum = Value
-  val YES = Value("yes")
-  val NO = Value("no")
-  val NOTSURE = Value("notSure")
-
+  val YES, NO, NOTSURE = Value
   val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
+
   val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
 }
+
 
 object YesNoNotYetEnum extends Enumeration {
   type YesNoNotYetEnum = Value
@@ -154,3 +153,29 @@ object EmploymentStatusEnum extends Enumeration {
 
   implicit def enumFormats: Format[EmploymentStatusEnum] = EnumUtils.enumFormat(EmploymentStatusEnum)
 }
+
+object SchemeEnum extends Enumeration {
+  type SchemeEnum = Value
+  val TFCELIGIBILITY = Value("tfcEligibility")
+  val TCELIGIBILITY = Value("tcEligibility")
+  val ESCELIGIBILITY = Value("escEligibility")
+
+  val enumReads: Reads[SchemeEnum] = EnumUtils.enumReads(SchemeEnum)
+
+  val enumWrites: Writes[SchemeEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[SchemeEnum] = EnumUtils.enumFormat(SchemeEnum)
+}
+
+object PeriodEnum extends Enumeration {
+  type PeriodEnum = Value
+  val WEEKLY, FORTNIGHTLY, MONTHLY, QUARTERLY, YEARLY, INVALID = Value
+  val enumReads: Reads[PeriodEnum] = EnumUtils.enumReads(PeriodEnum)
+
+  val enumWrites: Writes[PeriodEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
+}
+
+
+

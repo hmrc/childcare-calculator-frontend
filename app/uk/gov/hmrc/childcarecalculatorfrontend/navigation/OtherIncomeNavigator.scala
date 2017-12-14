@@ -52,19 +52,19 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
   private def yourOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.YourIncomeInfoPYController.onPageLoad(), routes.YouStatutoryPayController.onPageLoad(NormalMode))
+      case false => processTaxCreditsEligibility(answers, routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
     }
 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
       case true => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.PartnerIncomeInfoPYController.onPageLoad(), routes.PartnerStatutoryPayController.onPageLoad(NormalMode))
+      case false => processTaxCreditsEligibility(answers, routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
     }
 
   private def bothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.bothOtherIncomeThisYear) {
       case true => routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.PartnerIncomeInfoPYController.onPageLoad(), routes.BothStatutoryPayController.onPageLoad(NormalMode))
+      case false => processTaxCreditsEligibility(answers, routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
     }
 
   private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
@@ -74,11 +74,11 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
       case Both => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
     }
 
-  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers, answers.yourOtherIncomeAmountCY,routes.YourIncomeInfoPYController.onPageLoad(), routes.YouStatutoryPayController.onPageLoad(NormalMode))
+  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers, answers.yourOtherIncomeAmountCY,routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
 
-  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.partnerOtherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.PartnerStatutoryPayController.onPageLoad(NormalMode))
+  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.partnerOtherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
 
-  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.otherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.BothStatutoryPayController.onPageLoad(NormalMode))
+  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.otherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
     utils.getCall(answersType) {

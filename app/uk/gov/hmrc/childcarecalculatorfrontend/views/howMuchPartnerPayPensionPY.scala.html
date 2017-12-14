@@ -35,7 +35,6 @@
 
     @helpers.form(action = HowMuchPartnerPayPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),
             currencySymbol=Some("true"),

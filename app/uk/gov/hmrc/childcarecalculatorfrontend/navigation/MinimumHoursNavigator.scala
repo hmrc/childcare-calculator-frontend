@@ -22,7 +22,7 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Scheme, Schemes}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NormalMode, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val schemes: Schemes) extends ResultsNavigator {
@@ -53,7 +53,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   }
 
   private def costRoute(answers: UserAnswers): Call = {
-    val No = YesNoUnsureEnum.NO.toString
+    val No = YesNoNotYetEnum.NO.toString
     if(answers.childcareCosts.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad()
@@ -66,7 +66,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   }
 
   private def approvedChildCareRoute(answers: UserAnswers): Call = {
-    val No = YesNoUnsureEnum.NO.toString
+    val No = YesNoUnsureEnum.NO
     if(answers.approvedProvider.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad()
