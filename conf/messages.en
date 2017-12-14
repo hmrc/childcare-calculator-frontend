@@ -590,7 +590,7 @@ partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any ot
 bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
-bothOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+bothOtherIncomeThisYear.hint.text = This could be from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
 bothOtherIncomeThisYear.error = Select yes if you, your partner, or both of you will get any other income this year
 
@@ -774,8 +774,8 @@ yourOtherIncomeAmountCY.checkYourAnswersLabel = How much will your other income 
 parentOtherIncome.required = Enter how much your other income will be this year
 parentOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your other income will be this year
 
-partnerOtherIncomeAmountCY.title = How much will your partner other income be this year?
-partnerOtherIncomeAmountCY.heading = How much will your partner other income be this year?
+partnerOtherIncomeAmountCY.title = How much will your partner’s other income be this year?
+partnerOtherIncomeAmountCY.heading = How much will your partner’s other income be this year?
 partnerOtherIncomeAmountCY.checkYourAnswersLabel = How much will your partner other income be this year?
 partnerOtherIncome.required = Enter how much your partner’s other income will be this year
 partnerOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your partner’s other income will be this year
