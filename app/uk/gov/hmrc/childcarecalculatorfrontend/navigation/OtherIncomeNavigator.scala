@@ -52,7 +52,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
   private def yourOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.YourIncomeInfoPYController.onPageLoad(), routes.YouStatutoryPayController.onPageLoad(NormalMode))
+      case false => processTaxCreditsEligibility(answers, routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
     }
 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
@@ -74,7 +74,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
       case Both => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
     }
 
-  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers, answers.yourOtherIncomeAmountCY,routes.YourIncomeInfoPYController.onPageLoad(), routes.YouStatutoryPayController.onPageLoad(NormalMode))
+  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers, answers.yourOtherIncomeAmountCY,routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.partnerOtherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.PartnerStatutoryPayController.onPageLoad(NormalMode))
 

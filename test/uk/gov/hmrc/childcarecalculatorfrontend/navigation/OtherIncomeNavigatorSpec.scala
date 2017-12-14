@@ -55,7 +55,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "is eligible for tax credits" in {
@@ -73,7 +73,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
 
@@ -226,7 +226,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
           "is eligible for tax credits" in {
             val answers = spy(userAnswers())
@@ -242,7 +242,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
       }
