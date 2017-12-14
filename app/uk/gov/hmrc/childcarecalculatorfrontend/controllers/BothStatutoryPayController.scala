@@ -27,30 +27,34 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothStatutoryPayId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothStatutoryPay
 
 import scala.concurrent.Future
 
 class BothStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                           override val messagesApi: MessagesApi,
+                                           dataCacheConnector: DataCacheConnector,
+                                           navigator: Navigator,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+
+  val requiredKey = "bothStatutoryPay.required"
+  val requiredKeyArg = taxYearInfo.previousTaxYearStart
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.bothStatutoryPay match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+        case None => BooleanForm(requiredKey, requiredKeyArg)
+        case Some(value) => BooleanForm(requiredKey, requiredKeyArg).fill(value)
       }
       Ok(bothStatutoryPay(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm(requiredKey, requiredKeyArg).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothStatutoryPay(appConfig, formWithErrors, mode))),
         (value) =>
