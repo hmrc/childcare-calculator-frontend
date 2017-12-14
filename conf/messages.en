@@ -111,9 +111,9 @@ childcareCosts.error = Select yes if you have childcare costs
 approvedProvider.title = Are your childcare costs with an approved provider?
 approvedProvider.heading = Are your childcare costs with an approved provider?
 approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It could be a school, childminder, playscheme, nursery or an out of school club.
-approvedProvider.yes = Yes
-approvedProvider.no = No
-approvedProvider.notSure = Not sure
+approvedProvider.YES = Yes
+approvedProvider.NO = No
+approvedProvider.NOTSURE = Not sure
 approvedProvider.checkYourAnswersLabel = approvedProvider
 approvedProvider.error = Select yes if your childcare costs are with an approved provider
 
@@ -212,9 +212,9 @@ partnerWorkHours.para1 = This is the hours worked in all their paid jobs, zero h
 
 hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.yes = Yes
-hasYourTaxCodeBeenAdjusted.no = No
-hasYourTaxCodeBeenAdjusted.notSure = Not sure
+hasYourTaxCodeBeenAdjusted.YES = Yes
+hasYourTaxCodeBeenAdjusted.NO = No
+hasYourTaxCodeBeenAdjusted.NOTSURE = Not sure
 hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
 hasYourTaxCodeBeenAdjusted.info = It would be adjusted if you have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, you’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
 hasYourTaxCodeBeenAdjusted.error = Select yes if your tax code has been adjusted
@@ -235,9 +235,9 @@ hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been ad
 hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
 hasYourPartnersTaxCodeBeenAdjusted.info = It would be adjusted if they have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, they’re probably on the tax code of 1150L. The calculator will use that if you’re not sure.
 hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.yes = Yes
-hasYourPartnersTaxCodeBeenAdjusted.no = No
-hasYourPartnersTaxCodeBeenAdjusted.notSure = Not sure
+hasYourPartnersTaxCodeBeenAdjusted.YES = Yes
+hasYourPartnersTaxCodeBeenAdjusted.NO = No
+hasYourPartnersTaxCodeBeenAdjusted.NOTSURE = Not sure
 hasYourPartnersTaxCodeBeenAdjusted.error = Select yes if your partner’s tax code has been adjusted
 
 doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
@@ -253,9 +253,9 @@ whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of ei
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
-yourChildcareVouchers.yes = Yes
-yourChildcareVouchers.no = No
-yourChildcareVouchers.notSure = Not Sure
+yourChildcareVouchers.YES = Yes
+yourChildcareVouchers.NO = No
+yourChildcareVouchers.NOTSURE = Not Sure
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
 yourChildcareVouchers.error = You must tell the calculator if your employer offers childcare vouchers
 
@@ -269,9 +269,9 @@ partnerChildcareVouchers.error = You must tell the calculator if your partner's 
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
-eitherGetsVouchers.yes = Yes
-eitherGetsVouchers.no = No
-eitherGetsVouchers.notSure = Not sure
+eitherGetsVouchers.YES = Yes
+eitherGetsVouchers.NO = No
+eitherGetsVouchers.NOTSURE = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = You must tell the calculator if either of your employers offer childcare vouchers
 
@@ -1027,11 +1027,9 @@ whoGotStatutoryPay.partner = Partner
 whoGotStatutoryPay.both = Both
 whoGotStatutoryPay.error = You must tell the calculator who got statutory pay
 
-
 youStatutoryPay.title = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.heading = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April 2016?
-
 
 statutoryPay.guidance = Statutory pay is:
 statutoryPay.li.maternity = maternity
@@ -1043,7 +1041,6 @@ statutoryPay.guidance_extra = It could have started before this date and overlap
 bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
-
 
 partnerStatutoryPay.title = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April 2016?
@@ -1111,4 +1108,7 @@ partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week 
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 
+result.title = What help you could get with your childcare
+result.heading = What help you could get with your childcare
+result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 

@@ -18,8 +18,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
+
+import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
+
 import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits._
+
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
@@ -69,7 +77,7 @@ object Benefits {
 
 case class MinimumEarnings(
                             amount: BigDecimal = 0.00,
-                            employmentStatus: Option[String] = None,
+                            employmentStatus: Option[EmploymentStatusEnum] = None,
                             selfEmployedIn12Months: Option[Boolean] = None
                           )
 
@@ -123,7 +131,7 @@ object Disability {
 
 case class ChildCareCost(
                           amount: Option[BigDecimal] = None,
-                          period: Option[ChildcarePayFrequency.Value] = None
+                          period: Option[PeriodEnum] = None
                         )
 
 object ChildCareCost {
@@ -153,13 +161,13 @@ object Child {
 }
 
 case class Claimant(
-                     ageRange: Option[String] = None,
+                     ageRange: Option[AgeEnum] = None,
                      benefits: Option[Benefits] = None,
                      lastYearlyIncome: Option[Income] = None,
                      currentYearlyIncome: Option[Income] = None,
                      hours: Option[BigDecimal] = None,
                      minimumEarnings: Option[MinimumEarnings] = None,
-                     escVouchers: Option[String] = None,
+                     escVouchers: Option[YesNoUnsureEnum] = None,
                      maximumEarnings: Option[Boolean] = None
                    )
 
@@ -168,7 +176,7 @@ object Claimant {
 }
 
 case class Household(
-                      credits: Option[String] = None,
+                      credits: Option[CreditsEnum] = None,
                       location: Location,
                       children: List[Child] = List.empty,
                       parent: Claimant = Claimant(),
