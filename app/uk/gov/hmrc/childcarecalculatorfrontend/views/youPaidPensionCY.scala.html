@@ -34,6 +34,8 @@
 
     @components.heading("YouPaidPensionCY.heading", "heading-xlarge")
 
+    <p>@messages("YouPaidPensionCY.year.start.end.date")</p>
+
     @helpers.form(action = YouPaidPensionCYController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_yes_no(
