@@ -34,7 +34,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeYourStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap  = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourStatutoryPayPerWeekId.toString)
+      case JsString("false") => cacheMap copy (data = cacheMap.data - YourStatutoryPayPerWeekId.toString)
       case _ => cacheMap
     }
 

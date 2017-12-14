@@ -30,17 +30,17 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
       "remove YourStatutoryPayPerWeek page data when user selects no option" in {
         val originalCacheMap = new CacheMap("id", Map(YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
 
-        val result = cascadeUpsert(YourStatutoryPayBeforeTaxId.toString, false, originalCacheMap)
+        val result = cascadeUpsert(YourStatutoryPayBeforeTaxId.toString, "false", originalCacheMap)
 
-        result.data mustBe Map(YourStatutoryPayBeforeTaxId.toString -> JsBoolean(false))
+        result.data mustBe Map(YourStatutoryPayBeforeTaxId.toString -> JsString("false"))
       }
 
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300))))
 
-        val result = cascadeUpsert(YourStatutoryPayBeforeTaxId.toString, true, originalCacheMap)
+        val result = cascadeUpsert(YourStatutoryPayBeforeTaxId.toString, "true", originalCacheMap)
 
-        result.data mustBe Map(YourStatutoryPayBeforeTaxId.toString.toString -> JsBoolean(true),
+        result.data mustBe Map(YourStatutoryPayBeforeTaxId.toString.toString -> JsString("true"),
           YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)))
       }
     }
