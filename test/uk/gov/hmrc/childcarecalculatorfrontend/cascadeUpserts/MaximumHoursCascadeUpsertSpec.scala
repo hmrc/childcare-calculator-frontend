@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
+import org.joda.time.LocalDate
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerPaidWorkPYId, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -28,15 +29,14 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   lazy val no: String = YesNoUnsureEnum.NO.toString
   lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
-  lazy val disabilityBenefits=WhichBenefitsEnum.DISABILITYBENEFITS.toString
-  lazy val incomeBenefits=WhichBenefitsEnum.INCOMEBENEFITS.toString
+  lazy val disabilityBenefits: String = WhichBenefitsEnum.DISABILITYBENEFITS.toString
+  lazy val incomeBenefits: String = WhichBenefitsEnum.INCOMEBENEFITS.toString
 
 
-  lazy val under18=AgeEnum.UNDER18.toString
-  lazy val eighteenToTwenty=AgeEnum.EIGHTEENTOTWENTY.toString
-  lazy val twentyToTwentyFour=AgeEnum.TWENTYONETOTWENTYFOUR.toString
-  lazy val overTwentyFive=AgeEnum.OVERTWENTYFOUR.toString
-
+  lazy val under18: String = AgeEnum.UNDER18.toString
+  lazy val eighteenToTwenty: String = AgeEnum.EIGHTEENTOTWENTY.toString
+  lazy val twentyToTwentyFour: String = AgeEnum.TWENTYONETOTWENTYFOUR.toString
+  lazy val overTwentyFive: String = AgeEnum.OVERTWENTYFOUR.toString
 
 
   "saving the doYouLiveWithPartner" must {
@@ -45,11 +45,18 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       val originalCacheMap1 = new CacheMap("id", Map(
         WhoIsInPaidEmploymentId.toString -> JsString(partner), PartnerWorkHoursId.toString -> JsString("12"),
         HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-        WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"),PartnerChildcareVouchersId.toString -> JsString("yes"),
-         WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
+        WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), PartnerChildcareVouchersId.toString -> JsString("yes"),
+        WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
         PartnerMinimumEarningsId.toString -> JsBoolean(true),
         PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-        PartnerMaximumEarningsId.toString -> JsBoolean(true)))
+        PartnerMaximumEarningsId.toString -> JsBoolean(true),
+        BothStatutoryPayId.toString -> JsBoolean(true),
+        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
+        PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
+        PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+        PartnerStatutoryWeeksId.toString -> JsNumber(200),
+        PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
+        PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
 
       val originalCacheMap2 = new CacheMap("id", Map(
         WhoIsInPaidEmploymentId.toString -> JsString(both), PartnerWorkHoursId.toString -> JsString("12"),ParentWorkHoursId.toString -> JsString("12"),
@@ -64,7 +71,14 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourPartnersAgeId.toString -> JsString("under18"), YourAgeId.toString -> JsString("under18"), PartnerMinimumEarningsId.toString -> JsBoolean(true),
         YourMinimumEarningsId.toString -> JsBoolean(false),
         AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-        PartnerMaximumEarningsId.toString -> JsBoolean(true)))
+        PartnerMaximumEarningsId.toString -> JsBoolean(true),
+        BothStatutoryPayId.toString -> JsBoolean(true),
+        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
+        PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
+        PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+        PartnerStatutoryWeeksId.toString -> JsNumber(200),
+        PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
+        PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
 
 
       val result1 = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap1)
