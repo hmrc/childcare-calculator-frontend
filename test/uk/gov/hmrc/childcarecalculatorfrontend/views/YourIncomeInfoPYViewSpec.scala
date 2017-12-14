@@ -27,8 +27,7 @@ class YourIncomeInfoPYViewSpec extends ViewBehaviours {
   val messageKeyPrefix = "yourIncomeInfoPY"
 
   "Your Income Info PY view" must {
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
-      "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
+    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance")
 
     "contain the link for parent paid work for previous year" in {
       val doc = asDocument(createView())

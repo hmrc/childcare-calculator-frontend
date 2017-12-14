@@ -31,8 +31,7 @@ class PartnerIncomeInfoPYViewSpec extends ViewBehaviours {
   val messageKeyPrefix = "partnerIncomeInfoPY"
 
   "Partner Income Info PY view" must {
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
-      "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
+    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance")
   }
 
   "contain the link for next page" in {

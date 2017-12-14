@@ -29,16 +29,12 @@ nextPage: Call)(implicit request: Request[_], messages: Messages)
 
         @components.heading("partnerIncomeInfoPY.heading", "heading-xlarge")
 
-        <p>@messages("partnerIncomeInfoPY.tax_year")</p>
+        <div class="panel-indent panel-border-wide">
+            <p>@messages("partnerIncomeInfoPY.tax_year")</p>
+        </div>
+
         <p>@messages("partnerIncomeInfoPY.guidance")</p>
 
-        <ul class="bullets">
-            <li>@messages("partnerIncomeInfoPY.li.income_paid_work")</li>
-            <li>@messages("partnerIncomeInfoPY.li.pensions")</li>
-            <li>@messages("partnerIncomeInfoPY.li.other_income")</li>
-            <li>@messages("partnerIncomeInfoPY.li.benefits_income")</li>
-            <li>@messages("partnerIncomeInfoPY.li.birth_or_adoption")</li>
-        </ul>
 
 @components.button_link(
 messageKey = "site.save_and_continue",
