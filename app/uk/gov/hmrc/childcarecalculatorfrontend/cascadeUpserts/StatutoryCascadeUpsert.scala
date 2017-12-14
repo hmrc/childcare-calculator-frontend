@@ -28,7 +28,8 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
     Map(
-      YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm))
+      YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm)),
+      YourStatutoryPayTypeId.toString -> ((v, cm) => storeYourStatutoryPayType(v, cm))
     )
 
   private def storeYourStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap  = {
@@ -38,6 +39,19 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
 
     store(YourStatutoryPayBeforeTaxId.toString, value, mapToStore)
+  }
+
+  private def storeYourStatutoryPayType(value: JsValue, cacheMap: CacheMap): CacheMap  = {
+
+    val existingStatPayType: Option[JsValue] = cacheMap.data.get(YourStatutoryPayTypeId.toString)
+
+    val mapToStore: CacheMap = existingStatPayType.fold(cacheMap){
+      case `value` => cacheMap
+      case _ => cacheMap copy (data = cacheMap.data - YourStatutoryPayPerWeekId.toString - YourStatutoryWeeksId.toString -
+        YourStatutoryStartDateId.toString)
+    }
+
+    store(YourStatutoryPayTypeId.toString, value, mapToStore)
   }
 
   private def storeWhosHadBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
@@ -54,33 +68,5 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(WhosHadBenefitsId.toString, value, mapToStore)
   }
 
-  private def storeYouAnyTheseBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YouBenefitsIncomeCYId.toString)
-      case _ => cacheMap
-    }
-
-    store(YouAnyTheseBenefitsIdCY.toString, value, mapToStore)
-  }
-
-  private def storePartnerAnyTheseBenefitsCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - PartnerBenefitsIncomeCYId.toString)
-      case _ => cacheMap
-    }
-
-    store(PartnerAnyTheseBenefitsCYId.toString, value, mapToStore)
-  }
-
-
-  private def storeBothAnyTheseBenefitsCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhosHadBenefitsId.toString -
-        YouBenefitsIncomeCYId.toString - PartnerBenefitsIncomeCYId.toString - BenefitsIncomeCYId.toString)
-      case _ => cacheMap
-    }
-
-    store(BothAnyTheseBenefitsCYId.toString, value, mapToStore)
-  }
 
 }
