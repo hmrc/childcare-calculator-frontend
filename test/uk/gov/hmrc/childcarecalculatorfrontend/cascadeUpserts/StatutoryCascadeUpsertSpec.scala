@@ -20,8 +20,6 @@ import org.joda.time.LocalDate
 import play.api.libs.json
 import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, BothBenefitsIncomePY}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{Both, Partner, You}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -95,6 +93,40 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
         result.data mustBe Map(YourStatutoryPayTypeId.toString -> JsString("invalidvalue"),
           YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)))
+      }
+    }
+
+    "Save You Statutory Pay data" must {
+      "remove YourStatutoryPayPerWeek page data when user selects no option" in {
+        val originalCacheMap = new CacheMap("id", Map(YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)),
+          YourStatutoryPayTypeId.toString -> JsString("maternity"),
+          YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+          YourStatutoryWeeksId.toString -> JsNumber(200),
+          YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+          YourStatutoryPayBeforeTaxId.toString -> JsBoolean(true)))
+
+        val result = cascadeUpsert(YouStatutoryPayId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(YouStatutoryPayId.toString -> JsBoolean(false))
+      }
+
+      "return original cache map when user selects yes option" in {
+        val originalCacheMap = new CacheMap("id", Map(YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)),
+          YourStatutoryPayTypeId.toString -> JsString("maternity"),
+          YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+          YourStatutoryWeeksId.toString -> JsNumber(200),
+          YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+          YourStatutoryPayBeforeTaxId.toString -> JsBoolean(true)))
+
+        val result = cascadeUpsert(YouStatutoryPayId.toString, true, originalCacheMap)
+
+        result.data mustBe Map(YouStatutoryPayId.toString.toString -> JsBoolean(true),
+          YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)),
+          YourStatutoryPayTypeId.toString -> JsString("maternity"),
+          YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+          YourStatutoryWeeksId.toString -> JsNumber(200),
+          YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+          YourStatutoryPayBeforeTaxId.toString -> JsBoolean(true))
       }
     }
   }

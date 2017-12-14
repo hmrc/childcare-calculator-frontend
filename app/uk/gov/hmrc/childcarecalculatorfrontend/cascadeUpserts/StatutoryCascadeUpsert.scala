@@ -18,9 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsBoolean, JsString, JsValue}
+import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -29,7 +28,8 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
     Map(
       YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm)),
-      YourStatutoryPayTypeId.toString -> ((v, cm) => storeYourStatutoryPayType(v, cm))
+      YourStatutoryPayTypeId.toString -> ((v, cm) => storeYourStatutoryPayType(v, cm)),
+      YouStatutoryPayId.toString -> ((v, cm) => storeYouStatutoryPay(v, cm))
     )
 
   private def storeYourStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap  = {
@@ -54,19 +54,14 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(YourStatutoryPayTypeId.toString, value, mapToStore)
   }
 
-  private def storeWhosHadBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeYouStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap  = {
     val mapToStore = value match {
-      case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerBenefitsIncomeCYId.toString -
-        BenefitsIncomeCYId.toString)
-      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
-        BenefitsIncomeCYId.toString)
-      case JsString(Both) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
-        PartnerBenefitsIncomeCYId.toString)
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourStatutoryPayTypeId.toString - YourStatutoryPayPerWeekId.toString -
+        YourStatutoryWeeksId.toString - YourStatutoryStartDateId.toString - YourStatutoryPayBeforeTaxId.toString)
       case _ => cacheMap
     }
 
-    store(WhosHadBenefitsId.toString, value, mapToStore)
+    store(YouStatutoryPayId.toString, value, mapToStore)
   }
-
 
 }
