@@ -55,7 +55,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "is eligible for tax credits" in {
@@ -73,7 +73,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
 
@@ -104,7 +104,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(false)
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "they are eligible for tax credits" in {
@@ -122,7 +122,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+            routes.ResultController.onPageLoad()
           }
         }
 
@@ -152,7 +152,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotEligible
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-               routes.BothStatutoryPayController.onPageLoad(NormalMode)
+               routes.ResultController.onPageLoad()
             }
 
             "they are eligible for tax credits" in {
@@ -170,7 +170,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.BothStatutoryPayController.onPageLoad(NormalMode)
+                routes.ResultController.onPageLoad()
             }
           }
         }
@@ -219,14 +219,14 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "How Much Your Other Income CY Route" must {
-        "redirect to right page when user" when {
+        "redirect to right page when single user" when {
           "is not eligible for tax credits" in {
             val answers = spy(userAnswers())
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
           "is eligible for tax credits" in {
             val answers = spy(userAnswers())
@@ -242,7 +242,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.YouStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
       }
@@ -414,7 +414,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "How Much Both other income PY route" must {
+      "How Much Both other income CY route" must {
         "redirect to right page when user provides valid input" when {
           "both eligible for tax credits" in {
             val answers = spy(userAnswers())
@@ -433,7 +433,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "cannot determine if they can have tax credits" in {
@@ -443,12 +443,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
       }
 
-      "How Much Partner Other Income PY Route" must {
+      "How Much Partner Other Income CY Route" must {
         "redirect to right page when user provides valid input" when {
           "partner is eligible for tax credits" in {
             val answers = spy(userAnswers())
@@ -467,7 +467,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "partners eligibility for tax credits is not determined" in {
@@ -477,7 +477,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
 

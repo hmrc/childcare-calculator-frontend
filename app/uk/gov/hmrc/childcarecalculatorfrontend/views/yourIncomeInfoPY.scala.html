@@ -29,16 +29,13 @@
 
         @components.heading("yourIncomeInfoPY.heading", "heading-xlarge")
 
-        <p>@messages("yourIncomeInfoPY.tax_year")</p>
+        <div class="panel-indent panel-border-wide">
+            <p>@messages("yourIncomeInfoPY.tax_year")</p>
+        </div>
+
         <p>@messages("yourIncomeInfoPY.guidance")</p>
 
-        <ul class="bullets">
-            <li>@messages("yourIncomeInfoPY.li.income_paid_work")</li>
-            <li>@messages("yourIncomeInfoPY.li.pensions")</li>
-            <li>@messages("yourIncomeInfoPY.li.other_income")</li>
-            <li>@messages("yourIncomeInfoPY.li.benefits_income")</li>
-            <li>@messages("yourIncomeInfoPY.li.birth_or_adoption")</li>
-        </ul>
+
 
             @components.button_link(
             messageKey = "site.save_and_continue",
