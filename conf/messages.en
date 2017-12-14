@@ -652,14 +652,14 @@ bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2
 
 partnerAnyOtherIncomeLY.title = Did your partner get any other income last year?
 partnerAnyOtherIncomeLY.heading = Did your partner get any other income last year?
-partnerAnyOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.year.start.end.date = The previous year is 6 April 2016 to 5 April 2017.
 partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
 partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income last year
 
 yourOtherIncomeLY.title = Did you get any other income last year?
 yourOtherIncomeLY.heading = Did you get any other income last year?
-yourOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
+yourOtherIncomeLY.year.start.end.date = The previous year is 6 April 2016 to 5 April 2017.
 yourOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
 yourOtherIncomeLY.error = Select yes if you got any other income last year
@@ -711,7 +711,7 @@ partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you
 
 yourIncomeInfoPY.title = Your income last year
 yourIncomeInfoPY.heading = Your income last year
-yourIncomeInfoPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
 yourIncomeInfoPY.guidance = We’ll now ask questions about your income, including:
 yourIncomeInfoPY.li.income_paid_work = income from paid work
 yourIncomeInfoPY.li.pensions = pension contributions
@@ -731,15 +731,15 @@ partnerIncomeInfoPY.li.benefits_income = income from benefits
 partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
 partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
-bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income last year?
-bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income last year?
-bothOtherIncomeLY.year.start.end.date = Last year was 6 April 2016 to 5 April 2017.
-bothOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
+bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income in the previous year?
+bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income in the previous year?
+bothOtherIncomeLY.year.start.end.date = The previous year is 6 April 2016 to 5 April 2017.
+bothOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
 bothOtherIncomeLY.error = Select yes if you, your partner, or both of you got any other income last year
 
-whoOtherIncomePY.title = Who got other income last year?
-whoOtherIncomePY.heading = Who got other income last year?
+whoOtherIncomePY.title = Who got other income?
+whoOtherIncomePY.heading = Who got other income?
 whoOtherIncomePY.you = You
 whoOtherIncomePY.partner = Partner
 whoOtherIncomePY.both = Both
@@ -754,8 +754,8 @@ whoPaidIntoPensionPY.both = Both
 whoPaidIntoPensionPY.error = You must tell the calculator who paid into a pension
 whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
-whosHadBenefitsPY.title = Who’s had benefits last year?
-whosHadBenefitsPY.heading = Who’s had benefits last year?
+whosHadBenefitsPY.title = Who got benefits income?
+whosHadBenefitsPY.heading = Who got benefits income?
 whosHadBenefitsPY.you = You
 whosHadBenefitsPY.partner = Partner
 whosHadBenefitsPY.both = Both
@@ -790,7 +790,7 @@ employmentIncomeCY.hint = This is the total pay from all your jobs, or profit fr
 
 youAnyTheseBenefitsPY.title = Did you get any of these benefits last year?
 youAnyTheseBenefitsPY.heading = Did you get any of these benefits last year?
-youAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+youAnyTheseBenefitsPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
 youAnyTheseBenefitsPY.li.income_support = Income Support
 youAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
 youAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
@@ -804,7 +804,7 @@ youAnyTheseBenefitsPY.error = You must tell the calculator if you had any of the
 
 partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits last year?
 partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits last year?
-partnerAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerAnyTheseBenefitsPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
 partnerAnyTheseBenefitsPY.li.income_support = Income Support
 partnerAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
 partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
@@ -816,9 +816,9 @@ partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
 partnerAnyTheseBenefitsPY.error = You must tell the calculator if your partner had any of these benefits last year?
 
-bothAnyTheseBenefitsPY.title = Did you or your partner have any of these benefits last year?
-bothAnyTheseBenefitsPY.heading = Did you or your partner have any of these benefits last year?
-bothAnyTheseBenefitsPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+bothAnyTheseBenefitsPY.title = Did you, your partner, or both of you get any of these benefits in the previous year?
+bothAnyTheseBenefitsPY.heading = Did you, your partner, or both of you get any of these benefits in the previous year?
+bothAnyTheseBenefitsPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
 bothAnyTheseBenefitsPY.li.income_support = Income Support
 bothAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
 bothAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
@@ -830,10 +830,10 @@ bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.error = You must tell the calculator if you or your partner had any of these benefits last year
 
-bothBenefitsIncomePY.title = How much did you and your partner get in benefits last year?
-bothBenefitsIncomePY.heading = How much did you and your partner get in benefits last year?
-bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income last year
-bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income last year
+bothBenefitsIncomePY.title = What was you and your partner’s benefits income in the previous year?
+bothBenefitsIncomePY.heading = What was you and your partner’s benefits income in the previous year?
+bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income
+bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income
 bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner get in benefits last year?
 
 parentBenefitsIncomePY.required = You must tell the calculator how much you got paid in benefits last year
@@ -846,14 +846,14 @@ registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error = You must tell the calculator if your children are registered blind
 registeredBlind.checkYourAnswersLabel = registeredBlind
 
-partnerBenefitsIncomePY.title = How much did your partner get in benefits last year?
-partnerBenefitsIncomePY.heading = How much did your partner get in benefits last year?
+partnerBenefitsIncomePY.title = What was your partner’s benefits income?
+partnerBenefitsIncomePY.heading = What was your partner’s benefits income?
 partnerBenefitsIncomePY.info = Partner’s benefits income
 partnerBenefitsIncomePY.error = You must tell the calculator how much your partner got paid in benefits last year
 partnerBenefitsIncomePY.checkYourAnswersLabel = How much did your partner get in benefits last year?
 
-youBenefitsIncomePY.title = How much did you get in benefits last year?
-youBenefitsIncomePY.heading = How much did you get in benefits last year?
+youBenefitsIncomePY.title = What was your benefits income?
+youBenefitsIncomePY.heading = What was your benefits income?
 youBenefitsIncomePY.info = Your benefits income
 youBenefitsIncomePY.error = You must tell the calculator how much you got paid in benefits this year
 youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
@@ -911,7 +911,7 @@ partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s
 otherIncomeAmountPY.title = How much was you and your partner’s other income?
 otherIncomeAmountPY.heading = How much was you and your partner’s other income?
 otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
-otherIncomeAmountPY.partnerOtherIncomeAmountPY = Your Partner’s other income
+otherIncomeAmountPY.partnerOtherIncomeAmountPY = Partner’s other income
 otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
 
 childrenDisabilityBenefits.title = Do any of your children get any of these disability benefits?
@@ -926,13 +926,13 @@ parentEmploymentIncomePY.heading = How much did you get paid last year?
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
 parentEmploymentIncomePY.required = You must tell the calculator what did you get paid last year
 parentEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
-parentEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+parentEmploymentIncomePY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
 parentEmploymentIncomePY.hint = This was your total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 
 partnerEmploymentIncomePY.title = How much did your partner get paid last year?
 partnerEmploymentIncomePY.heading = How much did your partner get paid last year?
 partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid last year?
-partnerEmploymentIncomePY.tax_year = Last year is 6 April 2016 to 5 April 2017.
+partnerEmploymentIncomePY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
 partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 partnerEmploymentIncomePY.required = You must tell the calculator what did your partner get paid last year
 partnerEmploymentIncomePY.invalid = You must enter a number between 0 and 999999.9
@@ -1033,7 +1033,7 @@ statutoryPay.li.maternity = maternity
 statutoryPay.li.paternity = paternity
 statutoryPay.li.adoption = adoption
 statutoryPay.li.shared_parental = shared parental
-statutoryPay.guidance_extra = This could also be if you started to get the pay before 6 April 2016 and continued to get it after this date.
+statutoryPay.guidance_extra = It could have started before this date and overlapped past it.
 
 bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
@@ -1047,19 +1047,19 @@ partnerStatutoryPay.guidance_extra = This could also be if they started to get t
 
 partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
 partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.maternity = Maternity
-partnerStatutoryPayType.paternity = Paternity
-partnerStatutoryPayType.adoption = Adoption
-partnerStatutoryPayType.shared-parental = Shared parental
+partnerStatutoryPayType.maternity = maternity
+partnerStatutoryPayType.paternity = paternity
+partnerStatutoryPayType.adoption = adoption
+partnerStatutoryPayType.shared-parental = shared parental
 partnerStatutoryPayType.error = You must tell the calculator what kind of statutory pay your partner got
 partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
 
 yourStatutoryPayType.title = What kind of statutory pay did you get?
 yourStatutoryPayType.heading = What kind of statutory pay did you get?
-yourStatutoryPayType.maternity = Maternity
-yourStatutoryPayType.paternity = Paternity
-yourStatutoryPayType.adoption = Adoption
-yourStatutoryPayType.shared-parental = Shared parental
+yourStatutoryPayType.maternity = maternity
+yourStatutoryPayType.paternity = paternity
+yourStatutoryPayType.adoption = adoption
+yourStatutoryPayType.shared-parental = shared parental
 yourStatutoryPayType.error = You must tell the calculator what kind of statutory pay you got
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
 
@@ -1086,11 +1086,11 @@ partnerStatutoryStartDate.error.invalid = You must enter correct date
 partnerStatutoryStartDate.hint = For example, 31 2 2017
 partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
 
-yourStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
-yourStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
+yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
+yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.true = Yes
 yourStatutoryPayBeforeTax.false = No
-yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?

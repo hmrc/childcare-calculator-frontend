@@ -37,6 +37,7 @@
 
     @helpers.form(action = YourStatutoryPayBeforeTaxController.onSubmit(mode), 'autoComplete -> "off") {
 
+
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
             legend = messages("yourStatutoryPayBeforeTax.heading", statutoryType),
