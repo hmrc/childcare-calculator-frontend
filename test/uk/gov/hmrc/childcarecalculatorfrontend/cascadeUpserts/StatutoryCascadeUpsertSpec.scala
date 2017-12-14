@@ -43,7 +43,20 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         result.data mustBe Map(YourStatutoryPayBeforeTaxId.toString.toString -> JsBoolean(true),
           YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)))
       }
+    }
 
+    "Save Your Statutory Pay Type" must {
+      "remove data for YourStatutoryStartDate, YourStatutoryWeeks and YourStatutoryPayBeforeTax pages when" +
+        "Statutory Pay Type is changed" in {
+
+        val originalCacheMap = new CacheMap("id", Map(YourStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+          YourStatutoryWeeksId.toString -> JsNumber(200), YourStatutoryStartDateId -> JsD))
+
+        val result = cascadeUpsert(YourStatutoryPayTypeId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(YourStatutoryPayTypeId.toString -> JsBoolean(false))
+
+      }
     }
   }
 }
