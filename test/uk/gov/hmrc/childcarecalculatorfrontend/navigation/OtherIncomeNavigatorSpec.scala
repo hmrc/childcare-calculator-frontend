@@ -152,7 +152,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotEligible
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-               routes.BothStatutoryPayController.onPageLoad(NormalMode)
+               routes.ResultController.onPageLoad()
             }
 
             "they are eligible for tax credits" in {
@@ -170,7 +170,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.BothStatutoryPayController.onPageLoad(NormalMode)
+                routes.ResultController.onPageLoad()
             }
           }
         }
@@ -414,7 +414,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "How Much Both other income PY route" must {
+      "How Much Both other income CY route" must {
         "redirect to right page when user provides valid input" when {
           "both eligible for tax credits" in {
             val answers = spy(userAnswers())
@@ -433,7 +433,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
 
           "cannot determine if they can have tax credits" in {
@@ -443,7 +443,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothStatutoryPayController.onPageLoad(NormalMode)
+              routes.ResultController.onPageLoad()
           }
         }
       }
