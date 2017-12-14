@@ -58,5 +58,5 @@ class ParentWorkHoursForm @Inject() (appConfig: FrontendAppConfig) extends FormE
   }
 
   def apply(errorKeyBlank: String = parentWorkHoursBlankErrorKey, errorKeyInvalid: String = parentWorkHoursInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(parentWorkHoursFormatter(errorKeyBlank, errorKeyInvalid))))
+    Form("value" -> of(parentWorkHoursFormatter(errorKeyBlank, errorKeyInvalid)))
 }
