@@ -720,10 +720,10 @@ yourIncomeInfoPY.li.benefits_income = income from benefits
 yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 
-partnerIncomeInfoPY.title = Your partner’s income last year
-partnerIncomeInfoPY.heading = Your partner’s income last year
-partnerIncomeInfoPY.tax_year = Last year is 6 April 2016 to 5 April 2017.
-partnerIncomeInfoPY.guidance = We’ll now ask questions about your partner’s income, including:
+partnerIncomeInfoPY.title = You and your partner’s income for the previoys year
+partnerIncomeInfoPY.heading = You and your partner’s income for the previous year
+partnerIncomeInfoPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+partnerIncomeInfoPY.guidance = The calculator will now ask similar questions about you and your partner’s income for the previous year.
 partnerIncomeInfoPY.li.income_paid_work = income from paid work
 partnerIncomeInfoPY.li.pensions = pension contributions
 partnerIncomeInfoPY.li.other_income = other income
