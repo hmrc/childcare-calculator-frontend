@@ -16,7 +16,7 @@
 
 
 ul.bullets {
-    padding: 10px 0;
+    padding: 0 0 10px 0;
 }
 
 .green {
@@ -64,3 +64,14 @@ IE8: Hide back button as it doesn't work in IE8
 .panel-indent {
   margin-bottom: 40px;
 }
+
+#wrapper {
+  padding-bottom: 0;
+}
+
+@media (min-width: 641px) {
+.content__body {
+  width: 66.666667%;
+}
+}
+

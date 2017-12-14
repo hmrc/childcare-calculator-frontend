@@ -40,7 +40,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       dataRetrievalAction, new DataRequiredActionImpl)
 
   def viewAsString(
-                    form: Form[BigDecimal] = ExpectedChildcareCostsForm(WEEKLY),
+                    form: Form[BigDecimal] = ExpectedChildcareCostsForm(WEEKLY, "Foo"),
                     hasCosts: YesNoNotYetEnum.Value,
                     id: Int = 0,
                     frequency: ChildcarePayFrequency.Value = WEEKLY,
@@ -79,7 +79,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
         s"return OK and the correct view for a GET, for id: $id" in {
           val result = controller(getRequiredData(hasCosts)).onPageLoad(NormalMode, id)(fakeRequest)
           status(result) mustBe OK
-          contentAsString(result) mustBe viewAsString(ExpectedChildcareCostsForm(frequency), hasCosts, id, frequency, name)
+          contentAsString(result) mustBe viewAsString(ExpectedChildcareCostsForm(frequency, name), hasCosts, id, frequency, name)
         }
 
         s"populate the view correctly on a GET when the question has previously been answered, for id: $id" in {
@@ -88,12 +88,12 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
           ))
           val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
           val result = controller(getRelevantData).onPageLoad(NormalMode, id)(fakeRequest)
-          contentAsString(result) mustBe viewAsString(ExpectedChildcareCostsForm(frequency).fill(testNumber), hasCosts, id, frequency, name)
+          contentAsString(result) mustBe viewAsString(ExpectedChildcareCostsForm(frequency, name).fill(testNumber), hasCosts, id, frequency, name)
         }
 
         s"return a Bad Request and errors when invalid data is submitted, for id: $id" in {
           val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-          val boundForm = ExpectedChildcareCostsForm(frequency).bind(Map("value" -> "invalid value"))
+          val boundForm = ExpectedChildcareCostsForm(frequency, name).bind(Map("value" -> "invalid value"))
           val result = controller(getRequiredData(hasCosts)).onSubmit(NormalMode, id)(postRequest)
           status(result) mustBe BAD_REQUEST
           contentAsString(result) mustBe viewAsString(boundForm, hasCosts, id, frequency, name)

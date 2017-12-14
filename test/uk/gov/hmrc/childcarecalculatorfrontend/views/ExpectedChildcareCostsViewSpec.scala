@@ -30,15 +30,15 @@ class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
   val messageKeyPrefix = "expectedChildcareCosts"
 
   def createView = () =>
-    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY), YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
+    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
   def createViewNotYet = () =>
-    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY), NOTYET, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
+    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), NOTYET, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[BigDecimal]) =>
     expectedChildcareCosts(frontendAppConfig, form, YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
-  val form = ExpectedChildcareCostsForm(WEEKLY)
+  val form = ExpectedChildcareCostsForm(WEEKLY, "Foo")
 
   "ExpectedChildcareCosts view" must {
 

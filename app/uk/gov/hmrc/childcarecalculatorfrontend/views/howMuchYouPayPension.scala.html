@@ -35,7 +35,6 @@
 
     @helpers.form(action = HowMuchYouPayPensionController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>How much do you pay into your pension a month?</p>
 
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),

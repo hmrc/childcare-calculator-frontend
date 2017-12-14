@@ -26,18 +26,19 @@ class ChildStartEducationFormSpec extends FormSpec {
     "date.year"  -> "2017"
   )
 
-  val form = ChildStartEducationForm()
+  def form(dob: LocalDate) = ChildStartEducationForm(dob)
+  val validDob = new LocalDate(2000, 1, 1)
 
   "ChildStartEducation Form" must {
 
     "successfully bind when the date is valid" in {
-      form.bind(validData).get shouldEqual new LocalDate(2017, 2, 1)
+      form(validDob).bind(validData).get shouldEqual new LocalDate(2017, 2, 1)
     }
 
     "fail to bind when the date is omitted" in {
       val data = Map.empty[String, String]
-      val expectedError = error("date", "childStartEducation.error")
-      checkForError(form, data, expectedError)
+      val expectedError = error("date", "childStartEducation.error.blank")
+      checkForError(form(validDob), data, expectedError)
     }
 
     "fail to bind when the date is blank" in {
@@ -46,8 +47,8 @@ class ChildStartEducationFormSpec extends FormSpec {
         "date.month" -> "",
         "date.year"  -> ""
       )
-      val expectedError = error("date", "childStartEducation.error")
-      checkForError(form, data, expectedError)
+      val expectedError = error("date", "childStartEducation.error.blank")
+      checkForError(form(validDob), data, expectedError)
     }
 
     "fail to bind when the date is invalid" in {
@@ -57,7 +58,7 @@ class ChildStartEducationFormSpec extends FormSpec {
         "date.year"  -> "2017"
       )
       val expectedError = error("date", "childStartEducation.error.invalid")
-      checkForError(form, data, expectedError)
+      checkForError(form(validDob), data, expectedError)
     }
 
     "fail to bind when the date is in the future" in {
@@ -68,7 +69,13 @@ class ChildStartEducationFormSpec extends FormSpec {
         "date.year"  -> futureDate.getYear.toString
       )
       val expectedError = error("date", "childStartEducation.error.invalid")
-      checkForError(form, data, expectedError)
+      checkForError(form(validDob), data, expectedError)
+    }
+
+    "fail to bind when the date is before the child's 16th birthday" in {
+      val dob = new LocalDate(2010, 1, 1)
+      val expectedError = error("date", "childStartEducation.error.before16")
+      checkForError(form(dob), validData, expectedError)
     }
   }
 }
