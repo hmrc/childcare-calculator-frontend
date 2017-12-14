@@ -34,6 +34,7 @@
 
     @components.heading("youStatutoryPay.heading", "heading-xlarge")
 
+    <p>@messages("statutoryPay.guidance_extra")</p>
     <p>@messages("statutoryPay.guidance")</p>
 
     <ul class="bullets">
@@ -43,7 +44,7 @@
         <li>@messages("statutoryPay.li.shared_parental")</li>
     </ul>
 
-    <p>@messages("statutoryPay.guidance_extra")</p>
+
 
     @helpers.form(action = YouStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
 

@@ -35,7 +35,6 @@
 
     @helpers.form(action = YouBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("youBenefitsIncomePY.info")</p>
 
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),
