@@ -34,10 +34,19 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                       requireData: DataRequiredAction,
                                       resultsService: ResultsService) extends FrontendController with I18nSupport {
 
+<<<<<<< HEAD
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
     resultsService.getResultsViewModel(request.userAnswers).map(model=> Ok(result(appConfig,model)))
       .recover{
       case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+=======
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
+    
+    val schemesResult: Future[SchemeResults] = eligibilityService.eligibility(request.userAnswers).map {
+      results => {
+        results
+      }
+>>>>>>> CCALC-3571
     }
   }
 }
