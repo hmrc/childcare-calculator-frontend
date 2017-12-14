@@ -26,11 +26,9 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
-    Map(
-      YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm)),
+    Map(YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm)),
       YourStatutoryPayTypeId.toString -> ((v, cm) => storeYourStatutoryPayType(v, cm)),
-      YouStatutoryPayId.toString -> ((v, cm) => storeYouStatutoryPay(v, cm))
-    )
+      YouStatutoryPayId.toString -> ((v, cm) => storeYouStatutoryPay(v, cm)))
 
   private def storeYourStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap  = {
     val mapToStore = value match {
@@ -56,8 +54,9 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeYouStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap  = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourStatutoryPayTypeId.toString - YourStatutoryPayPerWeekId.toString -
-        YourStatutoryWeeksId.toString - YourStatutoryStartDateId.toString - YourStatutoryPayBeforeTaxId.toString)
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourStatutoryPayTypeId.toString -
+        YourStatutoryPayPerWeekId.toString - YourStatutoryWeeksId.toString - YourStatutoryStartDateId.toString -
+        YourStatutoryPayBeforeTaxId.toString)
       case _ => cacheMap
     }
 
