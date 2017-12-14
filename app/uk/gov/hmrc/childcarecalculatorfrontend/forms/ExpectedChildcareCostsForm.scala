@@ -23,26 +23,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 
 object ExpectedChildcareCostsForm extends FormErrorHelper {
 
-  private def expectedChildcareCostsFormatter(frequency: ChildcarePayFrequency.Value) = new Formatter[BigDecimal] {
-
-    val decimalRegex = """\d+(\.\d{1,2})?"""
-
-    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
-      data.get(key) match {
-        case None => produceError(key, "expectedChildcareCosts.error", frequency)
-        case Some("") => produceError(key, "expectedChildcareCosts.error", frequency)
-        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
-        case _ => produceError(key, "expectedChildcareCosts.invalid")
-      }
-    }
-
-    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-  }
-
-  def apply(frequency: ChildcarePayFrequency.Value): Form[BigDecimal] =
+  def apply(frequency: ChildcarePayFrequency.Value, name: String): Form[BigDecimal] =
     Form(
-      "value" -> of(expectedChildcareCostsFormatter(frequency))
-        .verifying("expectedChildcareCosts.invalid", _ >= 1.0)
-        .verifying("expectedChildcareCosts.invalid", _ <= 999.99)
+      "value" ->
+        decimal("expectedChildcareCosts.error", "expectedChildcareCosts.invalid", frequency, name)
+          .verifying(inRange[BigDecimal](1, 9999.99, "expectedChildcareCosts.invalid", frequency, name))
     )
 }

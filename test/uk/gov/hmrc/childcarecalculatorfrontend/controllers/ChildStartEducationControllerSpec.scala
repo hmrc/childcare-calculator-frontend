@@ -37,9 +37,6 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
     new ChildStartEducationController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[LocalDate] = ChildStartEducationForm()) =
-    childStartEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
-
   val date = new LocalDate(2017, 2, 1)
   val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
   val requiredData = Map(
@@ -53,6 +50,9 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
     )
   )
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
+
+  def viewAsString(form: Form[LocalDate] = ChildStartEducationForm(validBirthday)) =
+    childStartEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
 
   "ChildStartEducation Controller" must {
 
@@ -71,7 +71,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(ChildStartEducationForm().fill(date))
+      contentAsString(result) mustBe viewAsString(ChildStartEducationForm(validBirthday).fill(date))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -88,7 +88,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody()
-      val boundForm = ChildStartEducationForm().bind(Map.empty[String, String])
+      val boundForm = ChildStartEducationForm(validBirthday).bind(Map.empty[String, String])
 
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 

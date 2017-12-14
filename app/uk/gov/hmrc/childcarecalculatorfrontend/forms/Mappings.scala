@@ -23,40 +23,7 @@ import play.api.data.validation.{Constraint, Invalid, Valid}
 
 import scala.util.control.Exception.nonFatalCatch
 
-trait Mappings {
-
-  def stringFormatter(errorKey: String): Formatter[String] = new Formatter[String] {
-
-    override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
-      data.get(key) match {
-        case None | Some("") => Left(Seq(FormError(key, errorKey)))
-        case Some(s) => Right(s)
-      }
-
-    override def unbind(key: String, value: String): Map[String, String] =
-      Map(key -> value)
-  }
-
-  def decimalFormatter(requiredKey: String, invalidKey: String): Formatter[BigDecimal] = new Formatter[BigDecimal] {
-
-    private val baseFormatter = stringFormatter(requiredKey)
-    private val decimalRegex = """\d+(\.\d{1,2})?"""
-
-    override def bind(key: String, data: Map[String, String]) =
-      baseFormatter
-        .bind(key, data)
-        .right.flatMap {
-        case s if !s.matches(decimalRegex) =>
-          Left(Seq(FormError(key, invalidKey)))
-        case s =>
-          nonFatalCatch
-            .either(BigDecimal(s))
-            .left.map(_ => Seq(FormError(key, invalidKey)))
-      }
-
-    override def unbind(key: String, value: BigDecimal) =
-      Map(key -> value.toString)
-  }
+trait Mappings extends Formatters {
 
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint {
@@ -93,14 +60,30 @@ trait Mappings {
         }
     }
 
+  protected def maxLength(maximum: Int, errorKey: String, errorArgs: Any*): Constraint[String] =
+    Constraint {
+      case str if str.length <= maximum =>
+        Valid
+      case _ =>
+        Invalid(errorKey, errorArgs:_*)
+    }
+
   protected def inRange[A : Ordering](minimum: A, maximum: A, errorKey: String, errorArgs: Any*): Constraint[A] =
     firstError(
       minimumValue[A](minimum, errorKey, errorArgs: _*),
       maximumValue[A](maximum, errorKey, errorArgs: _*)
     )
 
-  protected def decimal(requiredKey: String = "error.required",
-                        invalidKey: String = "error.invalid"): FieldMapping[BigDecimal] =
-    of(decimalFormatter(requiredKey, invalidKey))
+  protected def decimal(requiredKey: String,
+                        invalidKey: String,
+                        args: Any*): FieldMapping[BigDecimal] =
+    of(decimalFormatter(requiredKey, invalidKey, args:_*))
 
+  protected def string(requiredKey: String, args: Any*): FieldMapping[String] =
+    of(stringFormatter(requiredKey, args:_*))
+
+  protected def int(requiredKey: String,
+                    invalidKey: String,
+                    args: Any*): FieldMapping[Int] =
+    of(intFormatter(requiredKey, invalidKey, args:_*))
 }

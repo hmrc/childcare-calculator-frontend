@@ -35,6 +35,11 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
     behave like questionForm(AboutYourChild("Foo", new LocalDate(2017, 2, 1)))
 
+    "bind when name is 35 chars long" in {
+      val data = validData + ("name" -> "a" * 35)
+      form.bind(data).get shouldBe AboutYourChild("a" * 35, new LocalDate(2017, 2, 1))
+    }
+
     "fail to bind when name is omitted" in {
       val data = validData - "name"
       val expectedError = error("name", "aboutYourChild.error.name")
@@ -47,9 +52,15 @@ class AboutYourChildFormSpec extends FormBehaviours {
       checkForError(form, data, expectedError)
     }
 
+    "fail to bind when name is more than 35 chars" in {
+      val data = validData + ("name" -> "a" * 36)
+      val expectedError = error("name", "aboutYourChild.error.maxLength")
+      checkForError(form, data, expectedError)
+    }
+
     "fail to bind when the date is omitted" in {
       val data = Map("name" -> "Foo")
-      val expectedError = error("dob", "aboutYourChild.error.dob")
+      val expectedError = error("dob", "aboutYourChild.error.dob.blank")
       checkForError(form, data, expectedError)
     }
 
@@ -60,7 +71,31 @@ class AboutYourChildFormSpec extends FormBehaviours {
         "dob.month" -> "",
         "dob.year"  -> ""
       )
-      val expectedError = error("dob", "aboutYourChild.error.dob")
+      val expectedError = error("dob", "aboutYourChild.error.dob.blank")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when non numerics supplied" in {
+      val data = Map(
+        "name"      -> "Foo",
+        "dob.day"   -> "not a number",
+        "dob.month" -> "not a number",
+        "dob.year"  -> "not a number"
+      )
+
+      val expectedError = error("dob", "aboutYourChild.error.dob.invalid")
+      checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when an invalid date is supplied" in {
+      val data = Map(
+        "name"      -> "Foo",
+        "dob.day"   -> "31",
+        "dob.month" -> "2",
+        "dob.year"  -> "2000"
+      )
+
+      val expectedError = error("dob", "aboutYourChild.error.dob.invalid")
       checkForError(form, data, expectedError)
     }
 

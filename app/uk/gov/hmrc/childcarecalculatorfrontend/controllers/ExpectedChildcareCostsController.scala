@@ -49,8 +49,8 @@ class ExpectedChildcareCostsController @Inject() (
       validIndex(childIndex) {
         case (hasCosts, name, frequency) =>
           val preparedForm = request.userAnswers.expectedChildcareCosts(childIndex) match {
-            case None => ExpectedChildcareCostsForm(frequency)
-            case Some(value) => ExpectedChildcareCostsForm(frequency).fill(value)
+            case None => ExpectedChildcareCostsForm(frequency, name)
+            case Some(value) => ExpectedChildcareCostsForm(frequency, name).fill(value)
           }
           Future.successful(Ok(expectedChildcareCosts(appConfig, preparedForm, hasCosts, childIndex, frequency, name, mode)))
       }
@@ -60,7 +60,7 @@ class ExpectedChildcareCostsController @Inject() (
     implicit request =>
       validIndex(childIndex) {
         case (hasCosts, name, frequency) =>
-          ExpectedChildcareCostsForm(frequency).bindFromRequest().fold(
+          ExpectedChildcareCostsForm(frequency, name).bindFromRequest().fold(
             (formWithErrors: Form[BigDecimal]) =>
               Future.successful(BadRequest(expectedChildcareCosts(appConfig, formWithErrors, hasCosts, childIndex, frequency, name, mode))),
             (value) =>
