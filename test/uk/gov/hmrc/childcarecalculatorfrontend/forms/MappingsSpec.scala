@@ -26,7 +26,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
 
     val testForm: Form[BigDecimal] =
       Form(
-        "value" -> decimal()
+        "value" -> decimal("error.required", "error.invalid")
       )
 
     "bind a valid integer" in {
@@ -52,6 +52,39 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
     "unbind a valid value" in {
       val result = testForm.fill(123)
       result.apply("value").value.value mustEqual "123"
+    }
+  }
+
+  "int" must {
+
+    val testForm: Form[Int] =
+      Form(
+        "value" -> int("error.required", "error.invalid")
+      )
+
+    "bind a valid integer" in {
+      val result = testForm.bind(Map("value" -> "1"))
+      result.get mustEqual 1
+    }
+
+    "not bind a decimal" in {
+      val result = testForm.bind(Map("value" -> "1.2"))
+      result.errors must contain(FormError("value", "error.invalid"))
+    }
+
+    "not bind non numerics" in {
+      val result = testForm.bind(Map("value" -> "not a number"))
+      result.errors must contain(FormError("value", "error.invalid"))
+    }
+
+    "not bind an empty value" in {
+      val result = testForm.bind(Map("value" -> ""))
+      result.errors must contain(FormError("value", "error.required"))
+    }
+
+    "not bind an empty map" in {
+      val result = testForm.bind(Map.empty[String, String])
+      result.errors must contain(FormError("value", "error.required"))
     }
   }
 
