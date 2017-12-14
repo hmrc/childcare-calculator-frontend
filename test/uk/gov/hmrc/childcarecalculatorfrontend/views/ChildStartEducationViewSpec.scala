@@ -28,11 +28,13 @@ class ChildStartEducationViewSpec extends DateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "childStartEducation"
 
-  def createView = () => childStartEducation(frontendAppConfig, ChildStartEducationForm(), NormalMode, 0, "Foo")(fakeRequest, messages)
+  val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
+
+  def createView = () => childStartEducation(frontendAppConfig, ChildStartEducationForm(validBirthday), NormalMode, 0, "Foo")(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[LocalDate]) => childStartEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
 
-  val form = ChildStartEducationForm()
+  val form = ChildStartEducationForm(validBirthday)
 
   "ChildStartEducation view" must {
 

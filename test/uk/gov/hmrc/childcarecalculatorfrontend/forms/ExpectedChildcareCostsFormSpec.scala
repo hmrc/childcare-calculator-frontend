@@ -23,7 +23,9 @@ class ExpectedChildcareCostsFormSpec extends FormSpec {
 
   val errorKeyBlank = "expectedChildcareCosts.error"
   val errorKeyInvalid = "expectedChildcareCosts.invalid"
-  val form = ExpectedChildcareCostsForm(WEEKLY)
+  val firstName = "name"
+  val frequency = WEEKLY
+  val form = ExpectedChildcareCostsForm(frequency, firstName)
 
   "ExpectedChildcareCosts Form" must {
 
@@ -38,47 +40,47 @@ class ExpectedChildcareCostsFormSpec extends FormSpec {
     }
 
     "bind the upper bound" in {
-      val result = form.bind(Map("value" -> "999.99"))
-      result.get shouldEqual 999.99
+      val result = form.bind(Map("value" -> "9999.99"))
+      result.get shouldEqual 9999.99
     }
 
     "fail to bind 0" in {
-      val expectedError = error("value", errorKeyInvalid)
+      val expectedError = error("value", errorKeyInvalid, frequency, firstName)
       checkForError(form, Map("value" -> "0"), expectedError)
     }
 
     "fail to bind a number less than 1" in {
-      val expectedError = error("value", errorKeyInvalid)
+      val expectedError = error("value", errorKeyInvalid, frequency, firstName)
       checkForError(form, Map("value" -> "0.9"), expectedError)
     }
 
-    "fail to bind a number greater than 999.99" in {
-      val expectedError = error("value", errorKeyInvalid)
-      checkForError(form, Map("value" -> "1000"), expectedError)
+    "fail to bind a number greater than 9999.99" in {
+      val expectedError = error("value", errorKeyInvalid, frequency, firstName)
+      checkForError(form, Map("value" -> "10000"), expectedError)
     }
 
     "fail to bind negative numbers" in {
-      val expectedError = error("value", errorKeyInvalid)
+      val expectedError = error("value", errorKeyInvalid, frequency, firstName)
       checkForError(form, Map("value" -> "-1"), expectedError)
     }
 
     "fail to bind a decimal with more than 2 decimal places" in {
-      val expectedError = error("value", errorKeyInvalid)
+      val expectedError = error("value", errorKeyInvalid, frequency, firstName)
       checkForError(form, Map("value" -> "10.888"), expectedError)
     }
 
     "fail to bind non-numerics" in {
-      val expectedError = error("value", errorKeyInvalid)
+      val expectedError = error("value", errorKeyInvalid, frequency, firstName)
       checkForError(form, Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
-      val expectedError = Seq(FormError("value", errorKeyBlank, Seq(WEEKLY)))
+      val expectedError = error("value", errorKeyBlank, frequency, firstName)
       checkForError(form, Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
-      val expectedError = Seq(FormError("value", errorKeyBlank, Seq(WEEKLY)))
+      val expectedError = error("value", errorKeyBlank, frequency, firstName)
       checkForError(form, emptyForm, expectedError)
     }
   }

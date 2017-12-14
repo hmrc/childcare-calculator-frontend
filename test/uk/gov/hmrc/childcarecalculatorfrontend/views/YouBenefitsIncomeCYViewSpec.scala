@@ -34,7 +34,7 @@ class YouBenefitsIncomeCYViewSpec extends BigDecimalViewBehaviours {
   val form = YouBenefitsIncomeCYForm()
 
   "YouBenefitsIncomeCY view" must {
-    behave like normalPage(createView, messageKeyPrefix, "info")
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
