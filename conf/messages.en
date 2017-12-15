@@ -1044,26 +1044,27 @@ partnerStatutoryPay.required = Select yes if your partner had statutory pay sinc
 
 partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
 partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.maternity = maternity
-partnerStatutoryPayType.paternity = paternity
-partnerStatutoryPayType.adoption = adoption
-partnerStatutoryPayType.shared-parental = shared parental
 partnerStatutoryPayType.error = Select what kind of statutory pay your partner got
 partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
 
 yourStatutoryPayType.title = What kind of statutory pay did you get?
 yourStatutoryPayType.heading = What kind of statutory pay did you get?
-yourStatutoryPayType.maternity = maternity
-yourStatutoryPayType.paternity = paternity
-yourStatutoryPayType.adoption = adoption
-yourStatutoryPayType.shared-parental = shared parental
 yourStatutoryPayType.error = Select what kind of statutory pay you got
-
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
+
+statutoryPayType.maternity = Maternity
+statutoryPayType.paternity = Paternity
+statutoryPayType.adoption = Adoption
+statutoryPayType.shared-parental = Shared parental
+
+statutoryPayTypeLower.maternity = maternity
+statutoryPayTypeLower.paternity = paternity
+statutoryPayTypeLower.adoption = adoption
+statutoryPayTypeLower.shared-parental = shared parental
 
 yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.error = You must tell the calculator the number of weeks
+yourStatutoryWeeks.required = Enter how many weeks of {0} pay you took
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?

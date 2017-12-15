@@ -17,19 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 
 class PartnerStatutoryPayTypeFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "value" -> PartnerStatutoryPayTypeForm.options.head.value
+    "value" -> StatutoryPayTypeEnum.MATERNITY.toString
   )
 
   val form = PartnerStatutoryPayTypeForm()
 
   "PartnerStatutoryPayType form" must {
-    behave like questionForm[String](PartnerStatutoryPayTypeForm.options.head.value)
+    behave like questionForm[StatutoryPayTypeEnum.Value](StatutoryPayTypeEnum.MATERNITY)
 
     behave like formWithOptionFieldError("value", partnerStatutoryPayTypeErrorKey, PartnerStatutoryPayTypeForm.options.map{x => x.value}:_*)
   }
