@@ -348,14 +348,14 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
       "We have children but no childcare costs" in {
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
         val schemeResults = SchemeResults(List(tfcScheme))
-        val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
+        val answers = new UserAnswers(new CacheMap("id", Map()))
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph must include("you have no childcare costs.")
+        values.firstParagraph must include("you don't have children.")
       }
 
       "You live on your own" in {

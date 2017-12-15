@@ -59,7 +59,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
 
   private def buildSecondSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
     val childcareCosts = CalculateChildcareCosts(answers)
-    val section2 = if (childcareCosts == 0) s", ${Messages("results.firstParagraph.noChildcareCosts")}" else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}$childcareCosts."
+    val section2 = if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}$childcareCosts."
     s"$paragraph$section2"
   }
 
