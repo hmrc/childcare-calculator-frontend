@@ -17,10 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.jsoup.nodes.Element
-import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerRow, AnswerSection}
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{AnswerRow, AnswerSection, Section}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
 
@@ -38,20 +37,11 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
                                                                                 answerSections)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
-
-    behave like normalPage(createView,
+      behave like normalPage(createView,
       messageKeyPrefix,
-      "notEligibleInfo",
-      "info.esc",
-      "info.tfc",
-      "info.tc",
-      "notEligible.heading",
-      "toBeEligible.heading",
-      "summary.heading",
-      "summary.info")
+      "toBeEligible.heading")
 
     behave like pageWithBackLink(createView)
-
   }
 
   "FreeHoursResult view" when {
@@ -67,23 +57,15 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, answerSections))
 
-        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.end"))
-
-        val childAged3Link: Element = doc.getElementById("free-hours-results-child-aged-3-link")
-        childAged3Link.attr("href") mustBe routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url
-        childAged3Link.text mustBe messagesApi("freeHoursResult.toBeEligible.info1.link.text")
-
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.start"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
 
         val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
         childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(CheckMode).url
         childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
-
       }
 
       "contain correct guidance when not eligible for location northern-ireland" in {
@@ -97,16 +79,9 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, NotEligible, answerSections))
 
-        assertContainsText(doc, messagesApi("freeHoursResult.notEligible.info.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.end"))
-
-        val childAged3Link: Element = doc.getElementById("free-hours-results-child-aged-3-link")
-        childAged3Link.attr("href") mustBe routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url
-        childAged3Link.text mustBe messagesApi("freeHoursResult.toBeEligible.info1.link.text")
-
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.start"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
 
@@ -116,64 +91,26 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
       }
 
       "eligible for 16 free hours for scotland and not eligible for other schemes" in {
-
         val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, Seq()))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.scotland"))
-        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
       }
 
       "eligible for 10 free hours for wales and not eligible for other schemes" in {
-
         val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, Seq()))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.wales"))
-        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
       }
 
       "eligible for 12.5 free hours for northern-ireland and not eligible for other schemes" in {
-
         val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, Seq()))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
-        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
       }
-
-     "display all the answer rows with correct contents " in {
-       val answerSections = Seq(AnswerSection(None, Seq(
-         AnswerRow("childAgedTwo.checkYourAnswersLabel",
-           "site.no",
-           true,
-           routes.ChildAgedTwoController.onPageLoad(CheckMode).url),
-         AnswerRow("childAgedThreeOrFour.checkYourAnswersLabel",
-           "site.no",
-           true,
-           routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url),
-         AnswerRow("expectChildcareCosts.checkYourAnswersLabel",
-           "expectChildcareCosts.yes",
-           true,
-           routes.ChildcareCostsController.onPageLoad(CheckMode).url)
-       )))
-
-       val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, answerSections))
-
-       assertContainsText(doc, messagesApi("childAgedTwo.checkYourAnswersLabel"))
-       assertContainsText(doc, messagesApi("site.no"))
-       assertContainsText(doc, messagesApi(messages("site.edit")))
-       assertContainsText(doc, routes.ChildAgedTwoController.onPageLoad(CheckMode).url)
-
-       assertContainsText(doc, messagesApi("childAgedThreeOrFour.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url)
-
-       assertContainsText(doc, messagesApi("expectChildcareCosts.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ChildcareCostsController.onPageLoad(CheckMode).url)
-     }
-
     }
-
   }
 
 }
