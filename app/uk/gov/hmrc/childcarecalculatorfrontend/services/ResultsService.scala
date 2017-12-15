@@ -33,10 +33,24 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                freeHours: FreeHours,
                                maxFreeHours: MaxFreeHours) {
   def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
+
+    val numberOfChildren = if (answers.noOfChildren.getOrElse(0) == 0) "don't have" else "have"
+
+    val section1 = s"You told the calculator that you $numberOfChildren children"
+
+    val childcareCosts = answers.expectedChildcareCosts.fold(BigDecimal(0))(costs => costs.toSeq.foldLeft(BigDecimal(0))((costs,elements)=>{
+      costs + elements._2
+    }))
+
+    val section2 = s", with childcare costs of £$childcareCosts."
+
+
+    val resultViewModel = ResultsViewModel(Some(section1 + section2))
+
     val result = eligibilityService.eligibility(answers)
 
     result.map(results => {
-      results.schemes.foldLeft(ResultsViewModel())((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
+      results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
     })
   }
 
