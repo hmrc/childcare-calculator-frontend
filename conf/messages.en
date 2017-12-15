@@ -258,9 +258,9 @@ yourChildcareVouchers.error = You must tell the calculator if your employer offe
 
 partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
 partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
-partnerChildcareVouchers.yes = Yes
-partnerChildcareVouchers.no = No
-partnerChildcareVouchers.notSure = Not Sure
+partnerChildcareVouchers.YES = Yes
+partnerChildcareVouchers.NO = No
+partnerChildcareVouchers.NOTSURE = Not Sure
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
 partnerChildcareVouchers.error = You must tell the calculator if your partner's employer offers childcare vouchers
 
