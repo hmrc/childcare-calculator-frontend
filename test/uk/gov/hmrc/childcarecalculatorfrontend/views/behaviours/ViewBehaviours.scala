@@ -48,12 +48,7 @@ trait ViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view())
           for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
         }
-
-        "display language toggles" in {
-          val doc = asDocument(view())
-          assertRenderedById(doc, "cymraeg-switch")
-        }
-
+        
         "display a beta banner" in {
           val doc = asDocument(view())
           assertRenderedByCssSelector(doc, ".beta-banner")
@@ -97,11 +92,6 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct guidance" in {
           val doc = asDocument(view())
           for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
-        }
-
-        "display language toggles" in {
-          val doc = asDocument(view())
-          assertRenderedById(doc, "cymraeg-switch")
         }
 
         "display a beta banner" in {
