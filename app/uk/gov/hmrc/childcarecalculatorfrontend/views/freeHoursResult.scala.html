@@ -38,87 +38,47 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
     @if(eligibility == Eligible) {
 
-        <div class="grid-layout grid-layout--stacked">
-
-            <div class="grid-layout__column grid-layout__column--1-2">
-                <div class="panel-indent panel-border-wide green">
-                    <h2 class="visuallyhidden">Eligible</h2>
-                    <ul class="list list-bullet">
-                        <li>@messages(s"freeHoursResult.info.entitled.${location}")</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="grid-layout__column grid-layout__column--1-2">
-                <div class="panel-indent panel-border-wide red">
-                    <h2 class="visuallyhidden">Ineligible</h2>
-                    <ul class="list list-bullet">
-                        <li>@messages("freeHoursResult.info.esc")</li>
-                        <li>@messages("freeHoursResult.info.tfc")</li>
-                        <li>@messages("freeHoursResult.info.tc")</li>
-                    </ul>
+        <div class="grid-row">
+            <div class="column-full">
+                <div class="panel panel-border-wide green">
+                    <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.fh")</h2>
+                    <p>@messages("freeHoursResult.info.fh.lead") <span class="heading-xlarge results">@messages(s"freeHoursResult.info.entitled.${location}") </span> @messages("freeHoursResult.info.fh.exit")</p>
+                     <p>@messages(s"freeHoursResult.partialEligible.guidance.${location}")</p>
                 </div>
             </div>
         </div>
 
-    <p>@messages(s"freeHoursResult.partialEligible.guidance.${location}")</p>
-    <p class="panel-indent panel-border-wide grey">@messages("freeHoursResult.partialEligible.info1")</p>
+        <div class="grid-row">
+            <div class="column-full">
+                <div class="panel panel-border-wide red">
+                    <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
+                    <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
+                </div>
+            </div>
+        </div>
+
 
     } else {
 
-            <p>@messages("freeHoursResult.notEligibleInfo") </p>
+        <div class="grid-row">
+            <div class="column-full">
+                <div class="panel panel-border-wide red">
+                    <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.freHours")</h2>
+                    <p>@messages("freeHoursResult.toBeEligible.info1.start")</p>
 
-            <div class="panel-indent panel-border-wide red">
-                <h2 class="visuallyhidden">Ineligible</h2>
-                <ul class="list list-bullet">
-                    <li>@messages("freeHoursResult.info.freHours")</li>
-                    <li>@messages("freeHoursResult.info.esc")</li>
-                    <li>@messages("freeHoursResult.info.tfc")</li>
-                    <li>@messages("freeHoursResult.info.tc")</li>
-                </ul>
+                    <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
+                    <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
+                </div>
             </div>
+        </div>
 
-            <h2>@messages("freeHoursResult.notEligible.heading")</h2>
-
-            <div id="free-hours-results-not-entitled">
-                @if(location == Location.NORTHERN_IRELAND) {
-                <p>@messages("freeHoursResult.notEligible.info.northern-ireland")</p>
-                } else {
-                <p>@messages("freeHoursResult.notEligible.info")</p>
-                }
-            </div>
     }
 
-    <h2>@messages("freeHoursResult.toBeEligible.heading")</h2>
-
-    @if(eligibility == NotEligible) {
-        <p>@messages("freeHoursResult.toBeEligible.info1.start")
-            <a id="free-hours-results-child-aged-3-link" href="@routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode)">
-                @messages(s"freeHoursResult.toBeEligible.info1.link.text")
-            </a>
-            @messages("freeHoursResult.toBeEligible.info1.end")
-        </p>
-     }
-
+    <!-- This p tag below needs removing once styling sorted -->
+    <p></p>
+    <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
     <p>@messages("freeHoursResult.toBeEligible.info2.start")
-        <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">
-            @messages(s"freeHoursResult.toBeEligible.info2.link.text")
-        </a>
-        @messages("freeHoursResult.toBeEligible.info2.end")
-    </p>
+    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a> @messages("freeHoursResult.toBeEligible.info2.end")</p>
 
-    <h2>@messages("freeHoursResult.summary.heading")</h2>
 
-    <p>@messages("freeHoursResult.summary.info")</p>
-
-    <h2>@messages("freeHoursResult.summary.table.header")</h2>
-
-    @for(section <- answerSections){
-        @{
-            section match {
-                case a: AnswerSection => components.answer_section(a)
-                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
-            }
-        }
-    }
 }
