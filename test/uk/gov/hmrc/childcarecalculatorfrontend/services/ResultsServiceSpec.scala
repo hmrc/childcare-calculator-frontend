@@ -31,7 +31,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -288,32 +288,221 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         values.firstParagraph.get must include("you don't have children")
       }
 
-      "We have childcare costs" in {
+      "We have childcare costs at monthly aggregation" in {
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
         val schemeResults = SchemeResults(List(tfcScheme))
-        val answers = new UserAnswers(new CacheMap("id", Map(ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(300)))))
+        val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString)),ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(25)))))
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("childcare costs of £300.")
+        values.firstParagraph.get must include("yearly childcare costs of £300.")
       }
 
-      "We have more than one childcare cost" in {
+      "We have more than one childcare cost at monthly aggregation" in {
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
         val schemeResults = SchemeResults(List(tfcScheme))
-        val answers = new UserAnswers(new CacheMap("id", Map(ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(300),"2" -> JsNumber(300),"3"-> JsNumber(75)))))
+        val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
+          "2"->JsString(ChildcarePayFrequency.MONTHLY.toString),
+          "3"->JsString(ChildcarePayFrequency.MONTHLY.toString)),
+          ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(20),"2" -> JsNumber(10),"3"-> JsNumber(5)))))
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("childcare costs of £675.")
+        values.firstParagraph.get must include("yearly childcare costs of £420.")
       }
 
+      "We have one childcare cost at weekely aggregation" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
+          ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(4)))))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("yearly childcare costs of £208.")
+      }
+
+      "We have one childcare cost at weekly aggregation and one childcare cost at monthly aggregation" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
+          "2"->JsString(ChildcarePayFrequency.MONTHLY.toString),
+          "3"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
+          ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(20),"2" -> JsNumber(10),"3"-> JsNumber(10)))))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("yearly childcare costs of £880.")
+      }
+
+      "We have no childcare costs" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = new UserAnswers(new CacheMap("id", Map()))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("you don't have children.")
+      }
+
+      "You live on your own" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = new UserAnswers(new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false))))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("on your own and")
+      }
+
+      "You live with your partner" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = new UserAnswers(new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true))))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("with your partner and")
+      }
+
+      "We have no data to establish whether if they live on their own or with partner" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = new UserAnswers(new CacheMap("id", Map()))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get mustNot include("with your partner and")
+        values.firstParagraph.get mustNot include("on your own and")
+      }
+
+      "Only user is in paid work" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("only you are")
+      }
+
+      "Partner in paid work" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("only your partner is")
+      }
+
+      "Both are in paid work" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("both you and your partner are")
+      }
+
+      "No data about who is in paid work" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get mustNot include("only your partner is")
+        values.firstParagraph.get mustNot include("only you are")
+        values.firstParagraph.get mustNot include("both you and your partner are")
+      }
+
+      "User works x hours a week" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("You work 40 hours a week")
+      }
+
+
+      "Your partner works x hours a week" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("Your partner works 40 hours a week")
+      }
+
+      "Your and your partner works x hours a week" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph.get must include("You work 40 hours and your partner works 40 a week")
+      }
     }
   }
 
