@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
-case class ResultsViewModel(firstParagraph : Option[String] = None,
+case class ResultsViewModel(firstParagraph : String = "",
                             tc: Option[BigDecimal] = None,
                             tfc:Option[BigDecimal] = None,
                             esc:Option[BigDecimal] = None,

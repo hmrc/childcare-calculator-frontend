@@ -257,7 +257,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("you have children")
+        values.firstParagraph must include("you have children")
       }
 
       "You don't have children" in {
@@ -270,7 +270,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("you don't have children")
+        values.firstParagraph must include("you don't have children")
       }
 
       "The number of children field is empty" in {
@@ -283,7 +283,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("you don't have children")
+        values.firstParagraph must include("you don't have children")
       }
 
       "We have childcare costs at monthly aggregation" in {
@@ -296,7 +296,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of around £300.")
+        values.firstParagraph must include("yearly childcare costs of around £300.")
       }
 
       "We have more than one childcare cost at monthly aggregation" in {
@@ -312,7 +312,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of around £420.")
+        values.firstParagraph must include("yearly childcare costs of around £420.")
       }
 
       "We have one childcare cost at weekely aggregation" in {
@@ -326,7 +326,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of around £208.")
+        values.firstParagraph must include("yearly childcare costs of around £208.")
       }
 
       "We have one childcare cost at weekly aggregation and one childcare cost at monthly aggregation" in {
@@ -342,7 +342,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of around £880.")
+        values.firstParagraph must include("yearly childcare costs of around £880.")
       }
 
       "We have no childcare costs" in {
@@ -355,7 +355,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("you don't have children.")
+        values.firstParagraph must include("you don't have children.")
       }
 
       "You live on your own" in {
@@ -368,7 +368,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("on your own and")
+        values.firstParagraph must include("on your own and")
       }
 
       "You live with your partner" in {
@@ -381,7 +381,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("with your partner and")
+        values.firstParagraph must include("with your partner and")
       }
 
       "We have no data to establish whether if they live on their own or with partner" in {
@@ -394,8 +394,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get mustNot include("with your partner and")
-        values.firstParagraph.get mustNot include("on your own and")
+        values.firstParagraph mustNot include("with your partner and")
+        values.firstParagraph mustNot include("on your own and")
       }
 
       "Only user is in paid work" in {
@@ -409,7 +409,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("only you are")
+        values.firstParagraph must include("only you are")
       }
 
       "Partner in paid work" in {
@@ -423,7 +423,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("only your partner is")
+        values.firstParagraph must include("only your partner is")
       }
 
       "Both are in paid work" in {
@@ -437,7 +437,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("both you and your partner are")
+        values.firstParagraph must include("both you and your partner are")
       }
 
       "No data about who is in paid work" in {
@@ -450,9 +450,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get mustNot include("only your partner is")
-        values.firstParagraph.get mustNot include("only you are")
-        values.firstParagraph.get mustNot include("both you and your partner are")
+        values.firstParagraph mustNot include("only your partner is")
+        values.firstParagraph mustNot include("only you are")
+        values.firstParagraph mustNot include("both you and your partner are")
       }
 
       "User works x hours a week" in {
@@ -467,7 +467,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("You work 40 hours a week")
+        values.firstParagraph must include("You work 40 hours a week")
       }
 
 
@@ -483,7 +483,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("Your partner works 40 hours a week")
+        values.firstParagraph must include("Your partner works 40 hours a week")
       }
 
       "Your and your partner works x hours a week" in {
@@ -499,7 +499,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("You work 40 hours and your partner works 40 a week")
+        values.firstParagraph must include("You work 40 hours and your partner works 40 a week")
       }
     }
   }
