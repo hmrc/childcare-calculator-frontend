@@ -157,6 +157,35 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
     }
+
+    "go to `free hours result` if user lives in England, not eligible for min free hours, have childcare cost but no approved provider" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
+      when(answers.location) thenReturn Some(Location.SCOTLAND)
+      when(answers.childAgedTwo) thenReturn Some(false)
+      when(answers.childAgedThreeOrFour) thenReturn Some(false)
+      when(freeHours.eligibility(any())) thenReturn NotEligible
+
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
+    }
+
+    "go to `free hours result` if user lives in NI, not eligible for min free hours, have childcare cost but no approved provider" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(schemes.allSchemesDetermined(any())) thenReturn false
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
+      when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
+      when(answers.childAgedThreeOrFour) thenReturn Some(false)
+      when(freeHours.eligibility(any())) thenReturn NotEligible
+
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.FreeHoursResultController.onPageLoad()
+    }
   }
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
