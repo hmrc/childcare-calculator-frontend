@@ -24,19 +24,20 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+
+    @components.back_link()
+
+
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
 
     @if(model.noOfEligibleSchemes > 0) {
-        <h2>@messages("result.eligibility.heading", model.noOfEligibleSchemes)</h2>
+        @if(model.noOfEligibleSchemes == 1) {
+            <h2>@messages("result.single.eligibility.heading")</h2>
+        } else {
+            <h2>@messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes)</h2>
+        }
 
-        @resultEligible
+        @resultEligible(model)
     }
 
-    <p>@model.freeHours.getOrElse("Not entitled to free hours")</p>
-
-    <p>@model.tc.getOrElse("Not entitled for TC scheme")</p>
-
-    <p>@model.tfc.getOrElse("Not entitled for TFC scheme")</p>
-
-    <p>@model.esc.getOrElse("Not entitled for ESC scheme")</p>
 }
