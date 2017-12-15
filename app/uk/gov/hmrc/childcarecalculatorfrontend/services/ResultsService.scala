@@ -46,7 +46,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
   private def buildFirstParagraph(answers: UserAnswers)(implicit messages: Messages) = {
     val doYouHaveChildren = buildFirstSection(answers, _: String)
     val yearlyChildcareCosts = buildSecondSection(answers, _: String)
-    val whoAreYouLivingWith = buildThidSection(answers, _: String)
+    val whoAreYouLivingWith = buildThirdSection(answers, _: String)
     val areYouInPaidWork = buildFourthSection(answers, _: String)
     val firstParagraph = (doYouHaveChildren andThen yearlyChildcareCosts andThen whoAreYouLivingWith andThen areYouInPaidWork) ("")
     firstParagraph
@@ -63,14 +63,14 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
     s"$paragraph$section2"
   }
 
-  private def buildThidSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
+  private def buildThirdSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
     val livesOnOwnOrWithPartner: Option[String] = answers.doYouLiveWithPartner.map(livesWithPartner => if (livesWithPartner) Messages("results.firstParagraph.withYourPartner") else Messages("results.firstParagraph.onYourOwn"))
-    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" ${Messages("results.firstParagraph.youLiveAnd", livesOnOwnOrWithPartner)} ")
+    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" ${Messages("results.firstParagraph.youLiveAnd", livesOnOwnOrWithPartner)}")
     s"$paragraph$section3"
   }
 
   private def buildFourthSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val section4 = answers.whoIsInPaidEmployment.fold("")(whoInPaidEmployment => {
+    val section4 = answers.whoIsInPaidEmployment.fold(".")(whoInPaidEmployment => {
       val You = YouPartnerBothEnum.YOU.toString
       val Partner = YouPartnerBothEnum.PARTNER.toString
       val Both = YouPartnerBothEnum.BOTH.toString
@@ -80,17 +80,22 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       whoInPaidEmployment match {
         case You => {
           val hoursAWeek = answers.parentWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
-          Messages("results.firstParagraph.onlyYouAre", currentlyInPaidWork, hoursAWeek)
+          answers.doYouLiveWithPartner.fold("")(livesWithPartner => if (livesWithPartner){
+            s" ${Messages("results.firstParagraph.onlyYouAre", currentlyInPaidWork, hoursAWeek)}"
+          }
+          else{
+            s" ${Messages("results.firstParagraph.youAre", currentlyInPaidWork, hoursAWeek)}"
+          })
         }
         case Partner => {
           val hoursAweek = answers.partnerWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.yourPartnerWorksXHoursAweek", hours)}")
-          Messages("results.firstParagraph.onlyYourPartnerIs", currentlyInPaidWork, hoursAweek)
+          s" ${Messages("results.firstParagraph.onlyYourPartnerIs", currentlyInPaidWork, hoursAweek)}"
         }
         case Both => {
           val yourHours = answers.parentWorkHours.fold(BigDecimal(0))(c => c)
           val partnerHours = answers.partnerWorkHours.fold(BigDecimal(0))(c => c)
           val hoursAweek = s" ${Messages("results.firstParagraph.youAndYourPartnerWorkXhoursAweek", yourHours, partnerHours)}"
-          Messages("results.firstParagraph.bothYouAndYourPartnerAre", currentlyInPaidWork, hoursAweek)
+          s" ${Messages("results.firstParagraph.bothYouAndYourPartnerAre", currentlyInPaidWork, hoursAweek)}"
         }
       }
     })
