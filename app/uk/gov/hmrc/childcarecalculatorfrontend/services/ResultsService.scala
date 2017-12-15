@@ -18,15 +18,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, YouPartnerBothEnum,_}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFreeHours}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, YouPartnerBothEnum, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,49 +36,42 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
   def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
 
     val numberOfChildren = if (answers.noOfChildren.getOrElse(0) == 0) "don't have" else "have"
-    val section1 = s"You told the calculator that you $numberOfChildren children"
+    val section1 =  s"You told the calculator that you $numberOfChildren children"
 
     val childcareCosts = CalculateChildcareCosts(answers)
-    val section2 = if (childcareCosts == 0) "." else s", with yearly childcare costs of £$childcareCosts."
+    val section2 = if (childcareCosts == 0) "." else s", with yearly childcare costs of around £$childcareCosts."
 
 
     val livesOnOwnOrWithPartner: Option[String] = answers.doYouLiveWithPartner.map(livesWithPartner => if (livesWithPartner) "with your partner" else "on your own")
-    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s"You live $livesOnOwnOrWithPartner and ")
+    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" You live $livesOnOwnOrWithPartner and ")
 
 
-
-    val paidWork: Option[String] = answers.whoIsInPaidEmployment.map(whoInPaidEmployment=> {
-      val You: String = YouPartnerBothEnum.YOU.toString
-      val Partner: String = YouPartnerBothEnum.PARTNER.toString
-      val Both: String = YouPartnerBothEnum.BOTH.toString
+    val section4 = answers.whoIsInPaidEmployment.fold("")(whoInPaidEmployment=> {
+      val You = YouPartnerBothEnum.YOU.toString
+      val Partner = YouPartnerBothEnum.PARTNER.toString
+      val Both = YouPartnerBothEnum.BOTH.toString
 
       val currentlyInPaidWork = "currently in paid work."
 
       whoInPaidEmployment match {
-        case You=> s"only you are $currentlyInPaidWork"
-        case Partner=> s"only your partner is $currentlyInPaidWork"
-        case Both=> s"both you and your partner are $currentlyInPaidWork"
-      }
-    })
-
-    val hoursAweek : Option[String] = answers.whoIsInPaidEmployment.map(whoInPaidEmployment=> {
-      val You: String = YouPartnerBothEnum.YOU.toString
-      val Partner: String = YouPartnerBothEnum.PARTNER.toString
-      val Both: String = YouPartnerBothEnum.BOTH.toString
-
-
-      whoInPaidEmployment match {
-        case You=> answers.parentWorkHours.fold("")(hours => s"You work $hours hours a week.")
-        case Partner=> answers.partnerWorkHours.fold("")(hours => s"Your partner works $hours hours a week.")
+        case You=> {
+          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s" You work $hours hours a week.")
+          s"only you are $currentlyInPaidWork $hoursAWeek"
+        }
+        case Partner=> {
+          val hoursAweek = answers.partnerWorkHours.fold("")(hours => s" Your partner works $hours hours a week.")
+          s"only your partner is $currentlyInPaidWork $hoursAweek"
+        }
         case Both=> {
           val yourHours=answers.parentWorkHours.fold(BigDecimal(0))(c=>c)
           val partnerHours = answers.partnerWorkHours.fold(BigDecimal(0))(c=>c)
-          s"You work $yourHours hours and your partner works $partnerHours a week"
+          val hoursAweek = s" You work $yourHours hours and your partner works $partnerHours a week"
+          s"both you and your partner are $currentlyInPaidWork $hoursAweek"
         }
       }
     })
 
-    val resultViewModel = ResultsViewModel(Some(section1 + section2 + section3 +  paidWork.fold("")(paidwork=>paidwork) + hoursAweek.fold("")(hoursaweek=>hoursaweek)))
+    val resultViewModel = ResultsViewModel(Some(section1 + section2 + section3 +  section4))
 
     val result = eligibilityService.eligibility(answers)
 

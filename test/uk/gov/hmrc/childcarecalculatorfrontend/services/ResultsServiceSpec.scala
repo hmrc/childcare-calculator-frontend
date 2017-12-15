@@ -16,27 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import org.joda.time.LocalDate
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import play.api.mvc.Request
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class ResultsServiceSpec extends PlaySpec with MockitoSugar {
+class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
   "Result Service" must {
     "Return View Model with eligible schemes" when {
@@ -298,7 +295,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of £300.")
+        values.firstParagraph.get must include("yearly childcare costs of around £300.")
       }
 
       "We have more than one childcare cost at monthly aggregation" in {
@@ -314,7 +311,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of £420.")
+        values.firstParagraph.get must include("yearly childcare costs of around £420.")
       }
 
       "We have one childcare cost at weekely aggregation" in {
@@ -328,7 +325,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of £208.")
+        values.firstParagraph.get must include("yearly childcare costs of around £208.")
       }
 
       "We have one childcare cost at weekly aggregation and one childcare cost at monthly aggregation" in {
@@ -344,7 +341,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar {
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph.get must include("yearly childcare costs of £880.")
+        values.firstParagraph.get must include("yearly childcare costs of around £880.")
       }
 
       "We have no childcare costs" in {
