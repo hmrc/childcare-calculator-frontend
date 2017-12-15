@@ -26,6 +26,12 @@
 
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
 
+    @if(model.noOfEligibleSchemes > 0) {
+        <h2>@messages("result.eligibility.heading", model.noOfEligibleSchemes)</h2>
+
+        @resultEligible
+    }
+
     <p>@model.freeHours.getOrElse("Not entitled to free hours")</p>
 
     <p>@model.tc.getOrElse("Not entitled for TC scheme")</p>
