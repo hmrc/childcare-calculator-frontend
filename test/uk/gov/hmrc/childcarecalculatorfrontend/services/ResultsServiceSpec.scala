@@ -345,17 +345,17 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         values.firstParagraph must include("yearly childcare costs of around £880.")
       }
 
-      "We have no childcare costs" in {
+      "We have children but no childcare costs" in {
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
         val schemeResults = SchemeResults(List(tfcScheme))
-        val answers = new UserAnswers(new CacheMap("id", Map()))
+        val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
-        values.firstParagraph must include("you don't have children.")
+        values.firstParagraph must include("you have no childcare costs.")
       }
 
       "You live on your own" in {
@@ -419,13 +419,25 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.firstParagraph must include("You live on your own and you are currently in paid work")
+      }
+
+      "You are in paid work but there is no data to know if you live with partner" in {
+        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+        val schemeResults = SchemeResults(List(tfcScheme))
+        val answers = spy(userAnswers())
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+        values.firstParagraph mustNot include("You live on your own and you are currently in paid work")
       }
 
       "You live on your own and don't work" in {

@@ -52,6 +52,7 @@ results.firstParagraph.onlyYouAre = and only you are {0} {1}
 results.firstParagraph.youAre = and you are {0} {1}
 results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
 results.firstParagraph.bothYouAndYourPartnerAre = and both you and your partner are {0} {1}
+results.firstParagraph.noChildcareCosts = you have no childcare costs
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
