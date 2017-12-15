@@ -42,9 +42,6 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
     behave like normalPage(createView,
       messageKeyPrefix,
       "notEligibleInfo",
-      "info.esc",
-      "info.tfc",
-      "info.tc",
       "notEligible.heading",
       "toBeEligible.heading",
       "summary.heading",
@@ -142,35 +139,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.info1"))
       }
 
-     "display all the answer rows with correct contents " in {
-       val answerSections = Seq(AnswerSection(None, Seq(
-         AnswerRow("childAgedTwo.checkYourAnswersLabel",
-           "site.no",
-           true,
-           routes.ChildAgedTwoController.onPageLoad(CheckMode).url),
-         AnswerRow("childAgedThreeOrFour.checkYourAnswersLabel",
-           "site.no",
-           true,
-           routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url),
-         AnswerRow("expectChildcareCosts.checkYourAnswersLabel",
-           "expectChildcareCosts.yes",
-           true,
-           routes.ChildcareCostsController.onPageLoad(CheckMode).url)
-       )))
 
-       val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, answerSections))
-
-       assertContainsText(doc, messagesApi("childAgedTwo.checkYourAnswersLabel"))
-       assertContainsText(doc, messagesApi("site.no"))
-       assertContainsText(doc, messagesApi(messages("site.edit")))
-       assertContainsText(doc, routes.ChildAgedTwoController.onPageLoad(CheckMode).url)
-
-       assertContainsText(doc, messagesApi("childAgedThreeOrFour.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ChildAgedThreeOrFourController.onPageLoad(CheckMode).url)
-
-       assertContainsText(doc, messagesApi("expectChildcareCosts.checkYourAnswersLabel"))
-       assertContainsText(doc, routes.ChildcareCostsController.onPageLoad(CheckMode).url)
-     }
 
     }
 
