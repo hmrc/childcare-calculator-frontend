@@ -37,6 +37,21 @@ nth.16 = seventeenth
 nth.17 = eighteenth
 nth.18 = nineteenth
 
+results.firstParagraph.haveChildren = You told the calculator that you {0} children
+results.firstParagraph.dontHave = don''t have
+results.firstParagraph.have = have
+results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
+results.firstParagraph.withYourPartner = with your partner
+results.firstParagraph.onYourOwn = on your own
+results.firstParagraph.youLiveAnd = You live {0} and
+results.firstParagraph.inPaidWork = currently in paid work.
+results.firstParagraph.youWorkXHoursAweek = You work {0} hours a week.
+results.firstParagraph.yourPartnerWorksXHoursAweek = Your partner works {0} hours a week.
+results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and your partner works {1} a week
+results.firstParagraph.onlyYouAre = only you are {0} {1}
+results.firstParagraph.onlyYourPartnerIs = only your partner is {0} {1}
+results.firstParagraph.bothYouAndYourPartnerAre = both you and your partner are {0} {1}
+
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
 session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.

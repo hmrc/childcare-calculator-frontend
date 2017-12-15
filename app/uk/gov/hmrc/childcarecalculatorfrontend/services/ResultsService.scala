@@ -26,6 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, YouPartnerBothE
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
+import play.api.i18n.Messages
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -33,17 +34,17 @@ import scala.concurrent.Future
 class ResultsService @Inject()(eligibilityService: EligibilityService,
                                freeHours: FreeHours,
                                maxFreeHours: MaxFreeHours) {
-  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
+  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
-    val numberOfChildren = if (answers.noOfChildren.getOrElse(0) == 0) "don't have" else "have"
-    val section1 =  s"You told the calculator that you $numberOfChildren children"
+    val numberOfChildren = if (answers.noOfChildren.getOrElse(0) == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
+    val section1 = Messages("results.firstParagraph.haveChildren",numberOfChildren)
 
     val childcareCosts = CalculateChildcareCosts(answers)
-    val section2 = if (childcareCosts == 0) "." else s", with yearly childcare costs of around £$childcareCosts."
+    val section2 = if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}$childcareCosts."
 
 
-    val livesOnOwnOrWithPartner: Option[String] = answers.doYouLiveWithPartner.map(livesWithPartner => if (livesWithPartner) "with your partner" else "on your own")
-    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" You live $livesOnOwnOrWithPartner and ")
+    val livesOnOwnOrWithPartner: Option[String] = answers.doYouLiveWithPartner.map(livesWithPartner => if (livesWithPartner) Messages("results.firstParagraph.withYourPartner") else Messages("results.firstParagraph.onYourOwn"))
+    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" ${Messages("results.firstParagraph.youLiveAnd",livesOnOwnOrWithPartner)} ")
 
 
     val section4 = answers.whoIsInPaidEmployment.fold("")(whoInPaidEmployment=> {
@@ -51,22 +52,22 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       val Partner = YouPartnerBothEnum.PARTNER.toString
       val Both = YouPartnerBothEnum.BOTH.toString
 
-      val currentlyInPaidWork = "currently in paid work."
+      val currentlyInPaidWork = Messages("results.firstParagraph.inPaidWork")
 
       whoInPaidEmployment match {
         case You=> {
-          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s" You work $hours hours a week.")
-          s"only you are $currentlyInPaidWork $hoursAWeek"
+          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.youWorkXHoursAweek",hours)}")
+          Messages("results.firstParagraph.onlyYouAre",currentlyInPaidWork,hoursAWeek)
         }
         case Partner=> {
-          val hoursAweek = answers.partnerWorkHours.fold("")(hours => s" Your partner works $hours hours a week.")
-          s"only your partner is $currentlyInPaidWork $hoursAweek"
+          val hoursAweek = answers.partnerWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.yourPartnerWorksXHoursAweek",hours)}")
+          Messages("results.firstParagraph.onlyYourPartnerIs",currentlyInPaidWork,hoursAweek)
         }
         case Both=> {
           val yourHours=answers.parentWorkHours.fold(BigDecimal(0))(c=>c)
           val partnerHours = answers.partnerWorkHours.fold(BigDecimal(0))(c=>c)
-          val hoursAweek = s" You work $yourHours hours and your partner works $partnerHours a week"
-          s"both you and your partner are $currentlyInPaidWork $hoursAweek"
+          val hoursAweek = s" ${Messages("results.firstParagraph.youAndYourPartnerWorkXhoursAweek",yourHours,partnerHours)}"
+          Messages("results.firstParagraph.bothYouAndYourPartnerAre",currentlyInPaidWork,hoursAweek)
         }
       }
     })

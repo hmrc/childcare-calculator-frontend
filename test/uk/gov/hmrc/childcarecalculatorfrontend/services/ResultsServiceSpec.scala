@@ -20,6 +20,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
+import play.api.i18n.Messages
 import play.api.libs.json._
 import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
@@ -508,6 +509,6 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
   val maxFreeHours: MaxFreeHours = mock[MaxFreeHours]
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]
-
+  override implicit val messages: Messages = messagesApi.preferred(fakeRequest)
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 }
