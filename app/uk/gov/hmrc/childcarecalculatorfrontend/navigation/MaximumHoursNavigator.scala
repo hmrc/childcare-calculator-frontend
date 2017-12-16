@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class MaximumHoursNavigator @Inject() (
                                         utils: Utils,
@@ -326,11 +327,21 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def yourMaximumEarningsRoute(answers: UserAnswers): Call = {
-    if(answers.partnerMinimumEarnings.contains(true)) {
-      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-    } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    answers.yourChildcareVouchers match {
+      case Some(voucherValue) => {
+          if(!voucherValue.equals(Yes)){
+            routes.FreeHoursResultController.onPageLoad()
+          }else{
+            if(answers.partnerMinimumEarnings.contains(true)) {
+              routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+            } else {
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+            }
+          }
+        }
+      case _ => routes.SessionExpiredController.onPageLoad()
     }
+
   }
 
   private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call = {
