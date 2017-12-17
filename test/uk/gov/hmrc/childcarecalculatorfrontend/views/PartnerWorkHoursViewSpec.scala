@@ -38,6 +38,6 @@ class PartnerWorkHoursViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.PartnerWorkHoursController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.PartnerWorkHoursController.onSubmit(NormalMode).url)
   }
 }

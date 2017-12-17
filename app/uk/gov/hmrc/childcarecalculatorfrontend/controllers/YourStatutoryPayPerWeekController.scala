@@ -59,8 +59,8 @@ class YourStatutoryPayPerWeekController @Inject()(
         statutoryType =>
 
           val preparedForm = request.userAnswers.yourStatutoryPayPerWeek match {
-            case None => YourStatutoryPayPerWeekForm()
-            case Some(value) => YourStatutoryPayPerWeekForm().fill(value)
+            case None => YourStatutoryPayPerWeekForm(statutoryType)
+            case Some(value) => YourStatutoryPayPerWeekForm(statutoryType).fill(value)
           }
           Future.successful(Ok(yourStatutoryPayPerWeek(appConfig, preparedForm, mode, statutoryType)))
       }
@@ -72,11 +72,11 @@ class YourStatutoryPayPerWeekController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
-          YourStatutoryPayPerWeekForm().bindFromRequest().fold(
-            (formWithErrors: Form[Int]) =>
+          YourStatutoryPayPerWeekForm(statutoryType).bindFromRequest().fold(
+            (formWithErrors: Form[BigDecimal]) =>
               Future.successful(BadRequest(yourStatutoryPayPerWeek(appConfig, formWithErrors, mode, statutoryType))),
             (value) =>
-              dataCacheConnector.save[Int](request.sessionId, YourStatutoryPayPerWeekId.toString, value).map(cacheMap =>
+              dataCacheConnector.save[BigDecimal](request.sessionId, YourStatutoryPayPerWeekId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(YourStatutoryPayPerWeekId, mode)(new UserAnswers(cacheMap))))
           )
       }

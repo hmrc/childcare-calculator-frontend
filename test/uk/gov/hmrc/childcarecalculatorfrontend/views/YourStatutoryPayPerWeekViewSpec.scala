@@ -19,21 +19,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayPerWeekForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
 
-class YourStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
+class YourStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "yourStatutoryPayPerWeek"
 
   val statutoryType = "maternity"
 
-  val form = YourStatutoryPayPerWeekForm()
+  val form = YourStatutoryPayPerWeekForm(statutoryType)
 
-  def createView = () => yourStatutoryPayPerWeek(frontendAppConfig, YourStatutoryPayPerWeekForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => yourStatutoryPayPerWeek(frontendAppConfig, YourStatutoryPayPerWeekForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewWithStatutoryType = (statutoryType: String) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
@@ -48,7 +48,7 @@ class YourStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(
+    behave like bigDecimalPage(
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url,

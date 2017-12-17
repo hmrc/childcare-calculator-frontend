@@ -1090,25 +1090,25 @@ partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
 
 yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.true = Yes
-yourStatutoryPayBeforeTax.false = No
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
-partnerStatutoryPayBeforeTax.true = Yes
-partnerStatutoryPayBeforeTax.false = No
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
+yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
+partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
 
 result.title = What help you could get with your childcare
 result.heading = What help you could get with your childcare

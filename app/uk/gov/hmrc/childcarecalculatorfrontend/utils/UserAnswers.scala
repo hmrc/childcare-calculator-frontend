@@ -26,9 +26,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](YourStatutoryStartDateId.toString)
 
-  def partnerStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryPayPerWeekId.toString)
+  def partnerStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayPerWeekId.toString)
 
-  def yourStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](YourStatutoryPayPerWeekId.toString)
+  def yourStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayPerWeekId.toString)
 
   def partnerStatutoryPayBeforeTax: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayBeforeTaxId.toString)
 

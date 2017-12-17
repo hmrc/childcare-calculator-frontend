@@ -19,21 +19,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayPerWeekForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayPerWeek
 
-class PartnerStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
+class PartnerStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayPerWeek"
 
   val statutoryType = "maternity"
 
-  def createView = () => partnerStatutoryPayPerWeek(frontendAppConfig, PartnerStatutoryPayPerWeekForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => partnerStatutoryPayPerWeek(frontendAppConfig, PartnerStatutoryPayPerWeekForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = PartnerStatutoryPayPerWeekForm()
+  val form = PartnerStatutoryPayPerWeekForm(statutoryType)
 
   "PartnerStatutoryPayPerWeek view" must {
     behave like normalPageWithTitleAsString(
@@ -45,7 +45,7 @@ class PartnerStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(
+    behave like bigDecimalPage(
       createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerStatutoryPayPerWeekController.onSubmit(NormalMode).url,

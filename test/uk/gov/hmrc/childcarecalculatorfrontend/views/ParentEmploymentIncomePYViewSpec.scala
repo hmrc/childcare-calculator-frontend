@@ -37,6 +37,6 @@ class ParentEmploymentIncomePYViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.ParentEmploymentIncomePYController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.ParentEmploymentIncomePYController.onSubmit(NormalMode).url)
   }
 }

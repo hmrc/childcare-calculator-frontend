@@ -42,7 +42,7 @@ class PartnerStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
     new PartnerStatutoryPayPerWeekController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = PartnerStatutoryPayPerWeekForm()) = partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = PartnerStatutoryPayPerWeekForm(statutoryType)) = partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   val testNumber = 123
 
@@ -61,7 +61,7 @@ class PartnerStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerStatutoryPayPerWeekForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(PartnerStatutoryPayPerWeekForm(statutoryType).fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -75,7 +75,7 @@ class PartnerStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerStatutoryPayPerWeekForm().bind(Map("value" -> "invalid value"))
+      val boundForm = PartnerStatutoryPayPerWeekForm(statutoryType).bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 
