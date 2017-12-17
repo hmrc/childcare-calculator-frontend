@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.data.Form
+import javax.inject.Inject
 
-object YourStatutoryWeeksForm extends FormErrorHelper {
+import org.joda.time.DateTimeFieldType._
+import uk.gov.hmrc.time.TaxYearResolver
 
-  def apply(statutoryType: String): Form[Int] =
-    Form(
-      "value" ->
-        int("yourStatutoryWeeks.required", "yourStatutoryWeeks.invalid", statutoryType)
-            .verifying(inRange[Int](1, 48, "yourStatutoryWeeks.invalid", statutoryType))
-    )
+class TaxYearInfo @Inject()() {
+
+  lazy val currentTaxYearStart: String = TaxYearResolver.startOfCurrentTaxYear.get(year).toString
+
+  lazy val currentTaxYearEnd: String = TaxYearResolver.endOfCurrentTaxYear.get(year).toString
+
+  lazy val previousTaxYearStart: String = (TaxYearResolver.startOfCurrentTaxYear.get(year) - 1).toString
+
+  lazy val previousTaxYearEnd: String = (TaxYearResolver.endOfCurrentTaxYear.get(year) - 1).toString
 }

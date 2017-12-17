@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryWeeksForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
@@ -48,6 +48,6 @@ class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
     behave like intPage(createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerStatutoryWeeksController.onSubmit(NormalMode).url,
-      messageDynamicValue = Some(statutoryType))
+      messageDynamicValue = Some(statutoryType.toString))
   }
 }

@@ -23,7 +23,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.ModelFactory
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -137,7 +137,10 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to yourStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.yourStatutoryPayType) thenReturn
-            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+            Some(StatutoryPayTypeEnum.MATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.PATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.ADOPTION) thenReturn
+            Some(StatutoryPayTypeEnum.SHARED_PARENTAL)
 
           navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
             routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
@@ -171,7 +174,10 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to partnerStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.partnerStatutoryPayType) thenReturn
-            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+            Some(StatutoryPayTypeEnum.MATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.PATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.ADOPTION) thenReturn
+            Some(StatutoryPayTypeEnum.SHARED_PARENTAL)
 
           navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
             routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)

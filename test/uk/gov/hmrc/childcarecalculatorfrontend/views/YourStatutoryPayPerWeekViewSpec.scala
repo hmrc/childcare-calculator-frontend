@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayPerWeekForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
 
@@ -52,7 +52,7 @@ class YourStatutoryPayPerWeekViewSpec extends IntViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url,
-      messageDynamicValue = Some(statutoryType))
+      messageDynamicValue = Some(statutoryType.toString))
   }
 
   "show correct statutory pay type" in {

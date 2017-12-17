@@ -25,16 +25,20 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayBeforeTaxForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayBeforeTaxId, PartnerStatutoryPayTypeId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayBeforeTax
 
 class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType))
+  private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType.toString))
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  private val retrievalAction = new FakeDataRetrievalAction(
+    Some(CacheMap("id", statutoryTypeNameValuePair))
+  )
+
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryPayBeforeTaxController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 

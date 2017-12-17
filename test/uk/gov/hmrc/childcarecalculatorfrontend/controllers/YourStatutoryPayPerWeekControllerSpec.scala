@@ -36,11 +36,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{yourStatutoryPayPerWe
 
 class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with MockitoSugar{
 
-  private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
+  private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType.toString))
+
+  private val retrievalAction = new FakeDataRetrievalAction(
+    Some(CacheMap("id", statutoryTypeNameValuePair))
+  )
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryPayPerWeekController(frontendAppConfig,
       messagesApi,
       FakeDataCacheConnector,

@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryStartDateForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.DateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
 

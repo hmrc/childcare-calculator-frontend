@@ -26,17 +26,22 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouStatutoryPayId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youStatutoryPay
 
 class YouStatutoryPayControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val taxYearInfo = new TaxYearInfo()
+
+  def myForm: Form[Boolean] = BooleanForm("youStatutoryPay.required", taxYearInfo.previousTaxYearStart)
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YouStatutoryPayController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = youStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = myForm) = youStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "youStatutoryPay Controller" must {
 
@@ -53,7 +58,7 @@ class YouStatutoryPayControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(myForm.fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -67,7 +72,7 @@ class YouStatutoryPayControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
+      val boundForm = myForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
