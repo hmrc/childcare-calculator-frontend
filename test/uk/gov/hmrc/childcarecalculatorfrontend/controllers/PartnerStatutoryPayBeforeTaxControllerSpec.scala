@@ -17,15 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
+import play.api.libs.json.{JsBoolean, JsString}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayBeforeTaxForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayBeforeTaxId, PartnerStatutoryPayTypeId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayBeforeTax
 
 class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
@@ -38,11 +38,13 @@ class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
     Some(CacheMap("id", statutoryTypeNameValuePair))
   )
 
+  val myForm = BooleanForm("yourStatutoryPayBeforeTax.error", statutoryType.toString)
+
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryPayBeforeTaxController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = PartnerStatutoryPayBeforeTaxForm()) = partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = myForm) = partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   "PartnerStatutoryPayBeforeTax Controller" must {
 
@@ -54,16 +56,16 @@ class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerStatutoryPayBeforeTaxId.toString -> JsString(PartnerStatutoryPayBeforeTaxForm.options.head.value)) ++ statutoryTypeNameValuePair
+      val validData = Map(PartnerStatutoryPayBeforeTaxId.toString -> JsBoolean(true)) ++ statutoryTypeNameValuePair
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerStatutoryPayBeforeTaxForm().fill(PartnerStatutoryPayBeforeTaxForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(myForm.fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", PartnerStatutoryPayBeforeTaxForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -73,7 +75,7 @@ class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerStatutoryPayBeforeTaxForm().bind(Map("value" -> "invalid value"))
+      val boundForm = myForm.bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 
@@ -89,7 +91,7 @@ class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", PartnerStatutoryPayBeforeTaxForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

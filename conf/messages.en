@@ -1065,10 +1065,13 @@ statutoryPayTypeLower.shared-parental = shared parental
 yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.required = Enter how many weeks of {0} pay you took
+yourStatutoryWeeks.invalid = Enter numbers between 1 and 48 for how many weeks of {0} pay you took
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
 partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
+partnerStatutoryWeeks.required = Enter how many weeks of {0} pay your partner took
+partnerStatutoryWeeks.invalid = Enter numbers between 1 and 48 for how many weeks of {0} pay your partner took
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
 yourStatutoryStartDate.title = When did your {0} pay start?
@@ -1090,12 +1093,14 @@ yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week befo
 yourStatutoryPayBeforeTax.true = Yes
 yourStatutoryPayBeforeTax.false = No
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
+yourStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.true = Yes
 partnerStatutoryPayBeforeTax.false = No
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?

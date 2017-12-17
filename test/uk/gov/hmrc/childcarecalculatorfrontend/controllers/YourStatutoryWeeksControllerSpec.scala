@@ -44,7 +44,7 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
   def viewAsString(form: Form[Int] = YourStatutoryWeeksForm(statutoryType)) = yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 1
 
   "YourStatutoryWeeks Controller" must {
 

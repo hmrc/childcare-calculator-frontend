@@ -24,6 +24,6 @@ object YourStatutoryWeeksForm extends FormErrorHelper {
     Form(
       "value" ->
         int("yourStatutoryWeeks.required", "yourStatutoryWeeks.invalid", statutoryType)
-            .verifying(inRange[Int](1, 48, "yourStatutoryWeeks.invalid", statutoryType))
+          .verifying(inRange[Int](1, 48, "yourStatutoryWeeks.invalid", statutoryType))
     )
 }

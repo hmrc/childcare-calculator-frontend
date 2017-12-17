@@ -25,7 +25,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayBeforeTaxForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryPayBeforeTaxId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
@@ -41,6 +41,8 @@ class YourStatutoryPayBeforeTaxController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+
+  val errorKey = "yourStatutoryPayBeforeTax.error"
 
   private def sessionExpired(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
@@ -59,8 +61,8 @@ class YourStatutoryPayBeforeTaxController @Inject()(
         statutoryType =>
 
           val preparedForm = request.userAnswers.yourStatutoryPayBeforeTax match {
-            case None => YourStatutoryPayBeforeTaxForm()
-            case Some(value) => YourStatutoryPayBeforeTaxForm().fill(value)
+            case None => BooleanForm(errorKey, statutoryType)
+            case Some(value) => BooleanForm(errorKey, statutoryType).fill(value)
           }
           Future.successful(Ok(yourStatutoryPayBeforeTax(appConfig, preparedForm, mode, statutoryType)))
       }
@@ -71,11 +73,11 @@ class YourStatutoryPayBeforeTaxController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
-          YourStatutoryPayBeforeTaxForm().bindFromRequest().fold(
-            (formWithErrors: Form[String]) =>
+          BooleanForm(errorKey, statutoryType).bindFromRequest().fold(
+            (formWithErrors: Form[Boolean]) =>
               Future.successful(BadRequest(yourStatutoryPayBeforeTax(appConfig, formWithErrors, mode, statutoryType))),
             (value) =>
-              dataCacheConnector.save[String](request.sessionId, YourStatutoryPayBeforeTaxId.toString, value).map(cacheMap =>
+              dataCacheConnector.save[Boolean](request.sessionId, YourStatutoryPayBeforeTaxId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(YourStatutoryPayBeforeTaxId, mode)(new UserAnswers(cacheMap))))
           )
       }

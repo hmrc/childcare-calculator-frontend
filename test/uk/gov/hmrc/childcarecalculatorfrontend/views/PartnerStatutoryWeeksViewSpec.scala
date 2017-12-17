@@ -29,11 +29,11 @@ class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryWeeks"
 
-  def createView = () => partnerStatutoryWeeks(frontendAppConfig, PartnerStatutoryWeeksForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => partnerStatutoryWeeks(frontendAppConfig, PartnerStatutoryWeeksForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = PartnerStatutoryWeeksForm()
+  val form = PartnerStatutoryWeeksForm(statutoryType)
 
   "PartnerStatutoryWeeks view" must {
     behave like normalPageWithTitleAsString(

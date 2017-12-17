@@ -22,7 +22,6 @@ class YourStatutoryWeeksFormSpec extends FormSpec {
   val errorInvalid = error("value", "yourStatutoryWeeks.invalid", statutoryType)
   val errorRequired = error("value", "yourStatutoryWeeks.required", statutoryType)
 
-
   "YourStatutoryWeeks Form" must {
 
     "bind numbers within range" in {
@@ -51,7 +50,7 @@ class YourStatutoryWeeksFormSpec extends FormSpec {
     }
 
     "fail to bind decimal numbers" in {
-      checkForError(YourStatutoryWeeksForm(statutoryType), Map("value" -> "123.45"), errorInvalid)
+      checkForError(YourStatutoryWeeksForm(statutoryType), Map("value" -> "1.23"), errorInvalid)
     }
   }
 }

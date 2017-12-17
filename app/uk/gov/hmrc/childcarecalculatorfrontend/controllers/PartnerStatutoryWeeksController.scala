@@ -59,8 +59,8 @@ class PartnerStatutoryWeeksController @Inject()(
         statutoryType =>
 
           val preparedForm = request.userAnswers.partnerStatutoryWeeks match {
-            case None => PartnerStatutoryWeeksForm()
-            case Some(value) => PartnerStatutoryWeeksForm().fill(value)
+            case None => PartnerStatutoryWeeksForm(statutoryType)
+            case Some(value) => PartnerStatutoryWeeksForm(statutoryType).fill(value)
           }
           Future.successful(Ok(partnerStatutoryWeeks(appConfig, preparedForm, mode, statutoryType)))
       }
@@ -71,7 +71,7 @@ class PartnerStatutoryWeeksController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
-          PartnerStatutoryWeeksForm().bindFromRequest().fold(
+          PartnerStatutoryWeeksForm(statutoryType).bindFromRequest().fold(
             (formWithErrors: Form[Int]) =>
               Future.successful(BadRequest(partnerStatutoryWeeks(appConfig, formWithErrors, mode, statutoryType))),
             (value) =>
