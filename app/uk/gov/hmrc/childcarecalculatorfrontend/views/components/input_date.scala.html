@@ -35,8 +35,8 @@ hint: Option[String] = None
             }
 
             @for(f <- Seq(field, field("day"), field("month"), field("year"))) {
-                @f.errors.map { error =>
-                    <span class="error-notification" id="error-message-@{f.id}">@messages(error.messages.head)</span>
+                @f.errors.headOption.map { error =>
+                    <span class="error-notification" id="error-message-@{f.id}">@messages(error.message, error.args: _*)</span>
                 }
             }
         </legend>

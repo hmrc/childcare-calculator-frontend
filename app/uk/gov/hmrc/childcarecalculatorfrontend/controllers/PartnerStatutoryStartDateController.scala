@@ -59,13 +59,13 @@ class PartnerStatutoryStartDateController @Inject()(
   def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
-        statutoryPay =>
+        statutoryType =>
           val preparedForm = request.userAnswers.partnerStatutoryStartDate match {
-            case None => PartnerStatutoryStartDateForm()
-            case Some(value) => PartnerStatutoryStartDateForm().fill(value)
+            case None => PartnerStatutoryStartDateForm(statutoryType)
+            case Some(value) => PartnerStatutoryStartDateForm(statutoryType).fill(value)
           }
 
-          Future.successful(Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, statutoryPay)))
+          Future.successful(Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, statutoryType)))
       }
   }
 
@@ -74,7 +74,7 @@ class PartnerStatutoryStartDateController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
-          PartnerStatutoryStartDateForm().bindFromRequest().fold(
+          PartnerStatutoryStartDateForm(statutoryType).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
             (value) =>

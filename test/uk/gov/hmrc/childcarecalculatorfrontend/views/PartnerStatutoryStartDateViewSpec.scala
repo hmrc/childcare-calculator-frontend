@@ -30,11 +30,11 @@ class PartnerStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
 
   val statutoryType = "maternity"
 
-  def createView = () => partnerStatutoryStartDate(frontendAppConfig, PartnerStatutoryStartDateForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => partnerStatutoryStartDate(frontendAppConfig, PartnerStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[LocalDate]) => partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = PartnerStatutoryStartDateForm()
+  val form = PartnerStatutoryStartDateForm(statutoryType)
 
   "PartnerStatutoryStartDate view" must {
 

@@ -22,21 +22,24 @@ import play.api.data.Forms._
 
 object YourStatutoryStartDateForm extends FormErrorHelper {
 
-  def apply(): Form[LocalDate] = Form(
+  val requiredKey = "yourStatutoryStartDate.error.required"
+  val invalidKey = "yourStatutoryStartDate.error.invalid"
+
+  def apply(statutoryType: String): Form[LocalDate] = Form(
     single(
       "date" -> localDateMapping(
-        "day" -> number,
-        "month" -> number,
-        "year" -> number
+        "day" -> int(requiredKey, invalidKey, statutoryType),
+        "month" -> int(requiredKey, invalidKey, statutoryType),
+        "year" -> int(requiredKey, invalidKey, statutoryType)
       )
-        .verifying("yourStatutoryStartDate.error.invalid", _.isBefore(LocalDate.now.plusDays(1)))
-        .replaceError("error.invalidDate", "yourStatutoryStartDate.error.invalid")
-        .replaceError(FormError("day", "error.required"), FormError("", "yourStatutoryStartDate.error"))
-        .replaceError(FormError("month", "error.required"), FormError("", "yourStatutoryStartDate.error"))
-        .replaceError(FormError("year", "error.required"), FormError("", "yourStatutoryStartDate.error"))
-        .replaceError(FormError("day", "error.number"), FormError("", "yourStatutoryStartDate.error"))
-        .replaceError(FormError("month", "error.number"), FormError("", "yourStatutoryStartDate.error"))
-        .replaceError(FormError("year", "error.number"), FormError("", "yourStatutoryStartDate.error"))
+        .verifying(before(LocalDate.now.plusDays(1), "yourStatutoryStartDate.error.past", statutoryType))
+        .replaceError(FormError("", "error.invalidDate", statutoryType), FormError("", invalidKey, Seq(statutoryType)))
+        .replaceError(FormError("day", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
+        .replaceError(FormError("month", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
+        .replaceError(FormError("year", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
+        .replaceError(FormError("day", invalidKey, statutoryType), FormError("", invalidKey, Seq(statutoryType)))
+        .replaceError(FormError("month", invalidKey, statutoryType), FormError("", invalidKey, Seq(statutoryType)))
+        .replaceError(FormError("year", invalidKey, statutoryType), FormError("", invalidKey, Seq(statutoryType)))
     )
   )
 }

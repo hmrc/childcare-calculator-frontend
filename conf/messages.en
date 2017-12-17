@@ -1076,15 +1076,17 @@ partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
 yourStatutoryStartDate.title = When did your {0} pay start?
 yourStatutoryStartDate.heading = When did your {0} pay start?
-yourStatutoryStartDate.error = You must tell the calculator when your statutory pay started
+yourStatutoryStartDate.error.required = Enter the date your {0} pay started
 yourStatutoryStartDate.error.invalid = You must enter correct date
+yourStatutoryStartDate.error.past = Date your {0} pay started must be in the past
 yourStatutoryStartDate.hint = For example, 31 2 2017
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
 
 partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
 partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.error = You must tell the calculator when your partner’s statutory pay started
+partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
 partnerStatutoryStartDate.error.invalid = You must enter correct date
+partnerStatutoryStartDate.error.past = Date your partner’s {0} pay started must be in the past
 partnerStatutoryStartDate.hint = For example, 31 2 2017
 partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
 

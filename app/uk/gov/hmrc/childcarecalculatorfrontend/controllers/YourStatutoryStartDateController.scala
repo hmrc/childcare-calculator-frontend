@@ -61,8 +61,8 @@ class YourStatutoryStartDateController @Inject()(
         statutoryType =>
 
           val preparedForm = request.userAnswers.yourStatutoryStartDate match {
-            case None => YourStatutoryStartDateForm()
-            case Some(value) => YourStatutoryStartDateForm().fill(value)
+            case None => YourStatutoryStartDateForm(statutoryType)
+            case Some(value) => YourStatutoryStartDateForm(statutoryType).fill(value)
           }
           Future.successful(Ok(yourStatutoryStartDate (appConfig, preparedForm, mode, statutoryType)))
       }
@@ -73,7 +73,7 @@ class YourStatutoryStartDateController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
-          YourStatutoryStartDateForm().bindFromRequest().fold(
+          YourStatutoryStartDateForm(statutoryType).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(yourStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
             (value) =>
