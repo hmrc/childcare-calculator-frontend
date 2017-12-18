@@ -53,8 +53,10 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
   }
 
   private def buildFirstSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val numberOfChildren = if (answers.noOfChildren.getOrElse(0) == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
-    s"$paragraph${Messages("results.firstParagraph.haveChildren", numberOfChildren)}"
+    val numberOfChildren = answers.noOfChildren.getOrElse(0)
+    val childOrChildren = if (numberOfChildren == 1) Messages("results.firstParagraph.aChild") else Messages("results.firstParagraph.children")
+    val numberOfChildrenMessage = if (numberOfChildren == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
+    s"$paragraph${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
   }
 
   private def buildSecondSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
@@ -79,7 +81,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
 
       whoInPaidEmployment match {
         case You => {
-          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
+          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
           answers.doYouLiveWithPartner.fold("")(livesWithPartner => if (livesWithPartner){
             s" ${Messages("results.firstParagraph.onlyYouAre", currentlyInPaidWork, hoursAWeek)}"
           }

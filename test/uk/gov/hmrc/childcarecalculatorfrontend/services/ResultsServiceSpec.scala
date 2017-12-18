@@ -249,7 +249,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
     "Return View Model with first paragraph info" when {
       "Loading the Do You Have Children section" when {
         "You have children" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
+          val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2))))
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
@@ -279,6 +279,17 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
           values.firstParagraph must include("you don't have children")
+        }
+
+        "You have one child" in {
+          val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+          values.firstParagraph must include("you have a child")
         }
       }
 
@@ -484,6 +495,19 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
           values.firstParagraph must include("You work 40 hours a week")
+        }
+
+        "You live on your own and you work x hours a week" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+          when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+
+          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
+
+          values.firstParagraph must include("You live on your own and you are currently in paid work. You work 40 hours a week.")
         }
 
 
