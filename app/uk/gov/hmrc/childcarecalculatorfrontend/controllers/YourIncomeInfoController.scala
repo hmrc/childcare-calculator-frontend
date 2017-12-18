@@ -32,6 +32,7 @@ class YourIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
                                       requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
+
     Ok(yourIncomeInfo(appConfig))
   }
 }

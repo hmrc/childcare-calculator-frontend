@@ -41,7 +41,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
-      when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future.successful(
+      when(resultService.getResultsViewModel(any())(any(),any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000)))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
@@ -62,7 +62,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       }
 
       "we try to get the view model and something goes wrong" in {
-        when(resultService.getResultsViewModel(any())(any(),any())) thenReturn Future.failed(new RuntimeException)
+        when(resultService.getResultsViewModel(any())(any(),any(),any())) thenReturn Future.failed(new RuntimeException)
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
         val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
