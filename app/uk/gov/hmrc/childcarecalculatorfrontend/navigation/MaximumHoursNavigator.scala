@@ -378,5 +378,4 @@ class MaximumHoursNavigator @Inject() (
       routes.SessionExpiredController.onPageLoad()
     }
   }
-
 }
