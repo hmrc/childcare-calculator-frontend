@@ -118,6 +118,8 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
           navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
+
+
       }
     }
 

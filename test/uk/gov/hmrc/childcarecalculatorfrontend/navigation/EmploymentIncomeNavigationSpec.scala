@@ -183,6 +183,20 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
         }
      }
 
+      "Both Paid Work PY" must {
+        "redirect to WhoWasInPaidWorkPY page when user selects yes" in{
+
+        }
+
+       "redirect to bothAnyTheseBenefitsPY page when user selects no" in {
+
+       }
+
+        "redirects to SessionExpired page when there is no value for selection" in {
+
+        }
+      }
+
       "Parent Employment Income PY Route" must {
         "redirects to parent paid pension PY when user provides valid value" in {
           val answers = spy(userAnswers())
