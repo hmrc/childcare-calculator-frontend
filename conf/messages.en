@@ -551,7 +551,7 @@ whoGetsOtherIncomeCY.error = Select who will get other income
 
 youAnyTheseBenefitsCY.title = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.heading = Have you had any of these benefits this year?
-youAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+youAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
 youAnyTheseBenefitsCY.li.income_support = Income Support
 youAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
 youAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
@@ -565,7 +565,7 @@ youAnyTheseBenefitsCY.error = Select yes if you’ve had any of these benefits t
 
 partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.heading = Has your partner had any of these benefits this year?
-partnerAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+partnerAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
 partnerAnyTheseBenefitsCY.li.income_support = Income Support
 partnerAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
 partnerAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
@@ -579,7 +579,7 @@ partnerAnyTheseBenefitsCY.error = You must tell the calculator if your partner h
 
 bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
-bothAnyTheseBenefitsCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+bothAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
 bothAnyTheseBenefitsCY.li.income_support = Income Support
 bothAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
 bothAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
