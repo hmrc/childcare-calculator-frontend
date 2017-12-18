@@ -170,7 +170,7 @@ class MaximumHoursNavigator @Inject() (
 
   private def whatIsYourPartnersTaxCodeRoute(answers: UserAnswers): Call = {
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Both)) {
-      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     } else {
       routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
