@@ -99,13 +99,13 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       })
     }
     else {
-      answers.areYouInPaidWork.fold("")(areYouInPaidWork => {
-        if (areYouInPaidWork) {
-          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
-          s" ${Messages("results.firstParagraph.youAre", currentlyInPaidWork, hoursAWeek)}"
-        }
-        else "."
-      })
+      if (answers.areYouInPaidWork.getOrElse(false)){
+        val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
+        s" ${Messages("results.firstParagraph.youAre", currentlyInPaidWork, hoursAWeek)}"
+      }
+      else {
+        "."
+      }
     })
 
     s"$paragraph$section4"
