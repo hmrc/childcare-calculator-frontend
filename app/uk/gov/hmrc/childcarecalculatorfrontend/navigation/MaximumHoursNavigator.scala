@@ -21,8 +21,9 @@ import javax.inject.Inject
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 class MaximumHoursNavigator @Inject() (
@@ -70,8 +71,8 @@ class MaximumHoursNavigator @Inject() (
     YourSelfEmployedId -> yourSelfEmployedRoute,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
-    PartnerMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
+    EitherOfYouMaximumEarningsId -> eitherMaximumEarningsRoute,
     TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes
   )
 
@@ -326,10 +327,37 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def yourMaximumEarningsRoute(answers: UserAnswers): Call = {
-    if(answers.partnerMinimumEarnings.contains(true)) {
-      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-    } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+    val yourMaxEarnings = answers.yourMaximumEarnings.getOrElse(false)
+
+    maximumEarningsRedirection(answers, yourMaxEarnings)
+  }
+
+  private def partnerMaximumEarningsRoute(answers: UserAnswers): Call = {
+    val partnerMaxEarnings= answers.partnerMaximumEarnings.getOrElse(false)
+
+    maximumEarningsRedirection(answers, partnerMaxEarnings)
+  }
+
+  private def eitherMaximumEarningsRoute(answers: UserAnswers): Call = {
+    val eitherMaxEarnings = answers.eitherOfYouMaximumEarnings.getOrElse(false)
+
+    maximumEarningsRedirection(answers, eitherMaxEarnings)
+  }
+
+  private def maximumEarningsRedirection(answers: UserAnswers, maxEarnings: Boolean): Call = {
+
+    def getCallForVoucherValue(voucherValue: String): Call =
+      if (!voucherValue.equals(Yes) && maxEarnings.equals(true)) {
+        routes.FreeHoursResultController.onPageLoad()
+      } else {
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      }
+
+    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
+      case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
+      case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)
+      case _ =>  answers.whoGetsVouchers.fold(
+        routes.SessionExpiredController.onPageLoad())(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
     }
   }
 
