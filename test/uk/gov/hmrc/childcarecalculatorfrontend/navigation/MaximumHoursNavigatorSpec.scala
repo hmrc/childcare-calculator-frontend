@@ -22,8 +22,8 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{MaxFreeHours, Schemes, TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{MaxFreeHours, Schemes, TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
@@ -1120,7 +1120,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "in Normal mode" must {
 
       "Your Maximum Earnings" must {
-        "single user redirects to your Do you get tax credits or universal credit page" in {
+        "single user where yourChildcareVouchers is yes redirects to your Do you get tax credits or universal credit page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
@@ -1133,91 +1133,184 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
         }
 
-        "user with partner redirects to partner maximum earnings when partner satisfies NMW" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
-          when(answers.partnerMinimumEarnings) thenReturn Some(true)
-          when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
+
+          "single user where yourChildcareVouchers is yes and partnerChildcareVouchers is no" +
+            "redirects to your Do you get tax credits or universal credit page" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+            when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
 
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+          "user with partner redirects to Do you get tax credits or universal credit page where " +
+            "yourChildcareVouchers is yes and  partner does not satisfy NMW" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+            when(answers.partnerMinimumEarnings) thenReturn Some(false)
+            when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
+
+         //NEED TO WRITE A SCENARIO WHEN BOTH NOT GETTING VOUCHERS
+
+
+
+          "user with partner redirects to TaxOrUniversalCredits page " +
+            "where yourChildcareVouchers is no or not sure and partner does not satisfy NMW" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.partnerMinimumEarnings) thenReturn Some(false)
+            when(answers.yourMaximumEarnings) thenReturn Some(false)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+
+          }
+
+          "user with partner redirects to Do you get tax credits or universal credit page " +
+            "where yourChildcareVouchers is yes only parent is in paid employment" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+            when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
+
+          "single user redirects to free hours result pages when Childcare vouchers selection is not yes " +
+            "and yourMaximumEarnings is true " in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.yourMaximumEarnings) thenReturn Some(true)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.FreeHoursResultController.onPageLoad()
+
+          }
+
+
+          "single user redirects to taxOrUniversalCredits pages when Childcare vouchers selection is not yes " +
+            "and yourMaximumEarnings  false " in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.yourMaximumEarnings) thenReturn Some(false)
+
+            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
         }
 
-        "user with partner redirects to Do you get tax credits or universal credit page when partner does not satisfy NMW" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
-          when(answers.partnerMinimumEarnings) thenReturn Some(false)
-          when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        "Partner Maximum earnings" must {
+          "user with partner redirects to your Do you get tax credits or universal credit page where partnerChildcareVouchers is yes" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+            when(answers.partnerMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
+
+          "user with partner redirects to your FreeHoursResult page where partnerChildcareVouchers is no or not sure" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.partnerMaximumEarnings) thenReturn Some(true)
+
+            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.FreeHoursResultController.onPageLoad()
+
+          }
+
+          "user with partner redirects to your Do you get tax credits or universal credit page where partnerChildcareVouchers is no or not sure" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.partnerMaximumEarnings) thenReturn Some(false)
+
+            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
+
+
+          "user with partner redirects to Do you get tax credits or universal credit page where " +
+            "partnerChildcareVouchers is yes and  partner does not satisfy NMW" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
+            when(answers.yourMinimumEarnings) thenReturn Some(false)
+            when(answers.partnerMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
+
+            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+
+            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
+
+          //need to write a scenario for neither in  gets vouchers
         }
 
-        "user with partner redirects to Do you get tax credits or universal credit page when only parent is in paid employment" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
-          when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        "Either Of You Maximum earnings" must {
+          "redirect to FreeHoursResult page when both selects no to vouchers and yes to maximum earnings " in {
+            val answers = spy(userAnswers())
+            when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
+            navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.FreeHoursResultController.onPageLoad()
+          }
 
-        "single user redirects to free hours result page when Childcare vouchers selection is not yes" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
-          when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
+          "redirect to Tax or Universal Credits page when partner selects no and parent yes for vouchers and yes to maximum earnings" in {
+            val answers = spy(userAnswers())
+            when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+            when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true)
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.FreeHoursResultController.onPageLoad()
+            navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.FreeHoursResultController.onPageLoad()
-        }
-      }
+          "redirect to Tax or Universal Credits page when partner selects no to vouchers and false to maximum earnings" in {
+            val answers = spy(userAnswers())
+            when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+            when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+            when(answers.eitherOfYouMaximumEarnings) thenReturn Some(false)
 
-      "Partner Maximum earnings" must {
-        "single user redirects to your Do you get tax credits or universal credit page" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.partnerMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
-
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-
-      "Either Of You Maximum earnings" must {
-        "redirect to Tax or Universal Credits page when user makes any selection" in {
-          val answers = spy(userAnswers())
-          when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
-
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-
+            navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
+              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          }
         }
       }
     }
-  }
+
 
   "Do you get tax credits or universal credit" must {
 

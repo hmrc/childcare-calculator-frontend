@@ -71,8 +71,8 @@ class MaximumHoursNavigator @Inject() (
     YourSelfEmployedId -> yourSelfEmployedRoute,
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
-    PartnerMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
-    EitherOfYouMaximumEarningsId -> (_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)),
+    PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
+    EitherOfYouMaximumEarningsId -> EitherMaximumEarningsRoute,
     TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes
   )
 
@@ -327,22 +327,87 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def yourMaximumEarningsRoute(answers: UserAnswers): Call = {
-    answers.yourChildcareVouchers match {
-      case Some(voucherValue) => {
-          if(!voucherValue.equals(Yes)){
-            routes.FreeHoursResultController.onPageLoad()
-          }else{
-            if(answers.partnerMinimumEarnings.contains(true)) {
-              routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
-            } else {
-              routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-            }
-          }
-        }
-      case _ => routes.SessionExpiredController.onPageLoad()
-    }
 
+    val yourMaxEarnings = answers.yourMaximumEarnings.getOrElse(false)
+
+    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
+      case (Some(parentVoucher), _) => {
+        if (!parentVoucher.equals(Yes) && (yourMaxEarnings == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case (_, Some(partnerVoucher)) => {
+        if (!partnerVoucher.equals(Yes) && (yourMaxEarnings == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => {
+        answers.whoGetsVouchers match {
+          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          case _ => routes.SessionExpiredController.onPageLoad()
+        }
+      }
+    }
   }
+
+  private def partnerMaximumEarningsRoute(answers: UserAnswers): Call = {
+    val partnerMaxEarnings = answers.partnerMaximumEarnings.getOrElse(false)
+
+    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
+      case (Some(parentVoucher), _) => {
+        if (!parentVoucher.equals(Yes) && (partnerMaxEarnings == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case (_, Some(partnerVoucher)) => {
+        if (!partnerVoucher.equals(Yes) && (partnerMaxEarnings == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => {
+        answers.whoGetsVouchers match {
+          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          case _ => routes.SessionExpiredController.onPageLoad()
+        }
+      }
+    }
+  }
+
+  private def EitherMaximumEarningsRoute(answers: UserAnswers): Call = {
+    val eitherVouchers = answers.eitherOfYouMaximumEarnings.getOrElse(false)
+
+    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
+      case (Some(parentVoucher), _) => {
+        if (!parentVoucher.equals(Yes) && (eitherVouchers == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case (_, Some(partnerVoucher)) => {
+        if (!partnerVoucher.equals(Yes) && (eitherVouchers == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => {
+        answers.whoGetsVouchers match {
+          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          case _ => routes.SessionExpiredController.onPageLoad()
+        }
+      }
+    }
+  }
+
 
   private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call = {
     if (schemes.allSchemesDetermined(answers)) {
