@@ -327,85 +327,21 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def yourMaximumEarningsRoute(answers: UserAnswers): Call = {
-
     val yourMaxEarnings = answers.yourMaximumEarnings.getOrElse(false)
 
-    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
-      case (Some(parentVoucher), _) => {
-        if (!parentVoucher.equals(Yes) && (yourMaxEarnings == true)) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-      case (_, Some(partnerVoucher)) => {
-        if (!partnerVoucher.equals(Yes) && (yourMaxEarnings == true)) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-      case _ => {
-        answers.whoGetsVouchers match {
-          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-          case _ => routes.SessionExpiredController.onPageLoad()
-        }
-      }
-    }
+    maximumEarningsRedirection(answers,yourMaxEarnings)
   }
 
   private def partnerMaximumEarningsRoute(answers: UserAnswers): Call = {
-    val partnerMaxEarnings = answers.partnerMaximumEarnings.getOrElse(false)
+    val partnerMaxEarnings= answers.partnerMaximumEarnings.getOrElse(false)
 
-    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
-      case (Some(parentVoucher), _) => {
-        if (!parentVoucher.equals(Yes) && (partnerMaxEarnings == true)) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-      case (_, Some(partnerVoucher)) => {
-        if (!partnerVoucher.equals(Yes) && (partnerMaxEarnings == true)) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-      case _ => {
-        answers.whoGetsVouchers match {
-          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-          case _ => routes.SessionExpiredController.onPageLoad()
-        }
-      }
-    }
+    maximumEarningsRedirection(answers,partnerMaxEarnings)
   }
 
   private def EitherMaximumEarningsRoute(answers: UserAnswers): Call = {
-    val eitherVouchers = answers.eitherOfYouMaximumEarnings.getOrElse(false)
+    val eitherMaxEarnings = answers.eitherOfYouMaximumEarnings.getOrElse(false)
 
-    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
-      case (Some(parentVoucher), _) => {
-        if (!parentVoucher.equals(Yes) && (eitherVouchers == true)) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-      case (_, Some(partnerVoucher)) => {
-        if (!partnerVoucher.equals(Yes) && (eitherVouchers == true)) {
-          routes.FreeHoursResultController.onPageLoad()
-        } else {
-          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
-      }
-      case _ => {
-        answers.whoGetsVouchers match {
-          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-          case _ => routes.SessionExpiredController.onPageLoad()
-        }
-      }
-    }
+    maximumEarningsRedirection(answers,eitherMaxEarnings)
   }
 
 
@@ -425,5 +361,41 @@ class MaximumHoursNavigator @Inject() (
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
+  }
+
+
+  private def maximumEarningsRedirection(answers: UserAnswers, maxEarnings:Boolean): Call = {
+    (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
+      case (Some(parentVoucher), _) => {
+        if (!parentVoucher.equals(Yes) && (maxEarnings == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case (_, Some(partnerVoucher)) => {
+        if (!partnerVoucher.equals(Yes) && (maxEarnings == true)) {
+          routes.FreeHoursResultController.onPageLoad()
+        } else {
+          routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        }
+      }
+      case _ => {
+        answers.whoGetsVouchers match {
+          case Some(_) => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+          case _ => routes.SessionExpiredController.onPageLoad()
+        }
+      }
+    }
+
+    def test(voucherValue : String) = {
+      if (!voucherValue.equals(Yes) && (maxEarnings == true)) {
+        routes.FreeHoursResultController.onPageLoad()
+      } else {
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      }
+    }
+
+
   }
 }
