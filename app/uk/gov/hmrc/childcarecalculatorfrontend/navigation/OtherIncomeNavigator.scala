@@ -90,9 +90,15 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
     processCall(answers, answers.yourOtherIncomeAmountCY, successRoute, failureRoute)
   }
 
-  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.partnerOtherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
+    processCall(answers,answers.partnerOtherIncomeAmountCY,
+      routes.PartnerIncomeInfoPYController.onPageLoad(),
+      routes.ResultController.onPageLoad())
 
-  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.otherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
+    processCall(answers,answers.otherIncomeAmountCY,
+      routes.PartnerIncomeInfoPYController.onPageLoad(),
+      routes.ResultController.onPageLoad())
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
     utils.getCall(answersType) {
