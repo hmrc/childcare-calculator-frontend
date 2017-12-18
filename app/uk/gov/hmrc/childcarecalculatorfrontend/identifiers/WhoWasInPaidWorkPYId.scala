@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.views
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case class ResultsViewModel(firstParagraph : String = "",
-                            tc: Option[BigDecimal] = None,
-                            tfc:Option[BigDecimal] = None,
-                            esc:Option[BigDecimal] = None,
-                            freeHours:Option[BigDecimal] = None) {
-
-  def noOfEligibleSchemes = List(tc, tfc, esc, freeHours).flatten.size
+case object WhoWasInPaidWorkPYId extends Identifier {
+  override def toString: String = "whoWasInPaidWorkPY"
 }

@@ -22,13 +22,15 @@
 @main_template(
     title = messages("result.title"),
     appConfig = appConfig,
-    bodyClasses = None) {
+    bodyClasses = Some("result")) {
 
 
     @components.back_link()
 
 
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
+
+    <p>@model.firstParagraph</p>
 
     @if(model.noOfEligibleSchemes > 0) {
         @if(model.noOfEligibleSchemes == 1) {
@@ -43,6 +45,11 @@
             <h2>@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
+    } else {
+        <h2>@messages("result.not.eligible.title")</h2>
+        @resultNotEligible(model)
     }
+
+    <p>@messages("result.read.more.info")</p>
 
 }

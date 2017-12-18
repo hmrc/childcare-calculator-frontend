@@ -40,7 +40,8 @@ class ResultNotEligibleViewSpec extends ViewBehaviours {
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax credits")
-        view.getElementById("notEligibleTC").text() mustBe messages("")
+        view.getElementById("notEligibleTC1").text() mustBe messages("result.tc.not.eligible.para1")
+        view.getElementById("notEligibleTC2").text() mustBe messages("result.tc.not.eligible.para2")
 
       }
 
@@ -50,7 +51,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours {
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax-Free Childcare")
-        view.getElementById("notEligibleTFC").text() mustBe messages("")
+        view.getElementById("notEligibleTFC").text() mustBe messages("result.free.hours.not.eligible")
 
       }
 
@@ -60,7 +61,8 @@ class ResultNotEligibleViewSpec extends ViewBehaviours {
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Childcare vouchers")
-        view.getElementById("notEligibleESC").text() mustBe messages("")
+        view.getElementById("notEligibleESC1").text() mustBe messages("result.esc.not.eligible.para1")
+        view.getElementById("notEligibleESC2").text() mustBe messages("result.esc.not.eligible.para2")
       }
 
 

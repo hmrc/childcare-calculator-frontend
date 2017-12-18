@@ -25,5 +25,30 @@
     @components.scheme_result(
     title = messages("result.free.hours.title"),
     para1 = Some(messages("result.free.hours.not.eligible")),
-    notEligibleID = Some("notEligibleFreeHours"))
+    notEligibleID1 = Some("notEligibleFreeHours"))
+}
+
+@if(!model.tc.isDefined) {
+    @components.scheme_result(
+    title = messages("result.tc.title"),
+    para1 = Some(messages("result.tc.not.eligible.para1")),
+    para2 = Some(messages("result.tc.not.eligible.para2")),
+    notEligibleID1 = Some("notEligibleTC1"),
+    notEligibleID2 = Some("notEligibleTC2"))
+}
+
+@if(!model.tfc.isDefined) {
+    @components.scheme_result(
+    title = messages("result.tfc.title"),
+    para1 = Some(messages("result.free.hours.not.eligible")),
+    notEligibleID1 = Some("notEligibleTFC"))
+}
+
+@if(!model.esc.isDefined) {
+    @components.scheme_result(
+    title = messages("result.esc.title"),
+    para1 = Some(messages("result.esc.not.eligible.para1")),
+    para2 = Some(messages("result.esc.not.eligible.para2")),
+    notEligibleID1 = Some("notEligibleESC1"),
+    notEligibleID2 = Some("notEligibleESC2"))
 }

@@ -66,7 +66,8 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   }
 
   private def approvedChildCareRoute(answers: UserAnswers): Call = {
-    val No = YesNoUnsureEnum.NO
+    val No = YesNoUnsureEnum.NO.toString
+
     if(answers.approvedProvider.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad()

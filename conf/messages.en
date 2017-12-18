@@ -37,6 +37,24 @@ nth.16 = seventeenth
 nth.17 = eighteenth
 nth.18 = nineteenth
 
+results.firstParagraph.youToldTheCalculator = You told the calculator that you {0} {1}
+results.firstParagraph.children = children
+results.firstParagraph.aChild = a child
+results.firstParagraph.dontHave = don''t have
+results.firstParagraph.have = have
+results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
+results.firstParagraph.withYourPartner = with your partner
+results.firstParagraph.onYourOwn = on your own
+results.firstParagraph.youLiveAnd = You live {0}
+results.firstParagraph.inPaidWork = currently in paid work.
+results.firstParagraph.youWorkXHoursAweek = You work {0} hours a week.
+results.firstParagraph.yourPartnerWorksXHoursAweek = Your partner works {0} hours a week.
+results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and your partner works {1} hours a week.
+results.firstParagraph.onlyYouAre = and only you are {0} {1}
+results.firstParagraph.youAre = and you are {0} {1}
+results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
+results.firstParagraph.bothYouAndYourPartnerAre = and both you and your partner are {0} {1}
+
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
 session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
@@ -258,9 +276,9 @@ yourChildcareVouchers.error = You must tell the calculator if your employer offe
 
 partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
 partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
-partnerChildcareVouchers.yes = Yes
-partnerChildcareVouchers.no = No
-partnerChildcareVouchers.notSure = Not Sure
+partnerChildcareVouchers.YES = Yes
+partnerChildcareVouchers.NO = No
+partnerChildcareVouchers.NOTSURE = Not Sure
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
 partnerChildcareVouchers.error = You must tell the calculator if your partner's employer offers childcare vouchers
 
@@ -575,7 +593,7 @@ bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any 
 bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
-partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?paid work in the previous year
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
@@ -639,11 +657,11 @@ partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but 
 partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work in the previous year
 partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
-bothPaidWorkPY.title = You and your partner isn’t working now, but have they had any paid work in the previous year?
-bothPaidWorkPY.heading = You and your partner isn’t working now, but have they had any paid work in the previous year?
-bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work last year?
-bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work in the previous year
-bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+bothPaidWorkPY.title = Were you, your partner, or both of you in paid work in the previous year?
+bothPaidWorkPY.heading = Were you, your partner, or both of you in paid work in the previous year?
+bothPaidWorkPY.checkYourAnswersLabel = Were you, your partner, or both of you in paid work in the previous year?
+bothPaidWorkPY.error = Select yes if you, your partner, or both of you were in paid work in the previous year
+bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April 2016 to 5 April 2017.
 
 partnerAnyOtherIncomeLY.title = Did your partner get any other income in the previous year?
 partnerAnyOtherIncomeLY.heading = Did your partner get any other income in the previous year?
@@ -1101,6 +1119,7 @@ result.heading = What help you could get with your childcare
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
+result.read.more.info = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
 
 result.general.could.get = You could get
 
@@ -1117,12 +1136,30 @@ result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs
 result.tc.para1 = On this scheme, you can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your income during the previous tax year.
 
+result.tc.not.eligible.para1 = You wouldn't get help from tax credits as one of you needs to work at least 16 hours, with you and your partner's combined hours being 24 or more a week.
+result.tc.not.eligible.para2 = You can go back and change your working hours to see how it changes how much you could get.
+
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs
 result.tfc.para1 = On this scheme, you set up an online childcare account to pay your provider directly and get a £2 government top-up for every £8 you pay in. You can get up to £2,000 a year towards 's childcare costs.
+
+result.tfc.not.eligible = Tax-Free Childcare is based around your earnings and working hours. Although you are in paid work, you don’t earn the weekly National Minimum Wage or Living Wage and you are not either an apprentice or in the first 12 months of self-employment. You have also told us that you earn over £100,000.
 
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice
 result.esc.para1 = On this scheme, each parent can take up to £55 a week of their wages as childcare vouchers, which you won’t pay tax or National Insurance on. Employers can only offer them to new claimants until the end of March 2018.
 
+result.esc.not.eligible.para1 = You wouldn’t get help from childcare vouchers as you told us that your employer doesn’t offer them.
+result.esc.not.eligible.para2 = Your employer may be able to help you with childcare costs by using vouchers (through salary sacrifice or salary plus) or other schemes, such as a staff nursery. If they don’t currently offer the scheme talk to them about joining it. The scheme will close to new joiners at the end of March 2018.
+
 result.not.eligible.title = You are not eligible for:
+
+
+whoWasInPaidWorkPY.title = Who was in paid work?
+whoWasInPaidWorkPY.heading = Who was in paid work?
+whoWasInPaidWorkPY.you = You
+whoWasInPaidWorkPY.partner = Partner
+whoWasInPaidWorkPY.both = Both
+whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
+whoWasInPaidWorkPY.error = Select who was in paid work
+
