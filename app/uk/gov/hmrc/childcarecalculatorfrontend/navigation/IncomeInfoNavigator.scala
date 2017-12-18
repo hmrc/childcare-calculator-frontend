@@ -21,7 +21,7 @@ import javax.inject.Singleton
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId, PartnerIncomeInfoPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId, BothIncomeInfoPYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -36,7 +36,7 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
   override protected val routeMap: Map[Identifier, UserAnswers => Call] =
     Map(
       PartnerIncomeInfoId -> nextPageUrlCY,
-      PartnerIncomeInfoPYId -> nextPageUrlPY
+      BothIncomeInfoPYId -> nextPageUrlPY
     )
 
   private def nextPageUrlCY(userAnswers: UserAnswers) = {

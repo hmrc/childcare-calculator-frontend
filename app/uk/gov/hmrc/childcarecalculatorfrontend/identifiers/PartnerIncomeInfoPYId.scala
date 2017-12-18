@@ -16,6 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object PartnerIncomeInfoPYId extends Identifier {
-  override def toString: String = "partnerIncomeInfoPY"
+case object BothIncomeInfoPYId extends Identifier {
+  override def toString: String = "bothIncomeInfoPY"
 }

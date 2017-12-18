@@ -368,7 +368,7 @@ GET         /change-how-much-both-pay-pension                  uk.gov.hmrc.child
 POST        /change-how-much-both-pay-pension                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionController.onSubmit(mode: Mode = CheckMode)
 
 GET         /your-income-info-py                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoPYController.onPageLoad()
-GET         /partner-income-info-py                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoPYController.onPageLoad()
+GET         /both-income-info-py                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothIncomeInfoPYController.onPageLoad()
 
 GET         /both-other-income-py                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeLYController.onPageLoad(mode: Mode = NormalMode)
 POST        /both-other-income-py                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeLYController.onSubmit(mode: Mode = NormalMode)

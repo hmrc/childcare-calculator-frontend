@@ -22,7 +22,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId, PartnerIncomeInfoPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId, BothIncomeInfoPYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -88,11 +88,11 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(You) thenReturn Some(Partner) thenReturn Some(Both)
 
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.BothPaidWorkPYController.onPageLoad(NormalMode)
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.BothPaidWorkPYController.onPageLoad(NormalMode)
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.BothPaidWorkPYController.onPageLoad(NormalMode)
         }
 
@@ -100,7 +100,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn None
 
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
