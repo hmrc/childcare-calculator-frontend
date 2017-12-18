@@ -24,9 +24,16 @@ class ResultViewSpec extends ViewBehaviours {
   
   "Result view" must {
 
-    behave like normalPage(() => result(frontendAppConfig,ResultsViewModel())(fakeRequest, messages), "result")
+    behave like normalPage(() => result(frontendAppConfig,ResultsViewModel(""))(fakeRequest, messages), "result")
 
     "Contain results" when {
+      "We have introductory paragraph" in {
+        val model = ResultsViewModel("This is the first paragraph")
+        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "This is the first paragraph")
+      }
+
       "We have free hours value" in {
         val model = ResultsViewModel(freeHours = Some(15))
         val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))

@@ -26,6 +26,8 @@
 
     <h1 class="heading-xlarge">@messages("result.heading")</h1>
 
+    <p>@model.firstParagraph</p>
+
     <p>@model.freeHours.getOrElse("Not entitled to free hours")</p>
 
     <p>@model.tc.getOrElse("Not entitled for TC scheme")</p>
