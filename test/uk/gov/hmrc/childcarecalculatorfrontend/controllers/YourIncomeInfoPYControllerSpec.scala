@@ -18,18 +18,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
 
 class YourIncomeInfoPYControllerSpec extends ControllerSpecBase {
 
+  val taxYearInfo = new TaxYearInfo
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourIncomeInfoPYController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+    new YourIncomeInfoPYController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
 
   "YourIncomeInfoPY Controller" must {
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe yourIncomeInfoPY(frontendAppConfig)(fakeRequest, messages).toString
+      contentAsString(result) mustBe yourIncomeInfoPY(frontendAppConfig, taxYearInfo)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
