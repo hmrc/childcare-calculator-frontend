@@ -932,13 +932,13 @@ parentEmploymentIncomePY.heading = How much did you get paid in the previous yea
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
 parentEmploymentIncomePY.required = Enter how much you got paid in the previous year
 parentEmploymentIncomePY.invalid = Enter numbers from 1 to 99999.99 for how much you got paid last year
-parentEmploymentIncomePY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+parentEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 parentEmploymentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
 partnerEmploymentIncomePY.title = How much did your partner get paid in the previous year?
 partnerEmploymentIncomePY.heading = How much did your partner get paid in the previous year?
 partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid in the previous year?
-partnerEmploymentIncomePY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+partnerEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 partnerEmploymentIncomePY.required = Enter how much your partner got paid in the previous year
 partnerEmploymentIncomePY.invalid = Enter numbers from 1 to 99999.99 for how much your partner got paid last year
@@ -948,7 +948,7 @@ employmentIncomePY.heading = How much did you and your partner get paid in the p
 employmentIncomePY.parentEmploymentIncomePY = Your pay
 employmentIncomePY.partnerEmploymentIncomePY = Partner’s pay
 employmentIncomePY.checkYourAnswersLabel = How much did you and your partner get paid last year?
-employmentIncomePY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+employmentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 employmentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
 aboutYourChild.title = About your child
