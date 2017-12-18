@@ -72,7 +72,7 @@ class MaximumHoursNavigator @Inject() (
     PartnerSelfEmployedId -> partnerSelfEmployedRoute,
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
     PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
-    EitherOfYouMaximumEarningsId -> EitherMaximumEarningsRoute,
+    EitherOfYouMaximumEarningsId -> eitherMaximumEarningsRoute,
     TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes
   )
 
@@ -338,7 +338,7 @@ class MaximumHoursNavigator @Inject() (
     maximumEarningsRedirection(answers, partnerMaxEarnings)
   }
 
-  private def EitherMaximumEarningsRoute(answers: UserAnswers): Call = {
+  private def eitherMaximumEarningsRoute(answers: UserAnswers): Call = {
     val eitherMaxEarnings = answers.eitherOfYouMaximumEarnings.getOrElse(false)
 
     maximumEarningsRedirection(answers, eitherMaxEarnings)
