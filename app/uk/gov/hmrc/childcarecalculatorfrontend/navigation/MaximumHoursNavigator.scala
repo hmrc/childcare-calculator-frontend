@@ -82,7 +82,7 @@ class MaximumHoursNavigator @Inject() (
 
   private def doYouLiveRoute(answers: UserAnswers): Call = {
     if (answers.doYouLiveWithPartner.contains(true)) {
-      routes.PaidEmploymentController.onPageLoad(NormalMode)
+      routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
     } else {
       routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
     }
