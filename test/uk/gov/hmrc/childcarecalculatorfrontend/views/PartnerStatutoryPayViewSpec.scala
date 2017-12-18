@@ -21,19 +21,60 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPay
 
 class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val messageKeyPrefix = "partnerStatutoryPay"
 
-  def createView = () => partnerStatutoryPay(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => partnerStatutoryPay(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => partnerStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => partnerStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "PartnerStatutoryPay view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    "have the correct banner title" in {
+      val doc = asDocument(createView())
+      val nav = doc.getElementById("proposition-menu")
+      val span = nav.children.first
+      span.text mustBe messagesApi("site.service_name")
+    }
+
+    "display the correct browser title" in {
+      val doc = asDocument(createView())
+      assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title", taxYearInfo.previousTaxYearStart) + " - " + messagesApi("site.service_name")+" - GOV.UK")
+    }
+
+    "display the correct page title" in {
+      val doc = asDocument(createView())
+      assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", taxYearInfo.previousTaxYearStart)
+    }
+
+    "display the correct guidance" in {
+      val doc = asDocument(createView())
+      val expectedGuidanceKeys = Seq(
+        "statutoryPay.guidance",
+        "partnerStatutoryPay.guidance_extra",
+        "statutoryPay.li.maternity",
+        "statutoryPay.li.paternity",
+        "statutoryPay.li.adoption",
+        "statutoryPay.li.shared_parental")
+      
+      for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(key))
+    }
+
+    "display a beta banner" in {
+      val doc = asDocument(createView())
+      assertRenderedByCssSelector(doc, ".beta-banner")
+    }
+
+    "not display HMRC branding" in {
+      val doc = asDocument(createView())
+      assertNotRenderedByCssSelector(doc, ".organisation-logo")
+    }
 
     behave like pageWithBackLink(createView)
 
