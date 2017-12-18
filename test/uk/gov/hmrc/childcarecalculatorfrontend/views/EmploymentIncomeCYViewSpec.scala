@@ -19,7 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, EmploymentIncomeCY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 
@@ -27,15 +28,17 @@ class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncome
 
   val messageKeyPrefix = "employmentIncomeCY"
 
+  val taxYearInfo = new TaxYearInfo
+
   override val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
-  def createView = () => employmentIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => employmentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[EmploymentIncomeCY]) => employmentIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[EmploymentIncomeCY]) => employmentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "EmploymentIncomeCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "hint")
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 
@@ -44,5 +47,10 @@ class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncome
       messageKeyPrefix,
       routes.EmploymentIncomeCYController.onSubmit(NormalMode).url,
       "parentEmploymentIncomeCY", "partnerEmploymentIncomeCY")
+  }
+
+  "contain tax year info" in {
+    val doc = asDocument(createView())
+    assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
   }
 }

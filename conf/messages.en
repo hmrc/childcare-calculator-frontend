@@ -514,7 +514,6 @@ partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 employmentIncome.invalid=You must enter a number between 0 and 999999.99
 partnerEmploymentIncome.blank= You must tell the calculator what your partner will get paid this year
 parentEmploymentIncome.blank= You must tell the calculator what you will get paid this year
-employmentIncomeCY.tax_year= This year is 6 April 2017 to 5 April 2018.
 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year?
@@ -799,7 +798,7 @@ employmentIncomeCY.heading = How much will you and your partner get paid this ye
 employmentIncomeCY.parentEmploymentIncome = Your pay
 employmentIncomeCY.partnerEmploymentIncome = Partner’s pay
 employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
-employmentIncomeCY.tax_year = This year is 6 April 2017 to 5 April 2018.
+employmentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 employmentIncomeCY.hint = This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
 
 youAnyTheseBenefitsPY.title = Did you get any of these benefits in the previous year?

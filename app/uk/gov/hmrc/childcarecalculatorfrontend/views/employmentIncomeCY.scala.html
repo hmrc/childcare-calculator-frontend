@@ -17,11 +17,11 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, EmploymentIncomeCY}
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@(appConfig: FrontendAppConfig, form: Form[EmploymentIncomeCY], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[EmploymentIncomeCY], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("employmentIncomeCY.title"),
@@ -36,7 +36,7 @@
 
     @helpers.form(action = EmploymentIncomeCYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("employmentIncomeCY.tax_year")</p>
+        <p>@messages("employmentIncomeCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
         <p>@messages("employmentIncomeCY.hint")</p>
 
         @components.input_text(InputViewModel[EmploymentIncomeCY]("parentEmploymentIncomeCY", form), label = messages("employmentIncomeCY.parentEmploymentIncome"))
