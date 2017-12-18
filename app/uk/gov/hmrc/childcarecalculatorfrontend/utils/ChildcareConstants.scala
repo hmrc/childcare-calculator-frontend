@@ -191,5 +191,7 @@ object ChildcareConstants {
   val yourStatutoryPayTypeErrorKey = "yourStatutoryPayType.error"
   val partnerStatutoryPayTypeErrorKey = "partnerStatutoryPayType.error"
 
+  val whoWasInPaidWorkErrorKey = "whoWasInPaidWorkPY.error"
+
 
 }
