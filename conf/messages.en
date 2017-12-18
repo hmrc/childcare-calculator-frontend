@@ -575,7 +575,7 @@ bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any 
 bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
-partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?paid work in the previous year
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
@@ -639,11 +639,11 @@ partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but 
 partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work in the previous year
 partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
-bothPaidWorkPY.title = You and your partner isn’t working now, but have they had any paid work in the previous year?
-bothPaidWorkPY.heading = You and your partner isn’t working now, but have they had any paid work in the previous year?
-bothPaidWorkPY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work last year?
-bothPaidWorkPY.error = You must tell the calculator if you and your partner had any paid work in the previous year
-bothPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+bothPaidWorkPY.title = Were you, your partner, or both of you in paid work in the previous year?
+bothPaidWorkPY.heading = Were you, your partner, or both of you in paid work in the previous year?
+bothPaidWorkPY.checkYourAnswersLabel = Were you, your partner, or both of you in paid work in the previous year?
+bothPaidWorkPY.error = Select yes if you, your partner, or both of you were in paid work in the previous year
+bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April 2016 to 5 April 2017.
 
 partnerAnyOtherIncomeLY.title = Did your partner get any other income in the previous year?
 partnerAnyOtherIncomeLY.heading = Did your partner get any other income in the previous year?
@@ -1100,3 +1100,11 @@ result.title = What help you could get with your childcare
 result.heading = What help you could get with your childcare
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 
+
+whoWasInPaidWorkPY.title = Who was in paid work?
+whoWasInPaidWorkPY.heading = Who was in paid work?
+whoWasInPaidWorkPY.you = You
+whoWasInPaidWorkPY.partner = Partner
+whoWasInPaidWorkPY.both = Both
+whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
+whoWasInPaidWorkPY.error = Select who was in paid work

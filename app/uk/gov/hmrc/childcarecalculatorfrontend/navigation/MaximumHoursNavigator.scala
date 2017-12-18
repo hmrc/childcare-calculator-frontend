@@ -165,7 +165,7 @@ class MaximumHoursNavigator @Inject() (
     } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(Partner)) {
       routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     } else {
-      routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
