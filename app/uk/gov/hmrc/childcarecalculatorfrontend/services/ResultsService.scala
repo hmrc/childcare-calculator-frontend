@@ -18,24 +18,25 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
+import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFreeHours}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, YouPartnerBothEnum, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, UserAnswers}
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.i18n.Messages
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ResultsService @Inject()(eligibilityService: EligibilityService,
                                freeHours: FreeHours,
-                               maxFreeHours: MaxFreeHours) {
+                               maxFreeHours: MaxFreeHours,
+                               firstParagraphBuilder: FirstParagraphBuilder) {
   def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
-    val resultViewModel = ResultsViewModel(buildFirstParagraph(answers))
+    val resultViewModel = ResultsViewModel(firstParagraphBuilder.buildFirstParagraph(answers))
     val result = eligibilityService.eligibility(answers)
 
     result.map(results => {
@@ -43,102 +44,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
     })
   }
 
-  private def buildFirstParagraph(answers: UserAnswers)(implicit messages: Messages) = {
-    val doYouHaveChildren = buildFirstSection(answers, _: String)
-    val yearlyChildcareCosts = buildSecondSection(answers, _: String)
-    val whoAreYouLivingWith = buildThirdSection(answers, _: String)
-    val areYouInPaidWork = buildFourthSection(answers, _: String)
-    val firstParagraph = (doYouHaveChildren andThen yearlyChildcareCosts andThen whoAreYouLivingWith andThen areYouInPaidWork) ("")
-    firstParagraph
-  }
 
-  private def buildFirstSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val numberOfChildren = answers.noOfChildren.getOrElse(0)
-    val childOrChildren = if (numberOfChildren == 1) Messages("results.firstParagraph.aChild") else Messages("results.firstParagraph.children")
-    val numberOfChildrenMessage = if (numberOfChildren == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
-    s"$paragraph${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
-  }
-
-  private def buildSecondSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val childcareCosts = CalculateChildcareCosts(answers)
-    val section2 = if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}$childcareCosts."
-    s"$paragraph$section2"
-  }
-
-  private def buildThirdSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val livesOnOwnOrWithPartner: Option[String] = answers.doYouLiveWithPartner.map(livesWithPartner => if (livesWithPartner) Messages("results.firstParagraph.withYourPartner") else Messages("results.firstParagraph.onYourOwn"))
-    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" ${Messages("results.firstParagraph.youLiveAnd", livesOnOwnOrWithPartner)}")
-    s"$paragraph$section3"
-  }
-
-  private def buildFourthSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val currentlyInPaidWork = Messages("results.firstParagraph.inPaidWork")
-
-    val section4 = answers.doYouLiveWithPartner.fold("")(livesWithPartner => if (livesWithPartner) {
-      checkWhoIsInPaidEmployment(answers, currentlyInPaidWork)
-    }
-    else {
-      checkIfInPaidWork(answers, currentlyInPaidWork)
-    })
-
-    s"$paragraph$section4"
-  }
-
-  private def checkIfInPaidWork(answers: UserAnswers, currentlyInPaidWork: String)(implicit messages: Messages) = {
-    if (answers.areYouInPaidWork.getOrElse(false)) {
-      val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
-      s" ${Messages("results.firstParagraph.youAre", currentlyInPaidWork, hoursAWeek)}"
-    }
-    else {
-      "."
-    }
-  }
-
-  private def checkWhoIsInPaidEmployment(answers: UserAnswers, currentlyInPaidWork: String)(implicit messages: Messages) = {
-    val You = YouPartnerBothEnum.YOU.toString
-    val Partner = YouPartnerBothEnum.PARTNER.toString
-    val Both = YouPartnerBothEnum.BOTH.toString
-
-    answers.whoIsInPaidEmployment.fold(".")(whoInPaidEmployment => {
-      whoInPaidEmployment match {
-        case You => {
-          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
-          s" ${Messages("results.firstParagraph.onlyYouAre", currentlyInPaidWork, hoursAWeek)}"
-        }
-        case Partner => {
-          val hoursAweek = answers.partnerWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.yourPartnerWorksXHoursAweek", hours)}")
-          s" ${Messages("results.firstParagraph.onlyYourPartnerIs", currentlyInPaidWork, hoursAweek)}"
-        }
-        case Both => {
-          val yourHours = answers.parentWorkHours.fold(BigDecimal(0))(c => c)
-          val partnerHours = answers.partnerWorkHours.fold(BigDecimal(0))(c => c)
-          val hoursAweek = s" ${Messages("results.firstParagraph.youAndYourPartnerWorkXhoursAweek", yourHours, partnerHours)}"
-          s" ${Messages("results.firstParagraph.bothYouAndYourPartnerAre", currentlyInPaidWork, hoursAweek)}"
-        }
-      }
-    })
-  }
-
-  private def CalculateChildcareCosts(answers: UserAnswers) = {
-    answers.expectedChildcareCosts.fold(BigDecimal(0))(costs =>
-      costs.toSeq.foldLeft(BigDecimal(0))((costs, elements) => AddCostsToYearlyAggregation(answers, costs, elements)))
-  }
-
-  private def AddCostsToYearlyAggregation(answers: UserAnswers, costs: BigDecimal, elements: (Int,BigDecimal)) = {
-    answers.childcarePayFrequency.fold(costs)(frequencies => {
-      val frequency = frequencies.get(elements._1)
-      frequency.getOrElse(costs) match {
-        case ChildcarePayFrequency.WEEKLY => {
-          costs + (elements._2 * 52)
-        }
-        case ChildcarePayFrequency.MONTHLY => {
-          costs + (elements._2 * 12)
-        }
-        case _ => costs
-      }
-    })
-
-  }
 
   private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {

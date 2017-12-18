@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, UserAnswers}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -45,7 +45,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.tc mustBe Some(500)
@@ -60,7 +60,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
 
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
@@ -77,7 +77,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.esc mustBe Some(600)
@@ -92,7 +92,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.tc mustBe None
@@ -106,7 +106,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.tfc mustBe None
@@ -122,7 +122,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.esc mustBe None
@@ -143,7 +143,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.freeHours mustBe Some(15)
@@ -163,7 +163,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.freeHours mustBe Some(16)
@@ -183,7 +183,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.freeHours mustBe Some(10)
@@ -203,7 +203,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.freeHours mustBe Some(12.5)
@@ -221,7 +221,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(maxFreeHours.eligibility(any())) thenReturn Eligible
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.freeHours mustBe Some(30)
@@ -239,310 +239,15 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(freeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
+        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
 
         values.freeHours mustBe None
       }
     }
-
-    "Return View Model with first paragraph info" when {
-      "Loading the Do You Have Children section" when {
-        "You have children" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("you have children")
-        }
-
-        "You don't have children" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(0))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("you don't have children")
-        }
-
-        "The number of children field is empty" in {
-          val answers = new UserAnswers(new CacheMap("id", Map()))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("you don't have children")
-        }
-
-        "You have one child" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("you have a child")
-        }
-      }
-
-      "Loading the Childcare Costs section" when {
-
-        "We have childcare costs at monthly aggregation" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString)),ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(25)))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("yearly childcare costs of around £300.")
-        }
-
-        "We have more than one childcare cost at monthly aggregation" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
-            "2"->JsString(ChildcarePayFrequency.MONTHLY.toString),
-            "3"->JsString(ChildcarePayFrequency.MONTHLY.toString)),
-            ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(20),"2" -> JsNumber(10),"3"-> JsNumber(5)))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("yearly childcare costs of around £420.")
-        }
-
-        "We have one childcare cost at weekly aggregation" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
-            ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(4)))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("yearly childcare costs of around £208.")
-        }
-
-        "We have one childcare cost at weekly aggregation and one childcare cost at monthly aggregation" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
-            "2"->JsString(ChildcarePayFrequency.MONTHLY.toString),
-            "3"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
-            ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(20),"2" -> JsNumber(10),"3"-> JsNumber(10)))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("yearly childcare costs of around £880.")
-        }
-
-        "We have children but no childcare costs" in {
-          val answers = new UserAnswers(new CacheMap("id", Map()))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("you don't have children.")
-        }
-      }
-
-      "Loading the Your Living Status section" when {
-        "You live on your own" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("on your own")
-        }
-
-        "You live with your partner" in {
-          val answers = new UserAnswers(new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true))))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("with your partner")
-        }
-
-        "We have no data to establish whether if they live on their own or with partner" in {
-          val answers = new UserAnswers(new CacheMap("id", Map()))
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph mustNot include("with your partner and")
-          values.firstParagraph mustNot include("on your own and")
-        }
-      }
-
-      "Loading the Who Is In Paid Work section" when {
-        "Only you are in paid work" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("and only you are")
-        }
-
-        "Partner in paid work" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("only your partner is")
-        }
-
-        "Both are in paid work" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("both you and your partner are")
-        }
-
-        "You live on your own and you are in paid work" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.areYouInPaidWork) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("You live on your own and you are currently in paid work")
-        }
-
-        "You live on your own and don't work" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.areYouInPaidWork) thenReturn Some(false)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("You live on your own.")
-        }
-
-        "You are in paid work but there is no data to know if you live with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph mustNot include("You live on your own and you are currently in paid work")
-        }
-
-        "You live with your partner and no one works" in {
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("You live with your partner.")
-        }
-
-        "No data about who is in paid work" in {
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph mustNot include("your partner is")
-          values.firstParagraph mustNot include("you are")
-          values.firstParagraph mustNot include("you and your partner are")
-        }
-
-        "You work x hours a week" in {
-          when(answers.areYouInPaidWork) thenReturn Some(true)
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-          when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("You work 40 hours a week")
-        }
-
-        "You live on your own and you work x hours a week" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.areYouInPaidWork) thenReturn Some(true)
-          when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("You live on your own and you are currently in paid work. You work 40 hours a week.")
-        }
-
-
-        "Your partner works x hours a week" in {
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
-          when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("Your partner works 40 hours a week")
-        }
-
-        "Your and your partner works x hours a week" in {
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-          when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
-          when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
-          val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-          values.firstParagraph must include("You work 40 hours and your partner works 40 hours a week")
-        }
-      }
-    }
   }
 
+  val firstParagraphBuilder = mock[FirstParagraphBuilder]
   val answers = spy(userAnswers())
   val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
   val schemeResults = SchemeResults(List(tfcScheme))
