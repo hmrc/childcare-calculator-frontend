@@ -620,7 +620,7 @@ bothPaidPensionCY.title = Are you, your partner, or both of you paying into a wo
 bothPaidPensionCY.heading = Are you, your partner, or both of you paying into a work pension this year?
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.error = Select yes if you, your partner, or both of you are paying into a work pension this year
-bothPaidPensionCY.tax.year = This year is 6 April 2017 to 5 April 2018.
+bothPaidPensionCY.tax.year = This year is 6 April {0} to 5 April {1}.
 
 whosHadBenefits.title = Who had benefits?
 whosHadBenefits.heading = Who had benefits?
