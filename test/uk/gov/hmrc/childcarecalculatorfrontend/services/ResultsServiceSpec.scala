@@ -409,6 +409,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         "Partner in paid work" in {
           val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
@@ -420,6 +421,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         "Both are in paid work" in {
           val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
@@ -432,6 +434,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         "You live on your own and you are in paid work" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
@@ -444,7 +447,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         "You live on your own and don't work" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-
+          when(answers.areYouInPaidWork) thenReturn Some(false)
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
           val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours)
@@ -486,6 +489,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "You work x hours a week" in {
+          when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
           when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
@@ -500,7 +504,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         "You live on your own and you work x hours a week" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
           when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
@@ -512,6 +516,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
 
         "Your partner works x hours a week" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
           when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
@@ -523,6 +528,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "Your and your partner works x hours a week" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
           when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
           when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
