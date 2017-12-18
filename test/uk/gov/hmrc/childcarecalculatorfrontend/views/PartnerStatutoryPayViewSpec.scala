@@ -62,7 +62,7 @@ class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
         "statutoryPay.li.paternity",
         "statutoryPay.li.adoption",
         "statutoryPay.li.shared_parental")
-      
+
       for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(key))
     }
 

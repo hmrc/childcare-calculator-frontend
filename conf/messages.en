@@ -470,7 +470,7 @@ maxFreeHoursInfo.give.more.info = You’re also eligible for Tax-Free Childcare,
 
 yourOtherIncomeThisYear.title = Will you get any other income this year?
 yourOtherIncomeThisYear.heading = Will you get any other income this year?
-yourOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+yourOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 yourOtherIncomeThisYear.hint.text = This could be from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
 yourOtherIncomeThisYear.error = Select yes if you will get any other income this year
@@ -607,7 +607,7 @@ bothOtherIncomeThisYear.error = Select yes if you, your partner, or both of you 
 
 YouPaidPensionCY.title = Are you paying into a work pension this year?
 YouPaidPensionCY.heading = Are you paying into a work pension this year?
-YouPaidPensionCY.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+YouPaidPensionCY.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 YouPaidPensionCY.checkYourAnswersLabel = YouPaidPensionCY
 YouPaidPensionCY.error = Select yes if you are paying into a work pension this year
 
@@ -1092,7 +1092,7 @@ yourStatutoryStartDate.heading = When did your {0} pay start?
 yourStatutoryStartDate.error.required = Enter the date your {0} pay started
 yourStatutoryStartDate.error.invalid = You must enter correct date
 yourStatutoryStartDate.error.past = Date your {0} pay started must be in the past
-yourStatutoryStartDate.hint = For example, 31 2 2017
+yourStatutoryStartDate.hint = For example, 31 1 2017
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
 
 partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
@@ -1100,7 +1100,7 @@ partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
 partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
 partnerStatutoryStartDate.error.invalid = You must enter correct date
 partnerStatutoryStartDate.error.past = Date your partner’s {0} pay started must be in the past
-partnerStatutoryStartDate.hint = For example, 31 2 2017
+partnerStatutoryStartDate.hint = For example, 31 1 2017
 partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
 
 yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
