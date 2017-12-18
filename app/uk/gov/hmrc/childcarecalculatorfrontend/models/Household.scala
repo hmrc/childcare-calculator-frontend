@@ -93,35 +93,33 @@ object Disability {
 
   def populateFromRawData(currentChildIndex: Int, disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Boolean] = None):
   Option[Disability] = {
-    println(s"*******************populate disabilities>>>>>>>>>>>>$disabilities")
-   val d = disabilities.map(childrenWithDisabilities => checkIfChildHasDisabilities(currentChildIndex, blindChildren, childrenWithDisabilities)) match {
-     case Some(Disability(false, false, false)) => None
-     case childDisabilities => childDisabilities
-   }
-    println(s"*******************1st>>>>$d")
-    d
+    disabilities match {
+      case None => blindChildren match {
+        case Some(true) => Some(Disability(false, false, true))
+        case _ => None
+      }
+      case Some(_) =>
+        disabilities.map(childrenWithDisabilities =>
+          checkIfChildHasDisabilities(currentChildIndex, blindChildren, childrenWithDisabilities)) match {
+          case Some(Disability(false, false, false)) => None
+          case childDisabilities => childDisabilities
+        }
+    }
   }
 
   private def checkIfChildHasDisabilities(currentChildIndex: Int, blindChildren: Option[Boolean], childrenWithDisabilities:
     Map[Int, Set[DisabilityBenefits.Value]]) = {
-    println(s"*******************2nd>>>>>>>>>>>>")
-    val d = childrenWithDisabilities.get(currentChildIndex) match {
+    childrenWithDisabilities.get(currentChildIndex) match {
       case Some(disabilities) => checkDisabilities(disabilities, blindChildren, currentChildIndex)
       case _ => Disability()
     }
-    println(s"*******************2nd>>>>$d")
-    d
+
   }
 
   private def checkDisabilities(disabilities: Set[DisabilityBenefits.Value], blindChildren: Option[Boolean], currentChildIndex: Int) = {
-    println(s"*******************3rd>>>>>>>>>>>>")
-    val d=disabilities.foldLeft(Disability())((disabilities, currentDisability) => {
+    disabilities.foldLeft(Disability())((disabilities, currentDisability) => {
       checkDisabilityType(currentDisability, disabilities, blindChildren)
-//      checkIfBlind(blindChildren,childDisabilities,currentChildIndex)
     })
-    println(s"*******************3rd>>>>$d")
-    d
-
   }
 
   private def checkDisabilityType(disabilityType: DisabilityBenefits.Value, childDisabilities: Disability, blindChildren: Option[Boolean]): Disability = {
@@ -129,21 +127,14 @@ object Disability {
       case DISABILITY_BENEFITS => childDisabilities.copy(disabled = true)
       case HIGHER_DISABILITY_BENEFITS => childDisabilities.copy(severelyDisabled = true)
     }
-    println(s"**************disabilities>>>>>>>>>>$disabilities")
-    println(s"**************blindChildren>>>>>>>>>>$blindChildren")
+
     blindChildren match {
       case Some(true) => disabilities.copy(blind = true)
       case Some(false) => disabilities
       case None => disabilities
     }
-//    childDisabilities
-  }
 
-//  private def checkIfBlind(blindChildren: Option[Set[Int]],childDisabilities: Disability, currentChildIndex : Int) : Disability = {
-//    blindChildren.fold(childDisabilities)(childrenWithBlindDisability => {
-//      childrenWithBlindDisability.find(childIndex=> childIndex == currentChildIndex).fold(childDisabilities)(_ => childDisabilities.copy(blind = true))
-//    })
-//  }
+  }
 
 }
 

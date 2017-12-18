@@ -65,14 +65,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   private def createChildren(answers: UserAnswers): List[Child] = {
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
-    val childBlind = if(totalChildren == 1) {
-      answers.childRegisteredBlind
-    } else {
-      answers.registeredBlind
-    }
 
-    println(s"***********totalChildren>>>>>>>>>>>$totalChildren")
-    println(s"***********childBlind>>>>>>>>>>>$childBlind")
     for (i <- 0 until totalChildren) {
       val (childName, childDob): (String, LocalDate) =
         if (answers.aboutYourChild(i).isDefined) {
@@ -96,11 +89,14 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       } else {
         None
       }
+
+      val childIsBlindValue = childIsBlind(answers, totalChildren, i)
+
       val child = Child(
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childBlind),
+        disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childIsBlindValue),
         childcareCost = childcareCost,
         education = childEducation
       )
@@ -109,6 +105,14 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
 
     childList.sortWith(_.id < _.id)
+  }
+
+  private def childIsBlind(answers: UserAnswers, count: Int, key: Int): Option[Boolean] = count match {
+    case 1 => answers.registeredBlind
+    case _ => {
+      val result = answers.whichChildrenBlind.get.exists(Set(key))
+      Some(result)
+    }
   }
 
   private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
@@ -160,24 +164,16 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
-  private def checkEitherVouchers(eitherVouchers: Option[String]) = {
-    if(eitherVouchers.contains(YesNoUnsureEnum.NOTSURE.toString) || eitherVouchers.contains(YesNoUnsureEnum.YES.toString)) {
-      true
-    } else {
-      false
-    }
-  }
-
-  private def getVoucherValue(eitherGetsVouchers: Option[String], whoGetsVouchers: Option[String], who: String, default: Option[String]): Option[YesNoUnsureEnum] = {
+  private def getVoucherValue(either: Option[String], whoGetsVouchers: Option[String], who: String, default: Option[String]): Option[YesNoUnsureEnum] = {
 
     val vouchers: Option[String] =
 
-      if(eitherGetsVouchers.contains(YesNoUnsureEnum.YES.toString)) {
+      if(either.contains(YesNoUnsureEnum.YES.toString)) {
 
         if(!whoGetsVouchers.contains(who)) Some("yes") else Some("no")
 
-      } else if(eitherGetsVouchers.contains(YesNoUnsureEnum.NOTSURE.toString) || eitherGetsVouchers.contains(YesNoUnsureEnum.NO.toString)) {
-        eitherGetsVouchers
+      } else if(either.contains(YesNoUnsureEnum.NOTSURE.toString) || either.contains(YesNoUnsureEnum.NO.toString)) {
+        either
       }
       else
       {

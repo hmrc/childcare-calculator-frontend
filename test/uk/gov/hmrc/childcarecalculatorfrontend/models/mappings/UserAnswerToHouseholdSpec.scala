@@ -75,7 +75,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.whichChildrenDisability) thenReturn Some(Set(0))
         when(answers.whichDisabilityBenefits) thenReturn Some(Map(0 -> Set(DisabilityBenefits.HIGHER_DISABILITY_BENEFITS, DisabilityBenefits.DISABILITY_BENEFITS)))
-        when(answers.whichChildrenBlind) thenReturn Some(Set(0))
+        when(answers.registeredBlind) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household
       }
