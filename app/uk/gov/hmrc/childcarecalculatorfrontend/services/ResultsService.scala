@@ -18,27 +18,33 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, Scheme}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
+import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFreeHours}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, UserAnswers}
+import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ResultsService @Inject()(eligibilityService: EligibilityService,
                                freeHours: FreeHours,
-                               maxFreeHours: MaxFreeHours) {
-  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[ResultsViewModel] = {
+                               maxFreeHours: MaxFreeHours,
+                               firstParagraphBuilder: FirstParagraphBuilder) {
+  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
+    val resultViewModel = ResultsViewModel(firstParagraphBuilder.buildFirstParagraph(answers))
     val result = eligibilityService.eligibility(answers)
 
     result.map(results => {
-      results.schemes.foldLeft(ResultsViewModel())((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
+      results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
     })
   }
+
+
 
   private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
