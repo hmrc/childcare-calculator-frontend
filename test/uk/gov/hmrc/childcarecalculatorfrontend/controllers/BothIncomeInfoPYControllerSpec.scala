@@ -22,15 +22,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, WhoIsInPaidEmploymentId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfoPY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothIncomeInfoPY
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class PartnerIncomeInfoPYControllerSpec extends ControllerSpecBase {
+class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerIncomeInfoPYController(frontendAppConfig,
+    new BothIncomeInfoPYController(frontendAppConfig,
       messagesApi,
       dataRetrievalAction,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -48,7 +48,7 @@ class PartnerIncomeInfoPYControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        partnerIncomeInfoPY(frontendAppConfig,
+        bothIncomeInfoPY(frontendAppConfig,
           routes.PartnerPaidWorkPYController.onPageLoad(NormalMode))(fakeRequest, messages).toString
 
     }

@@ -18,17 +18,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfoPY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothIncomeInfoPY
 
-class PartnerIncomeInfoPYViewSpec extends ViewBehaviours {
+class BothIncomeInfoPYViewSpec extends ViewBehaviours {
 
-  def createView = () => partnerIncomeInfoPY(frontendAppConfig, Call("GET", "test"))(fakeRequest, messages)
-
-
-  def createViewWithNextPageLink = (nextPage: Call) => partnerIncomeInfoPY(frontendAppConfig, nextPage)(fakeRequest, messages)
+  def createView = () => bothIncomeInfoPY(frontendAppConfig, Call("GET", "test"))(fakeRequest, messages)
 
 
-  val messageKeyPrefix = "partnerIncomeInfoPY"
+  def createViewWithNextPageLink = (nextPage: Call) => bothIncomeInfoPY(frontendAppConfig, nextPage)(fakeRequest, messages)
+
+
+  val messageKeyPrefix = "bothIncomeInfoPY"
 
   "Partner Income Info PY view" must {
     behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance")

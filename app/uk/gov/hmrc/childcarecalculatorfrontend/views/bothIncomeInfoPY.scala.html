@@ -21,19 +21,19 @@
 nextPage: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-        title = messages("partnerIncomeInfoPY.title"),
+        title = messages("bothIncomeInfoPY.title"),
         appConfig = appConfig,
         bodyClasses = None) {
 
         @components.back_link()
 
-        @components.heading("partnerIncomeInfoPY.heading", "heading-xlarge")
+        @components.heading("bothIncomeInfoPY.heading", "heading-xlarge")
 
         <div class="panel-indent panel-border-wide">
-            <p>@messages("partnerIncomeInfoPY.tax_year")</p>
+            <p>@messages("bothIncomeInfoPY.tax_year")</p>
         </div>
 
-        <p>@messages("partnerIncomeInfoPY.guidance")</p>
+        <p>@messages("bothIncomeInfoPY.guidance")</p>
 
 
 @components.button_link(

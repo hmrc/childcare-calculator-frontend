@@ -77,6 +77,38 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           }
         }
 
+        "redirects to the correct page when user with partner selects no to will you get any other income this year" when {
+          "is not eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
+            when(taxCredits.eligibility(any())) thenReturn NotEligible
+
+            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+
+          "is eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
+            when(taxCredits.eligibility(any())) thenReturn Eligible
+
+            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+              routes.BothIncomeInfoPYController.onPageLoad()
+          }
+
+          "is not determined" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
+            when(taxCredits.eligibility(any())) thenReturn NotDetermined
+
+            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+        }
+
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeThisYear) thenReturn None
@@ -113,7 +145,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.PartnerIncomeInfoPYController.onPageLoad()
+              routes.BothIncomeInfoPYController.onPageLoad()
           }
 
           "is not determined" in {
@@ -161,7 +193,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn Eligible
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.PartnerIncomeInfoPYController.onPageLoad()
+                routes.BothIncomeInfoPYController.onPageLoad()
             }
 
             "it is not determined if they are eligible for tax credits" in {
@@ -228,6 +260,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
+
           "is eligible for tax credits" in {
             val answers = spy(userAnswers())
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
@@ -236,8 +269,41 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.YourIncomeInfoPYController.onPageLoad()
           }
+
           "tax credits eligibility is not determined" in {
             val answers = spy(userAnswers())
+            when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+            when(taxCredits.eligibility(any())) thenReturn NotDetermined
+
+            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+        }
+
+        "redirect to correct page when user has partner" when {
+          "is not eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+            when(taxCredits.eligibility(any())) thenReturn NotEligible
+
+            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+
+          "is eligible for tax credits" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+            when(taxCredits.eligibility(any())) thenReturn Eligible
+
+            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.BothIncomeInfoPYController.onPageLoad()
+          }
+
+          "tax credits eligibility is not determined" in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
@@ -423,7 +489,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.PartnerIncomeInfoPYController.onPageLoad()
+              routes.BothIncomeInfoPYController.onPageLoad()
           }
 
           "both not eligible for tax credits" in {
@@ -457,7 +523,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.PartnerIncomeInfoPYController.onPageLoad()
+              routes.BothIncomeInfoPYController.onPageLoad()
           }
 
           "partner is not eligible for tax credits" in {

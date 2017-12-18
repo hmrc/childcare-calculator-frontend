@@ -593,7 +593,7 @@ bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any 
 bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partner had any of these benefits this year
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
-partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?paid work in the previous year
+partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
@@ -733,16 +733,16 @@ yourIncomeInfoPY.li.benefits_income = income from benefits
 yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 
-partnerIncomeInfoPY.title = You and your partner’s income for the previoys year
-partnerIncomeInfoPY.heading = You and your partner’s income for the previous year
-partnerIncomeInfoPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
-partnerIncomeInfoPY.guidance = The calculator will now ask similar questions about you and your partner’s income for the previous year.
-partnerIncomeInfoPY.li.income_paid_work = income from paid work
-partnerIncomeInfoPY.li.pensions = pension contributions
-partnerIncomeInfoPY.li.other_income = other income
-partnerIncomeInfoPY.li.benefits_income = income from benefits
-partnerIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
-partnerIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
+bothIncomeInfoPY.title = You and your partner’s income for the previoys year
+bothIncomeInfoPY.heading = You and your partner’s income for the previous year
+bothIncomeInfoPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+bothIncomeInfoPY.guidance = The calculator will now ask similar questions about you and your partner’s income for the previous year.
+bothIncomeInfoPY.li.income_paid_work = income from paid work
+bothIncomeInfoPY.li.pensions = pension contributions
+bothIncomeInfoPY.li.other_income = other income
+bothIncomeInfoPY.li.benefits_income = income from benefits
+bothIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
+bothIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
 bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income in the previous year?
 bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income in the previous year?
