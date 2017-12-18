@@ -48,7 +48,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
         }
 
-        "return ParentPaidWorkCY page when partner in paid work and lives with partner" in {
+        "return ParentPaidWorkCY page when partner in paid work and lives with partneBothOtherIncomeThisYearIdr" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -83,42 +83,26 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
 
     "in Normal mode" must {
       "NextPageUrlPY" must {
-        "return PartnerPaidWorkPY page when parent in paid work and lives with partner" in {
+        "return BothPaidWorkPY page when parent/partner/both in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You) thenReturn Some(Partner) thenReturn Some(Both)
 
           navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
-        }
-
-        "return ParentPaidWorkPY page when partner in paid work and lives with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
-
+            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
           navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
-        }
-
-        "return EmploymentIncomePY page when both in paid work and lives with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-
+            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
           navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.EmploymentIncomePYController.onPageLoad(NormalMode)
+            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
         }
 
-        "return sessionExpired page when there is no value for paid work and lives with partner" in {
+        "return sessionExpired page when user lives with partner and value is not present" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn None
+          when(answers.doYouLiveWithPartner) thenReturn None
 
           navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
-
 
       }
     }

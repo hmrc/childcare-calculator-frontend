@@ -49,11 +49,18 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
     OtherIncomeAmountPYId -> howMuchBothOtherIncomeRoutePY
   )
 
-  private def yourOtherIncomeRouteCY(answers: UserAnswers) =
+  private def yourOtherIncomeRouteCY(answers: UserAnswers) = {
+
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val eligibleCall = if (hasPartner) { routes.PartnerIncomeInfoPYController.onPageLoad()}
+                      else {routes.YourIncomeInfoPYController.onPageLoad()}
+    val notEligibleCall = routes.ResultController.onPageLoad()
+
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+      case false => processTaxCreditsEligibility(answers, eligibleCall, notEligibleCall)
     }
+  }
 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
@@ -74,7 +81,14 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
       case Both => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
     }
 
-  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers, answers.yourOtherIncomeAmountCY,routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val successRoute = if (hasPartner) { routes.PartnerIncomeInfoPYController.onPageLoad()}
+                      else {routes.YourIncomeInfoPYController.onPageLoad()}
+    val failureRoute =   routes.ResultController.onPageLoad()
+
+    processCall(answers, answers.yourOtherIncomeAmountCY, successRoute, failureRoute)
+  }
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.partnerOtherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
 

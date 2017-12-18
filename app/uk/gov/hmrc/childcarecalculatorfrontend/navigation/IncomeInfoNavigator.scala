@@ -56,11 +56,7 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
 
     if(hasPartner) {
-      utils.getCall(userAnswers.whoIsInPaidEmployment) {
-        case You => routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
-        case Partner => routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
-        case Both => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
-      }
+      routes.BothPaidWorkPYController.onPageLoad(NormalMode)
     }else {
       routes.SessionExpiredController.onPageLoad()
     }
