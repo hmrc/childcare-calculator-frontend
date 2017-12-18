@@ -65,7 +65,14 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   private def createChildren(answers: UserAnswers): List[Child] = {
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
+    val childBlind = if(totalChildren == 1) {
+      answers.childRegisteredBlind
+    } else {
+      answers.registeredBlind
+    }
 
+    println(s"***********totalChildren>>>>>>>>>>>$totalChildren")
+    println(s"***********childBlind>>>>>>>>>>>$childBlind")
     for (i <- 0 until totalChildren) {
       val (childName, childDob): (String, LocalDate) =
         if (answers.aboutYourChild(i).isDefined) {
@@ -93,7 +100,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
         id = i.toShort,
         name = childName,
         dob = childDob,
-        disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, answers.whichChildrenBlind),
+        disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childBlind),
         childcareCost = childcareCost,
         education = childEducation
       )
