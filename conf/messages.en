@@ -519,19 +519,19 @@ parentPaidWorkCY.title = You are not working now, but have you had any paid work
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.error = Select yes if you had any paid work this year
-parentPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+parentPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
 partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.error = Select yes if your partner had any paid work this year
-partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
 bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.error = You must tell the calculator if you and your partner had any paid work this year
-bothPaidWorkCY.currentYear.startEndDate = This year is 6 April 2017 to 5 April 2018.
+bothPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
 whoPaysIntoPension.title = Who’s paying into a pension?
 whoPaysIntoPension.heading = Who’s paying into a pension?
