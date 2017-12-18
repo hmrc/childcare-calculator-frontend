@@ -1110,6 +1110,9 @@ result.free.hours.period =  free childcare a week - {0} hours a year
 result.free.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 result.free.hours.para2 = You could also get 15 hours free childcare a week (1,140 hours a year) for your 2 year old if you are on certain benefits. You can take up the offer the term following your child’s 2nd birthday.
 
+result.free.hours.not.eligible = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4.
+
+
 result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs
 result.tc.para1 = On this scheme, you can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your income during the previous tax year.
@@ -1121,3 +1124,5 @@ result.tfc.para1 = On this scheme, you set up an online childcare account to pay
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice
 result.esc.para1 = On this scheme, each parent can take up to £55 a week of their wages as childcare vouchers, which you won’t pay tax or National Insurance on. Employers can only offer them to new claimants until the end of March 2018.
+
+result.not.eligible.title = You are not eligible for:
