@@ -620,3 +620,5 @@ GET        /who-was-in-paid-work-py               uk.gov.hmrc.childcarecalculato
 POST       /who-was-in-paid-work-py               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = NormalMode)
 GET        /change-who-was-in-paid-work-py               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-who-was-in-paid-work-py              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
+
+GET        /aboutYourResults               uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
