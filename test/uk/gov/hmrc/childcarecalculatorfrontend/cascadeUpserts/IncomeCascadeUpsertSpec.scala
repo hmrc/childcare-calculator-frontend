@@ -43,7 +43,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         result.data mustBe Map(YourOtherIncomeThisYearId.toString.toString -> JsBoolean(true),
           YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
       }
-
     }
 
     "Save PartnerAnyOtherIncomeThisYear data " must {
@@ -63,7 +62,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         result.data mustBe Map(PartnerAnyOtherIncomeThisYearId.toString.toString -> JsBoolean(true),
           PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
       }
-
     }
 
     "Save BothOtherIncomeThisYear data " must {
@@ -91,7 +89,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           WhoGetsOtherIncomeCYId.toString -> JsString(You),
           YourOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20)))
       }
-
     }
 
     "Save WhoGetsOtherIncomeCY data " must {
@@ -163,7 +160,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         result.data mustBe Map(YourOtherIncomeLYId.toString.toString -> JsBoolean(true),
           YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)))
       }
-
     }
 
     "Save PartnerAnyOtherIncomeLY data " must {
@@ -210,7 +206,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           WhoOtherIncomePYId.toString -> JsString(You),
           YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)))
       }
-
     }
 
     "Save WhoOtherIncomePY data " must {
@@ -304,8 +299,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
           YouPaidPensionPYId.toString -> JsBoolean(true),
           HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
-
-
       }
     }
   }
