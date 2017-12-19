@@ -18,16 +18,19 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
 
 class YourIncomeInfoPYViewSpec extends ViewBehaviours {
 
-  def createView = () => yourIncomeInfoPY(frontendAppConfig)(fakeRequest, messages)
+  val taxYearInfo = new TaxYearInfo
+
+  def createView = () => yourIncomeInfoPY(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
   val messageKeyPrefix = "yourIncomeInfoPY"
 
   "Your Income Info PY view" must {
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance")
+    behave like normalPage(createView, messageKeyPrefix, "guidance")
 
     "contain the link for parent paid work for previous year" in {
       val doc = asDocument(createView())
@@ -35,7 +38,11 @@ class YourIncomeInfoPYViewSpec extends ViewBehaviours {
 
       assertContainsText(doc, messagesApi("site.save_and_continue"))
       continueLink.attr("href") mustBe routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode).url
+    }
 
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
     }
   }
 }
