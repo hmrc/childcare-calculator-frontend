@@ -648,31 +648,31 @@ parentPaidWorkPY.title = You are not working now, but have you had any paid work
 parentPaidWorkPY.heading = You are not working now, but have you had any paid work in the previous year?
 parentPaidWorkPY.checkYourAnswersLabel = You are not working now, but have you had any paid work in the previous year
 parentPaidWorkPY.error = You must tell the calculator if you had any paid work in the previous year
-
-parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+parentPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
 partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work in the previous year?
 partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work in the previous year?
 partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work last year?
 partnerPaidWorkPY.error = You must tell the calculator if your partner had any paid work in the previous year
-partnerPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
+partnerPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
 bothPaidWorkPY.title = Were you, your partner, or both of you in paid work in the previous year?
 bothPaidWorkPY.heading = Were you, your partner, or both of you in paid work in the previous year?
 bothPaidWorkPY.checkYourAnswersLabel = Were you, your partner, or both of you in paid work in the previous year?
 bothPaidWorkPY.error = Select yes if you, your partner, or both of you were in paid work in the previous year
-bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April 2016 to 5 April 2017.
+bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
 partnerAnyOtherIncomeLY.title = Did your partner get any other income in the previous year?
 partnerAnyOtherIncomeLY.heading = Did your partner get any other income in the previous year?
-partnerAnyOtherIncomeLY.year.start.end.date = The previous year is 6 April 2016 to 5 April 2017.
+partnerAnyOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
 partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
 partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income in the previous year
 
 yourOtherIncomeLY.title = Did you get any other income in the previous year?
 yourOtherIncomeLY.heading = Did you get any other income in the previous year?
-yourOtherIncomeLY.year.start.end.date = The previous year is 6 April 2016 to 5 April 2017.
+yourOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
 yourOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
 yourOtherIncomeLY.error = Select yes if you got any other income in the previous year
@@ -724,7 +724,7 @@ partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you
 
 yourIncomeInfoPY.title = Your income for the previous year
 yourIncomeInfoPY.heading = Your income for the previous year
-yourIncomeInfoPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+yourIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 yourIncomeInfoPY.guidance = The calculator will now ask similar questions about your income for the previous year.
 yourIncomeInfoPY.li.income_paid_work = income from paid work
 yourIncomeInfoPY.li.pensions = pension contributions
@@ -735,7 +735,7 @@ yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 
 bothIncomeInfoPY.title = You and your partner’s income for the previoys year
 bothIncomeInfoPY.heading = You and your partner’s income for the previous year
-bothIncomeInfoPY.tax_year = The previous year is 6 April 2016 to 5 April 2017.
+bothIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 bothIncomeInfoPY.guidance = The calculator will now ask similar questions about you and your partner’s income for the previous year.
 bothIncomeInfoPY.li.income_paid_work = income from paid work
 bothIncomeInfoPY.li.pensions = pension contributions
@@ -1167,7 +1167,6 @@ result.esc.not.eligible.para2 = Your employer may be able to help you with child
 
 result.not.eligible.title = You are not eligible for:
 
-
 whoWasInPaidWorkPY.title = Who was in paid work?
 whoWasInPaidWorkPY.heading = Who was in paid work?
 whoWasInPaidWorkPY.you = You
@@ -1179,3 +1178,4 @@ whoWasInPaidWorkPY.error = Select who was in paid work
 
 aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
+
