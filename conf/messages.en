@@ -593,14 +593,14 @@ bothAnyTheseBenefitsCY.error = You must tell the calculator if you or your partn
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
-partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
 partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year
 
 bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?
-bothOtherIncomeThisYear.year.start.end.date = This year is 6 April 2017 to 5 April 2018.
+bothOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 bothOtherIncomeThisYear.hint.text = This could be from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
 bothOtherIncomeThisYear.error = Select yes if you, your partner, or both of you will get any other income this year
@@ -620,7 +620,7 @@ bothPaidPensionCY.title = Are you, your partner, or both of you paying into a wo
 bothPaidPensionCY.heading = Are you, your partner, or both of you paying into a work pension this year?
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.error = Select yes if you, your partner, or both of you are paying into a work pension this year
-bothPaidPensionCY.tax.year = This year is 6 April 2017 to 5 April 2018.
+bothPaidPensionCY.tax.year = This year is 6 April {0} to 5 April {1}.
 
 whosHadBenefits.title = Who had benefits?
 whosHadBenefits.heading = Who had benefits?
