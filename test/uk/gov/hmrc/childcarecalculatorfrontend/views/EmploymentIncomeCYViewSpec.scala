@@ -47,20 +47,25 @@ class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncome
       messageKeyPrefix,
       routes.EmploymentIncomeCYController.onSubmit(NormalMode).url,
       "parentEmploymentIncomeCY", "partnerEmploymentIncomeCY")
+
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+    }
+
+    "contain the currencySymbol class and £ " in {
+      val doc = asDocument(createView())
+
+      assertRenderedByCssSelector(doc, ".currencySymbol")
+
+      val parentCurrencySymbol = doc.getElementById("parentEmploymentIncomeCY").firstElementSibling().text()
+      val partnerCurrencySymbol = doc.getElementById("partnerEmploymentIncomeCY").firstElementSibling().text()
+
+      parentCurrencySymbol mustBe "£"
+      partnerCurrencySymbol mustBe "£"
+
+    }
   }
 
-  "contain tax year info" in {
-    val doc = asDocument(createView())
-    assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
-  }
-
-  "contain the currencySymbol class and £ " in {
-    val doc = asDocument(createView())
-    val parentCurrencySymbol = doc.getElementById("parentEmploymentIncomeCY").firstElementSibling().text()
-    val partnerCurrencySymbol = doc.getElementById("partnerEmploymentIncomeCY").firstElementSibling().text()
-
-    parentCurrencySymbol mustBe "£"
-    partnerCurrencySymbol mustBe "£"
-
-  }
 }
