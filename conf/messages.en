@@ -1130,6 +1130,42 @@ partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your pa
 result.title = What help you could get with your childcare
 result.heading = What help you could get with your childcare
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
+result.single.eligibility.heading = You are eligible for help from 1 scheme:
+result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
+result.read.more.info = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
+
+result.general.could.get = You could get
+
+result.free.hours.title = Free childcare hours
+result.free.hours.hours = hours
+result.free.hours.period =  free childcare a week - {0} hours a year
+result.free.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+result.free.hours.para2 = You could also get 15 hours free childcare a week (1,140 hours a year) for your 2 year old if you are on certain benefits. You can take up the offer the term following your child’s 2nd birthday.
+
+result.free.hours.not.eligible = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4.
+
+
+result.tc.title = Tax credits
+result.tc.period = over the year ahead towards your household costs
+result.tc.para1 = On this scheme, you can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your income during the previous tax year.
+
+result.tc.not.eligible.para1 = You wouldn't get help from tax credits as one of you needs to work at least 16 hours, with you and your partner's combined hours being 24 or more a week.
+result.tc.not.eligible.para2 = You can go back and change your working hours to see how it changes how much you could get.
+
+result.tfc.title = Tax-Free Childcare
+result.tfc.period = a year towards your childcare costs
+result.tfc.para1 = On this scheme, you set up an online childcare account to pay your provider directly and get a £2 government top-up for every £8 you pay in. You can get up to £2,000 a year towards 's childcare costs.
+
+result.tfc.not.eligible = Tax-Free Childcare is based around your earnings and working hours. Although you are in paid work, you don’t earn the weekly National Minimum Wage or Living Wage and you are not either an apprentice or in the first 12 months of self-employment. You have also told us that you earn over £100,000.
+
+result.esc.title = Childcare vouchers
+result.esc.period = a year in tax and National Insurance savings through salary sacrifice
+result.esc.para1 = On this scheme, each parent can take up to £55 a week of their wages as childcare vouchers, which you won’t pay tax or National Insurance on. Employers can only offer them to new claimants until the end of March 2018.
+
+result.esc.not.eligible.para1 = You wouldn’t get help from childcare vouchers as you told us that your employer doesn’t offer them.
+result.esc.not.eligible.para2 = Your employer may be able to help you with childcare costs by using vouchers (through salary sacrifice or salary plus) or other schemes, such as a staff nursery. If they don’t currently offer the scheme talk to them about joining it. The scheme will close to new joiners at the end of March 2018.
+
+result.not.eligible.title = You are not eligible for:
 
 
 whoWasInPaidWorkPY.title = Who was in paid work?
@@ -1139,3 +1175,4 @@ whoWasInPaidWorkPY.partner = Partner
 whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
 whoWasInPaidWorkPY.error = Select who was in paid work
+

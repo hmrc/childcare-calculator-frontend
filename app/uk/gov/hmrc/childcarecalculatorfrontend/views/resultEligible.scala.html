@@ -1,0 +1,58 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@import uk.gov.hmrc.play.views.html._
+
+@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+
+
+
+@if(model.freeHours.isDefined) {
+    @components.scheme_result(
+        title = messages("result.free.hours.title"),
+        couldGet = Some(messages("result.general.could.get")),
+        eligibility = Some(model.freeHours.fold(BigDecimal(0))(identity) + " " + messages("result.free.hours.hours")),
+        periodText = Some(messages("result.free.hours.period")),
+        para1 = Some(messages("result.free.hours.para1")),
+        para2 = Some(messages("result.free.hours.para2")))
+}
+
+@if(model.tc.isDefined) {
+    @components.scheme_result(
+        title = messages("result.tc.title"),
+        couldGet = Some(messages("result.general.could.get")),
+        eligibility = Some("£" + model.tc.fold(BigDecimal(0))(identity)),
+        periodText = Some(messages("result.tc.period")),
+        para1 = Some(messages("result.tc.para1")))
+}
+
+@if(model.tfc.isDefined) {
+    @components.scheme_result(
+        title = messages("result.tfc.title"),
+        couldGet = Some(messages("result.general.could.get")),
+        eligibility = Some("£" + model.tfc.fold(BigDecimal(0))(identity)),
+        periodText = Some(messages("result.tfc.period")),
+        para1 = Some(messages("result.tfc.para1")))
+}
+@if(model.esc.isDefined) {
+    @components.scheme_result(
+        title = messages("result.esc.title"),
+        couldGet = Some(messages("result.general.could.get")),
+        eligibility = Some("£" + model.esc.fold(BigDecimal(0))(identity)),
+        periodText = Some(messages("result.esc.period")),
+        para1 = Some(messages("result.esc.para1")))
+}

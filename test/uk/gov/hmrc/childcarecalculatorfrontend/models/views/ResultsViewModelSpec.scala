@@ -16,11 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
-case class ResultsViewModel(firstParagraph : String = "",
-                            tc: Option[BigDecimal] = None,
-                            tfc:Option[BigDecimal] = None,
-                            esc:Option[BigDecimal] = None,
-                            freeHours:Option[BigDecimal] = None) {
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 
-  def noOfEligibleSchemes = List(tc, tfc, esc, freeHours).flatten.size
+class ResultsViewModelSpec extends SpecBase {
+
+  "ResultViewModel" must {
+    "return correct number of eligible schemes" in {
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None)
+      resultsView.noOfEligibleSchemes mustBe 2
+    }
+
+    "return number of eligible schemes 0 when there is no eligible scheme" in {
+      val resultsView = ResultsViewModel()
+      resultsView.noOfEligibleSchemes mustBe 0
+    }
+  }
 }
