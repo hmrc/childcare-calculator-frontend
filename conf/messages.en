@@ -1165,7 +1165,6 @@ result.esc.not.eligible.para2 = Your employer may be able to help you with child
 
 result.not.eligible.title = You are not eligible for:
 
-
 whoWasInPaidWorkPY.title = Who was in paid work?
 whoWasInPaidWorkPY.heading = Who was in paid work?
 whoWasInPaidWorkPY.you = You
@@ -1173,4 +1172,3 @@ whoWasInPaidWorkPY.partner = Partner
 whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
 whoWasInPaidWorkPY.error = Select who was in paid work
-

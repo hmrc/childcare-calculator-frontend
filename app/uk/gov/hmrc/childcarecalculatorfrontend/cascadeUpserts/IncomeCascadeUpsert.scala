@@ -36,7 +36,8 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
       PartnerAnyOtherIncomeLYId.toString -> ((v, cm) => storePartnerAnyOtherIncomePY(v, cm)),
       BothOtherIncomeLYId.toString -> ((v, cm) => storeBothOtherIncomePY(v, cm)),
       WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm)),
-      BothPaidWorkPYId.toString -> ((v, cm) => storeBothPaidWorkPY(v, cm))
+      BothPaidWorkPYId.toString -> ((v, cm) => storeBothPaidWorkPY(v, cm)),
+      WhoWasInPaidWorkPYId.toString -> ((v, cm) => storeWhoWasInPaidWork(v, cm))
     )
 
   private def storeYourOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -136,6 +137,26 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
 
     store(BothPaidWorkPYId.toString, value, mapToStore)
+  }
+
+  private def storeWhoWasInPaidWork(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = value match {
+      case JsString(You) => cacheMap copy (data = cacheMap.data - PartnerEmploymentIncomePYId.toString -
+        PartnerPaidPensionPYId.toString  - HowMuchPartnerPayPensionPYId.toString - EmploymentIncomePYId.toString -
+        WhoPaidIntoPensionPYId.toString -  BothPaidPensionPYId.toString - HowMuchBothPayPensionPYId.toString)
+
+      case JsString(Partner) => cacheMap copy (data = cacheMap.data - ParentEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - EmploymentIncomePYId.toString -
+        WhoPaidIntoPensionPYId.toString - BothPaidPensionPYId.toString - HowMuchBothPayPensionPYId.toString)
+
+      case JsString(Both) => cacheMap copy (data = cacheMap.data  - ParentEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString  - PartnerEmploymentIncomePYId.toString -
+        PartnerPaidPensionPYId.toString  - HowMuchPartnerPayPensionPYId.toString)
+
+      case _ => cacheMap
+    }
+
+    store(WhoWasInPaidWorkPYId.toString, value, mapToStore)
   }
 
 }
