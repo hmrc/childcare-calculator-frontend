@@ -19,8 +19,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
+import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -44,13 +47,21 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       when(resultService.getResultsViewModel(any())(any(),any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000)))
 
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
+      val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
       val resultPage = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
       status(resultPage) mustBe OK
       contentAsString(resultPage) must include("15")
       contentAsString(resultPage) must include("500")
       contentAsString(resultPage) must include("600")
       contentAsString(resultPage) must include("1000")
+    }
+
+    "redirect to Location controller when there is no location data" in {
+      val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithNoLocation))
+      val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result).get mustBe routes.LocationController.onPageLoad(NormalMode).url
     }
 
     "redirect to Session Expired" when {
@@ -72,6 +83,8 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       }
     }
   }
-
+  val location = Location.ENGLAND
+  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  val cacheMapWithNoLocation = new CacheMap("id", Map("test" -> JsString(location.toString)))
   val resultService: ResultsService = mock[ResultsService]
 }

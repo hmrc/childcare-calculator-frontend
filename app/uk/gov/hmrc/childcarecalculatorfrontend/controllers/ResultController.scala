@@ -22,6 +22,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -35,10 +36,15 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                       resultsService: ResultsService) extends FrontendController with I18nSupport {
 
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    resultsService.getResultsViewModel(request.userAnswers).map(model=> Ok(result(appConfig,model)))
+  def onPageLoad(): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+    resultsService.getResultsViewModel(request.userAnswers).map(model=> {
+      request.userAnswers.location match {
+        case Some(location) => Ok(result(appConfig, model))
+        case None => Redirect(routes.LocationController.onPageLoad(NormalMode))
+      }
+    })
       .recover{
-      case _ => Redirect(routes.SessionExpiredController.onPageLoad())
-    }
+        case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+      }
   }
 }
