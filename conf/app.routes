@@ -616,9 +616,9 @@ POST        /partner-statutory-pay-per-week                    uk.gov.hmrc.child
 GET         /change-partner-statutory-pay-per-week             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-partner-statutory-pay-per-week             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onSubmit(mode: Mode = CheckMode)
 
-GET        /who-was-in-paid-work-py               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = NormalMode)
-POST       /who-was-in-paid-work-py               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = NormalMode)
-GET        /change-who-was-in-paid-work-py               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-who-was-in-paid-work-py              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
+GET        /who-was-in-paid-work-py                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = NormalMode)
+POST       /who-was-in-paid-work-py                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = NormalMode)
+GET        /change-who-was-in-paid-work-py                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-who-was-in-paid-work-py                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
 
-GET        /about-your-results               uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
+GET        /about-your-results                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
