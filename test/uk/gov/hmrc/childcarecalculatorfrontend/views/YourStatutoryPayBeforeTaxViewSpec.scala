@@ -17,20 +17,21 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayBeforeTaxForm
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{ViewBehaviours, YesNoViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayBeforeTax
 
-class YourStatutoryPayBeforeTaxViewSpec extends ViewBehaviours {
+class YourStatutoryPayBeforeTaxViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "yourStatutoryPayBeforeTax"
 
   val statutoryType = "maternity"
 
-  def createView = () => yourStatutoryPayBeforeTax(frontendAppConfig, YourStatutoryPayBeforeTaxForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => yourStatutoryPayBeforeTax(frontendAppConfig, BooleanForm("yourStatutoryPayBeforeTax.error", statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => yourStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => yourStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   "YourStatutoryPayBeforeTax view" must {
     behave like normalPageWithTitleAsString(
@@ -39,30 +40,9 @@ class YourStatutoryPayBeforeTaxViewSpec extends ViewBehaviours {
       title = messages(s"$messageKeyPrefix.title", statutoryType),
       heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
     )
+
     behave like pageWithBackLink(createView)
-  }
 
-  "YourStatutoryPayBeforeTax view" when {
-    "rendered" must {
-      "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(YourStatutoryPayBeforeTaxForm()))
-        for (option <- YourStatutoryPayBeforeTaxForm.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
-    }
-
-    for(option <- YourStatutoryPayBeforeTaxForm.options) {
-      s"rendered with a value of '${option.value}'" must {
-        s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(YourStatutoryPayBeforeTaxForm().bind(Map("value" -> s"${option.value}"))))
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
-
-          for(unselectedOption <- YourStatutoryPayBeforeTaxForm.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
-    }
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryPayBeforeTaxController.onSubmit(NormalMode).url)
   }
 }

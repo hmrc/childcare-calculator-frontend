@@ -28,21 +28,21 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](YourStatutoryStartDateId.toString)
 
-  def partnerStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryPayPerWeekId.toString)
+  def partnerStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayPerWeekId.toString)
 
-  def yourStatutoryPayPerWeek: Option[Int] = cacheMap.getEntry[Int](YourStatutoryPayPerWeekId.toString)
+  def yourStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayPerWeekId.toString)
 
-  def partnerStatutoryPayBeforeTax: Option[String] = cacheMap.getEntry[String](PartnerStatutoryPayBeforeTaxId.toString)
+  def partnerStatutoryPayBeforeTax: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayBeforeTaxId.toString)
 
-  def yourStatutoryPayBeforeTax: Option[String] = cacheMap.getEntry[String](YourStatutoryPayBeforeTaxId.toString)
+  def yourStatutoryPayBeforeTax: Option[Boolean] = cacheMap.getEntry[Boolean](YourStatutoryPayBeforeTaxId.toString)
 
   def partnerStatutoryWeeks: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryWeeksId.toString)
 
   def yourStatutoryWeeks: Option[Int] = cacheMap.getEntry[Int](YourStatutoryWeeksId.toString)
 
-  def yourStatutoryPayType: Option[String] = cacheMap.getEntry[String](YourStatutoryPayTypeId.toString)
+  def yourStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](YourStatutoryPayTypeId.toString)
 
-  def partnerStatutoryPayType: Option[String] = cacheMap.getEntry[String](PartnerStatutoryPayTypeId.toString)
+  def partnerStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](PartnerStatutoryPayTypeId.toString)
 
   def whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhoGotStatutoryPayId.toString)
   

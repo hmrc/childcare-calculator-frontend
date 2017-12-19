@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import javax.inject.Inject
 
-class YourStatutoryPayBeforeTaxFormSpec extends FormBehaviours {
+import org.joda.time.DateTimeFieldType._
+import uk.gov.hmrc.time.TaxYearResolver
 
-  val validData: Map[String, String] = Map(
-    "value" -> YourStatutoryPayBeforeTaxForm.options.head.value
-  )
+class TaxYearInfo @Inject()() {
 
-  val form = YourStatutoryPayBeforeTaxForm()
+  lazy val currentTaxYearStart: String = TaxYearResolver.startOfCurrentTaxYear.get(year).toString
 
-  "YourStatutoryPayBeforeTax form" must {
-    behave like questionForm[String](YourStatutoryPayBeforeTaxForm.options.head.value)
+  lazy val currentTaxYearEnd: String = TaxYearResolver.endOfCurrentTaxYear.get(year).toString
 
-    behave like formWithOptionField("value", YourStatutoryPayBeforeTaxForm.options.map{x => x.value}:_*)
-  }
+  lazy val previousTaxYearStart: String = (TaxYearResolver.startOfCurrentTaxYear.get(year) - 1).toString
+
+  lazy val previousTaxYearEnd: String = (TaxYearResolver.endOfCurrentTaxYear.get(year) - 1).toString
 }

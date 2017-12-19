@@ -20,14 +20,15 @@ import javax.inject.Inject
 
 import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Result, RequestHeader}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.mvc.{RequestHeader, Result}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryStartDateId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
@@ -43,36 +44,44 @@ class PartnerStatutoryStartDateController @Inject()(
                                         requireData: DataRequiredAction
                                       ) extends FrontendController with I18nSupport {
 
+
   private def sessionExpired(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  private def validateStatutoryPayType[A](block: (String) => Future[Result])
+                                         (implicit request: DataRequest[A]): Future[Result] = {
+
+    request.userAnswers.partnerStatutoryPayType.map {
+      payType => block(Messages(s"statutoryPayTypeLower.$payType"))
+    }.getOrElse(sessionExpired)
+  }
+
+  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      val preparedForm = request.userAnswers.partnerStatutoryStartDate match {
-        case None => PartnerStatutoryStartDateForm()
-        case Some(value) => PartnerStatutoryStartDateForm().fill(value)
+      validateStatutoryPayType {
+        statutoryType =>
+          val preparedForm = request.userAnswers.partnerStatutoryStartDate match {
+            case None => PartnerStatutoryStartDateForm(statutoryType)
+            case Some(value) => PartnerStatutoryStartDateForm(statutoryType).fill(value)
+          }
+
+          Future.successful(Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, statutoryType)))
       }
-
-      request.userAnswers.partnerStatutoryPayType match {
-        case Some(x) => Ok(partnerStatutoryStartDate(appConfig, preparedForm, mode, x))
-        case _ => Redirect(routes.SessionExpiredController.onPageLoad())
-      }
-
-
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+      validateStatutoryPayType {
+        statutoryType =>
 
-      val statutoryType = request.userAnswers.partnerStatutoryPayType.getOrElse("")
-
-      PartnerStatutoryStartDateForm().bindFromRequest().fold(
-        (formWithErrors: Form[LocalDate]) =>
-          Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
-        (value) =>
-          dataCacheConnector.save[LocalDate](request.sessionId, PartnerStatutoryStartDateId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerStatutoryStartDateId, mode)(new UserAnswers(cacheMap))))
-      )
+          PartnerStatutoryStartDateForm(statutoryType).bindFromRequest().fold(
+            (formWithErrors: Form[LocalDate]) =>
+              Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
+            (value) =>
+              dataCacheConnector.save[LocalDate](request.sessionId, PartnerStatutoryStartDateId.toString, value).map(cacheMap =>
+                Redirect(navigator.nextPage(PartnerStatutoryStartDateId, mode)(new UserAnswers(cacheMap))))
+          )
+      }
   }
 }
 

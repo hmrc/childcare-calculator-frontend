@@ -649,6 +649,7 @@ parentPaidWorkPY.title = You are not working now, but have you had any paid work
 parentPaidWorkPY.heading = You are not working now, but have you had any paid work in the previous year?
 parentPaidWorkPY.checkYourAnswersLabel = You are not working now, but have you had any paid work in the previous year
 parentPaidWorkPY.error = You must tell the calculator if you had any paid work in the previous year
+
 parentPaidWorkPY.currentYear.startEndDate = This year is 6 April 2016 to 5 April 2017.
 
 partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work in the previous year?
@@ -1031,11 +1032,12 @@ whoGotStatutoryPay.heading = Who got statutory pay?
 whoGotStatutoryPay.you = You
 whoGotStatutoryPay.partner = Partner
 whoGotStatutoryPay.both = Both
-whoGotStatutoryPay.error = You must tell the calculator who got statutory pay
+whoGotStatutoryPay.error = Select who got statutory pay
 
 youStatutoryPay.title = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.heading = Have you had statutory pay since 6 April 2016?
 youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April 2016?
+youStatutoryPay.required = Select yes if you have had statutory pay since 6 April {0}
 
 statutoryPay.guidance = Statutory pay is:
 statutoryPay.li.maternity = maternity
@@ -1047,72 +1049,83 @@ statutoryPay.guidance_extra = It could have started before this date and overlap
 bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April 2016?
 bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April 2016?
+bothStatutoryPay.required = Select yes if you, your partner, or both of you have had statutory pay since 6th April {0}
 
 partnerStatutoryPay.title = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay since 6 April 2016?
 partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April 2016 and continued to get it after this date.
+partnerStatutoryPay.required = Select yes if your partner had statutory pay since 6 April {0}
 
 partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
 partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.maternity = maternity
-partnerStatutoryPayType.paternity = paternity
-partnerStatutoryPayType.adoption = adoption
-partnerStatutoryPayType.shared-parental = shared parental
-partnerStatutoryPayType.error = You must tell the calculator what kind of statutory pay your partner got
+partnerStatutoryPayType.error = Select what kind of statutory pay your partner got
 partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
 
 yourStatutoryPayType.title = What kind of statutory pay did you get?
 yourStatutoryPayType.heading = What kind of statutory pay did you get?
-yourStatutoryPayType.maternity = maternity
-yourStatutoryPayType.paternity = paternity
-yourStatutoryPayType.adoption = adoption
-yourStatutoryPayType.shared-parental = shared parental
-yourStatutoryPayType.error = You must tell the calculator what kind of statutory pay you got
+yourStatutoryPayType.error = Select what kind of statutory pay you got
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
+
+statutoryPayType.maternity = Maternity
+statutoryPayType.paternity = Paternity
+statutoryPayType.adoption = Adoption
+statutoryPayType.shared-parental = Shared parental
+
+statutoryPayTypeLower.maternity = maternity
+statutoryPayTypeLower.paternity = paternity
+statutoryPayTypeLower.adoption = adoption
+statutoryPayTypeLower.shared-parental = shared parental
 
 yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.error = You must tell the calculator the number of weeks
+yourStatutoryWeeks.required = Enter how many weeks of {0} pay you took
+yourStatutoryWeeks.invalid = Enter numbers between 1 and 48 for how many weeks of {0} pay you took
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
 partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
+partnerStatutoryWeeks.required = Enter how many weeks of {0} pay your partner took
+partnerStatutoryWeeks.invalid = Enter numbers between 1 and 48 for how many weeks of {0} pay your partner took
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
 yourStatutoryStartDate.title = When did your {0} pay start?
 yourStatutoryStartDate.heading = When did your {0} pay start?
-yourStatutoryStartDate.error = You must tell the calculator when your statutory pay started
+yourStatutoryStartDate.error.required = Enter the date your {0} pay started
 yourStatutoryStartDate.error.invalid = You must enter correct date
+yourStatutoryStartDate.error.past = Date your {0} pay started must be in the past
 yourStatutoryStartDate.hint = For example, 31 2 2017
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
 
 partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
 partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.error = You must tell the calculator when your partner’s statutory pay started
+partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
 partnerStatutoryStartDate.error.invalid = You must enter correct date
+partnerStatutoryStartDate.error.past = Date your partner’s {0} pay started must be in the past
 partnerStatutoryStartDate.hint = For example, 31 2 2017
 partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
 
 yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.true = Yes
-yourStatutoryPayBeforeTax.false = No
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
+yourStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
-partnerStatutoryPayBeforeTax.true = Yes
-partnerStatutoryPayBeforeTax.false = No
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
+yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
+partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
 
 result.title = What help you could get with your childcare
 result.heading = What help you could get with your childcare

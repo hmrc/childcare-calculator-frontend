@@ -39,6 +39,6 @@ class ParentEmploymentIncomeCYViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.ParentEmploymentIncomeCYController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.ParentEmploymentIncomeCYController.onSubmit(NormalMode).url)
   }
 }

@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayTypeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryPayTypeId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayType
 
@@ -52,10 +52,10 @@ class PartnerStatutoryPayTypeController @Inject()(
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       PartnerStatutoryPayTypeForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
+        (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(partnerStatutoryPayType(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, PartnerStatutoryPayTypeId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[StatutoryPayTypeEnum.Value](request.sessionId, PartnerStatutoryPayTypeId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerStatutoryPayTypeId, mode)(new UserAnswers(cacheMap))))
       )
   }

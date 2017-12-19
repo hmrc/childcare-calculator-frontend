@@ -23,7 +23,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.ModelFactory
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -137,7 +137,10 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to yourStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.yourStatutoryPayType) thenReturn
-            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+            Some(StatutoryPayTypeEnum.MATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.PATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.ADOPTION) thenReturn
+            Some(StatutoryPayTypeEnum.SHARED_PARENTAL)
 
           navigator.nextPage(YourStatutoryPayTypeId, NormalMode).value(answers) mustBe
             routes.YourStatutoryStartDateController.onPageLoad(NormalMode)
@@ -171,7 +174,10 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to partnerStatutoryStartDate page when user selects some value" in {
           val answers = spy(userAnswers())
           when(answers.partnerStatutoryPayType) thenReturn
-            Some("maternity") thenReturn Some("paternity") thenReturn Some("adoption") thenReturn Some("shared parental")
+            Some(StatutoryPayTypeEnum.MATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.PATERNITY) thenReturn
+            Some(StatutoryPayTypeEnum.ADOPTION) thenReturn
+            Some(StatutoryPayTypeEnum.SHARED_PARENTAL)
 
           navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
             routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
@@ -271,7 +277,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       "Your Statutory Pay Before Tax route" must {
         "redirects to result page when user selects no and there is no partner in the system" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
@@ -280,7 +286,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to result page when user selects no, there is partner in the system and partner does not get statutory page" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
 
@@ -290,7 +296,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and partner gets statutory page" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
 
@@ -300,7 +306,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerStatutoryPayType page when user selects no, there is partner in the system and both get statutory page" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
 
@@ -310,7 +316,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to yourStatutoryPayPerWeek page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayBeforeTax) thenReturn Some("true")
+          when(answers.yourStatutoryPayBeforeTax) thenReturn Some(true)
 
           navigator.nextPage(YourStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
             routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
@@ -329,7 +335,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       "Partner Statutory Pay Before Tax route" must {
         "redirects to result page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayBeforeTax) thenReturn Some("false")
+          when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
           navigator.nextPage(PartnerStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
             routes.ResultController.onPageLoad()
@@ -337,7 +343,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerStatutoryPayPerWeek page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayBeforeTax) thenReturn Some("true")
+          when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(true)
 
           navigator.nextPage(PartnerStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
             routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode)
@@ -356,7 +362,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       "Your Statutory Pay Per Week route" must {
         "redirects to results page when user selects some value and there is no partner in the system" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
@@ -366,7 +372,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to results page when user selects some value and they have a partner" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
 
           navigator.nextPage(YourStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
@@ -375,7 +381,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to results page when user selects some value,has partner and partner does not get statutory pay" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
 
@@ -386,7 +392,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerStatutoryPayType page when user selects some value,has partner and partner get statutory pay" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
 
@@ -397,7 +403,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerStatutoryPayType page when user selects some value,has partner and both get statutory pay" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
 
@@ -418,7 +424,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       "Partner Statutory Pay Per Week route" must {
         "redirects to results page when user selects some value" in {
           val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayPerWeek) thenReturn Some(12)
+          when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
 
           navigator.nextPage(PartnerStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
             routes.ResultController.onPageLoad()
@@ -433,10 +439,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad()
         }
       }
-
-
     }
   }
-
-
 }

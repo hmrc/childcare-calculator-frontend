@@ -37,6 +37,6 @@ class PartnerOtherIncomeAmountCYViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(createViewUsingForm, messageKeyPrefix, routes.PartnerOtherIncomeAmountCYController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.PartnerOtherIncomeAmountCYController.onSubmit(NormalMode).url)
   }
 }
