@@ -49,14 +49,14 @@ class PartnerStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm(requiredKey, requiredKeyArg)
         case Some(value) => BooleanForm(requiredKey, requiredKeyArg).fill(value)
       }
-      Ok(partnerStatutoryPay(appConfig, preparedForm, mode))
+      Ok(partnerStatutoryPay(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm(requiredKey, requiredKeyArg).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerStatutoryPay(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerStatutoryPay(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, PartnerStatutoryPayId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerStatutoryPayId, mode)(new UserAnswers(cacheMap))))

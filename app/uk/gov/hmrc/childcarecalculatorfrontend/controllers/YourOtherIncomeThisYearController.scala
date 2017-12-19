@@ -27,17 +27,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourOtherIncomeThisYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourOtherIncomeThisYear
 
 import scala.concurrent.Future
 
 class YourOtherIncomeThisYearController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                  override val messagesApi: MessagesApi,
+                                                  dataCacheConnector: DataCacheConnector,
+                                                  navigator: Navigator,
+                                                  getData: DataRetrievalAction,
+                                                  requireData: DataRequiredAction,
+                                                  taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -45,14 +46,14 @@ class YourOtherIncomeThisYearController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(yourOtherIncomeThisYear(appConfig, preparedForm, mode))
+      Ok(yourOtherIncomeThisYear(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("yourOtherIncomeThisYear.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(yourOtherIncomeThisYear(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yourOtherIncomeThisYear(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, YourOtherIncomeThisYearId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourOtherIncomeThisYearId, mode)(new UserAnswers(cacheMap))))
