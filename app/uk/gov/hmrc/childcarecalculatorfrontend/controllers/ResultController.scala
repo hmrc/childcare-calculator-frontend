@@ -27,8 +27,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-import scala.concurrent.Future
-
 
 @Singleton
 class ResultController @Inject()(val appConfig: FrontendAppConfig,
