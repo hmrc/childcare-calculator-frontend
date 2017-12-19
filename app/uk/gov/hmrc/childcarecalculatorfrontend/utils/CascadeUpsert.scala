@@ -24,17 +24,16 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 @Singleton
 class CascadeUpsert @Inject()(pensions: PensionsCascadeUpsert,
-                             otherIncome: OtherIncomeCascadeUpsert,
-                             benefits: BenefitsCascadeUpsert,
-                             maxHours: MaximumHoursCascadeUpsert,
-                             minHours: MinimumHoursCascadeUpsert,
-                             children: ChildrenCascadeUpsert,
-                             statutory:StatutoryCascadeUpsert,
-                             income: EmploymentIncomeCascadeUpsert){
+                              income: IncomeCascadeUpsert,
+                              benefits: BenefitsCascadeUpsert,
+                              maxHours: MaximumHoursCascadeUpsert,
+                              minHours: MinimumHoursCascadeUpsert,
+                              children: ChildrenCascadeUpsert,
+                              statutory:StatutoryCascadeUpsert){
 
-  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = pensions.funcMap ++ otherIncome.funcMap ++
+  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = pensions.funcMap ++ income.funcMap ++
                                                      benefits.funcMap ++ maxHours.funcMap ++ minHours.funcMap ++ children.funcMap ++
-                                                     statutory.funcMap ++ income.funcMap
+                                                     statutory.funcMap
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
     funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}

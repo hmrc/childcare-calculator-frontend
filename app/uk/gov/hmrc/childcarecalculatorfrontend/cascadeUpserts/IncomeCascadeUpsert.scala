@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
+class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
     Map(
@@ -35,7 +35,8 @@ class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
       YourOtherIncomeLYId.toString -> ((v, cm) => storeYourOtherIncomePY(v, cm)),
       PartnerAnyOtherIncomeLYId.toString -> ((v, cm) => storePartnerAnyOtherIncomePY(v, cm)),
       BothOtherIncomeLYId.toString -> ((v, cm) => storeBothOtherIncomePY(v, cm)),
-      WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm))
+      WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm)),
+      BothPaidWorkPYId.toString -> ((v, cm) => storeBothPaidWorkPY(v, cm))
     )
 
   private def storeYourOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -109,7 +110,7 @@ class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(BothOtherIncomeLYId.toString, value, mapToStore)
   }
 
-  private def storeWhoOtherIncomePY(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeWhoOtherIncomePY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountPYId.toString -
         OtherIncomeAmountPYId.toString)
@@ -121,6 +122,20 @@ class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
 
     store(WhoOtherIncomePYId.toString, value, mapToStore)
+  }
+
+  private def storeBothPaidWorkPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhoWasInPaidWorkPYId.toString -
+        EmploymentIncomePYId.toString - ParentEmploymentIncomePYId.toString - PartnerEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - PartnerPaidPensionPYId.toString - BothPaidPensionPYId.toString -
+        WhoPaidIntoPensionPYId.toString - HowMuchYouPayPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
+        HowMuchBothPayPensionPYId.toString)
+
+      case _ => cacheMap
+    }
+
+    store(BothPaidWorkPYId.toString, value, mapToStore)
   }
 
 }
