@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{OtherIncomeAmountCY, OtherIncomeAmountPY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, OtherIncomeAmountCY, OtherIncomeAmountPY}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{Both, Partner, You}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -63,7 +63,6 @@ class OtherIncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
         result.data mustBe Map(PartnerAnyOtherIncomeLYId.toString.toString -> JsBoolean(true),
           PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)))
       }
-
     }
 
     "Save BothOtherIncomeLY data " must {

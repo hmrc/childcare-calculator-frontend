@@ -29,11 +29,12 @@ class CascadeUpsert @Inject()(pensions: PensionsCascadeUpsert,
                              maxHours: MaximumHoursCascadeUpsert,
                              minHours: MinimumHoursCascadeUpsert,
                              children: ChildrenCascadeUpsert,
-                             statutory:StatutoryCascadeUpsert){
+                             statutory:StatutoryCascadeUpsert,
+                             income: EmploymentIncomeCascadeUpsert){
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = pensions.funcMap ++ otherIncome.funcMap ++
                                                      benefits.funcMap ++ maxHours.funcMap ++ minHours.funcMap ++ children.funcMap ++
-                                                     statutory.funcMap
+                                                     statutory.funcMap ++ income.funcMap
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
     funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}
