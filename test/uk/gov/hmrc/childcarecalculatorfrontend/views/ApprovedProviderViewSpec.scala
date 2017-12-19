@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
@@ -26,9 +26,9 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "approvedProvider"
 
-  def createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => approvedProvider(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => approvedProvider(frontendAppConfig, form, YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
 
   "ApprovedProvider view" must {
     behave like normalPage(createView, messageKeyPrefix, "hint")

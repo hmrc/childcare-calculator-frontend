@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ApprovedProviderId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
@@ -46,14 +46,14 @@ class ApprovedProviderController @Inject()(
         case None => ApprovedProviderForm()
         case Some(value) => ApprovedProviderForm().fill(value)
       }
-      Ok(approvedProvider(appConfig, preparedForm, mode))
+      Ok(approvedProvider(appConfig, preparedForm,YesNoNotYetEnum.YES, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       ApprovedProviderForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors,YesNoNotYetEnum.YES, mode))),
         (value) =>
           dataCacheConnector.save[String](request.sessionId, ApprovedProviderId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ApprovedProviderId, mode)(new UserAnswers(cacheMap))))

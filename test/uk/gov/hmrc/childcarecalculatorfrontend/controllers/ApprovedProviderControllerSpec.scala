@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ApprovedProviderId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
 class ApprovedProviderControllerSpec extends ControllerSpecBase {
@@ -36,7 +36,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     new ApprovedProviderController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = ApprovedProviderForm()) = approvedProvider(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = ApprovedProviderForm()) = approvedProvider(frontendAppConfig, form, YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages).toString
 
   "ApprovedProvider Controller" must {
 
