@@ -16,9 +16,11 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import play.api.mvc.Call
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @(appConfig: FrontendAppConfig,
-nextPage: Call)(implicit request: Request[_], messages: Messages)
+nextPage: Call,
+taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
         title = messages("partnerIncomeInfo.title"),
@@ -30,7 +32,7 @@ nextPage: Call)(implicit request: Request[_], messages: Messages)
         @components.heading("partnerIncomeInfo.heading", "heading-xlarge")
 
         <div class="panel-indent panel-border-wide">
-          <p>@messages("partnerIncomeInfo.tax_year")</p>
+          <p>@messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
         </div>
 
         <p>@messages("partnerIncomeInfo.guidance")</p>

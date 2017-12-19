@@ -23,11 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
 
+  val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
 
@@ -36,7 +38,8 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       messagesApi,
       dataRetrievalAction,
       new FakeNavigator(onwardRoute),
-      new DataRequiredActionImpl)
+      new DataRequiredActionImpl,
+      taxYearInfo)
 
   "PartnerIncomeInfo Controller" must {
     "return OK and the correct view for a GET" in {
@@ -51,7 +54,7 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        partnerIncomeInfo(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode))(fakeRequest, messages).toString
+        partnerIncomeInfo(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode), taxYearInfo)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
