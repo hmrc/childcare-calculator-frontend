@@ -109,10 +109,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
   private def childIsBlind(answers: UserAnswers, count: Int, key: Int): Option[Boolean] = count match {
     case 1 => answers.registeredBlind
-    case _ => {
-      val result = answers.whichChildrenBlind.get.exists(Set(key))
-      Some(result)
-    }
+    case _ => answers.whichChildrenBlind.map(blindChildren => blindChildren.exists(Set(key)))
   }
 
   private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
