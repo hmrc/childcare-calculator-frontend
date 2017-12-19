@@ -663,6 +663,7 @@ bothPaidWorkPY.heading = Were you, your partner, or both of you in paid work in 
 bothPaidWorkPY.checkYourAnswersLabel = Were you, your partner, or both of you in paid work in the previous year?
 bothPaidWorkPY.error = Select yes if you, your partner, or both of you were in paid work in the previous year
 bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
 partnerAnyOtherIncomeLY.title = Did your partner get any other income in the previous year?
 partnerAnyOtherIncomeLY.heading = Did your partner get any other income in the previous year?
@@ -1167,7 +1168,6 @@ result.esc.not.eligible.para2 = Your employer may be able to help you with child
 
 result.not.eligible.title = You are not eligible for:
 
-
 whoWasInPaidWorkPY.title = Who was in paid work?
 whoWasInPaidWorkPY.heading = Who was in paid work?
 whoWasInPaidWorkPY.you = You
@@ -1175,4 +1175,3 @@ whoWasInPaidWorkPY.partner = Partner
 whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
 whoWasInPaidWorkPY.error = Select who was in paid work
-
