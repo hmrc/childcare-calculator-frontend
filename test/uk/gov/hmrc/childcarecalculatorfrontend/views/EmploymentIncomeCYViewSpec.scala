@@ -53,4 +53,14 @@ class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncome
     val doc = asDocument(createView())
     assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
   }
+
+  "contain the currencySymbol class and £ " in {
+    val doc = asDocument(createView())
+    val parentCurrencySymbol = doc.getElementById("parentEmploymentIncomeCY").firstElementSibling().text()
+    val partnerCurrencySymbol = doc.getElementById("partnerEmploymentIncomeCY").firstElementSibling().text()
+
+    parentCurrencySymbol mustBe "£"
+    partnerCurrencySymbol mustBe "£"
+
+  }
 }
