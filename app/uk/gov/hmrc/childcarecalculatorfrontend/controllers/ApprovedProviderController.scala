@@ -42,11 +42,20 @@ class ApprovedProviderController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+
+      val childcareCosts = request.userAnswers.childcareCosts.fold(YesNoNotYetEnum.YES)(costs => {
+        val notYet = YesNoNotYetEnum.NOTYET.toString()
+        costs match {
+          case notYet => YesNoNotYetEnum.NOTYET
+          case _ => YesNoNotYetEnum.YES
+        }
+      })
+
       val preparedForm = request.userAnswers.approvedProvider match {
         case None => ApprovedProviderForm()
         case Some(value) => ApprovedProviderForm().fill(value)
       }
-      Ok(approvedProvider(appConfig, preparedForm,YesNoNotYetEnum.YES, mode))
+      Ok(approvedProvider(appConfig, preparedForm,childcareCosts, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {

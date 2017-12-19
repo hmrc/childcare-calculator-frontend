@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ApprovedProviderId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ApprovedProviderId, ChildcareCostsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
@@ -54,6 +54,15 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(ApprovedProviderForm().fill(ApprovedProviderForm.options.head.value))
+    }
+
+    "populate the view correctly on a GET when we have NOT YET on childcare costs" in {
+      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString),ApprovedProviderId.toString -> JsString(ApprovedProviderForm.options.head.value))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+
+      contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.NOTYET, NormalMode)(fakeRequest, messages).toString
     }
 
     "redirect to the next page when valid data is submitted" in {
