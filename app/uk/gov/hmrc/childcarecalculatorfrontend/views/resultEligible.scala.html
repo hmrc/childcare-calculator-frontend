@@ -19,14 +19,16 @@
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
-
+@location = @{model.location.getOrElse("").toString}
+println("**************** location ::: "+location)
 
 @if(model.freeHours.isDefined) {
+
     @components.scheme_result(
         title = messages("result.free.hours.title"),
         couldGet = Some(messages("result.general.could.get")),
         eligibility = Some(model.freeHours.fold(BigDecimal(0))(identity) + " " + messages("result.free.hours.hours")),
-        periodText = Some(messages("result.free.hours.period")),
+        periodText = Some(messages(s"result.free.hours.period.$location")),
         para1 = Some(messages("result.free.hours.para1")),
         para2 = Some(messages("result.free.hours.para2")))
 }

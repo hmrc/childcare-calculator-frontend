@@ -1137,11 +1137,15 @@ result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.read.more.info = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
 
-result.general.could.get = You could get
+result.general.could.get = You could get up to
 
 result.free.hours.title = Free childcare hours
 result.free.hours.hours = hours
-result.free.hours.period =  free childcare a week - {0} hours a year
+result.free.hours.period =  free childcare a week hours a year
+result.free.hours.period.england =  free childcare a week {0} hours a year
+result.free.hours.period.wales =  free childcare a week
+result.free.hours.period.scotland =  free childcare a week
+result.free.hours.period.northern-ireland =  12 and a half hours free childcare a week
 result.free.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 result.free.hours.para2 = You could also get 15 hours free childcare a week (1,140 hours a year) for your 2 year old if you are on certain benefits. You can take up the offer the term following your child’s 2nd birthday.
 
