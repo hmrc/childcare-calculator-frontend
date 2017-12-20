@@ -23,9 +23,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, WhoIsInPaidEmploymentId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothIncomeInfoPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
+
+  val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
 
@@ -34,7 +37,8 @@ class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
       messagesApi,
       dataRetrievalAction,
       new FakeNavigator(desiredRoute = onwardRoute),
-      new DataRequiredActionImpl)
+      new DataRequiredActionImpl,
+      taxYearInfo)
 
   "PartnerIncomeInfoPY Controller" must {
     "return OK and the correct view for a GET" in {
@@ -49,8 +53,7 @@ class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
       status(result) mustBe OK
       contentAsString(result) mustBe
         bothIncomeInfoPY(frontendAppConfig,
-          routes.PartnerPaidWorkPYController.onPageLoad(NormalMode))(fakeRequest, messages).toString
-
+          routes.PartnerPaidWorkPYController.onPageLoad(NormalMode), taxYearInfo)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

@@ -20,23 +20,31 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomePY
 
 class ParentEmploymentIncomePYViewSpec extends BigDecimalViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val form = new ParentEmploymentIncomePYForm(frontendAppConfig).apply()
   val messageKeyPrefix = "parentEmploymentIncomePY"
 
-  def createView = () => parentEmploymentIncomePY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => parentEmploymentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => parentEmploymentIncomePY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => parentEmploymentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "ParentEmploymentIncomePY view" must {
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "hint")
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 
     behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.ParentEmploymentIncomePYController.onSubmit(NormalMode).url)
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
+    }
   }
 }

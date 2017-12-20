@@ -26,17 +26,21 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentEmploymentIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
 
 class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
+
+  val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentEmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl,new ParentEmploymentIncomeCYForm(frontendAppConfig))
+      dataRetrievalAction, new DataRequiredActionImpl,new ParentEmploymentIncomeCYForm(frontendAppConfig), taxYearInfo)
 
-  def viewAsString(form: Form[BigDecimal] =  new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()) = parentEmploymentIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] =  new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()) =
+    parentEmploymentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   val testNumber = 123
 

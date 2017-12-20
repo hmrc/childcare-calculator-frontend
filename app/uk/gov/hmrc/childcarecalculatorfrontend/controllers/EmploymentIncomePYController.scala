@@ -26,19 +26,20 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EmploymentIncomePYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, EmploymentIncomePY}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 
 import scala.concurrent.Future
 
 class EmploymentIncomePYController @Inject()(appConfig: FrontendAppConfig,
-                                                  override val messagesApi: MessagesApi,
-                                                  dataCacheConnector: DataCacheConnector,
-                                                  navigator: Navigator,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  form: EmploymentIncomePYForm) extends FrontendController with I18nSupport {
+                                             override val messagesApi: MessagesApi,
+                                             dataCacheConnector: DataCacheConnector,
+                                             navigator: Navigator,
+                                             getData: DataRetrievalAction,
+                                             requireData: DataRequiredAction,
+                                             form: EmploymentIncomePYForm,
+                                             taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -46,14 +47,14 @@ class EmploymentIncomePYController @Inject()(appConfig: FrontendAppConfig,
         case None => form()
         case Some(value) => form().fill(value)
       }
-      Ok(employmentIncomePY(appConfig, preparedForm, mode))
+      Ok(employmentIncomePY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       form().bindFromRequest().fold(
         (formWithErrors: Form[EmploymentIncomePY]) =>
-          Future.successful(BadRequest(employmentIncomePY(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(employmentIncomePY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[EmploymentIncomePY](request.sessionId, EmploymentIncomePYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(EmploymentIncomePYId, mode)(new UserAnswers(cacheMap))))
