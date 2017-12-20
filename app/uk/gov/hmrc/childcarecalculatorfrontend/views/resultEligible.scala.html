@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
@@ -24,14 +25,16 @@
 
 @if(model.freeHours.isDefined) {
 
-    @defining(if(location.toString.equals("england") && model.freeHours.contains(noOfFreeHours15)) {totalNoOfHoursAYear} else {2*totalNoOfHoursAYear}) { noOfHoursInAYear =>
+    @defining(if(location.toString.equals(Location.ENGLAND.toString) && model.freeHours.contains(noOfFreeHours15)) {totalNoOfHoursAYear} else {2*totalNoOfHoursAYear}) { noOfHoursInAYear =>
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             couldGet = Some(messages("result.you.could.get.up.to")),
             eligibility = Some(model.freeHours.fold(BigDecimal(0))(identity) + " " + messages("result.free.hours.hours")),
-            periodText = if(location.toString.equals("england")){Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {Some(messages(s"result.free.hours.period.$location"))},
+            periodText = if(location.toString.equals(Location.ENGLAND.toString)){
+                            Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {
+                            Some(messages(s"result.free.hours.period.$location"))},
             para1 = Some(messages("result.free.hours.para1")),
-            para2 = Some(messages("result.free.hours.para2")))
+            para2 = if(location.toString.equals(Location.ENGLAND.toString)) {Some(messages("result.free.hours.para2"))} else {None})
     }
 }
 
