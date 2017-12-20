@@ -39,6 +39,22 @@ class HowMuchBothPayPensionViewSpec extends QuestionViewBehaviours[HowMuchBothPa
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.HowMuchBothPayPensionController.onSubmit(NormalMode).url, "howMuchYouPayPension", "howMuchPartnerPayPension")
+    behave like pageWithTextFields(createViewUsingForm,
+      messageKeyPrefix,
+      routes.HowMuchBothPayPensionController.onSubmit(NormalMode).url,
+      "howMuchYouPayPension", "howMuchPartnerPayPension")
+
+    "contain the currencySymbol class and £ for parent and partner input text boxes" in {
+      val doc = asDocument(createView())
+
+      assertRenderedByCssSelector(doc, ".currencySymbol")
+
+      val parentCurrencySymbol = doc.getElementById("howMuchYouPayPension").firstElementSibling().text()
+      val partnerCurrencySymbol = doc.getElementById("howMuchPartnerPayPension").firstElementSibling().text()
+
+      parentCurrencySymbol mustBe "£"
+      partnerCurrencySymbol mustBe "£"
+    }
   }
+
 }

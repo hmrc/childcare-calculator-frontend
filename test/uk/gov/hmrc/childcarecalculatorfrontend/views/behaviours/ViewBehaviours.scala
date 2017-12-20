@@ -23,7 +23,7 @@ trait ViewBehaviours extends ViewSpecBase {
 
   def normalPage(view: () => HtmlFormat.Appendable,
                  messageKeyPrefix: String,
-                 expectedGuidanceKeys: String*) = {
+                 expectedGuidanceKeys: String*) {
 
     "behave like a normal page" when {
       "rendered" must {
@@ -62,13 +62,30 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def normalPageWithCurrencySymbol(view: () => HtmlFormat.Appendable,
+                             messageKeyPrefix: String,
+                             expectedGuidanceKeys: String*) {
+
+    normalPage(view, messageKeyPrefix, expectedGuidanceKeys: _*)
+
+    "behave like a currency symbol page" when {
+      "rendered" must {
+        "display the £ sign and have currencySymbol class" in {
+          val doc = asDocument(view())
+          assertRenderedByCssSelector(doc, ".currencySymbol")
+          assertContainsText(doc, "£")
+        }
+      }
+    }
+  }
+
   def normalPageWithTitleAsString(
                                    view: () => HtmlFormat.Appendable,
                                    messageKeyPrefix: String,
                                    title: String,
                                    heading: Option[String] = None,
                                    expectedGuidanceKeys: Seq[String] = Seq()
-                                 ) = {
+                                 ) {
 
     "behave like a normal page" when {
       "rendered" must {
@@ -81,7 +98,7 @@ trait ViewBehaviours extends ViewSpecBase {
 
         "display the correct browser title" in {
           val doc = asDocument(view())
-          assertEqualsValue(doc, "title", title +" - "+messagesApi("site.service_name")+" - GOV.UK")
+          assertEqualsValue(doc, "title", title + " - " + messagesApi("site.service_name") + " - GOV.UK")
         }
 
         "display the correct page title" in {
@@ -107,7 +124,7 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
-  def pageWithBackLink(view: () => HtmlFormat.Appendable) = {
+  def pageWithBackLink(view: () => HtmlFormat.Appendable) {
 
     "behave like a page with a back link" must {
       "have a back link" in {

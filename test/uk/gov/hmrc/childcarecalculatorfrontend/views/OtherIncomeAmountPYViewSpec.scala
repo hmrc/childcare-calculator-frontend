@@ -40,6 +40,28 @@ class OtherIncomeAmountPYViewSpec extends QuestionViewBehaviours[OtherIncomeAmou
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.OtherIncomeAmountPYController.onSubmit(NormalMode).url, "parentOtherIncomeAmountPY", "partnerOtherIncomeAmountPY")
+    behave like pageWithTextFields(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.OtherIncomeAmountPYController.onSubmit(NormalMode).url,
+      "parentOtherIncomeAmountPY", "partnerOtherIncomeAmountPY")
+  }
+
+  "contain the currencySymbol class and £ " in {
+    val doc = asDocument(createView())
+
+    assertRenderedByCssSelector(doc, ".currencySymbol")
+
+    val parentCurrencySymbol = doc.getElementById("parentOtherIncomeAmountPY").firstElementSibling().text()
+    val partnerCurrencySymbol = doc.getElementById("partnerOtherIncomeAmountPY").firstElementSibling().text()
+
+    parentCurrencySymbol mustBe "£"
+    partnerCurrencySymbol mustBe "£"
+
   }
 }
+
+
+
+  
+
