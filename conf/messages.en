@@ -1134,6 +1134,7 @@ result.guidance = You told the calculator that you have children, with childcare
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.read.more.info = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
+result.about.your.results = More about the schemes you’re eligible for
 
 result.general.could.get = You could get
 
@@ -1175,3 +1176,8 @@ whoWasInPaidWorkPY.partner = Partner
 whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
 whoWasInPaidWorkPY.error = Select who was in paid work
+
+
+aboutYourResults.title = How these options could work for you
+aboutYourResults.heading = How these options could work for you
+
