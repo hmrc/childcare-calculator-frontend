@@ -46,7 +46,6 @@ class MaximumHoursNavigator @Inject() (
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
-    PaidEmploymentId -> paidEmploymentRoute,
     WhoIsInPaidEmploymentId -> whoIsInPaidWorkRoute,
     ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
     PartnerWorkHoursId -> partnerWorkHoursRoute,
@@ -79,11 +78,12 @@ class MaximumHoursNavigator @Inject() (
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
   val Both: String = YouPartnerBothEnum.BOTH.toString
+  val Neither: String = YouPartnerBothEnum.NEITHER.toString
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
 
   private def doYouLiveRoute(answers: UserAnswers): Call = {
     if (answers.doYouLiveWithPartner.contains(true)) {
-      routes.PaidEmploymentController.onPageLoad(NormalMode)
+      routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
     } else {
       routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
     }
@@ -97,19 +97,12 @@ class MaximumHoursNavigator @Inject() (
     }
   }
 
-  private def paidEmploymentRoute(answers: UserAnswers): Call = {
-    if (answers.paidEmployment.contains(true)) {
-      routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
-    } else {
-      routes.FreeHoursResultController.onPageLoad()
-    }
-  }
 
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call = {
-    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
-      routes.ParentWorkHoursController.onPageLoad(NormalMode)
-    } else {
-      routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+    answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
+      case You => routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      case Partner | Both => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      case Neither => routes.FreeHoursResultController.onPageLoad()
     }
   }
 

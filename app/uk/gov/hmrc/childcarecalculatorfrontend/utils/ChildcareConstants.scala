@@ -27,6 +27,7 @@ object ChildcareConstants {
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
   val Both: String = YouPartnerBothEnum.BOTH.toString
+  val Neither: String = YouPartnerBothEnum.NEITHER.toString
 
   val Yes: String = YesNoUnsureEnum.YES.toString
   val No: String = YesNoUnsureEnum.NO.toString

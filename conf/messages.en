@@ -209,6 +209,7 @@ whoIsInPaidEmployment.heading = Who’s in paid work?
 whoIsInPaidEmployment.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
 whoIsInPaidEmployment.you = You
 whoIsInPaidEmployment.partner = Partner
+whoIsInPaidEmployment.neither = Neither
 whoIsInPaidEmployment.both = Both
 whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
 whoIsInPaidEmployment.error = Select who’s in paid work

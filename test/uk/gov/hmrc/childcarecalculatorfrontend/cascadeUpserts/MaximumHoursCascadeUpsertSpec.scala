@@ -135,14 +135,9 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
   }
 
-  "saving the are you your partner, or both of you in paid work" must {
-    "remove an existing who's in paid work, parent work hours, partner work hours, parents adjusted tax code, partners adjusted tax code," +
-      "either child care vouchers, who gets childcare vouchers, your childcare vouchers, partner childcare vouchers, do you get benefits, " +
-      "your age, partners age and all you, partner,both pages data in employment, pensions, other income, and " +
-      " benefits flow when paid employment is no" in {
-
-      // Both In Paid Employment
-      val originalCacheMap1 = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("both"), ParentWorkHoursId.toString -> JsString("12"),
+  "saving the whoIsInPaidEmployment" must {
+    "Do data clearance for Neither" in {
+      val originalCacheMap1 = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
         PartnerWorkHoursId.toString -> JsString("12"), HasYourTaxCodeBeenAdjustedId.toString ->  JsString(yes), HasYourPartnersTaxCodeBeenAdjustedId.toString ->  JsString(yes),
         DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
         WhatIsYourTaxCodeId.toString -> JsString("1100L"), WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), EitherGetsVouchersId.toString -> JsString("yes"),
@@ -175,10 +170,9 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20)))) //TODO Add in Statutory Data
 
       // Partner In Paid Employment
-      val originalCacheMap2 = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("partner"),
-        PartnerWorkHoursId.toString -> JsString("12"), HasYourPartnersTaxCodeBeenAdjustedId.toString ->  JsString(yes),
-       DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-       WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L") , PartnerChildcareVouchersId.toString->JsString("yes"),
+      val originalCacheMap2 = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12"), HasYourPartnersTaxCodeBeenAdjustedId.toString ->  JsString(yes),
+        DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+        WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L") , PartnerChildcareVouchersId.toString->JsString("yes"),
         DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),  YourPartnersAgeId.toString -> JsString("under18"),
         PartnerMinimumEarningsId.toString -> JsBoolean(false),
@@ -200,11 +194,11 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
         PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
-        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
+        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
 
       // You In Paid Employment
-      val originalCacheMap3 = new CacheMap("id", Map(WhoIsInPaidEmploymentId.toString -> JsString("you"), ParentWorkHoursId.toString -> JsString("12"),
-         HasYourTaxCodeBeenAdjustedId.toString ->  JsString(yes), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
+      val originalCacheMap3 = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
+        HasYourTaxCodeBeenAdjustedId.toString ->  JsString(yes), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
         WhatIsYourTaxCodeId.toString -> JsString("1100L"),   YourChildcareVouchersId.toString -> JsString("yes"),
         DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true), WhoGetsBenefitsId.toString -> JsString("you"),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"),
@@ -226,21 +220,20 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         YourOtherIncomeLYId.toString -> JsBoolean(true),
         YouAnyTheseBenefitsPYId.toString ->JsBoolean(true),
-        YouBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
+        YouBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
 
 
-      val result1 = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap1)
-      result1.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+      val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothEnum.NEITHER.toString, originalCacheMap1)
+      result1.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.NEITHER.toString))
 
-      val result2 = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap2)
-      result2.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+      val result2 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothEnum.NEITHER.toString, originalCacheMap2)
+      result2.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.NEITHER.toString))
 
-      val result3 = cascadeUpsert(PaidEmploymentId.toString, false, originalCacheMap3)
-      result3.data mustBe Map(PaidEmploymentId.toString -> JsBoolean(false))
+      val result3 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothEnum.NEITHER.toString, originalCacheMap3)
+      result3.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.NEITHER.toString))
     }
-  }
 
-  "saving the whoIsInPaidEmployment" must {
+
     "remove an existing partner work hours, partners adjusted tax code, partner min and max earnings, employment," +
       " pension,benefits CY and PY when whoIsInPaidEmployment is you" in {
 
