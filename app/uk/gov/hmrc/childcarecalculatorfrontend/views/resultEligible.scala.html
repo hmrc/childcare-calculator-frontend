@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
@@ -23,7 +24,7 @@
 
 @if(model.freeHours.isDefined) {
 
-    @defining(if(location.toString.equals("england") && model.freeHours.contains(15)) {570} else {1140}) { noOfHoursInAYear =>
+    @defining(if(location.toString.equals("england") && model.freeHours.contains(noOfFreeHours15)) {totalNoOfHoursAYear} else {2*totalNoOfHoursAYear}) { noOfHoursInAYear =>
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             couldGet = Some(messages("result.you.could.get.up.to")),
