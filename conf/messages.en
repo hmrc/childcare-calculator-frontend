@@ -1135,7 +1135,7 @@ result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.more.info.title = How these schemes could work for you
 result.more.info.para = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
-result.about.your.results = More about the schemes you’re eligible for
+result.read.more.button = Read more
 
 result.general.could.get = You could get
 
@@ -1181,4 +1181,5 @@ whoWasInPaidWorkPY.error = Select who was in paid work
 
 aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
+aboutYourResults.return.link = Return to results
 

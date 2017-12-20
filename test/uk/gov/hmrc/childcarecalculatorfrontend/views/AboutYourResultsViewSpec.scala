@@ -16,15 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
 class AboutYourResultsViewSpec extends ViewBehaviours {
 
-  def view = () => aboutYourResults(frontendAppConfig)(fakeRequest, messages)
+  def createView = () => aboutYourResults(frontendAppConfig)(fakeRequest, messages)
 
   "AboutYourResults view" must {
 
-    behave like normalPage(view, "aboutYourResults")
+    behave like normalPage(createView, "aboutYourResults")
+
+    "contain back to results link" in {
+
+      val doc = asDocument(createView())
+
+      doc.getElementById("returnToResults").text() mustBe messages("aboutYourResults.return.link")
+      doc.getElementById("returnToResults").attr("href") mustBe ResultController.onPageLoad().url
+    }
   }
 }

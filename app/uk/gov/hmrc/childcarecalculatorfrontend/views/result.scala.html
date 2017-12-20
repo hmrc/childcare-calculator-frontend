@@ -55,5 +55,9 @@
 
     <p>@messages("result.more.info.para")</p>
 
-    <p><a id="aboutYourResults" href="@AboutYourResultsController.onPageLoad()">@messages("result.about.your.results")</a></p>
+    @components.button_link(
+        messageKey = "result.read.more.button",
+        id = "aboutYourResults",
+        href = AboutYourResultsController.onPageLoad()
+    )
 }

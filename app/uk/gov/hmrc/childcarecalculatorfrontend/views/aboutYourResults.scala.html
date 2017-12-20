@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
 @(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
@@ -24,4 +25,10 @@
     bodyClasses = None) {
 
     <h1 class="heading-xlarge">@messages("aboutYourResults.heading")</h1>
+
+    @components.button_link(
+        messageKey = "aboutYourResults.return.link",
+        id = "returnToResults",
+        href = ResultController.onPageLoad()
+    )
 }

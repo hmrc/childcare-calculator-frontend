@@ -54,7 +54,7 @@ class ResultViewSpec extends ViewBehaviours {
       val model = ResultsViewModel(freeHours = Some(15))
       val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
 
-      view.getElementById("aboutYourResults").text() mustBe messages("result.about.your.results")
+      view.getElementById("aboutYourResults").text() mustBe messages("result.read.more.button")
       view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
     }
   }
