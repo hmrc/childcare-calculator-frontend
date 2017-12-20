@@ -16,20 +16,45 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import org.scalatest.mockito.MockitoSugar
+import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
-class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase {
+class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
+
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+
+  val tfc = mock[TaxFreeChildcare]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new MaxFreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+    new MaxFreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl, tfc)
+
+
 
   "MaxFreeHoursInfo Controller" must {
+
+    "return OK and eligible for childcare vouchers and correct view for a GET " in {
+
+
+      when(tfc.eligibility(any())) thenReturn Eligible
+
+      val result = controller().onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible)(fakeRequest, messages).toString()
+
+    }
+
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
