@@ -39,14 +39,14 @@
         @components.input_number(
             InputViewModel[HowMuchBothPayPensionPY]("howMuchYouPayPensionPY", form),
             currencySymbol=Some("true"),
-            label = messages("howMuchBothPayPensionPY.yourPension"),
-            labelClass=Some("visually-hidden"))
+            label = messages("howMuchBothPayPensionPY.yourPension")
+            )
 
         @components.input_number(
             InputViewModel[HowMuchBothPayPensionPY]("howMuchPartnerPayPensionPY", form),
             currencySymbol=Some("true"),
-            label = messages("howMuchBothPayPensionPY.partnerPension"),
-            labelClass=Some("visually-hidden"))
+            label = messages("howMuchBothPayPensionPY.partnerPension")
+            )
 
         @components.submit_button()
     }
