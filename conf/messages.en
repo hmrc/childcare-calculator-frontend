@@ -472,8 +472,11 @@ maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a wee
 maxFreeHoursInfo.info = If you're here only to find out about 30 hours free childcare, you can read more information before applying for it.
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
+maxFreeHoursInfo.li.vouchers = childcare vouchers
+maxFreeHoursInfo.li.tfc = Tax-Free Childcare
+maxFreeHoursInfo.li.tax_credits = tax credits
 maxFreeHoursInfo.still.to.check = Still to check
-maxFreeHoursInfo.give.more.info = You’re also eligible for Tax-Free Childcare, tax credits and childcare vouchers. Give the calculator more information to see how much you could get or save from these schemes.
+maxFreeHoursInfo.give.more.info = You are eligible for help from other schemes. By giving more information, the calculator can now check to see how much you can get from:
 
 yourOtherIncomeThisYear.title = Will you get any other income this year?
 yourOtherIncomeThisYear.heading = Will you get any other income this year?

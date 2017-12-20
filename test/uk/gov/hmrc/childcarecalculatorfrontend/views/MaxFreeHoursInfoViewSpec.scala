@@ -28,7 +28,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
   "MaxFreeHoursInfo view" must {
 
 
-    behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "still.to.check")
+    behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "li.vouchers", "li.tfc", "li.tax_credits", "still.to.check")
   }
 
 }
