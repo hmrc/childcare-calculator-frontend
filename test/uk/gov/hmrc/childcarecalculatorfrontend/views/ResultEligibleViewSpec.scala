@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import java.text.DecimalFormat
+
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
@@ -78,7 +80,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsText(view, messages("result.free.hours.title"))
         assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))
-        assertContainsText(view, messages("result.free.hours.period.england", 1140))
+        assertContainsText(view, messages("result.free.hours.period.england", new DecimalFormat("##,###").format(1140)))
         assertContainsText(view, messages("result.free.hours.para1"))
         assertContainsText(view, messages("result.free.hours.para2"))
 

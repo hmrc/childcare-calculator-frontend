@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import java.text.DecimalFormat
+
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
 
 object ChildcareConstants {
@@ -49,6 +51,7 @@ object ChildcareConstants {
 
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
+  val valueFormatter = new java.text.DecimalFormat("##,###")
 
   val unknownErrorKey = "error.unknown"
 

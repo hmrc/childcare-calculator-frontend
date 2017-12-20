@@ -25,7 +25,8 @@
 
 @if(model.freeHours.isDefined) {
 
-    @defining(if(location.toString.equals(Location.ENGLAND.toString) && model.freeHours.contains(noOfFreeHours15)) {totalNoOfHoursAYear} else {2*totalNoOfHoursAYear}) { noOfHoursInAYear =>
+    @defining(if(location.toString.equals(Location.ENGLAND.toString) && model.freeHours.contains(noOfFreeHours15)) {
+                totalNoOfHoursAYear} else {valueFormatter.format(2*totalNoOfHoursAYear)}) { noOfHoursInAYear =>
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             couldGet = Some(messages("result.you.could.get.up.to")),
