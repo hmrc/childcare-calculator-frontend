@@ -49,22 +49,29 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
     OtherIncomeAmountPYId -> howMuchBothOtherIncomeRoutePY
   )
 
-  private def yourOtherIncomeRouteCY(answers: UserAnswers) =
+  private def yourOtherIncomeRouteCY(answers: UserAnswers) = {
+
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val eligibleCall = if (hasPartner) { routes.BothIncomeInfoPYController.onPageLoad()}
+                      else {routes.YourIncomeInfoPYController.onPageLoad()}
+    val notEligibleCall = routes.ResultController.onPageLoad()
+
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+      case false => processTaxCreditsEligibility(answers, eligibleCall, notEligibleCall)
     }
+  }
 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
       case true => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+      case false => processTaxCreditsEligibility(answers, routes.BothIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
     }
 
   private def bothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.bothOtherIncomeThisYear) {
       case true => routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+      case false => processTaxCreditsEligibility(answers, routes.BothIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
     }
 
   private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
@@ -74,11 +81,24 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
       case Both => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
     }
 
-  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers, answers.yourOtherIncomeAmountCY,routes.YourIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+  private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val successRoute = if (hasPartner) { routes.BothIncomeInfoPYController.onPageLoad()}
+                      else {routes.YourIncomeInfoPYController.onPageLoad()}
+    val failureRoute =   routes.ResultController.onPageLoad()
 
-  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.partnerOtherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+    processCall(answers, answers.yourOtherIncomeAmountCY, successRoute, failureRoute)
+  }
 
-  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) = processCall(answers,answers.otherIncomeAmountCY,routes.PartnerIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+  private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
+    processCall(answers,answers.partnerOtherIncomeAmountCY,
+      routes.BothIncomeInfoPYController.onPageLoad(),
+      routes.ResultController.onPageLoad())
+
+  private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
+    processCall(answers,answers.otherIncomeAmountCY,
+      routes.BothIncomeInfoPYController.onPageLoad(),
+      routes.ResultController.onPageLoad())
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
     utils.getCall(answersType) {

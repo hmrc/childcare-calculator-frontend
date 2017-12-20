@@ -46,7 +46,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(32)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = Some(StatutoryIncome(13, 2600)))),
@@ -64,7 +64,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(18)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = None)),
@@ -82,7 +82,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(18)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = Some(StatutoryIncome(18, 3600))))
@@ -100,7 +100,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(35)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = Some(StatutoryIncome(19, 3800))))
@@ -119,7 +119,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(18)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -142,7 +142,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(35)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -166,7 +166,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.partnerStatutoryWeeks) thenReturn Some(18)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -189,7 +189,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.partnerStatutoryWeeks) thenReturn Some(35)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -213,11 +213,11 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(18)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.partnerStatutoryWeeks) thenReturn Some(18)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -239,11 +239,11 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(35)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 11, 20))
       when(answers.partnerStatutoryWeeks) thenReturn Some(35)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -265,7 +265,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(32)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -290,7 +290,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.partnerStatutoryWeeks) thenReturn Some(32)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -314,11 +314,11 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(32)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.partnerStatutoryWeeks) thenReturn Some(9)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -342,7 +342,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 2, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(32)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = None)),
@@ -359,7 +359,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.yourStatutoryWeeks) thenReturn Some(8)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = Some(StatutoryIncome(8, 1600))))
@@ -376,7 +376,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.yourStatutoryWeeks) thenReturn Some(39)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = Some(StatutoryIncome(33, 6600))))
@@ -394,7 +394,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.yourStatutoryWeeks) thenReturn Some(10)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -416,7 +416,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.partnerStatutoryWeeks) thenReturn Some(10)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -438,11 +438,11 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.yourStatutoryWeeks) thenReturn Some(10)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.partnerStatutoryWeeks) thenReturn Some(29)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -464,7 +464,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.YOU)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.yourStatutoryWeeks) thenReturn Some(39)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -486,7 +486,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.PARTNER)
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.partnerStatutoryWeeks) thenReturn Some(39)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -508,11 +508,11 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.whoGotStatutoryPay) thenReturn Some(YouPartnerBothEnum.BOTH)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.yourStatutoryWeeks) thenReturn Some(39)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(cy, 8, 12))
       when(answers.partnerStatutoryWeeks) thenReturn Some(39)
-      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(
         parent = Claimant(
@@ -532,7 +532,7 @@ class HouseholdSpec extends SchemeSpec with MockitoSugar with OptionValues with 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(cy-1, 11, 20))
       when(answers.yourStatutoryWeeks) thenReturn Some(32)
-      when(answers.yourStatutoryPayPerWeek) thenReturn Some(200)
+      when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
 
       Household(answers, taxCredits) mustBe Household(parent = new Claimant(
         currentYearlyIncome = Some(Income(statutoryIncome = None)),

@@ -106,8 +106,8 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
   private def YourStatutoryPayBeforeTaxRoute(answers: UserAnswers) = {
     utils.getCall(answers.yourStatutoryPayBeforeTax) {
-      case "true" => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
-      case "false" =>  nextPageForYourStatutoryPayBeforeTaxNoSelection(answers)
+      case true => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
+      case false =>  nextPageForYourStatutoryPayBeforeTaxNoSelection(answers)
     }
   }
 
@@ -128,8 +128,8 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
 
   private def partnerStatutoryPayBeforeTaxRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerStatutoryPayBeforeTax) {
-      case "true" => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode)
-      case "false" =>  routes.ResultController.onPageLoad()
+      case true => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode)
+      case false =>  routes.ResultController.onPageLoad()
     }
 
   private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) = {

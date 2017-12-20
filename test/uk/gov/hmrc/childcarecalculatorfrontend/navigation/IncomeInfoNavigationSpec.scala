@@ -22,7 +22,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId, PartnerIncomeInfoPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId, BothIncomeInfoPYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -48,7 +48,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
             routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
         }
 
-        "return ParentPaidWorkCY page when partner in paid work and lives with partner" in {
+        "return ParentPaidWorkCY page when partner in paid work and lives with partneBothOtherIncomeThisYearIdr" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
@@ -83,41 +83,27 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
 
     "in Normal mode" must {
       "NextPageUrlPY" must {
-        "return PartnerPaidWorkPY page when parent in paid work and lives with partner" in {
+        "return BothPaidWorkPY page when parent/partner/both in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You) thenReturn Some(Partner) thenReturn Some(Both)
 
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
+            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
+            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
+            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
         }
 
-        "return ParentPaidWorkPY page when partner in paid work and lives with partner" in {
+        "return sessionExpired page when user lives with partner and value is not present" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+          when(answers.doYouLiveWithPartner) thenReturn None
 
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
-        }
-
-        "return EmploymentIncomePY page when both in paid work and lives with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.EmploymentIncomePYController.onPageLoad(NormalMode)
-        }
-
-        "return sessionExpired page when there is no value for paid work and lives with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn None
-
-          navigator.nextPage(PartnerIncomeInfoPYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
+
       }
     }
 

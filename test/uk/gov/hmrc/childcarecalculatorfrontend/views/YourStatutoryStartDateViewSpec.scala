@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.DateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
@@ -30,11 +30,11 @@ class YourStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
 
   val statutoryType = "maternity"
 
-  def createView = () => yourStatutoryStartDate(frontendAppConfig, YourStatutoryStartDateForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => yourStatutoryStartDate(frontendAppConfig, YourStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[LocalDate]) => yourStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = YourStatutoryStartDateForm()
+  val form = YourStatutoryStartDateForm(statutoryType)
 
   "YourStatutoryStartDate view" must {
 

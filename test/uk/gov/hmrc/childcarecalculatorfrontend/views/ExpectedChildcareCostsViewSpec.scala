@@ -66,7 +66,7 @@ class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like intPage(
+    behave like bigDecimalPage(
       createViewUsingForm,
       messageKeyPrefix,
       routes.ExpectedChildcareCostsController.onSubmit(NormalMode, 0).url,

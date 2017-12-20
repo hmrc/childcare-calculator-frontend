@@ -17,17 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import org.joda.time.LocalDate
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
-
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
-
 import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits._
-
 
 //Note :- The order of these classes need to preserved to ensure json formatters are prepared in the correct order
 case class StatutoryIncome(
@@ -36,7 +33,7 @@ case class StatutoryIncome(
                           )
 
 object StatutoryIncome {
-  implicit val formatStatutoryIncome = Json.format[StatutoryIncome]
+  implicit val formatStatutoryIncome: OFormat[StatutoryIncome] = Json.format[StatutoryIncome]
 }
 
 case class Income(
@@ -49,7 +46,7 @@ case class Income(
                  )
 
 object Income {
-  implicit val formatIncome = Json.format[Income]
+  implicit val formatIncome: OFormat[Income] = Json.format[Income]
 }
 
 case class Benefits(
@@ -60,7 +57,7 @@ case class Benefits(
                    )
 
 object Benefits {
-  implicit val formatBenefits = Json.format[Benefits]
+  implicit val formatBenefits: OFormat[Benefits] = Json.format[Benefits]
 
   def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
     data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
@@ -82,7 +79,7 @@ case class MinimumEarnings(
                           )
 
 object MinimumEarnings {
-  implicit val formatMinimumEarnings = Json.format[MinimumEarnings]
+  implicit val formatMinimumEarnings: OFormat[MinimumEarnings] = Json.format[MinimumEarnings]
 }
 
 case class Disability(
@@ -92,41 +89,53 @@ case class Disability(
                      )
 
 object Disability {
-  implicit val formatDisability = Json.format[Disability]
+  implicit val formatDisability: OFormat[Disability] = Json.format[Disability]
 
-  def populateFromRawData(currentChildIndex: Int, disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Set[Int]] = None) : Option[Disability] = {
-   disabilities.map(childrenWithDisabilities => checkIfChildHasDisabilities(currentChildIndex, blindChildren, childrenWithDisabilities)) match {
-     case Some(Disability(false,false,false)) => None
-     case childDisabilities => childDisabilities
-   }
+  def populateFromRawData(currentChildIndex: Int, disabilities: Option[Map[Int, Set[DisabilityBenefits.Value]]], blindChildren: Option[Boolean] = None):
+  Option[Disability] = {
+    disabilities match {
+      case None => blindChildren match {
+        case Some(true) => Some(Disability(false, false, true))
+        case _ => None
+      }
+      case Some(_) =>
+        disabilities.map(childrenWithDisabilities =>
+          checkIfChildHasDisabilities(currentChildIndex, blindChildren, childrenWithDisabilities)) match {
+          case Some(Disability(false, false, false)) => None
+          case childDisabilities => childDisabilities
+        }
+    }
   }
 
-  private def checkIfChildHasDisabilities(currentChildIndex: Int, blindChildren: Option[Set[Int]], childrenWithDisabilities: Map[Int, Set[DisabilityBenefits.Value]]) = {
+  private def checkIfChildHasDisabilities(currentChildIndex: Int, blindChildren: Option[Boolean], childrenWithDisabilities:
+    Map[Int, Set[DisabilityBenefits.Value]]) = {
     childrenWithDisabilities.get(currentChildIndex) match {
       case Some(disabilities) => checkDisabilities(disabilities, blindChildren, currentChildIndex)
       case _ => Disability()
     }
+
   }
 
-  private def checkDisabilities(disabilities: Set[DisabilityBenefits.Value], blindChildren: Option[Set[Int]], currentChildIndex: Int) = {
-    disabilities.foldLeft(Disability())((disabilities,currentDisability) => {
-      val childDisabilities = checkDisabilityType(currentDisability,disabilities)
-      checkIfBlind(blindChildren,childDisabilities,currentChildIndex)
+  private def checkDisabilities(disabilities: Set[DisabilityBenefits.Value], blindChildren: Option[Boolean], currentChildIndex: Int) = {
+    disabilities.foldLeft(Disability())((disabilities, currentDisability) => {
+      checkDisabilityType(currentDisability, disabilities, blindChildren)
     })
   }
 
-  private def checkDisabilityType(disabilityType: DisabilityBenefits.Value, childDisabilities: Disability) : Disability = {
-    disabilityType match {
+  private def checkDisabilityType(disabilityType: DisabilityBenefits.Value, childDisabilities: Disability, blindChildren: Option[Boolean]): Disability = {
+    val disabilities = disabilityType match {
       case DISABILITY_BENEFITS => childDisabilities.copy(disabled = true)
       case HIGHER_DISABILITY_BENEFITS => childDisabilities.copy(severelyDisabled = true)
     }
+
+    blindChildren match {
+      case Some(true) => disabilities.copy(blind = true)
+      case Some(false) => disabilities
+      case None => disabilities
+    }
+
   }
 
-  private def checkIfBlind(blindChildren: Option[Set[Int]],childDisabilities: Disability, currentChildIndex : Int) : Disability = {
-    blindChildren.fold(childDisabilities)(childrenWithBlindDisability => {
-      childrenWithBlindDisability.find(childIndex=> childIndex == currentChildIndex).fold(childDisabilities)(_ => childDisabilities.copy(blind = true))
-    })
-  }
 }
 
 case class ChildCareCost(
@@ -135,7 +144,7 @@ case class ChildCareCost(
                         )
 
 object ChildCareCost {
-  implicit val formatChildCareCost = Json.format[ChildCareCost]
+  implicit val formatChildCareCost: OFormat[ChildCareCost] = Json.format[ChildCareCost]
 }
 
 case class Education(
@@ -144,7 +153,7 @@ case class Education(
                     )
 
 object Education {
-  implicit val formatEducation = Json.format[Education]
+  implicit val formatEducation: OFormat[Education] = Json.format[Education]
 }
 
 case class Child(
@@ -157,7 +166,7 @@ case class Child(
                 )
 
 object Child {
-  implicit val formatChild = Json.format[Child]
+  implicit val formatChild: OFormat[Child] = Json.format[Child]
 }
 
 case class Claimant(
@@ -172,7 +181,7 @@ case class Claimant(
                    )
 
 object Claimant {
-  implicit val formatClaimant = Json.format[Claimant]
+  implicit val formatClaimant: OFormat[Claimant] = Json.format[Claimant]
 }
 
 case class Household(
@@ -184,5 +193,5 @@ case class Household(
                     )
 
 object Household {
-  implicit val formatHousehold = Json.format[Household]
+  implicit val formatHousehold: OFormat[Household] = Json.format[Household]
 }

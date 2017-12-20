@@ -96,8 +96,8 @@ package object forms {
       }
     }
 
-    def replaceError(error: String, message: String): Mapping[A] =
-      replaceError(FormError(mapping.key, error), FormError(mapping.key, message))
+    def replaceError(error: String, message: String, args: Any*): Mapping[A] =
+      replaceError(FormError(mapping.key, error), FormError(mapping.key, message, args))
   }
 
   implicit class WithPrefix(formError: FormError) {

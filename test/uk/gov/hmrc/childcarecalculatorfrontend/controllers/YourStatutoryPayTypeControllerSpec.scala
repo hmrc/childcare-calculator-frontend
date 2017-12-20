@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayTypeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryPayTypeId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayType
 
 class YourStatutoryPayTypeControllerSpec extends ControllerSpecBase {
@@ -36,7 +36,7 @@ class YourStatutoryPayTypeControllerSpec extends ControllerSpecBase {
     new YourStatutoryPayTypeController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = YourStatutoryPayTypeForm()) = yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = YourStatutoryPayTypeForm()) = yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "YourStatutoryPayType Controller" must {
 
@@ -53,7 +53,7 @@ class YourStatutoryPayTypeControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YourStatutoryPayTypeForm().fill(YourStatutoryPayTypeForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(YourStatutoryPayTypeForm().fill(StatutoryPayTypeEnum.MATERNITY))
     }
 
     "redirect to the next page when valid data is submitted" in {

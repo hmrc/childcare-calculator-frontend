@@ -32,15 +32,19 @@ class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString() -> JsString(statutoryType))
+  private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString() -> JsString(statutoryType.toString))
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  private val retrievalAction = new FakeDataRetrievalAction(
+    Some(CacheMap("id", statutoryTypeNameValuePair))
+  )
+
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryWeeksController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = PartnerStatutoryWeeksForm()) = partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = PartnerStatutoryWeeksForm(statutoryType)) = partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 1
 
   "PartnerStatutoryWeeks Controller" must {
 
@@ -57,7 +61,7 @@ class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerStatutoryWeeksForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(PartnerStatutoryWeeksForm(statutoryType).fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -71,7 +75,7 @@ class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = PartnerStatutoryWeeksForm().bind(Map("value" -> "invalid value"))
+      val boundForm = PartnerStatutoryWeeksForm(statutoryType).bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 

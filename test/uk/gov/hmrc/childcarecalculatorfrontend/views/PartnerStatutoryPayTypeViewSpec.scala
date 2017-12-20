@@ -28,7 +28,7 @@ class PartnerStatutoryPayTypeViewSpec extends ViewBehaviours {
 
   def createView = () => partnerStatutoryPayType(frontendAppConfig, PartnerStatutoryPayTypeForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => partnerStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[_]) => partnerStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "PartnerStatutoryPayType view" must {
     behave like normalPage(createView, messageKeyPrefix)

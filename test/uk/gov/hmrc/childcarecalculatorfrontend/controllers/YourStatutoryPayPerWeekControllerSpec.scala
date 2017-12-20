@@ -38,9 +38,13 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
 
   private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
 
+  private val retrievalAction = new FakeDataRetrievalAction(
+    Some(CacheMap("id", statutoryTypeNameValuePair))
+  )
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryPayPerWeekController(frontendAppConfig,
       messagesApi,
       FakeDataCacheConnector,
@@ -48,10 +52,10 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
       dataRetrievalAction,
       new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Int] = YourStatutoryPayPerWeekForm()) =
+  def viewAsString(form: Form[BigDecimal] = YourStatutoryPayPerWeekForm(statutoryType)) =
     yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 123.45
 
   "YourStatutoryPayPerWeek Controller" must {
 
@@ -67,7 +71,7 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YourStatutoryPayPerWeekForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(YourStatutoryPayPerWeekForm(statutoryType).fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -81,7 +85,7 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = YourStatutoryPayPerWeekForm().bind(Map("value" -> "invalid value"))
+      val boundForm = YourStatutoryPayPerWeekForm(statutoryType).bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 

@@ -20,6 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible,NotEligible}
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 
 @(appConfig: FrontendAppConfig,
@@ -38,24 +39,17 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
     @if(eligibility == Eligible) {
 
-        <div class="grid-row">
-            <div class="column-full">
-                <div class="panel panel-border-wide green">
-                    <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.fh")</h2>
-                    <p>@messages("freeHoursResult.info.fh.lead") <span class="heading-xlarge results">@messages(s"freeHoursResult.info.entitled.${location}") </span> @messages("freeHoursResult.info.fh.exit")</p>
-                     <p>@messages(s"freeHoursResult.partialEligible.guidance.${location}")</p>
-                </div>
-            </div>
-        </div>
 
-        <div class="grid-row">
-            <div class="column-full">
-                <div class="panel panel-border-wide red">
-                    <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
-                    <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
-                </div>
-            </div>
-        </div>
+        @components.scheme_result(
+            title = messages("freeHoursResult.info.fh"),
+            couldGet = Some(messages("freeHoursResult.info.fh.lead")),
+            eligibility = Some(messages(s"freeHoursResult.info.entitled.${location}")),
+            periodText = Some(messages("freeHoursResult.info.fh.exit")),
+            para1 = Some(messages(s"freeHoursResult.partialEligible.guidance.${location}")))
+
+        @components.scheme_result(
+            title = messages("freeHoursResult.info.OtherSchemes"),
+            para1 = Some(messages("freeHoursResult.info.OtherSchemes.text")))
 
 
     } else {

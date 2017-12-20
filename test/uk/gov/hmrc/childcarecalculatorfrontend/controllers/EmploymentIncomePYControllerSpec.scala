@@ -25,19 +25,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EmploymentIncomePYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, EmploymentIncomePY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 
 class EmploymentIncomePYControllerSpec extends ControllerSpecBase {
+
+  val taxYearInfo = new TaxYearInfo
 
   val employmentIncomeForm = new EmploymentIncomePYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new EmploymentIncomePYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new EmploymentIncomePYForm(frontendAppConfig))
+      dataRetrievalAction, new DataRequiredActionImpl, new EmploymentIncomePYForm(frontendAppConfig), taxYearInfo)
 
-  def viewAsString(form: Form[EmploymentIncomePY] = employmentIncomeForm) = employmentIncomePY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[EmploymentIncomePY] = employmentIncomeForm) = employmentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "EmploymentIncomePY Controller" must {
 
