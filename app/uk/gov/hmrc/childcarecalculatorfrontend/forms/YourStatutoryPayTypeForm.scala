@@ -19,31 +19,32 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.unknownErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 
 object YourStatutoryPayTypeForm extends FormErrorHelper {
 
-  def YourStatutoryPayTypeFormatter = new Formatter[String] {
+  val errorKey = "yourStatutoryPayType.error"
+
+  def apply(): Form[StatutoryPayTypeEnum.Value] =
+    Form(single("value" -> of(StatutoryPayTypeFormatter)))
+
+  def options: Seq[InputOption] = StatutoryPayTypeEnum.values.map {
+    value =>
+      InputOption("statutoryPayType", value.toString)
+  }.toSeq
+
+  private def StatutoryPayTypeFormatter = new Formatter[StatutoryPayTypeEnum.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, yourStatutoryPayTypeErrorKey)
-      case _ => produceError(key, "error.unknown")
+      case Some(s) if optionIsValid(s) => Right(StatutoryPayTypeEnum.withName(s))
+      case None => produceError(key, errorKey)
+      case _ => produceError(key, unknownErrorKey)
     }
 
-    def unbind(key: String, value: String) = Map(key -> value)
+    def unbind(key: String, value: StatutoryPayTypeEnum.Value) = Map(key -> value.toString)
   }
 
-  def apply(): Form[String] = 
-    Form(single("value" -> of(YourStatutoryPayTypeFormatter)))
-
-  def options = Seq(
-    InputOption("yourStatutoryPayType", "maternity"),
-    InputOption("yourStatutoryPayType", "paternity"),
-    InputOption("yourStatutoryPayType", "adoption"),
-    InputOption("yourStatutoryPayType", "shared-parental")
-  )
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

@@ -134,10 +134,10 @@ object Claimant {
     }
 
   private def getPayPerWeek(answers: UserAnswers,
-                            partnerMode: Boolean = false) = if (partnerMode) {
-      answers.partnerStatutoryPayPerWeek.getOrElse(0)
+                            partnerMode: Boolean = false): BigDecimal = if (partnerMode) {
+      answers.partnerStatutoryPayPerWeek.getOrElse(0.0)
     } else {
-      answers.yourStatutoryPayPerWeek.getOrElse(0)
+      answers.yourStatutoryPayPerWeek.getOrElse(0.0)
     }
 
   private def getTaxYear(date: LocalDate) = {

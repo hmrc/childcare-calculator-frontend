@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 
-class PartnerStatutoryPayBeforeTaxFormSpec extends FormBehaviours {
+class ResultsViewModelSpec extends SpecBase {
 
-  val validData: Map[String, String] = Map(
-    "value" -> PartnerStatutoryPayBeforeTaxForm.options.head.value
-  )
+  "ResultViewModel" must {
+    "return correct number of eligible schemes" in {
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None)
+      resultsView.noOfEligibleSchemes mustBe 2
+    }
 
-  val form = PartnerStatutoryPayBeforeTaxForm()
-
-  "PartnerStatutoryPayBeforeTax form" must {
-    behave like questionForm[String](PartnerStatutoryPayBeforeTaxForm.options.head.value)
-
-    behave like formWithOptionField("value", PartnerStatutoryPayBeforeTaxForm.options.map{x => x.value}:_*)
+    "return number of eligible schemes 0 when there is no eligible scheme" in {
+      val resultsView = ResultsViewModel()
+      resultsView.noOfEligibleSchemes mustBe 0
+    }
   }
 }

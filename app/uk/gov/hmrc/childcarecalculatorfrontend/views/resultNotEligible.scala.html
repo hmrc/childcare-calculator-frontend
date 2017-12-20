@@ -1,0 +1,54 @@
+@*
+ * Copyright 2017 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@import uk.gov.hmrc.play.views.html._
+
+@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+
+
+
+@if(!model.freeHours.isDefined) {
+    @components.scheme_result(
+    title = messages("result.free.hours.title"),
+    para1 = Some(messages("result.free.hours.not.eligible")),
+    notEligibleID1 = Some("notEligibleFreeHours"))
+}
+
+@if(!model.tc.isDefined) {
+    @components.scheme_result(
+    title = messages("result.tc.title"),
+    para1 = Some(messages("result.tc.not.eligible.para1")),
+    para2 = Some(messages("result.tc.not.eligible.para2")),
+    notEligibleID1 = Some("notEligibleTC1"),
+    notEligibleID2 = Some("notEligibleTC2"))
+}
+
+@if(!model.tfc.isDefined) {
+    @components.scheme_result(
+    title = messages("result.tfc.title"),
+    para1 = Some(messages("result.free.hours.not.eligible")),
+    notEligibleID1 = Some("notEligibleTFC"))
+}
+
+@if(!model.esc.isDefined) {
+    @components.scheme_result(
+    title = messages("result.esc.title"),
+    para1 = Some(messages("result.esc.not.eligible.para1")),
+    para2 = Some(messages("result.esc.not.eligible.para2")),
+    notEligibleID1 = Some("notEligibleESC1"),
+    notEligibleID2 = Some("notEligibleESC2"))
+}

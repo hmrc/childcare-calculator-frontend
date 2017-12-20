@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 /**
   * Contains the navigation for current and previous year employment income pages
@@ -40,7 +41,9 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
     PartnerPaidWorkPYId -> partnerPaidWorkPYRoute,
     ParentPaidWorkPYId -> parentPaidWorkPYRoute,
     PartnerEmploymentIncomePYId -> partnerEmploymentIncomePYRoute,
-    EmploymentIncomePYId -> employmentIncomePYRoute
+    EmploymentIncomePYId -> employmentIncomePYRoute,
+    BothPaidWorkPYId -> bothPaidWorkPYRoute,
+    WhoWasInPaidWorkPYId -> whoWasInPaidWorkRoute
   )
 
   private def partnerPaidWorkCYRoute(answers: UserAnswers) =
@@ -72,4 +75,17 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def employmentIncomePYRoute(answers: UserAnswers) =
     utils.getCall(answers.employmentIncomePY) {case _=>  routes.BothPaidPensionPYController.onPageLoad(NormalMode)}
+
+  private def bothPaidWorkPYRoute(answers: UserAnswers) =
+    utils.getCall(answers.bothPaidWorkPY) {
+      case true => routes.WhoWasInPaidWorkPYController.onPageLoad(NormalMode)
+      case false => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+    }
+
+  private def whoWasInPaidWorkRoute(answers: UserAnswers) =
+    utils.getCall(answers.whoWasInPaidWorkPY) {
+      case You => routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+      case Partner => routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+      case Both => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
+    }
 }

@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryWeeksForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
@@ -29,11 +29,11 @@ class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryWeeks"
 
-  def createView = () => partnerStatutoryWeeks(frontendAppConfig, PartnerStatutoryWeeksForm(), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => partnerStatutoryWeeks(frontendAppConfig, PartnerStatutoryWeeksForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = PartnerStatutoryWeeksForm()
+  val form = PartnerStatutoryWeeksForm(statutoryType)
 
   "PartnerStatutoryWeeks view" must {
     behave like normalPageWithTitleAsString(
@@ -48,6 +48,6 @@ class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
     behave like intPage(createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerStatutoryWeeksController.onSubmit(NormalMode).url,
-      messageDynamicValue = Some(statutoryType))
+      messageDynamicValue = Some(statutoryType.toString))
   }
 }

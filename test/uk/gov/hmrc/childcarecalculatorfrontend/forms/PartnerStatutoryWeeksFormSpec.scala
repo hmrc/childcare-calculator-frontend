@@ -18,50 +18,43 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 class PartnerStatutoryWeeksFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
-  val errorKeyDecimal = "decimal"
-  val errorKeyNonNumeric = "must be a whole number"
+  val statutoryType = "maternity"
+  val errorInvalid = error("value", "partnerStatutoryWeeks.invalid", statutoryType)
+  val errorRequired = error("value", "partnerStatutoryWeeks.required", statutoryType)
 
   "PartnerStatutoryWeeks Form" must {
 
-    "bind zero" in {
-      val form = PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "0"))
-      form.get shouldBe 0
-    }
-
-    "bind positive numbers" in {
-      val form = PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "1"))
+    "bind numbers in range" in {
+      val form = PartnerStatutoryWeeksForm(statutoryType).bind(Map("value" -> "1"))
       form.get shouldBe 1
     }
 
-    "bind positive, comma separated numbers" in {
-      val form = PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric).bind(Map("value" -> "10,000"))
-      form.get shouldBe 10000
+    "fail to bind numbers below the threshold" in {
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "0"), errorInvalid)
+    }
+
+    "fail to bind numbers above the threshold" in {
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "49"), errorInvalid)
     }
 
     "fail to bind negative numbers" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "-1"), expectedError)
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "-1"), errorInvalid)
     }
 
     "fail to bind non-numerics" in {
-      val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "not a number"), expectedError)
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "not a number"), errorInvalid)
     }
 
     "fail to bind a blank value" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> ""), expectedError)
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> ""), errorRequired)
     }
 
     "fail to bind when value is omitted" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), emptyForm, expectedError)
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), emptyForm, errorRequired)
     }
 
     "fail to bind decimal numbers" in {
-      val expectedError = error("value", errorKeyDecimal)
-      checkForError(PartnerStatutoryWeeksForm(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric), Map("value" -> "123.45"), expectedError)
+      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "1.23"), errorInvalid)
     }
   }
 }

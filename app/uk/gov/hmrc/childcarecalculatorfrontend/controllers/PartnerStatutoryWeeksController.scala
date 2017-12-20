@@ -19,13 +19,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.Inject
 
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.mvc.{RequestHeader, Result}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryWeeksId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
@@ -40,29 +42,42 @@ class PartnerStatutoryWeeksController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+
+  private def validateStatutoryPayType[A](block: (String) => Future[Result])
+                                         (implicit request: DataRequest[A]): Future[Result] = {
+
+    request.userAnswers.partnerStatutoryPayType.map {
+      payType => block(Messages(s"statutoryPayTypeLower.$payType"))
+    }.getOrElse(sessionExpired)
+  }
+
+  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+      validateStatutoryPayType {
+        statutoryType =>
 
-      val statutoryType = request.userAnswers.partnerStatutoryPayType.getOrElse("")
-
-      val preparedForm = request.userAnswers.partnerStatutoryWeeks match {
-        case None => PartnerStatutoryWeeksForm()
-        case Some(value) => PartnerStatutoryWeeksForm().fill(value)
+          val preparedForm = request.userAnswers.partnerStatutoryWeeks match {
+            case None => PartnerStatutoryWeeksForm(statutoryType)
+            case Some(value) => PartnerStatutoryWeeksForm(statutoryType).fill(value)
+          }
+          Future.successful(Ok(partnerStatutoryWeeks(appConfig, preparedForm, mode, statutoryType)))
       }
-      Ok(partnerStatutoryWeeks(appConfig, preparedForm, mode, statutoryType))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+      validateStatutoryPayType {
+        statutoryType =>
 
-      val statutoryType = request.userAnswers.partnerStatutoryPayType.getOrElse("")
-
-      PartnerStatutoryWeeksForm().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) =>
-          Future.successful(BadRequest(partnerStatutoryWeeks(appConfig, formWithErrors, mode, statutoryType))),
-        (value) =>
-          dataCacheConnector.save[Int](request.sessionId, PartnerStatutoryWeeksId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerStatutoryWeeksId, mode)(new UserAnswers(cacheMap))))
-      )
+          PartnerStatutoryWeeksForm(statutoryType).bindFromRequest().fold(
+            (formWithErrors: Form[Int]) =>
+              Future.successful(BadRequest(partnerStatutoryWeeks(appConfig, formWithErrors, mode, statutoryType))),
+            (value) =>
+              dataCacheConnector.save[Int](request.sessionId, PartnerStatutoryWeeksId.toString, value).map(cacheMap =>
+                Redirect(navigator.nextPage(PartnerStatutoryWeeksId, mode)(new UserAnswers(cacheMap))))
+          )
+      }
   }
 }

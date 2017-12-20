@@ -21,19 +21,52 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youStatutoryPay
 
 class YouStatutoryPayViewSpec extends YesNoViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val messageKeyPrefix = "youStatutoryPay"
 
-  def createView = () => youStatutoryPay(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => youStatutoryPay(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => youStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => youStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "youStatutoryPay view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    "have the correct banner title" in {
+      val doc = asDocument(createView())
+      val nav = doc.getElementById("proposition-menu")
+      val span = nav.children.first
+      span.text mustBe messagesApi("site.service_name")
+    }
+
+    "display the correct browser title" in {
+      val doc = asDocument(createView())
+      assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title", taxYearInfo.previousTaxYearStart) + " - " + messagesApi("site.service_name")+" - GOV.UK")
+    }
+
+    "display the correct page title" in {
+      val doc = asDocument(createView())
+      assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", taxYearInfo.previousTaxYearStart)
+    }
+
+    "display the correct guidance" in {
+      val doc = asDocument(createView())
+      for (key <- Seq("guidance", "guidance_extra")) assertContainsText(doc, messages(s"statutoryPay.$key"))
+    }
+
+    "display a beta banner" in {
+      val doc = asDocument(createView())
+      assertRenderedByCssSelector(doc, ".beta-banner")
+    }
+
+    "not display HMRC branding" in {
+      val doc = asDocument(createView())
+      assertNotRenderedByCssSelector(doc, ".organisation-logo")
+    }
 
     behave like pageWithBackLink(createView)
 

@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
-case class ResultsViewModel(tc: Option[BigDecimal] = None,
+case class ResultsViewModel(firstParagraph : String = "",
+                            tc: Option[BigDecimal] = None,
                             tfc:Option[BigDecimal] = None,
                             esc:Option[BigDecimal] = None,
-                            freeHours:Option[BigDecimal] = None)
+                            freeHours:Option[BigDecimal] = None) {
 
+  def noOfEligibleSchemes = List(tc, tfc, esc, freeHours).flatten.size
+}
