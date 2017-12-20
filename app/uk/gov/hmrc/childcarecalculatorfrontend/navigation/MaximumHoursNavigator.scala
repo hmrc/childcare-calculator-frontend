@@ -78,6 +78,7 @@ class MaximumHoursNavigator @Inject() (
   val You: String = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
   val Both: String = YouPartnerBothEnum.BOTH.toString
+  val Neither: String = YouPartnerBothEnum.NEITHER.toString
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
 
   private def doYouLiveRoute(answers: UserAnswers): Call = {
@@ -98,10 +99,10 @@ class MaximumHoursNavigator @Inject() (
 
 
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call = {
-    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {
-      routes.ParentWorkHoursController.onPageLoad(NormalMode)
-    } else {
-      routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+    answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
+      case You => routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      case Partner | Both => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      case Neither => routes.FreeHoursResultController.onPageLoad()
     }
   }
 

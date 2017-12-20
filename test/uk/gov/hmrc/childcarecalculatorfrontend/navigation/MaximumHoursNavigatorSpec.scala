@@ -238,6 +238,12 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouInPaidWork) thenReturn Some(false)
       navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
     }
+
+    "user selects 'Neither' from who is in paid employment" in {
+      val answers = spy(userAnswers())
+      when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.NEITHER.toString)
+      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+    }
   }
 
   "go to who is in paid employment from do you live with partner when user selects yes" in {

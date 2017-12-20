@@ -292,11 +292,13 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     val You: String = YouPartnerBothEnum.YOU.toString
     val Partner: String = YouPartnerBothEnum.PARTNER.toString
     val Both: String = YouPartnerBothEnum.BOTH.toString
+    val Neither: String = YouPartnerBothEnum.NEITHER.toString
 
     who match {
       case Some(You) => You
       case Some(Partner) => Partner
       case Some(Both) => Both
+      case Some(Neither) => Neither
       case _ => You
     }
   }
