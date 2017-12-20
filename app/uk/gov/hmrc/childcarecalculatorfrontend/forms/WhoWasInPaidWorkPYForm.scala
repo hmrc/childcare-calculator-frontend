@@ -19,26 +19,29 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object YourStatutoryPayBeforeTaxForm extends FormErrorHelper {
+object WhoWasInPaidWorkPYForm extends FormErrorHelper {
 
-  def YourStatutoryPayBeforeTaxFormatter = new Formatter[String] {
+  def WhoWasInPaidWorkPYFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, "error.required")
-      case _ => produceError(key, "error.unknown")
+      case None => produceError(key, whoWasInPaidWorkErrorKey)
+      case _ => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(YourStatutoryPayBeforeTaxFormatter)))
+    Form(single("value" -> of(WhoWasInPaidWorkPYFormatter)))
 
   def options = Seq(
-    InputOption("yourStatutoryPayBeforeTax", "true"),
-    InputOption("yourStatutoryPayBeforeTax", "false")
+    InputOption("whoWasInPaidWorkPY", YouPartnerBothEnum.YOU.toString),
+    InputOption("whoWasInPaidWorkPY", YouPartnerBothEnum.PARTNER.toString),
+    InputOption("whoWasInPaidWorkPY", YouPartnerBothEnum.BOTH.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

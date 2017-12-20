@@ -20,13 +20,15 @@ import org.joda.time.LocalDate
 
 class PartnerStatutoryStartDateFormSpec extends FormSpec {
 
+  val statutoryType = "maternity"
+
   val validData: Map[String, String] = Map(
     "date.day"   -> "1",
     "date.month" -> "2",
     "date.year"  -> "2017"
   )
 
-  val form = PartnerStatutoryStartDateForm()
+  val form = PartnerStatutoryStartDateForm(statutoryType)
 
 
   "PartnerStatutoryStartDate Form" must {
@@ -37,7 +39,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec {
 
     "fail to bind when the date is omitted" in {
       val data = Map.empty[String, String]
-      val expectedError = error("date", "partnerStatutoryStartDate.error")
+      val expectedError = error("date", "partnerStatutoryStartDate.error.required", statutoryType)
       checkForError(form, data, expectedError)
     }
 
@@ -47,7 +49,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec {
         "date.month" -> "",
         "date.year"  -> ""
       )
-      val expectedError = error("date", "partnerStatutoryStartDate.error")
+      val expectedError = error("date", "partnerStatutoryStartDate.error.required", statutoryType)
       checkForError(form, data, expectedError)
     }
 
@@ -57,7 +59,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec {
         "date.month" -> "2",
         "date.year"  -> "2017"
       )
-      val expectedError = error("date", "partnerStatutoryStartDate.error.invalid")
+      val expectedError = error("date", "partnerStatutoryStartDate.error.invalid", statutoryType)
       checkForError(form, data, expectedError)
     }
 
@@ -68,7 +70,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec {
         "date.month" -> futureDate.getMonthOfYear.toString,
         "date.year"  -> futureDate.getYear.toString
       )
-      val expectedError = error("date", "partnerStatutoryStartDate.error.invalid")
+      val expectedError = error("date", "partnerStatutoryStartDate.error.past", statutoryType)
       checkForError(form, data, expectedError)
     }
   }

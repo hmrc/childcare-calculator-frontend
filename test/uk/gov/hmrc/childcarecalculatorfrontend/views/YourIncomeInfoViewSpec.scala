@@ -18,17 +18,25 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 
 class YourIncomeInfoViewSpec extends ViewBehaviours {
 
-  def createView = () => yourIncomeInfo(frontendAppConfig)(fakeRequest, messages)
+  val taxYearInfo = new TaxYearInfo
+
+  def createView = () => yourIncomeInfo(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
   val messageKeyPrefix = "yourIncomeInfo"
 
   "Your Income Info view" must {
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
+    behave like normalPage(createView, messageKeyPrefix, "guidance",
       "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages("yourIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+    }
 
     "contain the link for parent paid work for current year" in {
       val doc = asDocument(createView())

@@ -33,13 +33,17 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
+  private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType.toString))
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  private val retrievalAction = new FakeDataRetrievalAction(
+    Some(CacheMap("id", statutoryTypeNameValuePair))
+  )
+
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryStartDateController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm()) =
+  def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)) =
     yourStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   "YourStatutoryStartDate Controller" must {
@@ -59,7 +63,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm().fill(new LocalDate(2017, 2, 1)))
+      contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm(statutoryType).fill(new LocalDate(2017, 2, 1)))
     }
 
     "populate the view correctly on a GET request" in {
@@ -94,7 +98,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = YourStatutoryStartDateForm().bind(Map("value" -> "invalid value"))
+      val boundForm = YourStatutoryStartDateForm(statutoryType).bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 

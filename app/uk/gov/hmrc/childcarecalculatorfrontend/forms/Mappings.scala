@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.joda.time.LocalDate
 import play.api.data.{FieldMapping, FormError}
 import play.api.data.Forms.of
 import play.api.data.format.Formatter
@@ -73,6 +74,14 @@ trait Mappings extends Formatters {
       minimumValue[A](minimum, errorKey, errorArgs: _*),
       maximumValue[A](maximum, errorKey, errorArgs: _*)
     )
+
+  protected def before(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
+    Constraint {
+      case d if d.isBefore(date) =>
+        Valid
+      case _ =>
+        Invalid(errorKey, errorArgs: _*)
+    }
 
   protected def decimal(requiredKey: String,
                         invalidKey: String,

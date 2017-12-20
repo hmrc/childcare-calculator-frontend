@@ -21,22 +21,30 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkPY
 
 class ParentPaidWorkPYViewSpec extends YesNoViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val messageKeyPrefix = "parentPaidWorkPY"
 
-  def createView = () => parentPaidWorkPY(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => parentPaidWorkPY(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => parentPaidWorkPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => parentPaidWorkPY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "ParentPaidWorkPY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "currentYear.startEndDate")
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ParentPaidWorkPYController.onSubmit(NormalMode).url)
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.previousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
+    }
   }
 }

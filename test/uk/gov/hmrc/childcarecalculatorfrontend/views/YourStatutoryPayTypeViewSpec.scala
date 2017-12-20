@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayTypeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayType
 
@@ -26,9 +26,11 @@ class YourStatutoryPayTypeViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "yourStatutoryPayType"
 
+  val statutoryType = StatutoryPayTypeEnum.MATERNITY
+
   def createView = () => yourStatutoryPayType(frontendAppConfig, YourStatutoryPayTypeForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[_]) => yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "YourStatutoryPayType view" must {
     behave like normalPage(createView, messageKeyPrefix)

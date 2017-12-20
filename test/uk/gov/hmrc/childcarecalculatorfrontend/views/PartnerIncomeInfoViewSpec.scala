@@ -17,20 +17,27 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 
 class PartnerIncomeInfoViewSpec extends ViewBehaviours {
 
-  def createView = () => partnerIncomeInfo(frontendAppConfig, Call("GET", "test"))(fakeRequest, messages)
-  def createViewWithNextPageLink = (nextPage: Call) => partnerIncomeInfo(frontendAppConfig, nextPage)(fakeRequest, messages)
+  val taxYearInfo = new TaxYearInfo
+
+  def createView = () => partnerIncomeInfo(frontendAppConfig, Call("GET", "test"), taxYearInfo)(fakeRequest, messages)
+  def createViewWithNextPageLink = (nextPage: Call) => partnerIncomeInfo(frontendAppConfig, nextPage, taxYearInfo)(fakeRequest, messages)
   val messageKeyPrefix = "partnerIncomeInfo"
 
   "Partner Income Info view" must {
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "guidance",
+    behave like normalPage(createView, messageKeyPrefix, "guidance",
       "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
   }
 
+  "contain tax year info" in {
+    val doc = asDocument(createView())
+    assertContainsText(doc, messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+  }
 
   "contain the link for next page" in {
     val testCall = Call("GET", "http://google.com")
