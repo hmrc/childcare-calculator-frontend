@@ -42,27 +42,21 @@ class ApprovedProviderController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-
-      val childcareCosts = request.userAnswers.childcareCosts.fold(YesNoNotYetEnum.YES)(costs => {
-        val notYet = YesNoNotYetEnum.NOTYET.toString()
-        costs match {
-          case notYet => YesNoNotYetEnum.NOTYET
-          case _ => YesNoNotYetEnum.YES
-        }
-      })
+      val childcareCostsMaybeInFuture = request.userAnswers.childcareCosts.getOrElse(false) ==  YesNoNotYetEnum.NOTYET.toString
 
       val preparedForm = request.userAnswers.approvedProvider match {
         case None => ApprovedProviderForm()
         case Some(value) => ApprovedProviderForm().fill(value)
       }
-      Ok(approvedProvider(appConfig, preparedForm,childcareCosts, mode))
+      Ok(approvedProvider(appConfig, preparedForm,childcareCostsMaybeInFuture, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       ApprovedProviderForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors,YesNoNotYetEnum.YES, mode))),
+        (formWithErrors: Form[String]) => {
+          val childcareCostsMaybeInFuture = request.userAnswers.childcareCosts.getOrElse(false) ==  YesNoNotYetEnum.NOTYET.toString
+          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors,childcareCostsMaybeInFuture, mode)))},
         (value) =>
           dataCacheConnector.save[String](request.sessionId, ApprovedProviderId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ApprovedProviderId, mode)(new UserAnswers(cacheMap))))

@@ -26,9 +26,9 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "approvedProvider"
 
-  def createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
+  def createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => approvedProvider(frontendAppConfig, form, YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => approvedProvider(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages)
 
   "ApprovedProvider view" must {
     behave like normalPage(createView, messageKeyPrefix, "hint")
@@ -47,14 +47,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
       "contain right title" when {
         "we have selected 'Not Yet but maybe in the furure'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.NOTYET, NormalMode)(fakeRequest, messages)
+          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title.future")+" - "+messagesApi("site.service_name")+" - GOV.UK")
         }
 
         "we have selected 'Yes'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
+          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title")+" - "+messagesApi("site.service_name")+" - GOV.UK")
@@ -63,14 +63,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
       "contain right heading" when {
         "cwe have selected 'Not Yet but maybe in the future'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.NOTYET, NormalMode)(fakeRequest, messages)
+          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "h1", messagesApi(s"$messageKeyPrefix.heading.future"))
         }
 
         "we have selected 'Yes'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
+          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "h1", messagesApi(s"$messageKeyPrefix.heading"))
@@ -79,14 +79,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
       "contain right legend" when {
         "we have selected 'Not Yet but maybe in the future'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.NOTYET, NormalMode)(fakeRequest, messages)
+          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "legend", messagesApi(s"$messageKeyPrefix.heading.future"))
         }
 
         "we have selected 'Yes'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages)
+          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "legend", messagesApi(s"$messageKeyPrefix.heading"))

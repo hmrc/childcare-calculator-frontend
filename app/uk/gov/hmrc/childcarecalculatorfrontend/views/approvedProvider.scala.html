@@ -23,10 +23,10 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[String], doYouHaveChildCareCosts: YesNoNotYetEnum.Value, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String], childcareCostsMaybeInFuture: Boolean, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = if(doYouHaveChildCareCosts == YesNoNotYetEnum.NOTYET) messages("approvedProvider.title.future") else messages("approvedProvider.title"),
+    title = if(childcareCostsMaybeInFuture) messages("approvedProvider.title.future") else messages("approvedProvider.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -34,7 +34,7 @@
 
     @components.error_summary(form.errors)
 
-    @if(doYouHaveChildCareCosts == YesNoNotYetEnum.NOTYET) {
+    @if(childcareCostsMaybeInFuture) {
         @components.heading("approvedProvider.heading.future", "heading-xlarge")
     }else{
         @components.heading("approvedProvider.heading", "heading-xlarge")
@@ -47,7 +47,7 @@
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
-            legend =  if(doYouHaveChildCareCosts == YesNoNotYetEnum.NOTYET) messages("approvedProvider.heading.future") else messages("approvedProvider.heading"),
+            legend =  if(childcareCostsMaybeInFuture) messages("approvedProvider.heading.future") else messages("approvedProvider.heading"),
             legendClass = Some("visually-hidden"),
             inputs = ApprovedProviderForm.options
         )

@@ -36,7 +36,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     new ApprovedProviderController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[String] = ApprovedProviderForm()) = approvedProvider(frontendAppConfig, form, YesNoNotYetEnum.YES, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = ApprovedProviderForm()) = approvedProvider(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages).toString
 
   "ApprovedProvider Controller" must {
 
@@ -57,12 +57,12 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when we have NOT YET on childcare costs" in {
-      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString),ApprovedProviderId.toString -> JsString(ApprovedProviderForm.options.head.value))
+      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), YesNoNotYetEnum.NOTYET, NormalMode)(fakeRequest, messages).toString
+      contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages).toString
     }
 
     "redirect to the next page when valid data is submitted" in {
