@@ -39,6 +39,7 @@ object YouPartnerBothEnum extends Enumeration {
   val YOU = Value("you")
   val PARTNER = Value("partner")
   val BOTH = Value("both")
+  val NEITHER = Value("neither")
 
   val enumReads: Reads[YouPartnerBothEnum] = EnumUtils.enumReads(YouPartnerBothEnum)
   val enumWrites: Writes[YouPartnerBothEnum] = EnumUtils.enumWrites
