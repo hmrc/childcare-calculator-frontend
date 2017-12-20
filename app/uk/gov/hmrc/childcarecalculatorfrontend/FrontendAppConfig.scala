@@ -71,8 +71,17 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   lazy val minNoWeeksStatPay: Int = configuration.getInt("noWeeksStatPay.min").
     getOrElse(throw new ConfigException.Missing("Missing configuration noWeeksStatPay.min"))
 
-  lazy val maxNoWeeksStatPay: Int = configuration.getInt("noWeeksStatPay.max").
-    getOrElse(throw new ConfigException.Missing("Missing configuration noWeeksStatPay.max"))
+  lazy val maxNoWeeksMaternityPay: Int = configuration.getInt("noWeeksStatPay.maternity").
+    getOrElse(throw new ConfigException.Missing("Missing configuration noWeeksStatPay.maternity"))
+
+  lazy val maxNoWeeksPaternityPay: Int = configuration.getInt("noWeeksStatPay.paternity").
+    getOrElse(throw new ConfigException.Missing("Missing configuration noWeeksStatPay.paternity"))
+
+  lazy val maxNoWeeksAdoptionPay: Int = configuration.getInt("noWeeksStatPay.adoption").
+    getOrElse(throw new ConfigException.Missing("Missing configuration noWeeksStatPay.adoption"))
+
+  lazy val maxNoWeeksSharedParentalPay: Int = configuration.getInt("noWeeksStatPay.sharedParental").
+    getOrElse(throw new ConfigException.Missing("Missing configuration noWeeksStatPay.sharedParental"))
 
   lazy val maxStatutoryPay: Double = configuration.getDouble("statutoryPay.max").
     getOrElse(throw new ConfigException.Missing("Missing configuration statutoryPay.max"))
