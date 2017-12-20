@@ -46,7 +46,6 @@ class MaximumHoursNavigator @Inject() (
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
-    PaidEmploymentId -> paidEmploymentRoute,
     WhoIsInPaidEmploymentId -> whoIsInPaidWorkRoute,
     ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
     PartnerWorkHoursId -> partnerWorkHoursRoute,
@@ -97,13 +96,6 @@ class MaximumHoursNavigator @Inject() (
     }
   }
 
-  private def paidEmploymentRoute(answers: UserAnswers): Call = {
-    if (answers.paidEmployment.contains(true)) {
-      routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
-    } else {
-      routes.FreeHoursResultController.onPageLoad()
-    }
-  }
 
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call = {
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(You)) {

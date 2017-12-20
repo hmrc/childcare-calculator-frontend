@@ -238,11 +238,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouInPaidWork) thenReturn Some(false)
       navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
     }
-    "user selects 'No' from paid employment" in {
-      val answers = spy(userAnswers())
-      when(answers.paidEmployment) thenReturn Some(false)
-      navigator.nextPage(PaidEmploymentId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
-    }
   }
 
   "go to who is in paid employment from do you live with partner when user selects yes" in {
@@ -251,11 +246,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     navigator.nextPage(DoYouLiveWithPartnerId, NormalMode).value(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
   }
 
-  "go to who is in paid employment from paid employment when user answers yes" in {
-    val answers = spy(userAnswers())
-    when(answers.paidEmployment) thenReturn Some(true)
-    navigator.nextPage(PaidEmploymentId, NormalMode).value(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
-  }
 
   "Go to Partner work hours" when {
     "user selects 'partner' or 'both' from who is in paid employment" in {
@@ -940,7 +930,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to prent self employed 12 months page when user have partner and select self employed" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
@@ -952,7 +941,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to partner max earning page when user have partner and partner satisfy minimum earning and parent select apprentice or neither" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(apprentice) thenReturn Some(neither)
@@ -967,7 +955,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to parent self employed 12 months page when user have partner and partner satisfy minimum earning and parent select self employed" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
@@ -980,7 +967,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to partner self employed or apprentice page when user have partner and parent select apprentice or neither" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(true)
@@ -999,7 +985,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to have your partner been self employed less than 12 months when user select self employed" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(selfEmployed)
@@ -1011,7 +996,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to tc/uc page when user select apprentice or neither on partner self employed or apprentice page" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
       when(answers.partnerSelfEmployedOrApprentice) thenReturn (Some(apprentice)) thenReturn (Some(neither))
@@ -1026,7 +1010,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to partner self employed 12 months page when user have partner and parent satisfy minimum earning and partner select self employed" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(true)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
@@ -1039,7 +1022,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to parent max earnings page when user have partner and parent satisfy minimum earning and partner select apprentice or neither" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(true)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
@@ -1055,7 +1037,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to tc/uc page when user have partner and both doesn't satisfy minimum earning and both select apprentice" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
@@ -1070,7 +1051,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to tc/uc page when user have partner and both doesn't satisfy minimum earning and both select neither" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
@@ -1085,7 +1065,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to tc/uc page when user have partner, parent select self employment and partner select apprentice" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
@@ -1100,7 +1079,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to tc/uc page when user have partner, parent select apprentice and partner select neither" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
@@ -1114,7 +1092,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "navigate to tc/uc page when user have partner, parent select neither and partner select apprentice" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.paidEmployment) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
       when(answers.yourMinimumEarnings) thenReturn Some(false)
       when(answers.partnerMinimumEarnings) thenReturn Some(false)
