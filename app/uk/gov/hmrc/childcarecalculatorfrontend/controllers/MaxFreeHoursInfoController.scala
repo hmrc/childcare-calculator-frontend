@@ -36,6 +36,8 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
 
-    Ok(maxFreeHoursInfo(appConfig, taxFreeChildcare.eligibility(request.userAnswers)))
+      val childcareVouchersEligibility = ???
+
+    Ok(maxFreeHoursInfo(appConfig, taxFreeChildcare.eligibility(request.userAnswers), childcareVouchersEligibility))
   }
 }

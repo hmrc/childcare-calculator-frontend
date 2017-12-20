@@ -24,14 +24,14 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "maxFreeHoursInfo"
 
-  def view = () => maxFreeHoursInfo(frontendAppConfig, Eligible )(fakeRequest, messages)
+  def view = () => maxFreeHoursInfo(frontendAppConfig, Eligible, true )(fakeRequest, messages)
 
   "MaxFreeHoursInfo view" must {
 
     behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "still.to.check")
 
     "display correct message when eligible for tax free chjldcare" in {
-      val view = maxFreeHoursInfo(frontendAppConfig, Eligible) (fakeRequest, messages)
+      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, true) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.taxFreeChildcare"))
 
     }

@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-@(appConfig: FrontendAppConfig, tfcEligibility: Eligibility)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, tfcEligibility: Eligibility, childcareVouchersEligibility: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("maxFreeHoursInfo.title"),

@@ -19,12 +19,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
+import play.api.libs.json.JsBoolean
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildcareCostsId, PaidEmploymentId, PartnerChildcareVouchersId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildCareCost, Eligible, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
 
@@ -39,22 +42,31 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
   "MaxFreeHoursInfo Controller" must {
 
-    "return OK and eligible for childcare vouchers and correct view for a GET " in {
-
+    "return OK and eligible for tax free childcare and correct view for a GET " in {
 
       when(tfc.eligibility(any())) thenReturn Eligible
-
       val result = controller().onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible)(fakeRequest, messages).toString()
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible, true)(fakeRequest, messages).toString()
+    }
+
+    "return OK and eligible for childcare vouchers and correct view for a GET " in {
+      val validData = Map(ChildcareCostsId.toString -> JsBoolean(true),
+                          PaidEmploymentId.toString -> JsBoolean(true),
+                          PartnerChildcareVouchersId.toString -> JsBoolean(true))
+      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible, true)(fakeRequest, messages).toString
 
     }
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible, true)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
