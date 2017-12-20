@@ -24,6 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothIncomeInfoPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothIncomeInfoPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
@@ -32,9 +33,10 @@ class BothIncomeInfoPYController @Inject()(val appConfig: FrontendAppConfig,
                                               val messagesApi: MessagesApi,
                                               getData: DataRetrievalAction,
                                               navigator: Navigator,
-                                              requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                              requireData: DataRequiredAction,
+                                              taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(bothIncomeInfoPY(appConfig, navigator.nextPage(BothIncomeInfoPYId, NormalMode)(request.userAnswers)))
+    Ok(bothIncomeInfoPY(appConfig, navigator.nextPage(BothIncomeInfoPYId, NormalMode)(request.userAnswers), taxYearInfo))
   }
 }

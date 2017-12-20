@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
-@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, location: Location.Value)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, isChildAgedThreeOrFour :Boolean, hasChildcareCosts : Boolean, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursInfo.title"),
@@ -38,13 +38,18 @@
 
     <!-- These lists need to have logic around to only show certain ones if no costs or not approved costs -->
     <ul class="bullets">
-        <li>@messages("freeHoursInfo.li.30hours")</li>
-        @if(isChildAgedTwo) {
+        @if(isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts == false) {
+          <li>@messages("freeHoursInfo.li.30hours")</li>
+        }
+        @if(isChildAgedTwo && location != Location.NORTHERN_IRELAND) {
             <li>@messages("freeHoursInfo.li.2year")</li>
         }
-        <li>@messages("freeHoursInfo.li.vouchers")</li>
-        <li>@messages("freeHoursInfo.li.tfc")</li>
-        <li>@messages("freeHoursInfo.li.tax_credits")</li>
+
+        @if(hasChildcareCosts) {
+            <li>@messages("freeHoursInfo.li.vouchers")</li>
+            <li>@messages("freeHoursInfo.li.tfc")</li>
+            <li>@messages("freeHoursInfo.li.tax_credits")</li>
+        }
 
     </ul>
 

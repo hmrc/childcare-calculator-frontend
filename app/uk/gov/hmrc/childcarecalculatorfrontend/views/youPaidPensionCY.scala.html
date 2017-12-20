@@ -18,10 +18,10 @@
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("YouPaidPensionCY.title"),
@@ -34,7 +34,7 @@
 
     @components.heading("YouPaidPensionCY.heading", "heading-xlarge")
 
-    <p>@messages("YouPaidPensionCY.year.start.end.date")</p>
+    <p>@messages("YouPaidPensionCY.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
     @helpers.form(action = YouPaidPensionCYController.onSubmit(mode), 'autoComplete -> "off") {
 

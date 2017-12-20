@@ -21,15 +21,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourOtherIncomeThisYear
 
 class YourOtherIncomeThisYearViewSpec extends YesNoViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val messageKeyPrefix = "yourOtherIncomeThisYear"
 
-  def createView = () => yourOtherIncomeThisYear(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => yourOtherIncomeThisYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => yourOtherIncomeThisYear(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => yourOtherIncomeThisYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "YourOtherIncomeThisYear view" must {
 
@@ -38,5 +41,10 @@ class YourOtherIncomeThisYearViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourOtherIncomeThisYearController.onSubmit(NormalMode).url)
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+    }
   }
 }

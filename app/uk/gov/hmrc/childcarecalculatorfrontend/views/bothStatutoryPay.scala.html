@@ -18,13 +18,13 @@
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("bothStatutoryPay.title"),
+    title = messages("bothStatutoryPay.title", taxYearInfo.previousTaxYearStart),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -32,7 +32,7 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading("bothStatutoryPay.heading", "heading-xlarge")
+    @components.heading(messages("bothStatutoryPay.heading", taxYearInfo.previousTaxYearStart), "heading-xlarge")
 
     <p>@messages("statutoryPay.guidance_extra")</p>
     <p>@messages("statutoryPay.guidance")</p>

@@ -24,14 +24,14 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 @Singleton
 class CascadeUpsert @Inject()(pensions: PensionsCascadeUpsert,
-                             otherIncome: OtherIncomeCascadeUpsert,
-                             benefits: BenefitsCascadeUpsert,
-                             maxHours: MaximumHoursCascadeUpsert,
-                             minHours: MinimumHoursCascadeUpsert,
-                             children: ChildrenCascadeUpsert,
-                             statutory:StatutoryCascadeUpsert){
+                              income: IncomeCascadeUpsert,
+                              benefits: BenefitsCascadeUpsert,
+                              maxHours: MaximumHoursCascadeUpsert,
+                              minHours: MinimumHoursCascadeUpsert,
+                              children: ChildrenCascadeUpsert,
+                              statutory:StatutoryCascadeUpsert){
 
-  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = pensions.funcMap ++ otherIncome.funcMap ++
+  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = pensions.funcMap ++ income.funcMap ++
                                                      benefits.funcMap ++ maxHours.funcMap ++ minHours.funcMap ++ children.funcMap ++
                                                      statutory.funcMap
 

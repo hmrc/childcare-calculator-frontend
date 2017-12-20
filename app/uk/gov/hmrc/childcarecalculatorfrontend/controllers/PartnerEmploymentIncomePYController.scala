@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerEmploymentIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerEmploymentIncomePYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncomePY
 
 import scala.concurrent.Future
@@ -39,7 +39,8 @@ class PartnerEmploymentIncomePYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: PartnerEmploymentIncomePYForm) extends FrontendController with I18nSupport {
+                                        form: PartnerEmploymentIncomePYForm,
+                                        taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -47,14 +48,14 @@ class PartnerEmploymentIncomePYController @Inject()(
         case None => form()
         case Some(value) => form().fill(value)
       }
-      Ok(partnerEmploymentIncomePY(appConfig, preparedForm, mode))
+      Ok(partnerEmploymentIncomePY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(partnerEmploymentIncomePY(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerEmploymentIncomePY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[BigDecimal](request.sessionId, PartnerEmploymentIncomePYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerEmploymentIncomePYId, mode)(new UserAnswers(cacheMap))))
