@@ -38,6 +38,22 @@ class EmploymentIncomePYViewSpec extends QuestionViewBehaviours[EmploymentIncome
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.EmploymentIncomePYController.onSubmit(NormalMode).url, "parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+    behave like pageWithTextFields(createViewUsingForm,
+      messageKeyPrefix,
+      routes.EmploymentIncomePYController.onSubmit(NormalMode).url,
+      "parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+  }
+
+  "contain the currencySymbol class and £ " in {
+    val doc = asDocument(createView())
+
+    assertRenderedByCssSelector(doc, ".currencySymbol")
+
+    val parentCurrencySymbol = doc.getElementById("parentEmploymentIncomePY").firstElementSibling().text()
+    val partnerCurrencySymbol = doc.getElementById("partnerEmploymentIncomePY").firstElementSibling().text()
+
+    parentCurrencySymbol mustBe "£"
+    partnerCurrencySymbol mustBe "£"
+
   }
 }

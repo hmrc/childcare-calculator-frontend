@@ -39,9 +39,17 @@
         <p>@messages("employmentIncomePY.tax_year")</p>
         <p>@messages("employmentIncomePY.hint")</p>
 
-        @components.input_text(InputViewModel[EmploymentIncomePY]("parentEmploymentIncomePY", form), label = messages("employmentIncomePY.parentEmploymentIncomePY"))
+        @components.input_number(
+            InputViewModel[EmploymentIncomePY]("parentEmploymentIncomePY", form),
+            currencySymbol=Some("true"),
+            label = messages("employmentIncomePY.parentEmploymentIncomePY"),
+            labelClass=Some("visually-hidden"))
 
-        @components.input_text(InputViewModel[EmploymentIncomePY]("partnerEmploymentIncomePY", form), label = messages("employmentIncomePY.partnerEmploymentIncomePY"))
+        @components.input_number(
+            InputViewModel[EmploymentIncomePY]("partnerEmploymentIncomePY", form),
+            currencySymbol=Some("true"),
+            label = messages("employmentIncomePY.partnerEmploymentIncomePY"),
+            labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }
