@@ -50,7 +50,10 @@
         @resultNotEligible(model)
     }
 
-    <p>@messages("result.read.more.info")</p>
+
+    <h2>@messages("result.more.info.title")</h2>
+
+    <p>@messages("result.more.info.para")</p>
 
     <p><a id="aboutYourResults" href="@AboutYourResultsController.onPageLoad()">@messages("result.about.your.results")</a></p>
 }
