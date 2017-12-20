@@ -41,7 +41,9 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
   def options = Seq(
       InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.YOU.toString),
     InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.BOTH.toString)
+    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.BOTH.toString),
+    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.NEITHER.toString)
+
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
