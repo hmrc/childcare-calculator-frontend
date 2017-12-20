@@ -25,11 +25,10 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursInfo"
 
-  def createView = () => freeHoursInfo(frontendAppConfig, false,false,false, Location.ENGLAND)(fakeRequest, messages)
+  def createView = () => freeHoursInfo(frontendAppConfig, false, false, true, Location.ENGLAND)(fakeRequest, messages)
 
   "FreeHoursInfo view" must {
-    behave like normalPage(createView, messageKeyPrefix, "heading2", "guidance", "li.30hours",
-      "li.vouchers", "li.tfc", "li.tax_credits")
+    behave like normalPage(createView, messageKeyPrefix, "heading2", "guidance", "li.vouchers", "li.tfc", "li.tax_credits")
 
     Seq(ENGLAND, SCOTLAND, WALES).foreach { location =>
       s"display correct content when user with location $location and have child aged 2" in {
