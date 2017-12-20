@@ -21,6 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
@@ -32,9 +33,11 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val form = new YourStatutoryWeeksForm(frontendAppConfig).apply(statutoryType, statutoryType.toString)
 
-  def createView = () => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType.toString)(fakeRequest, messages)
+  val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, statutoryType)
 
-  def createViewUsingForm = (form: Form[Int]) => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType.toString)(fakeRequest, messages)
+  def createView = () => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[Int]) => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
   "YourStatutoryWeeks view" must {
 
