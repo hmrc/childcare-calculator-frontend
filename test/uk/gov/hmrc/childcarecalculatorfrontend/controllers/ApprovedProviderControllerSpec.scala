@@ -65,6 +65,15 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages).toString
     }
 
+    "populate the view correctly on a GET when we have selected YES on childcare costs" in {
+      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+
+      contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages).toString
+    }
+
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ApprovedProviderForm.options.head.value))
 
