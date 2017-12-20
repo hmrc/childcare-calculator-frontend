@@ -19,22 +19,25 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomePYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, EmploymentIncomePY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 
 class EmploymentIncomePYViewSpec extends QuestionViewBehaviours[EmploymentIncomePY] {
 
+  val taxYearInfo = new TaxYearInfo
+
   override val form = new EmploymentIncomePYForm(frontendAppConfig).apply()
   val messageKeyPrefix = "employmentIncomePY"
 
-  def createView = () => employmentIncomePY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => employmentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[EmploymentIncomePY]) => employmentIncomePY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[EmploymentIncomePY]) => employmentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "EmploymentIncomePY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "tax_year", "hint")
+    behave like normalPage(createView, messageKeyPrefix, "hint")
 
     behave like pageWithBackLink(createView)
 
@@ -55,5 +58,12 @@ class EmploymentIncomePYViewSpec extends QuestionViewBehaviours[EmploymentIncome
     parentCurrencySymbol mustBe "£"
     partnerCurrencySymbol mustBe "£"
 
+    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix,
+      routes.EmploymentIncomePYController.onSubmit(NormalMode).url, "parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
+    }
   }
 }

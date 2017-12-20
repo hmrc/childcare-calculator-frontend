@@ -88,12 +88,12 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
 
-    "go to either get vouchers if both are in paid work and no is selected" in {
+    "go to who gets vouchers if both are in paid work and no is selected" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
       when(answers.doYouKnowYourPartnersAdjustedTaxCode) thenReturn Some(false)
-      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(DoYouKnowYourPartnersAdjustedTaxCodeId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
@@ -211,11 +211,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "What is your Partners Tax Code" when {
-    "go to either get vouchers if both are in paid work" in {
+    "go to who gets vouchers if both are in paid work" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode).value(answers) mustBe routes.EitherGetsVouchersController.onPageLoad(NormalMode)
+      navigator.nextPage(WhatIsYourPartnersTaxCodeId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     }
 
     "go to partner childcare vouchers if only partner is in paid work" in {

@@ -17,8 +17,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
         title = messages("yourIncomeInfoPY.title"),
@@ -30,7 +31,7 @@
         @components.heading("yourIncomeInfoPY.heading", "heading-xlarge")
 
         <div class="panel-indent panel-border-wide">
-            <p>@messages("yourIncomeInfoPY.tax_year")</p>
+            <p>@messages("yourIncomeInfoPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
         </div>
 
         <p>@messages("yourIncomeInfoPY.guidance")</p>

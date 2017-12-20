@@ -50,14 +50,14 @@ class YouStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm(requiredKey, requiredKeyArg)
         case Some(value) => BooleanForm(requiredKey, requiredKeyArg).fill(value)
       }
-      Ok(youStatutoryPay(appConfig, preparedForm, mode))
+      Ok(youStatutoryPay(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm(requiredKey, requiredKeyArg).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(youStatutoryPay(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(youStatutoryPay(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, YouStatutoryPayId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YouStatutoryPayId, mode)(new UserAnswers(cacheMap))))
