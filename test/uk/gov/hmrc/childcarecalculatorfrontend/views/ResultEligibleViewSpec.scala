@@ -33,7 +33,6 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsMessages(view, "15")
       }
 
-
       "User is eligible for TC scheme" in {
         val model = ResultsViewModel(tc = Some(500))
         val view = asDocument(resultEligible(model)(fakeRequest, messages))
@@ -41,15 +40,12 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsMessages(view, "500")
       }
 
-
-
       "User is eligible for TFC scheme" in {
         val model = ResultsViewModel(tfc = Some(600))
         val view = asDocument(resultEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "600")
       }
-
 
       "User is eligible for ESC scheme" in {
         val model = ResultsViewModel(esc = Some(900))
@@ -62,11 +58,12 @@ class ResultEligibleViewSpec extends ViewBehaviours {
 
     "display correct no of free hours and text when user is eligible for free hours" when {
       "location is England and no of hours is 15" in {
-        val model = ResultsViewModel(freeHours = Some(15), location = Some(Location.ENGLAND))
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(15)), location = Some(Location.ENGLAND))
         val view = asDocument(resultEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "15")
         assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.england", 570))
         assertContainsText(view, messages("result.free.hours.para1"))
@@ -74,11 +71,12 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
       "location is England and no of hours is 30" in {
-        val model = ResultsViewModel(freeHours = Some(30), location = Some(Location.ENGLAND))
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Some(Location.ENGLAND))
         val view = asDocument(resultEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "30")
         assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.england", 1140))
         assertContainsText(view, messages("result.free.hours.para1"))
@@ -92,6 +90,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
 
         assertContainsMessages(view, "10")
         assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.you.could.get"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.wales"))
         assertContainsText(view, messages("result.free.hours.para1"))
@@ -105,6 +104,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
 
         assertContainsMessages(view, "16")
         assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.you.could.get"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.scotland"))
         assertContainsText(view, messages("result.free.hours.para1"))
@@ -117,6 +117,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
 
         assertContainsMessages(view, "12 and a half hours")
         assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.northern-ireland"))
         assertContainsText(view, messages("result.free.hours.para1"))

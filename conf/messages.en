@@ -1137,7 +1137,8 @@ result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.read.more.info = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
 
-result.general.could.get = You could get up to
+result.you.could.get = You could get
+result.you.could.get.up.to = You could get up to
 
 result.free.hours.title = Free childcare hours
 result.free.hours.hours = hours

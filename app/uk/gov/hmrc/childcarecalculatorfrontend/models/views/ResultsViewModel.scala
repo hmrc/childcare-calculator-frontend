@@ -26,4 +26,5 @@ case class ResultsViewModel(firstParagraph : String = "",
                             location:Option[Location.Value] = None) {
 
   def noOfEligibleSchemes = List(tc, tfc, esc, freeHours).flatten.size
+
 }

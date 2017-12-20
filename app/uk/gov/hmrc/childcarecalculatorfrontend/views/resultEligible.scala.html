@@ -19,24 +19,25 @@
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
-@location = @{model.location.getOrElse("").toString}
-println("**************** location ::: "+location)
+@location = @{model.location.getOrElse("")}
 
 @if(model.freeHours.isDefined) {
 
-    @components.scheme_result(
-        title = messages("result.free.hours.title"),
-        couldGet = Some(messages("result.general.could.get")),
-        eligibility = Some(model.freeHours.fold(BigDecimal(0))(identity) + " " + messages("result.free.hours.hours")),
-        periodText = Some(messages(s"result.free.hours.period.$location")),
-        para1 = Some(messages("result.free.hours.para1")),
-        para2 = Some(messages("result.free.hours.para2")))
+    @defining(if(location.toString.equals("england") && model.freeHours.contains(15)) {570} else {1140}) { noOfHoursInAYear =>
+        @components.scheme_result(
+            title = messages("result.free.hours.title"),
+            couldGet = Some(messages("result.you.could.get.up.to")),
+            eligibility = Some(model.freeHours.fold(BigDecimal(0))(identity) + " " + messages("result.free.hours.hours")),
+            periodText = if(location.toString.equals("england")){Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {Some(messages(s"result.free.hours.period.$location"))},
+            para1 = Some(messages("result.free.hours.para1")),
+            para2 = Some(messages("result.free.hours.para2")))
+    }
 }
 
 @if(model.tc.isDefined) {
     @components.scheme_result(
         title = messages("result.tc.title"),
-        couldGet = Some(messages("result.general.could.get")),
+        couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.tc.fold(BigDecimal(0))(identity)),
         periodText = Some(messages("result.tc.period")),
         para1 = Some(messages("result.tc.para1")))
@@ -45,7 +46,7 @@ println("**************** location ::: "+location)
 @if(model.tfc.isDefined) {
     @components.scheme_result(
         title = messages("result.tfc.title"),
-        couldGet = Some(messages("result.general.could.get")),
+        couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.tfc.fold(BigDecimal(0))(identity)),
         periodText = Some(messages("result.tfc.period")),
         para1 = Some(messages("result.tfc.para1")))
@@ -53,7 +54,7 @@ println("**************** location ::: "+location)
 @if(model.esc.isDefined) {
     @components.scheme_result(
         title = messages("result.esc.title"),
-        couldGet = Some(messages("result.general.could.get")),
+        couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.esc.fold(BigDecimal(0))(identity)),
         periodText = Some(messages("result.esc.period")),
         para1 = Some(messages("result.esc.para1")))
