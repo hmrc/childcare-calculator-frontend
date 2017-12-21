@@ -27,7 +27,20 @@
 
     <h1 class="heading-xlarge">@messages("aboutYourResults.heading")</h1>
 
-   @model
+    <h2>@messages("aboutYourResults.about.the.schemes")</h2>
+
+    @if(model.freeHours) {
+        <h3>@messages("aboutYourResults.free.childcare.hours.title")</h3>
+        <p>@messages("aboutYourResults.free.childcare.hours.para1")</p>
+        <p>@messages("aboutYourResults.free.childcare.hours.para2")</p>
+    }
+
+    @if(model.tc) {
+        <h3>@messages("aboutYourResults.tc.title")</h3>
+        <p>@messages("aboutYourResults.tc.para1")</p>
+        <p>@messages("aboutYourResults.tc.para2")</p>
+        <p>@messages("aboutYourResults.tc.para3")</p>
+    }
 
     @components.button_link(
         messageKey = "aboutYourResults.return.link",

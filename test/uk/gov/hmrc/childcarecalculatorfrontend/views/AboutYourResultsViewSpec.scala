@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
@@ -35,6 +36,66 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
       doc.getElementById("returnToResults").text() mustBe messages("aboutYourResults.return.link")
       doc.getElementById("returnToResults").attr("href") mustBe ResultController.onPageLoad().url
+    }
+
+    "display the correct title" in {
+
+      val doc = asDocument(createView())
+      assertContainsMessages(doc, messages("aboutYourResults.about.the.schemes"))
+
+    }
+
+    "display free hours content" when {
+      "user is eligible for free hours display title" in {
+
+        val model = ResultsViewModel(freeHours = Some(15))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.title"))
+      }
+
+      "user is eligible for free hours display first paragraph" in {
+
+        val model = ResultsViewModel(freeHours = Some(15))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para1"))
+      }
+
+      "user is eligible for free hours display second paragraph" in {
+
+        val model = ResultsViewModel(freeHours = Some(15))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para2"))
+      }
+    }
+
+    "display TC content" when {
+      "user is eligible for TC display title" in {
+
+        val model = ResultsViewModel(tc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
+      }
+
+      "user is eligible for TC display first paragraph" in {
+
+        val model = ResultsViewModel(tc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
+      }
+
+      "user is eligible for TC display second paragraph" in {
+
+        val model = ResultsViewModel(tc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
+      }
+
+      "user is eligible for TC display third paragraph" in {
+
+        val model = ResultsViewModel(tc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3"))
+      }
     }
   }
 }
