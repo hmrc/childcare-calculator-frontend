@@ -470,13 +470,7 @@ sealed trait StatutoryPay extends TaxYearInfo {
     weeks.map {
       statutoryWeeks =>
         val value = statutoryWeeks - Weeks.weeksBetween(startDate, endDate).getWeeks
-
-        if (value > 0) {
-          value
-        }
-        else {
-          0
-        }
+        Math.max(0,value)
     }
   }
 
