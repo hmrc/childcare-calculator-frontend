@@ -16,14 +16,30 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import javax.inject.Inject
+
 import play.api.data.Form
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.{ADOPTION, MATERNITY, PATERNITY, SHARED_PARENTAL}
 
-object PartnerStatutoryWeeksForm extends FormErrorHelper {
+class PartnerStatutoryWeeksForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def apply(statutoryType: String): Form[Int] =
+  def apply(statutoryType: StatutoryPayTypeEnum.Value, statutoryTypeMessage: String): Form[Int] = {
+
+    val maxWeeks = statutoryType match {
+      case MATERNITY => appConfig.maxNoWeeksMaternityPay
+      case PATERNITY => appConfig.maxNoWeeksPaternityPay
+      case ADOPTION => appConfig.maxNoWeeksAdoptionPay
+      case SHARED_PARENTAL => appConfig.maxNoWeeksSharedParentalPay
+    }
+
+    val minWeeks = appConfig.minNoWeeksStatPay
+
     Form(
       "value" ->
-        int("partnerStatutoryWeeks.required", "partnerStatutoryWeeks.invalid", statutoryType)
-          .verifying(inRange[Int](1, 48, "partnerStatutoryWeeks.invalid", statutoryType))
+        int("partnerStatutoryWeeks.required", "partnerStatutoryWeeks.invalid", minWeeks, maxWeeks, statutoryTypeMessage)
+          .verifying(inRange[Int](minWeeks, maxWeeks, "partnerStatutoryWeeks.invalid", minWeeks, maxWeeks, statutoryTypeMessage))
     )
+  }
 }

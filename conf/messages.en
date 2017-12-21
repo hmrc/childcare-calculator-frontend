@@ -1079,14 +1079,14 @@ statutoryPayTypeLower.shared-parental = shared parental
 
 yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.required = Enter how many weeks of {0} pay you took
-yourStatutoryWeeks.invalid = Enter numbers between 1 and 48 for how many weeks of {0} pay you took
+yourStatutoryWeeks.required = Enter how many weeks of {2} pay you took
+yourStatutoryWeeks.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay you took
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
 partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
-partnerStatutoryWeeks.required = Enter how many weeks of {0} pay your partner took
-partnerStatutoryWeeks.invalid = Enter numbers between 1 and 48 for how many weeks of {0} pay your partner took
+partnerStatutoryWeeks.required = Enter how many weeks of {2} pay your partner took
+partnerStatutoryWeeks.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
 yourStatutoryStartDate.title = When did your {0} pay start?
