@@ -1089,6 +1089,11 @@ partnerStatutoryWeeks.required = Enter how many weeks of {2} pay your partner to
 partnerStatutoryWeeks.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
+statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks
+statutoryWeeks.paternity.guidance = This is usually taken as {0} weeks
+statutoryWeeks.adoption.guidance = This is usually taken as {0} weeks
+statutoryWeeks.shared-parental.guidance = This is usually taken as {0} weeks between both parents
+
 yourStatutoryStartDate.title = When did your {0} pay start?
 yourStatutoryStartDate.heading = When did your {0} pay start?
 yourStatutoryStartDate.error.required = Enter the date your {0} pay started

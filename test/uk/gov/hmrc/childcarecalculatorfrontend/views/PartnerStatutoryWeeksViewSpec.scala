@@ -21,6 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
@@ -33,9 +34,11 @@ class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryWeeks"
 
-  def createView = () => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType.toString)(fakeRequest, messages)
+  val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, statutoryType)
 
-  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType.toString)(fakeRequest, messages)
+  def createView = () => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
   "PartnerStatutoryWeeks view" must {
     behave like normalPageWithTitleAsString(

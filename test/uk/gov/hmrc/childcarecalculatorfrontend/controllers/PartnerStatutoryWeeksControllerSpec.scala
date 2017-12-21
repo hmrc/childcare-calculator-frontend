@@ -27,6 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayTypeId, PartnerStatutoryWeeksId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
 class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
@@ -41,11 +42,13 @@ class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
   val form = new PartnerStatutoryWeeksForm(frontendAppConfig).apply(MATERNITY, statutoryType.toString)
 
+  val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, MATERNITY)
+
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryWeeksController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, new PartnerStatutoryWeeksForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = form) = partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = form) = partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages).toString
 
   val testNumber = 1
 
