@@ -115,8 +115,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         val model = ResultsViewModel(freeHours = Some(12.5), location = Some(Location.NORTHERN_IRELAND))
         val view = asDocument(resultEligible(model)(fakeRequest, messages))
 
-        //assertContainsMessages(view, "12 and a half hours")
-        assertContainsMessages(view, "12.5")
+        assertContainsMessages(view, "12 and a half hours")
         assertContainsText(view, messages("result.free.hours.title"))
         assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))

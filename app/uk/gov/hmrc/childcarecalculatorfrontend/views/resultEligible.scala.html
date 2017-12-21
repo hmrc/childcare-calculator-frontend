@@ -30,7 +30,7 @@
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             couldGet = Some(messages("result.you.could.get.up.to")),
-            eligibility = Some(model.freeHours.fold(BigDecimal(0))(identity) + " " + messages("result.free.hours.hours")),
+            eligibility = Some(model.freeHours.fold("")(hours => if(hours!=12.5) hours.toString else messages("result.fre.hours.twelve.and.half")) + " " + messages("result.free.hours.hours")),
             periodText = if(location.toString.equals(Location.ENGLAND.toString)){
                             Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {
                             Some(messages(s"result.free.hours.period.$location"))},
