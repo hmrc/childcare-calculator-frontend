@@ -26,6 +26,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryWeeksId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
 class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
@@ -38,11 +39,13 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
     Some(CacheMap("id", statutoryTypeNameValuePair))
   )
 
+  val form = new YourStatutoryWeeksForm(frontendAppConfig).apply(MATERNITY, statutoryType.toString)
+
   private def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryWeeksController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new YourStatutoryWeeksForm(frontendAppConfig))
 
-  def viewAsString(form: Form[Int] = YourStatutoryWeeksForm(statutoryType)) = yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = form) = yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   val testNumber = 1
 
@@ -61,7 +64,7 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YourStatutoryWeeksForm(statutoryType).fill(testNumber))
+      contentAsString(result) mustBe viewAsString(form.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -76,7 +79,7 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = YourStatutoryWeeksForm(statutoryType).bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
 
