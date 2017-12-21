@@ -61,8 +61,6 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
 
      val bothChildcareVouchers: String = request.userAnswers.whoGetsVouchers.getOrElse("")
 
-      val whoGetsChildcareVouchers = request.userAnswers.whoGetsVouchers
-
       val yourChildcareVouchers = request.userAnswers.yourChildcareVouchers.getOrElse(false) match {
         case YesSure => true
         case NotSure => true
@@ -72,7 +70,6 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
       val benefits = request.userAnswers.doYouGetAnyBenefits.getOrElse(false)
 
       val childcareVouchersEligibility =
-
         if (hasPartner) {
           whoInPaidEmployment match {
             case Some(You) => hasChildcareCosts && yourChildcareVouchers
@@ -80,17 +77,11 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
             case Some(_) => hasChildcareCosts && (bothChildcareVouchers == Both)
             case _ => false
           }
-         }else {
+         }else{
           hasChildcareCosts && yourChildcareVouchers
         }
 
       val taxCreditsEligibility = youPaidEmployment && benefits && hasChildcareCosts
-
-
-      println(s"*************childcareVouchersEligibility******* $childcareVouchersEligibility*****************")
-     // println(s"*************partnerPaidEmployment******* $partnerPaidEmployment*****************")
-      println(s"*************partnerChildcareVouchers******* $partnerChildcareVouchers*****************")
-      println(s"*************bothChildcareVouchers******* $bothChildcareVouchers*****************")
 
 
     Ok(maxFreeHoursInfo(appConfig, taxFreeChildcare.eligibility(request.userAnswers), childcareVouchersEligibility, taxCreditsEligibility))
