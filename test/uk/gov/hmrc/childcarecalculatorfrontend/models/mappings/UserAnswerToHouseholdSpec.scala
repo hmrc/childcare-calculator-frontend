@@ -431,7 +431,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.eitherGetsVouchers) thenReturn Some("NO")
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
