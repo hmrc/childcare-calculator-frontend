@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 import org.mockito.Mockito._
 import org.scalatest.{MustMatchers, OptionValues}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 
 class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
@@ -129,7 +129,7 @@ class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
-        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.NEITHER.toString)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.NEITHER.toString)
 
         factory(answers).value mustEqual JointHousehold(
           Parent(0, Set(DISABILITYBENEFITS)),

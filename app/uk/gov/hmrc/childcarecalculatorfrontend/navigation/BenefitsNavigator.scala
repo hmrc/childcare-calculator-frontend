@@ -81,8 +81,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
     utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case Partner => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case `partner` => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case `both` => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -123,8 +123,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerBenefitsIncomePY) {case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-         case Partner => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+         case `partner` => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
+        case `both` => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
       }
     }
 
@@ -138,8 +138,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case `you` => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case `both` => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -149,8 +149,8 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
-        case Both => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+        case `you` => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+        case `both` => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

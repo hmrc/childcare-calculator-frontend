@@ -89,7 +89,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore =
       value match {
-        case JsString(You) =>
+        case JsString(`you`) =>
           cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - PartnerChildcareVouchersId.toString - EitherGetsVouchersId.toString -
             WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerSelfEmployedOrApprenticeId.toString -
@@ -102,7 +102,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString - BothPaidPensionPYId.toString -
             WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString - WhoOtherIncomePYId.toString -
             OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString - BothBenefitsIncomePYId.toString)
-        case JsString(Partner) =>
+        case JsString(`partner`) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - YourChildcareVouchersId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
             YourAgeId.toString - YourMinimumEarningsId.toString - AreYouSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString -
@@ -117,7 +117,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             WhoOtherIncomePYId.toString - OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
             BothBenefitsIncomePYId.toString )
 
-        case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
+        case JsString(`both`) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
           PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString - HowMuchYouPayPensionId.toString -
           YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString - PartnerPaidWorkPYId .toString -
           ParentEmploymentIncomePYId.toString - YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
@@ -126,7 +126,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
           PartnerBenefitsIncomeCYId.toString - ParentPaidWorkPYId.toString - PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString -
           HowMuchPartnerPayPensionPYId.toString - PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString )
 
-        case JsString(Neither) =>
+        case JsString(`neither`) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - PartnerWorkHoursId.toString -
             HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
             HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -

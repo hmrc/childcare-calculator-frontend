@@ -38,13 +38,10 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
   def apply(): Form[String] = 
     Form(single("value" -> of(WhoIsInPaidEmploymentFormatter)))
 
-  def options = Seq(
-      InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.BOTH.toString),
-    InputOption("whoIsInPaidEmployment", YouPartnerBothEnum.NEITHER.toString)
-
-  )
+  def options =YouPartnerBothEnum.values.map {
+    value =>
+      InputOption("whoIsInPaidEmployment", value.toString)
+  }.toSeq
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
