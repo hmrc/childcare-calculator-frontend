@@ -20,6 +20,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
 class ResultViewSpec extends ViewBehaviours {
   
@@ -48,7 +49,14 @@ class ResultViewSpec extends ViewBehaviours {
 
         assertContainsMessages(view, "You are eligible for help from 2 schemes:")
       }
+    }
 
+    "display link that reditects to about your results page" in {
+      val model = ResultsViewModel(freeHours = Some(15))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      view.getElementById("aboutYourResults").text() mustBe messages("result.read.more.button")
+      view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
     }
   }
 }

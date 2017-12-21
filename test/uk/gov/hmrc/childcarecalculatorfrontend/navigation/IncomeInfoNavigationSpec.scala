@@ -42,7 +42,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
         "return  PartnerPaidWorkCY page when parent in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
 
           navigator.nextPage(PartnerIncomeInfoId, NormalMode).value(answers) mustBe
             routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
@@ -51,7 +51,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
         "return ParentPaidWorkCY page when partner in paid work and lives with partneBothOtherIncomeThisYearIdr" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
 
           navigator.nextPage(PartnerIncomeInfoId, NormalMode).value(answers) mustBe
             routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
@@ -60,7 +60,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
         "return EmploymentIncomeCY page when both in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
 
           navigator.nextPage(PartnerIncomeInfoId, NormalMode).value(answers) mustBe
             routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
@@ -86,7 +86,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
         "return BothPaidWorkPY page when parent/partner/both in paid work and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You) thenReturn Some(Partner) thenReturn Some(Both)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(partner) thenReturn Some(both)
 
           navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
             routes.BothPaidWorkPYController.onPageLoad(NormalMode)

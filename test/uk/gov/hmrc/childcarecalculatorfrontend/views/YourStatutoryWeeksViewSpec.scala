@@ -19,7 +19,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
@@ -27,13 +29,15 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val messageKeyPrefix = "yourStatutoryWeeks"
 
-  val statutoryType = "maternity"
+  val statutoryType = MATERNITY
 
-  val form = YourStatutoryWeeksForm(statutoryType)
+  val form = new YourStatutoryWeeksForm(frontendAppConfig).apply(statutoryType, statutoryType.toString)
 
-  def createView = () => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, statutoryType)
 
-  def createViewUsingForm = (form: Form[Int]) => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[Int]) => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
   "YourStatutoryWeeks view" must {
 

@@ -215,7 +215,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
         "redirects to parentEmploymentIncomePY page when user selects You" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoWasInPaidWorkPY) thenReturn Some(You)
+          when(answers.whoWasInPaidWorkPY) thenReturn Some(you)
 
           navigator.nextPage(WhoWasInPaidWorkPYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
@@ -224,7 +224,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
         "redirects to partnerEmploymentIncomePY page when user selects Partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoWasInPaidWorkPY) thenReturn Some(Partner)
+          when(answers.whoWasInPaidWorkPY) thenReturn Some(partner)
 
           navigator.nextPage(WhoWasInPaidWorkPYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
@@ -233,7 +233,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
         "redirects to employmentIncomePY page when user selects Both" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoWasInPaidWorkPY) thenReturn Some(Both)
+          when(answers.whoWasInPaidWorkPY) thenReturn Some(both)
 
           navigator.nextPage(WhoWasInPaidWorkPYId, NormalMode).value(answers) mustBe
             routes.EmploymentIncomePYController.onPageLoad(NormalMode)

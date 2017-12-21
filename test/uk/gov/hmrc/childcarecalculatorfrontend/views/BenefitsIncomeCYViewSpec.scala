@@ -40,5 +40,17 @@ class BenefitsIncomeCYViewSpec extends QuestionViewBehaviours[BenefitsIncomeCY] 
     behave like pageWithBackLink(createView)
 
     behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.BenefitsIncomeCYController.onSubmit(NormalMode).url, "parentBenefitsIncome", "partnerBenefitsIncome")
+
+    "contain the currencySymbol class and £ for parent and partner input text boxes" in {
+      val doc = asDocument(createView())
+
+      assertRenderedByCssSelector(doc, ".currencySymbol")
+
+      val parentCurrencySymbol = doc.getElementById("parentBenefitsIncome").firstElementSibling().text()
+      val partnerCurrencySymbol = doc.getElementById("partnerBenefitsIncome").firstElementSibling().text()
+
+      parentCurrencySymbol mustBe "£"
+      partnerCurrencySymbol mustBe "£"
+    }
   }
 }

@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import java.text.DecimalFormat
-
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 
 object ChildcareConstants {
+
   val you: String = YouPartnerBothEnum.YOU.toString
   val partner: String = YouPartnerBothEnum.PARTNER.toString
   val both: String = YouPartnerBothEnum.BOTH.toString
+  val neither: String = YouPartnerBothNeitherEnum.NEITHER.toString
 
   // First letter is capital in naming for below constants as these are being used in case statements
   val You: String = YouPartnerBothEnum.YOU.toString
@@ -127,8 +127,6 @@ object ChildcareConstants {
   val partnerPaidWorkPYErrorKey = "partnerPaidWorkPY.error"
   val bothPaidWorkPYErrorKey = "bothPaidWorkPY.error"
 
-  val youBenefitsIncomeCYErrorKey = "youBenefitsIncomeCY.error"
-  val partnerBenefitsIncomeCYErrorKey = "partnerBenefitsIncomeCY.error"
   val bothBenefitsIncomeCYErrorKey = "bothBenefitsIncomeCY.error"
 
   val howMuchYouPayPensionInvalidErrorKey = "howMuchYouPayPension.invalid"
