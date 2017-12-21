@@ -17,19 +17,26 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
 class AboutYourResultsControllerSpec extends ControllerSpecBase {
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new AboutYourResultsController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): AboutYourResultsController =
+    new AboutYourResultsController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      dataRetrievalAction,
+      new DataRequiredActionImpl)
 
   "AboutYourResults Controller" must {
     "return OK and the correct view for a GET" in {
+      val model = ResultsViewModel()
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe aboutYourResults(frontendAppConfig)(fakeRequest, messages).toString
+      contentAsString(result) mustBe aboutYourResults(frontendAppConfig, model)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

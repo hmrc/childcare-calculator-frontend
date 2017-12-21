@@ -17,12 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
 class AboutYourResultsViewSpec extends ViewBehaviours {
 
-  def createView = () => aboutYourResults(frontendAppConfig)(fakeRequest, messages)
+  def createView = () => aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages)
 
   "AboutYourResults view" must {
 

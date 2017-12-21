@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import play.api.libs.json._
 
 case class ResultsViewModel(firstParagraph : String = "",
                             tc: Option[BigDecimal] = None,
@@ -27,4 +28,8 @@ case class ResultsViewModel(firstParagraph : String = "",
 
   def noOfEligibleSchemes = List(tc, tfc, esc, freeHours).flatten.size
 
+}
+
+object ResultsViewModel {
+  implicit val format = Json.format[ResultsViewModel]
 }

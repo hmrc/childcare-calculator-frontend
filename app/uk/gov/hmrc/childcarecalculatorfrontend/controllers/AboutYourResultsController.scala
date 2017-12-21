@@ -22,16 +22,30 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
+
+import scala.concurrent.Future
 
 @Singleton
 class AboutYourResultsController @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
+                                      dataCacheConnector: DataCacheConnector,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(aboutYourResults(appConfig))
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+
+  val resultViewModel: Future[Option[ResultsViewModel]] = dataCacheConnector.getEntry[ResultsViewModel](request.sessionId, ResultsViewModelId.toString)
+
+    resultViewModel.map{
+        case Some(model) => Ok(aboutYourResults(appConfig, model))
+        case _ =>  Redirect(routes.SessionExpiredController.onPageLoad())
+    }.recover{
+      case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+    }
   }
 }
