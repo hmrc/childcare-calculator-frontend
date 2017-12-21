@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, UserAnswers, Utils}
 
 import scala.math.BigDecimal.RoundingMode
 
@@ -161,30 +161,31 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
-  private def getVoucherValue(either: Option[String], whoGetsVouchers: Option[String], who: String, default: Option[String]): Option[YesNoUnsureEnum] = {
+  private def getYouVoucherValue(vouchers: Option[String]) : Option[YesNoUnsureEnum] = {
+    vouchers.fold(Some(YesNoUnsureEnum.NO)) {
+      case ChildcareConstants.notSure => Some(YesNoUnsureEnum.NOTSURE)
+      case ChildcareConstants.both | ChildcareConstants.you => Some(YesNoUnsureEnum.YES)
+      case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
+      case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
+      case _ => Some(YesNoUnsureEnum.NO)
+    }
+  }
 
-    val vouchers: Option[String] =
-
-      if(either.contains(YesNoUnsureEnum.YES.toString)) {
-
-        if(!whoGetsVouchers.contains(who)) Some("yes") else Some("no")
-
-      } else if(either.contains(YesNoUnsureEnum.NOTSURE.toString) || either.contains(YesNoUnsureEnum.NO.toString)) {
-        either
-      }
-      else
-      {
-        default
-      }
-
-    stringToYesNoUnsureEnum(vouchers)
+  private def getPartnerVoucherValue(vouchers: Option[String]) : Option[YesNoUnsureEnum] = {
+    vouchers.fold(Some(YesNoUnsureEnum.NO)) {
+      case ChildcareConstants.notSure => Some(YesNoUnsureEnum.NOTSURE)
+      case ChildcareConstants.both | ChildcareConstants.partner => Some(YesNoUnsureEnum.YES)
+      case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
+      case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
+      case _ => Some(YesNoUnsureEnum.NO)
+    }
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
     val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-    val vouchers = getVoucherValue(answers.eitherGetsVouchers, answers.whoGetsVouchers, "partner", answers.yourChildcareVouchers)
+    val vouchers = if (answers.yourChildcareVouchers.isDefined) getYouVoucherValue(answers.yourChildcareVouchers) else getYouVoucherValue(answers.whoGetsVouchers)
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
     val maxEarnings = answers.yourMaximumEarnings
@@ -214,7 +215,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-    val vouchers = getVoucherValue(answers.eitherGetsVouchers, answers.whoGetsVouchers, "parent", answers.partnerChildcareVouchers)
+    val vouchers = if (answers.partnerChildcareVouchers.isDefined) getPartnerVoucherValue(answers.partnerChildcareVouchers) else getPartnerVoucherValue(answers.whoGetsVouchers)
     val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
     val selfEmployed = answers.partnerSelfEmployed
     val maxEarnings = answers.partnerMaximumEarnings
