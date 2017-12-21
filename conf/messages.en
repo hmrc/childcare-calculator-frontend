@@ -298,6 +298,8 @@ whoGetsVouchers.heading = Whose employer offers childcare vouchers?
 whoGetsVouchers.you = Yours
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
+whoGetsVouchers.neither = Neither
+whoGetsVouchers.notSure = Not sure
 whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 

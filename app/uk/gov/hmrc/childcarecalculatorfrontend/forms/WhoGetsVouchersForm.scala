@@ -20,7 +20,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, YouPartnerBothNeitherEnum, YouPartnerBothNeitherNotSureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object WhoGetsVouchersForm extends FormErrorHelper {
@@ -38,11 +38,10 @@ object WhoGetsVouchersForm extends FormErrorHelper {
   def apply(): Form[String] = 
     Form(single("value" -> of(WhoGetsVouchersFormatter)))
 
-  def options = Seq(
-    InputOption("whoGetsVouchers", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothEnum.BOTH.toString)
-  )
+  def options = YouPartnerBothNeitherNotSureEnum.values.map {
+    value =>
+      InputOption("whoGetsVouchers", value.toString)
+  }.toSeq
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
