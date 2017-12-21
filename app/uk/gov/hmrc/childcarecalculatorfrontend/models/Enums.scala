@@ -19,6 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models
 import play.api.libs.json.{Format, Reads, Writes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
+trait YouPartnerBothBaseEnumeration extends Enumeration{
+  val YOU = Value("you")
+  val PARTNER = Value("partner")
+  val BOTH = Value("both")
+}
+
 object Location extends Enumeration {
   type Location = Value
   val ENGLAND = Value("england")
@@ -33,18 +39,24 @@ object Location extends Enumeration {
   implicit def enumFormats: Format[Location] = EnumUtils.enumFormat(Location)
 }
 
-object YouPartnerBothEnum extends Enumeration {
+object YouPartnerBothEnum extends YouPartnerBothBaseEnumeration  {
   type YouPartnerBothEnum = Value
-
-  val YOU = Value("you")
-  val PARTNER = Value("partner")
-  val BOTH = Value("both")
-  val NEITHER = Value("neither")
 
   val enumReads: Reads[YouPartnerBothEnum] = EnumUtils.enumReads(YouPartnerBothEnum)
   val enumWrites: Writes[YouPartnerBothEnum] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[YouPartnerBothEnum] = EnumUtils.enumFormat(YouPartnerBothEnum)
+}
+
+object YouPartnerBothNeitherEnum extends YouPartnerBothBaseEnumeration {
+  type YouPartnerBothNeitherEnum = Value
+
+  val NEITHER = Value("neither")
+
+  val enumReads: Reads[YouPartnerBothNeitherEnum] = EnumUtils.enumReads(YouPartnerBothNeitherEnum)
+  val enumWrites: Writes[YouPartnerBothNeitherEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[YouPartnerBothNeitherEnum] = EnumUtils.enumFormat(YouPartnerBothNeitherEnum)
 }
 
 object YesNoUnsureEnum extends Enumeration {
