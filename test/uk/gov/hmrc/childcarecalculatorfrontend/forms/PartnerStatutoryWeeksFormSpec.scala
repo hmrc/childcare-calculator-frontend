@@ -16,45 +16,57 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
+
 class PartnerStatutoryWeeksFormSpec extends FormSpec {
 
-  val statutoryType = "maternity"
-  val errorInvalid = error("value", "partnerStatutoryWeeks.invalid", statutoryType)
-  val errorRequired = error("value", "partnerStatutoryWeeks.required", statutoryType)
+  val statutoryType = MATERNITY
+
+  val errorInvalid = error(
+    "value",
+    "partnerStatutoryWeeks.invalid",
+    frontendAppConfig.minNoWeeksStatPay,
+    frontendAppConfig.maxNoWeeksMaternityPay,
+    statutoryType.toString)
+
+  val errorRequired = error(
+    "value",
+    "partnerStatutoryWeeks.required",
+    frontendAppConfig.minNoWeeksStatPay,
+    frontendAppConfig.maxNoWeeksMaternityPay,
+    statutoryType.toString)
+
+  private def form = new PartnerStatutoryWeeksForm(frontendAppConfig).apply(statutoryType, statutoryType.toString)
 
   "PartnerStatutoryWeeks Form" must {
 
-    "bind numbers in range" in {
-      val form = PartnerStatutoryWeeksForm(statutoryType).bind(Map("value" -> "1"))
-      form.get shouldBe 1
+    "bind numbers within range" in {
+      form.bind(Map("value" -> "1")).get shouldBe 1
     }
 
     "fail to bind numbers below the threshold" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "0"), errorInvalid)
+      checkForError(form, Map("value" -> "0"), errorInvalid)
     }
 
     "fail to bind numbers above the threshold" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "49"), errorInvalid)
-    }
-
-    "fail to bind negative numbers" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "-1"), errorInvalid)
+      val invalidNumberOfWeeks = frontendAppConfig.maxNoWeeksMaternityPay + 1
+      checkForError(form, Map("value" -> invalidNumberOfWeeks.toString), errorInvalid)
     }
 
     "fail to bind non-numerics" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "not a number"), errorInvalid)
+      checkForError(form, Map("value" -> "not a number"), errorInvalid)
     }
 
     "fail to bind a blank value" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> ""), errorRequired)
+      checkForError(form, Map("value" -> ""), errorRequired)
     }
 
     "fail to bind when value is omitted" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), emptyForm, errorRequired)
+      checkForError(form, emptyForm, errorRequired)
     }
 
     "fail to bind decimal numbers" in {
-      checkForError(PartnerStatutoryWeeksForm(statutoryType), Map("value" -> "1.23"), errorInvalid)
+      checkForError(form, Map("value" -> "1.23"), errorInvalid)
     }
   }
 }

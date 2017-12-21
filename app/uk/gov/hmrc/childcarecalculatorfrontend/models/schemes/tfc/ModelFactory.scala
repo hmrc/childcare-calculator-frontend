@@ -28,6 +28,7 @@ class ModelFactory @Inject() () {
     val TRUE: Boolean = true
     val FALSE: Boolean = false
     val You: String = YouPartnerBothEnum.YOU.toString
+    val Both: String = YouPartnerBothEnum.BOTH.toString
     val Partner: String = YouPartnerBothEnum.PARTNER.toString
 
     def checkMinEarnings(minEarnings: Boolean, selfOrApprentice: Option[String], self: Boolean): Option[Boolean] = {
@@ -51,25 +52,17 @@ class ModelFactory @Inject() () {
     answers.doYouLiveWithPartner.flatMap {
       case true => {
         for {
-          youOrPartnerInPaidWork <- answers.paidEmployment
-
-          parentMinEarnings <- if (youOrPartnerInPaidWork) {
-            answers.whoIsInPaidEmployment.flatMap {
-              case str if str != Partner => answers.yourMinimumEarnings
+          parentMinEarnings <- answers.whoIsInPaidEmployment.flatMap {
+              case str if str == You => answers.yourMinimumEarnings
+              case str if str == Both => answers.yourMinimumEarnings
               case _ => Some(false)
             }
-          } else {
-            Some(false)
-          }
 
-          partnerMinEarnings <- if (youOrPartnerInPaidWork) {
-            answers.whoIsInPaidEmployment.flatMap {
-              case str if str != You => answers.partnerMinimumEarnings
+          partnerMinEarnings <- answers.whoIsInPaidEmployment.flatMap {
+              case str if str == Partner => answers.partnerMinimumEarnings
+              case str if str == Both => answers.partnerMinimumEarnings
               case _ => Some(false)
             }
-          } else {
-            Some(false)
-          }
 
           parentApprentice = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, FALSE).getOrElse(false)
 

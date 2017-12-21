@@ -46,11 +46,6 @@ POST        /are-you-in-paid-work                              uk.gov.hmrc.child
 GET         /change-are-you-in-paid-work                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-are-you-in-paid-work                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = CheckMode)
 
-GET         /paid-employment                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad(mode: Mode = NormalMode)
-POST        /paid-employment                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit(mode: Mode = NormalMode)
-GET         /change-paid-employment                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-paid-employment                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PaidEmploymentController.onSubmit(mode: Mode = CheckMode)
-
 GET         /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad(mode: Mode = NormalMode)
 POST        /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onSubmit(mode: Mode = NormalMode)
 GET         /change-who-is-in-paid-employment                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad(mode: Mode = CheckMode)
