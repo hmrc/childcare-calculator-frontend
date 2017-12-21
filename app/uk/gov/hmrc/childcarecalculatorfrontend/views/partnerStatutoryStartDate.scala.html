@@ -38,7 +38,8 @@
     @components.input_date(
         field = form("date"),
         label = messages("partnerStatutoryStartDate.heading", statutoryType),
-        hint = Some(messages("partnerStatutoryStartDate.hint"))
+        hint = Some(messages("partnerStatutoryStartDate.hint")),
+        legendClass="visually-hidden"
     )
         @components.submit_button()
     }

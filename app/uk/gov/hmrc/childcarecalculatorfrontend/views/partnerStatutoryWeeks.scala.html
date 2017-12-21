@@ -18,12 +18,12 @@
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{InputViewModel, StatutoryPayWeeksViewModel}
 
-@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode, statutoryType: String)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode, viewModel: StatutoryPayWeeksViewModel)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("partnerStatutoryWeeks.title", statutoryType),
+    title = messages("partnerStatutoryWeeks.title", viewModel.statutoryTypeMessage),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -31,12 +31,14 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading(messages("partnerStatutoryWeeks.heading", statutoryType), "heading-xlarge")
+    @components.heading(messages("partnerStatutoryWeeks.heading", viewModel.statutoryTypeMessage), "heading-xlarge")
+
+    <p>@messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)</p>
 
     @helpers.form(action = PartnerStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_number(InputViewModel[Int]("value", form),
-            label = messages("partnerStatutoryWeeks.heading", statutoryType),
+            label = messages("partnerStatutoryWeeks.heading", viewModel.statutoryTypeMessage),
             labelClass=Some("visually-hidden"))
 
         @components.submit_button()

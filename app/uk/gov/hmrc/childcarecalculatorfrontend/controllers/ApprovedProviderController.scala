@@ -20,13 +20,15 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.AnyContent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ApprovedProviderId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
@@ -42,21 +44,28 @@ class ApprovedProviderController @Inject()(
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
+      val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
+
       val preparedForm = request.userAnswers.approvedProvider match {
         case None => ApprovedProviderForm()
         case Some(value) => ApprovedProviderForm().fill(value)
       }
-      Ok(approvedProvider(appConfig, preparedForm, mode))
+      Ok(approvedProvider(appConfig, preparedForm,childcareCostsMaybeInFuture, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       ApprovedProviderForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors, mode))),
+        (formWithErrors: Form[String]) => {
+          val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
+          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors,childcareCostsMaybeInFuture, mode)))},
         (value) =>
           dataCacheConnector.save[String](request.sessionId, ApprovedProviderId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ApprovedProviderId, mode)(new UserAnswers(cacheMap))))
       )
+  }
+
+  private def checkIfUnsureAboutChildcareCosts(answers: UserAnswers) = {
+    answers.childcareCosts.getOrElse(false) == YesNoNotYetEnum.NOTYET.toString
   }
 }

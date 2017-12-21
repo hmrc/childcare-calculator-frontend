@@ -33,7 +33,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
       DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
-      PaidEmploymentId.toString -> ((v, cm) => storePaidEmployment(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
       AreYouInPaidWorkId.toString -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
       HasYourTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
@@ -56,7 +55,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeDoYouLiveWithPartner(value: JsValue, cacheMap: CacheMap): CacheMap = {
 
     val mapToStore = if (value.equals(JsBoolean(false))) {
-      cacheMap copy (data = cacheMap.data - PaidEmploymentId.toString - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString -
+      cacheMap copy (data = cacheMap.data - WhoIsInPaidEmploymentId.toString - PartnerWorkHoursId.toString -
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
         EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
         WhoGetsBenefitsId.toString  - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString - YourPartnersAgeId.toString -
@@ -87,45 +86,10 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(AreYouInPaidWorkId.toString, value, mapToStore)
   }
 
-  private def storePaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(false)) {
-      cacheMap copy (data = cacheMap.data - WhoIsInPaidEmploymentId.toString - ParentWorkHoursId.toString - PartnerWorkHoursId.toString -
-        HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
-        HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
-        EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
-        DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
-        YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
-        PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
-        TaxOrUniversalCreditsId.toString -
-        //Current Year
-        PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
-        HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
-        YouBenefitsIncomeCYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-        PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString -
-        PartnerAnyTheseBenefitsCYId.toString - PartnerBenefitsIncomeCYId.toString - EmploymentIncomeCYId.toString -
-        BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
-        BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
-        BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString -
-        //Previous Year
-        PartnerPaidWorkPYId.toString - ParentEmploymentIncomePYId.toString -
-        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
-        YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - ParentPaidWorkPYId.toString -
-        PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
-        PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString -
-        EmploymentIncomePYId.toString - BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString -
-        HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString - WhoOtherIncomePYId.toString -
-        OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
-        BothBenefitsIncomePYId.toString)
-
-    } else cacheMap
-
-    store(PaidEmploymentId.toString, value, mapToStore)
-  }
-
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore =
       value match {
-        case JsString(You) =>
+        case JsString(`you`) =>
           cacheMap copy (data = cacheMap.data - PartnerWorkHoursId.toString - HasYourPartnersTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - PartnerChildcareVouchersId.toString - EitherGetsVouchersId.toString -
             WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerSelfEmployedOrApprenticeId.toString -
@@ -138,7 +102,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString - BothPaidPensionPYId.toString -
             WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString - WhoOtherIncomePYId.toString -
             OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString - BothBenefitsIncomePYId.toString)
-        case JsString(Partner) =>
+        case JsString(`partner`) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - YourChildcareVouchersId.toString - EitherGetsVouchersId.toString - WhoGetsVouchersId.toString -
             YourAgeId.toString - YourMinimumEarningsId.toString - AreYouSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString -
@@ -153,7 +117,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             WhoOtherIncomePYId.toString - OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
             BothBenefitsIncomePYId.toString )
 
-        case JsString(Both) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
+        case JsString(`both`) => cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
           PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString - HowMuchYouPayPensionId.toString -
           YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString - PartnerPaidWorkPYId .toString -
           ParentEmploymentIncomePYId.toString - YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
@@ -161,6 +125,36 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
           PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString - PartnerAnyTheseBenefitsCYId.toString -
           PartnerBenefitsIncomeCYId.toString - ParentPaidWorkPYId.toString - PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString -
           HowMuchPartnerPayPensionPYId.toString - PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString )
+
+        case JsString(`neither`) =>
+          cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - PartnerWorkHoursId.toString -
+            HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
+            HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
+            EitherGetsVouchersId.toString - WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
+            DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
+            YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
+            PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
+            TaxOrUniversalCreditsId.toString -
+            //Current Year
+            PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
+            HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
+            YouBenefitsIncomeCYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
+            PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString -
+            PartnerAnyTheseBenefitsCYId.toString - PartnerBenefitsIncomeCYId.toString - EmploymentIncomeCYId.toString -
+            BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
+            BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
+            BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString -
+            //Previous Year
+            PartnerPaidWorkPYId.toString - ParentEmploymentIncomePYId.toString -
+            YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
+            YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - ParentPaidWorkPYId.toString -
+            PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
+            PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString -
+            EmploymentIncomePYId.toString - BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString -
+            HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString - WhoOtherIncomePYId.toString -
+            OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
+            BothBenefitsIncomePYId.toString)
+
         case _ => cacheMap
       }
 

@@ -41,7 +41,7 @@ class PartnerStatutoryPayControllerSpec extends ControllerSpecBase {
     new PartnerStatutoryPayController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
 
-  def viewAsString(form: Form[Boolean] = myForm) = partnerStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = myForm) = partnerStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "PartnerStatutoryPay Controller" must {
 

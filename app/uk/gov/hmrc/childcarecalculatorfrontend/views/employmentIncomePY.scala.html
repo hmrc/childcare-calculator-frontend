@@ -17,11 +17,11 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, EmploymentIncomePY}
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@(appConfig: FrontendAppConfig, form: Form[EmploymentIncomePY], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[EmploymentIncomePY], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("employmentIncomePY.title"),
@@ -36,12 +36,20 @@
 
     @helpers.form(action = EmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("employmentIncomePY.tax_year")</p>
+        <p>@messages("employmentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
         <p>@messages("employmentIncomePY.hint")</p>
 
-        @components.input_text(InputViewModel[EmploymentIncomePY]("parentEmploymentIncomePY", form), label = messages("employmentIncomePY.parentEmploymentIncomePY"))
+        @components.input_number(
+            InputViewModel[EmploymentIncomePY]("parentEmploymentIncomePY", form),
+            currencySymbol=Some("true"),
+            label = messages("employmentIncomePY.parentEmploymentIncomePY"),
+            labelClass=Some("visually-hidden"))
 
-        @components.input_text(InputViewModel[EmploymentIncomePY]("partnerEmploymentIncomePY", form), label = messages("employmentIncomePY.partnerEmploymentIncomePY"))
+        @components.input_number(
+            InputViewModel[EmploymentIncomePY]("partnerEmploymentIncomePY", form),
+            currencySymbol=Some("true"),
+            label = messages("employmentIncomePY.partnerEmploymentIncomePY"),
+            labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

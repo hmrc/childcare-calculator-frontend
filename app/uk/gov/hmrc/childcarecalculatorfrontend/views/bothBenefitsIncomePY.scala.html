@@ -36,9 +36,17 @@
 
     @helpers.form(action = BothBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_text(InputViewModel[BothBenefitsIncomePY]("parentBenefitsIncomePY", form), label = messages("bothBenefitsIncomePY.parentBenefitsIncomePY"))
+        @components.input_number(
+            InputViewModel[BothBenefitsIncomePY]("parentBenefitsIncomePY", form),
+            currencySymbol=Some("true"),
+            label = messages("bothBenefitsIncomePY.parentBenefitsIncomePY"),
+            labelClass=Some("visually-hidden"))
 
-        @components.input_text(InputViewModel[BothBenefitsIncomePY]("partnerBenefitsIncomePY", form), label = messages("bothBenefitsIncomePY.partnerBenefitsIncomePY"))
+        @components.input_number(
+            InputViewModel[BothBenefitsIncomePY]("partnerBenefitsIncomePY", form),
+            currencySymbol=Some("true"),
+            label = messages("bothBenefitsIncomePY.partnerBenefitsIncomePY"),
+            labelClass=Some("visually-hidden"))
 
         @components.submit_button()
     }

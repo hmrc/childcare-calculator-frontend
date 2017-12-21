@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
+class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
     Map(
@@ -35,7 +35,9 @@ class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
       YourOtherIncomeLYId.toString -> ((v, cm) => storeYourOtherIncomePY(v, cm)),
       PartnerAnyOtherIncomeLYId.toString -> ((v, cm) => storePartnerAnyOtherIncomePY(v, cm)),
       BothOtherIncomeLYId.toString -> ((v, cm) => storeBothOtherIncomePY(v, cm)),
-      WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm))
+      WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm)),
+      BothPaidWorkPYId.toString -> ((v, cm) => storeBothPaidWorkPY(v, cm)),
+      WhoWasInPaidWorkPYId.toString -> ((v, cm) => storeWhoWasInPaidWork(v, cm))
     )
 
   private def storeYourOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -68,11 +70,11 @@ class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeWhoGetsOtherIncomeCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
     val mapToStore = value match {
-      case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountCYId.toString -
+      case JsString(`you`) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountCYId.toString -
         OtherIncomeAmountCYId.toString)
-      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountCYId.toString -
+      case JsString(`partner`) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountCYId.toString -
         OtherIncomeAmountCYId.toString)
-      case JsString(Both) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountCYId.toString -
+      case JsString(`both`) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountCYId.toString -
         PartnerOtherIncomeAmountCYId.toString)
       case _ => cacheMap
     }
@@ -109,18 +111,52 @@ class OtherIncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(BothOtherIncomeLYId.toString, value, mapToStore)
   }
 
-  private def storeWhoOtherIncomePY(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeWhoOtherIncomePY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString(You) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountPYId.toString -
+      case JsString(`you`) => cacheMap copy (data = cacheMap.data  - PartnerOtherIncomeAmountPYId.toString -
         OtherIncomeAmountPYId.toString)
-      case JsString(Partner) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountPYId.toString -
+      case JsString(`partner`) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountPYId.toString -
         OtherIncomeAmountPYId.toString)
-      case JsString(Both) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountPYId.toString -
+      case JsString(`both`) => cacheMap copy (data = cacheMap.data  - YourOtherIncomeAmountPYId.toString -
         PartnerOtherIncomeAmountPYId.toString)
       case _ => cacheMap
     }
 
     store(WhoOtherIncomePYId.toString, value, mapToStore)
+  }
+
+  private def storeBothPaidWorkPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = value match {
+      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhoWasInPaidWorkPYId.toString -
+        EmploymentIncomePYId.toString - ParentEmploymentIncomePYId.toString - PartnerEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - PartnerPaidPensionPYId.toString - BothPaidPensionPYId.toString -
+        WhoPaidIntoPensionPYId.toString - HowMuchYouPayPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
+        HowMuchBothPayPensionPYId.toString)
+
+      case _ => cacheMap
+    }
+
+    store(BothPaidWorkPYId.toString, value, mapToStore)
+  }
+
+  private def storeWhoWasInPaidWork(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = value match {
+      case JsString(`you`) => cacheMap copy (data = cacheMap.data - PartnerEmploymentIncomePYId.toString -
+        PartnerPaidPensionPYId.toString  - HowMuchPartnerPayPensionPYId.toString - EmploymentIncomePYId.toString -
+        WhoPaidIntoPensionPYId.toString -  BothPaidPensionPYId.toString - HowMuchBothPayPensionPYId.toString)
+
+      case JsString(`partner`) => cacheMap copy (data = cacheMap.data - ParentEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - EmploymentIncomePYId.toString -
+        WhoPaidIntoPensionPYId.toString - BothPaidPensionPYId.toString - HowMuchBothPayPensionPYId.toString)
+
+      case JsString(`both`) => cacheMap copy (data = cacheMap.data  - ParentEmploymentIncomePYId.toString -
+        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString  - PartnerEmploymentIncomePYId.toString -
+        PartnerPaidPensionPYId.toString  - HowMuchPartnerPayPensionPYId.toString)
+
+      case _ => cacheMap
+    }
+
+    store(WhoWasInPaidWorkPYId.toString, value, mapToStore)
   }
 
 }

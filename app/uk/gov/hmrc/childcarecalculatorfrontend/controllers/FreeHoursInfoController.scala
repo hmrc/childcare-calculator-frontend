@@ -23,7 +23,7 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
@@ -34,13 +34,20 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val isChildAgedTwo = request.userAnswers.childAgedTwo.getOrElse(false)
+      val isChildAgedThreeOrFour = request.userAnswers.childAgedThreeOrFour.getOrElse(false)
       val locationOption = request.userAnswers.location
+      val Yes = YesNoNotYetEnum.YES.toString
+
+      val hasChildcareCosts = request.userAnswers.childcareCosts.getOrElse(false) match {
+        case Yes => true
+        case _ => false
+      }
 
       locationOption match {
         case None =>
           Redirect(routes.LocationController.onPageLoad(NormalMode))
         case Some(location) =>
-          Ok(freeHoursInfo(appConfig, isChildAgedTwo, location))
+          Ok(freeHoursInfo(appConfig, isChildAgedTwo, isChildAgedThreeOrFour,hasChildcareCosts ,location))
       }
   }
 }

@@ -20,7 +20,7 @@ import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, BothBenefitsIncomePY}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{Both, Partner, You}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
@@ -73,7 +73,7 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
           PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
           BothBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          WhosHadBenefitsPYId.toString -> JsString(You)))
+          WhosHadBenefitsPYId.toString -> JsString(you)))
 
         val result = cascadeUpsert(BothAnyTheseBenefitsPYId.toString, false, originalCacheMap)
 
@@ -82,13 +82,13 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(
-          WhosHadBenefitsPYId.toString -> JsString(You),
+          WhosHadBenefitsPYId.toString -> JsString(you),
           YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20))))
 
         val result = cascadeUpsert(BothAnyTheseBenefitsPYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(BothAnyTheseBenefitsPYId.toString.toString -> JsBoolean(true),
-          WhosHadBenefitsPYId.toString -> JsString(You),
+          WhosHadBenefitsPYId.toString -> JsString(you),
           YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
 
@@ -100,9 +100,9 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
           BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))))
 
-        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, You, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, you, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(You),
+        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(you),
           YouBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
 
@@ -111,9 +111,9 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
           BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))))
 
-        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, Partner, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, partner, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(Partner),
+        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(partner),
           PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
 
@@ -122,9 +122,9 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           PartnerBenefitsIncomePYId.toString -> JsNumber(BigDecimal(20)),
           BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))))
 
-        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, Both, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsPYId.toString, both, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(Both),
+        result.data mustBe Map(WhosHadBenefitsPYId.toString -> JsString(both),
           BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20)))
       }
 
@@ -192,7 +192,7 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
           PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
           BenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
-          WhosHadBenefitsId.toString -> JsString(You)))
+          WhosHadBenefitsId.toString -> JsString(you)))
 
         val result = cascadeUpsert(BothAnyTheseBenefitsCYId.toString, false, originalCacheMap)
 
@@ -201,13 +201,13 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(
-          WhosHadBenefitsId.toString -> JsString(You),
+          WhosHadBenefitsId.toString -> JsString(you),
           YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20))))
 
         val result = cascadeUpsert(BothAnyTheseBenefitsCYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(BothAnyTheseBenefitsCYId.toString.toString -> JsBoolean(true),
-          WhosHadBenefitsId.toString -> JsString(You),
+          WhosHadBenefitsId.toString -> JsString(you),
           YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)))
       }
 
@@ -220,9 +220,9 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
           BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(10, 20))))
 
-        val result = cascadeUpsert(WhosHadBenefitsId.toString, You, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsId.toString, you, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(You),
+        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(you),
           YouBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(10)))
       }
 
@@ -231,9 +231,9 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
           BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(10, 20))))
 
-        val result = cascadeUpsert(WhosHadBenefitsId.toString, Partner, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsId.toString, partner, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(Partner),
+        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(partner),
           PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)))
       }
 
@@ -242,9 +242,9 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)),
           BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(10, 20))))
 
-        val result = cascadeUpsert(WhosHadBenefitsId.toString, Both, originalCacheMap)
+        val result = cascadeUpsert(WhosHadBenefitsId.toString, both, originalCacheMap)
 
-        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(Both),
+        result.data mustBe Map(WhosHadBenefitsId.toString -> JsString(both),
           BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(10, 20)))
       }
 

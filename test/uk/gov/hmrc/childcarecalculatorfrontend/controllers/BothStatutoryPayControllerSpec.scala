@@ -41,7 +41,7 @@ class BothStatutoryPayControllerSpec extends ControllerSpecBase {
     new BothStatutoryPayController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
 
-  def viewAsString(form: Form[Boolean] = myForm) = bothStatutoryPay(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = myForm) = bothStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "BothStatutoryPay Controller" must {
 

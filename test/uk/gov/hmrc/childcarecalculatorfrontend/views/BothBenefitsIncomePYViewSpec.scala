@@ -39,6 +39,22 @@ class BothBenefitsIncomePYViewSpec extends QuestionViewBehaviours[BothBenefitsIn
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.BothBenefitsIncomePYController.onSubmit(NormalMode).url, "parentBenefitsIncomePY", "partnerBenefitsIncomePY")
+    behave like pageWithTextFields(createViewUsingForm,
+      messageKeyPrefix,
+      routes.BothBenefitsIncomePYController.onSubmit(NormalMode).url,
+      "parentBenefitsIncomePY", "partnerBenefitsIncomePY")
+  }
+
+  "contain the currencySymbol class and £ " in {
+    val doc = asDocument(createView())
+
+    assertRenderedByCssSelector(doc, ".currencySymbol")
+
+    val parentCurrencySymbol = doc.getElementById("parentBenefitsIncomePY").firstElementSibling().text()
+    val partnerCurrencySymbol = doc.getElementById("partnerBenefitsIncomePY").firstElementSibling().text()
+
+    parentCurrencySymbol mustBe "£"
+    partnerCurrencySymbol mustBe "£"
+
   }
 }

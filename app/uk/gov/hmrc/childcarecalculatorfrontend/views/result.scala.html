@@ -15,7 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @(appConfig: FrontendAppConfig, model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
@@ -50,6 +50,14 @@
         @resultNotEligible(model)
     }
 
-    <p>@messages("result.read.more.info")</p>
 
+    <h2>@messages("result.more.info.title")</h2>
+
+    <p>@messages("result.more.info.para")</p>
+
+    @components.button_link(
+        messageKey = "result.read.more.button",
+        id = "aboutYourResults",
+        href = AboutYourResultsController.onPageLoad()
+    )
 }

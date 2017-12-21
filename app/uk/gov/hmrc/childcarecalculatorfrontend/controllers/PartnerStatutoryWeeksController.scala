@@ -28,8 +28,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryWeeksId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
 import scala.concurrent.Future
@@ -40,16 +41,17 @@ class PartnerStatutoryWeeksController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        partnerStatutoryWeeksForm: PartnerStatutoryWeeksForm) extends FrontendController with I18nSupport {
 
   private def sessionExpired(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
 
-  private def validateStatutoryPayType[A](block: (String) => Future[Result])
+  private def validateStatutoryPayType[A](block: (StatutoryPayTypeEnum.Value) => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {
 
     request.userAnswers.partnerStatutoryPayType.map {
-      payType => block(Messages(s"statutoryPayTypeLower.$payType"))
+      payType => block(payType)
     }.getOrElse(sessionExpired)
   }
 
@@ -58,11 +60,13 @@ class PartnerStatutoryWeeksController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
+          val viewModel = new StatutoryPayWeeksViewModel(appConfig, statutoryType)
+
           val preparedForm = request.userAnswers.partnerStatutoryWeeks match {
-            case None => PartnerStatutoryWeeksForm(statutoryType)
-            case Some(value) => PartnerStatutoryWeeksForm(statutoryType).fill(value)
+            case None => partnerStatutoryWeeksForm(statutoryType, viewModel.statutoryTypeMessage)
+            case Some(value) => partnerStatutoryWeeksForm(statutoryType, viewModel.statutoryTypeMessage).fill(value)
           }
-          Future.successful(Ok(partnerStatutoryWeeks(appConfig, preparedForm, mode, statutoryType)))
+          Future.successful(Ok(partnerStatutoryWeeks(appConfig, preparedForm, mode, viewModel)))
       }
   }
 
@@ -71,9 +75,11 @@ class PartnerStatutoryWeeksController @Inject()(
       validateStatutoryPayType {
         statutoryType =>
 
-          PartnerStatutoryWeeksForm(statutoryType).bindFromRequest().fold(
+          val viewModel = new StatutoryPayWeeksViewModel(appConfig, statutoryType)
+
+          partnerStatutoryWeeksForm(statutoryType, viewModel.statutoryTypeMessage).bindFromRequest().fold(
             (formWithErrors: Form[Int]) =>
-              Future.successful(BadRequest(partnerStatutoryWeeks(appConfig, formWithErrors, mode, statutoryType))),
+              Future.successful(BadRequest(partnerStatutoryWeeks(appConfig, formWithErrors, mode, viewModel))),
             (value) =>
               dataCacheConnector.save[Int](request.sessionId, PartnerStatutoryWeeksId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(PartnerStatutoryWeeksId, mode)(new UserAnswers(cacheMap))))

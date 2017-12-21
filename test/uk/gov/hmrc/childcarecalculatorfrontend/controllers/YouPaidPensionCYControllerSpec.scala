@@ -24,21 +24,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PaidEmploymentId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouPaidPensionCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.paidEmployment
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youPaidPensionCY
 
-class PaidEmploymentControllerSpec extends ControllerSpecBase {
+class YouPaidPensionCYControllerSpec extends ControllerSpecBase {
+
+  val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PaidEmploymentController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new YouPaidPensionCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = paidEmployment(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = youPaidPensionCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
-  "PaidEmployment Controller" must {
+  "YouPaidPensionCY Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -48,12 +51,12 @@ class PaidEmploymentControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PaidEmploymentId.toString -> JsBoolean(true))
+      val validData = Map(YouPaidPensionCYId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(BooleanForm("YouPaidPensionCY.error").fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -67,7 +70,7 @@ class PaidEmploymentControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("paidEmployment.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("YouPaidPensionCY.error").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
