@@ -51,7 +51,6 @@ object ChildcareConstants {
 
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
-  val valueFormatter = new java.text.DecimalFormat("##,###")
 
   val unknownErrorKey = "error.unknown"
 

@@ -26,6 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,7 +41,8 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       messagesApi,
       dataRetrievalAction,
       new DataRequiredActionImpl,
-      resultService)
+      resultService,
+      new Utils)
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
@@ -53,7 +55,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       contentAsString(resultPage) must include("15")
       contentAsString(resultPage) must include("500")
       contentAsString(resultPage) must include("600")
-      contentAsString(resultPage) must include("1000")
+      contentAsString(resultPage) must include("1,000")
     }
 
     "redirect to Location controller when there is no location data" in {

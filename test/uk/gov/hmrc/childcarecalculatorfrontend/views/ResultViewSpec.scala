@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
@@ -24,26 +25,26 @@ class ResultViewSpec extends ViewBehaviours {
   
   "Result view" must {
 
-    behave like normalPage(() => result(frontendAppConfig,ResultsViewModel(""))(fakeRequest, messages), "result")
+    behave like normalPage(() => result(frontendAppConfig,ResultsViewModel(""), new Utils)(fakeRequest, messages), "result")
 
     "Contain results" when {
       "We have introductory paragraph" in {
         val model = ResultsViewModel("This is the first paragraph")
-        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "This is the first paragraph")
       }
 
       "We have free hours value" in {
         val model = ResultsViewModel(freeHours = Some(15))
-        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "You are eligible for help from 1 scheme:")
       }
 
       "user is eligible for more than one of the schemes" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
-        val view = asDocument(result(frontendAppConfig, model)(fakeRequest, messages))
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "You are eligible for help from 2 schemes:")
       }

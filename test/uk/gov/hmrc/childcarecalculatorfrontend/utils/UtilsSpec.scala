@@ -111,5 +111,34 @@ class UtilsSpec extends SpecBase {
         }
       }
 
+    "valueFormatter" should{
+      "return correct value when value has less than 4 digits" in {
+
+        val utils = new Utils
+        utils.valueFormatter(300) mustBe "300"
+        utils.valueFormatter(30) mustBe "30"
+        utils.valueFormatter(3) mustBe "3"
+        utils.valueFormatter(30.35) mustBe "30"
+      }
+
+      "return correct value with comma when value has more than 3 digits" in {
+
+        val utils = new Utils
+        utils.valueFormatter(1433000) mustBe "1,433,000"
+        utils.valueFormatter(3000) mustBe "3,000"
+        utils.valueFormatter(3030.35) mustBe "3,030"
+      }
+
+      "return correct value without decimal when value has decimal points" in {
+
+        val utils = new Utils
+        utils.valueFormatter(300.3) mustBe "300"
+        utils.valueFormatter(300.35) mustBe "300"
+        utils.valueFormatter(28.35) mustBe "28"
+        utils.valueFormatter(28.65) mustBe "29"
+
+      }
+    }
+
   }
 }
