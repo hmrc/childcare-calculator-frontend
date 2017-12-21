@@ -31,12 +31,16 @@
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             couldGet = Some(messages("result.you.could.get.up.to")),
-            eligibility = Some(model.freeHours.fold("")(hours => if(hours!=freeHoursForNI) hours.toString else messages("result.fre.hours.twelve.and.half")) + " " + messages("result.free.hours.hours")),
+            eligibility = Some(model.freeHours.fold("")(hours => if(hours!=freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours")),
             periodText = if(location.toString.equals(Location.ENGLAND.toString)){
                             Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {
                             Some(messages(s"result.free.hours.period.$location"))},
             para1 = Some(messages("result.free.hours.para1")),
-            para2 = if(location.toString.equals(Location.ENGLAND.toString)) {Some(messages("result.free.hours.para2"))} else {None})
+            para2 = if(location.toString.equals(Location.ENGLAND.toString)) {
+                        if(model.freeHours.contains(noOfFreeHours15)) {
+                            Some(messages("result.free.hours.para2.hours.15"))}
+                        else {Some(messages("result.free.hours.para2.hours.30"))}}
+                    else {None})
     }
 }
 

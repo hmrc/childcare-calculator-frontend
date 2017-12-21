@@ -85,7 +85,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.england", 570))
         assertContainsText(view, messages("result.free.hours.para1"))
-        assertContainsText(view, messages("result.free.hours.para2"))
+        assertContainsText(view, messages("result.free.hours.para2.hours.15"))
       }
 
       "location is England and no of hours is 30" in {
@@ -98,7 +98,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.england", new DecimalFormat("##,###").format(1140)))
         assertContainsText(view, messages("result.free.hours.para1"))
-        assertContainsText(view, messages("result.free.hours.para2"))
+        assertContainsText(view, messages("result.free.hours.para2.hours.30"))
 
       }
 
