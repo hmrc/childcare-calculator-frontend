@@ -299,29 +299,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     }
   }
 
-  "either gets vouchers pages" when {
-    "go to you or your partner benefits page from which of you gets vouchers page" in {
-      navigator.nextPage(WhoGetsVouchersId, NormalMode).value(spy(userAnswers())) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-    }
-
-    "go to who gets vouchers or you or your partner benefits page from do either of you get vouchers page when user selects 'yes' and lives with partner" in {
-      val answers = spy(userAnswers())
-      when(answers.eitherGetsVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(EitherGetsVouchersId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    }
-
-    "go to do you or your partner get benefits page from do either of you get vouchers page when user selects 'no' or 'not sure' and lives with partner" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.eitherGetsVouchers) thenReturn Some("no") thenReturn Some("notSure")
-      navigator.nextPage(EitherGetsVouchersId, NormalMode).value(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(EitherGetsVouchersId, NormalMode).value(answers) mustBe routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-    }
-
-  }
-
   "Does Your Employer Offer Childcare Vouchers" when {
     "user will be taken to DoYouOrYourPartnerGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
       "lives with partner" in {

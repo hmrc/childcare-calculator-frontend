@@ -101,11 +101,6 @@ POST        /partner-childcare-vouchers                        uk.gov.hmrc.child
 GET         /change-partner-childcare-vouchers                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-partner-childcare-vouchers                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode = CheckMode)
 
-GET         /either-gets-vouchers                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onPageLoad(mode: Mode = NormalMode)
-POST        /either-gets-vouchers                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = NormalMode)
-GET         /change-either-gets-vouchers                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-either-gets-vouchers                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherGetsVouchersController.onSubmit(mode: Mode = CheckMode)
-
 GET         /who-gets-vouchers                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = NormalMode)
 POST        /who-gets-vouchers                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode = NormalMode)
 GET         /change-who-gets-vouchers                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode = CheckMode)

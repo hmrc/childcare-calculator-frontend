@@ -250,8 +250,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 
-  def eitherGetsVouchers: Option[String] = cacheMap.getEntry[String](EitherGetsVouchersId.toString)
-
   def yourChildcareVouchers: Option[String] = cacheMap.getEntry[String](YourChildcareVouchersId.toString)
 
   def partnerChildcareVouchers: Option[String] = cacheMap.getEntry[String](PartnerChildcareVouchersId.toString)
