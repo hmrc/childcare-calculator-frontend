@@ -19,7 +19,10 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-@(appConfig: FrontendAppConfig, tfcEligibility: Eligibility, childcareVouchersEligibility: Boolean)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig,
+        tfcEligibility: Eligibility,
+        childcareVouchersEligibility: Boolean,
+        taxCreditsEligibility: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("maxFreeHoursInfo.title"),
@@ -36,9 +39,17 @@
     <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
     <ul class="bullets">
-        @if(tfcEligibility == Eligible) {
-            <li>@messages("maxFreeHoursInfo.li.taxFreeChildcare")
+        @if(childcareVouchersEligibility) {
+            <li>@messages("maxFreeHoursInfo.li.childcareVouchers")</li>
         }
+        @if(tfcEligibility == Eligible) {
+        }
+            <li>@messages("maxFreeHoursInfo.li.taxFreeChildcare")
+
+        @if(taxCreditsEligibility) {
+            <li>@messages("maxFreeHoursInfo.li.taxCredits")</li>
+        }
+
     </ul>
 
     <p>@messages("maxFreeHoursInfo.give.more.info")</p>
