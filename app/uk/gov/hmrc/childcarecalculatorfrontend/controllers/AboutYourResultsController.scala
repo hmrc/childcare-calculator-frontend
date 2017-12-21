@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
-import scala.concurrent.Future
-
 @Singleton
 class AboutYourResultsController @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
@@ -39,7 +37,7 @@ class AboutYourResultsController @Inject()(val appConfig: FrontendAppConfig,
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
 
-  val resultViewModel: Future[Option[ResultsViewModel]] = dataCacheConnector.getEntry[ResultsViewModel](request.sessionId, ResultsViewModelId.toString)
+  val resultViewModel = dataCacheConnector.getEntry[ResultsViewModel](request.sessionId, ResultsViewModelId.toString)
 
     resultViewModel.map{
         case Some(model) => Ok(aboutYourResults(appConfig, model))

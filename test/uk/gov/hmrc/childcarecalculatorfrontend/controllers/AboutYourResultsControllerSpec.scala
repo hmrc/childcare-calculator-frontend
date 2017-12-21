@@ -16,34 +16,62 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.scalatest.mockito.MockitoSugar
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.{DataCacheConnector, FakeDataCacheConnector}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
+import org.mockito.Matchers.any
+import org.mockito.Mockito._
+import scala.concurrent.ExecutionContext.Implicits.global
 
-class AboutYourResultsControllerSpec extends ControllerSpecBase {
+import scala.concurrent.Future
+
+class AboutYourResultsControllerSpec extends ControllerSpecBase with MockitoSugar{
+
+  val mockDataConnector: DataCacheConnector = mock[DataCacheConnector]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): AboutYourResultsController =
     new AboutYourResultsController(frontendAppConfig,
       messagesApi,
-      FakeDataCacheConnector,
+      mockDataConnector,
       dataRetrievalAction,
       new DataRequiredActionImpl)
 
   "AboutYourResults Controller" must {
     "return OK and the correct view for a GET" in {
       val model = ResultsViewModel()
+      when(mockDataConnector.getEntry[ResultsViewModel](any(), any())(any())) thenReturn Future(Some(model))
+
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe aboutYourResults(frontendAppConfig, model)(fakeRequest, messages).toString
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
+    "redirect to Session Expired for a GET" when {
+      "no existing data is found" in {
+        val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      }
+
+      "view model is returned as None" in {
+        when(mockDataConnector.getEntry[ResultsViewModel](any(), any())(any())) thenReturn Future(None)
+        val result = controller().onPageLoad()(fakeRequest)
+
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      }
+
+      "something goes wrong while fetching view model" in {
+        when(mockDataConnector.getEntry[ResultsViewModel](any(), any())(any())) thenReturn Future.failed(new RuntimeException)
+        val result = controller().onPageLoad()(fakeRequest)
+
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      }
     }
   }
 }

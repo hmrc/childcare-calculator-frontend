@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
