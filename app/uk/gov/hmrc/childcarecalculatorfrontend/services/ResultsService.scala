@@ -38,7 +38,6 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
   def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
     val resultViewModel = ResultsViewModel(firstParagraphBuilder.buildFirstParagraph(answers))
     val result = eligibilityService.eligibility(answers)
-
     result.map(results => {
       results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
     })
