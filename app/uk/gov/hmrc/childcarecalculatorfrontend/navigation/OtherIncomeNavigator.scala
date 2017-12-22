@@ -76,9 +76,9 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
 
   private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.whoGetsOtherIncomeCY) {
-      case You => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case Partner => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case Both => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case `you` => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case `partner` => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case `both` => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
     }
 
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
@@ -133,9 +133,9 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
 
   private def whoGetsOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.whoOtherIncomePY) {
-      case You => routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case Partner => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case Both => routes.OtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case `you` => routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case `partner` => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
+      case `both` => routes.OtherIncomeAmountPYController.onPageLoad(NormalMode)
     }
 
   private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
@@ -144,8 +144,8 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
   private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountPY) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `partner` => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `both` => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
       }
     }
 
@@ -157,8 +157,8 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
       routes.YouStatutoryPayController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayController.onPageLoad(NormalMode)
+        case `you` => routes.YouStatutoryPayController.onPageLoad(NormalMode)
+        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -168,8 +168,8 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
       routes.YouStatutoryPayController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case Both => routes.BothStatutoryPayController.onPageLoad(NormalMode)
+        case `you` => routes.YouStatutoryPayController.onPageLoad(NormalMode)
+        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

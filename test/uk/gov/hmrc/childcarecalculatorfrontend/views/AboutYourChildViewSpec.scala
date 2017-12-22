@@ -51,5 +51,15 @@ class AboutYourChildViewSpec extends QuestionViewBehaviours[AboutYourChild] with
       val doc = asDocument(createView(0, 2))
       assertContainsText(doc, messages(s"$messageKeyPrefix.title.nth", messages("nth.0")))
     }
+
+    "contain lede guidance for the first child" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.lede"))
+    }
+
+    "not contain lede guidance for other children" in {
+      val doc = asDocument(createView(1, 2))
+      assertNotContainsText(doc, messages(s"$messageKeyPrefix.lede"))
+    }
   }
 }

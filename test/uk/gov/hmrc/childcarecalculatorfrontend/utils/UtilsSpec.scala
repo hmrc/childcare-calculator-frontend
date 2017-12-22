@@ -83,8 +83,8 @@ class UtilsSpec extends SpecBase {
         }
 
         def stringPf: PartialFunction[String, Call] ={
-          case Partner => partnerCall
-          case Both => bothCall
+          case `partner` => partnerCall
+          case `both` => bothCall
         }
 
         val utils = new Utils
@@ -95,13 +95,13 @@ class UtilsSpec extends SpecBase {
 
       "return SessionExpired call when there is None in element" in {
         val noneValue = None
-        val optionalStringValue = Some(You)
+        val optionalStringValue = Some(you)
         val call1 = Call("GET", "one")
         val call2 = Call("GET", "two")
 
         def stringPf: PartialFunction[String, Call] ={
-          case Partner => call1
-          case Both => call2
+          case `partner` => call1
+          case `both` => call2
         }
 
         val utils = new Utils

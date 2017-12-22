@@ -84,8 +84,8 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def whoWasInPaidWorkRoute(answers: UserAnswers) =
     utils.getCall(answers.whoWasInPaidWorkPY) {
-      case You => routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
-      case Partner => routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
-      case Both => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
+      case `you` => routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+      case `partner` => routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+      case `both` => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
     }
 }

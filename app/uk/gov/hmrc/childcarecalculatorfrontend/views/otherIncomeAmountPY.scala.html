@@ -36,9 +36,17 @@
 
     @helpers.form(action = OtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_text(InputViewModel[OtherIncomeAmountPY]("parentOtherIncomeAmountPY", form), label = messages("otherIncomeAmountPY.parentOtherIncomeAmountPY"))
+        @components.input_number(
+            InputViewModel[OtherIncomeAmountPY]("parentOtherIncomeAmountPY", form),
+            currencySymbol=Some("true"),
+            label = messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")
+            )
 
-        @components.input_text(InputViewModel[OtherIncomeAmountPY]("partnerOtherIncomeAmountPY", form), label = messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY"))
+        @components.input_number(
+            InputViewModel[OtherIncomeAmountPY]("partnerOtherIncomeAmountPY", form),
+            currencySymbol=Some("true"),
+            label = messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")
+            )
 
         @components.submit_button()
     }

@@ -36,9 +36,17 @@
 
     @helpers.form(action = HowMuchBothPayPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.input_text(InputViewModel[HowMuchBothPayPensionPY]("howMuchYouPayPensionPY", form), label = messages("howMuchBothPayPensionPY.yourPension"))
+        @components.input_number(
+            InputViewModel[HowMuchBothPayPensionPY]("howMuchYouPayPensionPY", form),
+            currencySymbol=Some("true"),
+            label = messages("howMuchBothPayPensionPY.yourPension")
+            )
 
-        @components.input_text(InputViewModel[HowMuchBothPayPensionPY]("howMuchPartnerPayPensionPY", form), label = messages("howMuchBothPayPensionPY.partnerPension"))
+        @components.input_number(
+            InputViewModel[HowMuchBothPayPensionPY]("howMuchPartnerPayPensionPY", form),
+            currencySymbol=Some("true"),
+            label = messages("howMuchBothPayPensionPY.partnerPension")
+            )
 
         @components.submit_button()
     }
