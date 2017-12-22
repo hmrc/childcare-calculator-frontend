@@ -22,7 +22,7 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CheckYourAnswersHelper, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CheckYourAnswersHelper, ChildcareConstants, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursResult
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -48,6 +48,20 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
         checkYourAnswersHelper.childcareCosts
       ).flatten))
 
-    Ok(freeHoursResult(appConfig, location, eligibility, sections))
+
+      val paidEmployment = checkIfInEmployment(request.userAnswers)
+
+    Ok(freeHoursResult(appConfig, location, eligibility, sections,paidEmployment))
+  }
+
+  private def checkIfInEmployment(userAnswers: UserAnswers) = {
+    if (userAnswers.areYouInPaidWork.isDefined) {
+      userAnswers.areYouInPaidWork.getOrElse(false)
+    } else {
+      userAnswers.whoIsInPaidEmployment.fold(true)(whoInPaidEmployment => whoInPaidEmployment match {
+        case ChildcareConstants.neither => false
+        case _ => true
+      })
+    }
   }
 }
