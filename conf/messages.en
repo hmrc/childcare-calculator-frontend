@@ -1212,8 +1212,36 @@ whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
 whoWasInPaidWorkPY.error = Select who was in paid work
 
-
 aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
+aboutYourResults.about.the.schemes = About the schemes
+aboutYourResults.free.childcare.hours.title = Free childcare hours
+aboutYourResults.free.childcare.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. For example, if they turn 3 on 13 October, you will be able to get free childcare from January.
+aboutYourResults.free.childcare.hours.para2 = You can use your free hours between different approved providers. For example, a registered childminder, play scheme, nursery, out of school club or a home careworker working for a registered agency. They may apply charges for additional services.
+
+aboutYourResults.tc.title = Tax credits
+aboutYourResults.tc.para1 = This scheme provides extra money to people responsible for children. You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your household income.
+aboutYourResults.tc.para2 = It will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live.
+aboutYourResults.tc.para3.part1 = All tax credits claims will eventually be moved over to Universal Credit. Use the
+aboutYourResults.tc.para3.eligibility.checker = eligibility checker
+aboutYourResults.tc.para3.eligibility.checker.link = https://universalcreditinfo.net
+aboutYourResults.tc.para3.part2 = to find out exactly when you could be affected.
 aboutYourResults.return.link = Return to results
 
+aboutYourResults.tfc.title = Tax-Free Childcare
+aboutYourResults.tfc.para1 = With this scheme, you'll create an online childcare account. Then, for every £8 paid into it, the government will pay in £2.
+aboutYourResults.tfc.para2 = You can get up to £2,000 a year for each child, or £4,000 if they are disabled, towards their costs - that’s up to £500 or £1,000 a month. You can only use this money to pay your childcare provider.
+
+aboutYourResults.esc.title = Childcare vouchers
+aboutYourResults.esc.para1 = Each parent can take up to £55 a week of their wages as childcare vouchers – around £243 a month. This is called salary sacrifice. You won’t pay tax or National Insurance on the amount of your pay you take in vouchers.
+aboutYourResults.esc.para2 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
+
+aboutYourResults.more.info.title = More information on the schemes
+aboutYourResults.more.info.para1 = You can read more information about these schemes at:
+aboutYourResults.more.info.para1.tfc.help.link = https://www.gov.uk/help-with-childcare-costs/tax-free-childcare
+aboutYourResults.more.info.para2 = You can apply for 30 hours free childcare and Tax-Free Childcare through one online application - the eligibility rules are the same for both.
+
+aboutYourResults.two.years.old.guidance.title = If user has a 2 year old living in England the following text will display:
+aboutYourResults.two.years.old.guidance.para1 = Your 2 year old
+aboutYourResults.two.years.old.guidance.para2 =  Find out if your 2 year old is eligible for 15 hours free childcare.
+aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
