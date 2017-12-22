@@ -299,9 +299,11 @@ eitherGetsVouchers.error = Select yes if either of your employers offer childcar
 
 whoGetsVouchers.title = Whose employer offers childcare vouchers?
 whoGetsVouchers.heading = Whose employer offers childcare vouchers?
-whoGetsVouchers.you = Yours
+whoGetsVouchers.you = Your’s
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
+whoGetsVouchers.neither = Neither
+whoGetsVouchers.notSure = Not sure
 whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 

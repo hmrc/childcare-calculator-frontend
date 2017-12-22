@@ -31,11 +31,10 @@ object SessionDataOverwrite extends SubCascadeUpsert {
     val partnerAdjustedTaxCodeIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, DoYouKnowYourPartnersAdjustedTaxCodeId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.NO)
     val partnerChildcarePartnerIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, PartnerChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
     val yourChildcareVouchersIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap, YourChildcareVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
-    val eitherChildcareVouchersIfNotSureThenNo = overwrite[YesNoUnsureEnum](_:CacheMap,EitherGetsVouchersId.toString, YesNoUnsureEnum.NOTSURE, YesNoUnsureEnum.YES)
 
     (childCareCostsIfNotYetThenYes andThen  approvedProviderIfNotSureThenYes andThen
       yourAdjustedTaxCodeIfNotSureThenNo andThen partnerAdjustedTaxCodeIfNotSureThenNo andThen
-      partnerChildcarePartnerIfNotSureThenNo andThen yourChildcareVouchersIfNotSureThenNo andThen eitherChildcareVouchersIfNotSureThenNo)(userData)
+      partnerChildcarePartnerIfNotSureThenNo andThen yourChildcareVouchersIfNotSureThenNo)(userData)
   }
 
   def overwrite[T: Format](userSelections: CacheMap, elementToOverwrite: String, valueToReplace: T, valueToReplaceWith: T): CacheMap = {

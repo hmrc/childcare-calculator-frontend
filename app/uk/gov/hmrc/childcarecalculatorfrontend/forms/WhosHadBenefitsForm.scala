@@ -28,10 +28,9 @@ object WhosHadBenefitsForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBothEnum.Value] =
     Form(single("value" -> of(WhosHadBenefitsFormatter)))
 
-  def options: Seq[InputOption] = YouPartnerBothEnum.values.map {
-    value =>
-      InputOption("whosHadBenefits", value.toString)
-  }.toSeq
+  def options: Seq[InputOption] = Seq(InputOption("whosHadBenefits", YouPartnerBothEnum.YOU.toString),
+    InputOption("whosHadBenefits", YouPartnerBothEnum.PARTNER.toString),
+    InputOption("whosHadBenefits", YouPartnerBothEnum.BOTH.toString))
 
   private def WhosHadBenefitsFormatter = new Formatter[YouPartnerBothEnum.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
