@@ -81,9 +81,9 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
       val childcareVouchersEligibility =
         if (hasPartner) {
           whoInPaidEmployment match {
-            case  Some(You) => hasChildcareCosts && yourChildcareVouchers
-            case Some(Partner) => hasChildcareCosts && partnerChildcareVouchers
-            case Some(_) => hasChildcareCosts && (bothChildcareVouchers == Both)
+            case  Some(YouSelected) => hasChildcareCosts && yourChildcareVouchers
+            case Some(PartnerSelected) => hasChildcareCosts && partnerChildcareVouchers
+            case Some(_) => hasChildcareCosts && (bothChildcareVouchers == BothSelected)
             case _ => false
           }
          }else{
