@@ -43,7 +43,9 @@
                 <h3>@messages("aboutYourResults.tc.title")</h3>
                 <p>@messages("aboutYourResults.tc.para1")</p>
                 <p>@messages("aboutYourResults.tc.para2")</p>
-                <p>@messages("aboutYourResults.tc.para3")</p>
+                <p>@messages("aboutYourResults.tc.para3.part1")
+                    <a id="eligibilityChecker" href = @messages("aboutYourResults.tc.para3.eligibility.checker.link")>@messages("aboutYourResults.tc.para3.eligibility.checker")</a> @messages("aboutYourResults.tc.para3.part2")
+                </p>
         </div>
     }
 
@@ -63,18 +65,25 @@
         </div>
      }
 
-
     <div class="moreInfo">
-       <h3>@messages("aboutYourResults.more.info.title")</h3>
-        <p>@messages("aboutYourResults.more.info.para1") <a id="moreInfoHelp" href = @messages("aboutYourResults.more.info.para1.tfc.help.link")></a></p>
-       <p>@messages("aboutYourResults.more.info.para2")</p>
+        <h3>@messages("aboutYourResults.more.info.title")</h3>
+        <p>@messages("aboutYourResults.more.info.para1")
+            <a id="moreInfoHelp" href=@messages("aboutYourResults.more.info.para1.tfc.help.link")>
+                @messages("aboutYourResults.more.info.para1.tfc.help.link")
+            </a>
+        </p>
+        <p>@messages("aboutYourResults.more.info.para2")</p>
     </div>
 
-    @if(model.location.contains(Location.ENGLAND)) {
+    @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
     <div class="twoYearsOld">
         <h3>@messages("aboutYourResults.two.years.old.guidance.title")</h3>
         <p>@messages("aboutYourResults.two.years.old.guidance.para1")</p>
-        <p>@messages("aboutYourResults.two.years.old.guidance.para2")<a id="twoYearsOldHelp" href = @messages("aboutYourResults.two.years.old.guidance.para2.help.link")></a></p>
+        <p>@messages("aboutYourResults.two.years.old.guidance.para2")
+            <a id="twoYearsOldHelp" href = @messages("aboutYourResults.two.years.old.guidance.para2.help.link")>
+                @messages("aboutYourResults.two.years.old.guidance.para2.help.link")
+            </a>
+        </p>
     </div>
     }
 

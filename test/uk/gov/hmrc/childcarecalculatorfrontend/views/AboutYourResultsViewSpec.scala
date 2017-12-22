@@ -84,16 +84,17 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       }
     }
 
-  /*  "not display TFC contents" when {
+   "not display TFC contents" when {
       "user is not eligible for TFC scheme" in {
 
         val model = ResultsViewModel(tc = Some(2000), tfc = None)
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
-        assertNotContainsText(doc, messages("aboutYourResults.tfc.title"))
+
+        assertNotRenderedByCssSelector(doc, ".tfc")
         assertNotContainsText(doc, messages("aboutYourResults.tfc.para1"))
         assertNotContainsText(doc, messages("aboutYourResults.tfc.para2"))
       }
-    }*/
+    }
 
     "display ESC contents" when {
       "user is eligible for ESC scheme" in {
@@ -129,19 +130,27 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), tfc = Some(2300), esc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
+        assertRenderedByCssSelector(doc, ".freehours")
         assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.title"))
         assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para2"))
 
+        assertRenderedByCssSelector(doc, ".tc")
         assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part2"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.eligibility.checker"))
+        doc.getElementById("eligibilityChecker").attr("href") mustBe messages("aboutYourResults.tc.para3.eligibility.checker.link")
 
+        assertRenderedByCssSelector(doc, ".tfc")
         assertContainsMessages(doc, messages("aboutYourResults.tfc.title"))
         assertContainsMessages(doc, messages("aboutYourResults.tfc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.tfc.para2"))
 
+        assertRenderedByCssSelector(doc, ".esc")
         assertContainsMessages(doc, messages("aboutYourResults.esc.title"))
         assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
@@ -162,9 +171,8 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
     }
 
     "display guidance for 2 years old" when {
-
       "user lives in England" in {
-        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND))
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = true)
 
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
@@ -176,6 +184,21 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para2.help.link")
       }
 
+    }
+
+    "not display guidance for 2 years old" when {
+      "user does not live in England" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
+
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(doc, ".twoYearsOld")
+        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
+        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
+        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
+
+        assertNotRenderedById(doc, "twoYearsOldHelp")
+      }
     }
   }
 }

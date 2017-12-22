@@ -24,12 +24,12 @@ case class ResultsViewModel(firstParagraph : String = "",
                             tfc:Option[BigDecimal] = None,
                             esc:Option[BigDecimal] = None,
                             freeHours:Option[BigDecimal] = None,
-                            location:Option[Location.Value] = None) {
+                            location:Option[Location.Value] = None,
+                            childAgedTwo: Boolean = false) {
 
-  def noOfEligibleSchemes = List(tc, tfc, esc, freeHours).flatten.size
-
+  def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 }
 
 object ResultsViewModel {
-  implicit val format = Json.format[ResultsViewModel]
+  implicit val format: OFormat[ResultsViewModel] = Json.format[ResultsViewModel]
 }
