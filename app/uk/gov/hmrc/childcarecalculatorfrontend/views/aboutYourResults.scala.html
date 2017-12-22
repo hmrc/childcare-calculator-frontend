@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @(appConfig: FrontendAppConfig, model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
@@ -34,8 +35,8 @@
                 <h3>@messages("aboutYourResults.free.childcare.hours.title")</h3>
                 <p>@messages("aboutYourResults.free.childcare.hours.para1")</p>
                 <p>@messages("aboutYourResults.free.childcare.hours.para2")</p>
-            }
         </div>
+    }
 
     @if(model.tc.isDefined) {
         <div class="tc">
@@ -48,20 +49,34 @@
 
     @if(model.tfc.isDefined) {
         <div class="tfc">
-
                 <h3>@messages("aboutYourResults.tfc.title")</h3>
                 <p>@messages("aboutYourResults.tfc.para1")</p>
                 <p>@messages("aboutYourResults.tfc.para2")</p>
-            }
         </div>
+    }
 
     @if(model.esc.isDefined) {
         <div class="esc">
                 <h3>@messages("aboutYourResults.esc.title")</h3>
                 <p>@messages("aboutYourResults.esc.para1")</p>
                 <p>@messages("aboutYourResults.esc.para2")</p>
-            }
         </div>
+     }
+
+
+    <div class="moreInfo">
+       <h3>@messages("aboutYourResults.more.info.title")</h3>
+        <p>@messages("aboutYourResults.more.info.para1") <a id="moreInfoHelp" href = @messages("aboutYourResults.more.info.para1.tfc.help.link")></a></p>
+       <p>@messages("aboutYourResults.more.info.para2")</p>
+    </div>
+
+    @if(model.location.contains(Location.ENGLAND)) {
+    <div class="twoYearsOld">
+        <h3>@messages("aboutYourResults.two.years.old.guidance.title")</h3>
+        <p>@messages("aboutYourResults.two.years.old.guidance.para1")</p>
+        <p>@messages("aboutYourResults.two.years.old.guidance.para2")<a id="twoYearsOldHelp" href = @messages("aboutYourResults.two.years.old.guidance.para2.help.link")></a></p>
+    </div>
+    }
 
     @components.button_link(
         messageKey = "aboutYourResults.return.link",

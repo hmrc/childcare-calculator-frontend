@@ -17,31 +17,25 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
 class AboutYourResultsViewSpec extends ViewBehaviours {
 
-  def createView = () => aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages)
+  def createView() = () => aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages)
 
   "AboutYourResults view" must {
 
-    behave like normalPage(createView, "aboutYourResults")
+    behave like normalPage(createView(), "aboutYourResults")
 
     "contain back to results link" in {
 
-      val doc = asDocument(createView())
+      val doc = asDocument(aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages))
 
       doc.getElementById("returnToResults").text() mustBe messages("aboutYourResults.return.link")
       doc.getElementById("returnToResults").attr("href") mustBe ResultController.onPageLoad().url
-    }
-
-    "display the correct title" in {
-
-      val doc = asDocument(createView())
-      assertContainsMessages(doc, messages("aboutYourResults.about.the.schemes"))
-
     }
 
     "display free hours contents" when {
@@ -67,7 +61,13 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part2"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.eligibility.checker"))
+
+        doc.getElementById("eligibilityChecker").attr("href") mustBe messages("aboutYourResults.tc.para3.eligibility.checker.link")
+
       }
     }
 
@@ -84,7 +84,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       }
     }
 
-    "not display TFC contents" when {
+  /*  "not display TFC contents" when {
       "user is not eligible for TFC scheme" in {
 
         val model = ResultsViewModel(tc = Some(2000), tfc = None)
@@ -93,7 +93,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertNotContainsText(doc, messages("aboutYourResults.tfc.para1"))
         assertNotContainsText(doc, messages("aboutYourResults.tfc.para2"))
       }
-    }
+    }*/
 
     "display ESC contents" when {
       "user is eligible for ESC scheme" in {
@@ -153,6 +153,28 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
       val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
+      assertRenderedByCssSelector(doc, ".moreInfo")
+      assertContainsMessages(doc, messages("aboutYourResults.more.info.title"))
+      assertContainsMessages(doc, messages("aboutYourResults.more.info.para1"))
+      assertContainsMessages(doc, messages("aboutYourResults.more.info.para2"))
+
+      doc.getElementById("moreInfoHelp").attr("href") mustBe messages("aboutYourResults.more.info.para1.tfc.help.link")
+    }
+
+    "display guidance for 2 years old" when {
+
+      "user lives in England" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND))
+
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertRenderedByCssSelector(doc, ".twoYearsOld")
+        assertContainsMessages(doc, messages("aboutYourResults.two.years.old.guidance.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
+
+        doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para2.help.link")
+      }
 
     }
   }
