@@ -1144,13 +1144,13 @@ partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your par
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
 
-result.title = What help you could get with your childcare
-result.heading = What help you could get with your childcare
+result.title = You are eligible for
+result.heading = You are eligible for
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.more.info.title = How these schemes could work for you
-result.more.info.para = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
+result.more.info.para = You can read more information about how your schemes work together and compare which is the best option for your family before applying for your chosen scheme.
 result.read.more.button = Read more
 
 result.you.could.get = You could get
