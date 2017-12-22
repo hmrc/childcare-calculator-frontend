@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
-import play.api.libs.json.{JsBoolean, JsString}
+import play.api.libs.json.{JsBoolean, JsNumber, JsString}
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
@@ -56,7 +56,7 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       when(tfc.eligibility(any())) thenReturn NotEligible
       val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
                           DoYouLiveWithPartnerId.toString -> JsBoolean(false),
-                          PaidEmploymentId.toString -> JsBoolean(true),
+                          AreYouInPaidWorkId.toString -> JsBoolean(true),
                           YourChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.YES.toString))
 
       val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -100,10 +100,31 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
     }
 
-    "return OK and tax credits in the correct view for a GET " ignore {
+    "return OK when single claim working 18hrs a week and not getting any benefits" +
+      " show tax credits and the correct view for a GET " in {
       when(tfc.eligibility(any())) thenReturn NotEligible
-      val validData = Map(PaidEmploymentId.toString -> JsBoolean(true),
-        DoYouGetAnyBenefitsId.toString -> JsBoolean(true),
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(false),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(18),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, true)(fakeRequest, messages).toString
+    }
+
+    "return OK when joint claim and both working 16hrs a week and not getting any benefits" +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(16),
+        PartnerWorkHoursId.toString -> JsNumber(16),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
       val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
@@ -113,8 +134,42 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
     }
 
 
+    "return OK when joint claim and parent working 16hrs a week and partner getting qualifying benefits" +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(16),
+        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
 
-    "return OK and the correct view for a GET" ignore {
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, true)(fakeRequest, messages).toString
+    }
+
+    "return OK when joint claim and parent works less than 10hrs a week, partner is working 20hrs a week " +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(10),
+        PartnerWorkHoursId.toString -> JsNumber(20),
+        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(false),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, true)(fakeRequest, messages).toString
+    }
+
+    "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, false)(fakeRequest, messages).toString

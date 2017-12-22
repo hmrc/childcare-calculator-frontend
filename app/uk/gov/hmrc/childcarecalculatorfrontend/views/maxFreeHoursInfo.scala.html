@@ -40,14 +40,14 @@
 
     <ul class="bullets">
         @if(childcareVouchersEligibility) {
-            <li>@messages("maxFreeHoursInfo.li.childcareVouchers")</li>
+            <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
         }
         @if(tfcEligibility == Eligible) {
         }
-            <li>@messages("maxFreeHoursInfo.li.taxFreeChildcare")
+            <li>@messages("maxFreeHoursInfo.li.tfc")
 
         @if(taxCreditsEligibility) {
-            <li>@messages("maxFreeHoursInfo.li.taxCredits")</li>
+            <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
         }
 
     </ul>

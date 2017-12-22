@@ -476,8 +476,6 @@ maxFreeHoursInfo.li.vouchers = childcare vouchers
 maxFreeHoursInfo.li.tfc = Tax-Free Childcare
 maxFreeHoursInfo.li.tax_credits = tax credits
 maxFreeHoursInfo.still.to.check = Still to check
-maxFreeHoursInfo.li.taxFreeChildcare = Tax-Free childcare
-maxFreeHoursInfo.li.childcareVouchers = childcare vouchers
 maxFreeHoursInfo.give.more.info = You are eligible for help from other schemes. By giving more information, the calculator can now check to see how much you can get from:
 
 yourOtherIncomeThisYear.title = Will you get any other income this year?

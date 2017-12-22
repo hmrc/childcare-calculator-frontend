@@ -32,25 +32,25 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
     "display correct message when only eligible for tax free chjldcare" in {
       val view = maxFreeHoursInfo(frontendAppConfig, Eligible, false, false) (fakeRequest, messages)
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.taxFreeChildcare"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
 
     }
 
     "display the correct message when only eligible for childcare vouchers" in {
       val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, true, false) (fakeRequest, messages)
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.childcareVouchers"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
     }
 
     "display the correct message when only eligible for tax credits" in {
       val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, false, true) (fakeRequest, messages)
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.taxCredits"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
     }
 
-    "display correct message when only eligible for tax free chjldcare, childcare vouchers, tax credits " in {
+    "display correct message when only eligible for tax free childcare, childcare vouchers, tax credits " in {
       val view = maxFreeHoursInfo(frontendAppConfig, Eligible, true, true) (fakeRequest, messages)
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.taxFreeChildcare"))
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.childcareVouchers"))
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.taxFreeChildcare"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
 
     }
 
