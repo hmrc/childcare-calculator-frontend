@@ -22,6 +22,8 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum}
 
 class FirstParagraphBuilder @Inject()(){
+  val utils = new Utils()
+
   def buildFirstParagraph(answers: UserAnswers)(implicit messages: Messages) = {
     val doYouHaveChildren = buildFirstSection(answers, _: String)
     val yearlyChildcareCosts = buildSecondSection(answers, _: String)
@@ -40,7 +42,7 @@ class FirstParagraphBuilder @Inject()(){
 
   private def buildSecondSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
     val childcareCosts = CalculateChildcareCosts(answers)
-    val section2 = if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}$childcareCosts."
+    val section2 = if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}${utils.valueFormatter(childcareCosts)}."
     s"$paragraph$section2"
   }
 
