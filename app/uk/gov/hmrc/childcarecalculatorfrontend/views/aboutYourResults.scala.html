@@ -30,29 +30,38 @@
     <h2>@messages("aboutYourResults.about.the.schemes")</h2>
 
     @if(model.freeHours.isDefined) {
-        <h3>@messages("aboutYourResults.free.childcare.hours.title")</h3>
-        <p>@messages("aboutYourResults.free.childcare.hours.para1")</p>
-        <p>@messages("aboutYourResults.free.childcare.hours.para2")</p>
-    }
+        <div class="freeHours">
+                <h3>@messages("aboutYourResults.free.childcare.hours.title")</h3>
+                <p>@messages("aboutYourResults.free.childcare.hours.para1")</p>
+                <p>@messages("aboutYourResults.free.childcare.hours.para2")</p>
+            }
+        </div>
 
     @if(model.tc.isDefined) {
-        <h3>@messages("aboutYourResults.tc.title")</h3>
-        <p>@messages("aboutYourResults.tc.para1")</p>
-        <p>@messages("aboutYourResults.tc.para2")</p>
-        <p>@messages("aboutYourResults.tc.para3")</p>
+        <div class="tc">
+                <h3>@messages("aboutYourResults.tc.title")</h3>
+                <p>@messages("aboutYourResults.tc.para1")</p>
+                <p>@messages("aboutYourResults.tc.para2")</p>
+                <p>@messages("aboutYourResults.tc.para3")</p>
+        </div>
     }
 
     @if(model.tfc.isDefined) {
-        <h3>@messages("aboutYourResults.tfc.title")</h3>
-        <p>@messages("aboutYourResults.tfc.para1")</p>
-        <p>@messages("aboutYourResults.tfc.para2")</p>
-    }
+        <div class="tfc">
+
+                <h3>@messages("aboutYourResults.tfc.title")</h3>
+                <p>@messages("aboutYourResults.tfc.para1")</p>
+                <p>@messages("aboutYourResults.tfc.para2")</p>
+            }
+        </div>
 
     @if(model.esc.isDefined) {
-        <h3>@messages("aboutYourResults.esc.title")</h3>
-        <p>@messages("aboutYourResults.esc.para1")</p>
-        <p>@messages("aboutYourResults.esc.para2")</p>
-    }
+        <div class="esc">
+                <h3>@messages("aboutYourResults.esc.title")</h3>
+                <p>@messages("aboutYourResults.esc.para1")</p>
+                <p>@messages("aboutYourResults.esc.para2")</p>
+            }
+        </div>
 
     @components.button_link(
         messageKey = "aboutYourResults.return.link",

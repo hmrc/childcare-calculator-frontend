@@ -44,55 +44,29 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
     }
 
-    "display free hours content" when {
-      "user is eligible for free hours display title" in {
+    "display free hours contents" when {
+      "user is eligible for free hours scheme" in {
 
         val model = ResultsViewModel(freeHours = Some(15))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertRenderedByCssSelector(doc, ".freehours")
         assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.title"))
-      }
-
-      "user is eligible for free hours display first paragraph" in {
-
-        val model = ResultsViewModel(freeHours = Some(15))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
         assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para1"))
-      }
-
-      "user is eligible for free hours display second paragraph" in {
-
-        val model = ResultsViewModel(freeHours = Some(15))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
         assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para2"))
       }
     }
 
-    "display TC content" when {
-      "user is eligible for TC display title" in {
+    "display TC contents" when {
+      "user is eligible for TC scheme" in {
 
         val model = ResultsViewModel(tc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertRenderedByCssSelector(doc, ".tc")
         assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
-      }
-
-      "user is eligible for TC display first paragraph" in {
-
-        val model = ResultsViewModel(tc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
-      }
-
-      "user is eligible for TC display second paragraph" in {
-
-        val model = ResultsViewModel(tc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
-      }
-
-      "user is eligible for TC display third paragraph" in {
-
-        val model = ResultsViewModel(tc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
         assertContainsMessages(doc, messages("aboutYourResults.tc.para3"))
       }
     }
@@ -102,6 +76,8 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
         val model = ResultsViewModel(tfc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertRenderedByCssSelector(doc, ".tfc")
         assertContainsMessages(doc, messages("aboutYourResults.tfc.title"))
         assertContainsMessages(doc, messages("aboutYourResults.tfc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.tfc.para2"))
@@ -124,6 +100,12 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
         val model = ResultsViewModel(esc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertRenderedByCssSelector(doc, ".esc")
+        val elements = doc.getElementsByClass("esc")
+
+        elements.first().text() equals messages("aboutYourResults.esc.title")
+
         assertContainsMessages(doc, messages("aboutYourResults.esc.title"))
         assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
@@ -164,6 +146,14 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
         assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
       }
+    }
+
+    "display more info about the schemes" in {
+      val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
+
+      val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+
     }
   }
 }
