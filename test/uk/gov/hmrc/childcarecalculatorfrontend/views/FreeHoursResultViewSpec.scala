@@ -34,7 +34,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig,
                                                                                 location,
                                                                                 eligibility,
-                                                                                answerSections,false)(fakeRequest, messages)
+                                                                                answerSections,true)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
       behave like normalPage(createView,

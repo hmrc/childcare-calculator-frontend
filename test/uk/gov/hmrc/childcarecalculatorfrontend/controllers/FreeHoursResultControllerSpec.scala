@@ -57,21 +57,13 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"))
-
        val answers = new UserAnswers(CacheMap("", validData))
        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
        val eligibility = freeHours.eligibility(answers)
-       val sections = Seq(AnswerSection(None, Seq(
-         checkYourAnswersHelper.location,
-         checkYourAnswersHelper.childAgedTwo,
-         checkYourAnswersHelper.childAgedThreeOrFour,
-         checkYourAnswersHelper.childcareCosts
-       ).flatten))
-
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
+
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,sections,false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false)(fakeRequest, messages).toString
      }
 
      "your partner works" in {
@@ -82,21 +74,13 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"))
-
        val answers = new UserAnswers(CacheMap("", validData))
        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
        val eligibility = freeHours.eligibility(answers)
-       val sections = Seq(AnswerSection(None, Seq(
-         checkYourAnswersHelper.location,
-         checkYourAnswersHelper.childAgedTwo,
-         checkYourAnswersHelper.childAgedThreeOrFour,
-         checkYourAnswersHelper.childcareCosts
-       ).flatten))
-
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
+
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,sections,true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true)(fakeRequest, messages).toString
      }
 
      "you live on your own and don't work" in {
@@ -107,21 +91,13 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"))
-
        val answers = new UserAnswers(CacheMap("", validData))
        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
        val eligibility = freeHours.eligibility(answers)
-       val sections = Seq(AnswerSection(None, Seq(
-         checkYourAnswersHelper.location,
-         checkYourAnswersHelper.childAgedTwo,
-         checkYourAnswersHelper.childAgedThreeOrFour,
-         checkYourAnswersHelper.childcareCosts
-       ).flatten))
-
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
+
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,sections,false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false)(fakeRequest, messages).toString
      }
 
      "you live on your own and work" in {
@@ -132,21 +108,13 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"),WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString))
-
        val answers = new UserAnswers(CacheMap("", validData))
        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-       val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
        val eligibility = freeHours.eligibility(answers)
-       val sections = Seq(AnswerSection(None, Seq(
-         checkYourAnswersHelper.location,
-         checkYourAnswersHelper.childAgedTwo,
-         checkYourAnswersHelper.childAgedThreeOrFour,
-         checkYourAnswersHelper.childcareCosts
-       ).flatten))
-
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
+
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,sections,true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true)(fakeRequest, messages).toString
      }
    }
 
@@ -165,6 +133,17 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        await(controller(getRelevantData).onPageLoad()(fakeRequest))
      }
    }
+  }
+
+  private def getAnswers(answers: UserAnswers) = {
+    val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+    val sections = Seq(AnswerSection(None, Seq(
+      checkYourAnswersHelper.location,
+      checkYourAnswersHelper.childAgedTwo,
+      checkYourAnswersHelper.childAgedThreeOrFour,
+      checkYourAnswersHelper.childcareCosts
+    ).flatten))
+    sections
   }
 
   val freeHours = new FreeHours()
