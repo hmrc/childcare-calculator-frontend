@@ -161,12 +161,13 @@ freeHoursInfo.no.approved.para.link = will have approved childcare costs or that
 freeHoursInfo.no.approved.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 
 
-freeHoursResult.title = What help you could get with your childcare
-freeHoursResult.heading = What help you could get with your childcare
+freeHoursResult.title = Your eligibility for childcare support
+freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
 freeHoursResult.info.OtherSchemes.text = You don’t currently have or expect to have any approved childcare costs, so you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you’re not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
 freeHoursResult.info.entitled.wales = 10 hours
@@ -189,6 +190,14 @@ freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for t
 freeHoursResult.toBeEligible.info2.start  = If you’re here to see what childcare you can afford, you should tell the calculator that you
 freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 freeHoursResult.toBeEligible.info2.link.text = expect to have childcare costs in the future.
+
+freeHoursResult.toBeEligible.info3.start  = You would need to
+freeHoursResult.toBeEligible.info3.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
+freeHoursResult.toBeEligible.info3.link.text = be in paid work
+freeHoursResult.toBeEligible.info4.text = You can go back and change your answers to see what help you could get.
+
+
+
 freeHoursResult.summary.table.header = General
 freeHoursResult.summary.table.child.age2 = Child aged 2
 freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
