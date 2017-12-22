@@ -96,5 +96,74 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertContainsMessages(doc, messages("aboutYourResults.tc.para3"))
       }
     }
+
+    "display TFC contents" when {
+      "user is eligible for TFC scheme" in {
+
+        val model = ResultsViewModel(tfc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.tfc.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.tfc.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tfc.para2"))
+      }
+    }
+
+    "not display TFC contents" when {
+      "user is not eligible for TFC scheme" in {
+
+        val model = ResultsViewModel(tc = Some(2000), tfc = None)
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertNotContainsText(doc, messages("aboutYourResults.tfc.title"))
+        assertNotContainsText(doc, messages("aboutYourResults.tfc.para1"))
+        assertNotContainsText(doc, messages("aboutYourResults.tfc.para2"))
+      }
+    }
+
+    "display ESC contents" when {
+      "user is eligible for ESC scheme" in {
+
+        val model = ResultsViewModel(esc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertContainsMessages(doc, messages("aboutYourResults.esc.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
+      }
+    }
+
+    "not display ESC contents" when {
+      "user is not eligible for ESC scheme" in {
+
+        val model = ResultsViewModel(tc = Some(3000), esc = None)
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        assertNotContainsText(doc, messages("aboutYourResults.esc.title"))
+        assertNotContainsText(doc, messages("aboutYourResults.esc.para1"))
+        assertNotContainsText(doc, messages("aboutYourResults.esc.para2"))
+      }
+    }
+
+    "display contents for all the schemes" when {
+      "user is eligible for all the schemes" in {
+
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), tfc = Some(2300), esc = Some(2000))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para2"))
+
+        assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
+        assertContainsMessages(doc, messages("aboutYourResults.tc.para3"))
+
+        assertContainsMessages(doc, messages("aboutYourResults.tfc.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.tfc.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.tfc.para2"))
+
+        assertContainsMessages(doc, messages("aboutYourResults.esc.title"))
+        assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
+        assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
+      }
+    }
   }
 }

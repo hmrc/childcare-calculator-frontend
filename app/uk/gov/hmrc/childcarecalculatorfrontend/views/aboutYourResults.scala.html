@@ -29,17 +29,29 @@
 
     <h2>@messages("aboutYourResults.about.the.schemes")</h2>
 
-    @if(model.freeHours) {
+    @if(model.freeHours.isDefined) {
         <h3>@messages("aboutYourResults.free.childcare.hours.title")</h3>
         <p>@messages("aboutYourResults.free.childcare.hours.para1")</p>
         <p>@messages("aboutYourResults.free.childcare.hours.para2")</p>
     }
 
-    @if(model.tc) {
+    @if(model.tc.isDefined) {
         <h3>@messages("aboutYourResults.tc.title")</h3>
         <p>@messages("aboutYourResults.tc.para1")</p>
         <p>@messages("aboutYourResults.tc.para2")</p>
         <p>@messages("aboutYourResults.tc.para3")</p>
+    }
+
+    @if(model.tfc.isDefined) {
+        <h3>@messages("aboutYourResults.tfc.title")</h3>
+        <p>@messages("aboutYourResults.tfc.para1")</p>
+        <p>@messages("aboutYourResults.tfc.para2")</p>
+    }
+
+    @if(model.esc.isDefined) {
+        <h3>@messages("aboutYourResults.esc.title")</h3>
+        <p>@messages("aboutYourResults.esc.para1")</p>
+        <p>@messages("aboutYourResults.esc.para2")</p>
     }
 
     @components.button_link(
