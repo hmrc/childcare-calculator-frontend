@@ -39,7 +39,7 @@ nth.18 = nineteenth
 
 results.firstParagraph.youToldTheCalculator = You told the calculator that you {0} {1}
 results.firstParagraph.children = children
-results.firstParagraph.aChild = a child
+results.firstParagraph.aChild = 1 child
 results.firstParagraph.dontHave = don''t have
 results.firstParagraph.have = have
 results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
@@ -53,7 +53,7 @@ results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and
 results.firstParagraph.onlyYouAre = and only you are {0} {1}
 results.firstParagraph.youAre = and you are {0} {1}
 results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
-results.firstParagraph.bothYouAndYourPartnerAre = and both you and your partner are {0} {1}
+results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
@@ -146,17 +146,22 @@ freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in ter
 freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free preschool education a week in term time with an approved provider - 525 hours a year for your 3 or 4 year old.
 freeHoursInfo.heading2 = Still to check
 freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible for help from:
-freeHoursInfo.moreinfo = If you’re here only to find out about your free hours entitlement, you can
+freeHoursInfo.moreinfo = If you’re here only to find out about 30 hours free childcare, you can
 freeHoursInfo.moreinfo.link = read more information
-freeHoursInfo.moreinfo.part2 = before talking to your childcare provider about it.
+freeHoursInfo.moreinfo.part2 = before applying for it.
 
 freeHoursInfo.li.30hours = 30 hours free childcare
 freeHoursInfo.li.vouchers = childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = tax credits
 freeHoursInfo.li.2year = Free hours for your 2 year old
-freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs in the future. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you will have approved childcare costs or that your not sure. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. If you’re here to see what support you can get from them, you should tell the calculator that you
+freeHoursInfo.no.childcare.link = expect to have childcare costs in the future
+freeHoursInfo.no.childcare.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+
+freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. If you’re here to see what support you can get from them, you should tell the calculator that you
+freeHoursInfo.no.approved.para.link = will have approved childcare costs or that your not sure
+freeHoursInfo.no.approved.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 
 
 freeHoursResult.title = What help you could get with your childcare
@@ -1139,13 +1144,13 @@ partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your par
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
 
-result.title = What help you could get with your childcare
-result.heading = What help you could get with your childcare
+result.title = You are eligible for
+result.heading = You are eligible for
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.more.info.title = How these schemes could work for you
-result.more.info.para = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
+result.more.info.para = You can read more information about how your schemes work together and compare which is the best option for your family before applying for your chosen scheme.
 result.read.more.button = Read more
 
 result.you.could.get = You could get
