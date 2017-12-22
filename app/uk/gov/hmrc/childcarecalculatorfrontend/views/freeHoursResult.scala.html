@@ -62,6 +62,11 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
                     <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
                     <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
+
+                    <!-- This content below shold show instead of the above paragraph if you come to this page as you are not in employment -->
+                    <!-- <p>@messages("freeHoursResult.info.OtherSchemes.paidwork.text")</p> -->
+                    <!-- /end of message -->
+
                 </div>
             </div>
         </div>
@@ -74,5 +79,10 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
     <p>@messages("freeHoursResult.toBeEligible.info2.start")
     <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a> @messages("freeHoursResult.toBeEligible.info2.end")</p>
 
+    <!-- This content below shold show instead of the above paragraph if you come to this page as you are not in employment and the right controller used -->
+    <!-- <p>@messages("freeHoursResult.toBeEligible.info3.start")
+    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a> @messages("freeHoursResult.toBeEligible.info3.end")</p>
+    <p>@messages("freeHoursResult.toBeEligible.info4.text")</p> -->
+    <!-- /end of message -->
 
 }

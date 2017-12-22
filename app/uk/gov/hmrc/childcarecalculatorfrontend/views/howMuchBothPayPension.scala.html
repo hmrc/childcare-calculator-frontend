@@ -28,6 +28,7 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
+
     @components.back_link()
 
     @components.error_summary(form.errors)
@@ -39,14 +40,14 @@
         @components.input_number(
             InputViewModel[HowMuchBothPayPension]("howMuchYouPayPension", form),
             label = messages("howMuchBothPayPension.yourPension"),
-            labelClass = Some("visually-hidden"),
+            labelClass = Some(""),
             currencySymbol = Some(true)
         )
 
         @components.input_number(
             InputViewModel[HowMuchBothPayPension]("howMuchPartnerPayPension", form),
             label = messages("howMuchBothPayPension.partnerPension"),
-            labelClass = Some("visually-hidden"),
+            labelClass = Some(""),
             currencySymbol = Some(true)
         )
 

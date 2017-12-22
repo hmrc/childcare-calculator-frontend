@@ -42,16 +42,16 @@
         @components.input_number(
             InputViewModel[EmploymentIncomeCY]("parentEmploymentIncomeCY", form),
             currencySymbol=Some("true"),
-            label = messages("employmentIncomeCY.parentEmploymentIncome"),
-            labelClass=Some("visually-hidden"))
+            label = messages("employmentIncomeCY.parentEmploymentIncome")
+            )
 
 
 
         @components.input_number(
             InputViewModel[EmploymentIncomeCY]("partnerEmploymentIncomeCY", form),
             currencySymbol=Some("true"),
-            label = messages("employmentIncomeCY.partnerEmploymentIncome"),
-            labelClass=Some("visually-hidden"))
+            label = messages("employmentIncomeCY.partnerEmploymentIncome")
+            )
 
         @components.submit_button()
     }

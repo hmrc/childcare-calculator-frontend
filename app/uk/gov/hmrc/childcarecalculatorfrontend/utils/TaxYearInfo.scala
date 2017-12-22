@@ -18,7 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import javax.inject.Inject
 
-import org.joda.time.DateTimeFieldType._
+import org.joda.time.DateTimeFieldType.year
+import org.joda.time.LocalDate
 import uk.gov.hmrc.time.TaxYearResolver
 
 class TaxYearInfo @Inject()() {
@@ -27,7 +28,11 @@ class TaxYearInfo @Inject()() {
 
   lazy val currentTaxYearEnd: String = TaxYearResolver.endOfCurrentTaxYear.get(year).toString
 
+  lazy val currentTaxYearEndDate: LocalDate = TaxYearResolver.endOfCurrentTaxYear
+
   lazy val previousTaxYearStart: String = (TaxYearResolver.startOfCurrentTaxYear.get(year) - 1).toString
 
   lazy val previousTaxYearEnd: String = (TaxYearResolver.endOfCurrentTaxYear.get(year) - 1).toString
+
+  lazy val previousTaxYearEndDate: LocalDate = TaxYearResolver.endOfCurrentTaxYear.minusYears(1)
 }
