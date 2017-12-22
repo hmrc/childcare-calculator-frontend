@@ -43,7 +43,7 @@
 
     @helpers.form(action = ApprovedProviderController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("approvedProvider.hint") <a href="https://www.gov.uk/help-with-childcare-costs"> @messages("approvedProvider.hint.link")</a> @messages("approvedProvider.hint.part2")</p>
+        <p>@messages("approvedProvider.hint") <a href="https://www.gov.uk/help-with-childcare-costs" target="_blank"> @messages("approvedProvider.hint.link")</a> @messages("approvedProvider.hint.part2")</p>
 
         @components.input_radio(
             viewModel = InputViewModel[String]("value", form),
