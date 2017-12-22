@@ -30,6 +30,11 @@ object ChildcareConstants {
   val both: String = YouPartnerBothEnum.BOTH.toString
   val neither: String = YouPartnerBothNeitherEnum.NEITHER.toString
 
+  // First letter is capital in naming for below constants as these are being used in case statements
+  val You: String = YouPartnerBothEnum.YOU.toString
+  val Partner: String = YouPartnerBothEnum.PARTNER.toString
+  val Both: String = YouPartnerBothEnum.BOTH.toString
+
   val Yes: String = YesNoUnsureEnum.YES.toString
   val No: String = YesNoUnsureEnum.NO.toString
   val NotSure: String = YesNoUnsureEnum.NOTSURE.toString
@@ -48,6 +53,9 @@ object ChildcareConstants {
   val freeHoursForWales = 10
   val freeHoursForNI = 12.5
   val eligibleMaxFreeHours = 30
+
+  val totalNoOfHoursAYear = 570
+  val noOfFreeHours15 = 15
 
   val unknownErrorKey = "error.unknown"
 
