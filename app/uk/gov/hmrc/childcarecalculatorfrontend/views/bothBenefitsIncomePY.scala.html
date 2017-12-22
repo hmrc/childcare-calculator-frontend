@@ -39,14 +39,14 @@
         @components.input_number(
             InputViewModel[BothBenefitsIncomePY]("parentBenefitsIncomePY", form),
             currencySymbol=Some("true"),
-            label = messages("bothBenefitsIncomePY.parentBenefitsIncomePY"),
-            labelClass=Some("visually-hidden"))
+            label = messages("bothBenefitsIncomePY.parentBenefitsIncomePY")
+            )
 
         @components.input_number(
             InputViewModel[BothBenefitsIncomePY]("partnerBenefitsIncomePY", form),
             currencySymbol=Some("true"),
-            label = messages("bothBenefitsIncomePY.partnerBenefitsIncomePY"),
-            labelClass=Some("visually-hidden"))
+            label = messages("bothBenefitsIncomePY.partnerBenefitsIncomePY")
+            )
 
         @components.submit_button()
     }
