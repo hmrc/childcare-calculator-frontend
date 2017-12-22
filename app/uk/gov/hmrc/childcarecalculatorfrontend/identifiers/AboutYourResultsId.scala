@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice._
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.inject.Injector
-import play.api.test.FakeRequest
-
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
-
-  def injector: Injector = app.injector
-
-  def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
-
-  def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-
-  def fakeRequest = FakeRequest("", "")
-
-  implicit def messages: Messages = messagesApi.preferred(fakeRequest)
+case object AboutYourResultsId extends Identifier {
+  override def toString: String = "aboutYourResults"
 }

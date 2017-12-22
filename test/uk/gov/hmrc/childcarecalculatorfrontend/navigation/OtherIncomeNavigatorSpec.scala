@@ -434,7 +434,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to StatutoryPay page when user provides valid input, lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
@@ -454,7 +454,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
@@ -464,7 +464,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to StatutoryPay page when user provides valid input, lives with partner and " +
           "both in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
@@ -484,7 +484,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirect to right page when user provides valid input" when {
           "both eligible for tax credits" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
@@ -494,7 +494,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
           "both not eligible for tax credits" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
@@ -504,7 +504,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
           "cannot determine if they can have tax credits" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
@@ -518,7 +518,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirect to right page when user provides valid input" when {
           "partner is eligible for tax credits" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
@@ -528,7 +528,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
           "partner is not eligible for tax credits" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
@@ -538,7 +538,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
           "partners eligibility for tax credits is not determined" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
@@ -552,7 +552,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to SessionExpired page when user provides valid input and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
           when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe

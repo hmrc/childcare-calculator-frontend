@@ -68,9 +68,9 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def whoPaysPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.whoPaysIntoPension) {
-      case You =>  routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
-      case Partner =>  routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case Both =>  routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+      case `you` =>  routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+      case `partner` =>  routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+      case `both` =>  routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = {
@@ -80,8 +80,8 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.howMuchPartnerPayPension) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case Partner => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case `partner` => routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case `both` => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
       }
     }
 
@@ -108,9 +108,9 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def whoPaysPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.whoPaidIntoPensionPY) {
-      case You =>  routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
-      case Partner =>  routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
-      case Both =>  routes.HowMuchBothPayPensionPYController.onPageLoad(NormalMode)
+      case `you` =>  routes.HowMuchYouPayPensionPYController.onPageLoad(NormalMode)
+      case `partner` =>  routes.HowMuchPartnerPayPensionPYController.onPageLoad(NormalMode)
+      case `both` =>  routes.HowMuchBothPayPensionPYController.onPageLoad(NormalMode)
     }
 
   private def howMuchYouPayPensionRoutePY(answers: UserAnswers) =
@@ -119,8 +119,8 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
   private def howMuchPartnerPayPensionRoutePY(answers: UserAnswers) =
     utils.getCall(answers.howMuchPartnerPayPensionPY) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case Partner => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `partner` => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `both` => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
       }
     }
 
@@ -132,8 +132,8 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case `you` => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        case `both` => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }
@@ -143,8 +143,8 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
     } else {
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case You => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case Both => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `you` => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `both` => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         case _ => routes.SessionExpiredController.onPageLoad()
       }
     }

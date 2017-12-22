@@ -16,18 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 
 object ChildcareConstants {
+
   val you: String = YouPartnerBothEnum.YOU.toString
   val partner: String = YouPartnerBothEnum.PARTNER.toString
   val both: String = YouPartnerBothEnum.BOTH.toString
-
-  // First letter is capital in naming for below constants as these are being used in case statements
-  val You: String = YouPartnerBothEnum.YOU.toString
-  val Partner: String = YouPartnerBothEnum.PARTNER.toString
-  val Both: String = YouPartnerBothEnum.BOTH.toString
-  val Neither: String = YouPartnerBothEnum.NEITHER.toString
+  val neither: String = YouPartnerBothNeitherEnum.NEITHER.toString
 
   val Yes: String = YesNoUnsureEnum.YES.toString
   val No: String = YesNoUnsureEnum.NO.toString

@@ -223,14 +223,14 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YouBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
 
 
-      val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothEnum.NEITHER.toString, originalCacheMap1)
-      result1.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.NEITHER.toString))
+      val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothNeitherEnum.NEITHER.toString, originalCacheMap1)
+      result1.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString))
 
-      val result2 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothEnum.NEITHER.toString, originalCacheMap2)
-      result2.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.NEITHER.toString))
+      val result2 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothNeitherEnum.NEITHER.toString, originalCacheMap2)
+      result2.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString))
 
-      val result3 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothEnum.NEITHER.toString, originalCacheMap3)
-      result3.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.NEITHER.toString))
+      val result3 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, YouPartnerBothNeitherEnum.NEITHER.toString, originalCacheMap3)
+      result3.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString))
     }
 
 
