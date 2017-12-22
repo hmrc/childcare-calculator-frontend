@@ -36,26 +36,24 @@
 
     @if(model.noOfEligibleSchemes > 0) {
         @if(model.noOfEligibleSchemes == 1) {
-            <h2 class="resultEligibleHeading">@messages("result.single.eligibility.heading")</h2>
+            <h2 class="resultEligibleHeading visuallyhidden">@messages("result.single.eligibility.heading")</h2>
         } else {
-            <h2 class="resultEligibleHeading">@messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes)</h2>
+            <h2 class="resultEligibleHeading visuallyhidden">@messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes)</h2>
         }
 
         @resultEligible(model, utils)
 
         @if(model.noOfEligibleSchemes < 4) {
-            <h2 class="resultNotEligibleHeading">@messages("result.not.eligible.title")</h2>
+            <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
     } else {
-        <h2 class="resultNotEligibleHeading">@messages("result.not.eligible.title")</h2>
+        <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
         @resultNotEligible(model)
     }
 
-    <p class="moreInfo">@messages("result.read.more.info")</p>
 
-    <h2>@messages("result.more.info.title")</h2>
-
+    <h2 class="heading-medium">@messages("result.more.info.title")</h2>
     <p>@messages("result.more.info.para")</p>
 
     @components.button_link(

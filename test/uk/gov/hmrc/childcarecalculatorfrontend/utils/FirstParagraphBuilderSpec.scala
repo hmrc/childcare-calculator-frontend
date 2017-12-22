@@ -52,7 +52,7 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
      "You have one child" in {
        val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("you have a child")
+       paragraphBuilder.buildFirstParagraph(answers) must include("you have one child")
      }
    }
 
@@ -140,7 +140,7 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
        when(answers.doYouLiveWithPartner) thenReturn Some(true)
        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("both you and your partner are")
+       paragraphBuilder.buildFirstParagraph(answers) must include("and you are both")
      }
 
      "You live on your own and you are in paid work" in {
