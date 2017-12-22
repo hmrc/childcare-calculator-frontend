@@ -36,9 +36,8 @@
     <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
     <p>@messages(s"freeHoursInfo.guidance")</p>
 
-    <!-- These lists need to have logic around to only show certain ones if no costs or not approved costs -->
     <ul class="bullets">
-        @if(isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts == false) {
+        @if(isChildAgedThreeOrFour && location == Location.ENGLAND) {
           <li>@messages("freeHoursInfo.li.30hours")</li>
         }
         @if(isChildAgedTwo && location != Location.NORTHERN_IRELAND) {
