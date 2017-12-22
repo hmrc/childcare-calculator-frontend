@@ -39,7 +39,7 @@ nth.18 = nineteenth
 
 results.firstParagraph.youToldTheCalculator = You told the calculator that you {0} {1}
 results.firstParagraph.children = children
-results.firstParagraph.aChild = a child
+results.firstParagraph.aChild = 1 child
 results.firstParagraph.dontHave = don''t have
 results.firstParagraph.have = have
 results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
@@ -53,7 +53,7 @@ results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and
 results.firstParagraph.onlyYouAre = and only you are {0} {1}
 results.firstParagraph.youAre = and you are {0} {1}
 results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
-results.firstParagraph.bothYouAndYourPartnerAre = and both you and your partner are {0} {1}
+results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
