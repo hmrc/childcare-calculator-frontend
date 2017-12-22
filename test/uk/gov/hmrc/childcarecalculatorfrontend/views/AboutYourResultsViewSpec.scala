@@ -44,10 +44,21 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val model = ResultsViewModel(freeHours = Some(15))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
-        assertRenderedByCssSelector(doc, ".freehours")
-        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para2"))
+        assertRenderedByCssSelector(doc, ".freeHours")
+
+        doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
+        doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para1"))
+        doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para2"))
+      }
+    }
+
+    "not display free hours contents" when {
+      "user is not eligible for free hours scheme" in {
+
+        val model = ResultsViewModel(freeHours = None)
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(doc, ".freeHours")
       }
     }
 
@@ -58,15 +69,27 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
         assertRenderedByCssSelector(doc, ".tc")
-        assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part2"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.eligibility.checker"))
+
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para1"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.eligibility.checker"))
 
         doc.getElementById("eligibilityChecker").attr("href") mustBe messages("aboutYourResults.tc.para3.eligibility.checker.link")
+
+      }
+    }
+
+    "not display TC contents" when {
+      "user is not eligible for TC scheme" in {
+
+        val model = ResultsViewModel(tc = None)
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(doc, ".tc")
+        assertNotRenderedById(doc, "eligibilityChecker")
 
       }
     }
@@ -77,10 +100,9 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val model = ResultsViewModel(tfc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
-        assertRenderedByCssSelector(doc, ".tfc")
-        assertContainsMessages(doc, messages("aboutYourResults.tfc.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.tfc.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tfc.para2"))
+        doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
+        doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
+        doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
       }
     }
 
@@ -98,18 +120,12 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
     "display ESC contents" when {
       "user is eligible for ESC scheme" in {
-
         val model = ResultsViewModel(esc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
-        assertRenderedByCssSelector(doc, ".esc")
-        val elements = doc.getElementsByClass("esc")
-
-        elements.first().text() equals messages("aboutYourResults.esc.title")
-
-        assertContainsMessages(doc, messages("aboutYourResults.esc.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
+        doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
+        doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
+        doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
       }
     }
 
@@ -118,6 +134,8 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
         val model = ResultsViewModel(tc = Some(3000), esc = None)
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(doc, ".esc")
         assertNotContainsText(doc, messages("aboutYourResults.esc.title"))
         assertNotContainsText(doc, messages("aboutYourResults.esc.para1"))
         assertNotContainsText(doc, messages("aboutYourResults.esc.para2"))
@@ -130,30 +148,29 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), tfc = Some(2300), esc = Some(2000))
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
-        assertRenderedByCssSelector(doc, ".freehours")
-        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.free.childcare.hours.para2"))
+        assertRenderedByCssSelector(doc, ".freeHours")
+        doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
+        doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para1"))
+        doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para2"))
 
         assertRenderedByCssSelector(doc, ".tc")
-        assertContainsMessages(doc, messages("aboutYourResults.tc.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para2"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part2"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.part1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tc.para3.eligibility.checker"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para1"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
+        doc.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.eligibility.checker"))
         doc.getElementById("eligibilityChecker").attr("href") mustBe messages("aboutYourResults.tc.para3.eligibility.checker.link")
 
         assertRenderedByCssSelector(doc, ".tfc")
-        assertContainsMessages(doc, messages("aboutYourResults.tfc.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.tfc.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.tfc.para2"))
+        doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
+        doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
+        doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
 
         assertRenderedByCssSelector(doc, ".esc")
-        assertContainsMessages(doc, messages("aboutYourResults.esc.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.esc.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.esc.para2"))
+        doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
+        doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
+        doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
       }
     }
 
@@ -163,10 +180,10 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
       assertRenderedByCssSelector(doc, ".moreInfo")
-      assertContainsMessages(doc, messages("aboutYourResults.more.info.title"))
-      assertContainsMessages(doc, messages("aboutYourResults.more.info.para1"))
-      assertContainsMessages(doc, messages("aboutYourResults.more.info.para2"))
 
+      doc.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.title"))
+      doc.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para1"))
+      doc.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para2"))
       doc.getElementById("moreInfoHelp").attr("href") mustBe messages("aboutYourResults.more.info.para1.tfc.help.link")
     }
 
@@ -177,18 +194,33 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
         assertRenderedByCssSelector(doc, ".twoYearsOld")
-        assertContainsMessages(doc, messages("aboutYourResults.two.years.old.guidance.title"))
-        assertContainsMessages(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
-        assertContainsMessages(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
+
+        doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.title"))
+        doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para1"))
+        doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para2"))
 
         doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para2.help.link")
       }
-
     }
 
     "not display guidance for 2 years old" when {
       "user does not live in England" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
+
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(doc, ".twoYearsOld")
+        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
+        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
+        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
+
+        assertNotRenderedById(doc, "twoYearsOldHelp")
+      }
+    }
+
+    "not display guidance for 2 years old" when {
+      "user does not have 2 years old child" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = false)
 
         val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
 
