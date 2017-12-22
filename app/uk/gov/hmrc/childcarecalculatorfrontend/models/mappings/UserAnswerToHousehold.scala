@@ -194,10 +194,9 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
     val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
     val taxCode = answers.whatIsYourTaxCode
-    val statPay = None //TODO - to be implemented
 
-    val currentYearIncome = getParentCurrentYearIncome(answers, taxCode, statPay)
-    val previousYearIncome = getParentPreviousYearIncome(answers, taxCode, statPay)
+    val currentYearIncome = getParentCurrentYearIncome(answers, taxCode)
+    val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
       hours = hours,
@@ -224,10 +223,9 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
     val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
     val taxCode = answers.whatIsYourPartnersTaxCode
-    val statPay = None //TODO - to be implemented
 
-    val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode, statPay)
-    val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode, statPay)
+    val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode)
+    val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
       hours = hours,
@@ -253,7 +251,7 @@ sealed trait OverallIncome extends StatutoryPay {
     case None => None
   }
 
-  def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+  def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
     val pensionValue = determineIncomeValue(answers.howMuchYouPayPensionPY, answers.howMuchBothPayPensionPY, parentPensionPY)
@@ -284,7 +282,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
   }
 
-  def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+  def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
 
     val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPensionPY, answers.howMuchBothPayPensionPY, partnerPensionPY)
@@ -316,7 +314,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
   }
 
-  def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+  def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomeCY, answers.employmentIncomeCY, parentEmploymentIncomeCY)
 
     val pensionValue = determineIncomeValue(answers.howMuchYouPayPension, answers.howMuchBothPayPension, parentPensionCY)
@@ -348,7 +346,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
   }
 
-  def getPartnerCurrentYearIncome(answers: UserAnswers, taxCode: Option[String], statPay: Option[StatutoryIncome]): Option[Income] = {
+  def getPartnerCurrentYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomeCY, answers.employmentIncomeCY, partnerEmploymentIncomeCY)
 
     val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPension, answers.howMuchBothPayPension, partnerPensionCY)
