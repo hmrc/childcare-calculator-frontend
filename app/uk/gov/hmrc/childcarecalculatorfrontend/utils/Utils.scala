@@ -129,4 +129,17 @@ class Utils {
   def getCall[A](optionalElement: Option[A])(f: PartialFunction[A, Call]): Call =
     optionalElement.flatMap(f.lift).getOrElse(routes.SessionExpiredController.onPageLoad())
 
+  /**
+    * Returns the value with comma when value is more than 999, also removes the decimal part
+    * and gives the whole number
+    *
+    * Ex - 30 -> 30 , 30.35 -> 30, 1300 -> 1,300
+    * @param value
+    * @return
+    */
+  def valueFormatter(value: BigDecimal): String = {
+    val valueFormatter = new java.text.DecimalFormat("##,###")
+    valueFormatter.format(value)
+  }
+
 }

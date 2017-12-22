@@ -25,8 +25,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.time.TaxYearResolver
 
 class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
@@ -35,6 +36,9 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   val utils: Utils = mock[Utils]
   val taxCredits: TaxCredits = mock[TaxCredits]
+
+  val mockTaxYearResolver = mock[TaxYearResolver]
+  val mockTaxYearInfo = mock[TaxYearInfo]
 
   def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
@@ -155,6 +159,472 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
         when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+
+      "has a single parent with statutory pay falling within previous year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.YES),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(120.0)),
+          maximumEarnings = Some(false),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))
+          )
+        )
+        val household = Household(location = Location.ENGLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 4, 6)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
+        when(answers.yourStatutoryWeeks) thenReturn Some(4)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a single parent with statutory pay falling within current year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.YES),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(120.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 5.0, statutoryAmount = Some(BigDecimal(300)))))
+          )
+        )
+        val household = Household(location = Location.ENGLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2017, 5, 1)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
+        when(answers.yourStatutoryWeeks) thenReturn Some(5)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a single parent with statutory pay split between last and current year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.YES),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(120.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))
+          ),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))
+          )
+        )
+        val household = Household(location = Location.ENGLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2017, 3, 21)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
+        when(answers.yourStatutoryWeeks) thenReturn Some(5)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a single parent with statutory pay split across invalid year and previous year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.YES),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(120.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = None)),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))
+          )
+        )
+        val household = Household(location = Location.ENGLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 3, 21)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
+        when(answers.yourStatutoryWeeks) thenReturn Some(5)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a parent and partner where only partner has statutory pay in previous year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(112.0)),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(89.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 4, 6)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothNeitherNotSureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a parent and partner where only partner has statutory pay in current year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(112.0)),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(89.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))),
+                lastYearlyIncome = Some(Income(
+                employmentIncome = Some(BigDecimal(21000.0))
+            )))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2017, 5, 1)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothNeitherNotSureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a parent and partner where only partner has statutory pay split across years" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(112.0)),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(89.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))),
+            lastYearlyIncome = Some(Income(
+              employmentIncome = Some(BigDecimal(21000.0)),
+              statutoryIncome = Some( StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2017, 3, 21)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(5)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothNeitherNotSureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+
+      "has a parent and partner where both have statutory pay within previous year" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(112.0)),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(250)))))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(89.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 4, 6)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(250))
+        when(answers.yourStatutoryWeeks) thenReturn Some(2)
+        when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothNeitherNotSureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a parent and partner where both have statutory pay split across years" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(112.0)),
+          maximumEarnings = Some(true),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some( StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))))
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(89.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(32000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some( StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2017, 3, 21)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(5)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
+        when(answers.yourStatutoryWeeks) thenReturn Some(5)
+        when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothNeitherNotSureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(32000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
 
         userAnswerToHousehold.convert(answers) mustEqual household
       }

@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
-@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, isChildAgedThreeOrFour :Boolean, hasChildcareCosts : Boolean, location: Location.Value)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, isChildAgedThreeOrFour :Boolean, hasChildcareCosts : Boolean, approvedProviderCosts: Boolean, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursInfo.title"),
@@ -31,21 +31,21 @@
     @components.heading("freeHoursInfo.heading", "heading-xlarge")
 
     <p>@messages(s"freeHoursInfo.para1.$location")</p>
-    <p>@messages(s"freeHoursInfo.moreinfo") <a href="https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds"> @messages("freeHoursInfo.moreinfo.link")</a> @messages("freeHoursInfo.moreinfo.part2")</p>
+    <p>@messages(s"freeHoursInfo.moreinfo") <a href="https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds" target="_blank"> @messages("freeHoursInfo.moreinfo.link")</a> @messages("freeHoursInfo.moreinfo.part2")</p>
 
     <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
     <p>@messages(s"freeHoursInfo.guidance")</p>
 
-    <!-- These lists need to have logic around to only show certain ones if no costs or not approved costs -->
     <ul class="bullets">
-        @if(isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts == false) {
+        @if(isChildAgedThreeOrFour && location == Location.ENGLAND) {
           <li>@messages("freeHoursInfo.li.30hours")</li>
         }
         @if(isChildAgedTwo && location != Location.NORTHERN_IRELAND) {
             <li>@messages("freeHoursInfo.li.2year")</li>
         }
 
-        @if(hasChildcareCosts) {
+        <!--and approved costs-->
+        @if(hasChildcareCosts && approvedProviderCosts) {
             <li>@messages("freeHoursInfo.li.vouchers")</li>
             <li>@messages("freeHoursInfo.li.tfc")</li>
             <li>@messages("freeHoursInfo.li.tax_credits")</li>
@@ -53,10 +53,14 @@
 
     </ul>
 
-    <!-- One of tHese 2 messages should show if the user either has no costs, or no approved costs -->
-    <!--<p>@messages("freeHoursInfo.no.childcare.para")</p>-->
-    <!--<p>@messages("freeHoursInfo.no.approved.para")</p>-->
-    <!-- / end of meesages to include -->
+
+    @if(hasChildcareCosts == false) {
+        <p>@messages("freeHoursInfo.no.childcare.para")</p>
+    }
+
+    @if(hasChildcareCosts && approvedProviderCosts == false) {
+        @messages("freeHoursInfo.no.approved.para")
+    }
 
     @components.button_link(
         messageKey = "site.save_and_continue",
