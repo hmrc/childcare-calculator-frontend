@@ -17,7 +17,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-@(appConfig: FrontendAppConfig, model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+
+@(appConfig: FrontendAppConfig, model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("result.title"),
@@ -34,22 +36,23 @@
 
     @if(model.noOfEligibleSchemes > 0) {
         @if(model.noOfEligibleSchemes == 1) {
-            <h2>@messages("result.single.eligibility.heading")</h2>
+            <h2 class="resultEligibleHeading">@messages("result.single.eligibility.heading")</h2>
         } else {
-            <h2>@messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes)</h2>
+            <h2 class="resultEligibleHeading">@messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes)</h2>
         }
 
-        @resultEligible(model)
+        @resultEligible(model, utils)
 
         @if(model.noOfEligibleSchemes < 4) {
-            <h2>@messages("result.not.eligible.title")</h2>
+            <h2 class="resultNotEligibleHeading">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
     } else {
-        <h2>@messages("result.not.eligible.title")</h2>
+        <h2 class="resultNotEligibleHeading">@messages("result.not.eligible.title")</h2>
         @resultNotEligible(model)
     }
 
+    <p class="moreInfo">@messages("result.read.more.info")</p>
 
     <h2>@messages("result.more.info.title")</h2>
 
