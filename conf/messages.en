@@ -155,11 +155,11 @@ freeHoursInfo.li.vouchers = childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = tax credits
 freeHoursInfo.li.2year = Free hours for your 2 year old
-freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you
+freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. If you’re here to see what support you can get from them, you should tell the calculator that you
 freeHoursInfo.no.childcare.link = expect to have childcare costs in the future
 freeHoursInfo.no.childcare.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 
-freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you
+freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. If you’re here to see what support you can get from them, you should tell the calculator that you
 freeHoursInfo.no.approved.para.link = will have approved childcare costs or that your not sure
 freeHoursInfo.no.approved.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 
