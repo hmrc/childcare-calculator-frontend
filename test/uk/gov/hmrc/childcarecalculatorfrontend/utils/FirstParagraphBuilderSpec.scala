@@ -219,7 +219,8 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
    }
  }
 
-  val paragraphBuilder = new FirstParagraphBuilder()
+  val utils = new Utils()
+  val paragraphBuilder = new FirstParagraphBuilder(utils)
   val answers = spy(userAnswers())
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]

@@ -21,8 +21,7 @@ import javax.inject.Inject
 import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum}
 
-class FirstParagraphBuilder @Inject()(){
-  val utils = new Utils()
+class FirstParagraphBuilder @Inject()(utils: Utils){
 
   def buildFirstParagraph(answers: UserAnswers)(implicit messages: Messages) = {
     val doYouHaveChildren = buildFirstSection(answers, _: String)
