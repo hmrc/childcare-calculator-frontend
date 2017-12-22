@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 
 object ChildcareConstants {
 
@@ -39,8 +39,9 @@ object ChildcareConstants {
   val No: String = YesNoUnsureEnum.NO.toString
   val NotSure: String = YesNoUnsureEnum.NOTSURE.toString
 
-  val no = "no"
-  val yes = "yes"
+  val no = YesNoNotYetEnum.NO.toString
+  val yes = YesNoNotYetEnum.YES.toString
+  val notYet = YesNoNotYetEnum.NOTYET.toString
 
   val firstMonthOfTaxYear = 4
   val startDayOfTaxYear = 6

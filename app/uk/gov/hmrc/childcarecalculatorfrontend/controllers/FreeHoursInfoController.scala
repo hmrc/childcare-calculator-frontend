@@ -24,6 +24,8 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
@@ -36,10 +38,14 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
       val isChildAgedTwo = request.userAnswers.childAgedTwo.getOrElse(false)
       val isChildAgedThreeOrFour = request.userAnswers.childAgedThreeOrFour.getOrElse(false)
       val locationOption = request.userAnswers.location
-      val Yes = YesNoNotYetEnum.YES.toString
 
       val hasChildcareCosts = request.userAnswers.childcareCosts.getOrElse(false) match {
-        case Yes => true
+        case ChildcareConstants.yes | ChildcareConstants.notYet => true
+        case _ => false
+      }
+
+      val approvedCosts: Boolean = request.userAnswers.approvedProvider.fold(false) {
+        case Yes | NotSure => true
         case _ => false
       }
 
@@ -47,7 +53,7 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
         case None =>
           Redirect(routes.LocationController.onPageLoad(NormalMode))
         case Some(location) =>
-          Ok(freeHoursInfo(appConfig, isChildAgedTwo, isChildAgedThreeOrFour,hasChildcareCosts ,location))
+          Ok(freeHoursInfo(appConfig, isChildAgedTwo, isChildAgedThreeOrFour,hasChildcareCosts,approvedCosts,location))
       }
   }
 }
