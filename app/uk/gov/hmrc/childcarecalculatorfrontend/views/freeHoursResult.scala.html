@@ -26,7 +26,7 @@
 @(appConfig: FrontendAppConfig,
 location: Location.Value,
 eligibility: Eligibility,
-answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+answerSections: Seq[Section], paidEmployment: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursResult.title"),
@@ -76,13 +76,14 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
     <!-- This p tag below needs removing once styling sorted -->
     <p></p>
     <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
-    <p>@messages("freeHoursResult.toBeEligible.info2.start")
-    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a> @messages("freeHoursResult.toBeEligible.info2.end")</p>
 
-    <!-- This content below shold show instead of the above paragraph if you come to this page as you are not in employment and the right controller used -->
-    <!-- <p>@messages("freeHoursResult.toBeEligible.info3.start")
-    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a> @messages("freeHoursResult.toBeEligible.info3.end")</p>
-    <p>@messages("freeHoursResult.toBeEligible.info4.text")</p> -->
-    <!-- /end of message -->
-
+    @if(paidEmployment) {
+        <p>@messages("freeHoursResult.toBeEligible.info2.start")
+        <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a>
+        @messages("freeHoursResult.toBeEligible.info2.end")</p>
+    }else{
+        <p>@messages("freeHoursResult.toBeEligible.info3.start")
+        <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a> @messages("freeHoursResult.toBeEligible.info3.end")</p>
+        <p>@messages("freeHoursResult.toBeEligible.info4.text")</p>
+    }
 }
