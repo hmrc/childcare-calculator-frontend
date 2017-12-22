@@ -38,10 +38,11 @@ object WhoGetsVouchersForm extends FormErrorHelper {
   def apply(): Form[String] = 
     Form(single("value" -> of(WhoGetsVouchersFormatter)))
 
-  def options = YouPartnerBothNeitherNotSureEnum.values.map {
-    value =>
-      InputOption("whoGetsVouchers", value.toString)
-  }.toSeq
+  def options = Seq(InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.YOU.toString),
+    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.PARTNER.toString),
+    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.BOTH.toString),
+    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NEITHER.toString),
+    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NOTSURE.toString))
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
