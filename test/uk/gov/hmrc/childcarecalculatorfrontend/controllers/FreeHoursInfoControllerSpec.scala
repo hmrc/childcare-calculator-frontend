@@ -23,8 +23,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedThreeOrFourId, ChildAgedTwoId, ChildcareCostsId, LocationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
@@ -44,7 +44,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
       }
     }
 
@@ -55,7 +55,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
       }
     }
 
@@ -66,7 +66,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -84,7 +84,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
       }
 
       "we don't have a 2 year old" in {
@@ -94,7 +94,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
       }
     }
     
@@ -105,7 +105,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
     }
 
     "return OK with 30 hours" when {
@@ -116,17 +116,27 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, false,false, location)(fakeRequest, messages).toString
       }
 
-      "They have childcare costs" in {
+      "They have childcare costs and they are approved" in {
         val location = ENGLAND
-        val validData = Map(ChildAgedThreeOrFourId.toString -> JsBoolean(true),ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
+        val validData = Map(ApprovedProviderId.toString-> JsString(YesNoUnsureEnum.YES.toString), ChildAgedThreeOrFourId.toString -> JsBoolean(true), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
         val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true,true,location)(fakeRequest, messages).toString
+      }
+
+      "They are not sure about having childcare costs or them being by an approved provider" in {
+        val location = ENGLAND
+        val validData = Map(ApprovedProviderId.toString-> JsString(YesNoUnsureEnum.NOTSURE.toString), ChildAgedThreeOrFourId.toString -> JsBoolean(true), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString), LocationId.toString -> JsString(location.toString))
+        val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedFour).onPageLoad(fakeRequest)
+
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true,true,location)(fakeRequest, messages).toString
       }
     }
 
@@ -138,7 +148,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,false,false, location)(fakeRequest, messages).toString
       }
 
       "we don't have a 3 or 4 year old" in {
@@ -148,28 +158,60 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
       }
     }
 
-    "return OK with childcare vouchers, tfc and tc when we have childcare costs" in {
+    "return OK with childcare vouchers, tfc and tc when we have childcare costs and they are approved" in {
       val location = ENGLAND
-      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
+      val validData = Map(ApprovedProviderId.toString-> JsString(YesNoUnsureEnum.NOTSURE.toString),ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
       val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,true, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,true,true, location)(fakeRequest, messages).toString
     }
 
-    "return OK with no childcare vouchers, tfc and tc when we don't have childcare costs" in {
+    "return OK with no childcare vouchers, tfc and tc when we don't have childcare costs" when {
+      "we don't have childcare costs" in {
+        val location = ENGLAND
+        val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NO.toString), LocationId.toString -> JsString(location.toString))
+        val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedFour).onPageLoad(fakeRequest)
+
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
+      }
+
+      "we have childcare costs but they are not approved" in {
+        val location = ENGLAND
+        val validData = Map(ApprovedProviderId.toString-> JsString(YesNoUnsureEnum.NO.toString),ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
+        val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        val result = controller(childAgedFour).onPageLoad(fakeRequest)
+
+        status(result) mustBe OK
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,true,false, location)(fakeRequest, messages).toString
+      }
+    }
+
+    "return OK with no childcare costs paragraph if they have no childcare costs" in {
       val location = ENGLAND
       val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NO.toString), LocationId.toString -> JsString(location.toString))
       val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
+    }
+
+    "return OK with no approved childcare paragraph when they have childcare costs but not approved" in {
+      val location = ENGLAND
+      val validData = Map(ApprovedProviderId.toString-> JsString(YesNoUnsureEnum.NO.toString), ChildAgedThreeOrFourId.toString -> JsBoolean(true), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString), LocationId.toString -> JsString(location.toString))
+      val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childAgedFour).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true,false,location)(fakeRequest, messages).toString
     }
 
     "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
