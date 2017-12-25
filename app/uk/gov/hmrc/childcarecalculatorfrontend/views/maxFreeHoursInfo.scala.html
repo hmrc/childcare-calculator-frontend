@@ -20,41 +20,41 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 @(appConfig: FrontendAppConfig,
-        tfcEligibility: Eligibility,
-        childcareVouchersEligibility: Boolean,
-        taxCreditsEligibility: Boolean)(implicit request: Request[_], messages: Messages)
+tfcEligibility: Eligibility,
+childcareVouchersEligibility: Boolean,
+taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("maxFreeHoursInfo.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+title = messages("maxFreeHoursInfo.title"),
+appConfig = appConfig,
+bodyClasses = None) {
 
-    @components.back_link()
+@components.back_link()
 
-    @components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
+@components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
 
-    <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
-    <p>@messages("maxFreeHoursInfo.info")
+<p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
+<p>@messages("maxFreeHoursInfo.info")
 
-    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
+<h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
-    <ul class="bullets">
-        @if(childcareVouchersEligibility) {
-            <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
-        }
-        @if(tfcEligibility == Eligible) {
-        }
-            <li>@messages("maxFreeHoursInfo.li.tfc")
+<ul class="bullets">
+    @if(childcareVouchersEligibility) {
+    <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
+    }
 
-        @if(taxCreditsEligibility) {
-            <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
-        }
+    @if(tfcEligibility == Eligible) {
+    <li>@messages("maxFreeHoursInfo.li.tfc")
+    }
 
-    </ul>
+    @if(taxCreditsEligibility.equals(Eligible)) {
+    <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
+    }
 
-    <p>@messages("maxFreeHoursInfo.give.more.info")</p>
+</ul>
 
-    @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+<p>@messages("maxFreeHoursInfo.give.more.info")</p>
 
+@components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
 
 }

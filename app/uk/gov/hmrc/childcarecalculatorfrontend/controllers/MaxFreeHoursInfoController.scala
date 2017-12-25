@@ -20,85 +20,54 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum, YesNoUnsureEnum, YouPartnerBothNeitherEnum, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
                                            val messagesApi: MessagesApi,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
-                                          taxFreeChildcare: TaxFreeChildcare) extends FrontendController with I18nSupport {
+                                           tfc: TaxFreeChildcare,
+                                           tc: TaxCredits) extends FrontendController with I18nSupport {
 
-    def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
+
     implicit request =>
 
-      val Yes = YesNoNotYetEnum.YES.toString
-      val NotSure = YesNoUnsureEnum.NOTSURE.toString
-      val YesSure = YesNoUnsureEnum.YES.toString
-
-      val hasChildcareCosts = request.userAnswers.childcareCosts.getOrElse(false) match {
-        case Yes => true
-        case _=> false
-      }
-
-      val youPaidEmployment = request.userAnswers.areYouInPaidWork.getOrElse(false)
-
-      val hasPartner = request.userAnswers.doYouLiveWithPartner.getOrElse(false)
-
-      val partnerChildcareVouchers = request.userAnswers.partnerChildcareVouchers.getOrElse(false) match {
-        case YesSure => true
-        case NotSure => true
-        case _ => false
-      }
-
-      val whoInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
-
-     val bothChildcareVouchers: String = request.userAnswers.whoGetsVouchers.getOrElse("")
-
-      val parentHowManyHours: BigDecimal = request.userAnswers.parentWorkHours.getOrElse(0)
-
-      val partnerHowManyHours: BigDecimal = request.userAnswers.partnerWorkHours.getOrElse(0)
-
-      val totalHouseholdWorkHours = parentHowManyHours + partnerHowManyHours
-
-      val yourChildcareVouchers = request.userAnswers.yourChildcareVouchers.getOrElse(false) match {
-        case YesSure => true
-        case NotSure => true
-        case _ => false
-      }
-
-      val benefits = request.userAnswers.doYouGetAnyBenefits.getOrElse(false)
-
-      val householdBenefits = request.userAnswers.doYouOrYourPartnerGetAnyBenefits.getOrElse(false)
-
-
-      val childcareVouchersEligibility =
-        if (hasPartner) {
-          whoInPaidEmployment match {
-            case  Some(YouSelected) => hasChildcareCosts && yourChildcareVouchers
-            case Some(PartnerSelected) => hasChildcareCosts && partnerChildcareVouchers
-            case Some(_) => hasChildcareCosts && (bothChildcareVouchers == BothSelected)
-            case _ => false
-          }
-         }else{
-          hasChildcareCosts && yourChildcareVouchers
-        }
-
-      val taxCreditsEligibility =
-        if (hasPartner){
-          (parentHowManyHours >=16 && partnerHowManyHours >=16) && hasChildcareCosts ||
-          ((parentHowManyHours <=16 || partnerHowManyHours >=16) && totalHouseholdWorkHours >= 24) ||
-          ((parentHowManyHours >=16 || partnerHowManyHours >=16) &&  householdBenefits)
-        }else {
-         youPaidEmployment && hasChildcareCosts && (parentHowManyHours >= 16)
-        }
-
-    Ok(maxFreeHoursInfo(appConfig, taxFreeChildcare.eligibility(request.userAnswers), childcareVouchersEligibility, taxCreditsEligibility))
+      Ok(maxFreeHoursInfo(appConfig,
+        tfc.eligibility(request.userAnswers),
+        getESCEligibility(request.userAnswers),
+        tc.eligibility(request.userAnswers)))
   }
+
+  private def getESCEligibility(answers: UserAnswers): Boolean = {
+    val No = YesNoUnsureEnum.NO.toString
+
+    val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
+    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !x.equals(No))
+    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !x.equals(No))
+
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val whoInPaidEmployment = answers.whoIsInPaidEmployment
+    val bothChildcareVouchers = answers.whoGetsVouchers
+
+    if (hasPartner) {
+      whoInPaidEmployment match {
+        case  Some(You) => hasParentChildcareCosts && hasParentChildcareVouchers
+        case Some(Partner) => hasParentChildcareCosts && hasPartnerChildcareVouchers
+        case Some(_) => hasParentChildcareCosts && bothChildcareVouchers.contains(Both)
+        case _ => false
+      }
+    }else{
+      hasParentChildcareCosts && hasParentChildcareVouchers
+    }
+  }
+
 }
