@@ -62,7 +62,6 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val freeHours = mock[FreeHours]
       val schemes = mock[Schemes]
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString) thenReturn Some(YesNoNotYetEnum.NOTYET.toString)
-      when(schemes.allSchemesDetermined(any())) thenReturn false
       when(freeHours.eligibility(any())) thenReturn NotDetermined
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ApprovedProviderController.onPageLoad(NormalMode)
       navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ApprovedProviderController.onPageLoad(NormalMode)
