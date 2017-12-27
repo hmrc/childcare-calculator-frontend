@@ -18,15 +18,15 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerSection, RepeaterAnswerSection}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible,NotEligible}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 
 @(appConfig: FrontendAppConfig,
-location: Location.Value,
-eligibility: Eligibility,
-answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+        location: Location.Value,
+        eligibility: Eligibility,
+        answerSections: Seq[Section], paidEmployment: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursResult.title"),
@@ -61,18 +61,31 @@ answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
                     <p>@messages("freeHoursResult.toBeEligible.info1.start")</p>
 
                     <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
-                    <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
+
+                    @if(paidEmployment) {
+                        <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
+                    } else {
+                        <p>@messages("freeHoursResult.info.OtherSchemes.paidwork.text")</p>
+                    }
+
                 </div>
             </div>
         </div>
 
     }
 
-    <!-- This p tag below needs removing once styling sorted -->
+        <!-- This p tag below needs removing once styling sorted -->
     <p></p>
     <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
-    <p>@messages("freeHoursResult.toBeEligible.info2.start")
-    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a> @messages("freeHoursResult.toBeEligible.info2.end")</p>
 
-
+    @if(paidEmployment) {
+        <p>@messages("freeHoursResult.toBeEligible.info2.start")
+            <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a>
+            @messages("freeHoursResult.toBeEligible.info2.end")</p>
+    } else {
+        <p>@messages("freeHoursResult.toBeEligible.info3.start")
+            <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(CheckMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a>
+            @messages("freeHoursResult.toBeEligible.info3.end")</p>
+        <p>@messages("freeHoursResult.toBeEligible.info4.text")</p>
+    }
 }

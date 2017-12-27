@@ -27,14 +27,14 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursResult"
 
-  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible, Seq())(fakeRequest, messages)
+  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible, Seq(),false)(fakeRequest, messages)
 
   def createViewWithAnswers = (location: Location.Value,
                                eligibility:Eligibility,
                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig,
                                                                                 location,
                                                                                 eligibility,
-                                                                                answerSections)(fakeRequest, messages)
+                                                                                answerSections,true)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
       behave like normalPage(createView,

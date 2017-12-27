@@ -25,18 +25,18 @@ childcareVouchersEligibility: Boolean,
 taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("maxFreeHoursInfo.title"),
-appConfig = appConfig,
-bodyClasses = None) {
+    title = messages("maxFreeHoursInfo.title"),
+    appConfig = appConfig,
+    bodyClasses = None) {
 
-@components.back_link()
+    @components.back_link()
 
-@components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
+    @components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
 
-<p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
-<p>@messages("maxFreeHoursInfo.info")
+    <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
+    <p>@messages("maxFreeHoursInfo.info")
 
-<h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
+    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
 <ul class="bullets">
     @if(childcareVouchersEligibility) {

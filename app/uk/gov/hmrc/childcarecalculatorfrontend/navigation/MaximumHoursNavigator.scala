@@ -57,7 +57,6 @@ class MaximumHoursNavigator @Inject() (
     WhatIsYourPartnersTaxCodeId -> whatIsYourPartnersTaxCodeRoute,
     YourChildcareVouchersId -> yourChildcareVoucherRoute,
     PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
-    EitherGetsVouchersId -> eitherGetVouchersRoute,
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
@@ -172,13 +171,6 @@ class MaximumHoursNavigator @Inject() (
       case false => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
     }
 
-  private def eitherGetVouchersRoute(answers: UserAnswers): Call = {
-    if (answers.eitherGetsVouchers.contains(YesNoUnsureEnum.YES.toString)) {
-      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-    }
-  }
 
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call = {
     answers.doYouGetAnyBenefits.map {

@@ -154,7 +154,6 @@ class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.eitherGetsVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
         when(answers.eitherOfYouMaximumEarnings) thenReturn Some(false)

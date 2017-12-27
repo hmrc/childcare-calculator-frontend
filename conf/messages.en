@@ -39,7 +39,7 @@ nth.18 = nineteenth
 
 results.firstParagraph.youToldTheCalculator = You told the calculator that you {0} {1}
 results.firstParagraph.children = children
-results.firstParagraph.aChild = a child
+results.firstParagraph.aChild = one child
 results.firstParagraph.dontHave = don''t have
 results.firstParagraph.have = have
 results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
@@ -53,7 +53,7 @@ results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and
 results.firstParagraph.onlyYouAre = and only you are {0} {1}
 results.firstParagraph.youAre = and you are {0} {1}
 results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
-results.firstParagraph.bothYouAndYourPartnerAre = and both you and your partner are {0} {1}
+results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
@@ -146,25 +146,28 @@ freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in ter
 freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free preschool education a week in term time with an approved provider - 525 hours a year for your 3 or 4 year old.
 freeHoursInfo.heading2 = Still to check
 freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible for help from:
-freeHoursInfo.moreinfo = If you’re here only to find out about your free hours entitlement, you can
-freeHoursInfo.moreinfo.link = read more information
-freeHoursInfo.moreinfo.part2 = before talking to your childcare provider about it.
+
 
 freeHoursInfo.li.30hours = 30 hours free childcare
 freeHoursInfo.li.vouchers = childcare vouchers
 freeHoursInfo.li.tfc = Tax-Free Childcare
 freeHoursInfo.li.tax_credits = tax credits
 freeHoursInfo.li.2year = Free hours for your 2 year old
-freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs in the future. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you will have approved childcare costs or that your not sure. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. If you’re here to see what support you can get from them, you should tell the calculator that you
+freeHoursInfo.no.childcare.link = expect to have childcare costs in the future
+freeHoursInfo.no.childcare.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. If you’re here to see what support you can get from them, you should tell the calculator that you
+freeHoursInfo.no.approved.para.link = will have approved childcare costs or that your not sure
+freeHoursInfo.no.approved.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 
 
-freeHoursResult.title = What help you could get with your childcare
-freeHoursResult.heading = What help you could get with your childcare
+freeHoursResult.title = Your eligibility for childcare support
+freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
 freeHoursResult.info.OtherSchemes.text = You don’t currently have or expect to have any approved childcare costs, so you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you’re not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
 freeHoursResult.info.entitled.wales = 10 hours
@@ -187,6 +190,14 @@ freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for t
 freeHoursResult.toBeEligible.info2.start  = If you’re here to see what childcare you can afford, you should tell the calculator that you
 freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
 freeHoursResult.toBeEligible.info2.link.text = expect to have childcare costs in the future.
+
+freeHoursResult.toBeEligible.info3.start  = You would need to
+freeHoursResult.toBeEligible.info3.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
+freeHoursResult.toBeEligible.info3.link.text = be in paid work
+freeHoursResult.toBeEligible.info4.text = You can go back and change your answers to see what help you could get.
+
+
+
 freeHoursResult.summary.table.header = General
 freeHoursResult.summary.table.child.age2 = Child aged 2
 freeHoursResult.summary.table.child.age3or4 = Children aged 3 or 4
@@ -299,9 +310,11 @@ eitherGetsVouchers.error = Select yes if either of your employers offer childcar
 
 whoGetsVouchers.title = Whose employer offers childcare vouchers?
 whoGetsVouchers.heading = Whose employer offers childcare vouchers?
-whoGetsVouchers.you = Yours
+whoGetsVouchers.you = Your’s
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
+whoGetsVouchers.neither = Neither
+whoGetsVouchers.notSure = Not sure
 whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
@@ -469,7 +482,10 @@ noOfChildren.checkYourAnswersLabel = noOfChildren
 maxFreeHoursInfo.title = You’re eligible for 30 hours free childcare
 maxFreeHoursInfo.heading = You’re eligible for 30 hours free childcare
 maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services.
-maxFreeHoursInfo.info = If you're here only to find out about 30 hours free childcare, you can read more information before applying for it.
+maxFreeHoursInfo.info = If you’re here only to find out about 30 hours free childcare, you can
+maxFreeHoursInfo.info.link = read more information
+maxFreeHoursInfo.info.part2 = before applying for it.
+
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
 maxFreeHoursInfo.li.vouchers = childcare vouchers
@@ -1139,13 +1155,13 @@ partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your par
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
 
-result.title = What help you could get with your childcare
-result.heading = What help you could get with your childcare
+result.title = You are eligible for
+result.heading = You are eligible for
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
 result.more.info.title = How these schemes could work for you
-result.more.info.para = You can read more information, see how they work together and compare which is the best option for your family. Once you have decided, you can apply for your chosen scheme.
+result.more.info.para = You can read more information about how your schemes work together and compare which is the best option for your family before applying for your chosen scheme.
 result.read.more.button = Read more
 
 result.you.could.get = You could get
@@ -1196,8 +1212,36 @@ whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
 whoWasInPaidWorkPY.error = Select who was in paid work
 
-
 aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
+aboutYourResults.about.the.schemes = About the schemes
+aboutYourResults.free.childcare.hours.title = Free childcare hours
+aboutYourResults.free.childcare.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. For example, if they turn 3 on 13 October, you will be able to get free childcare from January.
+aboutYourResults.free.childcare.hours.para2 = You can use your free hours between different approved providers. For example, a registered childminder, play scheme, nursery, out of school club or a home careworker working for a registered agency. They may apply charges for additional services.
+
+aboutYourResults.tc.title = Tax credits
+aboutYourResults.tc.para1 = This scheme provides extra money to people responsible for children. You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your household income.
+aboutYourResults.tc.para2 = It will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live.
+aboutYourResults.tc.para3.part1 = All tax credits claims will eventually be moved over to Universal Credit. Use the
+aboutYourResults.tc.para3.eligibility.checker = eligibility checker
+aboutYourResults.tc.para3.eligibility.checker.link = https://universalcreditinfo.net
+aboutYourResults.tc.para3.part2 = to find out exactly when you could be affected.
 aboutYourResults.return.link = Return to results
 
+aboutYourResults.tfc.title = Tax-Free Childcare
+aboutYourResults.tfc.para1 = With this scheme, you'll create an online childcare account. Then, for every £8 paid into it, the government will pay in £2.
+aboutYourResults.tfc.para2 = You can get up to £2,000 a year for each child, or £4,000 if they are disabled, towards their costs - that’s up to £500 or £1,000 a month. You can only use this money to pay your childcare provider.
+
+aboutYourResults.esc.title = Childcare vouchers
+aboutYourResults.esc.para1 = Each parent can take up to £55 a week of their wages as childcare vouchers – around £243 a month. This is called salary sacrifice. You won’t pay tax or National Insurance on the amount of your pay you take in vouchers.
+aboutYourResults.esc.para2 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
+
+aboutYourResults.more.info.title = More information on the schemes
+aboutYourResults.more.info.para1 = You can read more information about these schemes at:
+aboutYourResults.more.info.para1.tfc.help.link = https://www.gov.uk/help-with-childcare-costs/tax-free-childcare
+aboutYourResults.more.info.para2 = You can apply for 30 hours free childcare and Tax-Free Childcare through one online application - the eligibility rules are the same for both.
+
+aboutYourResults.two.years.old.guidance.title = If user has a 2 year old living in England the following text will display:
+aboutYourResults.two.years.old.guidance.para1 = Your 2 year old
+aboutYourResults.two.years.old.guidance.para2 =  Find out if your 2 year old is eligible for 15 hours free childcare.
+aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
