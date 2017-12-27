@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouAnyTheseBenefitsIdCY
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{WhichBenefitsEnum, Mode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -52,12 +52,32 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(youAnyTheseBenefitsCYErrorKey).bindFromRequest().fold(
+
+      val boundForm = BooleanForm(youAnyTheseBenefitsCYErrorKey).bindFromRequest()
+
+      errorCheckForCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(youAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[Boolean](request.sessionId, YouAnyTheseBenefitsIdCY.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YouAnyTheseBenefitsIdCY, mode)(new UserAnswers(cacheMap))))
       )
+  }
+
+  private def errorCheckForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
+      userAnswers.whichBenefitsYouGet match {
+      case Some(benefits) if(!boundForm.hasErrors) => {
+        val hasCarerAllowance = benefits.exists( x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+        val youAnyBenefitsValue = boundForm.value.getOrElse(true)
+
+        if(hasCarerAllowance && !youAnyBenefitsValue) {
+            boundForm.withError("value", "youAnyTheseBenefitsCY.error.carers.allowance")
+        } else {
+          boundForm
+        }
+      }
+      case _ => boundForm
+    }
+
   }
 }
