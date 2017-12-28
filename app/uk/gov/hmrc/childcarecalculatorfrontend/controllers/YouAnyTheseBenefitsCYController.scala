@@ -87,6 +87,6 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
       }
       case _ => boundForm
     }
-
   }
+
 }
