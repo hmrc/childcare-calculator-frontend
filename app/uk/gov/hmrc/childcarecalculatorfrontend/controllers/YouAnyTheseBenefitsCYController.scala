@@ -56,7 +56,7 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
       val boundForm = BooleanForm(youAnyTheseBenefitsCYErrorKey).bindFromRequest()
 
-      errorCheckForCarersAllowance(boundForm, request.userAnswers).fold(
+      validationForCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(youAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
@@ -65,7 +65,7 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
       )
   }
 
-  private def errorCheckForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
+  private def validationForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
       userAnswers.whichBenefitsYouGet match {
       case Some(benefits) if !boundForm.hasErrors => {
         val hasCarerAllowance = benefits.exists( x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))

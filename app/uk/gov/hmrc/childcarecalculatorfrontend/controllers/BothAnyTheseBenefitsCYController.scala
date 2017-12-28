@@ -56,7 +56,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
       val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest()
 
-      errorCheckForCarersAllowance(boundForm, request.userAnswers).fold(
+      validationForCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
@@ -65,48 +65,23 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
       )
   }
 
-  private def errorCheckForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
+  private def validationForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
 
-    val parentBenefits = userAnswers.whichBenefitsYouGet
-    val partnerBenefits = userAnswers.whichBenefitsPartnerGet
+    if(!boundForm.hasErrors) {
+        val parentBenefits = userAnswers.whichBenefitsYouGet.getOrElse(Seq())
+        val partnerBenefits = userAnswers.whichBenefitsPartnerGet.getOrElse(Seq())
 
-    val benefitExists = List(parentBenefits, partnerBenefits).flatten.nonEmpty
+        val hasAnyOneGotCarerAllowance: Boolean = List(parentBenefits, partnerBenefits).foldLeft(false){
+          (acc, benefits) => acc || benefits.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+        }
 
-    if (benefitExists && !boundForm.hasErrors) {
-      val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
-
-      (parentBenefits, partnerBenefits) match {
-
-        case (Some(parentBen), Some(partnerBen)) => {
-          val hasParentCarerAllowance = parentBen.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
-          val hasPartnerCarerAllowance = partnerBen.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
-
-          if ((hasParentCarerAllowance || hasPartnerCarerAllowance) && !bothAnyBenefitsValue) {
+        val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
+        if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue) {
             boundForm.withError("value", "bothAnyTheseBenefitsCY.error.carers.allowance")
           } else {
             boundForm
-          }
         }
 
-        case (Some(parentBen), _) => getBoundFormForBenefits(bothAnyBenefitsValue, boundForm, parentBen)
-        case (_, Some(partnerBen)) => getBoundFormForBenefits(bothAnyBenefitsValue, boundForm, partnerBen)
-        case _ => boundForm
-      }
-
-    } else {
-      boundForm
-    }
-
-  }
-
-  private def getBoundFormForBenefits(selectedValue: Boolean,
-                              boundForm: Form[Boolean],
-                              benefits: Set[String]) = {
-
-    val hasCarerAllowance = benefits.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
-
-    if (hasCarerAllowance && !selectedValue) {
-      boundForm.withError("value", "bothAnyTheseBenefitsCY.error.carers.allowance")
     } else {
       boundForm
     }
