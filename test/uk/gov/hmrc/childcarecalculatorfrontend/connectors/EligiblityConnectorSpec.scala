@@ -21,7 +21,8 @@ import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.test.FakeRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Claimant, Household, Location, SchemeResults}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, SchemeResults}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.test.UnitSpec

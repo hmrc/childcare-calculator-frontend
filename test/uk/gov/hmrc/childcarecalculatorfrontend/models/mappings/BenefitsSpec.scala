@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Benefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.Benefits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 
 class BenefitsSpec extends PlaySpec {

@@ -17,7 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Disability, DisabilityBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.Disability
 
 class DisabilitySpec extends PlaySpec {
   "Disability" must {
