@@ -20,13 +20,14 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothAnyTheseBenefitsCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothAnyTheseBenefitsCY
@@ -41,7 +42,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
                                                  requireData: DataRequiredAction,
                                                  taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.bothAnyTheseBenefitsCY match {
         case None => BooleanForm()
@@ -50,9 +51,12 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
       Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest().fold(
+
+      val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest()
+
+      errorCheckForCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
@@ -60,4 +64,52 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
             Redirect(navigator.nextPage(BothAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
+  private def errorCheckForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
+
+    val parentBenefits = userAnswers.whichBenefitsYouGet
+    val partnerBenefits = userAnswers.whichBenefitsPartnerGet
+
+    val benefitExists = List(parentBenefits, partnerBenefits).flatten.nonEmpty
+
+    if (benefitExists && !boundForm.hasErrors) {
+      val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
+
+      (parentBenefits, partnerBenefits) match {
+
+        case (Some(parentBen), Some(partnerBen)) => {
+          val hasParentCarerAllowance = parentBen.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+          val hasPartnerCarerAllowance = partnerBen.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+
+          if ((hasParentCarerAllowance || hasPartnerCarerAllowance) && !bothAnyBenefitsValue) {
+            boundForm.withError("value", "bothAnyTheseBenefitsCY.error.carers.allowance")
+          } else {
+            boundForm
+          }
+        }
+
+        case (Some(parentBen), _) => getBoundFormForBenefits(bothAnyBenefitsValue, boundForm, parentBen)
+        case (_, Some(partnerBen)) => getBoundFormForBenefits(bothAnyBenefitsValue, boundForm, partnerBen)
+        case _ => boundForm
+      }
+
+    } else {
+      boundForm
+    }
+
+  }
+
+  private def getBoundFormForBenefits(selectedValue: Boolean,
+                              boundForm: Form[Boolean],
+                              benefits: Set[String]) = {
+
+    val hasCarerAllowance = benefits.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+
+    if (hasCarerAllowance && !selectedValue) {
+      boundForm.withError("value", "bothAnyTheseBenefitsCY.error.carers.allowance")
+    } else {
+      boundForm
+    }
+  }
+
 }

@@ -79,6 +79,6 @@ class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig
       }
       case _ => boundForm
     }
-
   }
+
 }

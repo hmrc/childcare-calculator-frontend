@@ -618,6 +618,7 @@ bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.error = Select yes if you or your partner had any of these benefits this year
+bothAnyTheseBenefitsCY.error.carers.allowance = As you, your partner or both or you get Carer’s Allowance, you must enter a number between 1 and 9999.99
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
