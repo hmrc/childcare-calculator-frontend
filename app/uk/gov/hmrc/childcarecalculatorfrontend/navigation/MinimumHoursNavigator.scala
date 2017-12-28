@@ -36,11 +36,11 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
-    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode))
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildcareCostsId -> costRoute
   )
 
   override protected val resultsMap: Map[Identifier, UserAnswers => Call] = Map(
-    ChildcareCostsId -> costRoute,
     ApprovedProviderId -> approvedChildCareRoute
   )
 
