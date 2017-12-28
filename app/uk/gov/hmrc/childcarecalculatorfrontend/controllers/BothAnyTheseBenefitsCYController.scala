@@ -56,7 +56,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
       val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest()
 
-      validationForCarersAllowance(boundForm, request.userAnswers).fold(
+      validateCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
@@ -65,7 +65,15 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
       )
   }
 
-  private def validationForCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
+  /**
+    * Checks whether any of parent or partner has Carer Allowance benefits,
+    * if yes then populate the form with error else return the original form
+    *
+    * @param boundForm
+    * @param userAnswers
+    * @return
+    */
+  private def validateCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
 
     if(!boundForm.hasErrors) {
         val parentBenefits = userAnswers.whichBenefitsYouGet.getOrElse(Seq())
@@ -77,7 +85,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
         val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
         if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue) {
-            boundForm.withError("value", "bothAnyTheseBenefitsCY.error.carers.allowance")
+            boundForm.withError("value", bothAnyTheseBenefitsCYCarerAllowanceErrorKey)
           } else {
             boundForm
         }
