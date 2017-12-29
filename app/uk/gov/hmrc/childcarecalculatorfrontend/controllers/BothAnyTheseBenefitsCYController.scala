@@ -69,9 +69,9 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
     * Checks whether any of parent or partner has Carer Allowance benefits when user selects No for the question,
     * if yes then populate the form with error else return the original form
     *
-    * @param boundForm
-    * @param userAnswers
-    * @return
+    * @param boundForm is a boolean form
+    * @param userAnswers contains the user's input saved in cache
+    * @return boundForm original or modified bound form
     */
   private def validateCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
 
