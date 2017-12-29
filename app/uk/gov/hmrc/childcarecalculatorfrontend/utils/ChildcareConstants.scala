@@ -20,6 +20,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 object ChildcareConstants {
 
+  val YouSelected: String = YouPartnerBothNeitherEnum.YOU.toString
+  val PartnerSelected: String = YouPartnerBothNeitherEnum.PARTNER.toString
+  val BothSelected: String = YouPartnerBothNeitherEnum.BOTH.toString
+  val NeitherSelected: String = YouPartnerBothNeitherEnum.NEITHER.toString
+
   val you: String = YouPartnerBothEnum.YOU.toString
   val partner: String = YouPartnerBothEnum.PARTNER.toString
   val both: String = YouPartnerBothEnum.BOTH.toString
@@ -122,8 +127,11 @@ object ChildcareConstants {
   val whoOtherIncomePYErrorKey = "whoOtherIncomePY.error"
 
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"
+  val youAnyTheseBenefitsCYCarerAllowanceErrorKey = "youAnyTheseBenefitsCY.error.carers.allowance"
   val partnerAnyTheseBenefitsCYErrorKey = "partnerAnyTheseBenefitsCY.error"
+  val partnerAnyTheseBenefitsCYCarerAllowanceErrorKey = "partnerAnyTheseBenefitsCY.error.carers.allowance"
   val bothAnyTheseBenefitsCYErrorKey = "bothAnyTheseBenefitsCY.error"
+  val bothAnyTheseBenefitsCYCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.carers.allowance"
   val youAnyTheseBenefitsPYErrorKey = "youAnyTheseBenefitsPY.error"
   val partnerAnyTheseBenefitsPYErrorKey = "partnerAnyTheseBenefitsPY.error"
   val bothAnyTheseBenefitsPYErrorKey = "bothAnyTheseBenefitsPY.error"

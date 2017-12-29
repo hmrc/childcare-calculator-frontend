@@ -484,6 +484,7 @@ maxFreeHoursInfo.heading = You’re eligible for 30 hours free childcare
 maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services.
 maxFreeHoursInfo.info = If you’re here only to find out about 30 hours free childcare, you can
 maxFreeHoursInfo.info.link = read more information
+maxFreeHoursInfo.info.link.url =  https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds
 maxFreeHoursInfo.info.part2 = before applying for it.
 
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
@@ -588,6 +589,7 @@ youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.error = Select yes if you’ve had any of these benefits this year
+youAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you get Carer’s Allowance
 
 partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.heading = Has your partner had any of these benefits this year?
@@ -602,6 +604,7 @@ partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.error = Select yes if your partner had any of these benefits this year
+partnerAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that your partner get Carer’s Allowance
 
 bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
@@ -616,6 +619,7 @@ bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.error = Select yes if you or your partner had any of these benefits this year
+bothAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you, your partner or both get Carer’s Allowance
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?

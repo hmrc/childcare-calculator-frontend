@@ -17,8 +17,12 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig,
+tfcEligibility: Eligibility,
+childcareVouchersEligibility: Boolean,
+taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("maxFreeHoursInfo.title"),
@@ -30,13 +34,32 @@
     @components.heading("maxFreeHoursInfo.heading", "heading-xlarge")
 
     <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
-    <p>@messages(s"maxFreeHoursInfo.info") <a href="https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds" target="_blank"> @messages("maxFreeHoursInfo.info.link")</a> @messages("maxFreeHoursInfo.info.part2")</p>
+    <p>@messages("maxFreeHoursInfo.info")
+        <a href=@messages("maxFreeHoursInfo.info.link.url") target="_blank">
+            @messages("maxFreeHoursInfo.info.link")
+        </a>
+        @messages("maxFreeHoursInfo.info.part2")
+    </p>
 
     <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
     <p>@messages("maxFreeHoursInfo.give.more.info")</p>
 
-    @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+    <ul class="bullets">
+        @if(childcareVouchersEligibility) {
+            <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
+        }
 
+        @if(tfcEligibility == Eligible) {
+            <li>@messages("maxFreeHoursInfo.li.tfc")</li>
+        }
+
+        @if(taxCreditsEligibility.equals(Eligible)) {
+            <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
+        }
+
+    </ul>
+
+    @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
 
 }
