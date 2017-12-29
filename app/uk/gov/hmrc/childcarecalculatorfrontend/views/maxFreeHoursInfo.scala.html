@@ -38,7 +38,8 @@ taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Mess
         <a href=@messages("maxFreeHoursInfo.info.link.url") target="_blank">
             @messages("maxFreeHoursInfo.info.link")
         </a>
-        @messages("maxFreeHoursInfo.info.part2")</p>
+        @messages("maxFreeHoursInfo.info.part2")
+    </p>
 
     <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
@@ -46,15 +47,15 @@ taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Mess
 
     <ul class="bullets">
         @if(childcareVouchersEligibility) {
-             <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
+            <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
         }
 
         @if(tfcEligibility == Eligible) {
-        <li>@messages("maxFreeHoursInfo.li.tfc")</li>
+            <li>@messages("maxFreeHoursInfo.li.tfc")</li>
         }
 
         @if(taxCreditsEligibility.equals(Eligible)) {
-             <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
+            <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
         }
 
     </ul>
