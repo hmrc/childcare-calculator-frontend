@@ -589,6 +589,7 @@ youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.error = Select yes if you’ve had any of these benefits this year
+youAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you get Carer’s Allowance
 
 partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.heading = Has your partner had any of these benefits this year?
@@ -603,6 +604,7 @@ partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
 partnerAnyTheseBenefitsCY.error = Select yes if your partner had any of these benefits this year
+partnerAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that your partner get Carer’s Allowance
 
 bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
@@ -617,6 +619,7 @@ bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.error = Select yes if you or your partner had any of these benefits this year
+bothAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you, your partner or both get Carer’s Allowance
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
 partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?

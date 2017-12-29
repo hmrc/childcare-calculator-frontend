@@ -122,8 +122,11 @@ object ChildcareConstants {
   val whoOtherIncomePYErrorKey = "whoOtherIncomePY.error"
 
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"
+  val youAnyTheseBenefitsCYCarerAllowanceErrorKey = "youAnyTheseBenefitsCY.error.carers.allowance"
   val partnerAnyTheseBenefitsCYErrorKey = "partnerAnyTheseBenefitsCY.error"
+  val partnerAnyTheseBenefitsCYCarerAllowanceErrorKey = "partnerAnyTheseBenefitsCY.error.carers.allowance"
   val bothAnyTheseBenefitsCYErrorKey = "bothAnyTheseBenefitsCY.error"
+  val bothAnyTheseBenefitsCYCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.carers.allowance"
   val youAnyTheseBenefitsPYErrorKey = "youAnyTheseBenefitsPY.error"
   val partnerAnyTheseBenefitsPYErrorKey = "partnerAnyTheseBenefitsPY.error"
   val bothAnyTheseBenefitsPYErrorKey = "bothAnyTheseBenefitsPY.error"
