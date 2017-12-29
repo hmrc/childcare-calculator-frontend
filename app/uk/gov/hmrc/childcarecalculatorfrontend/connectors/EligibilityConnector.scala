@@ -19,7 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 import javax.inject.Inject
 
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Household, SchemeResults}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.Household
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 

@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.household
+package uk.gov.hmrc.childcarecalculatorfrontend.models.integration
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 
-case class StatutoryIncome(statutoryWeeks: Double = 0.00,
-                           statutoryAmount: BigDecimal = 0.00)
+case class Household(
+                      credits: Option[CreditsEnum] = None,
+                      location: Location,
+                      children: List[Child] = List.empty,
+                      parent: Claimant = Claimant(),
+                      partner: Option[Claimant] = None
+                    )
 
-object StatutoryIncome {
-  implicit val formatStatutoryIncome: OFormat[StatutoryIncome] = Json.format[StatutoryIncome]
+object Household {
+  implicit val formatHousehold: OFormat[Household] = Json.format[Household]
 }

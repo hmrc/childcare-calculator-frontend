@@ -26,6 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.Emplo
 import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils}
 
@@ -161,20 +162,14 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
-  private def getYouVoucherValue(vouchers: Option[String]) : Option[YesNoUnsureEnum] = {
-    vouchers.fold(Some(YesNoUnsureEnum.NO)) {
-      case ChildcareConstants.notSure => Some(YesNoUnsureEnum.NOTSURE)
-      case ChildcareConstants.both | ChildcareConstants.you => Some(YesNoUnsureEnum.YES)
-      case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
-      case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
-      case _ => Some(YesNoUnsureEnum.NO)
+  private def getVoucherValue(vouchers: Option[String], isPartner: Boolean = false) : Option[YesNoUnsureEnum] = {
+    val whichParent: String = if(isPartner) {
+      ChildcareConstants.Partner
+    } else {
+      ChildcareConstants.You
     }
-  }
-
-  private def getPartnerVoucherValue(vouchers: Option[String]) : Option[YesNoUnsureEnum] = {
     vouchers.fold(Some(YesNoUnsureEnum.NO)) {
-      case ChildcareConstants.notSure => Some(YesNoUnsureEnum.NOTSURE)
-      case ChildcareConstants.both | ChildcareConstants.partner => Some(YesNoUnsureEnum.YES)
+      case ChildcareConstants.Both | `whichParent` => Some(YesNoUnsureEnum.YES)
       case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
       case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
       case _ => Some(YesNoUnsureEnum.NO)
@@ -185,14 +180,16 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-    val vouchers = if (answers.yourChildcareVouchers.isDefined) getYouVoucherValue(answers.yourChildcareVouchers) else getYouVoucherValue(answers.whoGetsVouchers)
+    val vouchers = if (answers.yourChildcareVouchers.isDefined) {
+      getVoucherValue(answers.yourChildcareVouchers)
+    } else {
+      getVoucherValue(answers.whoGetsVouchers)
+    }
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
     val maxEarnings = answers.yourMaximumEarnings
     val age = answers.yourAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
-
-    val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
     val taxCode = answers.whatIsYourTaxCode
 
     val currentYearIncome = getParentCurrentYearIncome(answers, taxCode)
@@ -214,14 +211,16 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
-    val vouchers = if (answers.partnerChildcareVouchers.isDefined) getPartnerVoucherValue(answers.partnerChildcareVouchers) else getPartnerVoucherValue(answers.whoGetsVouchers)
+    val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
+      getVoucherValue(answers.partnerChildcareVouchers, isPartner = true)
+    } else {
+      getVoucherValue(answers.whoGetsVouchers, isPartner = true)
+    }
     val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
     val selfEmployed = answers.partnerSelfEmployed
     val maxEarnings = answers.partnerMaximumEarnings
     val age = answers.yourPartnersAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
-
-    val tcEligibility = if (tc.eligibility(answers) == Eligible) true else false
     val taxCode = answers.whatIsYourPartnersTaxCode
 
     val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode)
