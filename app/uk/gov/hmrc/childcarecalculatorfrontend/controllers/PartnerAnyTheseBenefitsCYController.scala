@@ -66,7 +66,7 @@ class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig
   }
 
   /**
-    * Checks whether partner has Carer Allowance benefits,
+    * Checks whether partner has Carer Allowance benefits when user selects No for the question,
     * if yes then populate the form with error else return the original form
     *
     * @param boundForm
