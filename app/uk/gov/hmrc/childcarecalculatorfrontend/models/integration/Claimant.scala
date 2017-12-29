@@ -19,7 +19,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.integration
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 case class StatutoryIncome(
                             statutoryWeeks: Double = 0.00,
@@ -56,10 +58,10 @@ object Benefits {
   def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
     data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
       currentBenefit match {
-        case "incomeBenefits" => benefits.copy(incomeBenefits = true)
-        case "disabilityBenefits" => benefits.copy(disabilityBenefits = true)
-        case "highRateDisabilityBenefits" => benefits.copy(highRateDisabilityBenefits = true)
-        case "carersAllowance" => benefits.copy(carersAllowance = true)
+        case IncomeBenefits => benefits.copy(incomeBenefits = true)
+        case DisabilityBenefits => benefits.copy(disabilityBenefits = true)
+        case HighRatedDisabilityBenefits => benefits.copy(highRateDisabilityBenefits = true)
+        case CarersAllowanceBenefits => benefits.copy(carersAllowance = true)
         case _ => benefits
       }
     }))
@@ -90,5 +92,3 @@ case class Claimant(
 object Claimant {
   implicit val formatClaimant: OFormat[Claimant] = Json.format[Claimant]
 }
-
-
