@@ -20,18 +20,54 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
                                            val messagesApi: MessagesApi,
                                            getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                           requireData: DataRequiredAction,
+                                           tfc: TaxFreeChildcare,
+                                           tc: TaxCredits) extends FrontendController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(maxFreeHoursInfo(appConfig))
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
+
+    implicit request =>
+
+      Ok(maxFreeHoursInfo(appConfig,
+        tfc.eligibility(request.userAnswers),
+        getESCEligibility(request.userAnswers),
+        tc.eligibility(request.userAnswers)))
   }
+
+  private def getESCEligibility(answers: UserAnswers): Boolean = {
+    val No = YesNoUnsureEnum.NO.toString
+
+    val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
+    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !x.equals(No))
+    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !x.equals(No))
+
+    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+    val whoInPaidEmployment = answers.whoIsInPaidEmployment
+    val bothChildcareVouchers = answers.whoGetsVouchers
+
+    if (hasPartner) {
+      whoInPaidEmployment match {
+        case  Some(You) => hasParentChildcareCosts && hasParentChildcareVouchers
+        case Some(Partner) => hasParentChildcareCosts && hasPartnerChildcareVouchers
+        case Some(_) => hasParentChildcareCosts && bothChildcareVouchers.contains(Both)
+        case _ => false
+      }
+    }else{
+      hasParentChildcareCosts && hasParentChildcareVouchers
+    }
+  }
+
 }

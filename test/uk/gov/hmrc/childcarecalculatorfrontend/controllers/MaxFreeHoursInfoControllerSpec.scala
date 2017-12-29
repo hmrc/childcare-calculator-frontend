@@ -16,20 +16,191 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import org.scalatest.mockito.MockitoSugar
+import play.api.libs.json.{JsBoolean, JsNumber, JsString}
+import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
+import uk.gov.hmrc.http.cache.client.CacheMap
 
-class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase {
+class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
+
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+
+  val tfc = mock[TaxFreeChildcare]
+  val tc = mock[TaxCredits]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new MaxFreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+    new MaxFreeHoursInfoController(frontendAppConfig,
+      messagesApi,
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      tfc,
+      tc)
+
+
 
   "MaxFreeHoursInfo Controller" must {
+
+    "return OK and tax free childcare in the correct view for a GET  " in {
+
+      when(tfc.eligibility(any())) thenReturn Eligible
+      when(tc.eligibility(any())) thenReturn NotEligible
+      val result = controller().onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible, false, NotEligible)(fakeRequest, messages).toString()
+    }
+
+    "return OK when single claim and show childcare vouchers in the correct view for a GET " in {
+
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn NotEligible
+
+      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
+        DoYouLiveWithPartnerId.toString -> JsBoolean(false),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        YourChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.YES.toString))
+
+      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible)(fakeRequest, messages).toString
+
+    }
+
+    "return OK when joint claim and partner works and can get vouchers show childcare vouchers in the correct view for a GET " in {
+
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn NotEligible
+
+      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
+
+        PartnerChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.YES.toString))
+
+      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible)(fakeRequest, messages).toString
+
+    }
+
+    "return OK when joint claim and both work and both get vouchers show childcare vouchers in the correct view for a GET " in {
+
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn NotEligible
+
+      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.BOTH.toString),
+        WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.BOTH.toString))
+
+      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible)(fakeRequest, messages).toString
+
+    }
+
+    "return OK when single claim working 18hrs a week and not getting any benefits" +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn Eligible
+
+
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(false),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(18),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+    }
+
+    "return OK when joint claim and both working 16hrs a week and not getting any benefits" +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn Eligible
+
+
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(16),
+        PartnerWorkHoursId.toString -> JsNumber(16),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+    }
+
+
+    "return OK when joint claim and parent working 16hrs a week and partner getting qualifying benefits" +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn Eligible
+
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(16),
+        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+    }
+
+    "return OK when joint claim and parent works less than 10hrs a week, partner is working 20hrs a week " +
+      " show tax credits and the correct view for a GET " in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn Eligible
+
+      val validData = Map(
+        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        AreYouInPaidWorkId.toString -> JsBoolean(true),
+        DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
+        ParentWorkHoursId.toString ->JsNumber(10),
+        PartnerWorkHoursId.toString -> JsNumber(20),
+        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(false),
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+
+      val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
+
+      status(result) mustBe OK
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+    }
+
     "return OK and the correct view for a GET" in {
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(tc.eligibility(any())) thenReturn NotEligible
+
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, NotEligible)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
