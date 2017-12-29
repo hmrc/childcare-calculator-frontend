@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotEligible, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
@@ -28,7 +28,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
   "MaxFreeHoursInfo view" must {
 
-    behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "still.to.check")
+    behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "info.link", "info.link.url", "info.part2", "still.to.check")
 
     "display correct message when only eligible for tax free chjldcare" in {
       val view = maxFreeHoursInfo(frontendAppConfig, Eligible, false, NotEligible) (fakeRequest, messages)

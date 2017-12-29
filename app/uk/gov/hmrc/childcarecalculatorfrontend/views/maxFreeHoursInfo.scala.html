@@ -35,26 +35,30 @@ taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Mess
 
     <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
     <p>@messages("maxFreeHoursInfo.info")
+        <a href=@messages("maxFreeHoursInfo.info.link.url") target="_blank">
+            @messages("maxFreeHoursInfo.info.link")
+        </a>
+        @messages("maxFreeHoursInfo.info.part2")</p>
 
     <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
-<ul class="bullets">
-    @if(childcareVouchersEligibility) {
-    <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
-    }
+    <p>@messages("maxFreeHoursInfo.give.more.info")</p>
 
-    @if(tfcEligibility == Eligible) {
-    <li>@messages("maxFreeHoursInfo.li.tfc")
-    }
+    <ul class="bullets">
+        @if(childcareVouchersEligibility) {
+             <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
+        }
 
-    @if(taxCreditsEligibility.equals(Eligible)) {
-    <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
-    }
+        @if(tfcEligibility == Eligible) {
+        <li>@messages("maxFreeHoursInfo.li.tfc")</li>
+        }
 
-</ul>
+        @if(taxCreditsEligibility.equals(Eligible)) {
+             <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
+        }
 
-<p>@messages("maxFreeHoursInfo.give.more.info")</p>
+    </ul>
 
-@components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+    @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
 
 }
