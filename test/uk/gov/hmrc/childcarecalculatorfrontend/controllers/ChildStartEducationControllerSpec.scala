@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,10 +75,12 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
+      val startEducationDate = LocalDate.now
+
       val postRequest = fakeRequest.withFormUrlEncodedBody(
-        "date.day"   -> "1",
-        "date.month" -> "2",
-        "date.year"  -> "2017"
+        "date.day"   -> startEducationDate.dayOfMonth().get().toString,
+        "date.month" -> startEducationDate.monthOfYear().get().toString,
+        "date.year"  -> startEducationDate.year().get().toString
       )
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 
