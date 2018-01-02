@@ -36,12 +36,7 @@ class MaximumHoursNavigator @Inject() (
 
   override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
 
-  override protected def resultsMap: Map[Identifier, UserAnswers => Call] = Map(
-    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
-    DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
-    WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
-    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute
-  )
+
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
@@ -71,7 +66,10 @@ class MaximumHoursNavigator @Inject() (
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
     PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> eitherMaximumEarningsRoute,
-    TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes
+    TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes,
+    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
+    WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
+    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute
   )
 
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
