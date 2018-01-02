@@ -205,7 +205,7 @@ GET         /change-your-other-income-cy                       uk.gov.hmrc.child
 POST        /change-your-other-income-cy                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode = CheckMode)
 
 GET         /your-income-info                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoController.onPageLoad()
-GET         /partner-income-info                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoController.onPageLoad()
+GET         /both-income-info-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoController.onPageLoad()
 
 GET         /your-employment-income-cy                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomeCYController.onPageLoad(mode: Mode = NormalMode)
 POST        /your-employment-income-cy                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomeCYController.onSubmit(mode: Mode = NormalMode)
@@ -358,7 +358,7 @@ GET         /change-how-much-both-pay-pension                  uk.gov.hmrc.child
 POST        /change-how-much-both-pay-pension                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionController.onSubmit(mode: Mode = CheckMode)
 
 GET         /your-income-info-py                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoPYController.onPageLoad()
-GET         /both-income-info-py                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothIncomeInfoPYController.onPageLoad()
+GET         /both-income-info-previous-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothIncomeInfoPYController.onPageLoad()
 
 GET         /both-other-income-py                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeLYController.onPageLoad(mode: Mode = NormalMode)
 POST        /both-other-income-py                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeLYController.onSubmit(mode: Mode = NormalMode)
@@ -606,9 +606,9 @@ POST        /partner-statutory-pay-per-week                    uk.gov.hmrc.child
 GET         /change-partner-statutory-pay-per-week             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-partner-statutory-pay-per-week             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onSubmit(mode: Mode = CheckMode)
 
-GET        /who-was-in-paid-work-py                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = NormalMode)
-POST       /who-was-in-paid-work-py                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = NormalMode)
-GET        /change-who-was-in-paid-work-py                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-who-was-in-paid-work-py                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
+GET         /who-was-in-paid-work-py                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = NormalMode)
+POST        /who-was-in-paid-work-py                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = NormalMode)
+GET         /change-who-was-in-paid-work-py                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-who-was-in-paid-work-py                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode = CheckMode)
 
-GET        /about-your-results                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
+GET         /about-your-results                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()

@@ -514,7 +514,7 @@ yourIncomeInfo.li.birth_or_adoption = weeks taken off work while on statutory ma
 yourIncomeInfo.checkYourAnswersLabel = Your income this year
 
 partnerIncomeInfo.title = You and your partner’s income this year
-partnerIncomeInfo.heading = Your and your partner’s income this year
+partnerIncomeInfo.heading = You and your partner’s income this year
 partnerIncomeInfo.tax_year = This year is 6 April {0} to 5 April {1}.
 partnerIncomeInfo.guidance = The calculator will now ask questions about your income, including:
 partnerIncomeInfo.li.income_paid_work = paid work
