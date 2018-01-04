@@ -1008,11 +1008,12 @@ childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
 
 childStartEducation.title = When did your child start their education or training
 childStartEducation.heading = When did {0} start their education or training
+childStartEducation.hint = For example, 31 3 2015
 childStartEducation.checkYourAnswersLabel = When did your child start their education or training
 childStartEducation.error.blank = Enter the date they started their education or training
 childStartEducation.error.invalid = Enter a valid date
 childStartEducation.error.past = Date they started must be in the past
-childStartEducation.error.before16 = Date they started cannot be before {0}’s 16th birthday
+childStartEducation.error.before16 = Date they started cannot be before their 16th birthday
 
 whichChildrenDisability.title = Who gets disability benefits?
 whichChildrenDisability.heading = Who gets disability benefits?
