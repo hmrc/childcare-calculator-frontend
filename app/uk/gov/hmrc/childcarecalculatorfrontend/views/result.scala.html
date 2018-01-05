@@ -30,7 +30,7 @@
     @components.back_link()
 
 
-    <h1 class="heading-xlarge">@messages("result.heading")</h1>
+    <h1 class="heading-xlarge">@if(model.noOfEligibleSchemes > 0){@messages("result.heading")} else {@messages("result.heading.not.eligible")} </h1>
 
     <p>@model.firstParagraph</p>
 
