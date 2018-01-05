@@ -32,20 +32,19 @@ object Mode {
     }
   }
 
-  implicit def qsBindable(implicit stringBindable: QueryStringBindable[String]): QueryStringBindable[Mode] =
+  implicit def modeBinder(implicit urlInput: QueryStringBindable[String]): QueryStringBindable[Mode] =
     new QueryStringBindable[Mode] {
-
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] =
-        stringBindable.bind(key, params).map(_.right.flatMap {
+        urlInput.bind(key, params).map(_.right.flatMap {
           case "NormalMode" =>
             Right(NormalMode)
           case "CheckMode" =>
             Right(CheckMode)
           case _ =>
-            Left("error.invalid")
+            Left("error.invalidMode")
         })
 
       override def unbind(key: String, value: Mode): String =
-        stringBindable.unbind(key, value.toString)
+        urlInput.unbind(key, value.toString)
     }
 }
