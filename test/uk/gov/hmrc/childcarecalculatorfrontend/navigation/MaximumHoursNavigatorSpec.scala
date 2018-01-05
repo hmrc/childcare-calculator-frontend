@@ -23,7 +23,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{MaxFreeHours, Schemes, TaxCredits, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
@@ -34,10 +34,10 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  def navigator(schemes: Schemes, maxHours: MaxFreeHours, taxCredits: TaxCredits, tfc: TaxFreeChildcare): SubNavigator =
-    new MaximumHoursNavigator(new Utils, schemes, maxHours, taxCredits, tfc)
+  def navigator(schemes: Schemes, maxHours: MaxFreeHours, taxCredits: TaxCredits, tfc: TaxFreeChildcare, esc: EmploymentSupportedChildcare): SubNavigator =
+    new MaximumHoursNavigator(new Utils, schemes, maxHours, taxCredits, tfc, esc)
 
-  def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(new Utils, schemes, mock[MaxFreeHours], mock[TaxCredits], mock[TaxFreeChildcare])
+  def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(new Utils, schemes, mock[MaxFreeHours], mock[TaxCredits], mock[TaxFreeChildcare], mock[EmploymentSupportedChildcare])
 
   def navigator: SubNavigator = navigator(new Schemes())
 
@@ -1214,11 +1214,12 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(maxHours.eligibility(any())) thenReturn Eligible
       when(taxCredits.eligibility(any())) thenReturn NotEligible
       when(tfc.eligibility(any())) thenReturn NotEligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.ResultController.onPageLoad()
     }
 
@@ -1228,13 +1229,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(answers.childcareCosts) thenReturn Some(yes)
       when(answers.approvedProvider) thenReturn Some(yes)
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(maxHours.eligibility(any())) thenReturn Eligible
       when(taxCredits.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
     }
@@ -1245,11 +1247,12 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(maxHours.eligibility(any())) thenReturn NotEligible
       when(taxCredits.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn NotEligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.ResultController.onPageLoad()
     }
 
@@ -1259,13 +1262,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(answers.childcareCosts) thenReturn Some(notYet)
       when(answers.approvedProvider) thenReturn Some(yes)
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(maxHours.eligibility(any())) thenReturn Eligible
       when(taxCredits.eligibility(any())) thenReturn NotEligible
       when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
     }
 
@@ -1275,13 +1279,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(answers.childcareCosts) thenReturn Some(yes)
       when(answers.approvedProvider) thenReturn Some(notSure)
       when(maxHours.eligibility(any())) thenReturn NotEligible
       when(taxCredits.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn NotEligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
     }
 
@@ -1291,13 +1296,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(answers.childcareCosts) thenReturn Some(notYet)
       when(answers.approvedProvider) thenReturn Some(yes)
       when(maxHours.eligibility(any())) thenReturn NotEligible
       when(taxCredits.eligibility(any())) thenReturn NotEligible
       when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
     }
 
@@ -1307,13 +1313,36 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val maxHours = mock[MaxFreeHours]
       val taxCredits = mock[TaxCredits]
       val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
       when(schemes.allSchemesDetermined(any())) thenReturn true
       when(answers.childcareCosts) thenReturn Some(notYet)
       when(answers.approvedProvider) thenReturn Some(notSure)
       when(maxHours.eligibility(any())) thenReturn NotEligible
       when(taxCredits.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, maxHours, taxCredits, tfc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+      result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+    }
+
+    "redirect to `How many children do you have` if the user is not eligible for anything, but but partner is eligible for ESC" in {
+      val answers = spy(userAnswers())
+      val schemes = mock[Schemes]
+      val maxHours = mock[MaxFreeHours]
+      val taxCredits = mock[TaxCredits]
+      val tfc = mock[TaxFreeChildcare]
+      val esc = mock[EmploymentSupportedChildcare]
+      when(schemes.allSchemesDetermined(any())) thenReturn true
+      when(answers.childcareCosts) thenReturn Some(yes)
+      when(answers.approvedProvider) thenReturn Some(yes)
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
+      when(answers.yourMinimumEarnings) thenReturn Some(false)
+      when(maxHours.eligibility(any())) thenReturn NotEligible
+      when(taxCredits.eligibility(any())) thenReturn NotEligible
+      when(tfc.eligibility(any())) thenReturn NotEligible
+      when(esc.eligibility(any())) thenReturn Eligible
+
+      val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
     }
 
@@ -1324,5 +1353,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val result = navigator(schemes).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
     }
+
   }
+
 }
