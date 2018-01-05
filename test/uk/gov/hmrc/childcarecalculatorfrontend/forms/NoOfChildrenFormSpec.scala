@@ -32,7 +32,7 @@ class NoOfChildrenFormSpec extends FormSpec {
     }
 
     "bind positive, max number" in {
-      val expectedError = error("value", errorKeyNonNumeric)
+      val expectedError = error("value", noOfChildrenErrorKey)
       checkForError(NoOfChildrenForm, Map("value" -> "20"), expectedError)
     }
 
@@ -42,7 +42,7 @@ class NoOfChildrenFormSpec extends FormSpec {
     }
 
     "fail to bind zero number" in {
-      val expectedError = error("value", errorKeyNonNumeric)
+      val expectedError = error("value", noOfChildrenErrorKey)
       checkForError(NoOfChildrenForm, Map("value" -> "0"), expectedError)
     }
 
