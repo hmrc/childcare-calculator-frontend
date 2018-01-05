@@ -30,7 +30,7 @@
     @components.back_link()
 
 
-    <h1 class="heading-xlarge">@messages("result.heading")</h1>
+    <h1 class="heading-xlarge">@if(model.noOfEligibleSchemes > 0){@messages("result.heading")} else {@messages("result.heading.not.eligible")} </h1>
 
     <p>@model.firstParagraph</p>
 
@@ -47,18 +47,18 @@
             <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
+
+        <h2 class="heading-medium">@messages("result.more.info.title")</h2>
+        <p>@messages("result.more.info.para")</p>
+
+        @components.button_link(
+            messageKey = "result.read.more.button",
+            id = "aboutYourResults",
+            href = AboutYourResultsController.onPageLoad()
+        )
     } else {
         <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
         @resultNotEligible(model)
     }
 
-
-    <h2 class="heading-medium">@messages("result.more.info.title")</h2>
-    <p>@messages("result.more.info.para")</p>
-
-    @components.button_link(
-        messageKey = "result.read.more.button",
-        id = "aboutYourResults",
-        href = AboutYourResultsController.onPageLoad()
-    )
 }

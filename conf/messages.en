@@ -1161,6 +1161,7 @@ partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your pa
 
 result.title = You are eligible for
 result.heading = You are eligible for
+result.heading.not.eligible = You are not eligible for any help with your childcare costs
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
