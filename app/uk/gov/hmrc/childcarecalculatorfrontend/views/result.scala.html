@@ -47,12 +47,7 @@
             <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
-    } else {
-        <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
-        @resultNotEligible(model)
-    }
 
-    @if(model.noOfEligibleSchemes > 0) {
         <h2 class="heading-medium">@messages("result.more.info.title")</h2>
         <p>@messages("result.more.info.para")</p>
 
@@ -61,5 +56,9 @@
             id = "aboutYourResults",
             href = AboutYourResultsController.onPageLoad()
         )
-     }
+    } else {
+        <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
+        @resultNotEligible(model)
+    }
+
 }
