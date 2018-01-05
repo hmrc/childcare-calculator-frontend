@@ -52,13 +52,14 @@
         @resultNotEligible(model)
     }
 
+    @if(model.noOfEligibleSchemes > 0) {
+        <h2 class="heading-medium">@messages("result.more.info.title")</h2>
+        <p>@messages("result.more.info.para")</p>
 
-    <h2 class="heading-medium">@messages("result.more.info.title")</h2>
-    <p>@messages("result.more.info.para")</p>
-
-    @components.button_link(
-        messageKey = "result.read.more.button",
-        id = "aboutYourResults",
-        href = AboutYourResultsController.onPageLoad()
-    )
+        @components.button_link(
+            messageKey = "result.read.more.button",
+            id = "aboutYourResults",
+            href = AboutYourResultsController.onPageLoad()
+        )
+     }
 }

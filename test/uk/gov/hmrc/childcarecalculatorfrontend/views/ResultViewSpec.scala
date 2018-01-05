@@ -66,6 +66,10 @@ class ResultViewSpec extends ViewBehaviours {
       val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
       assertContainsMessages(view, messages("result.heading.not.eligible"))
+      assertNotContainsText(view, messages("result.more.info.title"))
+      assertNotContainsText(view, messages("result.more.info.para"))
+      assertNotContainsText(view, messages("result.read.more.button"))
+      assertNotRenderedById(view, "aboutYourResults")
     }
   }
 }
