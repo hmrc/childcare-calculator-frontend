@@ -26,7 +26,9 @@ class ResultViewSpec extends ViewBehaviours {
   
   "Result view" must {
 
-    behave like normalPage(() => result(frontendAppConfig,ResultsViewModel(""), new Utils)(fakeRequest, messages), "result")
+    behave like normalPage(() => result(frontendAppConfig,
+                                        ResultsViewModel(tc = Some(400)),
+                                        new Utils)(fakeRequest, messages), "result")
 
     "Contain results" when {
       "We have introductory paragraph" in {
@@ -57,6 +59,17 @@ class ResultViewSpec extends ViewBehaviours {
 
       view.getElementById("aboutYourResults").text() mustBe messages("result.read.more.button")
       view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
+    }
+
+    "display correct contents when user is not eligible for any of the schemes" in {
+      val model = ResultsViewModel()
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.heading.not.eligible"))
+      assertNotContainsText(view, messages("result.more.info.title"))
+      assertNotContainsText(view, messages("result.more.info.para"))
+      assertNotContainsText(view, messages("result.read.more.button"))
+      assertNotRenderedById(view, "aboutYourResults")
     }
   }
 }
