@@ -36,6 +36,8 @@
 
     @components.heading("whichChildrenDisability.heading")
 
+    <p>@messages("whichBenefits.select.all")</p>
+
     @helpers.form(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_check_box(
