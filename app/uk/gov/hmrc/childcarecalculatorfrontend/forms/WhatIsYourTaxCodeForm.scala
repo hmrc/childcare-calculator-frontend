@@ -28,7 +28,7 @@ class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends Form
 
   def whatIsYourTaxCodeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
-    val taxCodeRegex: String = """[1-9][0-9]{2,3}[L-NSTBDWX0][RT01]?""".r.toString()
+    val taxCodeRegex: String = """^(BR|D0|NT)$|^(([Kk]{1}[1-9]{1}[0-9]{2,3}$)|([1-9]{1}[0-9]{2,3}[LPTYlpty]{1}$))""".r.toString()
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
       data.get(key) match {
