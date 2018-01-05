@@ -38,8 +38,6 @@ object Mode {
         urlInput.bind(key, params).map(_.right.flatMap {
           case "NormalMode" =>
             Right(NormalMode)
-          case "CheckMode" =>
-            Right(CheckMode)
           case _ =>
             Left("error.invalidMode")
         })
