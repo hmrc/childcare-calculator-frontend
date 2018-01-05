@@ -48,7 +48,7 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
         checkYourAnswersHelper.childcareCosts
       ).flatten))
 
-      val livingWithPartner = request.userAnswers.doYouLiveWithPartner.fold(false)(c => c)
+      val livingWithPartner =request.userAnswers.doYouLiveWithPartner.fold(false)(c => c)
       val paidEmployment = checkIfInEmployment(request.userAnswers)
 
     Ok(freeHoursResult(appConfig, location, eligibility, sections,paidEmployment,livingWithPartner))
