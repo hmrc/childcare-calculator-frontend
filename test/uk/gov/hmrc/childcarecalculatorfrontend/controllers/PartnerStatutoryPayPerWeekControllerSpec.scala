@@ -44,7 +44,7 @@ class PartnerStatutoryPayPerWeekControllerSpec extends ControllerSpecBase {
 
   def viewAsString(form: Form[BigDecimal] = PartnerStatutoryPayPerWeekForm(statutoryType)) = partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testNumber = 20.48
 
   "PartnerStatutoryPayPerWeek Controller" must {
 
