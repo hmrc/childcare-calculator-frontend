@@ -18,10 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.handlers
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.Request
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.heading
 import uk.gov.hmrc.play.bootstrap.http.FrontendErrorHandler
 
 @Singleton
@@ -32,5 +33,11 @@ class ErrorHandler @Inject()(
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit rh: Request[_]): Html =
     uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template(pageTitle, heading, message, appConfig)
+
+  override def badRequestTemplate(implicit request: Request[_]): Html =
+    uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template(
+      Messages("global.error.InternalServerError500.title"),
+      Messages("global.error.InternalServerError500.heading"),
+      Messages("global.error.InternalServerError500.message"), appConfig)
 }
 

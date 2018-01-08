@@ -63,8 +63,8 @@ class AboutYourChildController @Inject()(
       validateIndex(childIndex) {
         noOfChildren =>
           val preparedForm = request.userAnswers.aboutYourChild(childIndex) match {
-            case None => AboutYourChildForm()
-            case Some(value) => AboutYourChildForm().fill(value)
+            case None => AboutYourChildForm(childIndex)
+            case Some(value) => AboutYourChildForm(childIndex, request.userAnswers.aboutYourChild).fill(value)
           }
           Future.successful(Ok(aboutYourChild(appConfig, preparedForm, mode, childIndex, noOfChildren)))
       }
@@ -74,7 +74,7 @@ class AboutYourChildController @Inject()(
     implicit request =>
       validateIndex(childIndex) {
         noOfChildren =>
-          AboutYourChildForm().bindFromRequest().fold(
+          AboutYourChildForm(childIndex, request.userAnswers.aboutYourChild).bindFromRequest().fold(
             (formWithErrors: Form[AboutYourChild]) =>
               Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren))),
               (value) =>

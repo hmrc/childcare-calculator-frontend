@@ -31,7 +31,8 @@ class MaximumHoursNavigator @Inject() (
                                         override val schemes: Schemes,
                                         maxHours: MaxFreeHours,
                                         taxCredits: TaxCredits,
-                                        tfc: TaxFreeChildcare
+                                        tfc: TaxFreeChildcare,
+                                        esc: EmploymentSupportedChildcare
                                       ) extends ResultsNavigator {
 
   override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
@@ -341,20 +342,30 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call = {
+
     if (schemes.allSchemesDetermined(answers)) {
-      if (taxCredits.eligibility(answers) == NotEligible && tfc.eligibility(answers) == NotEligible) {
+      if (
+        taxCredits.eligibility(answers) == NotEligible &&
+         tfc.eligibility(answers) == NotEligible &&
+          esc.eligibility(answers) == NotEligible) {
+
         routes.ResultController.onPageLoad()
-      } else if(answers.hasApprovedCosts.contains(true)) {
+      }
+      else if(answers.hasApprovedCosts.contains(true)) {
+
         if (maxHours.eligibility(answers) == Eligible) {
           routes.MaxFreeHoursInfoController.onPageLoad()
         } else {
           routes.NoOfChildrenController.onPageLoad(NormalMode)
         }
+
       } else {
         routes.ResultController.onPageLoad()
       }
     } else {
       routes.SessionExpiredController.onPageLoad()
     }
+
   }
+
 }

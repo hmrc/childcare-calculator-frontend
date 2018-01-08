@@ -55,7 +55,7 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
   def viewAsString(form: Form[BigDecimal] = YourStatutoryPayPerWeekForm(statutoryType)) =
     yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
-  val testNumber = 123.45
+  val testNumber = 92.22
 
   "YourStatutoryPayPerWeek Controller" must {
 

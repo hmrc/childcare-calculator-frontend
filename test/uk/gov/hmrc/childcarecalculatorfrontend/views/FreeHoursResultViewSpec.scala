@@ -27,14 +27,14 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursResult"
 
-  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible, Seq(),false)(fakeRequest, messages)
+  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible, Seq(),false, false)(fakeRequest, messages)
 
   def createViewWithAnswers = (location: Location.Value,
                                eligibility:Eligibility,
                                answerSections: Seq[Section]) => freeHoursResult(frontendAppConfig,
                                                                                 location,
                                                                                 eligibility,
-                                                                                answerSections,true)(fakeRequest, messages)
+                                                                                answerSections,true, false)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
       behave like normalPage(createView,
@@ -64,7 +64,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
 
         val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
-        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(CheckMode).url
+        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(NormalMode).url
         childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
       }
 
@@ -86,7 +86,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
 
         val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
-        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(CheckMode).url
+        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(NormalMode).url
         childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
       }
 

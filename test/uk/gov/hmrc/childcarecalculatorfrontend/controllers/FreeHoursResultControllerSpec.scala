@@ -54,6 +54,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val validData = Map(
          WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString),
          LocationId.toString -> JsString("england"),
+         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"))
@@ -63,7 +64,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, true)(fakeRequest, messages).toString
      }
 
      "your partner works" in {
@@ -71,6 +72,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val validData = Map(
          WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.PARTNER.toString),
          LocationId.toString -> JsString("england"),
+         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"))
@@ -80,7 +82,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true, true)(fakeRequest, messages).toString
      }
 
      "you live on your own and don't work" in {
@@ -97,7 +99,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, false)(fakeRequest, messages).toString
      }
 
      "you live on your own and work" in {
@@ -105,6 +107,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val validData = Map(
          AreYouInPaidWorkId.toString -> JsBoolean(true),
          LocationId.toString -> JsString("england"),
+         DoYouLiveWithPartnerId.toString -> JsBoolean(false),
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
          ChildcareCostsId.toString -> JsString("no"),WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString))
@@ -114,7 +117,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true, false)(fakeRequest, messages).toString
      }
    }
 
