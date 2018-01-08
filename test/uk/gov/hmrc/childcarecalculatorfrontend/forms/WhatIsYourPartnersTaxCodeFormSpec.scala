@@ -61,14 +61,13 @@ class WhatIsYourPartnersTaxCodeFormSpec extends FormSpec {
       }
     }
 
-
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
       checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> "-1"), expectedError)
     }
 
     Seq("011L", "120T", "11111L", "12L", "AAAAA", "11111", "101T", "115T", "1150K", "100K",
-      "011l", "120t", "12l", "aaaaa", "101t", "115t", "1150k", "100k").foreach { taxCode =>
+      "011l", "120t", "12l", "aaaaa", "101t", "115t", "1150k", "100k", "K100L", "k10L").foreach { taxCode =>
       s"fail to bind tax code $taxCode" in {
         val expectedError = error("value", errorKeyInvalid)
         checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> taxCode), expectedError)
