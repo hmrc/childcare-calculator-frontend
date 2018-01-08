@@ -28,7 +28,10 @@ class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends Form
 
   def whatIsYourTaxCodeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
-    val taxCodeRegex: String = """^(BR|D0|NT)$|^(([Kk]{1}[1-9]{1}[0-9]{2,3}$)|([1-9]{1}[0-9]{2,3}[LPTYlpty]{1}$))""".r.toString()
+    //Working upto some extent (120T is getting passed)
+    //val taxCodeRegex: String = """[K]*[1-9][0-9]{2,3}[L-NSBDWX0]?[RT01]?""".r.toString()
+
+    val taxCodeRegex: String = """[K]*[1-9][0-9]{2,3}(L|M|N|BR|D0|D1|NT|S|0T|W1|M1|X)?""".r.toString()
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
       data.get(key) match {
@@ -36,24 +39,16 @@ class WhatIsYourTaxCodeForm @Inject()(appConfig: FrontendAppConfig) extends Form
 
         case Some("") => produceError(key, errorKeyBlank)
 
-        case Some(s) if s.toUpperCase.matches(taxCodeRegex) =>
-          val length = s.length
-          val lastTwoChar = s.substring(length - two)
-
-          if (lastTwoChar.contains(taxCode0T) && length < taxCodeLength_five) {
-            produceError(key, errorKeyInvalid)
-          } else {
-            appConfig.getConfig(s"taxCodeLetter.${getTaxCodeLetter(s)}") match {
-              case Some(_) => Right(s)
-              case None => produceError(key, errorKeyInvalid)
-            }
-          }
-
+        case Some(s) => if(s.toUpperCase.matches(taxCodeRegex)) {
+          Right(s)
+        } else {
+          produceError(key, errorKeyInvalid)
+        }
         case _ => produceError(key, errorKeyInvalid)
       }
     }
 
-    def unbind(key: String, value: String) = Map(key -> value.toString)
+    def unbind(key: String, value: String): Map[String, String] = Map(key -> value.toString)
   }
 
   def apply(errorKeyBlank: String = whatIsYourTaxCodeBlankErrorKey, errorKeyInvalid: String = whatIsYourTaxCodeInvalidErrorKey): Form[String] =
