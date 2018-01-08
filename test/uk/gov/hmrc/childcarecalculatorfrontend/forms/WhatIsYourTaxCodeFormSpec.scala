@@ -55,6 +55,13 @@ class WhatIsYourTaxCodeFormSpec extends FormSpec {
       }
     }
 
+    Seq("K100", "K1000", "k100", "k1000").foreach { taxCodeChar =>
+      s"bind $taxCodeChar" in {
+        val form = whatIsYourTaxCodeForm.bind(Map("value" -> s"$taxCodeChar"))
+        form.get shouldBe s"$taxCodeChar"
+      }
+    }
+
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyInvalid)
       checkForError(whatIsYourTaxCodeForm, Map("value" -> "-1"), expectedError)

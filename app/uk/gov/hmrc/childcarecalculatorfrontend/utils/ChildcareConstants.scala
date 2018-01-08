@@ -110,7 +110,7 @@ object ChildcareConstants {
   val ccDateFormat = "dd-MM-yyyy"
   val nmwConfigFileAbbreviation = "nmw"
 
-  val taxCodeRegularExpression = """[K]*[1-9][0-9]{2,3}(L|M|N|BR|D0|D1|NT|S|0T|W1|M1|X)+"""
+  val taxCodeRegularExpression = """([K][1-9][0-9]{2,3})|([K]*[1-9][0-9]{2,3}(L|M|N|BR|D0|D1|NT|S|0T|W1|M1|X)+)"""
 
   val partnerSelfEmployedErrorKey = "partnerSelfEmployed.error"
 
