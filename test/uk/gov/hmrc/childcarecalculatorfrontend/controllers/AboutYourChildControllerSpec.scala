@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsNumber, Json}
+import play.api.test.FakeRequest
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector

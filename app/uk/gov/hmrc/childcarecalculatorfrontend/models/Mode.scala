@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import play.api.mvc.JavascriptLiteral
+import play.api.mvc.{JavascriptLiteral, QueryStringBindable}
 
 sealed trait Mode
 
@@ -31,4 +31,18 @@ object Mode {
       case CheckMode => "CheckMode"
     }
   }
+
+  implicit def modeBinder(implicit urlInput: QueryStringBindable[String]): QueryStringBindable[Mode] =
+    new QueryStringBindable[Mode] {
+      override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] =
+        urlInput.bind(key, params).map(_.right.flatMap {
+          case "NormalMode" =>
+            Right(NormalMode)
+          case _ =>
+            Left("error.invalidMode")
+        })
+
+      override def unbind(key: String, value: Mode): String =
+        urlInput.unbind(key, value.toString)
+    }
 }

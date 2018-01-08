@@ -57,7 +57,7 @@ results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
 
 session_expired.title = For your security, this service has been reset
 session_expired.heading = For your security, this service has been reset
-session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
+session_expired.guidance = The details you have given have been deleted because you did not continue the service for 30 minutes.
 
 site.back = Back
 site.delete = Remove
@@ -1003,6 +1003,7 @@ aboutYourChild.dob = What’s their date of birth?
 aboutYourChild.hint = For example, 31 3 2015
 aboutYourChild.checkYourAnswersLabel = About your child
 aboutYourChild.error.name = Enter their first name
+aboutYourChild.error.duplicateName = You have entered this name for another child. Use a different name or nickname for this child.
 aboutYourChild.error.maxLength = Their first name must be 35 characters or less
 aboutYourChild.error.dob.blank = Enter their date of birth
 aboutYourChild.error.dob.invalid = Enter a valid date
@@ -1167,17 +1168,18 @@ yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax
 yourStatutoryPayPerWeek.info = Your {0} pay a week before tax
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
-yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your {0} pay
+yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.info = Partner’s {0} pay a week before tax
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
-partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
+partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
 
 result.title = You are eligible for
 result.heading = You are eligible for
+result.heading.not.eligible = You are not eligible for any help with your childcare costs
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme:
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes:

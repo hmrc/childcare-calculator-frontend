@@ -31,6 +31,10 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
   val form = AboutYourChildForm()
 
+  val duplicateChild = Some(Map(0 -> AboutYourChild("Foo", new LocalDate(2017, 2, 1))))
+
+  val formDuplicateChildren = AboutYourChildForm(1, duplicateChild)
+
   "AboutYourChild form" must {
 
     behave like questionForm(AboutYourChild("Foo", new LocalDate(2017, 2, 1)))
@@ -56,6 +60,11 @@ class AboutYourChildFormSpec extends FormBehaviours {
       val data = validData + ("name" -> "a" * 36)
       val expectedError = error("name", "aboutYourChild.error.maxLength")
       checkForError(form, data, expectedError)
+    }
+
+    "fail to bind when name is duplicate" in {
+      val expectedError = error("name", "aboutYourChild.error.duplicateName")
+      checkForError(formDuplicateChildren, validData, expectedError)
     }
 
     "fail to bind when the date is omitted" in {

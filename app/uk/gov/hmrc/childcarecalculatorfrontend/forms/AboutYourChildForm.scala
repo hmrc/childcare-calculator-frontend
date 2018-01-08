@@ -26,11 +26,13 @@ object AboutYourChildForm extends Mappings {
   val requiredKey = "aboutYourChild.error.dob.blank"
   val invalidKey = "aboutYourChild.error.dob.invalid"
 
-  def apply(): Form[AboutYourChild] = Form(
+  def apply(index: Int = 0, children: Option[Map[Int, AboutYourChild]] = None): Form[AboutYourChild] = Form(
     mapping(
       "name" ->
         string("aboutYourChild.error.name")
-          .verifying(maxLength(35, "aboutYourChild.error.maxLength")),
+          .verifying(maxLength(35, "aboutYourChild.error.maxLength"))
+          .verifying("aboutYourChild.error.duplicateName", isDuplicateValue(_, index, children)),
+
       "dob" ->
         localDateMapping(
           "day" -> int(requiredKey, invalidKey),
@@ -48,4 +50,12 @@ object AboutYourChildForm extends Mappings {
           .replaceError(FormError("year", invalidKey), FormError("", invalidKey))
     )(AboutYourChild.apply)(AboutYourChild.unapply)
   )
+
+  private def isDuplicateValue(x: String, index: Int, children: Option[Map[Int, AboutYourChild]]): Boolean = children match {
+    case None => true
+    case Some(child) => {
+      val filtered = child.filterKeys(_ != index)
+      !(filtered.values.exists(_.name == x))
+    }
+  }
 }
