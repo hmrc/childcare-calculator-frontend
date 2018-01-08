@@ -25,7 +25,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{EmploymentSupportedChildcare, TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -35,6 +35,7 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
   val tfc = mock[TaxFreeChildcare]
   val tc = mock[TaxCredits]
+  val esc = mock[EmploymentSupportedChildcare]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new MaxFreeHoursInfoController(frontendAppConfig,
@@ -42,7 +43,8 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       dataRetrievalAction,
       new DataRequiredActionImpl,
       tfc,
-      tc)
+      tc,
+      esc)
 
 
 
