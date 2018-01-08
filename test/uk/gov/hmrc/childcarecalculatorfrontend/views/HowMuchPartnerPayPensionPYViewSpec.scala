@@ -38,6 +38,11 @@ class HowMuchPartnerPayPensionPYViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.HowMuchPartnerPayPensionPYController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.HowMuchPartnerPayPensionPYController.onSubmit(NormalMode).url,
+      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+    )
   }
 }

@@ -731,6 +731,7 @@ howMuchYouPayPension.required = Enter how much you pay into your pension a month
 
 howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.heading = How much does your partner pay into their pension a month?
+howMuchPartnerPayPension.info = Partner’s pension
 howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.required = Enter how much your partner pays into their pension a month
 howMuchPartnerPayPension.invalid = Enter numbers between 1 and 9999.99 for how much your partner pays into their pension a month
@@ -1061,6 +1062,7 @@ whichDisabilityBenefits.error = Select yes if {0} gets any of these disability b
 expectedChildcareCosts.title = What are your expected childcare costs?
 expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
 expectedChildcareCosts.heading.notYet = What will your expected {0} childcare costs be for {1}?
+expectedChildcareCosts.label = Your expected {0} childcare costs be for {1}
 expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
 expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
 expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
@@ -1162,12 +1164,14 @@ partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
+yourStatutoryPayPerWeek.info = Your {0} pay a week before tax
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
 yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
+partnerStatutoryPayPerWeek.info = Partner’s {0} pay a week before tax
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay

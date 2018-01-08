@@ -49,6 +49,7 @@ class PartnerStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerStatutoryPayPerWeekController.onSubmit(NormalMode).url,
-      messageDynamicValue = Some(statutoryType.toString))
+      Some(messages(s"$messageKeyPrefix.info", statutoryType.toString) + " " + messages("site.in.pounds"))
+    )
   }
 }
