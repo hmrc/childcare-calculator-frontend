@@ -29,7 +29,7 @@ class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormError
 
   def noOfChildrenFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
 
-    val intRegex: String = "([1-9]{1,2})".r.toString()
+    val intRegex: String = "([0-9]{1,3})".r.toString()
     val minAmountChildren: Double = appConfig.minAmountChildren
     val maxAmountChildren: Double = appConfig.maxAmountChildren
 

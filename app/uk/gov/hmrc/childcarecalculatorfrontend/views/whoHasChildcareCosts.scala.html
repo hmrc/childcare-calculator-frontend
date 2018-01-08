@@ -33,6 +33,8 @@
 
     @components.heading("whoHasChildcareCosts.heading")
 
+    <p>@messages("whichBenefits.select.all")</p>
+
     @helpers.form(action = WhoHasChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_check_box(

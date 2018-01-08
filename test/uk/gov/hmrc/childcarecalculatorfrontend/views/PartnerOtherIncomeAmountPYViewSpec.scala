@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerOtherIncomeAmountPYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmountPY
@@ -37,6 +38,11 @@ class PartnerOtherIncomeAmountPYViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.PartnerOtherIncomeAmountPYController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.PartnerOtherIncomeAmountPYController.onSubmit(NormalMode).url,
+      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+    )
   }
 }

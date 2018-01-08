@@ -38,6 +38,11 @@ class HowMuchYouPayPensionViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.HowMuchYouPayPensionController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.HowMuchYouPayPensionController.onSubmit(NormalMode).url,
+      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+    )
   }
 }

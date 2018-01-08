@@ -37,7 +37,9 @@
 
         @components.input_date(
             field = form("date"),
-            label = messages("childStartEducation.heading", name)
+            label = messages("childStartEducation.heading", name),
+            legendClass = "visually-hidden",
+            hint = Some(messages("childStartEducation.hint"))
         )
 
         @components.submit_button()

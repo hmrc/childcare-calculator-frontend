@@ -40,7 +40,12 @@ class ParentEmploymentIncomePYViewSpec extends BigDecimalViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like bigDecimalPage(createViewUsingForm, messageKeyPrefix, routes.ParentEmploymentIncomePYController.onSubmit(NormalMode).url)
+    behave like bigDecimalPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.ParentEmploymentIncomePYController.onSubmit(NormalMode).url,
+      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+    )
 
     "contain tax year info" in {
       val doc = asDocument(createView())

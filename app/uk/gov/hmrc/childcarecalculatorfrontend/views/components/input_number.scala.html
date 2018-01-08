@@ -27,7 +27,7 @@ labelClass: Option[String] = None
 
 <div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
     <label class="form-label @if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">
-        @label
+        @label @if(currencySymbol){<span class="visually-hidden">@messages("site.in.pounds")</span>}
     </label>
 
     @if(hint.nonEmpty){
@@ -40,7 +40,7 @@ labelClass: Option[String] = None
 
     <div class="form-control-wrapper ">
         @if(currencySymbol) {
-            <span class="currencySymbol">£</span>
+            <span class="currencySymbol" aria-hidden="true">£</span>
         }
         <input
                 class="form-control @inputClass input--no-spinner @if(currencySymbol){currencyInput}"
