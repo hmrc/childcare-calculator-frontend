@@ -1152,13 +1152,13 @@ yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
-yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your {0} pay
+yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
-partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 9999.99 for your partner’s {0} pay
+partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
 
 result.title = You are eligible for
 result.heading = You are eligible for
