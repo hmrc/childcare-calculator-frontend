@@ -44,9 +44,9 @@ class YourStatutoryPayPerWeekFormSpec extends FormSpec {
       checkForError(YourStatutoryPayPerWeekForm(statutoryType), Map("value" -> "0.9"), expectedError)
     }
 
-    "fail to bind numbers above the threshold of 9999.99" in {
+    "fail to bind numbers above the threshold of 99.99" in {
       val expectedError = error("value", errorKeyInvalid, statutoryType)
-      checkForError(YourStatutoryPayPerWeekForm(statutoryType), Map("value" -> "10000"), expectedError)
+      checkForError(YourStatutoryPayPerWeekForm(statutoryType), Map("value" -> "100"), expectedError)
     }
 
     "fail to bind non-numerics" in {

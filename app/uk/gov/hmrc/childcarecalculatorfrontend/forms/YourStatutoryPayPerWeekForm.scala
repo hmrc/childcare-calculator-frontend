@@ -28,6 +28,6 @@ object YourStatutoryPayPerWeekForm extends FormErrorHelper {
   def apply(statutoryType: String): Form[BigDecimal] =
     Form(
       "value" -> decimal(requiredKey, invalidKey, statutoryType)
-        .verifying(inRange[BigDecimal](1, 9999.99, invalidKey, statutoryType))
+        .verifying(inRange[BigDecimal](1, 99.99, invalidKey, statutoryType))
     )
 }
