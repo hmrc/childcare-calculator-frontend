@@ -16,31 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.scalatestplus.play.FakeApplicationFactory
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
 
 
-class ModeSpec extends SpecBase with FakeApplicationFactory {
+class ModeSpec extends SpecBase  {
 
   "Mode" should {
-
-    "return 400 if mode isn't supported" in {
-
-      val requestR = FakeRequest("GET", "/childcare-calc/location?mode=CheckMode")
-      val request = route(app, requestR).get
-      status(request) mustBe BAD_REQUEST
-      contentAsString(request) must include(messages("global.error.InternalServerError500.heading"))
+    "error if the mode is not supported" in {
+      binder.bind("mode",Map("mode" -> Seq("Test"))).get mustBe Left("error.invalidMode")
     }
-
-    "return 200 if mode is valid" in {
-
-      val requestR = FakeRequest("GET", "/childcare-calc/location")
-      val request = route(app, requestR).get
-      status(request) mustBe OK
+    "succeed if mode is supported" in {
+      binder.bind("mode",Map("mode" -> Seq("NormalMode"))).get mustBe Right(NormalMode)
     }
-
   }
 
+  val binder = Mode.binder
 }
