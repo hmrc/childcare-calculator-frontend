@@ -104,13 +104,18 @@ h2.heading-medium {
 @media (min-width: 641px) {
     .resultEligibleHeading {
         margin-top: 1.875em !important;
+        font-size: 28px;
     }
 
-
+    .resultNotEligibleHeading {
+        margin-top: 2em !important;
+        font-size: 28px;
+    }
 }
 @media (max-width: 640px) {
-    .resultEligibleHeading {
+    .resultEligibleHeading, .resultNotEligibleHeading {
         margin-top: 1.25em !important;
+        font-size: 24px;
     }
 
 }
@@ -123,9 +128,7 @@ h2.heading-medium {
   margin-top: 0!important;
 }
 
-.resultNotEligibleHeading {
-    margin-top: 2.7em !important;
-}
+
 
 .content__body .moreInfo {
     margin-top: 3em;
