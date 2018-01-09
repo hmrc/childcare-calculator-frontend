@@ -22,13 +22,42 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
-class ResultViewSpec extends ViewBehaviours {
+class ResultViewSpec extends ViewBehaviours with ViewSpecBase {
   
   "Result view" must {
+    val view = () => result(frontendAppConfig,
+      ResultsViewModel(tc = Some(400)),
+      new Utils)(fakeRequest, messages)
 
-    behave like normalPage(() => result(frontendAppConfig,
-                                        ResultsViewModel(tc = Some(400)),
-                                        new Utils)(fakeRequest, messages), "result")
+
+    "have the correct banner title" in {
+      val doc = asDocument(view())
+      val nav = doc.getElementById("proposition-menu")
+      val span = nav.children.first
+      span.text mustBe messagesApi("site.service_name")
+    }
+
+    "display the correct browser title" in {
+      val doc = asDocument(view())
+      assertEqualsValue(doc, "title", messagesApi(s"result.single.eligibility.heading")+" - "+messagesApi("site.service_name")+" - GOV.UK")
+    }
+
+    "display the correct page title" in {
+      val doc = asDocument(view())
+      assertPageTitleEqualsMessage(doc, s"result.single.eligibility.heading")
+    }
+
+    "display a beta banner" in {
+      val doc = asDocument(view())
+      assertRenderedByCssSelector(doc, ".beta-banner")
+    }
+
+    "not display HMRC branding" in {
+      val doc = asDocument(view())
+      assertNotRenderedByCssSelector(doc, ".organisation-logo")
+    }
+
+
 
     "Contain results" when {
       "We have introductory paragraph" in {
@@ -42,14 +71,14 @@ class ResultViewSpec extends ViewBehaviours {
         val model = ResultsViewModel(freeHours = Some(15))
         val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
-        assertContainsMessages(view, "You are eligible for help from 1 scheme:")
+        assertContainsMessages(view, "You are eligible for help from 1 scheme")
       }
 
       "user is eligible for more than one of the schemes" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
         val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
-        assertContainsMessages(view, "You are eligible for help from 2 schemes:")
+        assertContainsMessages(view, "You are eligible for help from 2 schemes")
       }
     }
 
