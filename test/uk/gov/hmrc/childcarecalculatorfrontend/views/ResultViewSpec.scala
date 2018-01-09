@@ -71,14 +71,14 @@ class ResultViewSpec extends ViewBehaviours with ViewSpecBase {
         val model = ResultsViewModel(freeHours = Some(15))
         val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
-        assertContainsMessages(view, "You are eligible for help from 1 scheme:")
+        assertContainsMessages(view, "You are eligible for help from 1 scheme")
       }
 
       "user is eligible for more than one of the schemes" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
         val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
-        assertContainsMessages(view, "You are eligible for help from 2 schemes:")
+        assertContainsMessages(view, "You are eligible for help from 2 schemes")
       }
     }
 
