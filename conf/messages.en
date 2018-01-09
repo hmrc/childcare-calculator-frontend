@@ -131,7 +131,7 @@ approvedProvider.title.future = Will your childcare costs be with an approved pr
 approvedProvider.heading = Are your childcare costs with an approved provider?
 approvedProvider.heading.future = Will your childcare costs be with an approved provider?
 approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It must be with an
-approvedProvider.hint.link = approved provider
+approvedProvider.hint.link = approved provider (opens in a new window)
 approvedProvider.hint.part2 = such as a childminder, playscheme, nursery or an out of school club.
 approvedProvider.YES = Yes
 approvedProvider.NO = No
@@ -1177,12 +1177,12 @@ partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your par
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
 
-result.title = You are eligible for
-result.heading = You are eligible for
+result.title = You are eligible for help from 1 scheme
+result.eligible.heading = You are eligible for:
 result.heading.not.eligible = You are not eligible for any help with your childcare costs
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
-result.single.eligibility.heading = You are eligible for help from 1 scheme:
-result.multiple.eligibility.heading = You are eligible for help from {0} schemes:
+result.single.eligibility.heading = You are eligible for help from 1 scheme
+result.multiple.eligibility.heading = You are eligible for help from {0} schemes
 result.more.info.title = How these schemes could work for you
 result.more.info.para = You can read more information about how your schemes work together and compare which is the best option for your family before applying for your chosen scheme.
 result.read.more.button = Read more
@@ -1260,8 +1260,9 @@ aboutYourResults.esc.para1 = Each parent can take up to £55 a week of their wag
 aboutYourResults.esc.para2 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
 
 aboutYourResults.more.info.title = More information on the schemes
-aboutYourResults.more.info.para1 = You can read more information about these schemes at:
+aboutYourResults.more.info.para1 = You can read more information about
 aboutYourResults.more.info.para1.tfc.help.link = https://www.gov.uk/help-with-childcare-costs/tax-free-childcare
+aboutYourResults.more.info.para1.tfc.help.link.text = Tax-Free Childcare.
 aboutYourResults.more.info.para2 = You can apply for 30 hours free childcare and Tax-Free Childcare through one online application - the eligibility rules are the same for both.
 
 aboutYourResults.two.years.old.guidance.title = If user has a 2 year old living in England the following text will display:
