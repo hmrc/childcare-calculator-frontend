@@ -1177,7 +1177,6 @@ partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your par
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
 
-result.title = You are eligible for help from 1 scheme
 result.eligible.heading = You are eligible for:
 result.heading.not.eligible = You are not eligible for any help with your childcare costs
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
