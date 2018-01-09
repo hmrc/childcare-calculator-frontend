@@ -26,31 +26,38 @@ class WhatIsYourPartnersTaxCodeFormSpec extends FormSpec {
 
   "WhatIsYourPartnersTaxCode Form" must {
 
-    Seq("L", "M", "N", "S", "T", "X").foreach { taxCodeChar =>
+    Seq("L", "M", "N", "S", "X", "l", "m", "n", "s", "x").foreach { taxCodeChar =>
       s"bind 3 numbers and one leading character $taxCodeChar" in {
         val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"101$taxCodeChar"))
         form.get shouldBe s"101$taxCodeChar"
       }
     }
 
-    Seq("L", "M", "N", "S", "T", "X").foreach { taxCodeChar =>
+    Seq("L", "M", "N", "S", "X", "l", "m", "n", "s", "x").foreach { taxCodeChar =>
       s"bind 4 numbers and one leading character $taxCodeChar" in {
         val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
         form.get shouldBe s"1000$taxCodeChar"
       }
     }
 
-    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach { taxCodeChar =>
+    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1", "0t", "br", "d0", "d1", "nt", "w1", "m1").foreach { taxCodeChar =>
       s"bind 4 numbers and 2 alphanumeric character $taxCodeChar" in {
         val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"1000$taxCodeChar"))
         form.get shouldBe s"1000$taxCodeChar"
       }
     }
 
-    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1").foreach { taxCodeChar =>
+    Seq("0T", "BR", "D0", "D1", "NT", "W1", "M1", "0t", "br", "d0", "d1", "nt", "w1", "m1").foreach { taxCodeChar =>
       s"bind 3 numbers and 2 alphanumeric character $taxCodeChar" in {
         val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"100$taxCodeChar"))
         form.get shouldBe s"100$taxCodeChar"
+      }
+    }
+
+    Seq("K100", "K1000", "k100", "k1000").foreach { taxCodeChar =>
+      s"bind $taxCodeChar" in {
+        val form = whatIsYourPartnersTaxCodeForm.bind(Map("value" -> s"$taxCodeChar"))
+        form.get shouldBe s"$taxCodeChar"
       }
     }
 
@@ -59,7 +66,8 @@ class WhatIsYourPartnersTaxCodeFormSpec extends FormSpec {
       checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> "-1"), expectedError)
     }
 
-    Seq("011L", "120T", "11111L", "12L", "AAAAA", "11111").foreach { taxCode =>
+    Seq("011L", "120T", "11111L", "12L", "AAAAA", "11111", "101T", "115T", "1150K", "100K",
+      "011l", "120t", "12l", "aaaaa", "101t", "115t", "1150k", "100k", "K100L", "k10L").foreach { taxCode =>
       s"fail to bind tax code $taxCode" in {
         val expectedError = error("value", errorKeyInvalid)
         checkForError(whatIsYourPartnersTaxCodeForm, Map("value" -> taxCode), expectedError)

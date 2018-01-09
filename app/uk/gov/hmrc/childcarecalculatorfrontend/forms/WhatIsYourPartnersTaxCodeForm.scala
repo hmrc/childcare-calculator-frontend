@@ -28,7 +28,7 @@ class WhatIsYourPartnersTaxCodeForm @Inject()(appConfig: FrontendAppConfig) exte
 
   def whatIsYourPartnersTaxCodeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
-    val taxCodeRegex: String = """[1-9][0-9]{2,3}[L-NSTBDWX0][RT01]?""".r.toString()
+    val taxCodeRegex: String = taxCodeRegularExpression.r.toString()
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
       data.get(key) match {
@@ -36,18 +36,11 @@ class WhatIsYourPartnersTaxCodeForm @Inject()(appConfig: FrontendAppConfig) exte
 
         case Some("") => produceError(key, errorKeyBlank)
 
-        case Some(s) if s.toUpperCase.matches(taxCodeRegex) =>
-          val length = s.length
-          val lastTwoChar = s.substring(length - two)
-
-          if (lastTwoChar.contains(taxCode0T) && length < taxCodeLength_five) {
-            produceError(key, errorKeyInvalid)
-          } else {
-            appConfig.getConfig(s"taxCodeLetter.${getTaxCodeLetter(s)}") match {
-              case Some(_) => Right(s)
-              case None => produceError(key, errorKeyInvalid)
-            }
-          }
+        case Some(s) => if (s.trim.toUpperCase.matches(taxCodeRegex)) {
+          Right(s)
+        } else {
+          produceError(key, errorKeyInvalid)
+        }
 
         case _ => produceError(key, errorKeyInvalid)
       }
