@@ -40,7 +40,7 @@ nth.18 = nineteenth
 results.firstParagraph.youToldTheCalculator = You told the calculator that you {0} {1}
 results.firstParagraph.children = children
 results.firstParagraph.aChild = one child
-results.firstParagraph.dontHave = don''t have
+results.firstParagraph.dontHave = don’t have
 results.firstParagraph.have = have
 results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
 results.firstParagraph.withYourPartner = with your partner
@@ -80,12 +80,13 @@ checkYourAnswers.guidance = Guidance for check your answers
 
 whatToTellTheCalculator.title = What you’ll need
 whatToTellTheCalculator.heading = What you’ll need
-whatToTellTheCalculator.guidance = You’ll need to know information for this year about you and your partner (if you have one). You may be asked the same questions for the previous year, including:
+whatToTellTheCalculator.guidance = To check if you are eligible, you’ll need to know information for this year about you and your partner (if you have one) including:
 whatToTellTheCalculator.li.benefits = how much your family gets in benefits
 whatToTellTheCalculator.li.pay = your working hours and how much you get paid (whether employed or in self-employment)
 whatToTellTheCalculator.li.childvouchers = if your employer offers childcare vouchers
 whatToTellTheCalculator.li.weeks = how many weeks you took off work for statutory maternity, paternity, shared parental or adoption and how much you got paid
-whatToTellTheCalculator.para2 = You’ll also need to give information about your children, such as:
+whatToTellTheCalculator.para1 = You may be asked the same questions for the previous year.
+whatToTellTheCalculator.para2 = You’ll also need to give information about your children, including:
 whatToTellTheCalculator.li.costs = what you think your weekly or monthly approved childcare costs might be or what they are
 whatToTellTheCalculator.li.benefits.child = any benefits they get
 whatToTellTheCalculator.li.ages = their age and any dates they may have started further education or training
@@ -299,7 +300,7 @@ partnerChildcareVouchers.YES = Yes
 partnerChildcareVouchers.NO = No
 partnerChildcareVouchers.NOTSURE = Not Sure
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
-partnerChildcareVouchers.error = Select yes if your partner's employer offers childcare vouchers
+partnerChildcareVouchers.error = Select yes if your partner’s employer offers childcare vouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -489,7 +490,7 @@ maxFreeHoursInfo.info.link.url =  https://www.gov.uk/help-with-childcare-costs/f
 maxFreeHoursInfo.info.part2 = before applying for it.
 
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
-maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you'd buy vouchers from your employer through salary sacrifice.
+maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you’d buy vouchers from your employer through salary sacrifice.
 maxFreeHoursInfo.li.vouchers = childcare vouchers
 maxFreeHoursInfo.li.tfc = Tax-Free Childcare
 maxFreeHoursInfo.li.tax_credits = tax credits
@@ -1209,12 +1210,12 @@ result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs
 result.tc.para1 = On this scheme, you can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your income during the previous tax year.
 
-result.tc.not.eligible.para1 = You wouldn't get help from tax credits as one of you needs to work at least 16 hours, with you and your partner's combined hours being 24 or more a week.
+result.tc.not.eligible.para1 = You wouldn’t get help from tax credits as one of you needs to work at least 16 hours, with you and your partner’s combined hours being 24 or more a week.
 result.tc.not.eligible.para2 = You can go back and change your working hours to see how it changes how much you could get.
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs
-result.tfc.para1 = On this scheme, you set up an online childcare account to pay your provider directly and get a £2 government top-up for every £8 you pay in. You can get up to £2,000 a year towards 's childcare costs.
+result.tfc.para1 = On this scheme, you set up an online childcare account to pay your provider directly and get a £2 government top-up for every £8 you pay in. You can get up to £2,000 a year towards ’s childcare costs.
 
 result.tfc.not.eligible = Tax-Free Childcare is based around your earnings and working hours. Although you are in paid work, you don’t earn the weekly National Minimum Wage or Living Wage and you are not either an apprentice or in the first 12 months of self-employment. You have also told us that you earn over £100,000.
 
@@ -1252,7 +1253,7 @@ aboutYourResults.tc.para3.part2 = to find out exactly when you could be affected
 aboutYourResults.return.link = Return to results
 
 aboutYourResults.tfc.title = Tax-Free Childcare
-aboutYourResults.tfc.para1 = With this scheme, you'll create an online childcare account. Then, for every £8 paid into it, the government will pay in £2.
+aboutYourResults.tfc.para1 = With this scheme, you’ll create an online childcare account. Then, for every £8 paid into it, the government will pay in £2.
 aboutYourResults.tfc.para2 = You can get up to £2,000 a year for each child, or £4,000 if they are disabled, towards their costs - that’s up to £500 or £1,000 a month. You can only use this money to pay your childcare provider.
 
 aboutYourResults.esc.title = Childcare vouchers
