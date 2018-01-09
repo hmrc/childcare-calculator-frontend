@@ -59,7 +59,7 @@
     }
 
     @if(hasChildcareCosts && approvedProviderCosts == false) {
-        @messages("freeHoursInfo.no.approved.para")
+        <p>@messages("freeHoursInfo.no.approved.para") <a href="">@messages("freeHoursInfo.no.approved.para.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
     }
 
     @components.button_link(
