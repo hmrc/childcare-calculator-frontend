@@ -54,7 +54,8 @@
 
 
     @if(hasChildcareCosts == false) {
-        <p>@messages("freeHoursInfo.no.childcare.para")</p>
+        <p>@messages("freeHoursInfo.no.childcare.para") <a href="">@messages("freeHoursInfo.no.childcare.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
+
     }
 
     @if(hasChildcareCosts && approvedProviderCosts == false) {
