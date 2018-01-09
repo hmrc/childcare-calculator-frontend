@@ -15,7 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
@@ -54,16 +54,15 @@
 
 
     @if(hasChildcareCosts == false) {
-        <p>@messages("freeHoursInfo.no.childcare.para") <a href="">@messages("freeHoursInfo.no.childcare.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
-
+        <p>@messages("freeHoursInfo.no.childcare.para") <a href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursInfo.no.childcare.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
     }
 
     @if(hasChildcareCosts && approvedProviderCosts == false) {
-        <p>@messages("freeHoursInfo.no.approved.para") <a href="">@messages("freeHoursInfo.no.approved.para.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
+        <p>@messages("freeHoursInfo.no.approved.para") <a href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursInfo.no.approved.para.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
     }
 
     @components.button_link(
         messageKey = "site.save_and_continue",
-        href = DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+        href = routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
     )
 }
