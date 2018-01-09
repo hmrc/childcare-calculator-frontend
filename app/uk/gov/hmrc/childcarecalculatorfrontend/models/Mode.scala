@@ -32,7 +32,7 @@ object Mode {
     }
   }
 
-  implicit def modeBinder(implicit urlInput: QueryStringBindable[String]): QueryStringBindable[Mode] =
+  implicit def binder(implicit urlInput: QueryStringBindable[String]): QueryStringBindable[Mode] =
     new QueryStringBindable[Mode] {
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] =
         urlInput.bind(key, params).map(_.right.flatMap {
