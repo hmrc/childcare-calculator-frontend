@@ -185,13 +185,13 @@ freeHoursResult.partialEligible.guidance.england = <<Need to get content and eli
 freeHoursResult.partialEligible.guidance.scotland = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - 600 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.partialEligible.guidance.wales = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - 390 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.partialEligible.guidance.northern-ireland = On this scheme, you can get free hours of free pre-school education for your 3 or 4 year old that can be used in term time - 575 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
-freeHoursResult.toBeEligible.heading = To be eligible
+freeHoursResult.toBeEligible.heading = If you want to see what support you could get
 freeHoursResult.toBeEligible.info1.start = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4.
 freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
 freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursResult.toBeEligible.info2.start  = If you’re here to see what childcare you can afford, you should tell the calculator that you
-freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursResult.toBeEligible.info2.link.text = expect to have childcare costs in the future.
+freeHoursResult.toBeEligible.info2.start  = To see what support you could get, you should select
+freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childare.
+freeHoursResult.toBeEligible.info2.link.text = not yet but maybe in the future.
 
 freeHoursResult.toBeEligible.info3.start  = You would need to
 freeHoursResult.toBeEligible.info3.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
