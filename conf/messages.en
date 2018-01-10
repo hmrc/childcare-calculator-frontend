@@ -128,9 +128,9 @@ childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
 childcareCosts.error = Select yes if you have childcare costs
 
 approvedProvider.title = Are your childcare costs with an approved provider?
-approvedProvider.title.future = Will your childcare costs be with an approved provider?
+approvedProvider.title.future = Will your future childcare costs be with an approved provider?
 approvedProvider.heading = Are your childcare costs with an approved provider?
-approvedProvider.heading.future = Will your childcare costs be with an approved provider?
+approvedProvider.heading.future = Will your future childcare costs be with an approved provider?
 approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It must be with an
 approvedProvider.hint.link = approved provider
 approvedProvider.hint.link.opens.new.window = (opens in a new window)
