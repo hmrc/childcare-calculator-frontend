@@ -37,16 +37,16 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
        paragraphBuilder.buildFirstParagraph(answers) must include("you have children")
      }
 
-     "You don't have children" in {
+     "You don’t have children" in {
        val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(0))))
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("you don't have children")
+       paragraphBuilder.buildFirstParagraph(answers) must include("you don’t have children")
      }
 
      "The number of children field is empty" in {
        val answers = new UserAnswers(new CacheMap("id", Map()))
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("you don't have children")
+       paragraphBuilder.buildFirstParagraph(answers) must include("you don’t have children")
      }
 
      "You have one child" in {
@@ -92,7 +92,7 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
      "We have children but no childcare costs" in {
        val answers = new UserAnswers(new CacheMap("id", Map()))
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("you don't have children.")
+       paragraphBuilder.buildFirstParagraph(answers) must include("you don’t have children.")
      }
    }
 
@@ -152,7 +152,7 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
        paragraphBuilder.buildFirstParagraph(answers) must include("You live on your own and you are currently in paid work")
      }
 
-     "You live on your own and don't work" in {
+     "You live on your own and don’t work" in {
        val answers = spy(userAnswers())
        when(answers.doYouLiveWithPartner) thenReturn Some(false)
        when(answers.areYouInPaidWork) thenReturn Some(false)
