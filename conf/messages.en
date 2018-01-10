@@ -189,7 +189,7 @@ freeHoursResult.toBeEligible.heading = See what help you could get
 freeHoursResult.toBeEligible.info1.start = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4.
 freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
 freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursResult.toBeEligible.info2.start  = As you need to have approved childcare costs, you should select
+freeHoursResult.toBeEligible.info2.start  = As you need to have childcare costs, you should select
 freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childare.
 freeHoursResult.toBeEligible.info2.link.text = not yet but maybe in the future.
 
