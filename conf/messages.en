@@ -193,6 +193,10 @@ freeHoursResult.toBeEligible.info2.start  = As you need to have childcare costs,
 freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childare.
 freeHoursResult.toBeEligible.info2.link.text = not yet but maybe in the future.
 
+freeHoursResult.toBeEligible.info2b.start  = As you need to have approved childcare, you should select
+freeHoursResult.toBeEligible.info2b.end = You’ll need to give an estimate of how much you think you might pay for childare.
+freeHoursResult.toBeEligible.info2b.link.text = not sure.
+
 freeHoursResult.toBeEligible.info3.start  = You would need to
 freeHoursResult.toBeEligible.info3.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
 freeHoursResult.toBeEligible.info3.link.text = be in paid work

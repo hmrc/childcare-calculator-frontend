@@ -79,6 +79,8 @@
     <p></p>
     <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
 
+    <!-- Note for dev. There is content ready in the messages file for the option when you have said no to approved childcare its freeHoursResult.toBeEligible.info2b.start etc -->
+
     @if(paidEmployment) {
         <p>@messages("freeHoursResult.toBeEligible.info2.start")
             <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a>
