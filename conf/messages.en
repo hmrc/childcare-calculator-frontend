@@ -486,7 +486,8 @@ maxFreeHoursInfo.title = You can get 30 hours free childcare
 maxFreeHoursInfo.heading = You can get 30 hours free childcare
 maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services. Free childcare hours stop when your child starts in reception class.
 maxFreeHoursInfo.info = If you’re here only to find out about 30 hours free childcare, you can
-maxFreeHoursInfo.info.link = read more information (opens in a new window)
+maxFreeHoursInfo.info.link = read more information
+maxFreeHoursInfo.info.link.opens.new.window = (opens in a new window)
 maxFreeHoursInfo.info.link.url =  https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds
 maxFreeHoursInfo.info.part2 = before applying for it.
 
