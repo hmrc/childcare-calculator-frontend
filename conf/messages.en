@@ -128,9 +128,9 @@ childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
 childcareCosts.error = Select yes if you have childcare costs
 
 approvedProvider.title = Are your childcare costs with an approved provider?
-approvedProvider.title.future = Will your childcare costs be with an approved provider?
+approvedProvider.title.future = Will your future childcare costs be with an approved provider?
 approvedProvider.heading = Are your childcare costs with an approved provider?
-approvedProvider.heading.future = Will your childcare costs be with an approved provider?
+approvedProvider.heading.future = Will your future childcare costs be with an approved provider?
 approvedProvider.hint  = This is not paid help from an unregistered friend or relative. It must be with an
 approvedProvider.hint.link = approved provider
 approvedProvider.hint.link.opens.new.window = (opens in a new window)
@@ -146,7 +146,7 @@ freeHoursInfo.heading = You can get free hours
 freeHoursInfo.para1.england = You can get 15 hours free childcare a week in term time with an approved provider - this is 570 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.para1.scotland = You can get 16 hours of free early learning and childcare a week in term time with an approved provider - this is 600 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time with an approved provider - this is 390 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
-freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free pre-school education a week in term time with an approved provider - this is 525 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
+freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free pre-school education a week in term time with an approved provider - this is 475 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.heading2 = Still to check
 freeHoursInfo.guidance = By giving more information, the calculator can check to see if you’re eligible for help from:
 
@@ -169,7 +169,7 @@ freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
-freeHoursResult.info.OtherSchemes.text = You don’t currently have or expect to have any approved childcare costs, so you would not be eligible for childcare vouchers, Tax-Free Childcare or tax credits.
+freeHoursResult.info.OtherSchemes.text = You do not currently have or expect to have any childcare costs, so you would not get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
 freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you’re not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
@@ -186,13 +186,17 @@ freeHoursResult.partialEligible.guidance.england = <<Need to get content and eli
 freeHoursResult.partialEligible.guidance.scotland = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - this is 600 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.partialEligible.guidance.wales = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - this is 390 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.partialEligible.guidance.northern-ireland = On this scheme, you can get free hours of free pre-school education for your 3 or 4 year old that can be used in term time - this is 475 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
-freeHoursResult.toBeEligible.heading = If you want to see what support you could get
-freeHoursResult.toBeEligible.info1.start = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4.
+freeHoursResult.toBeEligible.heading = See what help you could get
+freeHoursResult.toBeEligible.info1.start = You’re currently not eligible for any free hours because you do not have a child aged 3 or 4.
 freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
 freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursResult.toBeEligible.info2.start  = To see what support you could get, you should select
-freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childare.
+freeHoursResult.toBeEligible.info2.start  = As you need to have childcare costs, you should select
+freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childcare.
 freeHoursResult.toBeEligible.info2.link.text = not yet but maybe in the future.
+
+freeHoursResult.toBeEligible.info2b.start  = As you need to have approved childcare, you should select
+freeHoursResult.toBeEligible.info2b.end = You’ll need to give an estimate of how much you think you might pay for childcare.
+freeHoursResult.toBeEligible.info2b.link.text = not sure.
 
 freeHoursResult.toBeEligible.info3.start  = You would need to
 freeHoursResult.toBeEligible.info3.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
@@ -1204,7 +1208,7 @@ result.free.hours.para1 = On this scheme, you can get free hours for your 3 or 4
 result.free.hours.para2.hours.15 = You could also get 15 hours free childcare a week (this is 1,140 hours a year) for your 2 year old if you are on certain benefits. You can take up the offer the term following your child’s 2nd birthday.
 result.free.hours.para2.hours.30 = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services.
 
-result.free.hours.not.eligible = You‘re currently not eligible for any free hours because you don’t have a child aged 3 or 4.
+result.free.hours.not.eligible = You’re currently not eligible for any free hours because you do not have a child aged 3 or 4.
 
 
 result.tc.title = Tax credits
