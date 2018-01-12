@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
@@ -40,6 +41,11 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                             location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
     val result = eligibilityService.eligibility(answers)
     result.map(results => {
+
+      for(scheme <- results.schemes) {
+        Logger.warn(s"Scheme response: ${scheme}")
+      }
+
       results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
     })
   }
