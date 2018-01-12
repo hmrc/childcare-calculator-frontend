@@ -36,7 +36,7 @@ taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Mess
     <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
     <p>@messages("maxFreeHoursInfo.info")
         <a href=@messages("maxFreeHoursInfo.info.link.url") target="_blank" rel="external">
-            @messages("maxFreeHoursInfo.info.link")
+            @messages("maxFreeHoursInfo.info.link") <span class="visually-hidden">@messages("maxFreeHoursInfo.info.link.opens.new.window")</span>
         </a>
         @messages("maxFreeHoursInfo.info.part2")
     </p>
