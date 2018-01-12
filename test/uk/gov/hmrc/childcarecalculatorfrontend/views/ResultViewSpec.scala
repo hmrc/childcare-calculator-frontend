@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
 class ResultViewSpec extends ViewBehaviours with ViewSpecBase {
-  
+
   "Result view" must {
     val view = () => result(frontendAppConfig,
       ResultsViewModel(tc = Some(400)),
@@ -39,12 +39,12 @@ class ResultViewSpec extends ViewBehaviours with ViewSpecBase {
 
     "display the correct browser title" in {
       val doc = asDocument(view())
-      assertEqualsValue(doc, "title", messagesApi(s"result.single.eligibility.heading")+" - "+messagesApi("site.service_name")+" - GOV.UK")
+      assertEqualsValue(doc, "title", messagesApi(s"result.title")+" - "+messagesApi("site.service_name")+" - GOV.UK")
     }
 
     "display the correct page title" in {
       val doc = asDocument(view())
-      assertPageTitleEqualsMessage(doc, s"result.single.eligibility.heading")
+      assertPageTitleEqualsMessage(doc, s"result.title")
     }
 
     "display a beta banner" in {
@@ -94,7 +94,7 @@ class ResultViewSpec extends ViewBehaviours with ViewSpecBase {
       val model = ResultsViewModel()
       val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
-      assertContainsMessages(view, messages("result.heading.not.eligible"))
+      assertContainsMessages(view, messages("result.title"))
       assertNotContainsText(view, messages("result.more.info.title"))
       assertNotContainsText(view, messages("result.more.info.para"))
       assertNotContainsText(view, messages("result.read.more.button"))
