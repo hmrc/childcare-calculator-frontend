@@ -18,6 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
+import play.api.Logger
+import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -40,7 +42,6 @@ class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, t
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
 
     val household = userAnswerToHousehold.convert(answers)
-
     connector.getEligibility(household).map {
       results => {
         results
