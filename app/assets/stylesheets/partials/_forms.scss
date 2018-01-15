@@ -146,12 +146,6 @@ Input prefix / suffix
     margin-bottom: 0em;
 }
 
-// @media screen and (max-width: 640px){
-//     .form-control-wrapper input, .form-field .inline .multiple-choice, .form-field .form-group {
-//         margin-bottom: 0;
-//     }
-// }
-
 /*
 Remove spinner from number inputs
 */
@@ -177,13 +171,6 @@ override character count display
 =====================================
 New style radio and checkbox
 =====================================
-*/
-
-.multiple-choice {
-  // margin-bottom: 0;
-}
-
-/*
 IE8: Remove square border from around new style radio buttons
 */
 .lte-ie8 input[type="checkbox"],
