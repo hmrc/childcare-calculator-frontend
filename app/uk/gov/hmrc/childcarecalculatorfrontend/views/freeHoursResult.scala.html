@@ -61,14 +61,22 @@
                     <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.freHours")</h2>
                     <p>@messages("freeHoursResult.toBeEligible.info1.start")</p>
 
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-row">
+            <div class="column-full">
+                <div class="panel panel-border-wide red">
                     <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
+
+                    <!-- Note for dev. There is content ready in the messages file for the option when you have said no to approved childcare its freeHoursResult.info.OtherSchemes.approved.text etc -->
 
                     @if(paidEmployment) {
                         <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
                     } else {
                         <p>@messages("freeHoursResult.info.OtherSchemes.paidwork.text")</p>
                     }
-
                 </div>
             </div>
         </div>
@@ -78,6 +86,8 @@
         <!-- This p tag below needs removing once styling sorted -->
     <p></p>
     <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
+
+    <!-- Note for dev. There is content ready in the messages file for the option when you have said no to approved childcare its freeHoursResult.toBeEligible.info2b.start etc -->
 
     @if(paidEmployment) {
         <p>@messages("freeHoursResult.toBeEligible.info2.start")
