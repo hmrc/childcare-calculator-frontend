@@ -42,7 +42,6 @@ class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, t
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
 
     val household = userAnswerToHousehold.convert(answers)
-    
     connector.getEligibility(household).map {
       results => {
         results

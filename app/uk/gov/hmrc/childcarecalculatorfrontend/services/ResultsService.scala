@@ -41,11 +41,6 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                             location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
     val result = eligibilityService.eligibility(answers)
     result.map(results => {
-
-      for(scheme <- results.schemes) {
-        Logger.warn(s"Scheme response: ${scheme}")
-      }
-
       results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
     })
   }
