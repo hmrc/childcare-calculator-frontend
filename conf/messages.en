@@ -170,6 +170,7 @@ freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
 freeHoursResult.info.OtherSchemes.text = You do not currently have or expect to have any childcare costs, so you would not get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
+freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you would not get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
 freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you’re not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
@@ -190,11 +191,11 @@ freeHoursResult.toBeEligible.heading = See what help you could get
 freeHoursResult.toBeEligible.info1.start = You’re currently not eligible for any free hours because you do not have a child aged 3 or 4.
 freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
 freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursResult.toBeEligible.info2.start  = As you need to have childcare costs, you should select
+freeHoursResult.toBeEligible.info2.start  = As you need to have childcare costs to be able to get help with them, you should select
 freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childcare.
 freeHoursResult.toBeEligible.info2.link.text = not yet but maybe in the future.
 
-freeHoursResult.toBeEligible.info2b.start  = As you need to have approved childcare, you should select
+freeHoursResult.toBeEligible.info2b.start  = As you need to have approved childcare to be able to get help with it, you should select
 freeHoursResult.toBeEligible.info2b.end = You’ll need to give an estimate of how much you think you might pay for childcare.
 freeHoursResult.toBeEligible.info2b.link.text = not sure.
 
@@ -1184,6 +1185,8 @@ partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your par
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
 partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
 
+result.title = Help you could get with your childcare costs
+result.heading = Help you could get with your childcare costs
 result.eligible.heading = You are eligible for:
 result.heading.not.eligible = You are not eligible for any help with your childcare costs
 result.guidance = You told the calculator that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
