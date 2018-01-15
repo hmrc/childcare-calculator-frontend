@@ -1417,12 +1417,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           maximumEarnings = Some(true),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(72000.0)),
-            benefits = Some(BigDecimal(20.83))
+            benefits = Some(BigDecimal(250))
           )
           ),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            benefits = Some(BigDecimal(25.0))
+            benefits = Some(BigDecimal(300))
           )
           )
         )
@@ -1434,11 +1434,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            benefits = Some(BigDecimal(16.67))
+            benefits = Some(BigDecimal(200))
           )),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            benefits = Some(BigDecimal(8.33))
+            benefits = Some(BigDecimal(100))
           ))
         )
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
@@ -1474,7 +1474,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           maximumEarnings = Some(true),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(72000.0)),
-            benefits = Some(BigDecimal(20.83))
+            benefits = Some(BigDecimal(250))
           )
           ),
           lastYearlyIncome = Some(Income(
@@ -1489,7 +1489,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            benefits = Some(BigDecimal(16.67))
+            benefits = Some(BigDecimal(200))
           )),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0))))
@@ -1530,7 +1530,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           ),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            benefits = Some(BigDecimal(25.0))
+            benefits = Some(BigDecimal(300))
           )
           )
         )
@@ -1542,7 +1542,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            benefits = Some(BigDecimal(16.67))
+            benefits = Some(BigDecimal(200))
           )),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0))))
