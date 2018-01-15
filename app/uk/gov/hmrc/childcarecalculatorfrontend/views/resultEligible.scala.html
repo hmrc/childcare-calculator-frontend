@@ -35,12 +35,7 @@
             periodText = if(location.toString.equals(Location.ENGLAND.toString)){
                             Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {
                             Some(messages(s"result.free.hours.period.$location"))},
-            para1 = Some(messages("result.free.hours.para1")),
-            para2 = if(location.toString.equals(Location.ENGLAND.toString)) {
-                        if(model.freeHours.contains(noOfFreeHours15)) {
-                            Some(messages("result.free.hours.para2.hours.15"))}
-                        else {Some(messages("result.free.hours.para2.hours.30"))}}
-                    else {None})
+            para1 = Some(messages("result.free.hours.para1")))
     }
 }
 
