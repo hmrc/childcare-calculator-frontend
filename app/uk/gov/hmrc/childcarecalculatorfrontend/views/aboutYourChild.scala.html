@@ -46,9 +46,9 @@
     @helpers.form(action = AboutYourChildController.onSubmit(mode, index), 'autoComplete -> "off") {
 
         @if(index == 0){
-            <p class="panel-indent panel-border-wide">
-                @messages("aboutYourChild.lede")
-            </p>
+            <div class="panel-indent panel-border-wide panel-info">
+                <p>@messages("aboutYourChild.lede")</p>
+            </div>
         }
 
         @components.input_text(InputViewModel[AboutYourChild]("name", form), label = messages("aboutYourChild.name"))

@@ -31,7 +31,7 @@ taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
         @components.heading("bothIncomeInfoPY.heading", "heading-xlarge")
 
-        <div class="panel-indent panel-border-wide">
+        <div class="panel-indent panel-border-wide panel-info">
             <p>@messages("bothIncomeInfoPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
         </div>
 

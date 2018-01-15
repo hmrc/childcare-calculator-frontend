@@ -51,7 +51,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours {
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax-Free Childcare")
-        view.getElementById("notEligibleTFC").text() mustBe messages("result.free.hours.not.eligible")
+        view.getElementById("notEligibleTFC").text() mustBe messages("result.tfc.not.eligible")
 
       }
 
