@@ -15,9 +15,8 @@
 }
 
 
-
 ul.bullets {
-    padding: 0 0 10px 0;
+    // padding: 0 0 10px 0;
 }
 
 .green {
@@ -129,8 +128,11 @@ h2.heading-medium {
   margin-top: 0!important;
 }
 
-
+.panel-info {
+  margin-bottom: 30px;
+}
 
 .content__body .moreInfo {
     margin-top: 3em;
 }
+

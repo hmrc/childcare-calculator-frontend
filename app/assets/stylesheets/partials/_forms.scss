@@ -180,7 +180,7 @@ New style radio and checkbox
 */
 
 .multiple-choice {
-  margin-bottom: 0;
+  // margin-bottom: 0;
 }
 
 /*
@@ -228,7 +228,12 @@ article ul.error-summary-list {
 
 .form-field--error {
     padding: 0 0 0 15px;
-
-
 }
 
+.form-field {
+    margin-bottom: 30px;
+}
+
+.bullets li {
+    margin-bottom: 5px;
+}

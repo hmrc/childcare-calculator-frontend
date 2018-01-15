@@ -31,7 +31,7 @@ taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
         @components.heading("partnerIncomeInfo.heading", "heading-xlarge")
 
-        <div class="panel-indent panel-border-wide">
+        <div class="panel-indent panel-border-wide panel-info">
           <p>@messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
         </div>
 
