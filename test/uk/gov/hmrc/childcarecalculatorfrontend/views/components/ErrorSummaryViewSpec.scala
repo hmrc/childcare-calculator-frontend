@@ -32,7 +32,8 @@ class ErrorSummaryViewSpec extends ViewSpecBase {
         doc.getElementsByAttribute("href").text() mustBe messages("aboutYourChild.error.maxLength")
       }
     }
-    "does contains errors" must {
+
+    "does not contains errors" must {
       "not display error related guidance" in {
         val doc = asDocument(error_summary(Seq()))
         assertNotContainsText(doc, messages("error.summary.title"))
