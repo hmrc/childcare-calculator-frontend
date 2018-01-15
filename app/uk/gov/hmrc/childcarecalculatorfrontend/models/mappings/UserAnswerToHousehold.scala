@@ -243,13 +243,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
 sealed trait OverallIncome extends StatutoryPay {
 
-  private def yearToMonth(yearlyValue: Option[BigDecimal]): Option[BigDecimal] = yearlyValue match {
-    case Some(yearlyValue) =>
-    val monthlyValue: BigDecimal = yearlyValue/12
-      Some(monthlyValue.setScale(2, RoundingMode.HALF_EVEN))
-    case None => None
-  }
-
   def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
@@ -257,9 +250,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountPY, answers.otherIncomeAmountPY, parentOtherIncomePY)
 
-    val benefits = yearToMonth(
-      determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
-    )
+    val benefits = determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
 
     val statutoryPay = answers.yourStatutoryStartDate.flatMap {
       startDate =>
@@ -288,9 +279,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountPY, answers.otherIncomeAmountPY, partnerOtherIncomePY)
 
-    val benefits =  yearToMonth(
-      determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
-    )
+    val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
 
     val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
       startDate =>
@@ -320,9 +309,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountCY, answers.otherIncomeAmountCY, parentOtherIncomeCY)
 
-    val benefits =  yearToMonth(
-      determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
-    )
+    val benefits =  determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
 
     val statutoryPay = answers.yourStatutoryStartDate.flatMap {
       startDate =>
@@ -352,9 +339,7 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountCY, answers.otherIncomeAmountCY, partnerOtherIncomeCY)
 
-    val benefits = yearToMonth(
-      determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
-    )
+    val benefits = determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
 
     val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
       startDate =>
