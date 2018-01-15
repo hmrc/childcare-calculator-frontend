@@ -27,7 +27,7 @@ inputs: Seq[InputOption]
 )(implicit messages: Messages)
 
 <div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
-    <fieldset class="form-group" id="@{viewModel.id}">
+    <fieldset id="@{viewModel.id}">
         <legend class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</legend>
         @if(hint.nonEmpty){
         <span class="form-hint">@{hint.get}</span>
