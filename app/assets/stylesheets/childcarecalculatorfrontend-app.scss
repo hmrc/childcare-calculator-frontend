@@ -9,10 +9,11 @@
 
 @import 'partials/_shame';
 
-.panel-border-wide {
-  border-left-width: 10px;
-  margin-bottom: 30px;
+
+.panel-indent {
+  margin-bottom: 0.78947em;
 }
+
 
 
 ul.bullets {
@@ -68,9 +69,9 @@ IE8: Hide back button as it doesn't work in IE8
 }
 
 
-.panel-indent {
-  margin-bottom: 40px;
-}
+// .panel-indent {
+//   margin-bottom: 40px;
+// }
 
 #wrapper {
   padding-bottom: 0;
