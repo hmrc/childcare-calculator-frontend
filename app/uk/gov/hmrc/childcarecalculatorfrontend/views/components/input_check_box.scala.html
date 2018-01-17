@@ -27,7 +27,7 @@
 )(implicit messages: Messages)
 
 <div class="form-field @if(field.hasErrors){form-field--error}">
-    <fieldset class="form-group" id="@{field.id}">
+    <fieldset id="@{field.id}">
         <legend class="bold-small @legendClass">@legend</legend>
         @hint.map { hint =>
             <span class="form-hint">
@@ -47,7 +47,7 @@
             ) { answers =>
                 <div class="multiple-choice">
                     <input id="@field(s"[$i]").id" type="checkbox" name="@field(s"[$i]").name" value="@v" @if(answers.contains(v)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@field(s"[$i]").id"} />
-                    <label class="block-label" for="@field(s"[$i]").id">
+                    <label for="@field(s"[$i]").id">
                     @messages(label)
                     </label>
                 </div>

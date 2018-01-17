@@ -9,15 +9,11 @@
 
 @import 'partials/_shame';
 
-.panel-border-wide {
-  border-left-width: 10px;
-  margin-bottom: 30px;
+
+.panel-indent {
+  margin-bottom: 0.78947em;
 }
 
-
-ul.bullets {
-    padding: 0 0 10px 0;
-}
 
 .green {
     border-color: #006435;
@@ -30,8 +26,6 @@ ul.bullets {
 
 
 .green, .red, .orange, .grassgreen {
-  // padding-top: 0;
-  // padding-bottom: 0;
   border-left-width: 18px;
   margin-bottom: 0px;
   margin-top: 40px
@@ -68,9 +62,6 @@ IE8: Hide back button as it doesn't work in IE8
 }
 
 
-.panel-indent {
-  margin-bottom: 40px;
-}
 
 #wrapper {
   padding-bottom: 0;
@@ -128,8 +119,11 @@ h2.heading-medium {
   margin-top: 0!important;
 }
 
-
+.panel-info {
+  margin-bottom: 30px;
+}
 
 .content__body .moreInfo {
     margin-top: 3em;
 }
+

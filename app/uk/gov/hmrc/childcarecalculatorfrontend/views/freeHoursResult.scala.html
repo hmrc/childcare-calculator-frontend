@@ -69,6 +69,9 @@
             <div class="column-full">
                 <div class="panel panel-border-wide red">
                     <h2 class="heading-medium results--heading">@messages("freeHoursResult.info.OtherSchemes")</h2>
+
+                    <!-- Note for dev. There is content ready in the messages file for the option when you have said no to approved childcare its freeHoursResult.info.OtherSchemes.approved.text etc -->
+
                     @if(paidEmployment) {
                         <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
                     } else {

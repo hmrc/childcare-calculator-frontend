@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._

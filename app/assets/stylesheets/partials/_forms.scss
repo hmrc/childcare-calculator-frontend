@@ -142,14 +142,8 @@ Input prefix / suffix
 }
 
 
-.form-control-wrapper input, .form-field .inline .multiple-choice, .form-field .form-group {
-    margin-bottom: 0.8em;
-}
-
-@media screen and (max-width: 640px){
-    .form-control-wrapper input, .form-field .inline .multiple-choice, .form-field .form-group {
-        margin-bottom: 0;
-    }
+.form-control-wrapper input, .form-field .form-field .form-group {
+    margin-bottom: 0em;
 }
 
 /*
@@ -177,13 +171,6 @@ override character count display
 =====================================
 New style radio and checkbox
 =====================================
-*/
-
-.multiple-choice {
-  margin-bottom: 0;
-}
-
-/*
 IE8: Remove square border from around new style radio buttons
 */
 .lte-ie8 input[type="checkbox"],
@@ -217,4 +204,23 @@ Continue button
     button, .button, .button--get-started {
         width: 100%;
     }
+}
+
+
+
+
+article ul.error-summary-list {
+    margin-bottom: 0;
+}
+
+.form-field--error {
+    padding: 0 0 0 15px;
+}
+
+.form-field {
+    margin-bottom: 30px;
+}
+
+.bullets li {
+    margin-bottom: 5px;
 }
