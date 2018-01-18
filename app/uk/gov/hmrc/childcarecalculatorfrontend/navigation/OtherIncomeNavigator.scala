@@ -144,8 +144,8 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
   private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountPY) { case _ =>
       utils.getCall(answers.whoIsInPaidEmployment) {
-        case `partner` => routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        case `both` => routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        case `partner` => routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
       }
     }
 
