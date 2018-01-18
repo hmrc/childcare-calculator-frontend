@@ -50,9 +50,20 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to your other income cy page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.youAnyTheseBenefits) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
 
           navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+        }
+
+        "redirects to both other income cy page when user selects no and lives with partner" in {
+          val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefits) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe
+            routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -273,9 +284,19 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to other income page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.youAnyTheseBenefitsPY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to both other income ly page when user selects no and lives with partner" in {
+          val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefitsPY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe
+            routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
