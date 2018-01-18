@@ -169,7 +169,7 @@ freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
-freeHoursResult.info.OtherSchemes.text = You do not currently have or expect to have any childcare costs, so you would not get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
+freeHoursResult.info.OtherSchemes.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
 freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you would not get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
 freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you’re not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
@@ -766,7 +766,7 @@ partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you
 yourIncomeInfoPY.title = Your income for the previous year
 yourIncomeInfoPY.heading = Your income for the previous year
 yourIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-yourIncomeInfoPY.guidance = The calculator will now ask similar questions about your income for the previous year.
+yourIncomeInfoPY.guidance = You will now answer similar questions about your income for the previous year.
 yourIncomeInfoPY.li.income_paid_work = income from paid work
 yourIncomeInfoPY.li.pensions = pension contributions
 yourIncomeInfoPY.li.other_income = other income
