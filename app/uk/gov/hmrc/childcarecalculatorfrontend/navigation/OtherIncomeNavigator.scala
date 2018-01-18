@@ -140,18 +140,15 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
 
   private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeAmountPY) { case _ =>
-      utils.getCall(answers.whoWasInPaidWorkPY) {
-        case `you` => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
+      utils.getCall(answers.doYouLiveWithPartner) {
+        case false => routes.YouStatutoryPayController.onPageLoad(NormalMode)
+        case true => routes.BothStatutoryPayController.onPageLoad(NormalMode)
       }
     }
 
   private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerOtherIncomeAmountPY) { case _ =>
-      utils.getCall(answers.whoWasInPaidWorkPY) {
-        case `partner` => routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
-        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
-      }
+      routes.BothStatutoryPayController.onPageLoad(NormalMode)
     }
 
   private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
