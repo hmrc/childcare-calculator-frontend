@@ -15,10 +15,9 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-@import uk.gov.hmrc.play.views.html._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
-
+@(model: ResultsViewModel, answers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
 
 @if(!model.freeHours.isDefined) {
@@ -28,14 +27,31 @@
     notEligibleID1 = Some("notEligibleFreeHours"))
 }
 
-@if(!model.tc.isDefined) {
+
+
+@if(!model.tc.isDefined && answers.taxOrUniversalCredits.contains("UniversalCredit")) {
+
     @components.scheme_result(
-    title = messages("result.tc.title"),
-    para1 = Some(messages("result.tc.not.eligible.para1")),
-    para2 = Some(messages("result.tc.not.eligible.para2")),
-    notEligibleID1 = Some("notEligibleTC1"),
-    notEligibleID2 = Some("notEligibleTC2"))
+        title = messages("result.tc.title"),
+        para1 = Some(messages("result.uc.not.eligible.para")),
+        //para2 = Some(messages("result.tc.not.eligible.para2")),
+        notEligibleID1 = Some("notEligibleTC1")
+        //notEligibleID2 = Some("notEligibleTC2")
+    )
+} else {
+
+    if (!model.tc.isDefined) {
+        @components.scheme_result(
+            title = messages("result.tc.title"),
+            para1 = Some(messages("result.tc.not.eligible.para1")),
+            para2 = Some(messages("result.tc.not.eligible.para2")),
+            notEligibleID1 = Some("notEligibleTC1"),
+            notEligibleID2 = Some("notEligibleTC2")
+        )
+    }
 }
+
+
 
 @if(!model.tfc.isDefined) {
     @components.scheme_result(
