@@ -40,15 +40,20 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
 
     "in Normal mode" must {
       "Partner Paid Work CY Route" must {
-        "redirects to parent employment income CY when user selects yes or no" in {
+        "redirects to parent employment income CY when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.partnerPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
+          when(answers.partnerPaidWorkCY) thenReturn Some(false)
 
           navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to both employment income CY when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.partnerPaidWorkCY) thenReturn Some(true)
 
           navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe
-            routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
+            routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to session expired route when relevant answers has no value" in {
@@ -62,15 +67,20 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
       }
 
       "Parent Paid Work CY Route" must {
-        "redirects to partner employment income CY when user selects yes or no" in {
+        "redirects to partner employment income CY when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.parentPaidWorkCY) thenReturn Some(true) thenReturn Some(false)
+          when(answers.parentPaidWorkCY) thenReturn Some(false)
 
           navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
             routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to both employment income CY when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.parentPaidWorkCY) thenReturn Some(true)
 
           navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe
-            routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
+            routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to session expired route when relevant answers has no value" in {
