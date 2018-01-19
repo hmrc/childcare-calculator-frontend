@@ -78,17 +78,12 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  private def yourBenefitsIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.youBenefitsIncomeCY){case _ => getCallForYourBenefitAsPerPaidWorkCY(answers)}
-
-  private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
-    utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case `partner` => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case `both` => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
+  private def yourBenefitsIncomeRouteCY(answers: UserAnswers) = utils.getCall(answers.doYouLiveWithPartner){
+      case true => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case false =>routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
+
+  private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.benefitsIncomeCY){ case _ => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
@@ -140,17 +135,6 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.bothBenefitsIncomePY) { case _ =>
       routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
       }
-
-  private def getCallForYourBenefitAsPerPaidWorkCY(answers: UserAnswers)=
-    if(answers.areYouInPaidWork.nonEmpty) {
-      routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-    } else {
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case `you` => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case `both` => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    }
 
   private def getCallForYourBenefitAsPerPaidWorkPY(answers: UserAnswers)=
     if(answers.areYouInPaidWork.nonEmpty) {
