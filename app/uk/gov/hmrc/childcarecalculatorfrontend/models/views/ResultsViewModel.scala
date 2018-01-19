@@ -25,7 +25,8 @@ case class ResultsViewModel(firstParagraph : String = "",
                             esc:Option[BigDecimal] = None,
                             freeHours:Option[BigDecimal] = None,
                             location:Option[Location.Value] = None,
-                            childAgedTwo: Boolean = false) {
+                            childAgedTwo: Boolean = false,
+                            taxCreditsOrUC: Option[String] = None) {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 }

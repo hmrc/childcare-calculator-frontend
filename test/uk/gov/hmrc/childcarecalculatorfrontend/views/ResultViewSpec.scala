@@ -27,35 +27,34 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
   val answers: UserAnswers = mock[UserAnswers]
- // when(answers.taxOrUniversalCredits) thenReturn Some("UniversalCredit")
+
   
   "Result view" must {
 
     behave like normalPage(() => result(frontendAppConfig,
                                         ResultsViewModel(tc = Some(400)),
-                                        new Utils,
-                                        answers)(fakeRequest, messages), "result")
+                                        new Utils)(fakeRequest, messages), "result")
 
 
 
     "Contain results" when {
       "We have introductory paragraph" in {
         val model = ResultsViewModel("This is the first paragraph")
-        val view = asDocument(result(frontendAppConfig, model, new Utils, answers)(fakeRequest, messages))
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "This is the first paragraph")
       }
 
       "We have free hours value" in {
         val model = ResultsViewModel(freeHours = Some(15))
-        val view = asDocument(result(frontendAppConfig, model, new Utils, answers)(fakeRequest, messages))
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "You are eligible for help from 1 scheme")
       }
 
       "user is eligible for more than one of the schemes" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
-        val view = asDocument(result(frontendAppConfig, model, new Utils, answers)(fakeRequest, messages))
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "You are eligible for help from 2 schemes")
       }
@@ -63,7 +62,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
     "display link that reditects to about your results page" in {
       val model = ResultsViewModel(freeHours = Some(15))
-      val view = asDocument(result(frontendAppConfig, model, new Utils, answers)(fakeRequest, messages))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
       view.getElementById("aboutYourResults").text() mustBe messages("result.read.more.button")
       view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
@@ -71,7 +70,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
     "display correct contents when user is not eligible for any of the schemes" in {
       val model = ResultsViewModel()
-      val view = asDocument(result(frontendAppConfig, model, new Utils, answers)(fakeRequest, messages))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
       assertContainsMessages(view, messages("result.title"))
       assertNotContainsText(view, messages("result.more.info.title"))

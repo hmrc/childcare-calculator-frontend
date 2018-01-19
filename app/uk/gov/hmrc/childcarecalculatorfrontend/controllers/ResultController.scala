@@ -48,7 +48,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
       dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
 
       request.userAnswers.location match {
-        case Some(_) => Ok(result(appConfig, model, utils, request.userAnswers))
+        case Some(_) => Ok(result(appConfig, model, utils))
         case None => Redirect(routes.LocationController.onPageLoad(NormalMode))
       }
     })

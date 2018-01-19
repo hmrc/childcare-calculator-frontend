@@ -15,9 +15,9 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-@(model: ResultsViewModel, answers: UserAnswers)(implicit request: Request[_], messages: Messages)
+@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
 
 @if(!model.freeHours.isDefined) {
@@ -29,7 +29,7 @@
 
 
 
-@if(!model.tc.isDefined && answers.taxOrUniversalCredits.contains("UniversalCredit")) {
+@if(!model.tc.isDefined && model.taxCreditsOrUC.contains(universalCredits)) {
 
     @components.scheme_result(
         title = messages("result.tc.title"),
