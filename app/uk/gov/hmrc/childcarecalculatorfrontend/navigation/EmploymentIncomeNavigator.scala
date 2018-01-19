@@ -59,28 +59,24 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
     }
 
   private def parentEmploymentIncomeCYRoute(answers: UserAnswers) =
-    utils.getCall(answers.parentEmploymentIncomeCY) { case _=>  routes.YouPaidPensionCYController.onPageLoad(NormalMode)}
+    utils.getCall(answers.doYouLiveWithPartner) {
+      case true => routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+      case false =>  routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+    }
 
-  private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerEmploymentIncomeCY) {case _=>  routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)}
+  private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) =routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
-  private def employmentIncomeCYRoute(answers: UserAnswers) =
-    utils.getCall(answers.employmentIncomeCY) {case _=>  routes.BothPaidPensionCYController.onPageLoad(NormalMode)}
+  private def employmentIncomeCYRoute(answers: UserAnswers) =routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
-  private def parentEmploymentIncomePYRoute(answers: UserAnswers) =
-    utils.getCall(answers.parentEmploymentIncomePY) {case _=>  routes.YouPaidPensionPYController.onPageLoad(NormalMode)}
+  private def parentEmploymentIncomePYRoute(answers: UserAnswers) =routes.YouPaidPensionPYController.onPageLoad(NormalMode)
 
-  private def partnerPaidWorkPYRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerPaidWorkPY) {case _=>  routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)}
+  private def partnerPaidWorkPYRoute(answers: UserAnswers) =routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
 
-  private def parentPaidWorkPYRoute(answers: UserAnswers) =
-    utils.getCall(answers.parentPaidWorkPY) {case _=>  routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)}
+  private def parentPaidWorkPYRoute(answers: UserAnswers) =routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
 
-  private def partnerEmploymentIncomePYRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerEmploymentIncomePY) {case _=>  routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)}
+  private def partnerEmploymentIncomePYRoute(answers: UserAnswers) =routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
 
-  private def employmentIncomePYRoute(answers: UserAnswers) =
-    utils.getCall(answers.employmentIncomePY) {case _=>  routes.BothPaidPensionPYController.onPageLoad(NormalMode)}
+  private def employmentIncomePYRoute(answers: UserAnswers) =routes.BothPaidPensionPYController.onPageLoad(NormalMode)
 
   private def bothPaidWorkPYRoute(answers: UserAnswers) =
     utils.getCall(answers.bothPaidWorkPY) {
