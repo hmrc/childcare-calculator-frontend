@@ -590,14 +590,17 @@ whoGetsOtherIncomeCY.error = Select who will get other income
 youAnyTheseBenefitsCY.title = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.heading = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
-youAnyTheseBenefitsCY.li.income_support = Income Support
-youAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
-youAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
-youAnyTheseBenefitsCY.li.pensions = Pension Credit
-youAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+
+youAnyTheseBenefitsCY.li.income_support = State Pension
+youAnyTheseBenefitsCY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
+youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (contribution-based)
+youAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
+youAnyTheseBenefitsCY.li.disability = Widowed Parent's Allowance
+
 youAnyTheseBenefitsCY.li.attendance = Attendance allowance
 youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
-youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+
 youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.error = Select yes if you’ve had any of these benefits this year
 youAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you get Carer’s Allowance
@@ -620,14 +623,18 @@ partnerAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously 
 bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
-bothAnyTheseBenefitsCY.li.income_support = Income Support
-bothAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
-bothAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
-bothAnyTheseBenefitsCY.li.pensions = Pension Credit
-bothAnyTheseBenefitsCY.li.disability = Disability Living Allowance
+
+bothAnyTheseBenefitsCY.li.income_support = State Pension
+bothAnyTheseBenefitsCY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
+bothAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (contribution-based)
+bothAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
+bothAnyTheseBenefitsCY.li.disability = Widowed Parent's Allowance
+bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+
 bothAnyTheseBenefitsCY.li.attendance = Attendance allowance
 bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
-bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
+
+
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.error = Select yes if you or your partner had any of these benefits this year
 bothAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you, your partner or both get Carer’s Allowance
@@ -847,14 +854,18 @@ employmentIncomeCY.hint = This is the total pay from all your jobs, or profit fr
 youAnyTheseBenefitsPY.title = Did you get any of these benefits in the previous year?
 youAnyTheseBenefitsPY.heading = Did you get any of these benefits in the previous year?
 youAnyTheseBenefitsPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-youAnyTheseBenefitsPY.li.income_support = Income Support
-youAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
-youAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
-youAnyTheseBenefitsPY.li.pensions = Pension Credit
-youAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+
+youAnyTheseBenefitsPY.li.income_support = State Pension
+youAnyTheseBenefitsPY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
+youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+youAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance (contribution-based)
+youAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
+youAnyTheseBenefitsPY.li.disability = Widowed Parent's Allowance
+
 youAnyTheseBenefitsPY.li.attendance = Attendance allowance
 youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
-youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+
+
 youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits in the previous year?
 youAnyTheseBenefitsPY.error = Select yes if you had any of these benefits in the previous year
 
@@ -875,14 +886,18 @@ partnerAnyTheseBenefitsPY.error = Select yes if your partner had any of these be
 bothAnyTheseBenefitsPY.title = Did you, your partner, or both of you get any of these benefits in the previous year?
 bothAnyTheseBenefitsPY.heading = Did you, your partner, or both of you get any of these benefits in the previous year?
 bothAnyTheseBenefitsPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-bothAnyTheseBenefitsPY.li.income_support = Income Support
-bothAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
-bothAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
-bothAnyTheseBenefitsPY.li.pensions = Pension Credit
-bothAnyTheseBenefitsPY.li.disability = Disability Living Allowance
+
+
+bothAnyTheseBenefitsPY.li.income_support = State Pension
+bothAnyTheseBenefitsPY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
+bothAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance (contribution-based)
+bothAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
+bothAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
+bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+
 bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
 bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
-bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
+
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.error = Select yes if you or your partner had any of these benefits in the previous year
 
