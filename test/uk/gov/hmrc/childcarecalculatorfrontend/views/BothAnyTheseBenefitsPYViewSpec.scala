@@ -36,8 +36,8 @@ class BothAnyTheseBenefitsPYViewSpec extends YesNoViewBehaviours {
 
   "BothAnyTheseBenefitsPY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "li.income_support", "li.jobseekers_allowance",
-      "li.employment_support", "li.pensions", "li.disability", "li.attendance", "li.independance", "li.carers")
+    behave like normalPage(createView, messageKeyPrefix, "li.income_support", "li.jobseekers_allowance", "li.carers",
+      "li.employment_support", "li.pensions", "li.disability" )
 
     behave like pageWithBackLink(createView)
 
