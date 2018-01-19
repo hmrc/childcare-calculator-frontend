@@ -228,6 +228,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
       "Parent Benefits PY Route" must {
         "redirects to youBenefitsIncomePY page when user selects yes" in {
           val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.youAnyTheseBenefitsPY) thenReturn Some(true)
 
           navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
@@ -235,6 +236,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to other income page when user selects no" in {
           val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefitsPY) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
@@ -242,6 +244,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to both other income ly page when user selects no and lives with partner" in {
           val answers = spy(userAnswers())
+          when(answers.youAnyTheseBenefitsPY) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
 
           navigator.nextPage(YouAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
