@@ -31,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
   val taxCredits = mock[TaxCredits]
-  val navigator = new OtherIncomeNavigator(new Utils(),taxCredits)
+  val navigator = new OtherIncomeNavigator(new Utils(), taxCredits)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -154,7 +154,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad()
+              routes.ResultController.onPageLoad()
           }
         }
 
@@ -184,7 +184,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotEligible
 
               navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-               routes.ResultController.onPageLoad()
+                routes.ResultController.onPageLoad()
             }
 
             "they are eligible for tax credits" in {
@@ -327,17 +327,36 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to YouStatutoryPay page when user selects no" in {
+        "redirects to YouStatutoryPay page when user selects no and in single parent journey" in {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeLY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
 
+        "redirects to BothStatutoryPay page when user selects no and there is partner in the system" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeLY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.BothStatutoryPayController.onPageLoad(NormalMode)
+        }
+
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeLY) thenReturn None
+
+          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+            routes.SessionExpiredController.onPageLoad()
+        }
+
+        "redirects to sessionExpired page when user selects no and doYouLiveWithPartner is None" in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeLY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn None
 
           navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
@@ -353,12 +372,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to PartnerStatutoryPay page when user selects no" in {
+        "redirects to BothStatutoryPay page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeLY) thenReturn Some(false)
 
           navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayController.onPageLoad(NormalMode)
+            routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -434,41 +453,21 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to StatutoryPay page when user provides valid input, lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
-            routes.YouStatutoryPayController.onPageLoad(NormalMode)
+            routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
         "redirects to StatutoryPay page when user provides valid input,does not lives with partner and " +
           "parent in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        }
-
-        "redirects to SessionExpired page when user provides valid input, lives with partner and " +
-          "partner in paid employment" in {
-          val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
-          when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
-
-          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
-        }
-
-        "redirects to StatutoryPay page when user provides valid input, lives with partner and " +
-          "both in paid employment" in {
-          val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
-          when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
-
-          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -547,15 +546,13 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           }
         }
 
-
-
         "redirects to SessionExpired page when user provides valid input and " +
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(you)
           when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
-          navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+          navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
@@ -568,7 +565,27 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
+      "How Much Partner Other Income Amount PY Route" must {
+        "redirect to BothStatutoryPay page " when {
+          "user provides valid input" in {
+            val answers = spy(userAnswers())
+            when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
+            navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+              routes.BothStatutoryPayController.onPageLoad(NormalMode)
+          }
+        }
+
+        "redirects to sessionExpired page" when {
+          "there is no value for user selection" in {
+            val answers = spy(userAnswers())
+            when(answers.partnerOtherIncomeAmountPY) thenReturn None
+
+            navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+              routes.SessionExpiredController.onPageLoad()
+          }
+        }
+      }
     }
   }
 }
