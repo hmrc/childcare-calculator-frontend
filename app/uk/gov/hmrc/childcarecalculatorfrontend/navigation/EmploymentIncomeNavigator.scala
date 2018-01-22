@@ -78,7 +78,11 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def parentEmploymentIncomePYRoute(answers: UserAnswers) = {
     utils.getCall(answers.doYouLiveWithPartner) {
-      case true => routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+      case true => utils.getCall(answers.whoWasInPaidWorkPY) {
+        case You => routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+        case Partner => routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+        case _ => routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+      }
       case false => routes.YouPaidPensionPYController.onPageLoad(NormalMode)
     }
   }
@@ -87,7 +91,13 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def parentPaidWorkPYRoute(answers: UserAnswers) =routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
 
-  private def partnerEmploymentIncomePYRoute(answers: UserAnswers) =routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+  private def partnerEmploymentIncomePYRoute(answers: UserAnswers) = {
+    utils.getCall(answers.whoWasInPaidWorkPY) {
+      case Partner =>routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+      case You => routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+      case _ => routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+    }
+  }
 
   private def employmentIncomePYRoute(answers: UserAnswers) =routes.BothPaidPensionPYController.onPageLoad(NormalMode)
 
