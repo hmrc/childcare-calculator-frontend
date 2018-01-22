@@ -93,9 +93,18 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.YouPaidPensionCYController.onPageLoad(NormalMode)
         }
 
+        "redirects to parent paid pension CY when user lives with partner and partner does not work" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+
+          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+        }
+
         "redirects to both paid pension CY when user provides valid value and lives with partner" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
 
           navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.BothPaidPensionCYController.onPageLoad(NormalMode)
         }
@@ -111,9 +120,18 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
       "Partner Employment Income CY Route" must {
         "redirects to both paid pension CY when when user provides valid value" in {
           val answers = spy(userAnswers())
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
 
           navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to partner paid pension CY when only partner works" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+
+          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
 

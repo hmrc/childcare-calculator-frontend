@@ -60,11 +60,19 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def parentEmploymentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.doYouLiveWithPartner) {
-      case true => routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+      case true => utils.getCall(answers.whoIsInPaidEmployment) {
+        case You => routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+        case _ => routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+      }
       case false =>  routes.YouPaidPensionCYController.onPageLoad(NormalMode)
     }
 
-  private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) =routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+  private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) = {
+    utils.getCall(answers.whoIsInPaidEmployment) {
+      case Partner => routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
+      case _ => routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+    }
+  }
 
   private def employmentIncomeCYRoute(answers: UserAnswers) =routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
