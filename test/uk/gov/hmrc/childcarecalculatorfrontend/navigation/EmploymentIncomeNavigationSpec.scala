@@ -211,20 +211,27 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
       }
 
       "Parent Employment Income PY Route" must {
-        "redirects to parent paid pension PY when user provides valid value and lives is single" in {
+        "redirects to parent paid pension PY when user is single and provides valid value and lives is single" in {
           val answers = spy(userAnswers())
-          when(answers.parentEmploymentIncomePY) thenReturn Some(BigDecimal(12))
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(ParentEmploymentIncomePYId, NormalMode).value(answers) mustBe routes.YouPaidPensionPYController.onPageLoad(NormalMode)
         }
       }
 
       "Partner Employment Income PY Route" must {
-        "redirects to partner paid pension PY when when user provides valid value" in {
+        "redirects to Both Paid Pension PY Controller when parent was in paid work" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(ParentEmploymentIncomePYId, NormalMode).value(answers) mustBe routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to Both Paid Pension PY when when user provides valid value" in {
           val answers = spy(userAnswers())
           when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode).value(answers) mustBe routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerEmploymentIncomePYId, NormalMode).value(answers) mustBe routes.BothPaidPensionPYController.onPageLoad(NormalMode)
         }
       }
 

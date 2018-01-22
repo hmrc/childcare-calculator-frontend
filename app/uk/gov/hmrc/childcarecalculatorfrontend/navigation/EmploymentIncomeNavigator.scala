@@ -68,13 +68,18 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def employmentIncomeCYRoute(answers: UserAnswers) =routes.BothPaidPensionCYController.onPageLoad(NormalMode)
 
-  private def parentEmploymentIncomePYRoute(answers: UserAnswers) =routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+  private def parentEmploymentIncomePYRoute(answers: UserAnswers) = {
+    utils.getCall(answers.doYouLiveWithPartner) {
+      case true => routes.BothPaidPensionPYController.onPageLoad(NormalMode)
+      case false => routes.YouPaidPensionPYController.onPageLoad(NormalMode)
+    }
+  }
 
   private def partnerPaidWorkPYRoute(answers: UserAnswers) =routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
 
   private def parentPaidWorkPYRoute(answers: UserAnswers) =routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
 
-  private def partnerEmploymentIncomePYRoute(answers: UserAnswers) =routes.PartnerPaidPensionPYController.onPageLoad(NormalMode)
+  private def partnerEmploymentIncomePYRoute(answers: UserAnswers) =routes.BothPaidPensionPYController.onPageLoad(NormalMode)
 
   private def employmentIncomePYRoute(answers: UserAnswers) =routes.BothPaidPensionPYController.onPageLoad(NormalMode)
 
