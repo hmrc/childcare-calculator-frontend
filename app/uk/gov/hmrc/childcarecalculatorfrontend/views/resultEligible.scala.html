@@ -39,7 +39,7 @@
     }
 }
 
-@if(model.tc.isDefined) {
+@if(model.tc.isDefined && !model.taxCreditsOrUC.contains(universalCredits)) {
     @components.scheme_result(
         title = messages("result.tc.title"),
         couldGet = Some(messages("result.you.could.get")),
@@ -47,6 +47,7 @@
         periodText = Some(messages("result.tc.period")),
         para1 = Some(messages("result.tc.para1")))
 }
+
 
 @if(model.tfc.isDefined) {
     @components.scheme_result(

@@ -49,6 +49,20 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsMessages(viewWithMoreThan1000, "1,500")
       }
 
+     "User is eligible for TC scheme but has answered UC to do you get tax credits or universal credits " in {
+
+       val modelWithLessThan1000 = ResultsViewModel(tc = Some(500))
+       val modelWithMoreThan1000 = ResultsViewModel(tc = Some(1500))
+       val model = ResultsViewModel(tc = Some(500), taxCreditsOrUC = Some("tc"))
+       val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
+
+       val viewWithLessThan1000 = asDocument(resultEligible(modelWithLessThan1000, utils)(fakeRequest, messages))
+       val viewWithMoreThan1000 = asDocument(resultEligible(modelWithMoreThan1000, utils)(fakeRequest, messages))
+
+       assertContainsMessages(viewWithLessThan1000, "500")
+       assertContainsMessages(viewWithMoreThan1000, "1,500")
+      }
+
       "User is eligible for TFC scheme" in {
         val modelWithLessThan1000 = ResultsViewModel(tfc = Some(600))
         val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1600))
