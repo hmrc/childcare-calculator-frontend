@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -32,8 +31,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
     "contain results" when {
       "We don't have free hours value" in {
 
-        when(answers.taxOrUniversalCredits) thenReturn None
-        val model = ResultsViewModel(freeHours = None)
+        val model = ResultsViewModel(freeHours = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Free childcare hours")
@@ -43,8 +41,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User is not eligible for TC scheme" in {
 
-        when(answers.taxOrUniversalCredits) thenReturn None
-        val model = ResultsViewModel(tc = None)
+        val model = ResultsViewModel(tc = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax credits")
@@ -55,8 +52,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User is not eligible for TFC scheme" in {
 
-        when(answers.taxOrUniversalCredits) thenReturn None
-        val model = ResultsViewModel(tfc = None)
+        val model = ResultsViewModel(tfc = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax-Free Childcare")
@@ -66,8 +62,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User is not eligible for ESC scheme" in {
 
-        when(answers.taxOrUniversalCredits) thenReturn None
-        val model = ResultsViewModel(esc = None)
+        val model = ResultsViewModel(esc = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Childcare vouchers")
@@ -77,9 +72,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User is not eligible for TC scheme and has answered UC to do you get tax credits or universal credits " in {
 
-        when(answers.taxOrUniversalCredits) thenReturn Some("uc")
-
-        val model = ResultsViewModel(tc = None)
+        val model = ResultsViewModel(taxCreditsOrUC = Some("uc"))
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax credits")
@@ -87,7 +80,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
       }
 
      /*
-      "user answered UC to do you get tax credits or uiversal credits" in {
+      "user answered UC to do you get tax credits or universal credits" in {
         val answers = spy(userAnswers())
         when(answers.taxOrUniversalCredits) thenReturn Some(true)
 

@@ -40,7 +40,7 @@
     )
 } else {
 
-    if (!model.tc.isDefined) {
+    @if(!model.tc.isDefined) {
         @components.scheme_result(
             title = messages("result.tc.title"),
             para1 = Some(messages("result.tc.not.eligible.para1")),
