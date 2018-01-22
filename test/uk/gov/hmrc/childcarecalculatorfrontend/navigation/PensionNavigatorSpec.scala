@@ -48,8 +48,17 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to your benefits current year page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.YouPaidPensionCY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to both benefits current year when user lives with partner" in {
+          val answers = spy(userAnswers())
+          when(answers.YouPaidPensionCY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -72,7 +81,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.PartnerPaidPensionCY) thenReturn Some(false)
 
-          navigator.nextPage(PartnerPaidPensionCYId, NormalMode).value(answers) mustBe routes.PartnerAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode).value(answers) mustBe routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -217,8 +226,17 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to benefits income page when user selects no" in {
           val answers = spy(userAnswers())
           when(answers.youPaidPensionPY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
           navigator.nextPage(YouPaidPensionPYId, NormalMode).value(answers) mustBe routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to both benefits when living with partner and user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.youPaidPensionPY) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          navigator.nextPage(YouPaidPensionPYId, NormalMode).value(answers) mustBe routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
@@ -227,7 +245,6 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
 
           navigator.nextPage(YouPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
         }
-
       }
 
       "Partner Paid Pension PY Route" must {
@@ -242,7 +259,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerPaidPensionPY) thenReturn Some(false)
 
-          navigator.nextPage(PartnerPaidPensionPYId, NormalMode).value(answers) mustBe routes.PartnerAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerPaidPensionPYId, NormalMode).value(answers) mustBe routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
