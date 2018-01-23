@@ -45,7 +45,7 @@
             title = messages("freeHoursResult.info.fh"),
             couldGet = Some(messages("freeHoursResult.info.fh.lead")),
             eligibility = Some(messages(s"freeHoursResult.info.entitled.${location}")),
-            periodText = Some(messages("freeHoursResult.info.fh.exit")),
+            periodText = Some(messages("freeHoursResult.partialEligible.guidance.england.period")),
             para1 = Some(messages(s"freeHoursResult.partialEligible.guidance.${location}")))
 
         @components.scheme_result(
@@ -83,8 +83,6 @@
 
     }
 
-        <!-- This p tag below needs removing once styling sorted -->
-    <p></p>
     <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
 
     <!-- Note for dev. There is content ready in the messages file for the option when you have said no to approved childcare its freeHoursResult.toBeEligible.info2b.start etc -->
@@ -95,10 +93,12 @@
             @messages("freeHoursResult.toBeEligible.info2.end")</p>
     } else {
         <p>@messages("freeHoursResult.toBeEligible.info3.start")
+            <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.cost.link.text")</a>
+            @messages("freeHoursResult.toBeEligible.info3.and.also")
             @if(livingWithPartner){
-                <a id="free-hours-results-childCare-cost-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a>
+                <a id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.paid.work.link.text")</a>
             } else {
-                <a id="free-hours-results-childCare-cost-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a>
+                <a id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.paid.work.link.text")</a>
             }
             @messages("freeHoursResult.toBeEligible.info3.end")</p>
     }
