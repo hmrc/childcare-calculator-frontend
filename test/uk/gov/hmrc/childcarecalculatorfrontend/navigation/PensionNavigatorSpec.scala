@@ -22,15 +22,15 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPensionPY, HowMuchBothPayPension, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{RoutingUtils, UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 
 class PensionNavigatorSpec extends SpecBase with MockitoSugar {
 
-  val navigator = new PensionNavigator(new Utils)
+  val navigator = new PensionNavigator(new RoutingUtils(new Utils))
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
