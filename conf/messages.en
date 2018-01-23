@@ -1167,6 +1167,7 @@ yourStatutoryStartDate.error.invalid = You must enter correct date
 yourStatutoryStartDate.error.past = Date your {0} pay started must be in the past
 yourStatutoryStartDate.hint = For example, 31 1 2017
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
+yourStatutoryStartDate.error.past-over-2-years = Date your {0} pay started cannot be more than 2 years before 6 April {1}
 
 partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
 partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
@@ -1175,6 +1176,7 @@ partnerStatutoryStartDate.error.invalid = You must enter correct date
 partnerStatutoryStartDate.error.past = Date your partner’s {0} pay started must be in the past
 partnerStatutoryStartDate.hint = For example, 31 1 2017
 partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
+partnerStatutoryStartDate.error.past-over-2-years = Date your partner’s {0} pay started cannot be more than 2 years before 6 April {1}
 
 yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
@@ -1185,6 +1187,7 @@ partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week bef
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
 partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
+
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
