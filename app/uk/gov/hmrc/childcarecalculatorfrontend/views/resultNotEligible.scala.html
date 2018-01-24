@@ -32,14 +32,7 @@
         para1 = Some(messages("result.uc.not.eligible.para")),
         notEligibleID1 = Some("notEligibleTC1")
     )
-} else {
-    @if(model.tc.isDefined && model.taxCreditsOrUC.contains(universalCredits)) {
-        @components.scheme_result(
-            title = messages("result.tc.title"),
-            para1 = Some(messages("result.uc.not.eligible.para")),
-            notEligibleID1 = Some("notEligibleTC1")
-        )
-    } else {
+}  else {
 
         @if(!model.tc.isDefined) {
              @components.scheme_result(
@@ -51,7 +44,7 @@
             )
         }
     }
-}
+
 
 
 

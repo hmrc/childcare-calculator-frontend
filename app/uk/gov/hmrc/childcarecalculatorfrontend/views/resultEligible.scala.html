@@ -39,7 +39,7 @@
     }
 }
 
-@if(model.tc.isDefined && !model.taxCreditsOrUC.contains(universalCredits)) {
+@if(model.tc.isDefined) {
       @components.scheme_result(
         title = messages("result.tc.title"),
         couldGet = Some(messages("result.you.could.get")),
