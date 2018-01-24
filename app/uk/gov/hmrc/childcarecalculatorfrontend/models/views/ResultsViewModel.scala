@@ -28,7 +28,15 @@ case class ResultsViewModel(firstParagraph : String = "",
                             childAgedTwo: Boolean = false,
                             taxCreditsOrUC: Option[String] = None) {
 
-  def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
+  def noOfEligibleSchemes: Int = {
+
+    val numberOfAvailableSchemes = List(tc,tfc,esc,freeHours).flatten.size
+
+     if (taxCreditsOrUC.contains("uc")){
+       numberOfAvailableSchemes-1
+     }else{
+       numberOfAvailableSchemes
+     }
 }
 
 object ResultsViewModel {

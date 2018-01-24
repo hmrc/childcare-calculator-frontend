@@ -30,5 +30,10 @@ class ResultsViewModelSpec extends SpecBase {
       val resultsView = ResultsViewModel()
       resultsView.noOfEligibleSchemes mustBe 0
     }
+
+    "return number of eligible schemes as 3 when all schemes appilcable and UC selected on TC/UC page" in {
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(15) , esc = Some(120), taxCreditsOrUC = Some("uc"))
+      resultsView.noOfEligibleSchemes mustBe 3
+    }
   }
 }

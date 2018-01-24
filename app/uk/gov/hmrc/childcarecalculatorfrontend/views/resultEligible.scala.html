@@ -40,7 +40,7 @@
 }
 
 @if(model.tc.isDefined && !model.taxCreditsOrUC.contains(universalCredits)) {
-    @components.scheme_result(
+      @components.scheme_result(
         title = messages("result.tc.title"),
         couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.tc.fold("")(value => utils.valueFormatter(value))),
