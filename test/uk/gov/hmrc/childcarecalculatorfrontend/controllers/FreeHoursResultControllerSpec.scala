@@ -64,7 +64,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,false, true, false)(fakeRequest, messages).toString
      }
 
      "your partner works" in {
@@ -82,7 +82,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true, true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,true, true, false)(fakeRequest, messages).toString
      }
 
      "you live on your own and don't work" in {
@@ -99,7 +99,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,false, false, false)(fakeRequest, messages).toString
      }
 
      "you live on your own and work" in {
@@ -117,7 +117,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true, false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,true, false, false)(fakeRequest, messages).toString
      }
    }
 
@@ -136,17 +136,6 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        await(controller(getRelevantData).onPageLoad()(fakeRequest))
      }
    }
-  }
-
-  private def getAnswers(answers: UserAnswers) = {
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
-    val sections = Seq(AnswerSection(None, Seq(
-      checkYourAnswersHelper.location,
-      checkYourAnswersHelper.childAgedTwo,
-      checkYourAnswersHelper.childAgedThreeOrFour,
-      checkYourAnswersHelper.childcareCosts
-    ).flatten))
-    sections
   }
 
   val freeHours = new FreeHours()
