@@ -37,7 +37,7 @@ class YourIncomeInfoPYViewSpec extends ViewBehaviours {
       val continueLink = doc.getElementById("target-page-link")
 
       assertContainsText(doc, messagesApi("site.save_and_continue"))
-      continueLink.attr("href") mustBe routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode).url
+      continueLink.attr("href") mustBe routes.ParentPaidWorkPYController.onPageLoad(NormalMode).url
     }
 
     "contain tax year info" in {

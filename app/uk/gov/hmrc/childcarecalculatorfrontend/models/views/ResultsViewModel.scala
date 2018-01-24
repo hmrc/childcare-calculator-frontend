@@ -28,6 +28,13 @@ case class ResultsViewModel(firstParagraph : String = "",
                             childAgedTwo: Boolean = false) {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
+
+  def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty
+
+  def isEligibleForAllButTc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && tc.isEmpty
+
+  def isEligibleForAllButTfc: Boolean = esc.nonEmpty && tc.nonEmpty && freeHours.nonEmpty && tfc.isEmpty
+
 }
 
 object ResultsViewModel {
