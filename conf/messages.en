@@ -1207,8 +1207,16 @@ result.heading.not.eligible = You are not eligible for any help with your childc
 result.guidance = You answered that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.single.eligibility.heading = You are eligible for help from 1 scheme
 result.multiple.eligibility.heading = You are eligible for help from {0} schemes
-result.more.info.title = How these schemes could work for you
-result.more.info.para = You can read more information about how your schemes work together and compare which is the best option for your family before applying for your chosen scheme.
+
+result.more.info.title = How the schemes work together
+result.more.info.para = Of the childcare schemes available to you:
+result.schemes.free.hours.eligibility.guidance = free childcare hours can be used with any of the other schemes
+result.schemes.tax.credit.eligibility.with.vouchers.guidance = tax credits can be used with childcare vouchers, but you’d get less in tax credits payments if you do
+result.schemes.tax.credit.ineligibility.guidance = tax credits cannot be used with Tax-Free Childcare
+result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance = Tax-Free Childcare cannot be used with childcare vouchers and tax credits
+result.schemes.tfc.ineligibility.taxCredits.guidance = Tax-Free Childcare cannot be used with Tax credits
+result.schemes.tfc.ineligibility.vouchers.guidance = Tax-Free Childcare cannot be used with childcare vouchers
+
 result.read.more.button = Read more
 
 result.you.could.get = You could get
