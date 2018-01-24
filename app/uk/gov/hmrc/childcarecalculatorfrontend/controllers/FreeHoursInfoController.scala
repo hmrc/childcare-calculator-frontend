@@ -53,7 +53,12 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
         case None =>
           Redirect(routes.LocationController.onPageLoad(NormalMode))
         case Some(location) =>
-          Ok(freeHoursInfo(appConfig, isChildAgedTwo, isChildAgedThreeOrFour,hasChildcareCosts,approvedCosts,location))
+          Ok(freeHoursInfo(appConfig,
+            isChildAgedTwo,
+            isChildAgedThreeOrFour,
+            hasChildcareCosts,
+            approvedCosts,
+            location))
       }
   }
 }
