@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 /**
   * Contains the navigation for current and previous year benefits pages
   */
-class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
+class BenefitsNavigator @Inject()(utils: Utils) extends SubNavigator {
 
   override protected def routeMap = Map(
     YouAnyTheseBenefitsIdCY -> yourBenefitsRouteCY,
@@ -51,8 +51,11 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def yourBenefitsRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.youAnyTheseBenefits) {
-      case true =>  routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case true => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
+      case false => utils.getCall(answers.doYouLiveWithPartner) {
+        case true => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+        case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+      }
     }
 
   private def partnerBenefitsRouteCY(answers: UserAnswers) =
@@ -62,10 +65,10 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
 
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =
-  utils.getCall(answers.bothAnyTheseBenefitsCY) {
-    case true => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
-    case false => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-  }
+    utils.getCall(answers.bothAnyTheseBenefitsCY) {
+      case true => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
+      case false => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+    }
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) = {
     utils.getCall(answers.whosHadBenefits) {
@@ -75,29 +78,29 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  private def yourBenefitsIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.youBenefitsIncomeCY){case _ => getCallForYourBenefitAsPerPaidWorkCY(answers)}
+  private def yourBenefitsIncomeRouteCY(answers: UserAnswers) = utils.getCall(answers.doYouLiveWithPartner) {
+    case true => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+    case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+  }
 
-  private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = 
-    utils.getCall(answers.partnerBenefitsIncomeCY){ case _ =>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case `partner` => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case `both` => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    }
+  private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) = routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.benefitsIncomeCY){ case _ => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+    utils.getCall(answers.benefitsIncomeCY) { case _ => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
 
   private def yourBenefitsRoutePY(answers: UserAnswers) =
     utils.getCall(answers.youAnyTheseBenefitsPY) {
       case true => routes.YouBenefitsIncomePYController.onPageLoad(NormalMode)
-      case false => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+      case false => {
+        utils.getCall(answers.doYouLiveWithPartner) {
+          case true => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+          case false => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
+        }
+      }
     }
 
- private def partnerBenefitsRoutePY(answers: UserAnswers) =
+  private def partnerBenefitsRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyTheseBenefitsPY) {
       case true => routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
       case false => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
@@ -107,7 +110,7 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     utils.getCall(answers.bothAnyTheseBenefitsPY) {
       case true => routes.WhosHadBenefitsPYController.onPageLoad(NormalMode)
       case false => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
-   }
+    }
 
   private def whosHadBenefitsRoutePY(answers: UserAnswers) = {
     utils.getCall(answers.whosHadBenefitsPY) {
@@ -117,41 +120,17 @@ class BenefitsNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  private def yourBenefitsIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.youBenefitsIncomePY){ case _ => getCallForYourBenefitAsPerPaidWorkPY(answers)}
-
-  private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.partnerBenefitsIncomePY) {case _ =>
-      utils.getCall(answers.whoIsInPaidEmployment) {
-         case `partner` => routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
-        case `both` => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
-      }
+  private def yourBenefitsIncomeRoutePY(answers: UserAnswers) = {
+    utils.getCall(answers.doYouLiveWithPartner) {
+      case true => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
+      case false => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
     }
+  }
+
+  private def partnerBenefitsIncomeRoutePY(answers: UserAnswers) = routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
 
   private def bothBenefitsIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.bothBenefitsIncomePY) { case _ =>
       routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
-      }
-
-  private def getCallForYourBenefitAsPerPaidWorkCY(answers: UserAnswers)=
-    if(answers.areYouInPaidWork.nonEmpty) {
-      routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-    } else {
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case `you` => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case `both` => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    }
-
-  private def getCallForYourBenefitAsPerPaidWorkPY(answers: UserAnswers)=
-    if(answers.areYouInPaidWork.nonEmpty) {
-      routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
-    } else {
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case `you` => routes.YourOtherIncomeLYController.onPageLoad(NormalMode)
-        case `both` => routes.BothOtherIncomeLYController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
     }
 }

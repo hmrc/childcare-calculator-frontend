@@ -21,6 +21,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CheckYourAnswersHelper, ChildcareConstants, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
@@ -41,24 +42,21 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
       val eligibility = freeHours.eligibility(request.userAnswers)
 
-      val sections = Seq(AnswerSection(None, Seq(
-        checkYourAnswersHelper.location,
-        checkYourAnswersHelper.childAgedTwo,
-        checkYourAnswersHelper.childAgedThreeOrFour,
-        checkYourAnswersHelper.childcareCosts
-      ).flatten))
-
       val livingWithPartner =request.userAnswers.doYouLiveWithPartner.fold(false)(c => c)
       val paidEmployment = checkIfInEmployment(request.userAnswers)
 
-    Ok(freeHoursResult(appConfig, location, eligibility, sections,paidEmployment,livingWithPartner))
+      val approvedProvider: Boolean = checkYourAnswersHelper.approvedProvider.fold(false) {
+        !_.answer.contains(YesNoUnsureEnum.NO.toString)
+      }
+
+    Ok(freeHoursResult(appConfig, location, eligibility, paidEmployment, livingWithPartner, approvedProvider))
   }
 
   private def checkIfInEmployment(userAnswers: UserAnswers) = {
     if (userAnswers.areYouInPaidWork.isDefined) {
       userAnswers.areYouInPaidWork.getOrElse(false)
     } else {
-      userAnswers.whoIsInPaidEmployment.fold(true)(whoInPaidEmployment => whoInPaidEmployment match {
+      userAnswers.whoIsInPaidEmployment.fold(false)(whoInPaidEmployment => whoInPaidEmployment match {
         case ChildcareConstants.neither => false
         case _ => true
       })
