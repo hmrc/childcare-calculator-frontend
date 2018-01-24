@@ -17,12 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import org.joda.time.LocalDate
-import play.api.data.{FieldMapping, FormError}
+import play.api.data.FieldMapping
 import play.api.data.Forms.of
-import play.api.data.format.Formatter
 import play.api.data.validation.{Constraint, Invalid, Valid}
-
-import scala.util.control.Exception.nonFatalCatch
 
 trait Mappings extends Formatters {
 
@@ -78,6 +75,14 @@ trait Mappings extends Formatters {
   protected def before(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
     Constraint {
       case d if d.isBefore(date) =>
+        Valid
+      case _ =>
+        Invalid(errorKey, errorArgs: _*)
+    }
+
+  protected def after(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
+    Constraint {
+      case d if d.isAfter(date) =>
         Valid
       case _ =>
         Invalid(errorKey, errorArgs: _*)

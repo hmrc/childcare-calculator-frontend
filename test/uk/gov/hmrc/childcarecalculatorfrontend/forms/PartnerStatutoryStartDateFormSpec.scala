@@ -17,8 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import org.joda.time.LocalDate
+import org.scalatest.mockito.MockitoSugar
+import uk.gov.hmrc.time.TaxYearResolver
+import org.mockito.Mockito._
 
-class PartnerStatutoryStartDateFormSpec extends FormSpec {
+class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 
   val statutoryType = "maternity"
 
@@ -29,7 +32,6 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec {
   )
 
   val form = PartnerStatutoryStartDateForm(statutoryType)
-
 
   "PartnerStatutoryStartDate Form" must {
 
@@ -73,5 +75,37 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec {
       val expectedError = error("date", "partnerStatutoryStartDate.error.past", statutoryType)
       checkForError(form, data, expectedError)
     }
+
+    "fail to bind when the date is more than 2 years and 1 day before 6th April 2017 " in {
+      val mockTaxYearInfo = mock[TaxYearResolver]
+      val taxYearStart = new LocalDate(2017: Int, 4: Int, 5: Int)
+
+      when(mockTaxYearInfo.startOfCurrentTaxYear) thenReturn taxYearStart
+
+      val data = Map(
+        "date.day" -> "5",
+        "date.month" -> "4",
+        "date.year" -> "2015"
+      )
+
+      val expectedError = error("date", "partnerStatutoryStartDate.error.past-over-2-years", statutoryType, "2017")
+      checkForError(form, data, expectedError)
+    }
+
+    "successfully bind when the date is exactly 2 years before 6th April 2017" in {
+      val mockTaxYearInfo = mock[TaxYearResolver]
+      val taxYearStart = new LocalDate(2017: Int, 4: Int, 6: Int)
+
+      when(mockTaxYearInfo.startOfCurrentTaxYear) thenReturn taxYearStart
+
+      val data: Map[String, String] = Map(
+        "date.day" -> "6",
+        "date.month" -> "4",
+        "date.year" -> "2015"
+      )
+
+      form.bind(data).get shouldEqual new LocalDate(2015: Int, 4: Int, 6: Int)
+    }
+
   }
 }
