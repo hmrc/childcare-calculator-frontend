@@ -26,8 +26,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{EmploymentSupport
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
@@ -49,9 +49,13 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
   }
 
   private def getESCEligibility(answers: UserAnswers): Boolean = {
+
     val No = YesNoUnsureEnum.NO.toString
 
-    val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
+    val hasParentChildcareCosts: Boolean = answers.childcareCosts.fold(false) {
+      _ != YesNoNotYetEnum.NO.toString
+    }
+
     val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !x.equals(No))
     val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !x.equals(No))
 
@@ -61,12 +65,12 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
 
     if (hasPartner) {
       whoInPaidEmployment match {
-        case  Some(You) => hasParentChildcareCosts && hasParentChildcareVouchers
+        case Some(You) => hasParentChildcareCosts && hasParentChildcareVouchers
         case Some(Partner) => hasParentChildcareCosts && hasPartnerChildcareVouchers
         case Some(_) => hasParentChildcareCosts && bothChildcareVouchers.contains(Both)
         case _ => false
       }
-    }else{
+    } else {
       hasParentChildcareCosts && hasParentChildcareVouchers
     }
   }
