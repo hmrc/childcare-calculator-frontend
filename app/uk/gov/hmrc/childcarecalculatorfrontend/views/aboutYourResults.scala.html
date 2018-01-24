@@ -26,13 +26,14 @@
     appConfig = appConfig,
     bodyClasses = None) {
 
-    <h1 class="heading-xlarge">@messages("aboutYourResults.heading")</h1>
+    @components.back_link()
 
-    <h2 class="heading-medium">@messages("aboutYourResults.about.the.schemes")</h2>
+    @components.heading("aboutYourResults.heading", "heading-xlarge")
+
 
     @if(model.freeHours.isDefined) {
         <div class="freeHours">
-                <h3 class="heading-small">@messages("aboutYourResults.free.childcare.hours.title")</h3>
+                <h2 class="heading-medium">@messages("aboutYourResults.free.childcare.hours.title")</h2>
                 <p>@messages("aboutYourResults.free.childcare.hours.para1")</p>
                 <p>@messages("aboutYourResults.free.childcare.hours.para2")</p>
                 <p>@messages("aboutYourResults.free.childcare.hours.para3")</p>
@@ -41,7 +42,7 @@
 
     @if(model.tc.isDefined) {
         <div class="tc">
-                <h3 class="heading-small">@messages("aboutYourResults.tc.title")</h3>
+                <h2 class="heading-medium">@messages("aboutYourResults.tc.title")</h2>
                 <p>@messages("aboutYourResults.tc.para1")</p>
                 <p>@messages("aboutYourResults.tc.para2")</p>
                 <p>@messages("aboutYourResults.tc.para3.part1")
@@ -49,12 +50,13 @@
                         @messages("aboutYourResults.tc.para3.eligibility.checker")
                     </a> @messages("aboutYourResults.tc.para3.part2")
                 </p>
+                <p>@messages("aboutYourResults.tc.para4")</p>
         </div>
     }
 
     @if(model.tfc.isDefined) {
         <div class="tfc">
-                <h3 class="heading-small">@messages("aboutYourResults.tfc.title")</h3>
+                <h2 class="heading-medium">@messages("aboutYourResults.tfc.title")</h2>
                 <p>@messages("aboutYourResults.tfc.para1")</p>
                 <p>@messages("aboutYourResults.tfc.para2")</p>
         </div>
@@ -62,14 +64,15 @@
 
     @if(model.esc.isDefined) {
         <div class="esc">
-                <h3 class="heading-small">@messages("aboutYourResults.esc.title")</h3>
+                <h2 class="heading-medium">@messages("aboutYourResults.esc.title")</h2>
                 <p>@messages("aboutYourResults.esc.para1")</p>
                 <p>@messages("aboutYourResults.esc.para2")</p>
+                <p>@messages("aboutYourResults.esc.para3")</p>
         </div>
      }
 
     <div class="moreInfo">
-        <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h3>
+        <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
         <p>@messages("aboutYourResults.more.info.para1")
             <a id="moreInfoHelp" href=@messages("aboutYourResults.more.info.para1.tfc.help.link")>
                 @messages("aboutYourResults.more.info.para1.tfc.help.link.text")
@@ -80,7 +83,7 @@
 
     @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
     <div class="twoYearsOld">
-        <h3 class="heading-small">@messages("aboutYourResults.two.years.old.guidance.title")</h3>
+        <h2 class="heading-medium">@messages("aboutYourResults.two.years.old.guidance.title")</h2>
         <p>@messages("aboutYourResults.two.years.old.guidance.para1")</p>
         <p>@messages("aboutYourResults.two.years.old.guidance.para2")
             <a id="twoYearsOldHelp" href = @messages("aboutYourResults.two.years.old.guidance.para2.help.link")>
