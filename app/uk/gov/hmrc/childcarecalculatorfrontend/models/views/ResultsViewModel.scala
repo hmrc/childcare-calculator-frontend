@@ -28,15 +28,13 @@ case class ResultsViewModel(firstParagraph : String = "",
                             childAgedTwo: Boolean = false,
                             taxCreditsOrUC: Option[String] = None) {
 
-  def noOfEligibleSchemes: Int = {
+  def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 
-    val numberOfAvailableSchemes = List(tc,tfc,esc,freeHours).flatten.size
+  def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty
 
-     if (taxCreditsOrUC.contains("uc")){
-       numberOfAvailableSchemes-1
-     }else{
-       numberOfAvailableSchemes
-     }
+  def isEligibleForAllButTc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && tc.isEmpty
+
+  def isEligibleForAllButTfc: Boolean = esc.nonEmpty && tc.nonEmpty && freeHours.nonEmpty && tfc.isEmpty
 }
 
 object ResultsViewModel {

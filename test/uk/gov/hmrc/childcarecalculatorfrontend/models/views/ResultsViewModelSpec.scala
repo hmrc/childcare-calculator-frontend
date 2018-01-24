@@ -30,10 +30,53 @@ class ResultsViewModelSpec extends SpecBase {
       val resultsView = ResultsViewModel()
       resultsView.noOfEligibleSchemes mustBe 0
     }
+  }
 
-    "return number of eligible schemes as 3 when all schemes appilcable and UC selected on TC/UC page" in {
-      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(15) , esc = Some(120), taxCreditsOrUC = Some("uc"))
-      resultsView.noOfEligibleSchemes mustBe 3
+  "isEligibleForAllButVouchers" must {
+   "return true" when {
+     "user is eligible for all the schemes but vouchers" in {
+       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = None)
+       resultsView.isEligibleForAllButVouchers mustBe true
+     }
+   }
+
+    "return false" when {
+      "user is eligible for all the schemes" in {
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        resultsView.isEligibleForAllButVouchers mustBe false
+      }
+    }
+  }
+
+  "isEligibleForAllButTc" must {
+    "return true" when {
+      "user is eligible for all the schemes but tax credits" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = Some(100), freeHours = Some(200), esc = Some(200))
+        resultsView.isEligibleForAllButTc mustBe true
+      }
+    }
+
+    "return false" when {
+      "user is eligible for all the schemes" in {
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        resultsView.isEligibleForAllButVouchers mustBe false
+      }
+    }
+  }
+
+  "isEligibleForAllButTfc" must {
+    "return true" when {
+      "user is eligible for all the schemes but TFC" in {
+        val resultsView = ResultsViewModel(tc = Some(300), tfc = None, freeHours = Some(200), esc = Some(200))
+        resultsView.isEligibleForAllButTfc mustBe true
+      }
+    }
+
+    "return false" when {
+      "user is eligible for all the schemes" in {
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        resultsView.isEligibleForAllButVouchers mustBe false
+      }
     }
   }
 }
