@@ -23,7 +23,7 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
@@ -44,7 +44,7 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
         case _ => false
       }
 
-      val approvedCosts: Boolean = request.userAnswers.approvedProvider.fold(false) {
+      val hasApprovedCosts: Boolean = request.userAnswers.approvedProvider.fold(false) {
         case Yes | NotSure => true
         case _ => false
       }
@@ -53,12 +53,22 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
         case None =>
           Redirect(routes.LocationController.onPageLoad(NormalMode))
         case Some(location) =>
+
           Ok(freeHoursInfo(appConfig,
             isChildAgedTwo,
             isChildAgedThreeOrFour,
             hasChildcareCosts,
-            approvedCosts,
-            location))
+            hasApprovedCosts,
+            location,
+            isEligibleForOnlyOneScheme(isChildAgedThreeOrFour, hasChildcareCosts, hasApprovedCosts, location)))
       }
+  }
+
+  private def isEligibleForOnlyOneScheme(isChildAgedThreeOrFour: Boolean,
+                                         hasChildcareCosts: Boolean,
+                                         hasApprovedCosts: Boolean,
+                                         location: Location.Value) = {
+    (isChildAgedThreeOrFour && location == Location.ENGLAND && !hasChildcareCosts) ||
+      (isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts && !hasApprovedCosts)
   }
 }
