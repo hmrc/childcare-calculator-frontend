@@ -53,12 +53,11 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
 
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$ENGLAND"))
       assertNotContainsText(doc, messagesApi(s"$messageKeyPrefix.para2.$ENGLAND"))
-     // assertNotContainsText(doc, messagesApi("site.colon"))
       assertContainsText(doc, messagesApi("freeHoursInfo.no.approved.para"))
       assertContainsText(doc, messagesApi("freeHoursInfo.no.childcare.para.end"))
       assertContainsText(doc, messagesApi("freeHoursInfo.no.approved.para.link"))
       assertContainsText(doc, messagesApi("freeHoursInfo.li.30hours"))
-      assertNotRenderedByCssSelector(doc, "li")
+      assertNotRenderedByCssSelector(doc, "bullets")
     }
   }
 }

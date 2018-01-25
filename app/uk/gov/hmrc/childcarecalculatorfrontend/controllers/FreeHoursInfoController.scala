@@ -60,15 +60,16 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
             hasChildcareCosts,
             hasApprovedCosts,
             location,
-            isEligibleForOnlyOneScheme(isChildAgedThreeOrFour, hasChildcareCosts, hasApprovedCosts, location)))
+            isEligibleForOnlyOneScheme(isChildAgedTwo, isChildAgedThreeOrFour, hasChildcareCosts, hasApprovedCosts, location)))
       }
   }
 
-  private def isEligibleForOnlyOneScheme(isChildAgedThreeOrFour: Boolean,
+  private def isEligibleForOnlyOneScheme(isChildAgedTwo: Boolean,
+                                         isChildAgedThreeOrFour: Boolean,
                                          hasChildcareCosts: Boolean,
                                          hasApprovedCosts: Boolean,
                                          location: Location.Value) = {
-    (isChildAgedThreeOrFour && location == Location.ENGLAND && !hasChildcareCosts) ||
-      (isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts && !hasApprovedCosts)
+    (!isChildAgedTwo && isChildAgedThreeOrFour && location == Location.ENGLAND && !hasChildcareCosts) ||
+      (!isChildAgedTwo && isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts && !hasApprovedCosts)
   }
 }

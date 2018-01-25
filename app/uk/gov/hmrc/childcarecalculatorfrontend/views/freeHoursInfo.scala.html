@@ -42,10 +42,9 @@ isEligibleForOnlyOneScheme: Boolean = false)(implicit request: Request[_], messa
     <p>@messages(s"freeHoursInfo.guidance")@if(isEligibleForOnlyOneScheme){ @messages("freeHoursInfo.li.30hours")} else {@messages("site.colon")}</p>
 
     <ul class="bullets">
-        @if(!isEligibleForOnlyOneScheme) {
-            @if(isChildAgedThreeOrFour && location == Location.ENGLAND) {
+
+        @if(!isEligibleForOnlyOneScheme && isChildAgedThreeOrFour && location == Location.ENGLAND) {
             <li>@messages("freeHoursInfo.li.30hours")</li>
-            }
         }
 
         @if(isChildAgedTwo && location != Location.NORTHERN_IRELAND) {
