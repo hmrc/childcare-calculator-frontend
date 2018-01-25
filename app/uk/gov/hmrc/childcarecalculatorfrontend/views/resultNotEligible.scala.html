@@ -19,6 +19,8 @@
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
+
+
 @if(!model.freeHours.isDefined) {
     @components.scheme_result(
     title = messages("result.free.hours.title"),
@@ -26,16 +28,16 @@
     notEligibleID1 = Some("notEligibleFreeHours"))
 }
 
-@if(!model.tc.isDefined && model.taxCreditsOrUC.contains(universalCredits)) {
-      @components.scheme_result(
+@if(model.taxCreditsOrUC.contains(universalCredits)) {
+    @components.scheme_result(
         title = messages("result.tc.title"),
         para1 = Some(messages("result.uc.not.eligible.para")),
         notEligibleID1 = Some("notEligibleTC1")
     )
-}  else {
+} else {
 
         @if(!model.tc.isDefined) {
-             @components.scheme_result(
+            @components.scheme_result(
                 title = messages("result.tc.title"),
                 para1 = Some(messages("result.tc.not.eligible.para1")),
                 para2 = Some(messages("result.tc.not.eligible.para2")),
@@ -43,9 +45,7 @@
                 notEligibleID2 = Some("notEligibleTC2")
             )
         }
-    }
-
-
+   }
 
 
 @if(!model.tfc.isDefined) {

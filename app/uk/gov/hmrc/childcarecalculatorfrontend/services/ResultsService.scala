@@ -50,7 +50,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
     if (scheme.amount > 0) {
       scheme.name match {
         case TCELIGIBILITY => {
-          if (taxCreditsOrUC == Some(universalCredits)) resultViewModel else resultViewModel.copy(tc = Some(scheme.amount))
+          if (taxCreditsOrUC == Some(universalCredits)) resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC) else resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC)
         }
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
