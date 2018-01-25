@@ -41,7 +41,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
     val result = eligibilityService.eligibility(answers)
 
-    result.map(results => {
+     result.map(results => {
       results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
     })
   }
@@ -57,7 +57,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       }
     }
     else {
-      resultViewModel
+      resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
     }
   }
 

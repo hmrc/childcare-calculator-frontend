@@ -19,7 +19,7 @@
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
-
+@println("::::::::::::::::::::::::::::::::::::::::model is "+model)
 
 @if(!model.freeHours.isDefined) {
     @components.scheme_result(
