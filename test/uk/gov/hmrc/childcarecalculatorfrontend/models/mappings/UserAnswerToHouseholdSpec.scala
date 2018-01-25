@@ -362,7 +362,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           hours = Some(BigDecimal(32.1)),
           escVouchers = Some(YesNoUnsureEnum.NOTSURE),
           ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
-          minimumEarnings = Some(MinimumEarnings(112.0)),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.NEITHER))),
           maximumEarnings = Some(true),
           lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
@@ -371,7 +371,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           hours = Some(BigDecimal(46.0)),
           escVouchers = Some(YesNoUnsureEnum.NOTSURE),
           ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
-          minimumEarnings = Some(MinimumEarnings(89.0)),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.NEITHER))),
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
@@ -399,13 +399,15 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
         when(answers.whoGetsVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
-        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
         when(answers.yourMaximumEarnings) thenReturn Some(true)
         when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
         when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
         when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
-        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMinimumEarnings) thenReturn Some(false)
+        when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
         when(answers.partnerMaximumEarnings) thenReturn Some(false)
         when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
 
