@@ -194,7 +194,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
-    val maxEarnings = answers.yourMaximumEarnings
+    val maxEarnings = if(answers.eitherOfYouMaximumEarnings.isDefined) answers.eitherOfYouMaximumEarnings else answers.yourMaximumEarnings
     val age = answers.yourAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
     val taxCode = answers.whatIsYourTaxCode
@@ -225,7 +225,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
     val selfEmployed = answers.partnerSelfEmployed
-    val maxEarnings = answers.partnerMaximumEarnings
+    val maxEarnings = if(answers.eitherOfYouMaximumEarnings.isDefined) answers.eitherOfYouMaximumEarnings else answers.partnerMaximumEarnings
     val age = answers.yourPartnersAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
     val taxCode = answers.whatIsYourPartnersTaxCode

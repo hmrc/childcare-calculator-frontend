@@ -45,7 +45,5 @@ class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, t
         results
       }
     }
-
   }
-
 }
