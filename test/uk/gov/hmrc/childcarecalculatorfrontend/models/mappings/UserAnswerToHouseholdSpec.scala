@@ -164,6 +164,30 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
+      "has a single parent with no minimum earnings and employment status is neither self employed nor apprentice" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(120.0)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
+        )
+        val household = Household(location = Location.SCOTLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
 
       "has a single parent with statutory pay falling within previous year" in {
         val parent = Claimant(
