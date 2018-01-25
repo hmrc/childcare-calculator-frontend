@@ -1302,3 +1302,8 @@ aboutYourResults.two.years.old.guidance.title = If user has a 2 year old living 
 aboutYourResults.two.years.old.guidance.para1 = Your 2 year old
 aboutYourResults.two.years.old.guidance.para2 =  Find out if your 2 year old is eligible for 15 hours free childcare.
 aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
+
+results.feedback.survey.link.text = What did you think of this service?
+results.feedback.survey.text.after.link = (takes 30 seconds)
+
+

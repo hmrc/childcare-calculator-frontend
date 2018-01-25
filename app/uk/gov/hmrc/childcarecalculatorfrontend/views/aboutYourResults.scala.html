@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 @(appConfig: FrontendAppConfig, model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
@@ -95,4 +96,10 @@
         id = "returnToResults",
         href = ResultController.onPageLoad()
     )
+
+    <div class="feedback">
+        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+        @messages("results.feedback.survey.link.text")</a>@messages("results.feedback.survey.text.after.link")
+        </p>
+    </div>
 }
