@@ -1233,25 +1233,26 @@ result.free.hours.period.england =  free childcare a week - this is {0} hours a 
 result.free.hours.period.wales =  free childcare a week
 result.free.hours.period.scotland =  free childcare a week
 result.free.hours.period.northern-ireland = free childcare a week
-result.free.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+result.free.hours.para1 = You can get free hours for your 3 or 4 year old that can be used in or outside of term time. Your provider may apply charges for additional services.
 result.free.hours.not.eligible = You’re currently not eligible for any free hours because you do not have a child aged 3 or 4.
 
 result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs
-result.tc.para1 = On this scheme, you can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your income during the previous tax year.
+result.tc.para1 = You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and uses your household income from the previous year.
 
 result.tc.not.eligible.para1 = You wouldn’t get help from tax credits as one of you needs to work at least 16 hours, with you and your partner’s combined hours being 24 or more a week.
 result.tc.not.eligible.para2 = You can go back and change your working hours to see how it changes how much you could get.
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs
-result.tfc.para1 = On this scheme, you set up an online childcare account to pay your provider directly and get a £2 government top-up for every £8 you pay in. You can get up to £2,000 a year towards childcare costs.
+result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child. You get a £2 government top-up for every £8 you pay in childcare.
 
 result.tfc.not.eligible = Tax-Free Childcare is based around your earnings and working hours. Although you are in paid work, you don’t earn the weekly National Minimum Wage or Living Wage and you are not either an apprentice or in the first 12 months of self-employment. You have also told us that you earn over £100,000.
 
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice
-result.esc.para1 = On this scheme, each parent can take some of their pay as childcare vouchers. You don’t pay tax or National Insurance on the amount you take. You could take up to £55, £28 or £25 a week in vouchers, depending on how much you earn.
+result.esc.para1 = Each parent can take some of their pay as childcare vouchers and not pay tax or National Insurance on that amount. You could take up to £55, £28 or £25 a week in vouchers, depending on how much you earn.
+result.esc.para2 = Employers can only offer them to new claimants until the end of March 2018.
 
 
 result.esc.not.eligible.para1 = You wouldn’t get help from childcare vouchers as you told us that your employer doesn’t offer them.
@@ -1276,21 +1277,24 @@ aboutYourResults.free.childcare.hours.para2 = You can use your free hours betwee
 aboutYourResults.free.childcare.hours.para3 = Free childcare hours stop when your child starts in reception class.
 
 aboutYourResults.tc.title = Tax credits
-aboutYourResults.tc.para1 = This scheme provides extra money to people responsible for children. You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and your household income.
+aboutYourResults.tc.para1 = With this scheme, how much help you can get depends on your income, the number of children you have, whether any of your children are disabled. It is made up of different payments or ‘elements’ to pay 70% of your childcare. For example, for 1 child, the maximum childcare cost covered is £175 a week – this is £122.50 in tax credits. For 2 or more children, the maximum childcare cost covered is £300, which is £210 in tax credits.
 aboutYourResults.tc.para2 = It will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live.
 aboutYourResults.tc.para3.part1 = All tax credits claims will eventually be moved over to Universal Credit. You can find out about
 aboutYourResults.tc.para3.eligibility.checker = your eligiblity and when you could be affected
 aboutYourResults.tc.para3.eligibility.checker.link = https://universalcreditinfo.net
 aboutYourResults.tc.para3.part2 = by the change.
+aboutYourResults.tc.para4 = It is for children under 16.
 aboutYourResults.return.link = Return to results
 
 aboutYourResults.tfc.title = Tax-Free Childcare
-aboutYourResults.tfc.para1 = With this scheme, you’ll create an online childcare account. Then, for every £8 paid into it, the government will pay in £2.
-aboutYourResults.tfc.para2 = You can get up to £2,000 a year for each child, or £4,000 if they are disabled, towards their costs - that’s up to £500 or £1,000 a month. You can only use this money to pay your childcare provider.
+aboutYourResults.tfc.para1 = With this scheme, you'll create an online childcare account to pay your provider. For example, every £8 paid into the account gets a £2 top-up to give you £10 towards your childcare costs for each child. You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 if they are disabled.
+aboutYourResults.tfc.para2 = It is for children under 12, or 17 if disabled.
 
 aboutYourResults.esc.title = Childcare vouchers
-aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in vouchers depends on how much you earn. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
-aboutYourResults.esc.para2 = Employers can only offer vouchers to new claimants until the end of March 2018.
+aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
+aboutYourResults.esc.para2 = They are for children under 15, or 17 if disabled.
+aboutYourResults.esc.para3 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
+
 
 aboutYourResults.more.info.title = More information on the schemes
 aboutYourResults.more.info.para1 = You can read more information about
