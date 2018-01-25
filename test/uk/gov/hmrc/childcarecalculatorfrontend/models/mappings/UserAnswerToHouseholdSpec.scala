@@ -22,6 +22,7 @@ import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
@@ -169,7 +170,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           hours = Some(BigDecimal(54.9)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           ageRange = Some(AgeEnum.OVERTWENTYFOUR),
-          minimumEarnings = Some(MinimumEarnings(120.0)),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.NEITHER))),
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
         )
@@ -181,7 +182,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
-        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
         when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
