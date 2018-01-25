@@ -21,6 +21,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CheckYourAnswersHelper, ChildcareConstants, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
@@ -38,20 +39,32 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
     implicit request =>
 
       val location = utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+      val checkYourAnswersHelper: CheckYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
       val eligibility = freeHours.eligibility(request.userAnswers)
 
       val sections = Seq(AnswerSection(None, Seq(
         checkYourAnswersHelper.location,
         checkYourAnswersHelper.childAgedTwo,
         checkYourAnswersHelper.childAgedThreeOrFour,
-        checkYourAnswersHelper.childcareCosts
+        checkYourAnswersHelper.childcareCosts,
+        checkYourAnswersHelper.approvedProvider
       ).flatten))
 
-      val livingWithPartner =request.userAnswers.doYouLiveWithPartner.fold(false)(c => c)
+      val childcareCost = request.userAnswers.childcareCosts.fold(false)(c => c match {
+        case "no" => false
+        case _ => true
+      })
+
+      val livingWithPartner = request.userAnswers.doYouLiveWithPartner.fold(false)(c => c)
+
+      val approvedProvider = request.userAnswers.approvedProvider.fold(false)(c => c match {
+        case "NO" => false
+        case _ => true
+      })
+
       val paidEmployment = checkIfInEmployment(request.userAnswers)
 
-    Ok(freeHoursResult(appConfig, location, eligibility, sections,paidEmployment,livingWithPartner))
+    Ok(freeHoursResult(appConfig, location, eligibility, sections,paidEmployment,childcareCost,livingWithPartner, approvedProvider))
   }
 
   private def checkIfInEmployment(userAnswers: UserAnswers) = {

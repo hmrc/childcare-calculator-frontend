@@ -64,61 +64,63 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, true)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, false, true, false)(fakeRequest, messages).toString
      }
 
-     "your partner works" in {
-       val location = ENGLAND
-       val validData = Map(
-         WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.PARTNER.toString),
-         LocationId.toString -> JsString("england"),
-         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
-         ChildAgedTwoId.toString -> JsBoolean(false),
-         ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-         ChildcareCostsId.toString -> JsString("no"))
-       val answers = new UserAnswers(CacheMap("", validData))
-       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-       val eligibility = freeHours.eligibility(answers)
-       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
-
-       status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true, true)(fakeRequest, messages).toString
-     }
-
-     "you live on your own and don't work" in {
+     "you live on your own and don't work and childcare cost is with an approved provider" in {
        val location = ENGLAND
        val validData = Map(
          AreYouInPaidWorkId.toString -> JsBoolean(false),
          LocationId.toString -> JsString("england"),
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-         ChildcareCostsId.toString -> JsString("no"))
+         ChildcareCostsId.toString -> JsString("yes"),
+         ApprovedProviderId.toString -> JsString("YES"))
        val answers = new UserAnswers(CacheMap("", validData))
        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
        val eligibility = freeHours.eligibility(answers)
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, true, false, true)(fakeRequest, messages).toString
      }
 
-     "you live on your own and work" in {
+     "you live on your own and don't work and childcare cost is not with an approved provider" in {
        val location = ENGLAND
        val validData = Map(
-         AreYouInPaidWorkId.toString -> JsBoolean(true),
+         AreYouInPaidWorkId.toString -> JsBoolean(false),
          LocationId.toString -> JsString("england"),
-         DoYouLiveWithPartnerId.toString -> JsBoolean(false),
          ChildAgedTwoId.toString -> JsBoolean(false),
          ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-         ChildcareCostsId.toString -> JsString("no"),WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString))
+         ChildcareCostsId.toString -> JsString("yes"),
+         ApprovedProviderId.toString -> JsString("NO"))
        val answers = new UserAnswers(CacheMap("", validData))
        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
        val eligibility = freeHours.eligibility(answers)
        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
        status(result) mustBe OK
-       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),true, false)(fakeRequest, messages).toString
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, true, false, false)(fakeRequest, messages).toString
      }
+
+     "you live on your own and don't work and no childcare cost" in {
+       val location = ENGLAND
+       val validData = Map(
+         AreYouInPaidWorkId.toString -> JsBoolean(false),
+         LocationId.toString -> JsString("england"),
+         ChildAgedTwoId.toString -> JsBoolean(false),
+         ChildAgedThreeOrFourId.toString -> JsBoolean(true),
+         ChildcareCostsId.toString -> JsString("no"),
+         ApprovedProviderId.toString -> JsString("NO"))
+       val answers = new UserAnswers(CacheMap("", validData))
+       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+       val eligibility = freeHours.eligibility(answers)
+       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
+
+       status(result) mustBe OK
+       contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility,getAnswers(answers),false, false, false, false)(fakeRequest, messages).toString
+     }
+
    }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
