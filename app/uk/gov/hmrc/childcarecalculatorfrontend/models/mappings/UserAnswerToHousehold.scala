@@ -127,7 +127,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
       Some(MinimumEarnings(employmentStatus = stringToEmploymentStatusEnum(selfEmployedOrApprentice)))
 
-    } else if (amt.isDefined || selfEmployedOrApprentice.isEmpty || selfEmployed.isDefined) {
+    } else if (amt.isDefined || selfEmployedOrApprentice.isDefined || selfEmployed.isDefined) {
       Some(MinimumEarnings(
         amount = amt.getOrElse(0.0),
         employmentStatus = stringToEmploymentStatusEnum(selfEmployedOrApprentice),
