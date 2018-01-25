@@ -38,16 +38,6 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
       form.get shouldBe 10.80
     }
 
-//    "bind value of 0" in {
-//      val form = parentEmploymentIncomeCYForm.bind(Map("value" -> "0"))
-//      form.get shouldBe 0
-//    }
-//
-//    "bind value of 0.0" in {
-//      val form = parentEmploymentIncomeCYForm.bind(Map("value" -> "0.0"))
-//      form.get shouldBe 0
-//    }
-
     "fail to bind numbers below the threshold" in {
       val expectedError = error("value", errorKeyInvalid)
       checkForError(parentEmploymentIncomeCYForm, Map("value" -> "0.9"), expectedError)
