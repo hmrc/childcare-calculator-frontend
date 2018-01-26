@@ -133,4 +133,15 @@ trait ViewBehaviours extends ViewSpecBase {
       }
     }
   }
+
+  def resultPage(view: () => HtmlFormat.Appendable): Unit = {
+    "behave like a result page" when {
+      "rendered" must {
+        "have a link to feedback survey" in {
+          val doc = asDocument(view())
+          assertRenderedById(doc, "feedbackSurveyLink")
+        }
+      }
+    }
+  }
 }

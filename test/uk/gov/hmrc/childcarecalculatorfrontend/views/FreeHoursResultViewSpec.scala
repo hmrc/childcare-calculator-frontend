@@ -45,9 +45,10 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
     approvedProvider)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
-    behave like normalPage(createView,
-      messageKeyPrefix,
-      "toBeEligible.heading")
+
+    behave like normalPage(createView,messageKeyPrefix,"toBeEligible.heading")
+
+    behave like resultPage(createView)
 
     behave like pageWithBackLink(createView)
   }

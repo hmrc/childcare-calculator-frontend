@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @(appConfig: FrontendAppConfig, model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
@@ -96,4 +97,9 @@
         @resultNotEligible(model)
     }
 
+    <div class="feedback">
+        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+        @messages("results.feedback.survey.link.text")</a>@messages("results.feedback.survey.text.after.link")
+        </p>
+    </div>
 }

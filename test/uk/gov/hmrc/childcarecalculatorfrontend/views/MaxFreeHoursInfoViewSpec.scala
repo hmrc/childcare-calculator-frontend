@@ -30,7 +30,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
     behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "info.link", "info.link.url", "info.part2", "still.to.check")
 
-    "display correct message when only eligible for tax free chjldcare" in {
+    "display correct message when only eligible for tax free childcare" in {
       val view = maxFreeHoursInfo(frontendAppConfig, Eligible, false, NotEligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
 
@@ -39,11 +39,17 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
     "display the correct message when only eligible for childcare vouchers" in {
       val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
+      assertNotContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
+      assertNotContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
     }
 
     "display the correct message when only eligible for tax credits" in {
       val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.still.to.check"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
+      assertNotContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
+      assertNotContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
     }
 
     "display correct message when only eligible for tax free childcare, childcare vouchers, tax credits " in {
@@ -51,7 +57,9 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
-
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.still.to.check"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
     }
   }
+
 }

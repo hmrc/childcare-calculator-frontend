@@ -537,7 +537,7 @@ parentEmploymentIncomeCY.title = How much will you get paid this year?
 parentEmploymentIncomeCY.heading = How much will you get paid this year?
 parentEmploymentIncomeCY.info = Your pay
 parentEmploymentIncomeCY.blank = Enter how much you will get paid this year
-parentEmploymentIncomeCY.invalid = Enter numbers between 1 and 99999.99 for how much you will get paid this year
+parentEmploymentIncomeCY.invalid = How much you will get paid this year must be a number no less than 1
 parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
 parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
 parentEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
@@ -546,7 +546,7 @@ partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.info = Partner’s pay
 partnerEmploymentIncomeCY.blank = Enter how much your partner will get paid this year
-partnerEmploymentIncomeCY.invalid = Enter numbers between 1 and 99999.99 for how much your partner will get paid this year
+partnerEmploymentIncomeCY.invalid = How much your partner will get paid this year must be a number no less than 1
 partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay they’ve had.
 partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
@@ -995,7 +995,7 @@ parentEmploymentIncomePY.heading = How much did you get paid in the previous yea
 parentEmploymentIncomePY.info = Your pay
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
 parentEmploymentIncomePY.required = Enter how much you got paid in the previous year
-parentEmploymentIncomePY.invalid = Enter numbers from 1 to 99999.99 for how much you got paid last year
+parentEmploymentIncomePY.invalid = How much you got paid in the previous year must be a number no less than 1
 parentEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 parentEmploymentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
@@ -1006,7 +1006,7 @@ partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get 
 partnerEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 partnerEmploymentIncomePY.required = Enter how much your partner got paid in the previous year
-partnerEmploymentIncomePY.invalid = Enter numbers from 1 to 99999.99 for how much your partner got paid last year
+partnerEmploymentIncomePY.invalid = How much your partner got paid in the previous year must be a number no less than 1
 
 employmentIncomePY.title = How much did you and your partner get paid in the previous year?
 employmentIncomePY.heading = How much did you and your partner get paid in the previous year?
@@ -1309,7 +1309,14 @@ aboutYourResults.two.years.old.guidance.para1 = Your 2 year old
 aboutYourResults.two.years.old.guidance.para2 =  Find out if your 2 year old is eligible for 15 hours free childcare.
 aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
 
+
 surveyChildcareSupport.title = Do you understand your childcare support options?
 surveyChildcareSupport.heading = Do you understand your childcare support options?
 surveyChildcareSupport.error = Select yes if you understand your childcare support options
 surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
+
+results.feedback.survey.link.text = What did you think of this service?
+results.feedback.survey.text.after.link = (takes 30 seconds)
+
+
+
