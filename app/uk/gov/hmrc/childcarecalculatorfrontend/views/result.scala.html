@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @(appConfig: FrontendAppConfig, model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
 
 @heading = {
@@ -51,12 +52,39 @@
         @resultEligible(model, utils)
 
         @if(model.noOfEligibleSchemes < 4) {
+
             <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
 
         <h2 class="heading-medium">@messages("result.more.info.title")</h2>
         <p>@messages("result.more.info.para")</p>
+
+        <ul class="bullets">
+            @if(model.noOfEligibleSchemes == 4) {
+                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
+                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
+                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance")</li>
+            }
+
+            @if(model.isEligibleForAllButTc) {
+                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
+                <li>@messages("result.schemes.tfc.ineligibility.vouchers.guidance")</li>
+            }
+
+
+            @if(model.isEligibleForAllButTfc) {
+                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
+                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
+            }
+
+            @if(model.isEligibleForAllButVouchers) {
+                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
+                <li>@messages("result.schemes.tax.credit.ineligibility.guidance")</li>
+                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance")</li>
+            }
+
+        </ul>
 
         @components.button_link(
             messageKey = "result.read.more.button",

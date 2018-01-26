@@ -89,7 +89,11 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def partnerPaidWorkPYRoute(answers: UserAnswers) =routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
 
-  private def parentPaidWorkPYRoute(answers: UserAnswers) =routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
+  private def parentPaidWorkPYRoute(answers: UserAnswers) =
+    utils.getCall(answers.parentPaidWorkPY) {
+      case true => routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
+      case false => routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
+    }
 
   private def partnerEmploymentIncomePYRoute(answers: UserAnswers) = {
     utils.getCall(answers.whoWasInPaidWorkPY) {
@@ -113,4 +117,5 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
       case `partner` => routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
       case `both` => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
     }
+
 }

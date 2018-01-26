@@ -28,16 +28,26 @@
 @(appConfig: FrontendAppConfig,
         location: Location.Value,
         eligibility: Eligibility,
-        answerSections: Seq[Section], paidEmployment: Boolean, childcareCost: Boolean, livingWithPartner: Boolean, approvedProvider: Boolean)(implicit request: Request[_], messages: Messages)
+        paidEmployment: Boolean,
+        childcareCost: Boolean,
+        livingWithPartner: Boolean,
+        approvedProvider: Boolean)(implicit request: Request[_], messages: Messages)
 
 
 @otherChildcareSchemesContent = {
-    @if(paidEmployment) {
-        @messages("freeHoursResult.info.OtherSchemes.text")
-    } else {
-        @messages("freeHoursResult.info.OtherSchemes.paidwork.text")
+    @if(!childcareCost) {
+            @messages("freeHoursResult.info.OtherSchemes.childcare.cost.text")
+        } else {
+            @if(!approvedProvider){
+                @messages("freeHoursResult.info.OtherSchemes.approved.text")
+            } else {
+                @if(!paidEmployment) {
+                    @messages("freeHoursResult.info.OtherSchemes.paidwork.text")
+                }
+            }
     }
 }
+
 
 @main_template(
     title = messages("freeHoursResult.title"),
@@ -60,7 +70,7 @@
 
         @components.scheme_result(
             title = messages("freeHoursResult.info.OtherSchemes"),
-            para1 = Some(messages("freeHoursResult.info.OtherSchemes.text")))
+            para1 = Some(otherChildcareSchemesContent.toString))
 
 
     } else {
@@ -68,7 +78,6 @@
         @components.scheme_result(
             title = messages("freeHoursResult.info.freHours"),
             para1 = Some(messages("freeHoursResult.toBeEligible.free.hours")))
-
 
         @components.scheme_result(
             title = messages("freeHoursResult.info.OtherSchemes"),
@@ -78,11 +87,13 @@
 
     <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
 
+
         <p>
             @if(!childcareCost) {
                 @messages("freeHoursResult.toBeEligible.childcare.cost.start")
                 <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
                 @messages("freeHoursResult.toBeEligible.childcare.cost.end")
+
             } else {
                 @if(!approvedProvider){
                     @messages("freeHoursResult.toBeEligible.approved.provider.start")
@@ -100,5 +111,7 @@
                     }
                 }
             }
+
         </p>
+
 }
