@@ -60,6 +60,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       contentAsString(resultPage) must include("1,000")
     }
 
+
     "redirect to Location controller when there is no location data" in {
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithNoLocation))
       val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)

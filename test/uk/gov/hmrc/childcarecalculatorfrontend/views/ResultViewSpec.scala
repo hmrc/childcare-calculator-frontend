@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{aboutYourResults, result}
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
-class ResultViewSpec extends ViewBehaviours {
+class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
+  val answers: UserAnswers = mock[UserAnswers]
   def createView() = () => result(frontendAppConfig, ResultsViewModel(tc = Some(400)), new Utils)(fakeRequest, messages)
-
-
+  
   "Result view" must {
 
     behave like normalPage(createView(),"result")
-
     behave like resultPage(createView())
 
     "Contain results" when {

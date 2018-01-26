@@ -16,56 +16,60 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
-import uk.gov.hmrc.play.test.UnitSpec
 
-class ResultNotEligibleViewSpec extends ViewBehaviours {
+class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
+
+  val answers: UserAnswers = mock[UserAnswers]
 
   "Result not eligible view" must {
-
     "contain results" when {
       "We don't have free hours value" in {
-        val model = ResultsViewModel(freeHours = None)
+        val model = ResultsViewModel(freeHours = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Free childcare hours")
         view.getElementById("notEligibleFreeHours").text() mustBe messages("result.free.hours.not.eligible")
       }
 
-
       "User is not eligible for TC scheme" in {
-        val model = ResultsViewModel(tc = None)
+        val model = ResultsViewModel(tc = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax credits")
         view.getElementById("notEligibleTC1").text() mustBe messages("result.tc.not.eligible.para1")
         view.getElementById("notEligibleTC2").text() mustBe messages("result.tc.not.eligible.para2")
-
       }
 
+      "User answered UC to do you get tax credits or universal credits " in {
+        val model = ResultsViewModel(taxCreditsOrUC = Some("uc"))
+        val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
+
+        assertContainsMessages(view, "Tax credits")
+        view.getElementById("notEligibleTC1").text() mustBe messages("result.uc.not.eligible.para")
+      }
 
       "User is not eligible for TFC scheme" in {
-        val model = ResultsViewModel(tfc = None)
+        val model = ResultsViewModel(tfc = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax-Free Childcare")
         view.getElementById("notEligibleTFC").text() mustBe messages("result.tfc.not.eligible")
-
       }
 
 
       "User is not eligible for ESC scheme" in {
-        val model = ResultsViewModel(esc = None)
+        val model = ResultsViewModel(esc = None, taxCreditsOrUC = None)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Childcare vouchers")
         view.getElementById("notEligibleESC1").text() mustBe messages("result.esc.not.eligible.para1")
         view.getElementById("notEligibleESC2").text() mustBe messages("result.esc.not.eligible.para2")
       }
-
-
     }
   }
 }
