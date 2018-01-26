@@ -18,40 +18,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
-import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
-class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
+class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
 
-  def partnerEmploymentIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
-    val minValue: Double = appConfig.minIncome
-    val maxValue: Double = appConfig.maxIncome
+  override val minValue: Double = appConfig.minIncome
+  override val maxValue: Double = appConfig.maxIncome
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-
-    def bind(key: String, data: Map[String, String]) = {
-      data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
-        case Some(strValue) if strValue.matches(decimalRegex) =>
-          val value = BigDecimal(strValue)
-
-          if (validateInRange(value, minValue, maxValue)) {
-            Right(value)
-          } else {
-            produceError(key, errorKeyInvalid)
-          }
-        case _ => produceError(key, errorKeyInvalid)
-      }
-    }
-
-    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-  }
-
-  def apply(errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey, errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(partnerEmploymentIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))))
+  override val errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey
+  override val errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
 }
