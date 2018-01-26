@@ -42,6 +42,6 @@ class EmploymentIncomePYFormSpec extends FormBehaviours {
 
     behave like formWithDecimalField("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
 
-    behave like formWithInRange("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+    behave like formWithMinimumValue("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
   }
 }
