@@ -22,6 +22,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
+  def surveyDoNotUnderstand: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](SurveyDoNotUnderstandId.toString)
+
   def whoWasInPaidWorkPY: Option[String] = cacheMap.getEntry[String](WhoWasInPaidWorkPYId.toString)
 
   def partnerStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](PartnerStatutoryStartDateId.toString)
