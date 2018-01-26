@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours
 
-import org.scalatest.OptionValues
+import org.scalatest.{Assertion, OptionValues}
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
 
@@ -29,6 +29,12 @@ trait FormBehaviours extends FormSpec with OptionValues {
   val minValue: BigDecimal = 1
 
   val form: Form[_]
+
+  private def minimumValue(field: String): Assertion = {
+    val data = validData + (field -> (minValue - 1).toString())
+    val expectedError = error(field, s"$field.invalid")
+    checkForError(form, data, expectedError)
+  }
 
   def questionForm[A](expectedResult: A) = {
     "bind valid values correctly" in {
@@ -265,12 +271,18 @@ trait FormBehaviours extends FormSpec with OptionValues {
     }
   }
 
+  def formWithMinimumValue(fields: String*) = {
+    for (field <- fields) {
+      s"fail to bind when $field is less than minimum value" in {
+        minimumValue(field)
+      }
+    }
+  }
+
   def formWithInRange(fields: String*) = {
     for (field <- fields) {
       s"fail to bind when $field is less than minimum value" in {
-        val data = validData + (field -> (minValue-1).toString())
-        val expectedError = error(field, s"$field.invalid")
-        checkForError(form, data, expectedError)
+        minimumValue(field)
       }
 
       s"fail to bind when $field is greater than maximum value" in {

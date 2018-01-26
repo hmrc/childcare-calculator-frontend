@@ -35,12 +35,10 @@ class EmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends For
     mapping(
       "parentEmploymentIncomeCY" ->
         decimal("parentEmploymentIncomeCY.blank", parentIncomeInvalidKey)
-          .verifying(minimumValue[BigDecimal](minValue, parentIncomeInvalidKey))
-          .verifying(maximumValue[BigDecimal](maxValue, parentIncomeInvalidKey)),
+          .verifying(minimumValue[BigDecimal](minValue, parentIncomeInvalidKey)),
       "partnerEmploymentIncomeCY" ->
         decimal("partnerEmploymentIncomeCY.blank", partnerIncomeInvalidKey)
           .verifying(minimumValue[BigDecimal](minValue, partnerIncomeInvalidKey))
-          .verifying(maximumValue[BigDecimal](maxValue, partnerIncomeInvalidKey))
     )(EmploymentIncomeCY.apply)(EmploymentIncomeCY.unapply)
   )
 }

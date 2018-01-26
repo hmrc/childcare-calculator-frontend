@@ -61,10 +61,5 @@ class PartnerEmploymentIncomeCYFormSpec extends FormSpec {
       val expectedError = error("value", errorKeyInvalid)
       checkForError(partnerEmploymentIncomeCYForm, Map("value" -> "0.9"), expectedError)
     }
-
-    "fail to bind numbers above the threshold" in {
-      val expectedError = error("value", errorKeyInvalid)
-      checkForError(partnerEmploymentIncomeCYForm, Map("value" -> "100000.1"), expectedError)
-    }
   }
 }
