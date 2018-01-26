@@ -70,6 +70,7 @@ site.save_and_continue = Continue
 site.service_name = Childcare calculator
 site.textarea.char_limit = (Limit is {0} characters)
 site.in.pounds = in pounds
+site.colon = :
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -148,8 +149,7 @@ freeHoursInfo.para1.scotland = You can get 16 hours of free early learning and c
 freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time with an approved provider - this is 380 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free pre-school education a week in term time with an approved provider - this is 475 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.heading2 = Still to check
-freeHoursInfo.guidance = By giving more information, you can check to see if you’re eligible for help from:
-
+freeHoursInfo.guidance = By giving more information, you can check to see if you’re eligible for help from
 
 freeHoursInfo.li.30hours = 30 hours free childcare
 freeHoursInfo.li.vouchers = childcare vouchers
@@ -162,7 +162,6 @@ freeHoursInfo.no.childcare.para.end = You’ll need to give an estimate of how m
 freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So if you’re here to see what support you can get from them, you should select that you
 freeHoursInfo.no.approved.para.link = will have approved childcare costs or that you’re not sure
 freeHoursInfo.no.approved.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.heading = Your eligibility for childcare support
