@@ -19,7 +19,13 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
-@(appConfig: FrontendAppConfig, isChildAgedTwo: Boolean, isChildAgedThreeOrFour :Boolean, hasChildcareCosts : Boolean, approvedProviderCosts: Boolean, location: Location.Value)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig,
+isChildAgedTwo: Boolean,
+isChildAgedThreeOrFour :Boolean,
+hasChildcareCosts : Boolean,
+approvedProviderCosts: Boolean,
+location: Location.Value,
+isEligibleForOnlyOneScheme: Boolean = false)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursInfo.title"),
@@ -33,12 +39,14 @@
     <p>@messages(s"freeHoursInfo.para1.$location")</p>
 
     <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
-    <p>@messages(s"freeHoursInfo.guidance")</p>
+    <p>@messages(s"freeHoursInfo.guidance")@if(isEligibleForOnlyOneScheme){ @messages("freeHoursInfo.li.30hours")} else {@messages("site.colon")}</p>
 
     <ul class="bullets">
-        @if(isChildAgedThreeOrFour && location == Location.ENGLAND) {
-          <li>@messages("freeHoursInfo.li.30hours")</li>
+
+        @if(!isEligibleForOnlyOneScheme && isChildAgedThreeOrFour && location == Location.ENGLAND) {
+            <li>@messages("freeHoursInfo.li.30hours")</li>
         }
+
         @if(isChildAgedTwo && location != Location.NORTHERN_IRELAND) {
             <li>@messages("freeHoursInfo.li.2year")</li>
         }

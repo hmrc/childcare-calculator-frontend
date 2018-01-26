@@ -116,7 +116,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, false,false, location, true)(fakeRequest, messages).toString
       }
 
       "They have childcare costs and they are approved" in {
@@ -211,7 +211,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true,false,location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, true, false,location, true)(fakeRequest, messages).toString
     }
 
     "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
@@ -222,7 +222,3 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
     }
   }
 }
-
-
-
-
