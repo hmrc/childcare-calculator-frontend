@@ -219,4 +219,6 @@ object ChildcareConstants {
 
   val whoWasInPaidWorkErrorKey = "whoWasInPaidWorkPY.error"
 
+  val surveyChildcareSupportErrorKey = "surveyChildcareSupport.error"
+
 }
