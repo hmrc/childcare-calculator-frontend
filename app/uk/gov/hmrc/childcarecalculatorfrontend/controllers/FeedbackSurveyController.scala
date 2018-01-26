@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.forms
+package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-@Singleton
-class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
-
-  override val minValue: Double = appConfig.minIncome
-  override val maxValue: Double = appConfig.maxIncome
-
-  override val errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey
-  override val errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
+class FeedbackSurveyController  @Inject()(appConfig: FrontendAppConfig,
+                                          val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
+  def loadFeedbackSurvey : Action[AnyContent] = Action {
+    implicit request => Redirect(appConfig.surveyUrl)
+  }
 }

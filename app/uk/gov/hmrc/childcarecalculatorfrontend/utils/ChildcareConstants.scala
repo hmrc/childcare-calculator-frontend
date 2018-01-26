@@ -64,6 +64,8 @@ object ChildcareConstants {
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
 
+  val universalCredits = "uc"
+  val taxCredits = "tc"
   val unknownErrorKey = "error.unknown"
 
   val locationErrorKey = "location.error"
@@ -216,5 +218,7 @@ object ChildcareConstants {
   val partnerStatutoryPayTypeErrorKey = "partnerStatutoryPayType.error"
 
   val whoWasInPaidWorkErrorKey = "whoWasInPaidWorkPY.error"
+
+  val surveyChildcareSupportErrorKey = "surveyChildcareSupport.error"
 
 }

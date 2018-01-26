@@ -27,7 +27,9 @@
 @(appConfig: FrontendAppConfig,
         location: Location.Value,
         eligibility: Eligibility,
-        answerSections: Seq[Section], paidEmployment: Boolean, livingWithPartner: Boolean)(implicit request: Request[_], messages: Messages)
+        paidEmployment: Boolean,
+        livingWithPartner: Boolean,
+        approvedProvider: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("freeHoursResult.title"),
@@ -72,7 +74,7 @@
 
                     <!-- Note for dev. There is content ready in the messages file for the option when you have said no to approved childcare its freeHoursResult.info.OtherSchemes.approved.text etc -->
 
-                    @if(paidEmployment) {
+                    @if(paidEmployment || !approvedProvider) {
                         <p>@messages("freeHoursResult.info.OtherSchemes.text")</p>
                     } else {
                         <p>@messages("freeHoursResult.info.OtherSchemes.paidwork.text")</p>
@@ -94,12 +96,27 @@
             <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info2.link.text")</a>
             @messages("freeHoursResult.toBeEligible.info2.end")</p>
     } else {
-        <p>@messages("freeHoursResult.toBeEligible.info3.start")
+
+        @if(!approvedProvider) {
+            <p>@messages("freeHoursResult.toBeEligible.info2b.start")
+            <a id="free-hours-results-childCare-cost-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info2b.link.text")</a>
+                @messages("freeHoursResult.toBeEligible.info2b.end")
+                </p>
+        } else {
+            <p>@messages("freeHoursResult.toBeEligible.info3.start")
             @if(livingWithPartner){
                 <a id="free-hours-results-childCare-cost-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a>
             } else {
                 <a id="free-hours-results-childCare-cost-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages(s"freeHoursResult.toBeEligible.info3.link.text")</a>
             }
-            @messages("freeHoursResult.toBeEligible.info3.end")</p>
+            @messages("freeHoursResult.toBeEligible.info3.end")
+        </p>
+        }
     }
+
+    <div class="feedback">
+        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+        @messages("results.feedback.survey.link.text")</a>@messages("results.feedback.survey.text.after.link")
+        </p>
+    </div>
 }

@@ -113,14 +113,21 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => answers.whichChildrenBlind.map(blindChildren => blindChildren.exists(Set(key)))
   }
 
-  private def checkMinEarnings(age: Option[String], selfEmployedOrApprentice: Option[String], selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
+  private def checkMinEarnings(age: Option[String],
+                               selfEmployedOrApprentice: Option[String],
+                               selfEmployed: Option[Boolean]): Option[MinimumEarnings] = {
+
     val amt: Option[BigDecimal] = if (age.isDefined) {
       Some(utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, age))
     } else {
       None
     }
 
-    if (amt.isDefined || selfEmployedOrApprentice.isDefined || selfEmployed.isDefined) {
+    if(selfEmployedOrApprentice.contains(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)){
+
+      Some(MinimumEarnings(employmentStatus = stringToEmploymentStatusEnum(selfEmployedOrApprentice)))
+
+    } else if (amt.isDefined || selfEmployedOrApprentice.isDefined || selfEmployed.isDefined) {
       Some(MinimumEarnings(
         amount = amt.getOrElse(0.0),
         employmentStatus = stringToEmploymentStatusEnum(selfEmployedOrApprentice),
@@ -187,7 +194,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     val selfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
     val selfEmployed = answers.yourSelfEmployed
-    val maxEarnings = answers.yourMaximumEarnings
+    val maxEarnings = if(answers.eitherOfYouMaximumEarnings.isDefined) answers.eitherOfYouMaximumEarnings else answers.yourMaximumEarnings
     val age = answers.yourAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
     val taxCode = answers.whatIsYourTaxCode
@@ -218,7 +225,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     val selfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
     val selfEmployed = answers.partnerSelfEmployed
-    val maxEarnings = answers.partnerMaximumEarnings
+    val maxEarnings = if(answers.eitherOfYouMaximumEarnings.isDefined) answers.eitherOfYouMaximumEarnings else answers.partnerMaximumEarnings
     val age = answers.yourPartnersAge
     val minEarnings = checkMinEarnings(age, selfEmployedOrApprentice, selfEmployed)
     val taxCode = answers.whatIsYourPartnersTaxCode
