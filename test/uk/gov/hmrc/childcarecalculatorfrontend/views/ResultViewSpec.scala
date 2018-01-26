@@ -16,19 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.mockito.Mockito.when
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
-class ResultViewSpec extends ViewBehaviours {
+class ResultViewSpec extends ViewBehaviours with MockitoSugar {
+
+  val answers: UserAnswers = mock[UserAnswers]
+
   
   "Result view" must {
 
     behave like normalPage(() => result(frontendAppConfig,
                                         ResultsViewModel(tc = Some(400)),
                                         new Utils)(fakeRequest, messages), "result")
+
+
 
     "Contain results" when {
       "We have introductory paragraph" in {
