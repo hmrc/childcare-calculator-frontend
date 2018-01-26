@@ -30,6 +30,8 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
     behave like normalPage(createView(), "aboutYourResults")
 
+    behave like resultPage(createView())
+
     "contain back to results link" in {
 
       val doc = asDocument(aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages))

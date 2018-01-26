@@ -379,3 +379,5 @@ GET         /who-was-in-paid-work-previous-year                       uk.gov.hmr
 POST        /who-was-in-paid-work-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /about-your-results                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
+GET         /surveyClick                                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
+
