@@ -1243,6 +1243,8 @@ result.tc.para1 = You can get up to 70% of your childcare costs paid. The amount
 result.tc.not.eligible.para1 = You wouldn’t get help from tax credits as one of you needs to work at least 16 hours, with you and your partner’s combined hours being 24 or more a week.
 result.tc.not.eligible.para2 = You can go back and change your working hours to see how it changes how much you could get.
 
+result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have told us that you were already getting Universal Credit
+
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs
 result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child. You get a £2 government top-up for every £8 you pay in childcare.

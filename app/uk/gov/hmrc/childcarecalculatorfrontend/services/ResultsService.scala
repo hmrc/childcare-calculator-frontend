@@ -38,23 +38,26 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                firstParagraphBuilder: FirstParagraphBuilder) {
   def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
-                                            location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
+      location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
     val result = eligibilityService.eligibility(answers)
-    result.map(results => {
-      results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme,result)))
+
+     result.map(results => {
+      results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
     })
   }
 
-  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel) = {
+  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String]) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case TCELIGIBILITY => resultViewModel.copy(tc = Some(scheme.amount))
+        case TCELIGIBILITY => {
+          if (taxCreditsOrUC == Some(universalCredits)) resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC) else resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC)
+        }
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
-        case ESCELIGIBILITY =>resultViewModel.copy(esc = Some(scheme.amount))
+        case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
       }
     }
     else {
-      resultViewModel
+      resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
     }
   }
 
@@ -65,16 +68,16 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
 
     freeHoursEligibility match {
       case Eligible if maxFreeHoursEligibility == Eligible => resultViewModel.copy(freeHours = Some(eligibleMaxFreeHours))
-      case Eligible =>  getFreeHoursForLocation(location, resultViewModel)
+      case Eligible => getFreeHoursForLocation(location, resultViewModel)
       case _ => resultViewModel
     }
   }
 
-  private def getFreeHoursForLocation(optionLocation: Option[Location.Value], resultViewModel: ResultsViewModel)  =
-    optionLocation.fold(resultViewModel){
-          case ENGLAND => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
-          case SCOTLAND => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
-          case WALES => resultViewModel.copy(freeHours = Some(freeHoursForWales))
-          case NORTHERN_IRELAND => resultViewModel.copy(freeHours = Some(freeHoursForNI))
+  private def getFreeHoursForLocation(optionLocation: Option[Location.Value], resultViewModel: ResultsViewModel) =
+    optionLocation.fold(resultViewModel) {
+      case ENGLAND => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
+      case SCOTLAND => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
+      case WALES => resultViewModel.copy(freeHours = Some(freeHoursForWales))
+      case NORTHERN_IRELAND => resultViewModel.copy(freeHours = Some(freeHoursForNI))
     }
 }
