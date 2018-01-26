@@ -122,6 +122,13 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
       }
+
+      "eligible for 15 free hours for England and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, true, false, false))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.england"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.england"))
+      }
     }
   }
 
