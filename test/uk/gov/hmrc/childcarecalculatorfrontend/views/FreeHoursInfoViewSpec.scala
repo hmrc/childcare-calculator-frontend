@@ -47,6 +47,13 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
       }
     }
 
+    "display correct information when user in England has a 3 year old child" in {
+      val view = freeHoursInfo(frontendAppConfig, false, true, true, true, ENGLAND)(fakeRequest, messages)
+      val doc = asDocument(view)
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.england"))
+    }
+
+
     "display the correct guidance text without any bullet points when user is eligible for only one scheme" in {
       val view = freeHoursInfo(frontendAppConfig, false,true,true,false, ENGLAND, true)(fakeRequest, messages)
       val doc = asDocument(view)
