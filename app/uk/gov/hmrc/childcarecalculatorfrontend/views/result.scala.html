@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @(appConfig: FrontendAppConfig, model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
 
 @heading = {
@@ -51,6 +52,7 @@
         @resultEligible(model, utils)
 
         @if(model.noOfEligibleSchemes < 4) {
+
             <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)
         }
