@@ -28,6 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
 
 import scala.concurrent.Future
@@ -50,7 +51,7 @@ class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm(surveyChildcareSupportErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(surveyChildcareSupport(appConfig, formWithErrors))),
         (value) =>

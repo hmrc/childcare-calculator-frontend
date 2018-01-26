@@ -1311,5 +1311,5 @@ aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/he
 
 surveyChildcareSupport.title = Do you understand your childcare support options?
 surveyChildcareSupport.heading = Do you understand your childcare support options?
-surveyChildcareSupport.required = Select yes understand your childcare support options
+surveyChildcareSupport.error = Select yes if you understand your childcare support options
 surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
