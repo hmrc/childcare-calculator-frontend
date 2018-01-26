@@ -168,9 +168,9 @@ freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
-freeHoursResult.info.OtherSchemes.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
-freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you would not get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
-freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you’re not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
+freeHoursResult.info.OtherSchemes.childcare.cost.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
+freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
+freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
 freeHoursResult.info.entitled.wales = 10 hours
@@ -182,27 +182,25 @@ freeHoursResult.info.tc = Tax credits
 freeHoursResult.info.fh.lead = You could get up to
 freeHoursResult.info.fh.exit = free childcare a week
 
-freeHoursResult.partialEligible.guidance.england = <<Need to get content and eligibility criteria>>
+freeHoursResult.partialEligible.guidance.england = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+freeHoursResult.partialEligible.guidance.england.period = free childcare a week — this is 570 hours a year
 freeHoursResult.partialEligible.guidance.scotland = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - this is 600 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.partialEligible.guidance.wales = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - this is 380 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.partialEligible.guidance.northern-ireland = On this scheme, you can get free hours of free pre-school education for your 3 or 4 year old that can be used in term time - this is 475 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.toBeEligible.heading = See what help you could get
-freeHoursResult.toBeEligible.info1.start = You’re currently not eligible for any free hours because you do not have a child aged 3 or 4.
-freeHoursResult.toBeEligible.info1.link.text = answer as though your 2 year old is aged 3 or 4
-freeHoursResult.toBeEligible.info2 = You also need to have childcare costs for the other available schemes. So, if you’re here to see what childcare you can afford, you should tell the calculator that you expect to have childcare costs. You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursResult.toBeEligible.info2.start  = As you need to have childcare costs to be able to get help with them, you should select
-freeHoursResult.toBeEligible.info2.end = You’ll need to give an estimate of how much you think you might pay for childcare.
-freeHoursResult.toBeEligible.info2.link.text = not yet but maybe in the future.
+freeHoursResult.toBeEligible.free.hours = You’re currently not eligible for any free hours because you do not have a child aged 3 or 4.
 
-freeHoursResult.toBeEligible.info2b.start  = As you need to have approved childcare to be able to get help with it, you should select
-freeHoursResult.toBeEligible.info2b.end = You’ll need to give an estimate of how much you think you might pay for childcare.
-freeHoursResult.toBeEligible.info2b.link.text = not sure.
+freeHoursResult.toBeEligible.childcare.cost.start = As you need to have childcare costs to be able to get help with them, you should select
+freeHoursResult.toBeEligible.childcare.cost.link.text = not yet but maybe in the future
+freeHoursResult.toBeEligible.childcare.cost.end = You’ll need to give an estimate of how much you think you might pay for childcare.
 
-freeHoursResult.toBeEligible.info3.start  = You would need to
-freeHoursResult.toBeEligible.info3.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
-freeHoursResult.toBeEligible.info3.link.text = be in paid work
-freeHoursResult.toBeEligible.info4.text = You can go back and change your answers to see what help you could get.
+freeHoursResult.toBeEligible.approved.provider.start = As you need to have approved childcare to be able to get help with it, you should select
+freeHoursResult.toBeEligible.approved.provider.link.text = not sure
+freeHoursResult.toBeEligible.approved.provider.end = You’ll need to give an estimate of how much you think you might pay for childcare.
 
+freeHoursResult.toBeEligible.paid.work.start = You would need to
+freeHoursResult.toBeEligible.paid.work.link.text = be in paid work
+freeHoursResult.toBeEligible.paid.work.end = to check what help you can get from Tax-Free Childcare, tax credits and vouchers.
 
 
 freeHoursResult.summary.table.header = General
@@ -1316,6 +1314,4 @@ surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
-
-
-
+feedback.hint.link.opens.new.window = (opens in a new window)

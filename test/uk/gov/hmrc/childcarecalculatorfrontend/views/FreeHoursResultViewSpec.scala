@@ -27,22 +27,14 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursResult"
 
-  private def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible,
-    paidEmployment = false,
-    livingWithPartner = false,
-    approvedProvider = false)(fakeRequest, messages)
+  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible, false, true, false, false)(fakeRequest, messages)
 
-  private def createViewWithAnswers = (
-                                        location: Location.Value,
-                                        eligibility: Eligibility,
-                                        paidEmployment: Boolean,
-                                        livingWithPartner: Boolean,
-                                        approvedProvider: Boolean) => freeHoursResult(frontendAppConfig,
+  def createViewWithAnswers = (location: Location.Value,
+                               eligibility:Eligibility,
+                               inPaidWork:Boolean, childcareCost: Boolean, livingWithPartner: Boolean, approvedProvider: Boolean) => freeHoursResult(frontendAppConfig,
     location,
     eligibility,
-    paidEmployment,
-    livingWithPartner,
-    approvedProvider)(fakeRequest, messages)
+    inPaidWork, childcareCost, livingWithPartner, approvedProvider)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
 
@@ -56,69 +48,183 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
   "FreeHoursResult view" when {
     "rendered" must {
 
-      "contain correct guidance when not eligible because you don't have a child under 5 and you're not with an approved provider" in {
+      "contain correct guidance when not eligible for location other than northern-ireland when don't have childcare cost and not eligible" in {
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, false, false))
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
 
-        assertContainsText(doc, messagesApi("freeHoursResult.info.freHours"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes"))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.text"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2b.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2b.end"))
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val approvedProvierLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
-        approvedProvierLink.attr("href") mustBe routes.ApprovedProviderController.onPageLoad(NormalMode).url
-        approvedProvierLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2b.link.text")
-      }
-
-      "contain correct guidance when not eligible for location other than northern-ireland" in {
-
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, true, false, false))
-
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, false, false, false))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
 
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.childcare.cost.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.childcare.cost.start"))
 
         val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
         childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(NormalMode).url
-        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.childcare.cost.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.childcare.cost.end"))
+
+      }
+
+      "contain correct guidance when not eligible for location other than northern-ireland when childcare cost not with approved provider and not eligible" in {
+
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, true, false, false))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.approved.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.approved.provider.start"))
+
+        val childCareCostLink: Element = doc.getElementById("free-hours-results-approved-provider-link")
+        childCareCostLink.attr("href") mustBe routes.ApprovedProviderController.onPageLoad(NormalMode).url
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.approved.provider.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.approved.provider.end"))
+
+      }
+
+
+      "contain correct guidance when not eligible for location other than northern-ireland when not in employment and not eligible" in {
+
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, true, false, true))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.paidwork.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.start"))
+
+        val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
+        paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
+        paidWorkLink.text mustBe messagesApi("freeHoursResult.toBeEligible.paid.work.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.end"))
+
+      }
+
+      "contain correct guidance when not eligible for location other than northern-ireland when don't have childcare cost and eligible" in {
+
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, false, false, false))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.childcare.cost.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.childcare.cost.start"))
+
+        val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
+        childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(NormalMode).url
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.childcare.cost.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.childcare.cost.end"))
+
+      }
+
+      "contain correct guidance when not eligible for location other than northern-ireland when childcare cost not with approved provider and eligible" in {
+
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, true, false, false))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.approved.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.approved.provider.start"))
+
+        val childCareCostLink: Element = doc.getElementById("free-hours-results-approved-provider-link")
+        childCareCostLink.attr("href") mustBe routes.ApprovedProviderController.onPageLoad(NormalMode).url
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.approved.provider.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.approved.provider.end"))
+
+      }
+
+
+      "contain correct guidance when not eligible for location other than northern-ireland when not in employment and eligible" in {
+
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.england",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, true, false, true))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.paidwork.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.start"))
+
+        val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
+        paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
+        paidWorkLink.text mustBe messagesApi("freeHoursResult.toBeEligible.paid.work.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.end"))
+
       }
 
       "contain correct guidance when not eligible for location northern-ireland" in {
 
-        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, NotEligible, true, false, false))
+        val answerRow = AnswerRow("location.checkYourAnswersLabel",
+          "location.northern-ireland",
+          true,
+          routes.LocationController.onPageLoad(CheckMode).url)
+
+        val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
+
+        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, NotEligible, true, false, false, false))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.free.hours"))
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
-
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info1.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.start"))
-        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.info2.end"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.childcare.cost.start"))
 
         val childCareCostLink: Element = doc.getElementById("free-hours-results-childCare-cost-link")
         childCareCostLink.attr("href") mustBe routes.ChildcareCostsController.onPageLoad(NormalMode).url
-        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.info2.link.text")
+        childCareCostLink.text mustBe messagesApi("freeHoursResult.toBeEligible.childcare.cost.link.text")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.childcare.cost.end"))
       }
 
       "eligible for 16 free hours for scotland and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, true, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, true, false, false, false))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.scotland"))
       }
 
       "eligible for 10 free hours for wales and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, true, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, true, false, false, false))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.wales"))
       }
 
       "eligible for 12.5 free hours for northern-ireland and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, true, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, true, false, false, false))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
