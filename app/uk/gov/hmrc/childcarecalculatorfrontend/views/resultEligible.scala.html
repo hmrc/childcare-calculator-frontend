@@ -40,13 +40,14 @@
 }
 
 @if(model.tc.isDefined) {
-    @components.scheme_result(
+      @components.scheme_result(
         title = messages("result.tc.title"),
         couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.tc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.tc.period")),
         para1 = Some(messages("result.tc.para1")))
 }
+
 
 @if(model.tfc.isDefined) {
     @components.scheme_result(
@@ -63,5 +64,6 @@
         couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.esc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.esc.period")),
-        para1 = Some(messages("result.esc.para1")))
+        para1 = Some(messages("result.esc.para1")),
+        para2 = Some(messages("result.esc.para2")))
 }

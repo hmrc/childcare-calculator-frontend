@@ -16,19 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.mockito.Mockito.when
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
-class ResultViewSpec extends ViewBehaviours {
+class ResultViewSpec extends ViewBehaviours with MockitoSugar {
+
+  val answers: UserAnswers = mock[UserAnswers]
+
   
   "Result view" must {
 
     behave like normalPage(() => result(frontendAppConfig,
                                         ResultsViewModel(tc = Some(400)),
                                         new Utils)(fakeRequest, messages), "result")
+
+
 
     "Contain results" when {
       "We have introductory paragraph" in {
@@ -70,6 +77,60 @@ class ResultViewSpec extends ViewBehaviours {
       assertNotContainsText(view, messages("result.more.info.para"))
       assertNotContainsText(view, messages("result.read.more.button"))
       assertNotRenderedById(view, "aboutYourResults")
+    }
+
+    "display correct guidance when user is eligible for all the schemes" in {
+      val model = ResultsViewModel( tc = Some(200), tfc = Some(250), esc = Some(230), freeHours = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.title"))
+      assertContainsText(view, messages("result.more.info.title"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.read.more.button"))
+      view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
+    }
+
+    "display correct guidance when user is eligible for all the schemes but Vouchers" in {
+      val model = ResultsViewModel( tc = Some(200), tfc = Some(250), freeHours = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.title"))
+      assertContainsText(view, messages("result.more.info.title"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.read.more.button"))
+      view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+      assertContainsText(view, messages("result.schemes.tax.credit.ineligibility.guidance"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance"))
+    }
+
+    "display correct guidance when user is eligible for all the schemes but TFC" in {
+      val model = ResultsViewModel( tc = Some(200), esc = Some(250), freeHours = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.title"))
+      assertContainsText(view, messages("result.more.info.title"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.read.more.button"))
+      view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
+    }
+
+    "display correct guidance when user is eligible for all the schemes but TC" in {
+      val model = ResultsViewModel( esc = Some(250), tfc = Some(300), freeHours = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.title"))
+      assertContainsText(view, messages("result.more.info.title"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.read.more.button"))
+      view.getElementById("aboutYourResults").attr("href") mustBe AboutYourResultsController.onPageLoad().url
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance"))
     }
   }
 }

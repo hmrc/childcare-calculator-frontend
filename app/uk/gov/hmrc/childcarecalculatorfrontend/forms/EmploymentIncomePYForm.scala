@@ -26,7 +26,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomePY
 class EmploymentIncomePYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   val minValue: Double = appConfig.minIncome
-  val maxValue: Double = appConfig.maxIncome
 
   private val parentIncomeInvalidKey = "parentEmploymentIncomePY.invalid"
   private val partnerIncomeInvalidKey = "partnerEmploymentIncomePY.invalid"
@@ -35,10 +34,10 @@ class EmploymentIncomePYForm @Inject()(appConfig: FrontendAppConfig) extends For
     mapping(
       "parentEmploymentIncomePY" ->
         decimal("parentEmploymentIncomePY.required", parentIncomeInvalidKey)
-          .verifying(inRange[BigDecimal](minValue, maxValue, parentIncomeInvalidKey)),
+          .verifying(minimumValue[BigDecimal](minValue, parentIncomeInvalidKey)),
       "partnerEmploymentIncomePY" ->
         decimal("partnerEmploymentIncomePY.required", partnerIncomeInvalidKey)
-          .verifying(inRange[BigDecimal](minValue, maxValue, partnerIncomeInvalidKey))
+          .verifying(minimumValue[BigDecimal](minValue, partnerIncomeInvalidKey))
     )(EmploymentIncomePY.apply)(EmploymentIncomePY.unapply)
   )
 }

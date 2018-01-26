@@ -49,7 +49,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
         assertContainsMessages(viewWithMoreThan1000, "1,500")
       }
 
-      "User is eligible for TFC scheme" in {
+     "User is eligible for TFC scheme" in {
         val modelWithLessThan1000 = ResultsViewModel(tfc = Some(600))
         val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1600))
 

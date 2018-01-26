@@ -19,6 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import org.joda.time.LocalDate
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.time.TaxYearResolver
 
 object YourStatutoryStartDateForm extends FormErrorHelper {
 
@@ -33,6 +35,7 @@ object YourStatutoryStartDateForm extends FormErrorHelper {
         "year" -> int(requiredKey, invalidKey, statutoryType)
       )
         .verifying(before(LocalDate.now.plusDays(1), "yourStatutoryStartDate.error.past", statutoryType))
+        .verifying(after(TaxYearResolver.startOfCurrentTaxYear.minusYears(2).minusDays(1), "yourStatutoryStartDate.error.past-over-2-years", statutoryType, TaxYearResolver.startOfCurrentTaxYear.getYear.toString()))
         .replaceError(FormError("", "error.invalidDate", statutoryType), FormError("", invalidKey, Seq(statutoryType)))
         .replaceError(FormError("day", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
         .replaceError(FormError("month", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
