@@ -17,13 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.StringViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 
-class SurveyDoNotUnderstandViewSpec extends BigDecimalViewBehaviours {
+class SurveyDoNotUnderstandViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "surveyDoNotUnderstand"
 

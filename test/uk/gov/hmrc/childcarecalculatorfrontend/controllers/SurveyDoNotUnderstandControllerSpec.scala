@@ -17,16 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.libs.json.JsString
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
@@ -36,9 +35,9 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
     new SurveyDoNotUnderstandController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[BigDecimal] = SurveyDoNotUnderstandForm()) = surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages).toString
 
-  val testNumber = 123
+  val testString = "feedback string"
 
   "SurveyDoNotUnderstand Controller" must {
 
@@ -50,31 +49,21 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(SurveyDoNotUnderstandId.toString -> JsNumber(testNumber))
+      val validData = Map(SurveyDoNotUnderstandId.toString -> JsString("feedback string"))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(SurveyDoNotUnderstandForm().fill(testNumber))
+      contentAsString(result) mustBe viewAsString(SurveyDoNotUnderstandForm().fill(testString))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString))
 
       val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
-    }
-
-    "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = SurveyDoNotUnderstandForm().bind(Map("value" -> "invalid value"))
-
-      val result = controller().onSubmit()(postRequest)
-
-      status(result) mustBe BAD_REQUEST
-      contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -85,7 +74,7 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString))
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER

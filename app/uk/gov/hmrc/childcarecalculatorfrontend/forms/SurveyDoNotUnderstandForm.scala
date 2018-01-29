@@ -24,7 +24,7 @@ object SurveyDoNotUnderstandForm extends FormErrorHelper {
 
   def surveyDoNotUnderstandFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+
 
     def bind(key: String, data: Map[String, String]) = {
       data.get(key) match {
@@ -38,6 +38,6 @@ object SurveyDoNotUnderstandForm extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[String] =
+  def apply(errorKeyBlank: String = "surveyDoNotUnderstand.error", errorKeyInvalid: String = "error.bigDecimal"): Form[String] =
     Form(single("value" -> of(surveyDoNotUnderstandFormatter(errorKeyBlank, errorKeyInvalid))))
 }

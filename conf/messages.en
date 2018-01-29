@@ -1312,10 +1312,8 @@ aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/he
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 
-
-
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.guidance = Do not include any personal or financial information like your National Insurance number or bank details.
-surveyDoNotUnderstand.error = Select who was in paid work
+surveyDoNotUnderstand.error = Enter why you don’t understand
 surveyDoNotUnderstand.checkYourAnswersLabel = surveyDoNotUnderstand
