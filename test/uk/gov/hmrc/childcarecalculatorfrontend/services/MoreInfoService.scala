@@ -40,11 +40,34 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
   "MoreInfoService" should {
 
     "return correct title and links for England" in {
-
       val service = new MoreInfoService(messagesApi)
       service.get(Location.ENGLAND, allSchemesValid) must contain(
         Map("link" -> messagesApi("aboutYourResults.more.info.england.hours.link"),
           "title" -> messagesApi("aboutYourResults.more.info.england.hours.title")
+        ))
+    }
+
+    "return correct title and links for Wales" in {
+      val service = new MoreInfoService(messagesApi)
+      service.get(Location.WALES, allSchemesValid) must contain(
+        Map("link" -> messagesApi("aboutYourResults.more.info.wales.hours.link"),
+          "title" -> messagesApi("aboutYourResults.more.info.wales.hours.title")
+        ))
+    }
+
+    "return correct title and links for Scotland" in {
+      val service = new MoreInfoService(messagesApi)
+      service.get(Location.SCOTLAND, allSchemesValid) must contain(
+      Map("link" -> messagesApi("aboutYourResults.more.info.scotland.hours.link"),
+      "title" -> messagesApi("aboutYourResults.more.info.scotland.hours.title")
+      ))
+    }
+
+    "return correct title and links for Northern Ireland" in {
+      val service = new MoreInfoService(messagesApi)
+      service.get(Location.NORTHERN_IRELAND, allSchemesValid) must contain(
+        Map("link" -> messagesApi("aboutYourResults.more.info.northern-ireland.hours.link"),
+          "title" -> messagesApi("aboutYourResults.more.info.northern-ireland.hours.title")
         ))
     }
   }

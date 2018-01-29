@@ -45,7 +45,17 @@ class MoreInfoService @Inject() (val messages: MessagesApi) extends MoreInfoServ
       case _ => Map("" -> "")
     }
 
-    List(freeHours)
+    val taxCredits = results.tc match {
+      case Some(x) if x > 0 => {
+        Map(
+          "title" -> messages(s"aboutYourResults.more.info.$locationKey.hours.title"),
+          "link" -> messages(s"aboutYourResults.more.info.$locationKey.hours.link")
+        )
+      }
+      case _ => Map("" -> "")
+    }
+
+    List(freeHours, taxCredits)
   }
 }
 
