@@ -68,7 +68,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       val model = ResultsViewModel()
       val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
 
-      assertContainsMessages(view, messages("result.title"))
+      assertContainsMessages(view, messages("result.heading.not.eligible"))
       assertNotContainsText(view, messages("result.more.info.title"))
       assertNotContainsText(view, messages("result.more.info.para"))
       assertNotContainsText(view, messages("result.read.more.button"))
@@ -128,5 +128,6 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
       assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance"))
     }
+
   }
 }
