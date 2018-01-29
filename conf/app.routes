@@ -385,4 +385,5 @@ POST        /survey/childcare-support                          uk.gov.hmrc.child
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
 
-
+GET        /survey/do-not-understand               uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onPageLoad()
+POST       /survey/do-not-understand               uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onSubmit()
