@@ -1305,6 +1305,11 @@ aboutYourResults.two.years.old.guidance.title = Your 2 year old:
 aboutYourResults.two.years.old.guidance.para1 = Find out if your 2 year old is eligible for 15 hours free childcare.
 aboutYourResults.two.years.old.guidance.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
 
+surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
+surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
+surveyDoNotUnderstand.guidance = Do not include any personal or financial information like your National Insurance number or bank details.
+surveyDoNotUnderstand.error = Enter why you don’t understand
+surveyDoNotUnderstand.checkYourAnswersLabel = surveyDoNotUnderstand
 
 surveyChildcareSupport.title = Do you understand your childcare support options?
 surveyChildcareSupport.heading = Do you understand your childcare support options?
@@ -1314,3 +1319,4 @@ surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
+
