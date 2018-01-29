@@ -17,28 +17,33 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyChildcareSupportErrorKey
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionStatus, SubmissionSuccessful}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
+import scala.concurrent.Future
+
+class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new SurveyChildcareSupportController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new FakeSplunkSubmissionService)
+    new SurveyDoNotUnderstandController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, new FakeSplunkSubmissionService())
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = surveyChildcareSupport(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages).toString
 
-  "SurveyChildcareSupport Controller" must {
+  val testString = "feedback string"
+
+  "SurveyDoNotUnderstand Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad()(fakeRequest)
@@ -48,31 +53,21 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(SurveyChildcareSupportId.toString -> JsBoolean(true))
+      val validData = Map(SurveyDoNotUnderstandId.toString -> JsString("feedback string"))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(SurveyDoNotUnderstandForm().fill(testString))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString))
 
       val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
-    }
-
-    "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm(surveyChildcareSupportErrorKey).bind(Map("value" -> "invalid value"))
-
-      val result = controller().onSubmit()(postRequest)
-
-      status(result) mustBe BAD_REQUEST
-      contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -83,11 +78,18 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString))
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
+  }
+}
+
+class FakeSplunkSubmissionService extends SplunkSubmissionServiceInterface {
+  def submit(date: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
+    import scala.concurrent.ExecutionContext.Implicits.global
+    Future(SubmissionSuccessful)
   }
 }

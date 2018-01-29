@@ -35,19 +35,18 @@ object SubmissionFailed extends SubmissionStatus
 sealed
 class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier)
   extends DataEvent(
-    auditSource = "childcare-calc",
-    auditType = "feedback-survey",
+    auditSource = "Childcare-Calculator",
+    auditType = "childcare-calculator-feedback-survey",
     tags = hc.toAuditTags("Childcare Calculator Submission Service", "/survey/childcare-support"),
     detail = hc.toAuditDetails(data.toSeq: _*))
 
-sealed
 trait SplunkSubmissionServiceInterface {
-  def submit(data: Map[String, String]): Future[SubmissionStatus]
+  def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus]
 }
 
-class SplunkSubmissionService @Inject() (http: DefaultAuditConnector)(implicit hc: HeaderCarrier) extends SplunkSubmissionServiceInterface {
+class SplunkSubmissionService @Inject() (http: DefaultAuditConnector) extends SplunkSubmissionServiceInterface {
 
-  def submit(data: Map[String, String]): Future[SubmissionStatus] = {
+  def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
     
     val dataEvent = new SplunkSubmissionEvent(data)
 

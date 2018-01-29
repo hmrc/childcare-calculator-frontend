@@ -383,6 +383,7 @@ GET         /about-your-results                                uk.gov.hmrc.child
 GET         /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onPageLoad()
 POST        /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onSubmit()
 
+GET         /survey/do-not-understand                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onPageLoad()
+POST        /survey/do-not-understand                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onSubmit()
+
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
-
-

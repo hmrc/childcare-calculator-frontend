@@ -199,9 +199,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
         doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.title"))
         doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para1"))
-        doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para2"))
-
-        doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para2.help.link")
+        doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para1.help.link")
       }
     }
 
@@ -214,7 +212,6 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertNotRenderedByCssSelector(doc, ".twoYearsOld")
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
-        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
 
         assertNotRenderedById(doc, "twoYearsOldHelp")
       }
@@ -229,7 +226,6 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertNotRenderedByCssSelector(doc, ".twoYearsOld")
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
-        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
 
         assertNotRenderedById(doc, "twoYearsOldHelp")
       }

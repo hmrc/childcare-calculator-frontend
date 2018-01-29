@@ -18,27 +18,30 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
 class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                 override val messagesApi: MessagesApi,
+                                                 dataCacheConnector: DataCacheConnector,
+                                                 navigator: Navigator,
+                                                 getData: DataRetrievalAction,
+                                                 requireData: DataRequiredAction,
+                                                 splunkSubmissionService: SplunkSubmissionServiceInterface) extends FrontendController with I18nSupport {
 
   def onPageLoad = (getData andThen requireData) {
     implicit request =>
@@ -54,9 +57,21 @@ class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
       BooleanForm(surveyChildcareSupportErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(surveyChildcareSupport(appConfig, formWithErrors))),
-        (value) =>
+        (value) => {
+
+          val data = Map("understandChildcareSupport" -> s"$value")
+
+          splunkSubmissionService.submit(data).map {
+            x => x match {
+              case SubmissionSuccessful => Logger.info("understandChildcareSupport logged to Splunk")
+              case SubmissionFailed => Logger.warn("understandChildcareSupport failed to log to Splunk")
+            }
+          }
+
           dataCacheConnector.save[Boolean](request.sessionId, SurveyChildcareSupportId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(SurveyChildcareSupportId, NormalMode)(new UserAnswers(cacheMap))))
+        }
+
       )
   }
 }

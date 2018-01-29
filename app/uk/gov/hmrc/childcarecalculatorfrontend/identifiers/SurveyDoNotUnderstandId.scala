@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package guice
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import com.google.inject.AbstractModule
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService, SplunkSubmissionServiceInterface}
-
-class SplunkSubmissionModule extends AbstractModule {
-  override def configure() = {
-    bind(classOf[SplunkSubmissionServiceInterface]).to(classOf[SplunkSubmissionService])
-  }
+case object SurveyDoNotUnderstandId extends Identifier {
+  override def toString: String = "surveyDoNotUnderstand"
 }
