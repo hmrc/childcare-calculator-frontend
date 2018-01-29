@@ -1301,6 +1301,19 @@ aboutYourResults.more.info.para1.tfc.help.link = https://www.gov.uk/help-with-ch
 aboutYourResults.more.info.para1.tfc.help.link.text = Tax-Free Childcare.
 aboutYourResults.more.info.para2 = You can apply for 30 hours free childcare and Tax-Free Childcare through one online application - the eligibility rules are the same for both.
 
+
+aboutYourResults.more.info.england.hours.title = 15 hours free childcare
+aboutYourResults.more.info.england.hours.link = https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds
+aboutYourResults.more.info.scotland.hours.title = 16 Free Hours and how to apply
+aboutYourResults.more.info.scotland.hours.link = https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare/
+aboutYourResults.more.info.wales.hours.title = 10 Free Hours and how to apply
+aboutYourResults.more.info.wales.hours.link = http://gov.wales/topics/people-and-communities/people/children-and-young-people/childcare/?lang=en
+aboutYourResults.more.info.northern-ireland.hours.title = 12.5 Free Hours and how to apply:
+aboutYourResults.more.info.northern-ireland.hours.link = https://www.nidirect.gov.uk/information-and-services/parents/childcare
+
+
+
+
 aboutYourResults.two.years.old.guidance.title = If user has a 2 year old living in England the following text will display:
 aboutYourResults.two.years.old.guidance.para1 = Your 2 year old
 aboutYourResults.two.years.old.guidance.para2 =  Find out if your 2 year old is eligible for 15 hours free childcare.
