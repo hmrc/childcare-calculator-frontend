@@ -79,7 +79,9 @@
                 @messages("aboutYourResults.more.info.para1.tfc.help.link.text")
             </a>
         </p>
-        <p>@messages("aboutYourResults.more.info.para2")</p>
+        @if(model.location.contains(Location.ENGLAND)){
+            <p>@messages("aboutYourResults.more.info.para2")</p>
+        }
     </div>
 
     @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
