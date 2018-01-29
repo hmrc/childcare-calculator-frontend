@@ -24,8 +24,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionStatus, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.concurrent.Future
 
 class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
@@ -33,7 +37,7 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new SurveyDoNotUnderstandController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new FakeSplunkSubmissionService())
 
   def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages).toString
 
@@ -80,5 +84,12 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
+  }
+}
+
+class FakeSplunkSubmissionService extends SplunkSubmissionServiceInterface {
+  def submit(date: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
+    import scala.concurrent.ExecutionContext.Implicits.global
+    Future(SubmissionSuccessful)
   }
 }

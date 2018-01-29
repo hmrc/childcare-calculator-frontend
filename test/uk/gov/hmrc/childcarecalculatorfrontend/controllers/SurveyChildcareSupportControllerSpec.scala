@@ -18,16 +18,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.JsBoolean
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyChildcareSupportErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 
@@ -35,7 +34,7 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new SurveyChildcareSupportController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredActionImpl, new FakeSplunkSubmissionService)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = surveyChildcareSupport(frontendAppConfig, form)(fakeRequest, messages).toString
 
@@ -92,7 +91,3 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
     }
   }
 }
-
-
-
-
