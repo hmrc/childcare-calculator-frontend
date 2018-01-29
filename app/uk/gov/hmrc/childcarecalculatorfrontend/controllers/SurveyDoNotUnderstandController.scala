@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -27,6 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService, SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 
@@ -38,7 +40,8 @@ class SurveyDoNotUnderstandController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        splunkSubmissionService: SplunkSubmissionServiceInterface) extends FrontendController with I18nSupport {
 
   def onPageLoad() = (getData andThen requireData) {
     implicit request =>
@@ -54,9 +57,19 @@ class SurveyDoNotUnderstandController @Inject()(
       SurveyDoNotUnderstandForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
-        (value) =>
+        (value) => {
+
+          val data = Map("reasonForNotUnderstanding" -> value)
+
+          splunkSubmissionService.submit(data).map {
+            case SubmissionSuccessful => Logger.info("reasonForNotUnderstanding logged to Splunk")
+            case SubmissionFailed => Logger.warn("reasonForNotUnderstanding failed to log to Splunk")
+          }
+
           dataCacheConnector.save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(SurveyDoNotUnderstandId, NormalMode)(new UserAnswers(cacheMap))))
+        }
+
       )
   }
 }

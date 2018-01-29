@@ -24,13 +24,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionStatus, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyChildcareSupportErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
-
-import scala.concurrent.Future
 
 class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 
@@ -93,12 +89,5 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
-  }
-}
-
-class FakeSplunkSubmissionService extends SplunkSubmissionServiceInterface {
-  def submit(date: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
-    import scala.concurrent.ExecutionContext.Implicits.global
-    Future(SubmissionSuccessful)
   }
 }
