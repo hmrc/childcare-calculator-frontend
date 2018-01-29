@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.guice
+package guice
 
 import com.google.inject.AbstractModule
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService, SplunkSubmissionServiceInterface}
 
 class SplunkSubmissionModule extends AbstractModule {
-
-  override def configure(): Unit = {
+  override def configure() = {
     bind(classOf[SplunkSubmissionServiceInterface]).to(classOf[SplunkSubmissionService])
   }
 }
