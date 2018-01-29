@@ -1315,8 +1315,7 @@ results.feedback.survey.text.after.link = (takes 30 seconds)
 
 
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
-
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
-surveyDoNotUnderstand.hint = Do not include any personal or financial information like your National Insurance number or bank details.
+surveyDoNotUnderstand.guidance = Do not include any personal or financial information like your National Insurance number or bank details.
 
 surveyDoNotUnderstand.checkYourAnswersLabel = surveyDoNotUnderstand

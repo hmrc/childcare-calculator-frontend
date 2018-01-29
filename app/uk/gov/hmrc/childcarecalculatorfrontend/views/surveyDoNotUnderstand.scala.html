@@ -33,9 +33,10 @@
 
     @components.heading("surveyDoNotUnderstand.heading")
 
-    @components.heading("surveyDoNotUnderstand.hint")
 
     @helpers.form(action = SurveyDoNotUnderstandController.onSubmit(), 'autoComplete -> "off") {
+
+        <p>@messages("surveyDoNotUnderstand.guidance")</p>
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("surveyDoNotUnderstand.heading"), labelClass=Some("visually-hidden"))
 
