@@ -26,6 +26,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("surveyDoNotUnderstand.checkYourAnswersLabel", s"$x", false, routes.SurveyDoNotUnderstandController.onPageLoad().url)
   }
 
+  def surveyChildcareSupport: Option[AnswerRow] = userAnswers.surveyChildcareSupport map {
+    x => AnswerRow("surveyChildcareSupport.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.SurveyChildcareSupportController.onPageLoad().url)
+  }
+
   def whoWasInPaidWorkPY: Option[AnswerRow] = userAnswers.whoWasInPaidWorkPY map {
     x => AnswerRow("whoWasInPaidWorkPY.checkYourAnswersLabel", s"whoWasInPaidWorkPY.$x", true, routes.WhoWasInPaidWorkPYController.onPageLoad(CheckMode).url)
   }
