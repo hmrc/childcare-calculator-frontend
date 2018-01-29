@@ -22,7 +22,7 @@ import play.api.data.format.Formatter
 
 object SurveyDoNotUnderstandForm extends FormErrorHelper {
 
-  def surveyDoNotUnderstandFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def surveyDoNotUnderstandFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
 
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
@@ -30,14 +30,14 @@ object SurveyDoNotUnderstandForm extends FormErrorHelper {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if(s.matches(decimalRegex)) => Right(BigDecimal(s))
+        case Some(s) => Right(s)
         case _ => produceError(key, errorKeyInvalid)
       }
     }
 
-    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
+    def unbind(key: String, value: String) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = "error.required", errorKeyInvalid: String = "error.bigDecimal"): Form[String] =
     Form(single("value" -> of(surveyDoNotUnderstandFormatter(errorKeyBlank, errorKeyInvalid))))
 }

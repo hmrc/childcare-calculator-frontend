@@ -29,7 +29,7 @@ class SurveyDoNotUnderstandViewSpec extends BigDecimalViewBehaviours {
 
   def createView = () => surveyDoNotUnderstand(frontendAppConfig, SurveyDoNotUnderstandForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages)
 
   val form = SurveyDoNotUnderstandForm()
 

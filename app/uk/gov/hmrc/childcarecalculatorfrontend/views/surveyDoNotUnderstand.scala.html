@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal])(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("surveyDoNotUnderstand.title"),
@@ -38,7 +38,7 @@
 
         <p>@messages("surveyDoNotUnderstand.guidance")</p>
 
-        @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("surveyDoNotUnderstand.heading"), labelClass=Some("visually-hidden"))
+        @components.input_textarea(InputViewModel[String]("value", form), label = messages(""))
 
         @components.submit_button()
     }

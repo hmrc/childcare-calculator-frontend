@@ -52,10 +52,10 @@ class SurveyDoNotUnderstandController @Inject()(
   def onSubmit() = (getData andThen requireData).async {
     implicit request =>
       SurveyDoNotUnderstandForm().bindFromRequest().fold(
-        (formWithErrors: Form[BigDecimal]) =>
+        (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
         (value) =>
-          dataCacheConnector.save[BigDecimal](request.sessionId, SurveyDoNotUnderstandId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(SurveyDoNotUnderstandId, NormalMode)(new UserAnswers(cacheMap))))
       )
   }
