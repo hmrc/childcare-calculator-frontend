@@ -74,9 +74,7 @@
 
     <div class="moreInfo">
         <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
-
         <p>@messages("aboutYourResults.more.info.para1")</p>
-
         @if(links.nonEmpty) {
             <ul class="list list-bullet">
                 @for(link <- links) {
@@ -84,15 +82,7 @@
                 }
             </ul>
         }
-
-        <!--<a id="moreInfoHelp" href=@messages("aboutYourResults.more.info.para1.tfc.help.link")>-->
-            <!--@messages("aboutYourResults.more.info.para1.tfc.help.link.text")-->
-        <!--</a>-->
-
         <p>@summary.getOrElse("")</p>
-
-
-        <!--<p>@messages("aboutYourResults.more.info.para2")</p>-->
     </div>
 
     @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
