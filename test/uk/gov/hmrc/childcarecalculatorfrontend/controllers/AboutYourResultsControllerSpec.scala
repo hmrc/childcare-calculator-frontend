@@ -24,29 +24,34 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import scala.concurrent.ExecutionContext.Implicits.global
+import services.{MoreInfoService, MoreInfoServiceInterface}
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class AboutYourResultsControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   val mockDataConnector: DataCacheConnector = mock[DataCacheConnector]
+  val mockMoreInfoService: MoreInfoServiceInterface = mock[MoreInfoService]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): AboutYourResultsController =
     new AboutYourResultsController(frontendAppConfig,
       messagesApi,
       mockDataConnector,
       dataRetrievalAction,
-      new DataRequiredActionImpl)
+      new DataRequiredActionImpl,
+      mockMoreInfoService)
 
   "AboutYourResults Controller" must {
     "return OK and the correct view for a GET" in {
       val model = ResultsViewModel()
       when(mockDataConnector.getEntry[ResultsViewModel](any(), any())(any())) thenReturn Future(Some(model))
+      when(mockMoreInfoService.getSchemeContent(any(), any())) thenReturn List.empty
+      when(mockMoreInfoService.getSummary(any(), any())) thenReturn None
 
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe aboutYourResults(frontendAppConfig, model)(fakeRequest, messages).toString
+      contentAsString(result) mustBe aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET" when {

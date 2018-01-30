@@ -20,16 +20,10 @@ import org.scalatestplus.play.PlaySpec
 import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 
 class MoreInfoServiceSpec extends PlaySpec with SpecBase {
-
-  /*
-   * SHOULD:
-    * Accept a location argument and scheme eligibility arguments
-    * Return an array of title link values
-    * Return exception if location doesn't exist
-   */
 
   private val allSchemesValid = ResultsViewModel(
     tc = Some(2.0),
@@ -37,40 +31,182 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
     esc = Some(2.0),
     freeHours = Some(2.0))
 
+  private val tcSchemeInvalid = ResultsViewModel(
+    tc = None,
+    tfc = Some(2.0),
+    esc = Some(2.0),
+    freeHours = Some(2.0))
+
+  private val tfcSchemeInvalid = ResultsViewModel(
+    tc = Some(2.0),
+    tfc = None,
+    esc = Some(2.0),
+    freeHours = Some(2.0))
+
+  private val escSchemeInvalid = ResultsViewModel(
+    tc = Some(2.0),
+    tfc = Some(2.0),
+    esc = None,
+    freeHours = Some(2.0))
+
+  private val freeHoursSchemeInvalid = ResultsViewModel(
+    tc = Some(2.0),
+    tfc = Some(2.0),
+    esc = Some(2.0),
+    freeHours = None)
+
+  case class Results(location: Location, key: String, scheme: ResultsViewModel)
+
+  private val summaryContent = messagesApi("aboutYourResults.more.info.summary")
+
+  private val allValid = List(
+    Results(Location.ENGLAND, "england", allSchemesValid),
+    Results(Location.WALES, "wales", allSchemesValid),
+    Results(Location.SCOTLAND, "scotland", allSchemesValid),
+    Results(Location.NORTHERN_IRELAND, "northern-ireland", allSchemesValid)
+  )
+
+  private val tcInvalid = List(
+    Results(Location.ENGLAND, "england", tcSchemeInvalid),
+    Results(Location.WALES, "wales", tcSchemeInvalid),
+    Results(Location.SCOTLAND, "scotland", tcSchemeInvalid),
+    Results(Location.NORTHERN_IRELAND, "northern-ireland", tcSchemeInvalid)
+  )
+
+  private val tfcInvalid = List(
+    Results(Location.ENGLAND, "england", tfcSchemeInvalid),
+    Results(Location.WALES, "wales", tfcSchemeInvalid),
+    Results(Location.SCOTLAND, "scotland", tfcSchemeInvalid),
+    Results(Location.NORTHERN_IRELAND, "northern-ireland", tfcSchemeInvalid)
+  )
+
+  private val escInvalid = List(
+    Results(Location.ENGLAND, "england", escSchemeInvalid),
+    Results(Location.WALES, "wales", escSchemeInvalid),
+    Results(Location.SCOTLAND, "scotland", escSchemeInvalid),
+    Results(Location.NORTHERN_IRELAND, "northern-ireland", escSchemeInvalid)
+  )
+
+  private val freeHoursInvalid = List(
+    Results(Location.ENGLAND, "england", freeHoursSchemeInvalid),
+    Results(Location.WALES, "wales", freeHoursSchemeInvalid),
+    Results(Location.SCOTLAND, "scotland", freeHoursSchemeInvalid),
+    Results(Location.NORTHERN_IRELAND, "northern-ireland", freeHoursSchemeInvalid)
+  )
+
+  private val service = new MoreInfoService(messagesApi)
+
   "MoreInfoService" should {
 
-    "return correct title and links for England" in {
-      val service = new MoreInfoService(messagesApi)
-      service.get(Location.ENGLAND, allSchemesValid) must contain(
-        Map("link" -> messagesApi("aboutYourResults.more.info.england.hours.link"),
-          "title" -> messagesApi("aboutYourResults.more.info.england.hours.title")
-        ))
+    for (test <- allValid) {
+      s"return correct footer information for ${test.key} when all schemes are valid" in {
+
+        service.getSchemeContent(test.location, test.scheme) must contain(
+          Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.hours.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.hours.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.esc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.esc.title")
+          ))
+
+        val summary = service.getSummary(test.location, test.scheme)
+        test.location match {
+          case Location.ENGLAND => {
+            summary must contain (summaryContent)
+          }
+          case _ =>
+            summary must not contain summaryContent
+        }
+      }
     }
 
-    "return correct title and links for Wales" in {
-      val service = new MoreInfoService(messagesApi)
-      service.get(Location.WALES, allSchemesValid) must contain(
-        Map("link" -> messagesApi("aboutYourResults.more.info.wales.hours.link"),
-          "title" -> messagesApi("aboutYourResults.more.info.wales.hours.title")
-        ))
+    for (testTC <- tcInvalid) {
+      s"return correct footer information for ${testTC.key} when tc is invalid" in {
+        val result = service.getSchemeContent(testTC.location, testTC.scheme)
+        result must contain(
+          Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.hours.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.hours.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.esc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.esc.title")
+          ))
+
+        result must not contain Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tc.title"))
+      }
     }
 
-    "return correct title and links for Scotland" in {
-      val service = new MoreInfoService(messagesApi)
-      service.get(Location.SCOTLAND, allSchemesValid) must contain(
-      Map("link" -> messagesApi("aboutYourResults.more.info.scotland.hours.link"),
-      "title" -> messagesApi("aboutYourResults.more.info.scotland.hours.title")
-      ))
+    for (testTFC <- tfcInvalid) {
+      s"return correct footer information for ${testTFC.key} when tfc is invalid" in {
+        val result = service.getSchemeContent(testTFC.location, testTFC.scheme)
+        result must contain(
+          Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.hours.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.hours.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.esc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.esc.title")
+          ))
+
+        result must not contain Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tfc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tfc.title"))
+
+        service.getSummary(testTFC.location, testTFC.scheme) must not contain
+          summaryContent
+      }
     }
 
-    "return correct title and links for Northern Ireland" in {
-      val service = new MoreInfoService(messagesApi)
-      service.get(Location.NORTHERN_IRELAND, allSchemesValid) must contain(
-        Map("link" -> messagesApi("aboutYourResults.more.info.northern-ireland.hours.link"),
-          "title" -> messagesApi("aboutYourResults.more.info.northern-ireland.hours.title")
-        ))
+    for (testESC <- escInvalid) {
+      s"return correct footer information for ${testESC.key} when esc is invalid" in {
+        val result = service.getSchemeContent(testESC.location, testESC.scheme)
+        result must contain(
+          Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.hours.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.hours.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.tc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.tc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.tfc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.tfc.title")
+          ))
+
+        result must not contain Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.esc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testESC.key}.esc.title"))
+      }
     }
+
+    for (testFreeHours <- freeHoursInvalid) {
+      s"return correct footer information for ${testFreeHours.key} when free hours is invalid" in {
+        val result = service.getSchemeContent(testFreeHours.location, testFreeHours.scheme)
+        result must contain(
+          Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.title"),
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.esc.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.esc.title")
+          ))
+
+        result must not contain Map(
+            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.hours.link"),
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.hours.title"))
+
+        service.getSummary(testFreeHours.location, testFreeHours.scheme) must not contain
+          summaryContent
+      }
+
+    }
+
   }
-
 
 }
