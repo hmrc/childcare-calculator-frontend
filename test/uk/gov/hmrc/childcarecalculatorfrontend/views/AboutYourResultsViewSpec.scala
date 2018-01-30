@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
 class AboutYourResultsViewSpec extends ViewBehaviours {
 
-  def createView() = () => aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages)
+  def createView() = () => aboutYourResults(frontendAppConfig, ResultsViewModel(), List.empty, None)(fakeRequest, messages)
 
   "AboutYourResults view" must {
 
@@ -34,7 +34,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
     "contain back to results link" in {
 
-      val doc = asDocument(aboutYourResults(frontendAppConfig, ResultsViewModel())(fakeRequest, messages))
+      val doc = asDocument(aboutYourResults(frontendAppConfig, ResultsViewModel(), List.empty, None)(fakeRequest, messages))
 
       doc.getElementById("returnToResults").text() mustBe messages("aboutYourResults.return.link")
       doc.getElementById("returnToResults").attr("href") mustBe ResultController.onPageLoad().url
@@ -44,7 +44,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is eligible for free hours scheme" in {
 
         val model = ResultsViewModel(freeHours = Some(15))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertRenderedByCssSelector(doc, ".freeHours")
 
@@ -58,7 +58,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is not eligible for free hours scheme" in {
 
         val model = ResultsViewModel(freeHours = None)
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(doc, ".freeHours")
       }
@@ -68,7 +68,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is eligible for TC scheme" in {
 
         val model = ResultsViewModel(tc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertRenderedByCssSelector(doc, ".tc")
 
@@ -88,7 +88,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is not eligible for TC scheme" in {
 
         val model = ResultsViewModel(tc = None)
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(doc, ".tc")
         assertNotRenderedById(doc, "eligibilityChecker")
@@ -100,7 +100,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is eligible for TFC scheme" in {
 
         val model = ResultsViewModel(tfc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
         doc.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
@@ -112,7 +112,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is not eligible for TFC scheme" in {
 
         val model = ResultsViewModel(tc = Some(2000), tfc = None)
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(doc, ".tfc")
         assertNotContainsText(doc, messages("aboutYourResults.tfc.para1"))
@@ -123,7 +123,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
     "display ESC contents" when {
       "user is eligible for ESC scheme" in {
         val model = ResultsViewModel(esc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
         doc.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
@@ -135,7 +135,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is not eligible for ESC scheme" in {
 
         val model = ResultsViewModel(tc = Some(3000), esc = None)
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(doc, ".esc")
         assertNotContainsText(doc, messages("aboutYourResults.esc.title"))
@@ -148,7 +148,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user is eligible for all the schemes" in {
 
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), tfc = Some(2300), esc = Some(2000))
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertRenderedByCssSelector(doc, ".freeHours")
         doc.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
@@ -179,21 +179,20 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
     "display more info about the schemes" in {
       val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
 
-      val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+      val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
       assertRenderedByCssSelector(doc, ".moreInfo")
 
       doc.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.title"))
       doc.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para1"))
       doc.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para2"))
-      doc.getElementById("moreInfoHelp").attr("href") mustBe messages("aboutYourResults.more.info.para1.tfc.help.link")
     }
 
     "display guidance for 2 years old" when {
       "user lives in England" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = true)
 
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertRenderedByCssSelector(doc, ".twoYearsOld")
 
@@ -207,7 +206,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user does not live in England" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
 
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(doc, ".twoYearsOld")
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
@@ -221,7 +220,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
       "user does not have 2 years old child" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = false)
 
-        val doc = asDocument(aboutYourResults(frontendAppConfig, model)(fakeRequest, messages))
+        val doc = asDocument(aboutYourResults(frontendAppConfig, model, List.empty, None)(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(doc, ".twoYearsOld")
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
@@ -238,9 +237,9 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         val modelWithNI = ResultsViewModel(tfc = Some(200), location = Some(Location.NORTHERN_IRELAND))
 
 
-        val viewForWales = asDocument(aboutYourResults(frontendAppConfig, modelWithWales)(fakeRequest, messages))
-        val viewForScotland = asDocument(aboutYourResults(frontendAppConfig, modelWithScotland)(fakeRequest, messages))
-        val viewForNI = asDocument(aboutYourResults(frontendAppConfig, modelWithNI)(fakeRequest, messages))
+        val viewForWales = asDocument(aboutYourResults(frontendAppConfig, modelWithWales, List.empty, None)(fakeRequest, messages))
+        val viewForScotland = asDocument(aboutYourResults(frontendAppConfig, modelWithScotland, List.empty, None)(fakeRequest, messages))
+        val viewForNI = asDocument(aboutYourResults(frontendAppConfig, modelWithNI, List.empty, None)(fakeRequest, messages))
 
 
         assertRenderedByCssSelector(viewForWales, ".tfc")

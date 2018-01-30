@@ -20,7 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
-@(appConfig: FrontendAppConfig, model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("aboutYourResults.title"),
@@ -74,14 +74,15 @@
 
     <div class="moreInfo">
         <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
-        <p>@messages("aboutYourResults.more.info.para1")
-            <a id="moreInfoHelp" href=@messages("aboutYourResults.more.info.para1.tfc.help.link")>
-                @messages("aboutYourResults.more.info.para1.tfc.help.link.text")
-            </a>
-        </p>
-        @if(model.location.contains(Location.ENGLAND)){
-            <p>@messages("aboutYourResults.more.info.para2")</p>
+        <p>@messages("aboutYourResults.more.info.para1")</p>
+        @if(links.nonEmpty) {
+            <ul class="list list-bullet">
+                @for(link <- links) {
+                    <li><a href=@link("link")>@link("title")</a></li>
+                }
+            </ul>
         }
+        <p>@summary.getOrElse("")</p>
     </div>
 
     @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
