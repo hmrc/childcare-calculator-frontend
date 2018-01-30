@@ -1237,8 +1237,7 @@ result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs
 result.tc.para1 = You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and uses your household income from the previous year.
 
-result.tc.not.eligible.para1 = You wouldn’t get help from tax credits as one of you needs to work at least 16 hours, with you and your partner’s combined hours being 24 or more a week.
-result.tc.not.eligible.para2 = You can go back and change your working hours to see how it changes how much you could get.
+result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
 
 result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have told us that you were already getting Universal Credit
 
@@ -1246,7 +1245,7 @@ result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs
 result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child. You get a £2 government top-up for every £8 you pay in childcare.
 
-result.tfc.not.eligible = Tax-Free Childcare is based around your earnings and working hours. Although you are in paid work, you don’t earn the weekly National Minimum Wage or Living Wage and you are not either an apprentice or in the first 12 months of self-employment. You have also told us that you earn over £100,000.
+result.tfc.not.eligible = You cannot get help from Tax-Free Childcare. To get help, you need to earn at least 16 times the National Minimum Wage a week and not earn more than £100,000 a year. This applies to both if you live with a partner.
 
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice
@@ -1254,8 +1253,7 @@ result.esc.para1 = Each parent can take some of their pay as childcare vouchers 
 result.esc.para2 = Employers can only offer them to new claimants until the end of March 2018.
 
 
-result.esc.not.eligible.para1 = You wouldn’t get help from childcare vouchers as you told us that your employer doesn’t offer them.
-result.esc.not.eligible.para2 = Your employer may be able to help you with childcare costs by using vouchers (through salary sacrifice or salary plus) or other schemes, such as a staff nursery. If they don’t currently offer the scheme talk to them about joining it. The scheme will close to new joiners at the end of March 2018.
+result.esc.not.eligible.para1 = You cannot get help from childcare vouchers. To get help, you or your partner’s employer has to offer them.
 
 result.not.eligible.title = You are not eligible for:
 
@@ -1331,11 +1329,15 @@ aboutYourResults.more.info.northern-ireland.esc.title = Childcare Vouchers
 aboutYourResults.more.info.northern-ireland.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
 aboutYourResults.more.info.summary = You can apply for 30 hours free childcare and Tax-Free Childcare through one online application - the eligibility rules are the same for both.
 
-aboutYourResults.two.years.old.guidance.title = If user has a 2 year old living in England the following text will display:
-aboutYourResults.two.years.old.guidance.para1 = Your 2 year old
-aboutYourResults.two.years.old.guidance.para2 =  Find out if your 2 year old is eligible for 15 hours free childcare.
-aboutYourResults.two.years.old.guidance.para2.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
+aboutYourResults.two.years.old.guidance.title = Your 2 year old:
+aboutYourResults.two.years.old.guidance.para1 = Find out if your 2 year old is eligible for 15 hours free childcare.
+aboutYourResults.two.years.old.guidance.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-benefits
 
+surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
+surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
+surveyDoNotUnderstand.guidance = Do not include any personal or financial information like your National Insurance number or bank details.
+surveyDoNotUnderstand.error = Enter why you don’t understand
+surveyDoNotUnderstand.checkYourAnswersLabel = surveyDoNotUnderstand
 
 surveyChildcareSupport.title = Do you understand your childcare support options?
 surveyChildcareSupport.heading = Do you understand your childcare support options?
@@ -1345,3 +1347,4 @@ surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
+

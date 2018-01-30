@@ -42,7 +42,6 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertContainsMessages(view, "Tax credits")
         view.getElementById("notEligibleTC1").text() mustBe messages("result.tc.not.eligible.para1")
-        view.getElementById("notEligibleTC2").text() mustBe messages("result.tc.not.eligible.para2")
       }
 
       "User answered UC to do you get tax credits or universal credits " in {
@@ -68,7 +67,6 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertContainsMessages(view, "Childcare vouchers")
         view.getElementById("notEligibleESC1").text() mustBe messages("result.esc.not.eligible.para1")
-        view.getElementById("notEligibleESC2").text() mustBe messages("result.esc.not.eligible.para2")
       }
     }
   }

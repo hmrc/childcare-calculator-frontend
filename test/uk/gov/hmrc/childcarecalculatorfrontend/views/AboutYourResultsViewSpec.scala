@@ -198,9 +198,7 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
 
         doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.title"))
         doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para1"))
-        doc.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para2"))
-
-        doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para2.help.link")
+        doc.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para1.help.link")
       }
     }
 
@@ -213,7 +211,6 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertNotRenderedByCssSelector(doc, ".twoYearsOld")
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
-        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
 
         assertNotRenderedById(doc, "twoYearsOldHelp")
       }
@@ -228,9 +225,47 @@ class AboutYourResultsViewSpec extends ViewBehaviours {
         assertNotRenderedByCssSelector(doc, ".twoYearsOld")
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.title"))
         assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para1"))
-        assertNotContainsText(doc, messages("aboutYourResults.two.years.old.guidance.para2"))
 
         assertNotRenderedById(doc, "twoYearsOldHelp")
+      }
+    }
+
+    "display correct guidance" when {
+      "users are not in England and are eligible for TFC" in {
+        val modelWithWales = ResultsViewModel(tfc = Some(200), location = Some(Location.WALES))
+        val modelWithScotland = ResultsViewModel(tfc = Some(200), location = Some(Location.SCOTLAND))
+        val modelWithNI = ResultsViewModel(tfc = Some(200), location = Some(Location.NORTHERN_IRELAND))
+
+
+        val viewForWales = asDocument(aboutYourResults(frontendAppConfig, modelWithWales, List.empty, None)(fakeRequest, messages))
+        val viewForScotland = asDocument(aboutYourResults(frontendAppConfig, modelWithScotland, List.empty, None)(fakeRequest, messages))
+        val viewForNI = asDocument(aboutYourResults(frontendAppConfig, modelWithNI, List.empty, None)(fakeRequest, messages))
+
+
+        assertRenderedByCssSelector(viewForWales, ".tfc")
+        viewForWales.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
+        viewForWales.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
+        viewForWales.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        assertNotContainsText(viewForWales, messages("aboutYourResults.more.info.para2"))
+        assertContainsText(viewForWales, messages("aboutYourResults.more.info.title"))
+        assertContainsText(viewForWales, messages("aboutYourResults.more.info.para1"))
+
+        assertRenderedByCssSelector(viewForScotland, ".tfc")
+        viewForScotland.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
+        viewForScotland.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
+        viewForScotland.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        assertNotContainsText(viewForScotland, messages("aboutYourResults.more.info.para2"))
+        assertContainsText(viewForScotland, messages("aboutYourResults.more.info.title"))
+        assertContainsText(viewForScotland, messages("aboutYourResults.more.info.para1"))
+
+        assertRenderedByCssSelector(viewForNI, ".tfc")
+        viewForNI.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
+        viewForNI.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
+        viewForNI.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        assertNotContainsText(viewForNI, messages("aboutYourResults.more.info.para2"))
+        assertContainsText(viewForNI, messages("aboutYourResults.more.info.title"))
+        assertContainsText(viewForNI, messages("aboutYourResults.more.info.para1"))
+
       }
     }
   }

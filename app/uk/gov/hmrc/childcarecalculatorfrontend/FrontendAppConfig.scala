@@ -42,6 +42,7 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   lazy val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
   lazy val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
   lazy val surveyUrl = loadConfig("feedback-survey-frontend.host")
+  lazy val surveyThankYouUrl = loadConfig("feedback-survey-frontend.thankYou")
 
   lazy val authUrl = baseUrl("auth")
   lazy val loginUrl = loadConfig("urls.login")
