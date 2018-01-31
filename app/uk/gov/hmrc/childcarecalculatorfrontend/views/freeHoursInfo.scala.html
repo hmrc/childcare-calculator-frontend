@@ -39,7 +39,7 @@ isEligibleForOnlyOneScheme: Boolean = false)(implicit request: Request[_], messa
     <p>@messages(s"freeHoursInfo.para1.$location")</p>
 
     <h2 class="heading-medium">@messages(s"freeHoursInfo.heading2")</h2>
-    <p>@messages(s"freeHoursInfo.guidance")@if(isEligibleForOnlyOneScheme){ @messages("freeHoursInfo.li.30hours")} else {@messages("site.colon")}</p>
+    <p>@messages(s"freeHoursInfo.guidance")@if(isEligibleForOnlyOneScheme){ @messages("freeHoursInfo.li.30hours").} else {@messages("site.colon")}</p>
 
     <ul class="bullets">
 
