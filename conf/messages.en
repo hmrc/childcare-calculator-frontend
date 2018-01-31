@@ -169,7 +169,7 @@ freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
 freeHoursResult.info.OtherSchemes.childcare.cost.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
-freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare help from tax credits.
+freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
 freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. Tax-Free Childcare and tax credits are for working families and vouchers are offered by an employer.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
