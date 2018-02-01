@@ -43,6 +43,11 @@ class PartnerStatutoryPayBeforeTaxViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourStatutoryPayBeforeTaxController.onSubmit(NormalMode).url)
+    behave like yesNoPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.YourStatutoryPayBeforeTaxController.onSubmit(NormalMode).url,
+      Some(messages(s"$messageKeyPrefix.heading", statutoryType.toString))
+    )
   }
 }
