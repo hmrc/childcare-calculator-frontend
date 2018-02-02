@@ -25,41 +25,43 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+
+
 @(appConfig: FrontendAppConfig,
-        location: Location.Value,
-        eligibility: Eligibility,
-        paidEmployment: Boolean,
-        childcareCost: Boolean,
-        livingWithPartner: Boolean,
-        approvedProvider: Boolean)(implicit request: Request[_], messages: Messages)
+location: Location.Value,
+eligibility: Eligibility,
+paidEmployment: Boolean,
+childcareCost: Boolean,
+livingWithPartner: Boolean,
+approvedProvider: Boolean)(implicit request: Request[_], messages: Messages)
 
 
 @otherChildcareSchemesContent = {
     @if(!childcareCost) {
-            @messages("freeHoursResult.info.OtherSchemes.childcare.cost.text")
+    @messages("freeHoursResult.info.OtherSchemes.childcare.cost.text")
+    } else {
+        @if(!approvedProvider){
+        @messages("freeHoursResult.info.OtherSchemes.approved.text")
         } else {
-            @if(!approvedProvider){
-                @messages("freeHoursResult.info.OtherSchemes.approved.text")
-            } else {
-                @if(!paidEmployment) {
-                    @messages("freeHoursResult.info.OtherSchemes.paidwork.text")
-                }
+            @if(!paidEmployment) {
+                @messages("freeHoursResult.info.OtherSchemes.paidwork.text")
             }
+        }
     }
 }
 
 
 @main_template(
-    title = messages("freeHoursResult.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+title = messages("freeHoursResult.title"),
+appConfig = appConfig,
+bodyClasses = None) {
 
-    @components.back_link()
+@components.back_link()
 
-    @components.heading("freeHoursResult.title", "heading-xlarge")
+@components.heading("freeHoursResult.title", "heading-xlarge")
 
     @if(eligibility == Eligible) {
-
 
         @components.scheme_result(
             title = messages("freeHoursResult.info.fh"),
@@ -68,57 +70,91 @@
             periodText = Some(messages("freeHoursResult.partialEligible.guidance.england.period")),
             para1 = Some(messages(s"freeHoursResult.partialEligible.guidance.${location}")))
 
-        @components.scheme_result(
+
+
+        @if(childcareCost && approvedProvider && paidEmployment) {
+            @components.scheme_result(
+            title = messages("result.tc.title"),
+            para1 = Some(messages("result.uc.not.eligible.para")),
+            notEligibleID1 = Some("notEligibleTC1"))
+
+            @components.scheme_result(
+            title = messages("result.tfc.title"),
+            para1 = Some(messages("result.tfc.not.eligible")),
+            notEligibleID1 = Some("notEligibleTFC"))
+
+            @components.scheme_result(
+            title = messages("result.esc.title"),
+            para1 = Some(messages("result.esc.not.eligible.para1")),
+            notEligibleID1 = Some("notEligibleESC1"),
+            notEligibleID2 = Some("notEligibleESC2"))
+
+        } else {
+            @components.scheme_result(
             title = messages("freeHoursResult.info.OtherSchemes"),
             para1 = Some(otherChildcareSchemesContent.toString))
+        }
+
+
 
 
     } else {
+        @components.scheme_result(
+        title = messages("freeHoursResult.info.freHours"),
+        para1 = Some(messages("freeHoursResult.toBeEligible.free.hours")))
 
         @components.scheme_result(
-            title = messages("freeHoursResult.info.freHours"),
-            para1 = Some(messages("freeHoursResult.toBeEligible.free.hours")))
+        title = messages("freeHoursResult.info.OtherSchemes"),
+        para1 = Some(otherChildcareSchemesContent.toString))
 
         @components.scheme_result(
-            title = messages("freeHoursResult.info.OtherSchemes"),
-            para1 = Some(otherChildcareSchemesContent.toString))
+        title = messages("freeHoursResult.info.OtherSchemes"),
+        para1 = Some(otherChildcareSchemesContent.toString))
+
+
+        @components.scheme_result(
+        title = messages("freeHoursResult.info.OtherSchemes"),
+        para1 = Some(otherChildcareSchemesContent.toString))
+
 
     }
 
-    <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
+<h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
 
 
-        <p>
-            @if(!childcareCost) {
-                @messages("freeHoursResult.toBeEligible.childcare.cost.start")
-                <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
-                @messages("freeHoursResult.toBeEligible.childcare.cost.end")
+<p>
+    @if(!childcareCost) {
+    @messages("freeHoursResult.toBeEligible.childcare.cost.start")
+    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
+    @messages("freeHoursResult.toBeEligible.childcare.cost.end")
 
-            } else {
-                @if(!approvedProvider){
-                    @messages("freeHoursResult.toBeEligible.approved.provider.start")
-                    <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
-                    @messages("freeHoursResult.toBeEligible.approved.provider.end")
-                } else {
-                    @if(!paidEmployment) {
-                        @messages("freeHoursResult.toBeEligible.paid.work.start")
-                        @if(livingWithPartner){
-                            <a id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
-                        } else {
-                            <a id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
-                        }
-                        @messages("freeHoursResult.toBeEligible.paid.work.end")
-                    }
-                }
-            }
+    } else {
+    @if(!approvedProvider){
+    @messages("freeHoursResult.toBeEligible.approved.provider.start")
+    <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
+    @messages("freeHoursResult.toBeEligible.approved.provider.end")
+    } else {
+    @if(!paidEmployment) {
+    @messages("freeHoursResult.toBeEligible.paid.work.start")
+    @if(livingWithPartner){
+    <a id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+    } else {
+    <a id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+    }
+    @messages("freeHoursResult.toBeEligible.paid.work.end")
+    }
+    }
+    }
 
-        </p>
+</p>
 
-    <div class="feedback">
-        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
-            @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a> @messages("results.feedback.survey.text.after.link")
-        </p>
-    </div>
+<div class="feedback">
+    <p><a rel="external" target="_blank" id="feedbackSurveyLink"
+          href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+        @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a>
+        @messages("results.feedback.survey.text.after.link")
+    </p>
+</div>
 
 }
 
