@@ -78,6 +78,11 @@ class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerStatutoryPayController.onSubmit(NormalMode).url)
+    behave like yesNoPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.PartnerStatutoryPayController.onSubmit(NormalMode).url,
+      Some(messages(s"$messageKeyPrefix.heading", taxYearInfo.previousTaxYearStart.toString))
+    )
   }
 }

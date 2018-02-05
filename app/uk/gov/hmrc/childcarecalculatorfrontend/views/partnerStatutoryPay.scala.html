@@ -49,7 +49,7 @@
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
-            label = messages("partnerStatutoryPay.heading"),
+            label = messages("partnerStatutoryPay.heading", taxYearInfo.previousTaxYearStart),
             labelClass = Some("visually-hidden")
         )
 

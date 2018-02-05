@@ -31,7 +31,6 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
   "Result view" must {
 
     behave like normalPage(createView(),"result")
-    behave like resultPage(createView())
 
     "Contain results" when {
       "We have introductory paragraph" in {
@@ -129,5 +128,13 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance"))
     }
 
+    "display correct guidance when user is eligible for all schemes but Free Hours" in {
+      val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
+      assertNotContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+    }
   }
 }
