@@ -137,7 +137,7 @@
           details.__content.id = 'details-content-' + i
         }
 
-        // Remove ARIA role attribute from details for IOS bug - On IOS it doesn't read out click to expand which is not fixed
+        // Remove ARIA role attribute from details for IOS bug (On IOS it doesn't read out click to expand - now fixed)
         details.removeAttribute('role')
 
         // Add role=button to summary
