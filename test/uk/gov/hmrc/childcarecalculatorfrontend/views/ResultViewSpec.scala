@@ -31,7 +31,6 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
   "Result view" must {
 
     behave like normalPage(createView(),"result")
-    behave like resultPage(createView())
 
     "Contain results" when {
       "We have introductory paragraph" in {
