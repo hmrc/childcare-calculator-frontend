@@ -138,7 +138,7 @@
         }
 
         // Add ARIA role="group" to details
-        details.setAttribute('role', 'group')
+        details.removeAttribute('role')
 
         // Add role=button to summary
         details.__summary.setAttribute('role', 'button')
