@@ -64,7 +64,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
         val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, false, true, false)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, false, true, false,"")(fakeRequest, messages).toString
       }
 
       "you live on your own and don't work and childcare cost is with an approved provider" in {
@@ -82,7 +82,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
         val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, true, false, true)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, true, false, true,"")(fakeRequest, messages).toString
       }
 
       "you live on your own and don't work and childcare cost is not with an approved provider" in {
@@ -100,7 +100,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
         val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, true, false, false)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, true, false, false,"")(fakeRequest, messages).toString
       }
 
       "you live on your own and don't work and no childcare cost" in {
@@ -118,7 +118,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
         val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, false, false, false)(fakeRequest, messages).toString
+        contentAsString(result) mustBe freeHoursResult(frontendAppConfig,location,eligibility, false, false, false, false,"")(fakeRequest, messages).toString
       }
 
     }

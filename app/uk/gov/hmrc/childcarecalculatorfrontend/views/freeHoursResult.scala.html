@@ -23,6 +23,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 @import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
@@ -34,7 +35,8 @@ eligibility: Eligibility,
 paidEmployment: Boolean,
 childcareCost: Boolean,
 livingWithPartner: Boolean,
-approvedProvider: Boolean)(implicit request: Request[_], messages: Messages)
+approvedProvider: Boolean,
+tcOrUc: String = "")(implicit request: Request[_], messages: Messages)
 
 
 @otherChildcareSchemesContent = {
@@ -70,13 +72,18 @@ bodyClasses = None) {
             periodText = Some(messages("freeHoursResult.partialEligible.guidance.england.period")),
             para1 = Some(messages(s"freeHoursResult.partialEligible.guidance.${location}")))
 
-
-
-        @if(childcareCost && approvedProvider && paidEmployment) {
-            @components.scheme_result(
-            title = messages("result.tc.title"),
-            para1 = Some(messages("result.uc.not.eligible.para")),
-            notEligibleID1 = Some("notEligibleTC1"))
+            @if(childcareCost && approvedProvider && paidEmployment) {
+                    @if(tcOrUc == ChildcareConstants.universalCredits){
+                        @components.scheme_result(
+                        title = messages("result.tc.title"),
+                        para1 = Some(messages("result.uc.not.eligible.para")),
+                        notEligibleID1 = Some("notEligibleTC1"))
+                    } else{
+                        @components.scheme_result(
+                        title = messages("result.tc.title"),
+                        para1 = Some(messages("result.tc.not.eligible.para1")),
+                        notEligibleID1 = Some("notEligibleTC1"))
+                    }
 
             @components.scheme_result(
             title = messages("result.tfc.title"),

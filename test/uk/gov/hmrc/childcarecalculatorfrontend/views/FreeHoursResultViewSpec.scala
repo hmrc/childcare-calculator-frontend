@@ -27,14 +27,18 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "freeHoursResult"
 
-  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND, NotEligible, false, true, false, false)(fakeRequest, messages)
+  def createView = () => freeHoursResult(frontendAppConfig, Location.ENGLAND,NotEligible, false, true, false, false, "tc" )(fakeRequest, messages)
 
   def createViewWithAnswers = (location: Location.Value,
                                eligibility:Eligibility,
-                               inPaidWork:Boolean, childcareCost: Boolean, livingWithPartner: Boolean, approvedProvider: Boolean) => freeHoursResult(frontendAppConfig,
+                               inPaidWork:Boolean,
+                               childcareCost: Boolean,
+                               livingWithPartner: Boolean,
+                               approvedProvider: Boolean,
+                               tcOrUc: String) => freeHoursResult(frontendAppConfig,
     location,
     eligibility,
-    inPaidWork, childcareCost, livingWithPartner, approvedProvider)(fakeRequest, messages)
+    inPaidWork, childcareCost, livingWithPartner, approvedProvider,tcOrUc)(fakeRequest, messages)
 
   "FreeHoursResult view" must {
 
@@ -57,7 +61,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND,NotEligible, false, false, false, false,""))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.childcare.cost.text"))
@@ -80,7 +84,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, true, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND,NotEligible, false, true, false, false,""))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
         assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.approved.text"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.approved.provider.start"))
@@ -103,7 +107,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, true, false, true))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, NotEligible, false, true, false, true,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
         assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.paidwork.text"))
@@ -126,7 +130,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, false, false, false,""))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.childcare.cost.text"))
@@ -149,7 +153,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, true, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, true, false, false,""))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
         assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.approved.text"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.approved.provider.start"))
@@ -172,7 +176,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, true, false, true))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, false, true, false, true,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
         assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.paidwork.text"))
@@ -195,7 +199,7 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
 
         val answerSections = Seq(AnswerSection(None, Seq(answerRow)))
 
-        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, NotEligible, true, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, NotEligible, true, false, false, false,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.free.hours"))
 
@@ -210,31 +214,159 @@ class FreeHoursResultViewSpec extends ViewBehaviours {
       }
 
       "eligible for 16 free hours for scotland and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, true, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, true, false, false, false,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.scotland"))
       }
 
       "eligible for 10 free hours for wales and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, true, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, true, false, false, false,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.wales"))
       }
 
       "eligible for 12.5 free hours for northern-ireland and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, true, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, true, false, false, false,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
       }
 
       "eligible for 15 free hours for England and not eligible for other schemes" in {
-        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, true, false, false, false))
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, true, false, false, false,""))
 
         assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.england"))
         assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.england"))
+      }
+
+      "eligible for 16 free hours for scotland, gets tc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, true, true, false, true,"tc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.scotland"))
+
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.tc.not.eligible.para1"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+
+
+      }
+
+      "eligible for 16 free hours for scotland, gets uc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.SCOTLAND, Eligible, true, true, false, true,"uc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.scotland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.scotland"))
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.uc.not.eligible.para"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+
+
+      }
+
+      "eligible for 10 free hours for wales, gets tc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, true, true, true, true,"tc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.wales"))
+
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.tc.not.eligible.para1"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+      }
+
+      "eligible for 10 free hours for wales, gets uc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.WALES, Eligible, true, true, false, true,"uc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.wales"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.wales"))
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.uc.not.eligible.para"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+      }
+
+      "eligible for 12.5 free hours for northern-ireland, gets tc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, true, true, true, true,"tc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
+
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.tc.not.eligible.para1"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+      }
+
+      "eligible for 12.5 free hours for northern-ireland, gets uc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.NORTHERN_IRELAND, Eligible, true, true, false, true,"uc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.northern-ireland"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.northern-ireland"))
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.uc.not.eligible.para"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+      }
+
+      "eligible for 15 free hours for England, gets tc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, true, true, true, true,"tc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.england"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.england"))
+
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.tc.not.eligible.para1"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
+      }
+
+      "eligible for 15 free hours for England, gets uc and not eligible for other schemes" in {
+        val doc = asDocument(createViewWithAnswers(Location.ENGLAND, Eligible, true, true, false, true,"uc"))
+
+        assertContainsText(doc, messagesApi("freeHoursResult.info.entitled.england"))
+        assertContainsText(doc, messagesApi("freeHoursResult.partialEligible.guidance.england"))
+
+        assertContainsText(doc, messagesApi("result.tc.title"))
+        assertContainsText(doc, messagesApi("result.uc.not.eligible.para"))
+
+        assertContainsText(doc, messagesApi("result.tfc.title"))
+        assertContainsText(doc, messagesApi("result.tfc.not.eligible"))
+        assertContainsText(doc, messagesApi("result.esc.title"))
+        assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
       }
     }
   }
