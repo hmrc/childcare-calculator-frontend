@@ -62,7 +62,7 @@ class SurveyDoNotUnderstandController @Inject()(
           val data = Map("reasonForNotUnderstanding" -> value)
 
           splunkSubmissionService.submit(data).map {
-            case SubmissionSuccessful => Logger.info( s"reasonForNotUnderstanding logged to Splunk [${value}]")
+            case SubmissionSuccessful => Logger.warn(s"reasonForNotUnderstanding logged to Splunk [${value}]")
             case SubmissionFailed => Logger.warn("reasonForNotUnderstanding failed to log to Splunk")
           }
 
