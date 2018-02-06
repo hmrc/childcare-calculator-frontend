@@ -59,11 +59,10 @@ class SurveyDoNotUnderstandController @Inject()(
           Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
         (value) => {
 
-          Logger.warn(s"reasonForNotUnderstanding: ${value}")
           val data = Map("reasonForNotUnderstanding" -> value)
 
           splunkSubmissionService.submit(data).map {
-            case SubmissionSuccessful => Logger.info("reasonForNotUnderstanding logged to Splunk")
+            case SubmissionSuccessful => Logger.info( s"reasonForNotUnderstanding logged to Splunk [${value}]")
             case SubmissionFailed => Logger.warn("reasonForNotUnderstanding failed to log to Splunk")
           }
 
