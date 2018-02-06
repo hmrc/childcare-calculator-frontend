@@ -31,7 +31,7 @@ class ModelFactory @Inject() () {
     val Both: String = YouPartnerBothEnum.BOTH.toString
     val Partner: String = YouPartnerBothEnum.PARTNER.toString
 
-    def checkMinEarnings(minEarnings: Boolean, selfOrApprentice: Option[String], self: Boolean): Option[Boolean] = {
+    def checkMinEarnings(minEarnings: Boolean, selfOrApprentice: Option[String], employedLessThan12Months: Boolean ,self: Boolean): Option[Boolean] = {
       val strAppOrSelf = if(self) {
         SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
       } else {
@@ -40,7 +40,9 @@ class ModelFactory @Inject() () {
       if (!minEarnings) {
         selfOrApprentice.flatMap {
           case str if str == strAppOrSelf =>
-            Some(true)
+            {
+              Some(true)
+            }
           case _ =>
             Some(false)
         }
@@ -64,7 +66,7 @@ class ModelFactory @Inject() () {
               case _ => Some(false)
             }
 
-          parentApprentice = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, FALSE).getOrElse(false)
+          parentApprentice = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, answers. ,FALSE).getOrElse(false)
 
           partnerApprentice = checkMinEarnings(partnerMinEarnings, answers.partnerSelfEmployedOrApprentice, FALSE).getOrElse(false)
 
