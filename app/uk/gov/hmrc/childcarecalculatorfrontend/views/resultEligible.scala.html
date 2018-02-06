@@ -55,7 +55,9 @@
         couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.tfc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.tfc.period")),
-        para1 = Some(messages("result.tfc.para1")))
+        para1 = Some(messages("result.tfc.para1")),
+        displayWarning = model.showTFCWarning,
+        warningMessage = model.tfcWarningMessage)
 }
 
 @if(model.esc.isDefined) {
