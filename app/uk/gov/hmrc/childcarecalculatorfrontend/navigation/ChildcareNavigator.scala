@@ -157,9 +157,6 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
       if (registeredBlind) {
         Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
       } else {
-        approvedEducation <- answers.childApprovedEducation(id)
-
-
         Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
       }
     } else {
