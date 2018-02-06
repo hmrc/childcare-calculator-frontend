@@ -35,7 +35,7 @@
 
     <p>@messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)</p>
 
-    @helpers.form(action = YourStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = YourStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(InputViewModel[Int]("value", form),
             label = messages("yourStatutoryWeeks.heading", viewModel.statutoryTypeMessage),

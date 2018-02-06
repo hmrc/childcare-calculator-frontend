@@ -43,7 +43,7 @@
 
     @components.heading(heading, "heading-xlarge")
 
-    @helpers.form(action = AboutYourChildController.onSubmit(mode, index), 'autoComplete -> "off") {
+    @helpers.form(action = AboutYourChildController.onSubmit(mode, index), 'autoComplete -> "off", 'novalidate -> "") {
 
         @if(index == 0){
             <div class="panel-indent panel-border-wide panel-info">

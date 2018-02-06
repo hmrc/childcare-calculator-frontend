@@ -34,7 +34,7 @@
 
     @components.heading("parentEmploymentIncomePY.heading", "heading-xlarge")
 
-    @helpers.form(action = ParentEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = ParentEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         <p>@messages("parentEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
         <p>@messages("parentEmploymentIncomePY.hint")</p>

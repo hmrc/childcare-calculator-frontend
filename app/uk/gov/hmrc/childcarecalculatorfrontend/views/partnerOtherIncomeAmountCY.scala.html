@@ -33,7 +33,7 @@
 
     @components.heading("partnerOtherIncomeAmountCY.heading", "heading-xlarge")
 
-    @helpers.form(action = PartnerOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = PartnerOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),
