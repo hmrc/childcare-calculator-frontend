@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
-import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -31,6 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService, SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
+import play.api.Logger
 
 import scala.concurrent.Future
 
@@ -59,6 +59,7 @@ class SurveyDoNotUnderstandController @Inject()(
           Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
         (value) => {
 
+          Logger.warn(s"reasonForNotUnderstanding: ${value}")
           val data = Map("reasonForNotUnderstanding" -> value)
 
           splunkSubmissionService.submit(data).map {
