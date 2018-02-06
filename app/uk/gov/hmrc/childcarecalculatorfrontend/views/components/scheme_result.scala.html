@@ -31,17 +31,17 @@
 
 <div class="grid-row">
     <div class="column-full">
-        <div class="panel panel-border-wide @if(eligibility) {green} else {red}">
+        <div class="panel panel-border-wide @if(eligibility.isDefined) {green} else {red}">
             <h3 class="heading-medium results--heading">@title</h3>
             <p>@couldGet <span class="heading-xlarge results">@eligibility</span>
                 @periodText</p>
-            @if(para1) {
-                <p @if(notEligibleID1) { id="@notEligibleID1" }>@para1</p>
+            @if(para1.isDefined) {
+                <p @if(notEligibleID1.isDefined) { id="@notEligibleID1" }>@para1</p>
             }
-            @if(para2) {
-                <p @if(notEligibleID2) { id="@notEligibleID2" }>@para2</p>
+            @if(para2.isDefined) {
+                <p @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
             }
-            @if(para3) {
+            @if(para3.isDefined) {
                 <p>@para3</p>
             }
             @if(displayWarning) {
