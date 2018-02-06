@@ -42,7 +42,7 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
 
 
       val childcareCost = request.userAnswers.childcareCosts.fold(false){
-        case "no" => false
+        case ChildcareConstants.no => false
         case _ => true
       }
 
@@ -52,7 +52,7 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
       val paidEmployment = checkIfInEmployment(request.userAnswers)
 
       val approvedProvider = request.userAnswers.approvedProvider.fold(false){
-        case "NO" => false
+        case ChildcareConstants.no => false
         case _ => true
       }
 
