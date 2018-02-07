@@ -338,7 +338,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   "Are any of your children registered blind" must {
     "user has a single child" when {
       "redirect to `How often do you expect to pay for childcare` when the user answers `Yes`" in {
-        val answers: UserAnswers =spy(userAnswers())
+        val answers: UserAnswers = spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
@@ -361,7 +361,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to Your Income This Year" when {
         "the child is over 16 and is single parent" in {
-          val answers: UserAnswers =spy(userAnswers())
+          val answers: UserAnswers = spy(userAnswers())
           when(answers.noOfChildren).thenReturn(Some(1))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
@@ -370,6 +370,20 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.YourIncomeInfoController.onPageLoad()
+        }
+      }
+
+      "redirect to Partner Income This Year" when {
+        "the child is over 16 and is single parent" in {
+          val answers: UserAnswers = spy(userAnswers())
+          when(answers.noOfChildren).thenReturn(Some(1))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16))))
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
         }
       }
     }
@@ -393,6 +407,19 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
       }
+
+      /*"redirect to `Your Income This Year` when the user answers `No` and all the children aged above 16, single user" in {
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.noOfChildren).thenReturn(Some(2))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.YourIncomeInfoController.onPageLoad()
+      }*/
+
     }
 
     "redirect to `Session Expired` when `childrenWithCosts` is undefined and there's a single child" in {

@@ -153,10 +153,15 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     for {
       noOfChildren    <- answers.noOfChildren
       registeredBlind <- answers.registeredBlind
+
+
+
     } yield if (noOfChildren > 1) {
       if (registeredBlind) {
         Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
       } else {
+
+
         Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
       }
     } else {
@@ -167,6 +172,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
         if (answers.childrenOver16.fold(0)(_.size) > 0){
           utils.getCall(answers.doYouLiveWithPartner)  {
             case false => routes.YourIncomeInfoController.onPageLoad()
+            case true => routes.PartnerIncomeInfoController.onPageLoad()
           }
         }
         else {
