@@ -25,13 +25,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.over19
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSugar {
 
-  val navigator: SubNavigator = new ChildcareNavigator()
+  val navigator: SubNavigator = new ChildcareNavigator(new Utils())
 
   "Number of children" must {
     "redirect to `About your child`" in {
@@ -322,7 +322,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Any children blind` when this is the only child" in {
       val answers: UserAnswers = userAnswers(
-        NoOfChildrenId.toString               -> JsNumber(1),
+        NoOfChildrenId.toString -> JsNumber(1),
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
@@ -338,29 +338,34 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   "Are any of your children registered blind" must {
     "user has a single child" when {
       "redirect to `How often do you expect to pay for childcare` when the user answers `Yes`" in {
-        val answers: UserAnswers = mock[UserAnswers]
+        val answers: UserAnswers =spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-        when(answers.registeredBlind).thenReturn(Some(true))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusYears(1)))))
+
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
       }
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No`" in {
-        val answers: UserAnswers = mock[UserAnswers]
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusYears(1)))))
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
+
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
       }
 
       "redirect to Your Income This Year when the child is over 16 and is single parent" in {
-        val answers: UserAnswers = mock[UserAnswers]
-          when(answers.noOfChildren).thenReturn(Some(1))
-          when(answers.registeredBlind).thenReturn(Some(false))
-          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test",dob16))))
+        val answers: UserAnswers =spy(userAnswers())
+        when(answers.noOfChildren).thenReturn(Some(1))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.YourIncomeInfoController.onPageLoad()

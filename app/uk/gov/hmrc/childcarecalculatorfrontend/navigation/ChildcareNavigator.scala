@@ -24,9 +24,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-class ChildcareNavigator @Inject() () extends SubNavigator {
+class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected lazy val routeMap: PartialFunction[Identifier, UserAnswers => Call] = {
     case NoOfChildrenId => _ => routes.AboutYourChildController.onPageLoad(NormalMode, 0)
@@ -164,11 +164,18 @@ class ChildcareNavigator @Inject() () extends SubNavigator {
         children   <- answers.childrenWithCosts
         childIndex <- children.toSeq.headOption
       } yield {
-        routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
+        if (answers.childrenOver16.fold(0)(_.size) > 0){
+          utils.getCall(answers.doYouLiveWithPartner)  {
+            case false => routes.YourIncomeInfoController.onPageLoad()
+          }
+        }
+        else {
+          routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
+        }
       }
     }
   }.flatten.getOrElse(routes.SessionExpiredController.onPageLoad())
-`
+
   private def whoHasChildcareCostsRoutes(answers: UserAnswers): Call = {
     for {
       children   <- answers.childrenWithCosts
