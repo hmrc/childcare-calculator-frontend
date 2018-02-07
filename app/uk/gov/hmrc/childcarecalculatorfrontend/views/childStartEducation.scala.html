@@ -33,7 +33,7 @@
 
     @components.heading(messages("childStartEducation.heading", name), "heading-xlarge")
 
-    @helpers.form(action = ChildStartEducationController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
+    @helpers.form(action = ChildStartEducationController.onSubmit(mode, childIndex), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_date(
             field = form("date"),

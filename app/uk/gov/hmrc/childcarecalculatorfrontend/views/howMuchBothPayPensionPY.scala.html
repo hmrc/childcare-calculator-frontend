@@ -34,7 +34,7 @@
 
     @components.heading("howMuchBothPayPensionPY.heading", "heading-xlarge")
 
-    @helpers.form(action = HowMuchBothPayPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = HowMuchBothPayPensionPYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(
             InputViewModel[HowMuchBothPayPensionPY]("howMuchYouPayPensionPY", form),

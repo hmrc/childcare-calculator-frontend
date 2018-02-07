@@ -35,7 +35,7 @@
 
     <p>@messages("partnerWorkHours.para1")</p>
 
-    @helpers.form(action = PartnerWorkHoursController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = PartnerWorkHoursController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(InputViewModel[BigDecimal]("value", form), label = messages("partnerWorkHours.heading"), labelClass=Some("visually-hidden"))
 
