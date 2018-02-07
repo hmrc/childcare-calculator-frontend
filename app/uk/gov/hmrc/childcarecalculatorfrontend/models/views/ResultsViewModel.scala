@@ -26,7 +26,9 @@ case class ResultsViewModel(firstParagraph : String = "",
                             freeHours:Option[BigDecimal] = None,
                             location:Option[Location.Value] = None,
                             childAgedTwo: Boolean = false,
-                            taxCreditsOrUC: Option[String] = None) {
+                            taxCreditsOrUC: Option[String] = None,
+                            showTFCWarning: Boolean = false,
+                            tfcWarningMessage: String = "") {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 

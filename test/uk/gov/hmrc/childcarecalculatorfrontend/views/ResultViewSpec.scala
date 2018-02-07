@@ -136,5 +136,23 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
       assertNotContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
     }
+
+    "display TFC warning message" when {
+      "it is needed" in {
+        val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = Some(200),showTFCWarning = true, tfcWarningMessage = "this is a test")
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+        assertContainsText(view, "this is a test")
+      }
+    }
+
+    "not display TFC warning message" when {
+      "it is not needed" in {
+        val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = None, showTFCWarning = false, tfcWarningMessage = "this is a test")
+        val view = asDocument(result(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+
+        assertNotContainsText(view, "this is a test")
+      }
+    }
   }
 }

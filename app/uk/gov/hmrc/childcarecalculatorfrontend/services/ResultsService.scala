@@ -39,10 +39,19 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
   def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
-    val result = eligibilityService.eligibility(answers)
+    val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
-     result.map(results => {
-      results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
+    result.map(results => {
+      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
+
+      if (result.tc.isDefined && result.tfc.isDefined)
+        result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.tc.warning"))
+      else {
+        if (result.taxCreditsOrUC == Some("uc") && result.tfc.isDefined)
+          result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.uc.warning"))
+        else
+          result
+      }
     })
   }
 
