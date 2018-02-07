@@ -37,12 +37,9 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/childcarecalculatorfrontend-app.css")' />
 
-    <script src='@AssetsController.at("javascripts/timeout-dialog.js")' type="text/javascript"></script>
-
     <script type="text/javascript" charset="utf-8">
         $.timeoutDialog({
-            timeout: @appConfig.defaultTimeoutSeconds,
-            countdown: 60,
+            timeout: 1800,
             message: "Session timeout"
             keep_alive_url: '/keep-alive',
             logout_url: '/this-service-has-been-reset'
