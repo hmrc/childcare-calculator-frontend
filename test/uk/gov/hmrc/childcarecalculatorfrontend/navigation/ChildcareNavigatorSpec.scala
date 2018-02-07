@@ -21,6 +21,7 @@ import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito._
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.over19
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
@@ -335,9 +336,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   }
 
   "Are any of your children registered blind" must {
-
     "user has a single child" when {
-
       "redirect to `How often do you expect to pay for childcare` when the user answers `Yes`" in {
         val answers: UserAnswers = mock[UserAnswers]
         when(answers.noOfChildren).thenReturn(Some(1))
@@ -354,6 +353,18 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.registeredBlind).thenReturn(Some(false))
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+
+      "redirect to Your Income This Year when the child is over 16 and is single parent" in {
+        val answers: UserAnswers = mock[UserAnswers]
+          when(answers.noOfChildren).thenReturn(Some(1))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test",dob16))))
+
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.YourIncomeInfoController.onPageLoad()
       }
     }
 
