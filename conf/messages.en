@@ -1350,3 +1350,7 @@ results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
 
+timeout.heading = Your session is about to expire
+timeout.message = Session timeout in
+timeout.continue = Continue using the calculator
+timeout.exit = Leave the calculator

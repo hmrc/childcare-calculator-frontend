@@ -23,12 +23,12 @@
   contentHeader: Option[Html] = None,
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
+  timeout: Option[Boolean] = None,
   scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
 @import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
 @head = {
     @uiLayouts.head(
@@ -36,17 +36,6 @@
       headScripts = None)
     <meta name="format-detection" content="telephone=no" />
     <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/childcarecalculatorfrontend-app.css")' />
-
-    <script type="text/javascript" charset="utf-8">
-        $.timeoutDialog({
-            timeout: 1800,
-            message: "Session timeout"
-            keep_alive_url: '/keep-alive',
-            logout_url: '/this-service-has-been-reset'
-        });
-        var dialogOpen;
-    </script>
-
 }
 
 @headerNavLinks = {}
@@ -69,6 +58,20 @@
       scriptElem = scriptElem,
       gaCalls = None)
       <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
+        @if(timeout.getOrElse(true)) {
+            <script type="text/javascript" charset="utf-8">
+                $.timeoutDialog({
+                    timeout: 5000,
+                    title: "@messages("timeout.heading")",
+                    message: "@messages("timeout.message")",
+                    keep_alive_button_text: "@messages("timeout.continue")",
+                    sign_out_button_text: "@messages("timeout.exit")",
+                    keep_alive_url: '/childcare-calc/session-extend',
+                    logout_url: '/childcare-calc/this-service-has-been-reset'
+                });
+                var dialogOpen;
+            </script>
+        }
 }
 
 @footerTop = {}
