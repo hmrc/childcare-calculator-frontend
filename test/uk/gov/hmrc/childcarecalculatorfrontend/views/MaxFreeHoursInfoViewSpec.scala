@@ -29,7 +29,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
   "MaxFreeHoursInfo view" must {
 
-    //behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "info.link", "info.link.url", "info.part2", "still.to.check")
+    behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "info.link", "info.link.url", "info.part2", "still.to.check")
 
     "display correct message when only eligible for tax free childcare" in {
       val view = maxFreeHoursInfo(frontendAppConfig, Eligible, false, NotEligible) (fakeRequest, messages)
