@@ -68,19 +68,30 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
+          "0" -> Json.toJson(AboutYourChild("Foo", over16.minusYears(1).plusMonths(7))),
           "1" -> Json.toJson(AboutYourChild("Bar", under16)),
           "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16))
+          "3" -> Json.toJson(AboutYourChild("Baz", over16.minusYears(1).plusMonths(7)))
         )
       )
 
       val result = helper(answers).childrenOver16
-      result.value must contain(0 -> AboutYourChild("Foo", over16))
-      result.value must contain(3 -> AboutYourChild("Baz", over16))
+      result.value must contain(0 -> AboutYourChild("Foo", over16.minusYears(1).plusMonths(7)))
+      result.value must contain(3 -> AboutYourChild("Baz", over16.minusYears(1).plusMonths(7)))
       result.value mustNot contain(1 -> AboutYourChild("Bar", under16))
       result.value mustNot contain(2 -> AboutYourChild("Quux", under16))
     }
+
+    "not return any children who are over 16 but Birthday is before 31st of August" in {
+      val over16WithBirthdayBefore31stOfAugust = LocalDate.now.minusYears(16).minusDays(1)
+
+      val answers: CacheMap = cacheMap(
+        AboutYourChildId.toString -> Json.obj("0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)))
+      )
+      val result = helper(answers).childrenOver16
+      result.get.size mustBe 0
+    }
+
 
     "return `None` when there are no children defined" in {
       val answers: CacheMap = cacheMap()
