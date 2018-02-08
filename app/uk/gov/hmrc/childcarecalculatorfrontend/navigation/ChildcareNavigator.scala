@@ -151,31 +151,55 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def registeredBlindRoutes(answers: UserAnswers): Call = {
     for {
-      noOfChildren    <- answers.noOfChildren
-      registeredBlind <- answers.registeredBlind
-    } yield if (noOfChildren > 1) {
-      if (registeredBlind) {
-        Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
-      } else {
-          isAnyChildLessThan16(answers.aboutYourChild)
-      }
+      totalNumberOfChildren    <- answers.noOfChildren
+      isAnyChildRegisteredBlind <- answers.registeredBlind
+    } yield if (totalNumberOfChildren > 1) {
+      handleMultipleChildrenRoute(answers, totalNumberOfChildren, isAnyChildRegisteredBlind)
     } else {
-      for {
-        children   <- answers.childrenWithCosts
-        childIndex <- children.toSeq.headOption
-      } yield {
-        if (answers.childrenOver16.fold(0)(_.size) > 0){
-          utils.getCall(answers.doYouLiveWithPartner)  {
-            case false => routes.YourIncomeInfoController.onPageLoad()
-            case true => routes.PartnerIncomeInfoController.onPageLoad()
-          }
-        }
-        else {
-          routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
-        }
-      }
+      handleSingleChildRoute(answers)
     }
   }.flatten.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+
+  private def handleSingleChildRoute(answers: UserAnswers) = {
+    for {
+      children <- answers.childrenWithCosts
+      childIndex <- children.toSeq.headOption
+    } yield {
+      if (answers.numberOfChildrenOver16 > 0) {
+        utils.getCall(answers.doYouLiveWithPartner) {
+          case false => routes.YourIncomeInfoController.onPageLoad()
+          case true => routes.PartnerIncomeInfoController.onPageLoad()
+        }
+      }
+      else {
+        routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
+      }
+    }
+  }
+
+  private def handleMultipleChildrenRoute(answers: UserAnswers, totalNumberOfChildren: Int, isAnyChildRegisteredBlind: Boolean) = {
+    if (isAnyChildRegisteredBlind) {
+      Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
+    } else {
+      if (answers.numberOfChildrenOver16 == totalNumberOfChildren) {
+        routeToIncomeInfoPage(answers)
+      }
+      else {
+        Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
+      }
+    }
+  }
+
+  private def routeToIncomeInfoPage(answers: UserAnswers) = {
+    val livesWithPartner = answers.doYouLiveWithPartner.fold(false)(c => c)
+    if (livesWithPartner) {
+      Some(routes.PartnerIncomeInfoController.onPageLoad())
+    }
+    else {
+      Some(routes.YourIncomeInfoController.onPageLoad())
+    }
+  }
 
   private def whoHasChildcareCostsRoutes(answers: UserAnswers): Call = {
     for {
@@ -209,18 +233,4 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       }
     }
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
-
-
-  private def  isAnyChildLessThan16(childrenMap: Option[Map[Int, AboutYourChild]]) = {
-
-
-
-     childrenMap match {
-       case Some(children) => {
-         children.foldLeft(false)((over16, childDetails) => checkAge(over16, age))
-         Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
-       }
-       case _ => Some(routes.SessionExpiredController.onPageLoad())
-     }
-  }
 }

@@ -399,15 +399,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         result mustEqual routes.WhichChildrenBlindController.onPageLoad(NormalMode)
       }
 
-      "redirect to `Who has childcare costs` when the user answers `No`" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        when(answers.noOfChildren).thenReturn(Some(2))
-        when(answers.childrenWithCosts).thenReturn(None)
-        when(answers.registeredBlind).thenReturn(Some(false))
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
-      }
-
       "redirect to `Your Income This Year` when the user answers `No` and all the children aged above 16, single user" in {
         val answers: UserAnswers = spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(2))
@@ -420,6 +411,29 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         result mustEqual routes.YourIncomeInfoController.onPageLoad()
       }
 
+      "redirect to `Partner Income This Year` when the user answers `No` and all the children aged above 16, both user" in {
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.noOfChildren).thenReturn(Some(2))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+      }
+
+      "redirect to `Who has childcare costs` when the user answers `No` and all the children aged below 16, both user" in {
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.noOfChildren).thenReturn(Some(2))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusMonths(3)),1 -> AboutYourChild("Dan", LocalDate.now().minusMonths(10)))))
+
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
+      }
     }
 
     "redirect to `Session Expired` when `childrenWithCosts` is undefined and there's a single child" in {

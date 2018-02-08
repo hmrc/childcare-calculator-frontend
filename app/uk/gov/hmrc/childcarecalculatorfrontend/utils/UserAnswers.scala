@@ -305,7 +305,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     }
   }
 
-  // TODO 31st August
   def childrenOver16: Option[Map[Int, AboutYourChild]] = {
     aboutYourChild.map {
       children =>
@@ -314,6 +313,10 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
             model.dob.isBefore(LocalDate.now.minusYears(16))
         }
     }
+  }
+
+  def numberOfChildrenOver16 = {
+    childrenOver16.fold(0)(_.size)
   }
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
