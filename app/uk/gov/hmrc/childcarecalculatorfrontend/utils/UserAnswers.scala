@@ -310,10 +310,14 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
       children =>
         children.filter {
           case (_, model) => {
-            (model.dob.isBefore(LocalDate.now.minusYears(16))  || (model.dob.plusYears(16).getYear == LocalDate.now.getYear && model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear}-08-31"))))
+            (model.dob.isBefore(LocalDate.now.minusYears(16))  || is16ThisYearAndDateOfBirthIsAfter31stAugust(model))
           }
         }
     }
+  }
+
+  private def is16ThisYearAndDateOfBirthIsAfter31stAugust(model: AboutYourChild) = {
+    (model.dob.plusYears(16).getYear == LocalDate.now.getYear && model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear}-08-31")))
   }
 
   def numberOfChildrenOver16 = {
