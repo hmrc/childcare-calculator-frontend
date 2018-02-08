@@ -568,7 +568,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         i.toString -> Json.toJson(AboutYourChild(name, dob))
     }.toMap)
 
-  private lazy val dob16: LocalDate = LocalDate.now.minusYears(16).minusDays(1)
+  private lazy val dob16: LocalDate = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
   private lazy val dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
   private lazy val dob: LocalDate = LocalDate.now.minusYears(1)
 }
