@@ -153,16 +153,11 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     for {
       noOfChildren    <- answers.noOfChildren
       registeredBlind <- answers.registeredBlind
-
-
-
     } yield if (noOfChildren > 1) {
       if (registeredBlind) {
         Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
       } else {
-
-
-        Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
+          isAnyChildLessThan16(answers.aboutYourChild)
       }
     } else {
       for {
@@ -214,4 +209,18 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       }
     }
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+
+  private def  isAnyChildLessThan16(childrenMap: Option[Map[Int, AboutYourChild]]) = {
+
+
+
+     childrenMap match {
+       case Some(children) => {
+         children.foldLeft(false)((over16, childDetails) => checkAge(over16, age))
+         Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
+       }
+       case _ => Some(routes.SessionExpiredController.onPageLoad())
+     }
+  }
 }

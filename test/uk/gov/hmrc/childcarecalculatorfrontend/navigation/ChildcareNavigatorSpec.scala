@@ -408,7 +408,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
       }
 
-      /*"redirect to `Your Income This Year` when the user answers `No` and all the children aged above 16, single user" in {
+      "redirect to `Your Income This Year` when the user answers `No` and all the children aged above 16, single user" in {
         val answers: UserAnswers = spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(2))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
@@ -418,7 +418,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.YourIncomeInfoController.onPageLoad()
-      }*/
+      }
 
     }
 
