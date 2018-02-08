@@ -557,6 +557,63 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
+      "has a parent who is self employed for less than 12 months and partner has minimum earnings" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED),
+            selfEmployedIn12Months = Some(true), amount = BigDecimal(112))),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(amount = 89)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 4, 6)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
+        when(answers.yourSelfEmployed) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
 
       "has a parent and partner and both have minimum earnings and either of maximum earnings is true" in {
         val parent = Claimant(
