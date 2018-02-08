@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
@@ -59,6 +60,17 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.still.to.check"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
+    }
+
+    "display correct message when user selected Universal credits and only eligible for tax free childcare, " +
+      "childcare vouchers " in {
+
+      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, true, Eligible, universalCredits ) (fakeRequest, messages)
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.still.to.check"))
+      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
+
     }
   }
 

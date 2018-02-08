@@ -66,5 +66,5 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
       assertContainsText(doc, messagesApi("freeHoursInfo.li.30hours"))
       assertNotRenderedByCssSelector(doc, "bullets")
     }
-  }
+   }
 }
