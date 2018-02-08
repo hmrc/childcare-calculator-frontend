@@ -87,6 +87,11 @@
                 <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance")</li>
             }
 
+            @if(model.isEligibleForAllButFreeHours) {
+                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
+                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance")</li>
+            }
+
         </ul>
 
         @components.button_link(
@@ -99,9 +104,4 @@
         @resultNotEligible(model)
     }
 
-    <div class="feedback">
-        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
-        @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a> @messages("results.feedback.survey.text.after.link")
-        </p>
-    </div>
 }

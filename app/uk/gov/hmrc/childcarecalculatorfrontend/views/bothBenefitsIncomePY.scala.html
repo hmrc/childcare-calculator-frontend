@@ -34,7 +34,7 @@
 
     @components.heading("bothBenefitsIncomePY.heading", "heading-xlarge")
 
-    @helpers.form(action = BothBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = BothBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(
             InputViewModel[BothBenefitsIncomePY]("parentBenefitsIncomePY", form),

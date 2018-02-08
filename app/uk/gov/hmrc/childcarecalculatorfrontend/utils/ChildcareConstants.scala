@@ -20,6 +20,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 object ChildcareConstants {
 
+
+  val England : String = Location.ENGLAND.toString
+
   val YouSelected: String = YouPartnerBothNeitherEnum.YOU.toString
   val PartnerSelected: String = YouPartnerBothNeitherEnum.PARTNER.toString
   val BothSelected: String = YouPartnerBothNeitherEnum.BOTH.toString

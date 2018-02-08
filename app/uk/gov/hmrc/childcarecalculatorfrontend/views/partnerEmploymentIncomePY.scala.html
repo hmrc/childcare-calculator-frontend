@@ -34,7 +34,7 @@
 
     @components.heading("partnerEmploymentIncomePY.heading", "heading-xlarge")
 
-    @helpers.form(action = PartnerEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = PartnerEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         <p>@messages("partnerEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
         <p>@messages("partnerEmploymentIncomePY.hint")</p>

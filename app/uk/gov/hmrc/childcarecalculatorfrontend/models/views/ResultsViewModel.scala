@@ -26,7 +26,9 @@ case class ResultsViewModel(firstParagraph : String = "",
                             freeHours:Option[BigDecimal] = None,
                             location:Option[Location.Value] = None,
                             childAgedTwo: Boolean = false,
-                            taxCreditsOrUC: Option[String] = None) {
+                            taxCreditsOrUC: Option[String] = None,
+                            showTFCWarning: Boolean = false,
+                            tfcWarningMessage: String = "") {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 
@@ -35,6 +37,8 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleForAllButTc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && tc.isEmpty
 
   def isEligibleForAllButTfc: Boolean = esc.nonEmpty && tc.nonEmpty && freeHours.nonEmpty && tfc.isEmpty
+
+  def isEligibleForAllButFreeHours: Boolean = esc.nonEmpty && tc.nonEmpty  && tfc.nonEmpty && freeHours.isEmpty
 }
 
 object ResultsViewModel {
