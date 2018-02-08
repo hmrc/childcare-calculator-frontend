@@ -33,7 +33,7 @@
 
     @components.heading("howMuchYouPayPension.heading", "heading-xlarge")
 
-    @helpers.form(action = HowMuchYouPayPensionController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = HowMuchYouPayPensionController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
 
         @components.input_number(

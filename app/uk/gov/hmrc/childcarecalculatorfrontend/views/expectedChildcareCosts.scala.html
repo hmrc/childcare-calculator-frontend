@@ -47,7 +47,7 @@
         <p>@messages(s"expectedChildcareCosts.info$suffix")</p>
     </div>
 
-    @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off") {
+    @helpers.form(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),

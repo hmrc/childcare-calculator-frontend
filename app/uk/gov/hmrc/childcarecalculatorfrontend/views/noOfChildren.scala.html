@@ -33,7 +33,7 @@
 
     @components.heading("noOfChildren.heading", "heading-xlarge")
 
-    @helpers.form(action = NoOfChildrenController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = NoOfChildrenController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         <p>@messages("noOfChildren.hint.text")</p>
 

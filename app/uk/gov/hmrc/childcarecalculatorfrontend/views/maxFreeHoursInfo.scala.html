@@ -18,11 +18,14 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @(appConfig: FrontendAppConfig,
 tfcEligibility: Eligibility,
 childcareVouchersEligibility: Boolean,
-taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Messages)
+taxCreditsEligibility: Eligibility,
+taxOrUniversalCredits: String = ""
+)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("maxFreeHoursInfo.title"),
@@ -54,7 +57,7 @@ taxCreditsEligibility: Eligibility)(implicit request: Request[_], messages: Mess
             <li>@messages("maxFreeHoursInfo.li.tfc")</li>
         }
 
-        @if(taxCreditsEligibility.equals(Eligible)) {
+        @if(taxOrUniversalCredits != universalCredits && taxCreditsEligibility.equals(Eligible)) {
             <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
         }
 

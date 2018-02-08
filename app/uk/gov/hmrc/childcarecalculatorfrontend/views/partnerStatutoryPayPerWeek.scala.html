@@ -33,7 +33,7 @@
 
     @components.heading(messages("partnerStatutoryPayPerWeek.heading", statutoryType), "heading-xlarge")
 
-    @helpers.form(action = PartnerStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = PartnerStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(
             InputViewModel[BigDecimal]("value", form),

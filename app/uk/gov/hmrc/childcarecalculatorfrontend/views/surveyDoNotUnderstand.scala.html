@@ -34,7 +34,7 @@
     @components.heading("surveyDoNotUnderstand.heading")
 
 
-    @helpers.form(action = SurveyDoNotUnderstandController.onSubmit(), 'autoComplete -> "off") {
+    @helpers.form(action = SurveyDoNotUnderstandController.onSubmit(), 'autoComplete -> "off", 'novalidate -> "") {
 
         <p>@messages("surveyDoNotUnderstand.guidance")</p>
 
