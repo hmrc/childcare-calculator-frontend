@@ -61,7 +61,7 @@
         @if(timeout.getOrElse(true)) {
             <script type="text/javascript" charset="utf-8">
                 $.timeoutDialog({
-                    timeout: 5000,
+                    timeout: 900,
                     title: "@messages("timeout.heading")",
                     message: "@messages("timeout.message")",
                     keep_alive_button_text: "@messages("timeout.continue")",
