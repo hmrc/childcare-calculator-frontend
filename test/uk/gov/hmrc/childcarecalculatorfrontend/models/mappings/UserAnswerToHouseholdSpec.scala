@@ -51,7 +51,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "convert UserAnswers to Household object" when {
 
       "user input contains only location" in {
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO))
+        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
         val household = Household(location = Location.ENGLAND, parent = claimant)
         val answers = spy(userAnswers())
 
@@ -68,7 +68,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           disability = Some(Disability(disabled = true, severelyDisabled = true, blind = true)),
           childcareCost = Some(ChildCareCost(Some(200.0), Some(PeriodEnum.MONTHLY))),
           education = Some(Education(inEducation = true, startDate = Some(todaysDate.minusMonths(6)))))
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO))
+        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
 
         val household = Household(location = Location.ENGLAND, children = List(child1), parent = claimant)
         val answers = spy(userAnswers())
@@ -89,7 +89,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       }
 
       "has 2 children" in {
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO))
+        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
 
         val child1 = Child(
           id = 0,
@@ -98,6 +98,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           disability = Some(Disability(disabled = true, severelyDisabled = true)),
           childcareCost = None,
           education = None)
+
         val child2 = Child(
           id = 1,
           name = "Jagan",
@@ -126,7 +127,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         val parent = Claimant(
           hours = Some(BigDecimal(54.9)),
           benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
-          escVouchers = Some(YesNoUnsureEnum.NO)
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
 
         val household = Household(credits = Some(CreditsEnum.TAXCREDITS), location = Location.SCOTLAND, parent = parent)
