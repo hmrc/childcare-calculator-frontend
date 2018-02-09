@@ -350,8 +350,7 @@ class MaximumHoursNavigator @Inject() (
           esc.eligibility(answers) == NotEligible) {
 
         routes.ResultController.onPageLoad()
-      }
-      else if(answers.hasApprovedCosts.contains(true)) {
+      } else if(answers.hasApprovedCosts.contains(true)) {
 
         if (maxHours.eligibility(answers) == Eligible) {
           routes.MaxFreeHoursInfoController.onPageLoad()
