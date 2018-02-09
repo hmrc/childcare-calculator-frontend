@@ -16,20 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
+import play.api.test.Helpers._
 
+class SessionManagementControllerSpec extends ControllerSpecBase {
 
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Action
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig}
-
-import scala.concurrent.Future
-
-class SessionManagementController @Inject()(val appConfig: FrontendAppConfig,
-                                            val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
-
-  def sessionExtend = Action.async {
-    Future.successful(Ok("OK"))
+  "SessionManagement Controller" must {
+    "return 200 for a GET" in {
+      val result = new SessionManagementController(frontendAppConfig, messagesApi).sessionExtend()(fakeRequest)
+      status(result) mustBe OK
+    }
   }
 }
