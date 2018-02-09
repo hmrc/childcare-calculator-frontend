@@ -16,28 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
+import java.io.FileNotFoundException
+
 import com.google.inject.{ImplementedBy, Inject}
-import play.api.Logger
 import play.api.mvc.{ActionBuilder, ActionTransformer, Request}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.Failure
 
 class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnector) extends DataRetrievalAction {
 
   override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = {
     implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-
-
-    hc.sessionId match {
+      hc.sessionId match {
         case None => Future.failed(new IllegalStateException())
         case Some(sessionId) =>
-          Logger.warn(s"sessionId: ${sessionId.value}")
           dataCacheConnector.fetch(sessionId.toString).map {
             case None => OptionalDataRequest(request, sessionId.toString, None)
             case Some(data) => OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
