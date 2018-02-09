@@ -324,6 +324,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     childrenOver16.fold(0)(_.size)
   }
 
+  def childrenIdsForAgeBelow16 : Seq[Int] =
+    aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq
+
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
     whichChildrenDisability.orElse {
       noOfChildren.flatMap {

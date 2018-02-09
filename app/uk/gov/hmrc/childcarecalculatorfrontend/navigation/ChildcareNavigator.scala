@@ -37,7 +37,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     case WhichChildrenDisabilityId => whichChildrenDisabilityRoutes
     case WhichDisabilityBenefitsId(id) => whichDisabilityBenefitsRoutes(id)
     case RegisteredBlindId => registeredBlindRoutes
-    case WhichChildrenBlindId => _ => routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    case WhichChildrenBlindId => whichChildrenBlindRoute
     case WhoHasChildcareCostsId => whoHasChildcareCostsRoutes
     case ChildcarePayFrequencyId(id) => _ => routes.ExpectedChildcareCostsController.onPageLoad(NormalMode, id)
     case ExpectedChildcareCostsId(id) => expectedChildcareCostsRoutes(id)
@@ -178,16 +178,31 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
-  private def handleMultipleChildrenRoute(answers: UserAnswers, totalNumberOfChildren: Int, isAnyChildRegisteredBlind: Boolean) = {
+
+  private def whichChildrenBlindRoute(answers:UserAnswers):Call=
+    test(answers, answers.noOfChildren.getOrElse(0)).getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def handleMultipleChildrenRoute(answers: UserAnswers,
+                                          totalNumberOfChildren: Int,
+                                          isAnyChildRegisteredBlind: Boolean) = {
     if (isAnyChildRegisteredBlind) {
       Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
     } else {
-      if (answers.numberOfChildrenOver16 == totalNumberOfChildren) {
-        routeToIncomeInfoPage(answers)
+      test(answers, totalNumberOfChildren)
+    }
+  }
+
+  private def test(answers: UserAnswers, totalNumberOfChildren: Int) = {
+    if (answers.numberOfChildrenOver16 == totalNumberOfChildren) {
+      routeToIncomeInfoPage(answers)
+    }
+    else {
+      val x=
+      if((totalNumberOfChildren - answers.numberOfChildrenOver16) ==1){
+        Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1))
+
       }
-      else {
-        Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
-      }
+      Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
     }
   }
 

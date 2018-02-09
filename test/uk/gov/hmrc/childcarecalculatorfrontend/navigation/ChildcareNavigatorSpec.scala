@@ -476,9 +476,64 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   }
 
   "Which children are registered blind" must {
-    "redirect to `Who has childcare costs`" in {
-      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(userAnswers())
+    "redirect to `Who has childcare costs` for single user and more than 1 child age below 16" in {
+
+      val answers: UserAnswers = spy(userAnswers())
+      when(answers.noOfChildren).thenReturn(Some(3))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+      when(answers.registeredBlind).thenReturn(Some(true))
+      when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusYears(2)),1 -> AboutYourChild("Dan", LocalDate.now().minusYears(2)),2 -> AboutYourChild("Tan", dob16))))
+
+
+      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+
       result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+    }
+
+
+      "redirect to `Childcare Pay Frequency` for single parent and 1 child age below 16" in {
+
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.noOfChildren).thenReturn(Some(3))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(true))
+        when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", LocalDate.now().minusYears(2)),2 -> AboutYourChild("Tan", dob16))))
+
+
+        val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1)
+      }
+
+
+    "redirect to 'Your Income This Year' when single user with multiple children and all above 16" in {
+      val answers: UserAnswers = spy(userAnswers())
+      when(answers.noOfChildren).thenReturn(Some(2))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+      when(answers.registeredBlind).thenReturn(Some(true))
+      when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+
+      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      result mustEqual routes.YourIncomeInfoController.onPageLoad()
+    }
+
+    "redirect to 'Partner Income This Year' when single user with multiple children and all above 16" in {
+      val answers: UserAnswers = spy(userAnswers())
+      when(answers.noOfChildren).thenReturn(Some(2))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+      when(answers.registeredBlind).thenReturn(Some(true))
+      when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+
+      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
     }
   }
 
