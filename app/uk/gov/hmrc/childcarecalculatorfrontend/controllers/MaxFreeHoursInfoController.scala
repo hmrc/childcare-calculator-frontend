@@ -36,16 +36,18 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
                                            requireData: DataRequiredAction,
                                            tfc: TaxFreeChildcare,
                                            tc: TaxCredits,
-                                           esc: EmploymentSupportedChildcare) extends FrontendController with I18nSupport {
+                                           esc: EmploymentSupportedChildcare
+                                          ) extends FrontendController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
 
     implicit request =>
-
       Ok(maxFreeHoursInfo(appConfig,
         tfc.eligibility(request.userAnswers),
         getESCEligibility(request.userAnswers),
-        tc.eligibility(request.userAnswers)))
+        tc.eligibility(request.userAnswers),
+        request.userAnswers.taxOrUniversalCredits.getOrElse(""))
+      )
   }
 
   private def getESCEligibility(answers: UserAnswers): Boolean = {
