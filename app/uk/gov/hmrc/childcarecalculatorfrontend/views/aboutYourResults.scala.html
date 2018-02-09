@@ -25,6 +25,7 @@
 @main_template(
     title = messages("aboutYourResults.title"),
     appConfig = appConfig,
+    timeout = Some(false),
     bodyClasses = None) {
 
     @components.back_link()
