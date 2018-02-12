@@ -1182,7 +1182,7 @@ yourStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more less £100 a week before tax?
+partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 
