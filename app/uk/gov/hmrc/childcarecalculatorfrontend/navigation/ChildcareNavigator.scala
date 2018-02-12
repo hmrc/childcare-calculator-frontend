@@ -197,12 +197,13 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       routeToIncomeInfoPage(answers)
     }
     else {
-      val x=
-      if((totalNumberOfChildren - answers.numberOfChildrenOver16) ==1){
-        Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1))
+      if(answers.childrenIdsForAgeBelow16.size==1){
 
+        Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,answers.childrenIdsForAgeBelow16.head))
       }
-      Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
+      else {
+        Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
+      }
     }
   }
 

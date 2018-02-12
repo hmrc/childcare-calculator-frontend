@@ -435,7 +435,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
       }
 
-      "redirect to `Who has childcare costs` when the user answers `No` and the children aged below and above 16" in {
+      "redirect to `Childcare Pay Frequency` when the user answers `No` and the children aged below and above 16" in {
         val answers: UserAnswers = spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(2))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
@@ -443,7 +443,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", LocalDate.now().minusMonths(10)))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1)
       }
     }
 
