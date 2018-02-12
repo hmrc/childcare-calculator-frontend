@@ -33,7 +33,7 @@
 
     @components.heading("whatIsYourPartnersTaxCode.heading", "heading-xlarge")
 
-    @helpers.form(action = WhatIsYourPartnersTaxCodeController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = WhatIsYourPartnersTaxCodeController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_text(InputViewModel[String]("value", form), label = messages("whatIsYourPartnersTaxCode.heading"), labelClass=Some("visually-hidden"))
 

@@ -34,7 +34,7 @@
 
     @components.heading("otherIncomeAmountCY.heading", "heading-xlarge")
 
-    @helpers.form(action = OtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @helpers.form(action = OtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @components.input_number(
             InputViewModel[OtherIncomeAmountCY]("parentOtherIncome", form),

@@ -1180,9 +1180,9 @@ yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week befo
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
-partnerStatutoryPayBeforeTax.title = Was this {0} pay more than £100 a week before tax?
-partnerStatutoryPayBeforeTax.heading = Was this {0} pay more than £100 a week before tax?
-partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay more than £100 a week before tax?
+partnerStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
+partnerStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
+partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
 
 
@@ -1253,7 +1253,6 @@ result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice
 result.esc.para1 = Each parent can take some of their pay as childcare vouchers and not pay tax or National Insurance on that amount. You could take up to £55, £28 or £25 a week in vouchers, depending on how much you earn.
 result.esc.para2 = Employers can only offer them to new claimants until the end of March 2018.
-
 
 result.esc.not.eligible.para1 = You cannot get help from childcare vouchers. To get help, you or your partner’s employer has to offer them.
 
