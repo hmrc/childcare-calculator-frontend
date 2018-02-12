@@ -180,7 +180,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
 
   private def whichChildrenBlindRoute(answers:UserAnswers):Call=
-    test(answers, answers.noOfChildren.getOrElse(0)).getOrElse(routes.SessionExpiredController.onPageLoad())
+    handleRoutesIfChildrenOver16(answers, answers.noOfChildren.getOrElse(0)).getOrElse(routes.SessionExpiredController.onPageLoad())
 
   private def handleMultipleChildrenRoute(answers: UserAnswers,
                                           totalNumberOfChildren: Int,
@@ -188,17 +188,16 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     if (isAnyChildRegisteredBlind) {
       Some(routes.WhichChildrenBlindController.onPageLoad(NormalMode))
     } else {
-      test(answers, totalNumberOfChildren)
+      handleRoutesIfChildrenOver16(answers, totalNumberOfChildren)
     }
   }
 
-  private def test(answers: UserAnswers, totalNumberOfChildren: Int) = {
+  private def handleRoutesIfChildrenOver16(answers: UserAnswers, totalNumberOfChildren: Int) = {
     if (answers.numberOfChildrenOver16 == totalNumberOfChildren) {
       routeToIncomeInfoPage(answers)
     }
     else {
       if(answers.childrenIdsForAgeBelow16.size==1){
-
         Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,answers.childrenIdsForAgeBelow16.head))
       }
       else {

@@ -35,23 +35,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 import scala.concurrent.Future
 
 class WhoHasChildcareCostsController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                appConfig: FrontendAppConfig,
+                                                override val messagesApi: MessagesApi,
+                                                dataCacheConnector: DataCacheConnector,
+                                                navigator: Navigator,
+                                                getData: DataRetrievalAction,
+                                                requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       withValues {
         values =>
-        val answer = request.userAnswers.whoHasChildcareCosts
-        val preparedForm = answer match {
-          case None => WhoHasChildcareCostsForm()
-          case Some(value) => WhoHasChildcareCostsForm().fill(value)
-        }
-        Future.successful(Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values))))
+          val answer = request.userAnswers.whoHasChildcareCosts
+          val childrenUnderSixteen = request.userAnswers.childrenIdsForAgeBelow16
+          val preparedForm = answer match {
+            case None => WhoHasChildcareCostsForm()
+            case Some(value) => WhoHasChildcareCostsForm().fill(value)
+          }
+          Future.successful(Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values,childrenUnderSixteen))))
       }
   }
 
@@ -59,27 +60,28 @@ class WhoHasChildcareCostsController @Inject()(
     implicit request =>
       withValues {
         values =>
-      WhoHasChildcareCostsForm(values.values.toSeq: _*).bindFromRequest().fold(
-        (formWithErrors: Form[_]) => {
-          Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values))))
-        },
-        (value) => {
-          dataCacheConnector.save[Set[Int]](request.sessionId, WhoHasChildcareCostsId.toString, value).map {
-            cacheMap =>
-              Redirect(navigator.nextPage(WhoHasChildcareCostsId, mode)(new UserAnswers(cacheMap)))
-          }
-        }
-      )
+          val childrenUnderSixteen = request.userAnswers.childrenIdsForAgeBelow16
+          WhoHasChildcareCostsForm(values.values.toSeq: _*).bindFromRequest().fold(
+            (formWithErrors: Form[_]) => {
+              Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values,childrenUnderSixteen))))
+            },
+            (value) => {
+              dataCacheConnector.save[Set[Int]](request.sessionId, WhoHasChildcareCostsId.toString, value).map {
+                cacheMap =>
+                  Redirect(navigator.nextPage(WhoHasChildcareCostsId, mode)(new UserAnswers(cacheMap)))
+              }
+            }
+          )
+      }
+  }
+
+  private def options(values: Map[String, Int], childrenUnder16: Seq[Int]): Map[String, String] = {
+    values.filter(c=> childrenUnder16.contains(c._2)).map {
+      case (k, v) => (k, v.toString)
     }
   }
 
-  private def options(values: Map[String, Int]): Map[String, String] =
-    values.map {
-      case (k, v) =>
-        (k, v.toString)
-    }
-
-  private def withValues[A](block: Map[String, Int] => Future[Result])(implicit request: DataRequest[A]): Future[Result]= {
+  private def withValues[A](block: Map[String, Int] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
     request.userAnswers.aboutYourChild.map {
       aboutYourChild =>
         val values: Map[String, Int] = aboutYourChild.map {
@@ -87,6 +89,6 @@ class WhoHasChildcareCostsController @Inject()(
             model.name -> i
         }
         block(values)
-      }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+    }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
   }
 }

@@ -22,6 +22,7 @@ import play.api.data.Form
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.json.Json.JsValueWrapper
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{exact15, over16, over19, under16}
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -40,6 +41,20 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
       status(result) mustEqual OK
       contentAsString(result) mustEqual viewAsString()
+    }
+
+    "return OK and only display the children that are under 16" in {
+      val children = Map("Over16" -> "0", "Under16_1" -> "1", "Under16_2" -> "2")
+      val dataWithOneChildOver16 = requiredData(children) + (AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Over16", over19)),
+        "1" -> Json.toJson(AboutYourChild("Under16_1", exact15)),
+        "2" -> Json.toJson(AboutYourChild("Under16_2", exact15))))
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)))
+
+      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+
+      contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(0)), Map("Under16_1" -> "1", "Under16_2" -> "2"))
     }
 
     Seq(
