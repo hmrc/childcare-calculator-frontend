@@ -51,7 +51,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
     "convert UserAnswers to Household object" when {
 
       "user input contains only location" in {
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO))
+        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
         val household = Household(location = Location.ENGLAND, parent = claimant)
         val answers = spy(userAnswers())
 
@@ -68,7 +68,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           disability = Some(Disability(disabled = true, severelyDisabled = true, blind = true)),
           childcareCost = Some(ChildCareCost(Some(200.0), Some(PeriodEnum.MONTHLY))),
           education = Some(Education(inEducation = true, startDate = Some(todaysDate.minusMonths(6)))))
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO))
+        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
 
         val household = Household(location = Location.ENGLAND, children = List(child1), parent = claimant)
         val answers = spy(userAnswers())
@@ -89,7 +89,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
       }
 
       "has 2 children" in {
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO))
+        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
 
         val child1 = Child(
           id = 0,
@@ -98,6 +98,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
           disability = Some(Disability(disabled = true, severelyDisabled = true)),
           childcareCost = None,
           education = None)
+
         val child2 = Child(
           id = 1,
           name = "Jagan",
@@ -126,7 +127,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         val parent = Claimant(
           hours = Some(BigDecimal(54.9)),
           benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
-          escVouchers = Some(YesNoUnsureEnum.NO)
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
 
         val household = Household(credits = Some(CreditsEnum.TAXCREDITS), location = Location.SCOTLAND, parent = parent)
@@ -184,6 +186,88 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a single parent with no minimum earnings and employment status is Apprentice " in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(amount = 120, employmentStatus = Some(EmploymentStatusEnum.APPRENTICE))),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
+        )
+        val household = Household(location = Location.SCOTLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a single parent with no minimum earnings and employment status is self employed for less than 12 months " in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(amount = 120, employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED),
+                                                 selfEmployedIn12Months = Some(true))),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
+        )
+        val household = Household(location = Location.SCOTLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
+        when(answers.yourSelfEmployed) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
+        when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a single parent with no minimum earnings and employment status is self employed for more than 12 months " in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED),
+            selfEmployedIn12Months = Some(false))),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
+        )
+        val household = Household(location = Location.SCOTLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
+        when(answers.yourSelfEmployed) thenReturn Some(false)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
         when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(120)
@@ -414,6 +498,122 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
+      "has a parent and partner and both have no minimum earnings and employment status Apprentice" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE),
+                                                 amount = BigDecimal(112))),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE),
+            amount = BigDecimal(89))),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 4, 6)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(false)
+        when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has a parent who is self employed for less than 12 months and partner has minimum earnings" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(32.1)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.TWENTYONETOTWENTYFOUR),
+          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED),
+            selfEmployedIn12Months = Some(true), amount = BigDecimal(112))),
+          maximumEarnings = Some(true),
+          lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
+        )
+        val partner = Claimant(
+          hours = Some(BigDecimal(46.0)),
+          escVouchers = Some(YesNoUnsureEnum.NOTSURE),
+          ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
+          minimumEarnings = Some(MinimumEarnings(amount = 89)),
+          maximumEarnings = Some(false),
+          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
+          lastYearlyIncome = Some(Income(
+            employmentIncome = Some(BigDecimal(21000.0)),
+            statutoryIncome = Some(
+              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+
+        val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
+        val answers = spy(userAnswers())
+
+        val statutoryStartDate = new LocalDate(2016, 4, 6)
+
+        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2017"
+        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2016"
+        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2017, 4, 5)
+
+        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
+        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
+        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
+        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
+
+        when(answers.location) thenReturn Some(Location.WALES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
+        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
+        when(answers.whoGetsVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+        when(answers.yourMinimumEarnings) thenReturn Some(false)
+        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
+        when(answers.yourSelfEmployed) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(true)
+        when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(72000.0, 32000.0))
+        when(answers.employmentIncomePY) thenReturn Some(EmploymentIncomePY(21000.0, 21000.0))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(46.0))
+        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
+        when(answers.partnerMinimumEarnings) thenReturn Some(true)
+        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(utils.getEarningsForAgeRange(any(), any(), any())) thenReturn 89 thenReturn 112
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
 
       "has a parent and partner and both have minimum earnings and either of maximum earnings is true" in {
         val parent = Claimant(
