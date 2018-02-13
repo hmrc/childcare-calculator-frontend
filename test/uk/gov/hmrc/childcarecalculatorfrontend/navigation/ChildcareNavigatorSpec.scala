@@ -581,14 +581,31 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
 
-    "redirect to Your Income This Year for a partner user when only one child is younger than 16" in {
+    "redirect to Your Income This Year for a user when only one child is younger than 16" in {
       val answers = mock[UserAnswers]
       when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Over16",dob19))))
-      when(answers.childrenWithCosts).thenReturn(Some(Set(0, 1, 2)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
       val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
+
+    "redirect to next child for a user when two children are younger than 16" in {
+      val answers = mock[UserAnswers]
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Under16",dob19))))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
+      result mustEqual routes.YourIncomeInfoController.onPageLoad()
+    }
+
+    "redirect to Childcare Pay Frequency when two of the children are younger than 16 and we've entered details for the first under 16" in {
+      val answers = mock[UserAnswers]
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Over16",LocalDate.now()))))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(1,2)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 2)
+    }
+
 
     "redirect to `Your partner's income this year` for a partner user when this is the last child" in {
       val answers = mock[UserAnswers]
@@ -610,14 +627,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
       when(answers.doYouLiveWithPartner).thenReturn(None)
-      val result = navigator.nextPage(ExpectedChildcareCostsId(3), NormalMode).value(answers)
-      result mustEqual routes.SessionExpiredController.onPageLoad()
-    }
-
-    "redirect to `Session Expired` when `childrenWithCosts` is undefined" in {
-      val answers = mock[UserAnswers]
-      when(answers.childrenWithCosts).thenReturn(None)
-      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
       val result = navigator.nextPage(ExpectedChildcareCostsId(3), NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
     }

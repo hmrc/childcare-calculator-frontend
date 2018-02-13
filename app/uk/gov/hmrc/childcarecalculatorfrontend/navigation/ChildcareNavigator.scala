@@ -226,26 +226,31 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
 
   private def expectedChildcareCostsRoutes(id: Int)(answers: UserAnswers): Call = {
-    for {
-      hasPartner        <- answers.doYouLiveWithPartner
-      childrenWithCosts <- answers.childrenWithCosts
-    } yield {
-
-      def next: Option[Int] = {
-        val children: Seq[Int] = childrenWithCosts.toSeq
-        children.lift(children.indexOf(id) + 1)
-      }
-
-      next.map {
-        nextId =>
-          routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, nextId)
-      }.getOrElse {
-        if (hasPartner) {
-          routes.PartnerIncomeInfoController.onPageLoad()
-        } else {
-          routes.YourIncomeInfoController.onPageLoad()
-        }
-      }
-    }
+    answers.doYouLiveWithPartner.map(hasPartner => answers.childrenWithCosts match {
+      case Some(childrenWithCosts) => checkNextChildWithCosts(id, hasPartner, childrenWithCosts)
+      case _ => routeBasedIfPartnerOrNot(hasPartner)
+    })
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def checkNextChildWithCosts(id: Int, hasPartner: Boolean, childrenWithCosts: Set[Int]) = {
+    def next: Option[Int] = {
+      val children: Seq[Int] = childrenWithCosts.toSeq
+      children.lift(children.indexOf(id) + 1)
+    }
+
+    next.map {
+      nextId =>
+        routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, nextId)
+    }.getOrElse {
+      routeBasedIfPartnerOrNot(hasPartner)
+    }
+  }
+
+  private def routeBasedIfPartnerOrNot(hasPartner: Boolean) = {
+    if (hasPartner) {
+      routes.PartnerIncomeInfoController.onPageLoad()
+    } else {
+      routes.YourIncomeInfoController.onPageLoad()
+    }
+  }
 }
