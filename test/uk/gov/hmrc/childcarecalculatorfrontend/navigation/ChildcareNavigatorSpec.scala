@@ -581,6 +581,15 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
 
+    "redirect to Your Income This Year for a partner user when only one child is younger than 16" in {
+      val answers = mock[UserAnswers]
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Over16",dob19))))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0, 1, 2)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
+      result mustEqual routes.YourIncomeInfoController.onPageLoad()
+    }
+
     "redirect to `Your partner's income this year` for a partner user when this is the last child" in {
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
