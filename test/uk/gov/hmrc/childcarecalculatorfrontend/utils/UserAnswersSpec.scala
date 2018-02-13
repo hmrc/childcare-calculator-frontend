@@ -61,6 +61,21 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   ".childrenOver16" must {
 
+    "return no children over 16" in {
+      val under16 = LocalDate.now().minusYears(16).minusMonths(1)
+
+      val answers: CacheMap = cacheMap(
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", under16)),
+          "1" -> Json.toJson(AboutYourChild("Baz", under16))
+        )
+      )
+
+      val result = helper(answers).childrenOver16
+      result.get.size mustBe 0
+    }
+
+
     "return any children who are over 16" in {
 
       val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
@@ -78,8 +93,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val result = helper(answers).childrenOver16
       result.value must contain(0 -> AboutYourChild("Foo", over16))
       result.value must contain(3 -> AboutYourChild("Baz", over16))
-      result.value mustNot contain(1 -> AboutYourChild("Bar", under16))
-      result.value mustNot contain(2 -> AboutYourChild("Quux", under16))
     }
 
     "return `None` when there are no children defined" in {

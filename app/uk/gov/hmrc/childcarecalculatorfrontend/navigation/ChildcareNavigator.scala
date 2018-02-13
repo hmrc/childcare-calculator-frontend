@@ -59,8 +59,10 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
           model.dob.isBefore(LocalDate.now.minusYears(16))
       }
 
-      if (firstOver16 > -1) {
-        routes.ChildApprovedEducationController.onPageLoad(NormalMode, firstOver16)
+      val childrenOver16 = answers.childrenOver16
+
+      if (childrenOver16.get.size > 0) {
+        routes.ChildApprovedEducationController.onPageLoad(NormalMode, childrenOver16.get.head._1)
       } else {
         routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
       }
