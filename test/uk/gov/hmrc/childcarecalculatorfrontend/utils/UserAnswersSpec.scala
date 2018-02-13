@@ -82,6 +82,13 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       result.value mustNot contain(2 -> AboutYourChild("Quux", under16))
     }
 
+    "return `None` when there are no children defined" in {
+      val answers: CacheMap = cacheMap()
+      helper(answers).childrenOver16 mustNot be(defined)
+    }
+  }
+
+  "is16ThisYearAndDateOfBirthIsAfter31stAugust" must{
     "not return any children who are over 16 but Birthday is before 31st of August" in {
       val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31") else LocalDate.now.minusYears(16)
 
@@ -90,12 +97,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       )
       val result = helper(answers).childrenOver16
       result.get.size mustBe 0
-    }
-
-
-    "return `None` when there are no children defined" in {
-      val answers: CacheMap = cacheMap()
-      helper(answers).childrenOver16 mustNot be(defined)
     }
   }
 

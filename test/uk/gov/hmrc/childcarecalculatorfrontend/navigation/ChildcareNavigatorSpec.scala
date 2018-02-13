@@ -74,8 +74,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val answers: UserAnswers = userAnswers(
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
-            "Foo" -> dob,
-            "Bar" -> dob
+            "Foo" -> LocalDate.now().minusYears(16).minusMonths(1),
+            "Bar" -> LocalDate.now().minusYears(16).minusMonths(1)
           )
         )
         val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
