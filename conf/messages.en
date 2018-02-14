@@ -1350,6 +1350,6 @@ results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
 
 timeout.heading = You are about to be timed out
-timeout.message = For your security, you will be timed out of this service in
-timeout.continue = Stay in the calculator
-timeout.exit = Leave the calculator
+timeout.message = For your security, we will clear what you have entered in
+timeout.continue = Continue what you were doing
+timeout.exit = Clear what you entered now
