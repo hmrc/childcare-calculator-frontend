@@ -67,6 +67,17 @@ class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
         factory(answers).value mustEqual SingleHousehold(Parent(110, Set.empty))
       }
 
+      "return 'Some' when a user is self employed for less than 12 months" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        factory(answers).value mustEqual SingleHousehold(Parent(110, Set.empty))
+      }
+
       "return `None` when `areYouInPaidWork` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
