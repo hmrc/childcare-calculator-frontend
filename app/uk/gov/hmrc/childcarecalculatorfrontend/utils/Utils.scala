@@ -27,6 +27,7 @@ import play.api.Configuration
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.http.Request
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class Utils {
 
@@ -141,5 +142,7 @@ class Utils {
     val valueFormatter = new java.text.DecimalFormat("##,###")
     valueFormatter.format(value)
   }
+
+  def emptyCacheMap(existingCacheMap: CacheMap): CacheMap = existingCacheMap.copy(data = Map())
 
 }
