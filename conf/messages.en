@@ -732,13 +732,13 @@ youBenefitsIncomeCY.heading = How much will you get in benefits this year?
 youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
 youBenefitsIncomeCY.invalid = Please only enter a numerical value of up to two decimal places
-youBenefitsIncomeCY.required = Enter numbers from 1 to 9999 for how much you will get in benefits this year
+youBenefitsIncomeCY.required = Enter number from 1 to 9999 for how much you will get in benefits this year
 
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
 howMuchYouPayPension.info = Your pension
 howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
-howMuchYouPayPension.invalid = Enter numbers between 1 and 9999.99 for how much you pay into your pension a month
+howMuchYouPayPension.invalid = Enter number between 1 and 9999.99 for how much you pay into your pension a month
 howMuchYouPayPension.required = Enter how much you pay into your pension a month
 
 howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
@@ -746,7 +746,7 @@ howMuchPartnerPayPension.heading = How much does your partner pay into their pen
 howMuchPartnerPayPension.info = Partner’s pension
 howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.required = Enter how much your partner pays into their pension a month
-howMuchPartnerPayPension.invalid = Enter numbers between 1 and 9999.99 for how much your partner pays into their pension a month
+howMuchPartnerPayPension.invalid = Enter number between 1 and 9999.99 for how much your partner pays into their pension a month
 
 howMuchBothPayPension.title = How much do you and your partner pay into your pensions a month?
 howMuchBothPayPension.heading = How much do you and your partner pay into your pensions a month?
@@ -764,8 +764,8 @@ benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get 
 
 parentBenefitsIncome.required = Enter how much you will get in benefits this year
 partnerBenefitsIncome.required = Enter how much your partner will get in benefits this year
-parentBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
-partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much your partner will get in benefits this year
+parentBenefitsIncome.invalid = Enter number from 1 to 9999.99 for how much you will get in benefits this year
+partnerBenefitsIncome.invalid = Enter number from 1 to 9999.99 for how much your partner will get in benefits this year
 
 yourIncomeInfoPY.title = Your income for the previous year
 yourIncomeInfoPY.heading = Your income for the previous year
@@ -831,14 +831,14 @@ yourOtherIncomeAmountCY.heading = How much will your other income be this year?
 yourOtherIncomeAmountCY.info = Your other income
 yourOtherIncomeAmountCY.checkYourAnswersLabel = How much will your other income be this year?
 parentOtherIncome.required = Enter how much your other income will be this year
-parentOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your other income will be this year
+parentOtherIncome.invalid = Enter number from 1 to 99999.99 for how much your other income will be this year
 
 partnerOtherIncomeAmountCY.title = How much will your partner’s other income be this year?
 partnerOtherIncomeAmountCY.heading = How much will your partner’s other income be this year?
 partnerOtherIncomeAmountCY.info = Partner’s other income
 partnerOtherIncomeAmountCY.checkYourAnswersLabel = How much will your partner other income be this year?
 partnerOtherIncome.required = Enter how much your partner’s other income will be this year
-partnerOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your partner’s other income will be this year
+partnerOtherIncome.invalid = Enter number from 1 to 99999.99 for how much your partner’s other income will be this year
 
 employmentIncomeCY.title = How much will you and your partner get paid this year?
 employmentIncomeCY.heading = How much will you and your partner get paid this year?
@@ -906,8 +906,8 @@ bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner g
 
 parentBenefitsIncomePY.required = Enter how much your benefits income was in the previous year
 partnerBenefitsIncomePY.required = Enter how much your partner’s benefits income was in the previous year
-parentBenefitsIncomePY.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
-partnerBenefitsIncomePY.invalid = Enter numbers from 1 to 9999.99 for your partner’s benefits income in the previous year
+parentBenefitsIncomePY.invalid = Enter number from 1 to 9999.99 for your benefits income in the previous year
+partnerBenefitsIncomePY.invalid = Enter number from 1 to 9999.99 for your partner’s benefits income in the previous year
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
@@ -936,7 +936,7 @@ howMuchYouPayPensionPY.info = Your pension
 howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
 howMuchYouPayPensionPY.yourPension = You
 howMuchYouPayPensionPY.required = Enter how much you paid into your pension a month
-howMuchYouPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much you paid into your pension a month
+howMuchYouPayPensionPY.invalid = Enter number from 1 to 9999.99 for how much you paid into your pension a month
 
 howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
@@ -944,7 +944,7 @@ howMuchPartnerPayPensionPY.info = Partner’s pension
 howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.partnerPension = Partner
 howMuchPartnerPayPensionPY.required = Enter how much your partner paid into their pension a month
-howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into your pension a month
+howMuchPartnerPayPensionPY.invalid = Enter number from 1 to 9999.99 for how much your partner paid into their pension a month
 
 childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
@@ -965,10 +965,10 @@ yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.info = Your other income
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
 parentOtherIncomeAmountPY.required = Enter how much your other income was in the previous year
-parentOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your other income in the previous year
+parentOtherIncomeAmountPY.invalid = Enter number from 1 to 99999.99 for your other income in the previous year
 
-partnerOtherIncomeAmountPY.required = Enter how much your partner’s other income was
-partnerOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income
+partnerOtherIncomeAmountPY.required = Enter how much your partner’s other income was in the previous year
+partnerOtherIncomeAmountPY.invalid = Enter number from 1 to 99999.99 for your partner’s other income in the previous year
 partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.info = Partner’s other income
@@ -1191,14 +1191,14 @@ yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax
 yourStatutoryPayPerWeek.info = Your {0} pay a week before tax
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
-yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your {0} pay
+yourStatutoryPayPerWeek.invalid = Enter number from 1 to 99.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.info = Partner’s {0} pay a week before tax
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
-partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
+partnerStatutoryPayPerWeek.invalid = Enter number from 1 to 99.99 for your partner’s {0} pay
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs
