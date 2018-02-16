@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildStartEducationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 
 import scala.concurrent.Future
@@ -44,8 +44,8 @@ class ChildStartEducationController @Inject() (
                                                 requireData: DataRequiredAction
                                              ) extends FrontendController with I18nSupport with MapFormats {
 
-  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers)))
 
   private def validateIndex[A](childIndex: Int)(block: (String, LocalDate) => Future[Result])
                               (implicit request: DataRequest[A]): Future[Result] = {
@@ -56,7 +56,7 @@ class ChildStartEducationController @Inject() (
         case false => None
       }
     } yield block(name, child.dob)
-  }.getOrElse(sessionExpired)
+  }.getOrElse(sessionExpired("validateIndex",Some(request.userAnswers)))
 
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>

@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
 import scala.concurrent.Future
@@ -85,8 +85,8 @@ class ChildcarePayFrequencyController @Inject() (
       if (childrenWithCosts.contains(i)) {
         block(model.name)
       } else {
-        Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers))))
       }
     }
-  }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers)))))
 }
