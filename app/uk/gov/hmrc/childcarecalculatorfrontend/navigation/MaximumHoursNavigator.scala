@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
 
 class MaximumHoursNavigator @Inject() (
                                         utils: Utils,
@@ -179,7 +179,7 @@ class MaximumHoursNavigator @Inject() (
         } else {
           routes.YourAgeController.onPageLoad(NormalMode)
         }
-    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+    }.getOrElse(SessionExpiredRouter.route(getClass.getName,"doYouGetAnyBenefitsRoute",Some(answers)))
   }
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
