@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.controllers
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import play.api.test.Helpers._
-
-class SessionManagementControllerSpec extends ControllerSpecBase {
-
-  "SessionManagement Controller" must {
-    "return 200 for a GET" in {
-     /* val result = new SessionManagementController(frontendAppConfig, messagesApi).sessionExtend()(fakeRequest)
-      status(result) mustBe OK*/
-    }
-  }
+case object SessionDataClearId extends Identifier {
+  override def toString: String = "sessionDataClear"
 }

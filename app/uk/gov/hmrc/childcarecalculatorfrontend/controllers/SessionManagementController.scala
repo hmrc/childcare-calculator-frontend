@@ -18,46 +18,39 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 
-
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Action
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.DataRetrievalAction
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig}
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SessionDataClearId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
 import scala.concurrent.Future
 
 class SessionManagementController @Inject()(val appConfig: FrontendAppConfig,
-                                            getData: DataRetrievalAction,
                                             dataCacheConnector: DataCacheConnector,
+                                            navigator: Navigator,
                                             val messagesApi: MessagesApi,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
                                              utils: Utils) extends FrontendController with I18nSupport {
 
-  def sessionExtend = Action.async {
+  def sessionExtend: Action[AnyContent] = Action.async {
     Future.successful(Ok("OK"))
   }
 
-  def sessionClearData = Action.async {
+  /* def sessionClearData = Action.async {
     Future.successful(Ok("OK"))
-  }
-//  def sessionClearData = getData.async {
-//    implicit request =>
-//     request.userAnswers.map{
-//        x => {
-//            dataCacheConnector.save[Location.Value](request.sessionId, LocationId.toString, x).map(cacheMap =>
-//            Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
-//        }
-//      }
-//  }
+  }*/
+
+
+  def sessionClearData: Action[AnyContent] = getData.async {
+    implicit request =>
+          dataCacheConnector.save[String](request.sessionId, SessionDataClearId.toString, "sessionData").map(cacheMap =>
+            Redirect(navigator.nextPage(SessionDataClearId, NormalMode)(new UserAnswers(cacheMap))))
+      }
+
 }
-
-//    implicit request =>
-//        (formWithErrors: Form[_]) =>
-//          Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
-//        (value) =>
-//          dataCacheConnector.save[Location.Value](request.sessionId, LocationId.toString, value).map(cacheMap =>
-//            Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
-//
-

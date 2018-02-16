@@ -911,4 +911,15 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   // Need to work on clearence for maximum earnings 'no' to clear noOfChildren data and further
 
+  "session management" must {
+    "clear all the cache Map data" in {
+
+      val originalCacheMap = new CacheMap("id", Map(LocationId.toString -> JsString(Location.ENGLAND.toString),
+                                                    PartnerSelfEmployedId.toString -> JsBoolean(false)))
+      val result = cascadeUpsert(SessionDataClearId.toString, "sessionData" ,originalCacheMap)
+
+      result.data mustBe Map(SessionDataClearId.toString -> JsString("sessionData"))
+
+    }
+  }
 }

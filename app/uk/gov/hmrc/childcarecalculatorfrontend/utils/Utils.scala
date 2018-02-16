@@ -108,6 +108,7 @@ class Utils {
       currentDate.toDate.compareTo(ruleDate) >= 0
     }
 
+
     result match {
       case Some(conf) =>
         conf
