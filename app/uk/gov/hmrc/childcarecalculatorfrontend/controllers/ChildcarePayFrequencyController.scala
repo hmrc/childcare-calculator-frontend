@@ -88,5 +88,5 @@ class ChildcarePayFrequencyController @Inject() (
         Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers))))
       }
     }
-  }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers)))))
 }
