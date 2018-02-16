@@ -6,6 +6,7 @@ GET         /this-service-has-been-reset                       uk.gov.hmrc.child
 GET         /check-your-answers                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.CheckYourAnswersController.onPageLoad
 GET         /unauthorised                                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.UnauthorisedController.onPageLoad
 GET         /session-extend                                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionManagementController.sessionExtend
+GET         /session-clear-data                                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionManagementController.sessionClearData
 
 GET         /                                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatToTellTheCalculatorController.onPageLoad
 
