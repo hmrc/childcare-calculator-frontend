@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildApprovedEducationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -43,15 +43,15 @@ class ChildApprovedEducationController @Inject() (
                                                    requireData: DataRequiredAction
                                                 ) extends FrontendController with I18nSupport with MapFormats {
 
-  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers)))
 
   private def validateIndex[A](childIndex: Int)(block: String => Future[Result])
                               (implicit request: DataRequest[A]): Future[Result] = {
     request.userAnswers.childrenOver16.flatMap {
       childrenOver16 =>
         childrenOver16.get(childIndex).map(child => block(child.name))
-    }.getOrElse(sessionExpired)
+    }.getOrElse(sessionExpired("validateIndex",Some(request.userAnswers)))
   }
 
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
