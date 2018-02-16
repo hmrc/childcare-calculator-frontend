@@ -24,6 +24,17 @@
 
 @location = @{model.location.getOrElse("")}
 
+@additionalContent = {
+    @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
+    <div class="twoYearsOld">
+        <h2 class="heading-medium">@messages("aboutYourResults.two.years.old.guidance.title")</h2>
+        <p> <a id="twoYearsOldHelp" href = @messages("aboutYourResults.two.years.old.guidance.para1.help.link")>
+                @messages("aboutYourResults.two.years.old.guidance.para1")
+            </a>
+        </p>
+    </div>
+    }
+}
 @if(model.freeHours.isDefined) {
 
     @defining(if(location.toString.equals(Location.ENGLAND.toString) && model.freeHours.contains(noOfFreeHours15)) {
@@ -35,7 +46,13 @@
             periodText = if(location.toString.equals(Location.ENGLAND.toString)){
                             Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {
                             Some(messages(s"result.free.hours.period.$location"))},
-            para1 = Some(messages("result.free.hours.para1")))
+            para1 = Some(messages("result.free.hours.para1")),
+            additionalContent = Some(additionalContent),
+            detailSummary = Some(messages("result.free.hours.detail.summary")),
+            detailPara1 = Some(messages("result.free.hours.detailPara1")),
+            detailPara2 = Some(messages("result.free.hours.detailPara2")),
+            detailPara3 = Some(messages("result.free.hours.detailPara3")),
+            detailPara4 = Some(messages("result.free.hours.detailPara4")))
     }
 }
 

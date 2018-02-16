@@ -22,6 +22,7 @@
         para1: Option[String] = None,
         para2: Option[String] = None,
         para3: Option[String] = None,
+        additionalContent: Option[Html] = None,
         detailSummary: Option[String] = None,
         detailPara1: Option[String] = None,
         detailPara2: Option[String] = None,
@@ -49,6 +50,9 @@
             }
             @if(para3.isDefined) {
                 <p>@para3</p>
+            }
+            @if(additionalContent.isDefined) {
+                @additionalContent
             }
             @if(detailSummary.isDefined) {
                 <details>

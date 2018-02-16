@@ -1234,6 +1234,11 @@ result.free.hours.period.scotland =  free childcare a week
 result.free.hours.period.northern-ireland = free childcare a week
 result.free.hours.para1 = You can get free hours for your 3 or 4 year old that can be used in or outside of term time. Your provider may apply charges for additional services.
 result.free.hours.not.eligible = You are currently not eligible for any free hours because you do not have any children aged 3 or 4.
+result.free.hours.detail.summary = How free childcare hours work
+result.free.hours.detailPara1 = You can take up the offer the term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
+result.free.hours.detailPara2 = You must use childcare from an approved provider. For example, a registered childminder, playscheme, nursery, out of school club or a home careworker working for a registered agency. You may be able to use your free hours between 2 different providers.
+result.free.hours.detailPara3 = Contact your childcare provider or local council to find out more.
+result.free.hours.detailPara4 = Free childcare hours stop when your child starts in reception class.
 
 result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs
