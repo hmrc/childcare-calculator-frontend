@@ -22,14 +22,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidPensionPY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 class BothPaidPensionPYViewSpec extends YesNoViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val messageKeyPrefix = "bothPaidPensionPY"
 
-  def createView = () => bothPaidPensionPY(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => bothPaidPensionPY(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => bothPaidPensionPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => bothPaidPensionPY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "BothPaidPensionPY view" must {
 
@@ -38,5 +41,10 @@ class BothPaidPensionPYViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothPaidPensionPYController.onSubmit(NormalMode).url)
+  }
+
+  "contain tax year info" in {
+    val doc = asDocument(createView())
+    assertContainsText(doc, messages(s"$messageKeyPrefix.tax.year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
   }
 }
