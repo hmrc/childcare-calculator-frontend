@@ -44,13 +44,13 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
     implicit request =>
       Ok(maxFreeHoursInfo(appConfig,
         tfc.eligibility(request.userAnswers),
-        getESCEligibility(request.userAnswers),
+        esc.eligibility(request.userAnswers),
         tc.eligibility(request.userAnswers),
         request.userAnswers.taxOrUniversalCredits.getOrElse(""))
       )
   }
 
-  private def getESCEligibility(answers: UserAnswers): Boolean = {
+ /* private def getESCEligibility(answers: UserAnswers): Boolean = {
 
     val No = YesNoUnsureEnum.NO.toString
 
@@ -76,5 +76,5 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
       hasParentChildcareCosts && hasParentChildcareVouchers
     }
   }
-
+*/
 }

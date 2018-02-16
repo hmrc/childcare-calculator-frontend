@@ -25,10 +25,13 @@ class EmploymentSupportedChildcare extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
     val No = YesNoUnsureEnum.NO.toString
+    val NotSure = YesNoUnsureEnum.NOTSURE.toString
+
 
     val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
-    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !x.equals(No))
-    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !x.equals(No))
+    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !(x.equals(No)|| x.equals(NotSure)))
+
+    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !(x.equals(No)|| x.equals(NotSure)))
 
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val whoInPaidEmployment = answers.whoIsInPaidEmployment
@@ -48,7 +51,8 @@ class EmploymentSupportedChildcare extends Scheme {
         case _ => NotEligible
       }
     } else {
-      getEligibility(hasParentChildcareCosts && hasParentChildcareVouchers)
+
+       getEligibility(hasParentChildcareCosts && hasParentChildcareVouchers)
     }
   }
 
