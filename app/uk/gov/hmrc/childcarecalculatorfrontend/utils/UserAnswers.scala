@@ -307,16 +307,23 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
   def childrenOver16: Option[Map[Int, AboutYourChild]] = {
-    val children16OrOlder = get16YearOldsAndOlder
+    val children16OrOlderMap = get16YearOldsAndOlder
+    val childrenBet16And17Map = extract16YearOldsWithBirthdayBefore31stAugust(children16OrOlderMap)
 
-    remove16YearOldsWithBirthdayBefore31stAugust(children16OrOlder)
+    //Remove 16 Years old children have birth date before 31 Aug
+    children16OrOlderMap.map{
+      children => children.filterNot {
+        case (x, y) => childrenBet16And17Map.getOrElse(Map()).keys.exists(_ == x)
+      }
+    }
   }
 
-  private def remove16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]) = {
+  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]) = {
     children.map {
       children16OrOlder =>
-        children16OrOlder.filterNot {
-          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear}-01-1")) && model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-08-31"))
+        children16OrOlder.filter {
+          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear-1}-12-31")) &&
+            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-08-31"))
         }
     }
   }

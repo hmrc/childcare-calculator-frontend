@@ -53,14 +53,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       aboutYourChild <- answers.aboutYourChild
     } yield if (isLast(id, noOfChildren)) {
 
-      val firstOver16 = aboutYourChild.values.toSeq.indexWhere {
-        // TODO helper with more specific logic
-        model =>
-          model.dob.isBefore(LocalDate.now.minusYears(16))
-      }
-
       val childrenOver16 = answers.childrenOver16
-
       if (childrenOver16.get.size > 0) {
         routes.ChildApprovedEducationController.onPageLoad(NormalMode, childrenOver16.get.head._1)
       } else {

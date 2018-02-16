@@ -18,12 +18,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
-import org.mockito.Mockito._
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.Parent
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
@@ -101,6 +98,31 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     "return `None` when there are no children defined" in {
       val answers: CacheMap = cacheMap()
       helper(answers).childrenOver16 mustNot be(defined)
+    }
+  }
+
+  "extract16YearsOldWithBirthdayBefore31stAugust" must {
+    "return the number of children of 16 years and dob before 31st August" in {
+
+      val over19 = LocalDate.now.minusYears(19)
+      val answers: CacheMap = cacheMap(
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now().minusYears(16))),
+          "1" -> Json.toJson(AboutYourChild("Bar", LocalDate.now().minusYears(16))),
+          "2" -> Json.toJson(AboutYourChild("Quux", over19))
+        )
+      )
+
+      val parametersMap = Map(
+        0 -> AboutYourChild("Foo", LocalDate.now().minusYears(16)),
+        1 -> AboutYourChild("Bar", LocalDate.now().minusYears(16)),
+        2 -> AboutYourChild("Quux", over19))
+
+
+      val result = helper(answers).extract16YearOldsWithBirthdayBefore31stAugust(Some(parametersMap))
+
+      result.value must contain(0 -> AboutYourChild("Foo", LocalDate.now().minusYears(16)))
+      result.value must contain(1 -> AboutYourChild("Bar", LocalDate.now().minusYears(16)))
     }
   }
 
@@ -240,8 +262,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   ".hasApprovedCosts" must {
 
-    import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
-    import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
+    import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum}
 
     val yesNoNotYetPositive: Seq[String] = Seq(YesNoNotYetEnum.YES.toString, YesNoNotYetEnum.NOTYET.toString)
     val yesNoUnsurePositive: Seq[String] = Seq(YesNoUnsureEnum.YES.toString, YesNoUnsureEnum.NOTSURE.toString)
