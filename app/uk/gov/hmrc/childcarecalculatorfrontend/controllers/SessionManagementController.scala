@@ -22,33 +22,28 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SessionDataClearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
 class SessionManagementController @Inject()(val appConfig: FrontendAppConfig,
+                                            val messagesApi: MessagesApi,
                                             dataCacheConnector: DataCacheConnector,
                                             navigator: Navigator,
-                                            val messagesApi: MessagesApi,
                                             getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                             utils: Utils) extends FrontendController with I18nSupport {
+                                            requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  def sessionExtend: Action[AnyContent] = Action.async {
+  def extendSession: Action[AnyContent] = Action.async {
     Future.successful(Ok("OK"))
   }
 
-  /* def sessionClearData = Action.async {
-    Future.successful(Ok("OK"))
-  }*/
-
-
-  def sessionClearData: Action[AnyContent] = getData.async {
+  def clearSessionData: Action[AnyContent] = getData.async {
     implicit request =>
+          //value has been hard coded as "sessionData" as there is no form associated with this controller
           dataCacheConnector.save[String](request.sessionId, SessionDataClearId.toString, "sessionData").map(cacheMap =>
             Redirect(navigator.nextPage(SessionDataClearId, NormalMode)(new UserAnswers(cacheMap))))
       }

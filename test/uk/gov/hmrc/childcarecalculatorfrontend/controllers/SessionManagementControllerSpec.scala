@@ -16,14 +16,36 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import play.api.mvc.Call
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
+import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
 
 class SessionManagementControllerSpec extends ControllerSpecBase {
 
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): SessionManagementController =
+    new SessionManagementController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl)
+
   "SessionManagement Controller" must {
     "return 200 for a GET" in {
-     /* val result = new SessionManagementController(frontendAppConfig, messagesApi).sessionExtend()(fakeRequest)
-      status(result) mustBe OK*/
+      val result = controller().extendSession()(fakeRequest)
+      status(result) mustBe OK
     }
+  }
+
+  "redirect to the next page when valid data is submitted" in {
+    val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "sessionData"))
+    val result = controller().clearSessionData()(postRequest)
+
+    status(result) mustBe SEE_OTHER
+    redirectLocation(result) mustBe Some(onwardRoute.url)
   }
 }
