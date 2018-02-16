@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.RegisteredBlindId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.registeredBlind
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
@@ -75,7 +75,7 @@ class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
       noOfChildren <- request.userAnswers.noOfChildren
       name         <- request.userAnswers.aboutYourChild(0).map(_.name)
     } yield block(noOfChildren, name)
-  }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withData",Some(request.userAnswers)))))
 
   private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode, noOfChildren: Int)
                   (implicit request: Request[_]): Html =
