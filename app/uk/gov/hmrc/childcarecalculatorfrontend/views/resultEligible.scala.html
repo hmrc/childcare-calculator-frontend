@@ -45,7 +45,11 @@
         couldGet = Some(messages("result.you.could.get")),
         eligibility = Some("£" + model.tc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.tc.period")),
-        para1 = Some(messages("result.tc.para1")))
+        para1 = Some(messages("result.tc.para1")),
+        detailSummary = Some(messages("result.tc.detail.summary")),
+        detailPara1 = Some(messages("result.tc.detailPara1")),
+        detailPara2 = Some(messages("result.tc.detailPara2")),
+        detailPara3 = Some(messages("result.tc.detailPara3")))
 }
 
 
@@ -56,6 +60,9 @@
         eligibility = Some("£" + model.tfc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.tfc.period")),
         para1 = Some(messages("result.tfc.para1")),
+        detailSummary = Some(messages("result.tfc.detail.summary")),
+        detailPara1 = Some(messages("result.tfc.detailPara1")),
+        detailPara2 = Some(messages("result.tfc.detailPara2")),
         displayWarning = model.showTFCWarning,
         warningMessage = model.tfcWarningMessage)
 }
@@ -67,5 +74,9 @@
         eligibility = Some("£" + model.esc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.esc.period")),
         para1 = Some(messages("result.esc.para1")),
-        para2 = Some(messages("result.esc.para2")))
+        para2 = Some(messages("result.esc.para2")),
+        detailSummary = Some(messages("result.esc.detail.summary")),
+        detailPara1 = Some(messages("result.esc.detailPara1")),
+        detailPara2 = Some(messages("result.esc.detailPara2")),
+        detailPara3 = Some(messages("result.esc.detailPara3")))
 }
