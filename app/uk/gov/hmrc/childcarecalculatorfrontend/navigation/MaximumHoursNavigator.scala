@@ -189,7 +189,7 @@ class MaximumHoursNavigator @Inject() (
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }else if(answers.whoIsInPaidEmployment.contains(you)||answers.whoIsInPaidEmployment.contains(both)){
       routes.YourAgeController.onPageLoad(NormalMode)
-    }else routes.SessionExpiredController.onPageLoad()
+    }else SessionExpiredRouter.route(getClass.getName,"doYouOrYourPartnerGetAnyBenefitsRoute",Some(answers))
   }
 
   private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
@@ -208,10 +208,10 @@ class MaximumHoursNavigator @Inject() (
         if (!answers.whoIsInPaidEmployment.contains(partner)) {
           routes.YourAgeController.onPageLoad(NormalMode)
         } else routes.YourPartnersAgeController.onPageLoad(NormalMode)
-      } else routes.SessionExpiredController.onPageLoad()
+      } else SessionExpiredRouter.route(getClass.getName,"whichBenefitsYouGetRoute",Some(answers))
     } else if(answers.doYouLiveWithPartner.contains(false)) {
       routes.YourAgeController.onPageLoad(NormalMode)
-    } else routes.SessionExpiredController.onPageLoad()
+    } else SessionExpiredRouter.route(getClass.getName,"whichBenefitsYouGetRoute",Some(answers))
 
   }
 
@@ -337,7 +337,7 @@ class MaximumHoursNavigator @Inject() (
       case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
       case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)
       case _ =>  answers.whoGetsVouchers.fold(
-        routes.SessionExpiredController.onPageLoad())(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+        SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
     }
   }
 
@@ -362,9 +362,7 @@ class MaximumHoursNavigator @Inject() (
         routes.ResultController.onPageLoad()
       }
     } else {
-      routes.SessionExpiredController.onPageLoad()
+      SessionExpiredRouter.route(getClass.getName,"taxOrUniversalCreditsRoutes",Some(answers))
     }
-
   }
-
 }
