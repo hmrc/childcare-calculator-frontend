@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotEligible, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
