@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichDisabilityBenefitsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{DisabilityBenefits, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -78,8 +78,8 @@ class WhichDisabilityBenefitsController @Inject() (
       }
   }
 
-  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers)))
 
   private def withValidIndex[A](index: Int)
                                (block: String => Future[Result])
@@ -90,7 +90,7 @@ class WhichDisabilityBenefitsController @Inject() (
     } yield if (children.contains(index)) {
       block(name)
     } else {
-      sessionExpired
+      sessionExpired("withValidIndex",Some(request.userAnswers))
     }
-  }.getOrElse(sessionExpired)
+  }.getOrElse(sessionExpired("withValidIndex",None))
 }
