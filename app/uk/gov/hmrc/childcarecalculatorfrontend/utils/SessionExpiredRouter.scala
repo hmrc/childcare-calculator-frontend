@@ -21,7 +21,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 object SessionExpiredRouter {
-  def route[A](area: String, message: String, answers: Option[UserAnswers] = None, uri : String = "N/A") = {
+  def route[A](area: String, message: String, answers: Option[UserAnswers] = None, uri : String = "N/A", session: String = "N/A") = {
 
     val data = answers match {
       case Some(answers) => if (answers.cacheMap != null) Json.toJson(answers.cacheMap) else "No cachemap available"
