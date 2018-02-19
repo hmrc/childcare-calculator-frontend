@@ -344,7 +344,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
   def childrenIdsForAgeBelow16: Seq[Int] =
-    aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq
+
+    (extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys ++
+      aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).toSeq
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
     whichChildrenDisability.orElse {

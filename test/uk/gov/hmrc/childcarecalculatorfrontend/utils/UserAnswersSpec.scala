@@ -139,22 +139,27 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
   }
 
   "childrenIdsForAgeBelow16" must {
-    "return the seq of child ids who are less than 16 years old" in {
+    "return the seq of child ids who are less than 16 years old and exactly 16 whose dob is before 31st of august " in {
       val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
       val under16 = LocalDate.now
+      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+      } else {LocalDate.now.minusYears(16)}
 
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
           "0" -> Json.toJson(AboutYourChild("Foo", over16)),
           "1" -> Json.toJson(AboutYourChild("Bar", under16)),
           "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16))
+          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))
         )
       )
 
       val result: Seq[Int] = helper(answers).childrenIdsForAgeBelow16
-      result mustEqual Seq(1,2)
+      result mustEqual Seq(1,2,3)
     }
+
+
 
     "return the empty sequence when children Map has None" in {
       val answers: CacheMap = cacheMap()

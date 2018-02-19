@@ -24,7 +24,7 @@ import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.over19
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -337,21 +337,41 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
   "Are any of your children registered blind" must {
     "user has a single child" when {
-      "redirect to `How often do you expect to pay for childcare` when the user answers `Yes`" in {
+
+      ///////////////////////////////////////////////
+      "redirect to `How often do you expect to pay for childcare` when the user answers `Yes` and child age below 16" in {
         val answers: UserAnswers = spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-        when(answers.registeredBlind).thenReturn(Some(false))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusYears(1)))))
+        when(answers.childDisabilityBenefits).thenReturn(Some(false))
+        when(answers.registeredBlind).thenReturn(Some(true))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
       }
 
-      "redirect to `How often do you expect to pay for childcare` when the user answers `No`" in {
+      "redirect to `How often do you expect to pay for childcare` when the user answers `No` and child age below 16" in {
         val answers: UserAnswers = spy(userAnswers())
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusYears(1)))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
         when(answers.noOfChildren).thenReturn(Some(1))
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.childDisabilityBenefits).thenReturn(Some(true))
+        when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+
+      "redirect to `How often do you expect to pay for childcare` when the user answers `No, disable child age 16 and dob before august" in {
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+        when(answers.noOfChildren).thenReturn(Some(1))
+        when(answers.childDisabilityBenefits).thenReturn(Some(true))
+
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
 
@@ -359,6 +379,183 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
       }
 
+      "redirect to `How often do you expect to pay for childcare` when the user answers `No, blind child age 16 and dob before august" in {
+        val answers: UserAnswers = spy(userAnswers())
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+        when(answers.noOfChildren).thenReturn(Some(1))
+        when(answers.childDisabilityBenefits).thenReturn(Some(false))
+
+        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+        when(answers.registeredBlind).thenReturn(Some(true))
+
+        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+      }
+
+      "redirect to  Your Income This Year" when {
+        "the user answers `No and child is 16 years and dob before august and not disable" in {
+          val answers: UserAnswers = spy(userAnswers())
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+          when(answers.noOfChildren).thenReturn(Some(1))
+          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.YourIncomeInfoController.onPageLoad()
+        }
+      }
+
+      "redirect to  Partner Income This Year" when {
+        "the user answers `No and child is 16 years and dob before august and not disable" in {
+          val answers: UserAnswers = spy(userAnswers())
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+          when(answers.noOfChildren).thenReturn(Some(1))
+          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+        }
+      }
+///////////////////////////////////////////////////////////////
+      "user with multiple children" when{
+        "redirect to Childcare Pay Frequency the user answers 'No' to registerd blind and 1 child is 16 years " +
+          "and dob is before august and  disable" in{
+
+          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+          } else {LocalDate.now.minusYears(16)}
+
+          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
+          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
+
+          val answers: UserAnswers = spy(userAnswers())
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
+                1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
+                2 -> AboutYourChild("Quux", over19))))
+          when(answers.noOfChildren).thenReturn(Some(3))
+          when(answers.childDisabilityBenefits).thenReturn(Some(true))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.whichDisabilityBenefits).thenReturn(Some(Map(0 -> Set(disabilityBenefits),
+            1 -> Set(disabilityBenefits, higherRateDisabilityBenefits))))
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 1)
+
+        }
+
+        "redirect to Your Income Info for single user answers 'No' to registerd blind and " +
+          "1 child is 16 years and dob is before august and not disable " in{
+
+          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+          } else {LocalDate.now.minusYears(16)}
+
+          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
+          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
+
+          val answers: UserAnswers = spy(userAnswers())
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
+            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
+            2 -> AboutYourChild("Quux", over19))))
+          when(answers.noOfChildren).thenReturn(Some(3))
+          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.YourIncomeInfoController.onPageLoad()
+        }
+
+        "redirect to Your Income Info for user with partner answers 'No' to registerd blind and " +
+          "1 child is 16 years and dob is before august and not disable " in{
+
+          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+          } else {LocalDate.now.minusYears(16)}
+
+          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
+          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
+
+          val answers: UserAnswers = spy(userAnswers())
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
+            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
+            2 -> AboutYourChild("Quux", over19))))
+          when(answers.noOfChildren).thenReturn(Some(3))
+          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+        }
+
+        "redirect to for user answers 'No' to registerd blind and more than 1 child is 16 years and dob is before august and not disable" in{
+          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+          } else {LocalDate.now.minusYears(16)}
+
+          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
+          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
+
+          val answers: UserAnswers = spy(userAnswers())
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
+            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
+            2 -> AboutYourChild("Quux", over19),
+            3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
+          when(answers.noOfChildren).thenReturn(Some(4))
+          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+        }
+
+        "the user answers 'No' and more than 1 child is 16 years and dob is before august and disable" in{
+          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+          } else {LocalDate.now.minusYears(16)}
+
+          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
+          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
+
+          val answers: UserAnswers = spy(userAnswers())
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
+            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
+            2 -> AboutYourChild("Quux", over19),
+            3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
+          when(answers.noOfChildren).thenReturn(Some(4))
+          when(answers.childDisabilityBenefits).thenReturn(Some(true))
+          when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1,3)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.whichDisabilityBenefits).thenReturn(Some(Map(0 -> Set(disabilityBenefits),
+            1 -> Set(disabilityBenefits, higherRateDisabilityBenefits), 3 -> Set(higherRateDisabilityBenefits))))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+
+
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
+        }
+      }
+///////////////////////////////////////////////////////////////////////////////////////////
       "redirect to Your Income This Year" when {
         "the child is over 16 and is single parent" in {
           val answers: UserAnswers = spy(userAnswers())
