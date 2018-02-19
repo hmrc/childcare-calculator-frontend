@@ -28,7 +28,7 @@ object SessionExpiredRouter {
       case None => "No cachemap available"
     }
 
-    Logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${data}")
+    Logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${data} - ${session}")
     routes.SessionExpiredController.onPageLoad()
   }
 }
