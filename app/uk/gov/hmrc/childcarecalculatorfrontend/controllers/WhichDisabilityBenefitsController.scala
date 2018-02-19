@@ -79,7 +79,7 @@ class WhichDisabilityBenefitsController @Inject() (
   }
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers)))
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
 
   private def withValidIndex[A](index: Int)
                                (block: String => Future[Result])

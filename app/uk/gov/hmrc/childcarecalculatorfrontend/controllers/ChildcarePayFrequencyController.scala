@@ -85,8 +85,8 @@ class ChildcarePayFrequencyController @Inject() (
       if (childrenWithCosts.contains(i)) {
         block(model.name)
       } else {
-        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers))))
+        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri)))
       }
     }
-  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers)))))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri))))
 }

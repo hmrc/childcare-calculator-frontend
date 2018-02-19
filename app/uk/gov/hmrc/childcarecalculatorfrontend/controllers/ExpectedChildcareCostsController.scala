@@ -86,5 +86,5 @@ class ExpectedChildcareCostsController @Inject() (
       model     <- request.userAnswers.aboutYourChild(childIndex)
       frequency <- request.userAnswers.childcarePayFrequency(childIndex)
     } yield block(hasCosts, model.name, frequency)
-  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validIndex",Some(request.userAnswers)))))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validIndex",Some(request.userAnswers),request.uri))))
 }
