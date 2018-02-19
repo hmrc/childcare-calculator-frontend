@@ -87,6 +87,6 @@ class WhoHasChildcareCostsController @Inject()(
             model.name -> i
         }
         block(values)
-      }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers)))))
+      }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers),request.uri))))
   }
 }
