@@ -28,6 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.SessionExpiredRouter
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 
 @Singleton
@@ -51,9 +52,9 @@ class AboutYourResultsController @Inject()(val appConfig: FrontendAppConfig,
           moreInfoResults.getSummary(request.userAnswers.location.getOrElse(Location.ENGLAND), model)
         ))
       }
-      case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+      case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers),request.uri))
     }.recover {
-      case _ => Redirect(routes.SessionExpiredController.onPageLoad())
+      case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers),request.uri))
     }
   }
 }
