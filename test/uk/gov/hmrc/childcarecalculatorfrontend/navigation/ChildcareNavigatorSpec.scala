@@ -440,7 +440,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
                 1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
                 2 -> AboutYourChild("Quux", over19))))
           when(answers.noOfChildren).thenReturn(Some(3))
-          when(answers.childDisabilityBenefits).thenReturn(Some(true))
+          when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
           when(answers.registeredBlind).thenReturn(Some(false))
@@ -468,7 +468,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
             2 -> AboutYourChild("Quux", over19))))
           when(answers.noOfChildren).thenReturn(Some(3))
-          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenDisabilityBenefits).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
@@ -493,7 +493,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
             2 -> AboutYourChild("Quux", over19))))
           when(answers.noOfChildren).thenReturn(Some(3))
-          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenDisabilityBenefits).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -517,7 +517,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             2 -> AboutYourChild("Quux", over19),
             3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
           when(answers.noOfChildren).thenReturn(Some(4))
-          when(answers.childDisabilityBenefits).thenReturn(Some(false))
+          when(answers.childrenDisabilityBenefits).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -542,14 +542,12 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             2 -> AboutYourChild("Quux", over19),
             3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
           when(answers.noOfChildren).thenReturn(Some(4))
-          when(answers.childDisabilityBenefits).thenReturn(Some(true))
+          when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
           when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1,3)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.whichDisabilityBenefits).thenReturn(Some(Map(0 -> Set(disabilityBenefits),
             1 -> Set(disabilityBenefits, higherRateDisabilityBenefits), 3 -> Set(higherRateDisabilityBenefits))))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-          when(answers.registeredBlind).thenReturn(Some(false))
-
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()

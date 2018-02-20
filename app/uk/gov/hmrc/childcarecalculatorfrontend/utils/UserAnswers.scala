@@ -339,14 +339,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     }
   }
 
-  def numberOfChildrenOver16 = {
-    childrenOver16.fold(0)(_.size)
-  }
+  def numberOfChildrenOver16: Int = childrenOver16.fold(0)(_.size)
 
-  def childrenIdsForAgeBelow16: Seq[Int] =
-
-    (extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys ++
-      aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).toSeq
+  def childrenIdsForAgeBelow16: List[Int] =
+     (extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys ++
+      aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).toList.sorted
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
     whichChildrenDisability.orElse {
