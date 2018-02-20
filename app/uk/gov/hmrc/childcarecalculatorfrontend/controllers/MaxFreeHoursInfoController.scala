@@ -49,32 +49,4 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
         request.userAnswers.taxOrUniversalCredits.getOrElse(""))
       )
   }
-
- /* private def getESCEligibility(answers: UserAnswers): Boolean = {
-
-    val No = YesNoUnsureEnum.NO.toString
-
-    val hasParentChildcareCosts: Boolean = answers.childcareCosts.fold(false) {
-      _ != YesNoNotYetEnum.NO.toString
-    }
-
-    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !x.equals(No))
-    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !x.equals(No))
-
-    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-    val whoInPaidEmployment = answers.whoIsInPaidEmployment
-    val bothChildcareVouchers = answers.whoGetsVouchers
-
-    if (hasPartner) {
-      whoInPaidEmployment match {
-        case Some(You) => hasParentChildcareCosts && hasParentChildcareVouchers
-        case Some(Partner) => hasParentChildcareCosts && hasPartnerChildcareVouchers
-        case Some(_) => hasParentChildcareCosts && bothChildcareVouchers.contains(Both)
-        case _ => false
-      }
-    } else {
-      hasParentChildcareCosts && hasParentChildcareVouchers
-    }
-  }
-*/
 }
