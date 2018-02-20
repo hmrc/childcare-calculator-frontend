@@ -91,7 +91,7 @@ class WhichChildrenDisabilityController @Inject()(
         }
 
         block(values)
-    }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers)))))
+    }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers),request.uri))))
   }
 
 }
