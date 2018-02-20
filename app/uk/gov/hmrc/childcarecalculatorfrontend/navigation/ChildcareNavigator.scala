@@ -195,25 +195,30 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     if (answers.numberOfChildrenOver16 == totalNumberOfChildren) {
       Some(routeToIncomeInfoPage(answers))
     } else {
-      if(answers.childrenIdsForAgeBelow16.size == 1 ||
-            answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size==1)
+      if(answers.childrenIdsForAgeExactly16.size.equals(1) || answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size==1)
           {destinedUrlForSingleChildAged16(answers)}
           else { destinedUrlForMultipleChildAged16(answers)}
     }
   }
 
   private def destinedUrlForSingleChildAged16(answers: UserAnswers): Option[Call] = {
-    if (answers.childrenIdsForAgeBelow16.size.equals(1) && (answers.childDisabilityBenefits.contains(true) || answers.registeredBlind.contains(true))) {
-      Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenIdsForAgeBelow16.head))
+    if (answers.childrenIdsForAgeExactly16.size.equals(1) && test(answers)
+      || (answers.whichChildrenDisability.map(c=>c.contains(answers.childrenIdsForAgeExactly16.head)).getOrElse(false) || answers.registeredBlind.contains(true))) {
+      Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenIdsForAgeExactly16.head))
     } else if (answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size == 1) {
-      Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenIdsForAgeBelow16.head))
+      Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenIdsForAgeExactly16.head))
     } else {
       Some(routeToIncomeInfoPage(answers))
     }
   }
-
+private def gi(answers: UserAnswers): Boolean ={
+  if(answers.noOfChildren == Some(1)){ (answers.childDisabilityBenefits.contains(true))
+  }else{
+    (answers.whichChildrenDisability.map(c=>c.contains(answers.childrenIdsForAgeExactly16.head)).getOrElse(false))
+  }
+}
   private def  destinedUrlForMultipleChildAged16(answers: UserAnswers): Option[Call] = {
-    if (answers.childrenIdsForAgeBelow16.size > 1 && (answers.childrenDisabilityBenefits.contains(true) || answers.registeredBlind.contains(true))) {
+    if (answers.childrenIdsForAgeExactly16.size > 1 && (answers.childrenDisabilityBenefits.contains(true) || answers.registeredBlind.contains(true))) {
       Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
     } else if (answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size > 1) {
       Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))

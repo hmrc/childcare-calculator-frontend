@@ -155,7 +155,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
         )
       )
 
-      val result: Seq[Int] = helper(answers).childrenIdsForAgeBelow16
+      val result: Seq[Int] = helper(answers).childrenIdsForAgeExactly16
       result mustEqual Seq(1,2,3)
     }
 
@@ -163,7 +163,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
     "return the empty sequence when children Map has None" in {
       val answers: CacheMap = cacheMap()
-      val result: Seq[Int] = helper(answers).childrenIdsForAgeBelow16
+      val result: Seq[Int] = helper(answers).childrenIdsForAgeExactly16
       result mustEqual Seq()
     }
   }
