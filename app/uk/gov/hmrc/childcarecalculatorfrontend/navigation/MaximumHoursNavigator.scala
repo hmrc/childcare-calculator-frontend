@@ -104,7 +104,7 @@ class MaximumHoursNavigator @Inject() (
     if (answers.whoIsInPaidEmployment.contains(both)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 

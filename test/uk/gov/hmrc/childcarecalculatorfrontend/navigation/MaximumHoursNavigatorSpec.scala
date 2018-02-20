@@ -282,12 +282,19 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     }
   }
 
-  "Go to Has you partners tax code been adjusted" when {
+  "Go to childcare vouchers" when {
     "user selects 'Partner' on who is in paid employment and hit continue on Partner work hours" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
       when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
-      navigator.nextPage(PartnerWorkHoursId, NormalMode).value(answers) mustBe routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerWorkHoursId, NormalMode).value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+    }
+
+    "user selects 'Both' on who is in paid employment and hit continue on parent work hours" in {
+      val answers = spy(userAnswers())
+      when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+      when(answers.partnerWorkHours) thenReturn Some(BigDecimal(23))
+      navigator.nextPage(ParentWorkHoursId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     }
   }
 
