@@ -36,5 +36,18 @@ class BenefitsIncomeCYFormSpec extends FormBehaviours {
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerBenefitsIncome",
       "partnerBenefitsIncome.required", "partnerBenefitsIncome.required")
+
+    "not bind when either value is above the threshold of 9999.99" in {
+      val expectedErrors =
+        error("parentBenefitsIncome", "parentBenefitsIncome.invalid") ++
+          error("partnerBenefitsIncome", "partnerBenefitsIncome.invalid")
+
+      val data = Map(
+        "parentBenefitsIncome" -> "10000.0",
+        "partnerBenefitsIncome" -> "10000.0"
+      )
+
+      checkForError(BenefitsIncomeCYForm(), data, expectedErrors )
+    }
   }
 }
