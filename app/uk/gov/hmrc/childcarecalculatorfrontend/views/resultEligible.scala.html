@@ -35,6 +35,15 @@
     </div>
     }
 }
+
+@freeHoursContactCouncil = {
+    <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
+}
+
+@findoutAboutUC = {
+    <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
+}
+
 @if(model.freeHours.isDefined) {
 
     @defining(if(location.toString.equals(Location.ENGLAND.toString) && model.freeHours.contains(noOfFreeHours15)) {
@@ -49,9 +58,10 @@
             para1 = Some(messages("result.free.hours.para1")),
             additionalContent = Some(additionalContent),
             detailSummary = Some(messages("result.free.hours.detail.summary")),
+            detailClass = Some("freeHours"),
             detailPara1 = Some(messages("result.free.hours.detailPara1")),
             detailPara2 = Some(messages("result.free.hours.detailPara2")),
-            detailPara3 = Some(messages("result.free.hours.detailPara3")),
+            detailPara3WithLink = Some(freeHoursContactCouncil),
             detailPara4 = Some(messages("result.free.hours.detailPara4")))
     }
 }
@@ -64,8 +74,9 @@
         periodText = Some(messages("result.tc.period")),
         para1 = Some(messages("result.tc.para1")),
         detailSummary = Some(messages("result.tc.detail.summary")),
+        detailClass = Some("tc"),
         detailPara1 = Some(messages("result.tc.detailPara1")),
-        detailPara2 = Some(messages("result.tc.detailPara2")),
+        detailPara2WithLink = Some(findoutAboutUC),
         detailPara3 = Some(messages("result.tc.detailPara3")))
 }
 
@@ -78,6 +89,7 @@
         periodText = Some(messages("result.tfc.period")),
         para1 = Some(messages("result.tfc.para1")),
         detailSummary = Some(messages("result.tfc.detail.summary")),
+        detailClass = Some("tfc"),
         detailPara1 = Some(messages("result.tfc.detailPara1")),
         detailPara2 = Some(messages("result.tfc.detailPara2")),
         displayWarning = model.showTFCWarning,
@@ -93,6 +105,7 @@
         para1 = Some(messages("result.esc.para1")),
         para2 = Some(messages("result.esc.para2")),
         detailSummary = Some(messages("result.esc.detail.summary")),
+        detailClass = Some("esc"),
         detailPara1 = Some(messages("result.esc.detailPara1")),
         detailPara2 = Some(messages("result.esc.detailPara2")),
         detailPara3 = Some(messages("result.esc.detailPara3")))

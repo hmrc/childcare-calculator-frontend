@@ -71,6 +71,7 @@ site.service_name = Childcare calculator
 site.textarea.char_limit = (Limit is {0} characters)
 site.in.pounds = in pounds
 site.colon = :
+site.opens.new.window = (opens in a new window)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -1237,7 +1238,9 @@ result.free.hours.not.eligible = You are currently not eligible for any free hou
 result.free.hours.detail.summary = How free childcare hours work
 result.free.hours.detailPara1 = You can take up the offer the term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
 result.free.hours.detailPara2 = You must use childcare from an approved provider. For example, a registered childminder, playscheme, nursery, out of school club or a home careworker working for a registered agency. You may be able to use your free hours between 2 different providers.
-result.free.hours.detailPara3 = Contact your childcare provider or local council to find out more.
+result.free.hours.detailPara3.you.can = You can
+result.free.hours.detailPara3.link.text = contact your childcare provider or your local council to find out more about free childcare hours
+result.free.hours.detailPara3.link = https://www.gov.uk/find-free-early-education
 result.free.hours.detailPara4 = Free childcare hours stop when your child starts in reception class.
 
 result.tc.title = Tax credits
@@ -1245,7 +1248,9 @@ result.tc.period = over the year ahead towards your household costs
 result.tc.para1 = You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances such as your children, childcare spend and uses your household income from the previous year.
 result.tc.detail.summary = How tax credits works
 result.tc.detailPara1 = How much childcare support you can get depends on your income, hours worked, what you pay for childcare, the number of children you have and whether you, your partner, or any of your children are disabled. You can get up to 70% of your childcare costs paid. For example, for 1 child, the maximum childcare cost covered is £175 a week and 70% of this would be £122.50 in tax credits. For more than 1 child, the maximum childcare cost covered is £300, which would be £210 in tax credits.
-result.tc.detailPara2 = Tax credits will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live. You can find out about your eligibility and when you could be affected by the change.
+result.tc.detailPara2.tax.credit.replace.uc = Tax credits will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live. You can
+result.tc.detailPara2.tax.credit.replace.uc.link.text = find out about your Universal Credit eligibility and when you could be affected by the change
+result.tc.detailPara2.tax.credit.replace.uc.link = https://www.gov.uk/universal-credit/eligibility
 result.tc.detailPara3 = It is for children under 16.
 
 result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
