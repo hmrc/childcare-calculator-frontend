@@ -211,7 +211,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       Some(routeToIncomeInfoPage(answers))
     }
   }
-private def gi(answers: UserAnswers): Boolean ={
+private def test(answers: UserAnswers): Boolean ={
   if(answers.noOfChildren == Some(1)){ (answers.childDisabilityBenefits.contains(true))
   }else{
     (answers.whichChildrenDisability.map(c=>c.contains(answers.childrenIdsForAgeExactly16.head)).getOrElse(false))
