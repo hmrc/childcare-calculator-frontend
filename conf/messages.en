@@ -684,6 +684,8 @@ partnerPaidPensionPY.title = Did your partner pay into a work pension in the pre
 partnerPaidPensionPY.heading = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.error = Select yes if your partner paid into a work pension in the previous year
+youPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
+partnerPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 
 bothPaidPensionPY.title = Did you, your partner, or both of you pay into a work pension in the previous year?
 bothPaidPensionPY.heading = Did you, your partner, or both of you pay into a work pension in the previous year?
