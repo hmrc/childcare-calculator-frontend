@@ -732,7 +732,7 @@ youBenefitsIncomeCY.heading = How much will you get in benefits this year?
 youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
 youBenefitsIncomeCY.invalid = Please only enter a numerical value of up to two decimal places
-youBenefitsIncomeCY.required = Enter numbers from 1 to 9999 for how much you will get in benefits this year
+youBenefitsIncomeCY.required = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
 
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
