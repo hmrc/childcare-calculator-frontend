@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
 
 /**
   * Contains the navigation for current and previous year other income pages
@@ -157,25 +157,4 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) exten
   private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountPY) { case _ => routes.BothStatutoryPayController.onPageLoad(NormalMode) }
 
-  private def getCallForYourOtherIncomeAsPerPaidWorkCY(answers: UserAnswers) =
-    if (answers.areYouInPaidWork.nonEmpty) {
-      routes.YouStatutoryPayController.onPageLoad(NormalMode)
-    } else {
-      utils.getCall(answers.whoIsInPaidEmployment) {
-        case `you` => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    }
-
-  private def getCallForYourOtherIncomeAsPerPaidWorkPY(answers: UserAnswers) =
-    if (answers.areYouInPaidWork.nonEmpty) {
-      routes.YouStatutoryPayController.onPageLoad(NormalMode)
-    } else {
-      utils.getCall(answers.whoWasInPaidWorkPY) {
-        case `you` => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case `both` => routes.BothStatutoryPayController.onPageLoad(NormalMode)
-        case _ => routes.SessionExpiredController.onPageLoad()
-      }
-    }
 }

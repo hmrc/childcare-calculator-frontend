@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ExpectedChildcareCost
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum.NOTYET
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode, YesNoNotYetEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -86,5 +86,5 @@ class ExpectedChildcareCostsController @Inject() (
       model     <- request.userAnswers.aboutYourChild(childIndex)
       frequency <- request.userAnswers.childcarePayFrequency(childIndex)
     } yield block(hasCosts, model.name, frequency)
-  }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validIndex",Some(request.userAnswers),request.uri))))
 }

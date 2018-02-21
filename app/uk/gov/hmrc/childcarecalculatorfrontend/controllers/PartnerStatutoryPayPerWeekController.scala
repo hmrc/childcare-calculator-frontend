@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayPerWeekF
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryPayPerWeekId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayPerWeek
 
 import scala.concurrent.Future
@@ -42,15 +42,15 @@ class PartnerStatutoryPayPerWeekController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
 
   private def validateStatutoryPayType[A](block: (String) => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {
 
     request.userAnswers.partnerStatutoryPayType.map {
       payType => block(Messages(s"statutoryPayTypeLower.$payType"))
-    }.getOrElse(sessionExpired)
+    }.getOrElse(sessionExpired("validateStatutoryPayType",Some(request.userAnswers)))
   }
 
   def onPageLoad(mode: Mode) = (getData andThen requireData).async {

@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoHasChildcareCostsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
 import scala.concurrent.Future
@@ -87,6 +87,6 @@ class WhoHasChildcareCostsController @Inject()(
             model.name -> i
         }
         block(values)
-      }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+      }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers),request.uri))))
   }
 }
