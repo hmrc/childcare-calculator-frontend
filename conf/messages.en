@@ -967,8 +967,8 @@ yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
 parentOtherIncomeAmountPY.required = Enter how much your other income was in the previous year
 parentOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your other income in the previous year
 
-partnerOtherIncomeAmountPY.required = Enter how much your partner’s other income was in the previous year
-partnerOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income in the previous year
+partnerOtherIncomeAmountPY.required = Enter how much your partner’s other income was
+partnerOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income
 partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.info = Partner’s other income
