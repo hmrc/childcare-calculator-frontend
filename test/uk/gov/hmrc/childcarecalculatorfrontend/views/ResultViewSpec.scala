@@ -156,9 +156,9 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.eligibility.checker"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc"))
 
-        view.getElementById("eligibilityChecker").attr("href") mustBe messages("aboutYourResults.tc.para3.eligibility.checker.link")
+        view.getElementById("findOutUCEligibility").attr("href") mustBe messages("result.tc.detailPara2.tax.credit.replace.uc.link")
 
       }
     }
@@ -217,7 +217,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".esc")
-        assertNotContainsText(view, messages("aboutYourResults.esc.title"))
+       // assertNotContainsText(view, messages("aboutYourResults.esc.title"))
         assertNotContainsText(view, messages("aboutYourResults.esc.para1"))
         assertNotContainsText(view, messages("aboutYourResults.esc.para2"))
       }
@@ -240,8 +240,8 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.eligibility.checker"))
-        view.getElementById("eligibilityChecker").attr("href") mustBe messages("aboutYourResults.tc.para3.eligibility.checker.link")
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc"))
+        view.getElementById("findOutUCEligibility").attr("href") mustBe messages("result.tc.detailPara2.tax.credit.replace.uc.link")
 
         assertRenderedByCssSelector(view, ".tfc")
         view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))

@@ -28,8 +28,8 @@
     @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
     <div class="twoYearsOld">
         <h2 class="heading-medium">@messages("aboutYourResults.two.years.old.guidance.title")</h2>
-        <p> <a id="twoYearsOldHelp" href = @messages("aboutYourResults.two.years.old.guidance.para1.help.link")>
-                @messages("aboutYourResults.two.years.old.guidance.para1")
+        <p> <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("aboutYourResults.two.years.old.guidance.para1.help.link")>
+                @messages("aboutYourResults.two.years.old.guidance.para1")  <span class="visually-hidden">@messages("site.opens.new.window")</span>
             </a>
         </p>
     </div>
@@ -103,7 +103,6 @@
         eligibility = Some("£" + model.esc.fold("")(value => utils.valueFormatter(value))),
         periodText = Some(messages("result.esc.period")),
         para1 = Some(messages("result.esc.para1")),
-        para2 = Some(messages("result.esc.para2")),
         detailSummary = Some(messages("result.esc.detail.summary")),
         detailClass = Some("esc"),
         detailPara1 = Some(messages("result.esc.detailPara1")),
