@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.joda.time.LocalDate
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json._
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over16,under16,over16WithBirthdayBefore31stOfAugust,over19}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -74,10 +75,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
 
     "return any children who are over 16" in {
-
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val over19 = LocalDate.now.minusYears(19)
-      val under16 = LocalDate.now
 
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
@@ -140,11 +137,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   "childrenIdsForAgeBelow16" must {
     "return the seq of child ids who are less than 16 years old and exactly 16 whose dob is before 31st of august " in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {LocalDate.now.minusYears(16)}
 
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
@@ -166,63 +158,8 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
   }
 
-  ".test3" must {
-    "return a seq of child id's for children aged below 16 and exactly 16 with birthday before 31st of August " in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
-
-
-      val answers: CacheMap = cacheMap(
-        NoOfChildrenId.toString -> JsNumber(4),
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
-
-      val result: Seq[Int] = helper(answers).test3
-      result mustEqual Seq(1,2,3)
-    }
-
-    "return empty sequence when children Map has None" in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
-
-
-      val answers: CacheMap = cacheMap(
-        NoOfChildrenId.toString -> JsNumber(4),
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-          "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", over16))))
-
-      val result: Seq[Int] = helper(answers).test3
-      result mustEqual Seq()
-    }
-  }
-
     ".singleChildBelow16Yrs" must {
       "return true when the child aged exactly 16 and birthday before 31st of August are disabled" in {
-        val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-        val under16 = LocalDate.now
-        val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-          LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-        } else {
-          LocalDate.now.minusYears(16)
-        }
-
 
         val answers: CacheMap = cacheMap(
           NoOfChildrenId.toString -> JsNumber(4),
@@ -239,14 +176,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       }
 
       "return false when the child aged exactly 16 and birthday before 31st of August are not  disabled" in {
-        val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-        val under16 = LocalDate.now
-        val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-          LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-        } else {
-          LocalDate.now.minusYears(16)
-        }
-
 
         val answers: CacheMap = cacheMap(
           NoOfChildrenId.toString -> JsNumber(4),
@@ -263,14 +192,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       }
 
       "return false when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
-        val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-        val under16 = LocalDate.now
-        val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-          LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-        } else {
-          LocalDate.now.minusYears(16)
-        }
-
 
         val answers: CacheMap = cacheMap(
           NoOfChildrenId.toString -> JsNumber(4),
@@ -286,14 +207,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       }
 
       "return true when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
-        val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-        val under16 = LocalDate.now
-        val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-          LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-        } else {
-          LocalDate.now.minusYears(16)
-        }
-
 
         val answers: CacheMap = cacheMap(
           NoOfChildrenId.toString -> JsNumber(4),
@@ -312,14 +225,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   ".multipleChildrenBelow16Yrs" must {
     "return true when the children aged exactly 16 and birthday before 31st of August are disabled" in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
-
 
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
@@ -336,14 +241,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
 
     "return true when the children aged exactly 16 and birthday before 31st of August are blind" in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
-
 
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
@@ -360,14 +257,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
 
     "return false when the children aged exactly 16 and birthday before 31st of August are not blind nor disabled" in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
-
 
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
@@ -386,13 +275,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
 ".childrenIdsForAgeExactly16AndDisabled" must {
   "returns list with children exactly 16 years with dob before august and blind" in {
-    val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-    val under16 = LocalDate.now
-    val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-      LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-    } else {
-      LocalDate.now.minusYears(16)
-    }
 
     val answers: CacheMap = cacheMap(
       NoOfChildrenId.toString -> JsNumber(4),
@@ -409,13 +291,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
   }
 
   "returns list with children exactly 16 years with dob before august and disable " in {
-    val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-    val under16 = LocalDate.now
-    val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-      LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-    } else {
-      LocalDate.now.minusYears(16)
-    }
 
     val answers: CacheMap = cacheMap(
       NoOfChildrenId.toString -> JsNumber(4),
@@ -455,13 +330,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   ".childrenBelow16" when {
     "return the list of children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
 
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
@@ -477,13 +345,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
 
     "return empty list when children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
-      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-      val under16 = LocalDate.now
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-      } else {
-        LocalDate.now.minusYears(16)
-      }
 
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),

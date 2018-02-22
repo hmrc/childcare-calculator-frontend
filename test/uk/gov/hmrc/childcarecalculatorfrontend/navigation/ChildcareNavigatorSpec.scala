@@ -21,7 +21,7 @@ import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito._
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.over19
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over19,over16WithBirthdayBefore31stOfAugust}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
@@ -347,7 +347,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.registeredBlind).thenReturn(Some(true))
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", over16WithBirthdayBefore31stOfAugust))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
@@ -471,15 +471,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
             result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
           }
-///////
+
         "redirect to Partner Income Info when user answers 'No' to registered blind and " +
           "1 child is 16 years and dob is before august and same child is not disabled" in{
-
-          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-          } else {LocalDate.now.minusYears(16)}
-
-
 
           val answers: UserAnswers = spy(userAnswers())
 
@@ -499,10 +493,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         "redirect to Your Income Info when single user answers 'No' to registerd blind and " +
           "1 child is 16 years and dob is before august and not disable " in{
-
-          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-          } else {LocalDate.now.minusYears(16)}
 
           lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
           lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
@@ -525,13 +515,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         "redirect to Your Income Info when user with partner answers 'No' to registerd blind and " +
           "1 child is 16 years and dob is before august and not disabled " in{
 
-          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-          } else {LocalDate.now.minusYears(16)}
-
-          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
-          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
-
           val answers: UserAnswers = spy(userAnswers())
 
           when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
@@ -549,12 +532,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         "redirect to  Partner Income Info when user answers 'No' to registerd blind and more than " +
           "1 child is 16 years and dob is before august and not disable" in{
-          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-          } else {LocalDate.now.minusYears(16)}
-
-          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
-          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
 
           val answers: UserAnswers = spy(userAnswers())
 
@@ -575,9 +552,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         "redirects to Who Has Childcare Costs when the user answers 'No' and more than " +
           "1 child is 16 years and dob is before august and disable" in{
-          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-          } else {LocalDate.now.minusYears(16)}
 
           val answers: UserAnswers = spy(userAnswers())
 
@@ -598,9 +572,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirects to Your Income Info when user answers 'No' and more than " +
         "1 child is 16 years and dob is before august and same children are not disable" in{
-        val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-          LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-        } else {LocalDate.now.minusYears(16)}
 
         val answers: UserAnswers = spy(userAnswers())
 
