@@ -947,7 +947,7 @@ howMuchPartnerPayPensionPY.info = Partner’s pension
 howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.partnerPension = Partner
 howMuchPartnerPayPensionPY.required = Enter how much your partner paid into their pension a month
-howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into your pension a month
+howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into their pension a month
 
 childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
