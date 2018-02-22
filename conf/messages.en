@@ -1215,6 +1215,7 @@ result.schemes.free.hours.eligibility.guidance = free childcare hours can be use
 result.schemes.tax.credit.eligibility.with.vouchers.guidance = tax credits can be used with childcare vouchers, but you’d get less in tax credits payments if you do
 result.schemes.tax.credit.ineligibility.guidance = tax credits cannot be used with Tax-Free Childcare
 result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance = Tax-Free Childcare cannot be used with childcare vouchers, tax credits and Universal Credit
+result.schemes.tfc.vouchers.eligibility.guidance = Tax-Free Childcare cannot be used with childcare vouchers
 result.schemes.tfc.ineligibility.taxCredits.guidance = Tax-Free Childcare cannot be used with Tax credits
 result.schemes.tfc.ineligibility.vouchers.guidance = Tax-Free Childcare cannot be used with childcare vouchers
 result.schemes.tfc.tc.warning = Your tax credits will stop if you apply for Tax-Free Childcare.
