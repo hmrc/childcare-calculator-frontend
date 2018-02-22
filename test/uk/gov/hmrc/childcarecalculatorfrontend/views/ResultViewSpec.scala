@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
@@ -126,10 +127,13 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertRenderedByCssSelector(view, ".freeHours")
-
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para1"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
+        view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
       }
     }
 
@@ -140,6 +144,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".freeHours")
+        assertNotContainsText(view, messages("result.free.hours.detail.summary"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara1"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara2"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara3.link.text"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara4"))
       }
     }
 
@@ -150,15 +159,12 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertRenderedByCssSelector(view, ".tc")
-
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detail.summary"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara1"))
         view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc"))
-
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
         view.getElementById("findOutUCEligibility").attr("href") mustBe messages("result.tc.detailPara2.tax.credit.replace.uc.link")
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara3"))
 
       }
     }
@@ -170,7 +176,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".tc")
-        assertNotRenderedById(view, "eligibilityChecker")
+        assertNotContainsText(view, messages("result.tc.detail.summary"))
+        assertNotContainsText(view, messages("result.tc.detailPara1"))
+        assertNotContainsText(view, messages("result.tc.detailPara2.tax.credit.replace.uc"))
+        assertNotContainsText(view, messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
+        assertNotContainsText(view, messages("result.tc.detailPara3"))
 
       }
     }
@@ -181,9 +191,10 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(tfc = Some(2000))
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        assertRenderedByCssSelector(view, ".tfc")
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detail.summary"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara1"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara2"))
       }
     }
 
@@ -194,8 +205,9 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".tfc")
-        assertNotContainsText(view, messages("aboutYourResults.tfc.para1"))
-        assertNotContainsText(view, messages("aboutYourResults.tfc.para2"))
+        assertNotContainsText(view, messages("result.tfc.detail.summary"))
+        assertNotContainsText(view, messages("result.tfc.detailPara1"))
+        assertNotContainsText(view, messages("result.tfc.detailPara2"))
       }
     }
 
@@ -204,9 +216,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(esc = Some(2000))
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
+        assertRenderedByCssSelector(view, ".esc")
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
 
@@ -217,9 +231,10 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".esc")
-       // assertNotContainsText(view, messages("aboutYourResults.esc.title"))
-        assertNotContainsText(view, messages("aboutYourResults.esc.para1"))
-        assertNotContainsText(view, messages("aboutYourResults.esc.para2"))
+        assertNotContainsText(view, messages("result.esc.detail.summary"))
+        assertNotContainsText(view, messages("result.esc.detailPara1"))
+        assertNotContainsText(view, messages("result.esc.detailPara2"))
+        assertNotContainsText(view, messages("result.esc.detailPara3"))
       }
     }
 
@@ -235,29 +250,81 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
         view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
         view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
         view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
 
         assertRenderedByCssSelector(view, ".tc")
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detail.summary"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara1"))
         view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
         view.getElementById("findOutUCEligibility").attr("href") mustBe messages("result.tc.detailPara2.tax.credit.replace.uc.link")
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara3"))
 
         assertRenderedByCssSelector(view, ".tfc")
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detail.summary"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara1"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara2"))
+        view.getElementsByClass("tfc").text().contains(messages("result.schemes.tfc.tc.warning"))
 
         assertRenderedByCssSelector(view, ".esc")
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
 
+    "display more info about the schemes" in {
+      val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+      assertRenderedByCssSelector(view, ".moreInfo")
+
+      view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.title"))
+      view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para1"))
+      view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para2"))
+    }
+
+    "display guidance for 2 years old" when {
+      "user lives in England" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = true)
+
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertRenderedByCssSelector(view, ".twoYearsOld")
+
+        view.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.title"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para1"))
+        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para1.help.link")
+      }
+    }
+
+    "not display guidance for 2 years old" when {
+      "user does not live in England" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(view, ".twoYearsOld")
+        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.title"))
+        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.para1"))
+
+        assertNotRenderedById(view, "twoYearsOldHelp")
+      }
+    }
+
+    "not display guidance for 2 years old" when {
+      "user does not have 2 years old child" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = false)
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(view, ".twoYearsOld")
+        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.title"))
+        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.para1"))
+
+        assertNotRenderedById(view, "twoYearsOldHelp")
+      }
+    }
     "display TFC warning message" when {
       "it is needed" in {
         val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = Some(200),showTFCWarning = true, tfcWarningMessage = "this is a test")
