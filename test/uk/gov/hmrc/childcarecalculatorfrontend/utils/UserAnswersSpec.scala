@@ -183,7 +183,9 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           "0" -> Json.toJson(AboutYourChild("Foo", over16)),
           "1" -> Json.toJson(AboutYourChild("Bar", under16)),
           "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))))
+          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
       val result: Seq[Int] = helper(answers).test3
       result mustEqual Seq(1,2,3)
@@ -211,7 +213,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
   }
 
-    ".test" must {
+    ".singleChildBelow16Yrs" must {
       "return true when the child aged exactly 16 and birthday before 31st of August are disabled" in {
         val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
         val under16 = LocalDate.now
@@ -232,7 +234,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
           WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
-        val result: Boolean = helper(answers).test
+        val result: Boolean = helper(answers).singleChildBelow16Yrs
         result mustEqual true
       }
 
@@ -256,7 +258,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
           WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)))
 
-        val result: Boolean = helper(answers).test
+        val result: Boolean = helper(answers).singleChildBelow16Yrs
         result mustEqual false
       }
 
@@ -279,7 +281,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
             "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
 
-        val result: Boolean = helper(answers).test
+        val result: Boolean = helper(answers).singleChildBelow16Yrs
         result mustEqual false
       }
 
@@ -302,13 +304,13 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
             "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
           WhichChildrenBlindId.toString -> Json.toJson(Seq(2,3)))
 
-        val result: Boolean = helper(answers).test
+        val result: Boolean = helper(answers).singleChildBelow16Yrs
         result mustEqual true
       }
     }
 
 
-  ".test2" must {
+  ".multipleChildrenBelow16Yrs" must {
     "return true when the children aged exactly 16 and birthday before 31st of August are disabled" in {
       val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
       val under16 = LocalDate.now
@@ -329,7 +331,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,2,3)))
 
-      val result: Boolean = helper(answers).test2
+      val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
       result mustEqual true
     }
 
@@ -353,7 +355,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
         WhichChildrenBlindId.toString -> Json.toJson(Seq(0,2,3)))
 
-      val result: Boolean = helper(answers).test2
+      val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
       result mustEqual true
     }
 
@@ -377,7 +379,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1,2)),
         WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
 
-      val result: Boolean = helper(answers).test2
+      val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
       result mustEqual false
     }
   }

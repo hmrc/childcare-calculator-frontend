@@ -195,16 +195,15 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     if (answers.numberOfChildrenOver16 == totalNumberOfChildren) {
       Some(routeToIncomeInfoPage(answers))
     } else {
-      if(answers.test3.size.equals(1) || answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size==1)
+      if(answers.test3.size.equals(1))
           {destinedUrlForSingleChildAged16(answers)}
           else { destinedUrlForMultipleChildAged16(answers)}
     }
   }
 
   private def destinedUrlForSingleChildAged16(answers: UserAnswers): Option[Call] = {
-    if (answers.test3.size.equals(1) && answers.test) {
-      Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.test3.head))
-    } else if (answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size == 1) {
+    if (answers.test3.size.equals(1)) {
+
       Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.test3.head))
     } else {
       Some(routeToIncomeInfoPage(answers))
@@ -215,7 +214,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
 
   private def  destinedUrlForMultipleChildAged16(answers: UserAnswers): Option[Call] = {
-    if (answers.test3.size > 1 && answers.test2) {
+    if (answers.test3.size > 1 && answers.multipleChildrenBelow16Yrs) {
       Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
     } else if (answers.aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toSeq.size > 1) {
       Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))

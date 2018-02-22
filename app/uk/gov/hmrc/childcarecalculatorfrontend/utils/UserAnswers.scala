@@ -345,7 +345,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
      extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
 
 
-  def test3: List[Int] = (childrenIdsForAgeExactly16 ++aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).sorted
+  def test3: List[Int] = (childrenIdsForAgeExactly16AndDisabled ++aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).sorted
 
   def childrenBelow16:List[Int] = {
     (childrenIdsForAgeExactly16AndDisabled ++aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).sorted
@@ -353,13 +353,16 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
 
   def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
-    if (test2) {
-      childrenIdsForAgeExactly16.filter {
-        identity => (whichChildrenDisability.getOrElse(Set()).contains(identity))|| (whichChildrenBlind.getOrElse(Set()).contains(identity))
+
+    childrenIdsForAgeExactly16.filter {
+
+        identity => if(noOfChildren.getOrElse(0)==1) {
+          childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
+        } else {
+          whichChildrenDisability.getOrElse(Set()).contains(identity)|| whichChildrenBlind.getOrElse(Set()).contains(identity)
+        }
       }
-    } else {
-      List()
-    }
+
   }
 
 
@@ -382,15 +385,15 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     }
   }
 
-   def test:Boolean = {
-    if(noOfChildren == Some(1)){ (childDisabilityBenefits.contains(true)|| registeredBlind.contains(true))
+   def singleChildBelow16Yrs:Boolean = {
+    if(noOfChildren == Some(1)){ childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
     }else{
 
-      test2
+      multipleChildrenBelow16Yrs
     }
   }
 
-   def test2: Boolean ={
+   def multipleChildrenBelow16Yrs: Boolean ={
 
      val Disabled16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
        (acc, child) => acc || whichChildrenDisability.getOrElse(Set()).contains(child)

@@ -446,6 +446,31 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 1)
         }
+
+
+          "redirect to Childcare Pay Frequency if the user answers 'No' to " +
+            "registered blind and more than 1 child is 16 years and dob is before august but only 1 is disabled " in{
+
+            val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+              LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+            } else {LocalDate.now.minusYears(16)}
+
+
+
+            val answers: UserAnswers = spy(userAnswers())
+
+            when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust),
+              1 -> AboutYourChild("Bar", over19),
+              2 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
+             3 -> AboutYourChild("Quux", over19))))
+            when(answers.noOfChildren).thenReturn(Some(4))
+            when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+            when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
+            when(answers.registeredBlind).thenReturn(Some(false))
+
+            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+          }
 ///////
         "redirect to Partner Income Info when user answers 'No' to registered blind and " +
           "1 child is 16 years and dob is before august and same child is not disabled" in{
