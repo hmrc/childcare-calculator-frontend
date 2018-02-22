@@ -345,10 +345,13 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
      extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
 
 
-  def childrenBelow16:List[Int] = {
-    (childrenIdsForAgeExactly16AndDisabled ++aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).sorted
+  def childrenBelow16AndExactly16Disabled:List[Int] = {
+    (childrenIdsForAgeExactly16AndDisabled ++childrenBelow16).sorted
   }
 
+  def childrenBelow16:List[Int]={
+  aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toList
+  }
 
   def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
 

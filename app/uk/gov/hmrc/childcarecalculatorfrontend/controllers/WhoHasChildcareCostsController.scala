@@ -47,7 +47,7 @@ class WhoHasChildcareCostsController @Inject()(
       withValues {
         values =>
           val answer = request.userAnswers.whoHasChildcareCosts
-          val childrenUnderSixteen = request.userAnswers.childrenBelow16
+          val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
           val preparedForm = answer match {
             case None => WhoHasChildcareCostsForm()
             case Some(value) => WhoHasChildcareCostsForm().fill(value)
@@ -60,7 +60,7 @@ class WhoHasChildcareCostsController @Inject()(
     implicit request =>
       withValues {
         values =>
-          val childrenUnderSixteen = request.userAnswers.childrenBelow16
+          val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
           WhoHasChildcareCostsForm(values.values.toSeq: _*).bindFromRequest().fold(
             (formWithErrors: Form[_]) => {
               Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values,childrenUnderSixteen))))
