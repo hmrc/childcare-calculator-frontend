@@ -63,6 +63,8 @@ object ChildcareConstants {
   val freeHoursForWales = 10
   val freeHoursForNI = 12.5
   val eligibleMaxFreeHours = 30
+  val sixteenHours = 16
+  val twentyFoursHours = 24
 
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
