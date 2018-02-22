@@ -54,7 +54,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     } yield if (isLast(id, noOfChildren)) {
 
       val childrenOver16 = answers.childrenOver16
-      if (childrenOver16.get.size > 0) {
+      if (childrenOver16.get.nonEmpty) {
         routes.ChildApprovedEducationController.onPageLoad(NormalMode, childrenOver16.get.head._1)
       } else {
         routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
@@ -164,7 +164,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
     for {
       children <- answers.childrenWithCosts
-      childIndex <- children.toSeq.headOption
 
     } yield {
       if (answers.numberOfChildrenOver16 > 0) {

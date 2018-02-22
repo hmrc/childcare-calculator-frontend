@@ -387,7 +387,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   }
 
    def singleChildBelow16Yrs:Boolean = {
-    if(noOfChildren == Some(1)){ childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
+    if(noOfChildren .contains(1)){ childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
     }else{
 
       multipleChildrenBelow16Yrs

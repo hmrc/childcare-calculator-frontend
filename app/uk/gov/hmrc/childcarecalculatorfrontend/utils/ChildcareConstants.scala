@@ -67,6 +67,9 @@ object ChildcareConstants {
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
 
+  val ninteen = 19
+  val sixteen = 16
+
   val universalCredits = "uc"
   val taxCredits = "tc"
   val unknownErrorKey = "error.unknown"
