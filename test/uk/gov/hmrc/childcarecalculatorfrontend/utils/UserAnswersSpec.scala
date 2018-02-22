@@ -382,6 +382,121 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
   }
 
+".childrenIdsForAgeExactly16AndDisabled" must {
+  "returns list with children exactly 16 years with dob before august and blind" in {
+    val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
+    val under16 = LocalDate.now
+    val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+      LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+    } else {
+      LocalDate.now.minusYears(16)
+    }
+
+    val answers: CacheMap = cacheMap(
+      NoOfChildrenId.toString -> JsNumber(4),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
+        "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+        "2" -> Json.toJson(AboutYourChild("Quux", under16)),
+        "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
+      WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1,2)),
+      WhichChildrenBlindId.toString -> Json.toJson(Seq(0,2,1,3)))
+
+    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+    result mustEqual Seq(0,3)
+  }
+
+  "returns list with children exactly 16 years with dob before august and disable " in {
+    val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
+    val under16 = LocalDate.now
+    val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+      LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+    } else {
+      LocalDate.now.minusYears(16)
+    }
+
+    val answers: CacheMap = cacheMap(
+      NoOfChildrenId.toString -> JsNumber(4),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
+        "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+        "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
+        "3" -> Json.toJson(AboutYourChild("Baz", under16))),
+      WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,2,3)),
+      WhichChildrenBlindId.toString -> Json.toJson(Seq(1,3)))
+
+    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+    result mustEqual Seq(0,2)
+  }
+
+  "returns empty list with children exactly 16 years with dob before august and not disable " in {
+    val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
+    val under16 = LocalDate.now
+    val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+      LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+    } else {
+      LocalDate.now.minusYears(16)
+    }
+
+    val answers: CacheMap = cacheMap(
+      NoOfChildrenId.toString -> JsNumber(4),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
+        "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+        "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
+        "3" -> Json.toJson(AboutYourChild("Baz", under16))))
+
+    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+    result mustEqual Seq()
+  }
+}
+
+  ".childrenBelow16" when {
+    "return the list of children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
+      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
+      val under16 = LocalDate.now
+      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+      } else {
+        LocalDate.now.minusYears(16)
+      }
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
+          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
+          "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
+          "3" -> Json.toJson(AboutYourChild("Baz", under16))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,3)))
+
+      val result: List[Int] = helper(answers).childrenBelow16
+      result mustEqual Seq(0,1,3)
+    }
+
+    "return empty list when children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
+      val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
+      val under16 = LocalDate.now
+      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
+        LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
+      } else {
+        LocalDate.now.minusYears(16)
+      }
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
+          "1" -> Json.toJson(AboutYourChild("Bar", over16)),
+          "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
+          "3" -> Json.toJson(AboutYourChild("Baz", over16))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(1,3)))
+
+      val result: List[Int] = helper(answers).childrenBelow16
+      result mustEqual Seq()
+    }
+  }
+
 
   ".childrenWithDisabilityBenefits" must {
 

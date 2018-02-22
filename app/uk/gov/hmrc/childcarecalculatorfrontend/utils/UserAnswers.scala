@@ -347,6 +347,22 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def test3: List[Int] = (childrenIdsForAgeExactly16 ++aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).sorted
 
+  def childrenBelow16:List[Int] = {
+    (childrenIdsForAgeExactly16AndDisabled ++aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys).sorted
+  }
+
+
+  def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
+    if (test2) {
+      childrenIdsForAgeExactly16.filter {
+        identity => (whichChildrenDisability.getOrElse(Set()).contains(identity))|| (whichChildrenBlind.getOrElse(Set()).contains(identity))
+      }
+    } else {
+      List()
+    }
+  }
+
+
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
     whichChildrenDisability.orElse {
       noOfChildren.flatMap {
@@ -379,9 +395,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
      val Disabled16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
        (acc, child) => acc || whichChildrenDisability.getOrElse(Set()).contains(child)
      }
+
      val registeredBlind16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
        (acc, child) => acc || whichChildrenBlind.getOrElse(Set()).contains(child)
      }
+
      Disabled16yrChild|| registeredBlind16yrChild
 
   }

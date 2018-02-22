@@ -22,12 +22,12 @@ import play.api.data.Form
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.json.Json.JsValueWrapper
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{exact15, over16, over19, under16}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{exact15, over16, over16WithBirthdayBefore31stOfAugust, over19, under16}
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhoHasChildcareCostsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhichChildrenBlindId, WhichChildrenDisabilityId, WhoHasChildcareCostsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -43,18 +43,24 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       contentAsString(result) mustEqual viewAsString()
     }
 
-    "return OK and only display the children that are under 16" in {
-      val children = Map("Over16" -> "0", "Under16_1" -> "1", "Under16_2" -> "2")
+    "return OK and only display the children that are under 16 and exact 16 with DOB before 31st august and disabled" in {
+      val children = Map("Over16" -> "0", "Under16_1" -> "1", "Under16_2" -> "2","exact16WithBirthdayBefore31stAugust" ->"3")
+
+
       val dataWithOneChildOver16 = requiredData(children) + (AboutYourChildId.toString -> Json.obj(
         "0" -> Json.toJson(AboutYourChild("Over16", over19)),
         "1" -> Json.toJson(AboutYourChild("Under16_1", exact15)),
-        "2" -> Json.toJson(AboutYourChild("Under16_2", exact15))))
+        "2" -> Json.toJson(AboutYourChild("Under16_2", exact15)),
+        "3" -> Json.toJson(AboutYourChild("exact16WithBirthdayBefore31stAugust", over16WithBirthdayBefore31stOfAugust)))) +
+        (WhichChildrenBlindId.toString -> Json.toJson(Seq(2))) +
+        (WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(0)), Map("Under16_1" -> "1", "Under16_2" -> "2"))
+      contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(0)),
+        Map("Under16_1" -> "1", "Under16_2" -> "2","exact16WithBirthdayBefore31stAugust" ->"3"))
     }
 
     Seq(
