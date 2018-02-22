@@ -230,9 +230,12 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertRenderedByCssSelector(view, ".freeHours")
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para1"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
+        view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
 
         assertRenderedByCssSelector(view, ".tc")
         view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
