@@ -32,25 +32,29 @@ case class ResultsViewModel(firstParagraph : String = "",
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 
+
+//
   def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty
-
+//
   def isEligibleForAllButTc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && tc.isEmpty
-
-  def isEligibleForAllButTfc: Boolean = esc.nonEmpty && tc.nonEmpty && freeHours.nonEmpty && tfc.isEmpty
-
-  def isEligibleForAllButFreeHours: Boolean = esc.nonEmpty && tc.nonEmpty  && tfc.nonEmpty && freeHours.isEmpty
-
-  def isEligibleOnlyForFreeHoursAndTfc: Boolean = freeHours.nonEmpty && tfc.nonEmpty && esc.isEmpty && tc.isEmpty
-
-  def isEligibleOnlyForFreeHoursAndTc: Boolean = freeHours.nonEmpty && tc.nonEmpty && esc.isEmpty && tfc.isEmpty
-
-  def isEligibleOnlyForFreeHoursAndEsc: Boolean = freeHours.nonEmpty && esc.nonEmpty && tc.isEmpty && tfc.isEmpty
-
-  def isEligibleOnlyForTCAndTfc: Boolean = tfc.nonEmpty && tc.nonEmpty && esc.isEmpty && freeHours.isEmpty
-
+//
+//  def isEligibleForAllButTfc: Boolean = esc.nonEmpty && tc.nonEmpty && freeHours.nonEmpty && tfc.isEmpty
+//
+//  def isEligibleForAllButFreeHours: Boolean = esc.nonEmpty && tc.nonEmpty  && tfc.nonEmpty && freeHours.isEmpty
+//
+//  def isEligibleOnlyForFreeHoursAndTfc: Boolean = freeHours.nonEmpty && tfc.nonEmpty && esc.isEmpty && tc.isEmpty
+//
+//  def isEligibleOnlyForFreeHoursAndTc: Boolean = freeHours.nonEmpty && tc.nonEmpty && esc.isEmpty && tfc.isEmpty
+//
+//  def isEligibleOnlyForFreeHoursAndEsc: Boolean = freeHours.nonEmpty && esc.nonEmpty && tc.isEmpty && tfc.isEmpty
+//
+  def isEligibleForTCAndTfc: Boolean = tfc.nonEmpty && tc.nonEmpty
+//
   def isEligibleOnlyForTCAndEsc: Boolean = esc.nonEmpty && tc.nonEmpty && tfc.isEmpty && freeHours.isEmpty
+//
+  def isEligibleForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty
 
-  def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty && tc.isEmpty && freeHours.isEmpty
+
 }
 
 object ResultsViewModel {

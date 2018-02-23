@@ -60,51 +60,50 @@
             @resultNotEligible(model)
         }
 
-        <h2 class="heading-medium">@messages("result.more.info.title")</h2>
-        <p>@messages("result.more.info.para")</p>
+        @if(model.noOfEligibleSchemes > 1) {
 
-        <ul class="bullets">
+            <h2 class="heading-medium">@messages("result.more.info.title")</h2>
+
             @if(model.noOfEligibleSchemes == 4) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance")</li>
+                <p>@messages("result.more.info.para")</p>
+                <ul class="bullets">
+                    <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
+                    <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance")</li>
+                </ul>
+            } else if(model.isEligibleForAllButVouchers) {
+                <p>@messages("result.more.info.para")</p>
+                <ul class="bullets">
+                    <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
+                    <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
+                </ul>
+            } else if(model.isEligibleForAllButTc) {
+                <p>@messages("result.more.info.para")</p>
+                <ul class="bullets">
+                    <li>@messages("")</li>
+                    <li>@messages("")</li>
+                </ul>
+            } else {
+                @if(model.freeHours.nonEmpty) {
+
+                    @if(model.tc.nonEmpty) {
+                        <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
+                    } else {
+                        <p>@messages("result.schemes.free.hours.eligibility.guidance")</p>
+                    }
+                }
+
+                @if(model.isEligibleOnlyForTCAndEsc) {
+                    <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</p>
+                }
+
+                @if(model.isEligibleForTfcAndEsc) {
+                    <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance")</p>
+                }
+                @if(model.isEligibleForTCAndTfc) {
+                    <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
+                }
             }
-
-            @if(model.isEligibleForAllButTc) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.vouchers.guidance")</li>
-            }
-
-
-            @if(model.isEligibleForAllButTfc) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-            }
-
-            @if(model.isEligibleForAllButVouchers) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tax.credit.ineligibility.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance")</li>
-            }
-
-            @if(model.isEligibleForAllButFreeHours) {
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance")</li>
-            }
-
-            @if(model.isEligibleOnlyForFreeHoursAndTfc) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-            }
-
-            @if(model.isEligibleOnlyForTfcAndEsc) {
-                <li>@messages("result.schemes.tfc.vouchers.eligibility.guidance")</li>
-            }
-
-            @if(model.isEligibleOnlyForTCAndEsc) {
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-            }
-
-        </ul>
+        }
 
         <div class="moreInfo">
             <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
