@@ -30,7 +30,7 @@ case class ResultsViewModel(firstParagraph : String = "",
                             taxCreditsOrUC: Option[String] = None,
                             showTFCWarning: Boolean = false,
                             tfcWarningMessage: String = "",
-                            tCSchemeInEligibilityMsg: String = "") {
+                            tcSchemeInEligibilityMsg: String = "") {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 

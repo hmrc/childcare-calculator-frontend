@@ -37,11 +37,12 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
       }
 
       "User is not eligible for TC scheme" in {
-        val model = ResultsViewModel(tc = None, taxCreditsOrUC = None)
+        val tcSchemeIneligibleMsg = "Not eligible for Tax credit"
+        val model = ResultsViewModel(tc = None, taxCreditsOrUC = None, tcSchemeInEligibilityMsg = tcSchemeIneligibleMsg)
         val view = asDocument(resultNotEligible(model)(fakeRequest, messages))
 
         assertContainsMessages(view, "Tax credits")
-        view.getElementById("notEligibleTC1").text() mustBe messages("result.tc.not.eligible.para1")
+        view.getElementById("notEligibleTC1").text() mustBe tcSchemeIneligibleMsg + messages("result.tc.scheme.guidance.link")
       }
 
       "User answered UC to do you get tax credits or universal credits " in {

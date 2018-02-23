@@ -1258,6 +1258,7 @@ result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have
 result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get childcare support from tax credits as both you and your partner would each/ need to work 16 hours or more a week.
 result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
+result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.
@@ -1315,7 +1316,6 @@ aboutYourResults.esc.title = Childcare vouchers
 aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
 aboutYourResults.esc.para2 = They are for children under 16, or 18 if disabled.
 aboutYourResults.esc.para3 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
-
 
 aboutYourResults.more.info.title = How to apply
 aboutYourResults.more.info.para1 = Read more about the schemes you could get help from and find out how to apply for:
