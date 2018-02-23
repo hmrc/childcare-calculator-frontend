@@ -17,14 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.Logger
-import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 object SessionExpiredRouter {
   def route[A](area: String, message: String, answers: Option[UserAnswers] = None, uri : String = "N/A", session: String = "N/A") = {
 
     val data = answers match {
-      case Some(answers) => if (answers.cacheMap != null) Json.toJson(answers.cacheMap) else "No cachemap available"
+      case Some(answers) => if (answers.cacheMap != null) "Cachemap available" else "No cachemap available"
       case None => "No cachemap available"
     }
 
