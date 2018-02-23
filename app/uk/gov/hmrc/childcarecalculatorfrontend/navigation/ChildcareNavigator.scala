@@ -134,7 +134,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
           val children: Seq[Int] = whichChildrenDisability.toSeq
           children.lift(children.indexOf(id) + 1)
         }
-
         next.map {
           nextId =>
             routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, nextId)
@@ -149,22 +148,17 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     for {
       totalNumberOfChildren    <- answers.noOfChildren
       isAnyChildRegisteredBlind <- answers.registeredBlind
-
     } yield if (totalNumberOfChildren > 1) {
-
       handleMultipleChildrenRoute(answers, totalNumberOfChildren, isAnyChildRegisteredBlind)
     } else {
-
       handleSingleChildRoute(answers)
     }
   }.flatten.getOrElse(routes.SessionExpiredController.onPageLoad())
 
 
   private def handleSingleChildRoute(answers: UserAnswers): Option[Call] = {
-
     for {
       children <- answers.childrenWithCosts
-
     } yield {
       if (answers.numberOfChildrenOver16 > 0) {
         Some(routeToIncomeInfoPage(answers))
@@ -202,7 +196,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def destinedUrlForSingleChildAged16(answers: UserAnswers): Option[Call] = {
     if (answers.childrenBelow16AndExactly16Disabled.size.equals(1)) {
-
       Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenBelow16AndExactly16Disabled.head))
     } else {
       Some(routeToIncomeInfoPage(answers))

@@ -358,7 +358,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-        when(answers.childDisabilityBenefits).thenReturn(Some(true))
+        when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
         when(answers.registeredBlind).thenReturn(Some(false))
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
@@ -370,7 +370,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val answers: UserAnswers = spy(userAnswers())
         when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
         when(answers.noOfChildren).thenReturn(Some(1))
-        when(answers.childDisabilityBenefits).thenReturn(Some(true))
+        when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
 
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))

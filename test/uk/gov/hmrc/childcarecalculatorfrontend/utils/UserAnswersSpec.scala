@@ -326,6 +326,46 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
     result mustEqual Seq()
   }
+
+  "returns list with single child exactly 16 years with dob before august and disabled" in {
+
+    val answers: CacheMap = cacheMap(
+      NoOfChildrenId.toString -> JsNumber(1),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust))),
+      ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+      RegisteredBlindId.toString -> JsBoolean(false))
+
+    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+    result mustEqual Seq(0)
+  }
+
+  "returns list with single child exactly 16 years with dob before august and blind" in {
+
+    val answers: CacheMap = cacheMap(
+      NoOfChildrenId.toString -> JsNumber(1),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust))),
+      ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+      RegisteredBlindId.toString -> JsBoolean(true))
+
+    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+    result mustEqual Seq(0)
+  }
+
+  "returns empty list for single child exactly 16 years with dob before august and not blind or disabled" in {
+
+    val answers: CacheMap = cacheMap(
+      NoOfChildrenId.toString -> JsNumber(1),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust))),
+      ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+      RegisteredBlindId.toString -> JsBoolean(false))
+
+    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+    result mustEqual Seq()
+  }
+
 }
 
   ".childrenBelow16AndExactly16Disabled" when {
