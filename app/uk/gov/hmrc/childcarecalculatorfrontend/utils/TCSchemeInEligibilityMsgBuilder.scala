@@ -17,25 +17,29 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherNotSureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{NotSure, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class TCSchemeInEligibilityMsgBuilder {
 
   val defaultInEligibilityMsg = "result.tc.not.eligible.para1"
 
-  def getMessage(answers: UserAnswers)(implicit messages: Messages): String =
-    if (answers.doYouLiveWithPartner.getOrElse(false)) {
+  def getMessage(answers: UserAnswers)(implicit messages: Messages): String = {
+
+    if(answers.childrenBelow16AndExactly16Disabled.isEmpty){
+      messages("result.tc.not.eligible.user.no.child.below.16")
+    } else if (answers.doYouLiveWithPartner.getOrElse(false)) {
       getMessageForPartnerJourney(answers)
     } else {
       getMessageForSingleUser(answers)
     }
-
+  }
 
   private def getMessageForSingleUser(answers: UserAnswers)(implicit messages: Messages) = {
     val parentHours = answers.parentWorkHours.getOrElse(BigDecimal(0))
+
     if(parentHours < sixteenHours) {
       messages("result.tc.not.eligible.single.user.hours.less.than.16")
+
     } else {messages(defaultInEligibilityMsg)}
   }
 
@@ -43,27 +47,42 @@ class TCSchemeInEligibilityMsgBuilder {
     answers.whoIsInPaidEmployment match {
       case Some(Both) => messageForPartnerJourneyWithBothInWork(answers)
       case Some(Partner) => messageForPartnerJourneyOnlyPartnerInWork(answers)
-      case Some(You) => messages(defaultInEligibilityMsg)
+      case Some(You) =>  messageForPartnerJourneyOnlyParentInWork(answers)
+      case _ => messages(defaultInEligibilityMsg)
     }
 
   private def messageForPartnerJourneyWithBothInWork(answers: UserAnswers)(implicit messages: Messages) = {
 
     val parentHours = answers.parentWorkHours.getOrElse(BigDecimal(0))
     val partnerHours = answers.partnerWorkHours.getOrElse(BigDecimal(0))
+    val totalHours = parentHours + partnerHours
 
-    if(parentHours < sixteenHours && partnerHours < sixteenHours) {
+    val haveBothLessThan16HoursEach = parentHours < sixteenHours && partnerHours < sixteenHours
+    val haveLessThan24HoursCombined = totalHours < twentyFoursHours
+
+    if(haveBothLessThan16HoursEach || haveLessThan24HoursCombined) {
       messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
-    } else if(parentHours >= sixteenHours) {
-
+    } else {
+      messages(defaultInEligibilityMsg)
     }
-
-
   }
 
-  private def messageForPartnerJourneyOnlyPartnerInWork(answers: UserAnswers)(implicit messages: Messages) =
-    answers.partnerChildcareVouchers match {
-      case Some(No) => messages("result.esc.not.eligible.with.partner.partner.work.no.childCare.voucher")
-      case Some(NotSure) => messages("result.esc.not.eligible.with.partner.partner.work.childCare.voucher.notSure")
-      case _ => messages(defaultInEligibilityMsg)
+  private def messageForPartnerJourneyOnlyPartnerInWork(answers: UserAnswers)(implicit messages: Messages) = {
+
+    if(answers.partnerWorkHours.getOrElse(BigDecimal(0)) < twentyFoursHours)
+      {
+        messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
+      }else {
+      messages(defaultInEligibilityMsg)
     }
+  }
+
+  private def messageForPartnerJourneyOnlyParentInWork(answers: UserAnswers)(implicit messages: Messages) = {
+    if(answers.parentWorkHours.getOrElse(BigDecimal(0)) < twentyFoursHours)
+    {
+      messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
+    }else {
+      messages(defaultInEligibilityMsg)
+    }
+  }
 }

@@ -48,8 +48,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def yourStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](YourStatutoryPayTypeId.toString)
 
   def partnerStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](PartnerStatutoryPayTypeId.toString)
+
   def whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhoGotStatutoryPayId.toString)
-  
+
   def partnerStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayId.toString)
 
   def bothStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](BothStatutoryPayId.toString)
@@ -237,7 +238,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def partnerMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMinimumEarningsId.toString)
 
   def yourMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](YourMinimumEarningsId.toString)
-    
+
   def yourAge: Option[String] = cacheMap.getEntry[String](YourAgeId.toString)
 
   def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
@@ -342,11 +343,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
           if (noOfChildren == 1) {
             childcareCosts.map {
               value =>
-              if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
-                Set(0)
-              } else {
-                Set.empty
-              }
+                if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
+                  Set(0)
+                } else {
+                  Set.empty
+                }
             }
           } else {
             None
@@ -357,12 +358,44 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def hasApprovedCosts: Option[Boolean] = {
     for {
-      costs    <- childcareCosts.map(_ != YesNoNotYetEnum.NO.toString)
+      costs <- childcareCosts.map(_ != YesNoNotYetEnum.NO.toString)
       approved <- if (costs) {
         approvedProvider.map(_ != YesNoUnsureEnum.NO.toString)
       } else {
         Some(false)
       }
     } yield approved
+  }
+
+  def childrenBelow16AndExactly16Disabled: List[Int] = {
+    (childrenIdsForAgeExactly16AndDisabled ++ childrenBelow16).sorted
+  }
+
+  def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
+    childrenIdsForAgeExactly16.filter {
+      identity =>
+        if (noOfChildren.getOrElse(0) == 1) {
+          childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)
+        } else {
+          whichChildrenDisability.getOrElse(Set()).contains(identity) || whichChildrenBlind.getOrElse(Set()).contains(identity)
+        }
+    }
+  }
+
+  def childrenBelow16: List[Int] = {
+    aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toList
+  }
+
+  def childrenIdsForAgeExactly16: List[Int] =
+    extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
+
+  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]) = {
+    children.map {
+      children16OrOlder =>
+        children16OrOlder.filter {
+          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear - 1}-12-31")) &&
+            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-08-31"))
+        }
+    }
   }
 }

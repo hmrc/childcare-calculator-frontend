@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import java.time.LocalDate
+
 import org.mockito.Mockito.{spy, when}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -36,6 +38,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(10))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(3)
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.single.user.hours.less.than.16")
@@ -50,6 +53,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
 
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(10))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(10))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
@@ -62,6 +66,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
 
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(16))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(7))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
@@ -73,6 +78,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
         when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(7))
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(16))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
@@ -83,6 +89,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(You)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(21))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
@@ -93,16 +100,19 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(21))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
       }
 
-      "user does not have any child under 16 or under 17 (if disabled)" in {
+      "user does not have any child under 16" in {
         val answers = spy(userAnswers())
+
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(21))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn (List())
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.user.no.child.below.16")
