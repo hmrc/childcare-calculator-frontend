@@ -127,7 +127,7 @@ class Utils {
     * @return Call
     */
   def getCall[A](optionalElement: Option[A])(f: PartialFunction[A, Call]): Call =
-    optionalElement.flatMap(f.lift).getOrElse(routes.SessionExpiredController.onPageLoad())
+    optionalElement.flatMap(f.lift).getOrElse(SessionExpiredRouter.route(getClass.getName,"getCall"))
 
   /**
     * Returns the value with comma when value is more than 999, also removes the decimal part

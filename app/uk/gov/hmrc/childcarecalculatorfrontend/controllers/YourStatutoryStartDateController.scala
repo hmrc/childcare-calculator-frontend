@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryStartDateId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
 import scala.concurrent.Future
@@ -44,15 +44,15 @@ class YourStatutoryStartDateController @Inject()(
                                         requireData: DataRequiredAction
                                       ) extends FrontendController with I18nSupport {
 
-  private def sessionExpired(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
 
   private def validateStatutoryPayType[A](block: (String) => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {
 
     request.userAnswers.yourStatutoryPayType.map {
       payType => block(Messages(s"statutoryPayTypeLower.$payType"))
-    }.getOrElse(sessionExpired)
+    }.getOrElse(sessionExpired("validateStatutoryPayType",Some(request.userAnswers)))
   }
 
   def onPageLoad(mode: Mode) = (getData andThen requireData).async {

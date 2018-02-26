@@ -17,15 +17,12 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
 import com.google.inject.{ImplementedBy, Inject}
-import play.api.mvc.{ActionRefiner, Result}
 import play.api.mvc.Results.Redirect
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.{DataRequest, OptionalDataRequest}
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.SessionExpiredRouter
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DataRequiredActionImpl @Inject() extends DataRequiredAction {
@@ -34,7 +31,7 @@ class DataRequiredActionImpl @Inject() extends DataRequiredAction {
     implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request.userAnswers match {
-      case None => Future.successful(Left(Redirect(routes.SessionExpiredController.onPageLoad())))
+      case None => Future.successful(Left(Redirect(SessionExpiredRouter.route(getClass.getName,"refine",uri = request.uri, session = request.sessionId))))
       case Some(data) => Future.successful(Right(DataRequest(request.request, request.sessionId, data)))
     }
   }

@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
 import scala.concurrent.Future
@@ -78,4 +78,20 @@ class ChildcarePayFrequencyController @Inject()(
         case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
       }
   }
+
+  private def validateIndex[A](i: Int)(block: String => Future[Result])
+                           (implicit request: DataRequest[A]): Future[Result] = {
+
+    for {
+      model             <- request.userAnswers.aboutYourChild(i)
+      childrenWithCosts <- request.userAnswers.childrenWithCosts
+    } yield {
+      if (childrenWithCosts.contains(i)) {
+        block(model.name)
+      } else {
+        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri)))
+      }
+    }
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri))))
+
 }

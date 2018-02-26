@@ -19,12 +19,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Inject
 
 import org.joda.time.LocalDate
+import play.api.Logger
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
+
 
 class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
@@ -62,7 +65,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       routes.AboutYourChildController.onPageLoad(NormalMode, id + 1)
     }
-  }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }.getOrElse(SessionExpiredRouter.route(getClass.getName,"aboutYourChildRoutes",Some(answers)))
 
   private def childApprovedEducationRoutes(id: Int)(answers: UserAnswers): Call = {
 
@@ -86,7 +89,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
           routes.ChildApprovedEducationController.onPageLoad(NormalMode, nextId)
       }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
     }
-  }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }.getOrElse(SessionExpiredRouter.route(getClass.getName,"childApprovedEducationRoutes",Some(answers)))
 
   private def childEducationStartRoutes(id: Int)(answers: UserAnswers): Call = {
 
@@ -94,14 +97,13 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       val ints: Seq[Int] = childrenOver16.keys.toSeq
       ints.lift(ints.indexOf(i) + 1)
     }
-
     answers.childrenOver16.map {
       childrenOver16 =>
         next(id, childrenOver16).map {
           nextId =>
             routes.ChildApprovedEducationController.onPageLoad(NormalMode, nextId)
         }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
-    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+    }.getOrElse(SessionExpiredRouter.route(getClass.getName,"childEducationStartRoutes",Some(answers)))
   }
 
   private def childrenDisabilityBenefitsRoutes(answers: UserAnswers): Call = {
@@ -117,13 +119,13 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       routes.RegisteredBlindController.onPageLoad(NormalMode)
     }
-  }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }.getOrElse(SessionExpiredRouter.route(getClass.getName,"childrenDisabilityBenefitsRoutes",Some(answers)))
 
   private def whichChildrenDisabilityRoutes(answers: UserAnswers): Call = {
     answers.whichChildrenDisability.map {
       children =>
         routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, children.head.toInt)
-    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+    }.getOrElse(SessionExpiredRouter.route(getClass.getName,"whichChildrenDisabilityRoutes",Some(answers)))
   }
 
   private def whichDisabilityBenefitsRoutes(id: Int)(answers: UserAnswers): Call = {
@@ -140,11 +142,10 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
         }.getOrElse {
           routes.RegisteredBlindController.onPageLoad(NormalMode)
         }
-    }.getOrElse(routes.SessionExpiredController.onPageLoad())
+    }.getOrElse(SessionExpiredRouter.route(getClass.getName,"whichDisabilityBenefitsRoutes",Some(answers)))
   }
 
   private def registeredBlindRoutes(answers: UserAnswers): Call = {
-
     for {
       totalNumberOfChildren    <- answers.noOfChildren
       isAnyChildRegisteredBlind <- answers.registeredBlind
@@ -153,7 +154,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     } else {
       handleSingleChildRoute(answers)
     }
-  }.flatten.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }.flatten.getOrElse(SessionExpiredRouter.route(getClass.getName,"registeredBlindRoutes",Some(answers)))
 
 
   private def handleSingleChildRoute(answers: UserAnswers): Option[Call] = {
@@ -195,7 +196,9 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def destinedUrlForSingleChildAged16(answers: UserAnswers): Option[Call] = {
+    println(".................."+answers.childrenBelow16AndExactly16Disabled)
     if (answers.childrenBelow16AndExactly16Disabled.size.equals(1)) {
+
       Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenBelow16AndExactly16Disabled.head))
     } else {
       Some(routeToIncomeInfoPage(answers))
@@ -227,14 +230,14 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     } yield {
       routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, childIndex)
     }
-  }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }.getOrElse(SessionExpiredRouter.route(getClass.getName,"whoHasChildcareCostsRoutes",Some(answers)))
 
   private def expectedChildcareCostsRoutes(id: Int)(answers: UserAnswers): Call = {
     answers.doYouLiveWithPartner.map(hasPartner => answers.childrenWithCosts match {
       case Some(childrenWithCosts) => checkNextChildWithCosts(id, hasPartner, childrenWithCosts)
       case _ => routeBasedIfPartnerOrNot(hasPartner)
     })
-  }.getOrElse(routes.SessionExpiredController.onPageLoad())
+  }.getOrElse(SessionExpiredRouter.route(getClass.getName,"expectedChildcareCostsRoutes",Some(answers)))
 
   private def checkNextChildWithCosts(id: Int, hasPartner: Boolean, childrenWithCosts: Set[Int]) = {
     def next: Option[Int] = {
@@ -256,4 +259,5 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       routes.YourIncomeInfoController.onPageLoad()
     }
   }
+
 }

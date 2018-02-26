@@ -170,7 +170,7 @@ freeHoursResult.info.OtherSchemes = Other childcare schemes
 
 freeHoursResult.info.OtherSchemes.childcare.cost.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
 freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
-freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
+freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes 30 hours free childcare, childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
 freeHoursResult.info.entitled.wales = 10 hours
@@ -666,6 +666,7 @@ bothPaidPensionCY.heading = Are you, your partner, or both of you paying into a 
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.error = Select yes if you, your partner, or both of you are paying into a work pension this year
 bothPaidPensionCY.tax.year = This year is 6 April {0} to 5 April {1}.
+bothPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 
 whosHadBenefits.title = Who had benefits?
 whosHadBenefits.heading = Who had benefits?
@@ -679,10 +680,12 @@ youPaidPensionPY.title = Did you pay into a work pension in the previous year?
 youPaidPensionPY.heading = Did you pay into a work pension in the previous year?
 youPaidPensionPY.checkYourAnswersLabel = Did you pay into a work pension in the previous year?
 youPaidPensionPY.error = Select yes if you paid into your work pension in the previous year
+youPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 partnerPaidPensionPY.title = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.heading = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.error = Select yes if your partner paid into a work pension in the previous year
+partnerPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 
 bothPaidPensionPY.title = Did you, your partner, or both of you pay into a work pension in the previous year?
 bothPaidPensionPY.heading = Did you, your partner, or both of you pay into a work pension in the previous year?
@@ -731,8 +734,8 @@ youBenefitsIncomeCY.title = How much will you get in benefits this year?
 youBenefitsIncomeCY.heading = How much will you get in benefits this year?
 youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
-youBenefitsIncomeCY.invalid = Please only enter a numerical value of up to two decimal places
-youBenefitsIncomeCY.required = Enter numbers from 1 to 9999 for how much you will get in benefits this year
+youBenefitsIncomeCY.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
+youBenefitsIncomeCY.required = Enter how much you will get in benefits this year
 
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
@@ -944,7 +947,7 @@ howMuchPartnerPayPensionPY.info = Partner’s pension
 howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.partnerPension = Partner
 howMuchPartnerPayPensionPY.required = Enter how much your partner paid into their pension a month
-howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into your pension a month
+howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into their pension a month
 
 childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?

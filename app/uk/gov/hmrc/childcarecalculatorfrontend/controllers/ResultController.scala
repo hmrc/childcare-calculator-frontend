@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
@@ -52,8 +52,5 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
         case None => Redirect(routes.LocationController.onPageLoad(NormalMode))
       }
     })
-      .recover{
-        case _ => Redirect(routes.SessionExpiredController.onPageLoad())
-      }
   }
 }
