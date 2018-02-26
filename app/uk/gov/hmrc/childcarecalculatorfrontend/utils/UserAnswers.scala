@@ -322,7 +322,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
       children16OrOlder =>
         children16OrOlder.filter {
           case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear-1}-8-31")) &&
-            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-08-31"))
+            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-09-1"))
         }
     }
   }
