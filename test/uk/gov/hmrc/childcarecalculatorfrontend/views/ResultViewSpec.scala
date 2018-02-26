@@ -71,10 +71,9 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
       assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
+      assertContainsText(view, messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all the schemes but Vouchers" in {
@@ -84,9 +83,8 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
       assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tax.credit.ineligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all the schemes but TFC" in {
@@ -95,9 +93,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
-      assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.para"))
     }
 
     "display correct guidance when user is eligible for all the schemes but TC" in {
@@ -107,17 +103,38 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
       assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.bullet"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all schemes but Free Hours" in {
-      val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = Some(200))
+      val model = ResultsViewModel(freeHours = None, esc = Some(250), tfc = Some(300), tc = Some(200))
       val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para"))
+    }
 
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
-      assertNotContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+    "display correct guidance when user is eligible only for Free hours and TC" in {
+      val model = ResultsViewModel(freeHours = Some(30), esc = None, tfc = None, tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.para"))
+    }
+
+    "display correct guidance when user is eligible only for ESC and TC" in {
+      val model = ResultsViewModel(freeHours = None, esc = Some(300), tfc = None, tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for ESC and TFC" in {
+      val model = ResultsViewModel(freeHours = None, esc = Some(300), tc = None, tfc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for TC and TFC" in {
+      val model = ResultsViewModel(freeHours = None, tc = Some(300), esc = None, tfc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para"))
     }
 
     "display free hours contents" when {

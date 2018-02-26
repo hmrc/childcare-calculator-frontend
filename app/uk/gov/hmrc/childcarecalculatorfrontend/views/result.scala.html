@@ -68,39 +68,48 @@
                 <p>@messages("result.more.info.para")</p>
                 <ul class="bullets">
                     <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
-                    <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance")</li>
-                </ul>
-            } else if(model.isEligibleForAllButVouchers) {
-                <p>@messages("result.more.info.para")</p>
-                <ul class="bullets">
-                    <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
-                    <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
-                </ul>
-            } else if(model.isEligibleForAllButTc) {
-                <p>@messages("result.more.info.para")</p>
-                <ul class="bullets">
-                    <li>@messages("")</li>
-                    <li>@messages("")</li>
+                    <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
+                    <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")</li>
                 </ul>
             } else {
-                @if(model.freeHours.nonEmpty) {
-
-                    @if(model.tc.nonEmpty) {
-                        <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
+                @if(model.isEligibleForAllButVouchers) {
+                    <p>@messages("result.more.info.para")</p>
+                    <ul class="bullets">
+                        <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
+                        <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
+                    </ul>
+                } else {
+                    @if(model.isEligibleForAllButTc) {
+                        <p>@messages("result.more.info.para")</p>
+                        <ul class="bullets">
+                            <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
+                            <li>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")</li>
+                        </ul>
                     } else {
-                        <p>@messages("result.schemes.free.hours.eligibility.guidance")</p>
+                        @if(model.isEligibleForAllButFreeHours) {
+                            <p>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
+                        } else {
+                            @if(model.isEligibleOnlyForFreeHoursAndTc) {
+                                <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
+                            }
+
+                            @if(model.isEligibleForAllButTfc) {
+                                <p>@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
+                            }
+
+                            @if(model.isEligibleOnlyForTCAndEsc) {
+                                <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
+                            }
+
+                            @if(model.isEligibleForTfcAndEsc) {
+                                <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
+                            }
+
+                            @if(model.isEligibleForTCAndTfc) {
+                                <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
+                            }
+                        }
                     }
-                }
-
-                @if(model.isEligibleOnlyForTCAndEsc) {
-                    <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</p>
-                }
-
-                @if(model.isEligibleForTfcAndEsc) {
-                    <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance")</p>
-                }
-                @if(model.isEligibleForTCAndTfc) {
-                    <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
                 }
             }
         }
