@@ -22,12 +22,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 object SessionExpiredRouter {
   def route[A](area: String, message: String, answers: Option[UserAnswers] = None, uri : String = "N/A", session: String = "N/A") = {
 
-    val data = answers match {
-      case Some(answers) => if (answers.cacheMap != null) "Cachemap available" else "No cachemap available"
-      case None => "No cachemap available"
-    }
+    val isCacheMapAvailable = answers.fold("No")(c=>if (c.cacheMap == null) "No" else "")
 
-    Logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${data} - ${session}")
+    Logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${isCacheMapAvailable} cachemap available - ${session}")
     routes.SessionExpiredController.onPageLoad()
   }
 }
