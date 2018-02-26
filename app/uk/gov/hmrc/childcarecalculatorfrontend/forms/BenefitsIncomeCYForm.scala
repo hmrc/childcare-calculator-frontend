@@ -28,9 +28,13 @@ object BenefitsIncomeCYForm extends FormErrorHelper {
   def apply(): Form[BenefitsIncomeCY] = Form(
     mapping(
       "parentBenefitsIncome" ->
-        decimal("parentBenefitsIncome.required", parentIncomeInvalidKey),
+        decimal("parentBenefitsIncome.required", parentIncomeInvalidKey)
+          .verifying(minimumValue[BigDecimal](1, parentIncomeInvalidKey))
+          .verifying(maximumValue[BigDecimal](9999.99, parentIncomeInvalidKey)),
       "partnerBenefitsIncome" ->
         decimal("partnerBenefitsIncome.required", partnerIncomeInvalidKey)
+          .verifying(minimumValue[BigDecimal](1, partnerIncomeInvalidKey))
+          .verifying(maximumValue[BigDecimal](9999.99, partnerIncomeInvalidKey))
     )(BenefitsIncomeCY.apply)(BenefitsIncomeCY.unapply)
   )
 }

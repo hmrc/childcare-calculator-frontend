@@ -54,27 +54,23 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
       when(tfc.eligibility(any())) thenReturn Eligible
       when(tc.eligibility(any())) thenReturn NotEligible
+      when(esc.eligibility(any())) thenReturn NotEligible
+
       val result = controller().onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible, false, NotEligible)(fakeRequest, messages).toString()
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, Eligible, NotEligible, NotEligible)(fakeRequest, messages).toString()
     }
 
     "return OK when single claim and show childcare vouchers in the correct view for a GET " in {
 
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn NotEligible
+      when(esc.eligibility(any())) thenReturn Eligible
 
-      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(false),
-        AreYouInPaidWorkId.toString -> JsBoolean(true),
-        YourChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.YES.toString))
-
-      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
-
+      val result = controller().onPageLoad(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, Eligible, NotEligible)(fakeRequest, messages).toString
 
     }
 
@@ -82,18 +78,12 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn NotEligible
+      when(esc.eligibility(any())) thenReturn Eligible
 
-      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
-        WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
-
-        PartnerChildcareVouchersId.toString -> JsString(YesNoUnsureEnum.YES.toString))
-
-      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
+      val result = controller().onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, Eligible, NotEligible)(fakeRequest, messages).toString
 
     }
 
@@ -101,17 +91,12 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn NotEligible
+      when(esc.eligibility(any())) thenReturn Eligible
 
-      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString),
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
-        WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.BOTH.toString),
-        WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.BOTH.toString))
-
-      val childCareVouchersInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(childCareVouchersInfo).onPageLoad(fakeRequest)
+      val result = controller().onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, Eligible, NotEligible)(fakeRequest, messages).toString
 
     }
 
@@ -119,6 +104,7 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       " show tax credits and the correct view for a GET " in {
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn Eligible
+      when(esc.eligibility(any())) thenReturn NotEligible
 
 
       val validData = Map(
@@ -132,13 +118,14 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, NotEligible, Eligible)(fakeRequest, messages).toString
     }
 
     "return OK when joint claim and both working 16hrs a week and not getting any benefits" +
       " show tax credits and the correct view for a GET " in {
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn Eligible
+      when(esc.eligibility(any())) thenReturn NotEligible
 
 
       val validData = Map(
@@ -152,7 +139,7 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, NotEligible, Eligible)(fakeRequest, messages).toString
     }
 
 
@@ -160,6 +147,7 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       " show tax credits and the correct view for a GET " in {
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn Eligible
+      when(esc.eligibility(any())) thenReturn NotEligible
 
       val validData = Map(
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
@@ -172,13 +160,14 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, NotEligible, Eligible)(fakeRequest, messages).toString
     }
 
     "return OK when joint claim and parent works less than 10hrs a week, partner is working 20hrs a week " +
       " show tax credits and the correct view for a GET " in {
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn Eligible
+      when(esc.eligibility(any())) thenReturn NotEligible
 
       val validData = Map(
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
@@ -193,16 +182,17 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, NotEligible, Eligible)(fakeRequest, messages).toString
     }
 
     "return OK and the correct view for a GET" in {
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(tc.eligibility(any())) thenReturn NotEligible
+      when(esc.eligibility(any())) thenReturn NotEligible
 
       val result = controller().onPageLoad()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, false, NotEligible)(fakeRequest, messages).toString
+      contentAsString(result) mustBe maxFreeHoursInfo(frontendAppConfig, NotEligible, NotEligible, NotEligible)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
