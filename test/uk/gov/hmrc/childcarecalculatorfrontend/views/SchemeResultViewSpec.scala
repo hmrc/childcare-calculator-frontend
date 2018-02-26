@@ -76,7 +76,8 @@ class SchemeResultViewSpec extends ViewBehaviours {
 
       assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
       view.getElementById("tcGuidanceLink").attr("href") mustBe tcSchemeGuidanceLinkUrl
-      view.getElementById("tcGuidanceLink").text mustBe messages("result.tc.scheme.guidance.link")
+      view.getElementById("tcGuidanceLink").text mustBe messages("result.tc.scheme.guidance.link") +
+        messages("feedback.hint.link.opens.new.window")
     }
   }
 }

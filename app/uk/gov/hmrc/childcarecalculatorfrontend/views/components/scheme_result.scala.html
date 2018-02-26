@@ -48,9 +48,9 @@
             <p>@couldGet <span class="heading-xlarge results">@eligibility</span>
                 @periodText</p>
             @if(para1.isDefined) {
-            <p @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a id="tcGuidanceLink"
-                                                                                href=@tcSchemeGuidanceLinkUrl>
-                    @messages("result.tc.scheme.guidance.link")
+            <p @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a rel="external" target="_blank"
+                                                            id="tcGuidanceLink" href=@tcSchemeGuidanceLinkUrl>
+                @messages("result.tc.scheme.guidance.link")<span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span>
                 </a>
                 }
             </p>
