@@ -95,22 +95,22 @@ class ResultsViewModelSpec extends SpecBase {
       }
     }
   }
-//
-//  "isEligibleForFreeHoursAndTFC" must {
-//    "return true" when {
-//      "user is eligible for Free hours and TFC" in {
-//        val resultsView = ResultsViewModel(esc = None, tc = None, tfc = Some(500), freeHours = Some(200))
-//        resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe true
-//      }
-//    }
-//
-//    "return false" when {
-//      "user is eligible for all the schemes" in {
-//        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
-//        resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe false
-//      }
-//    }
-//  }
+
+  "isEligibleForFreeHoursAndTFC" must {
+    "return true" when {
+      "user is eligible for Free hours and TFC" in {
+        val resultsView = ResultsViewModel(esc = None, tc = None, tfc = Some(500), freeHours = Some(200))
+        resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe true
+      }
+    }
+
+    "return false" when {
+      "user is eligible for all the schemes" in {
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe false
+      }
+    }
+  }
 //
   "isEligibleOnlyForFreeHoursAndTC" must {
     "return true" when {
@@ -127,23 +127,23 @@ class ResultsViewModelSpec extends SpecBase {
       }
     }
   }
-//
-//  "isEligibleForFreeHoursAndESC" must {
-//    "return true" when {
-//      "user is eligible for Free hours and ESC" in {
-//        val resultsView = ResultsViewModel(tc = None, tfc = None, esc = Some(500), freeHours = Some(200))
-//        resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe true
-//      }
-//    }
-//
-//    "return false" when {
-//      "user is eligible for all the schemes" in {
-//        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
-//        resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe false
-//      }
-//    }
-//  }
-//
+
+  "isEligibleForFreeHoursAndESC" must {
+    "return true" when {
+      "user is eligible for Free hours and ESC" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, esc = Some(500), freeHours = Some(200))
+        resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe true
+      }
+    }
+
+    "return false" when {
+      "user is eligible for all the schemes" in {
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe false
+      }
+    }
+  }
+
   "isEligibleForTCAndTFC" must {
     "return true" when {
       "user is eligible for TC and TFC" in {

@@ -94,11 +94,20 @@
                             }
 
                             @if(model.isEligibleForAllButTfc) {
-                                <p>@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
+                                <p>@messages("")</p>
+                                <p>@messages("result.more.info.para")</p>
+                                <ul class="bullets">
+                                    <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
+                                    <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
+                                </ul>
                             }
 
                             @if(model.isEligibleOnlyForTCAndEsc) {
                                 <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
+                            }
+
+                            @if(model.isEligibleOnlyForFreeHoursAndTfc) {
+                                <p>@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
                             }
 
                             @if(model.isEligibleForTfcAndEsc) {
