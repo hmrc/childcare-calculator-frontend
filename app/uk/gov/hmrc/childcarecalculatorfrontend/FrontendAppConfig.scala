@@ -20,20 +20,18 @@ import com.google.inject.{Inject, Singleton}
 import com.typesafe.config.ConfigException
 import play.api.Configuration
 import play.api.i18n.Lang
-import uk.gov.hmrc.play.bootstrap.config.{AppName, BaseUrl}
+import uk.gov.hmrc.play.bootstrap.config.AppName
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 @Singleton
-class FrontendAppConfig @Inject() (override val configuration: Configuration) extends AppName with BaseUrl {
+class FrontendAppConfig @Inject() (override val configuration: Configuration) extends AppName {
 
   private def loadConfig(key: String) = configuration.getString(key).getOrElse(throw new ConfigException.Missing(s"Missing configuration key: $key"))
 
-  private lazy val contactHost = configuration.getString("contact-frontend.host").getOrElse("")
+  private lazy val contactHost = loadConfig("contact-frontend.host")
   private val contactFormServiceIdentifier = "childcarecalculatorfrontend"
 
-  lazy val eligibilityUrl = baseUrl("cc-eligibility") + configuration.getString("microservice.services.cc-eligibility.url").getOrElse(
-    throw new ConfigException.Missing(s"Missing configuration key: microservice.services.cc-eligibility.url")
-  )
+  lazy val eligibilityUrl =  loadConfig("cc-eligibility") + loadConfig("microservice.services.cc-eligibility.url")
 
   lazy val analyticsToken = loadConfig(s"google-analytics.token")
   lazy val analyticsHost = loadConfig(s"google-analytics.host")
@@ -44,7 +42,7 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   lazy val surveyUrl = loadConfig("feedback-survey-frontend.host")
   lazy val surveyThankYouUrl = loadConfig("feedback-survey-frontend.thankYou")
 
-  lazy val authUrl = baseUrl("auth")
+  lazy val authUrl = loadConfig("auth")
   lazy val loginUrl = loadConfig("urls.login")
   lazy val loginContinueUrl = loadConfig("urls.loginContinue")
 
