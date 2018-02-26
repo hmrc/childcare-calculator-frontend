@@ -48,11 +48,11 @@ case class ResultsViewModel(firstParagraph : String = "",
 //
   def isEligibleOnlyForFreeHoursAndEsc: Boolean = freeHours.nonEmpty && esc.nonEmpty && tc.isEmpty && tfc.isEmpty
 //
-  def isEligibleForTCAndTfc: Boolean = tfc.nonEmpty && tc.nonEmpty
+  def isEligibleOnlyForTCAndTfc: Boolean = tfc.nonEmpty && tc.nonEmpty
 //
   def isEligibleOnlyForTCAndEsc: Boolean = esc.nonEmpty && tc.nonEmpty && tfc.isEmpty && freeHours.isEmpty
 //
-  def isEligibleForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty
+  def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty
 
 
 }

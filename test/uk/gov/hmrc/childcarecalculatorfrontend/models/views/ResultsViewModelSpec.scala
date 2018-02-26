@@ -148,14 +148,14 @@ class ResultsViewModelSpec extends SpecBase {
     "return true" when {
       "user is eligible for TC and TFC" in {
         val resultsView = ResultsViewModel(tc = Some(500), tfc = Some(200))
-        resultsView.isEligibleForTCAndTfc mustBe true
+        resultsView.isEligibleOnlyForTCAndTfc mustBe true
       }
     }
 
     "return false" when {
       "user is not eligible for TC and TFC" in {
         val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(200), esc = Some(300))
-        resultsView.isEligibleForTCAndTfc mustBe false
+        resultsView.isEligibleOnlyForTCAndTfc mustBe false
       }
     }
   }
@@ -180,14 +180,14 @@ class ResultsViewModelSpec extends SpecBase {
     "return true" when {
       "user is eligible for TFC and ESC" in {
         val resultsView = ResultsViewModel(esc = Some(500), tfc = Some(200))
-        resultsView.isEligibleForTfcAndEsc mustBe true
+        resultsView.isEligibleOnlyForTfcAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
         val resultsView = ResultsViewModel(tfc = None, esc = None)
-        resultsView.isEligibleForTfcAndEsc mustBe false
+        resultsView.isEligibleOnlyForTfcAndEsc mustBe false
       }
     }
   }
