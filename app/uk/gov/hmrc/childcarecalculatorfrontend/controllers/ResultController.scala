@@ -52,8 +52,5 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
         case None => Redirect(routes.LocationController.onPageLoad(NormalMode))
       }
     })
-      .recover{
-        case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers),request.uri))
-      }
   }
 }
