@@ -20,18 +20,20 @@ import com.google.inject.{Inject, Singleton}
 import com.typesafe.config.ConfigException
 import play.api.Configuration
 import play.api.i18n.Lang
+import uk.gov.hmrc.play.bootstrap.config.{AppName, BaseUrl}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.play.bootstrap.config.AppName
 
 @Singleton
-class FrontendAppConfig @Inject() (override val configuration: Configuration) extends AppName {
+class FrontendAppConfig @Inject() (override val configuration: Configuration) extends AppName with BaseUrl {
 
   private def loadConfig(key: String) = configuration.getString(key).getOrElse(throw new ConfigException.Missing(s"Missing configuration key: $key"))
 
-  private lazy val contactHost = loadConfig("contact-frontend.host")
+  private lazy val contactHost = configuration.getString("contact-frontend.host").getOrElse("")
   private val contactFormServiceIdentifier = "childcarecalculatorfrontend"
 
-  lazy val eligibilityUrl =  baseUrl("cc-eligibility") + loadConfig("microservice.services.cc-eligibility.url")
+  lazy val eligibilityUrl = baseUrl("cc-eligibility") + configuration.getString("microservice.services.cc-eligibility.url").getOrElse(
+    throw new ConfigException.Missing(s"Missing configuration key: microservice.services.cc-eligibility.url")
+  )
 
   lazy val analyticsToken = loadConfig(s"google-analytics.token")
   lazy val analyticsHost = loadConfig(s"google-analytics.host")
@@ -47,12 +49,6 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
   lazy val loginContinueUrl = loadConfig("urls.loginContinue")
 
   lazy val languageTranslationEnabled = configuration.getBoolean("microservice.services.features.welsh-translation").getOrElse(true)
-
-  private lazy val root: Configuration = {
-    configuration.getConfig("microservice.services")
-  }.getOrElse(Configuration.empty)
-
-  private lazy val defaultProtocol: String = root.getString("protocol").getOrElse("http")
 
   def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
@@ -100,15 +96,4 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
 
   lazy val minAmountChildren: Double = configuration.getDouble("amountChildren.min").
     getOrElse(throw new ConfigException.Missing("Missing configuration amountChildren.min"))
-
-  def baseUrl(serviceName: String): String = {
-
-    val config    = root.underlying.getConfig(serviceName)
-
-    val protocol  = Configuration(config).getString("protocol").getOrElse(defaultProtocol)
-    val host      = config.getString("host")
-    val port      = config.getString("port")
-
-    s"$protocol://$host:$port"
-  }
 }
