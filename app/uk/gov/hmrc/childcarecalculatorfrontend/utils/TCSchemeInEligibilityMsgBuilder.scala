@@ -24,10 +24,7 @@ class TCSchemeInEligibilityMsgBuilder {
   val defaultInEligibilityMsg = "result.tc.not.eligible.para1"
 
   def getMessage(answers: UserAnswers)(implicit messages: Messages): String = {
-
-    if(answers.childrenBelow16AndExactly16Disabled.isEmpty){
-      messages("result.tc.not.eligible.user.no.child.below.16")
-    } else if (answers.doYouLiveWithPartner.getOrElse(false)) {
+   if (answers.doYouLiveWithPartner.getOrElse(false)) {
       getMessageForPartnerJourney(answers)
     } else {
       getMessageForSingleUser(answers)
@@ -40,7 +37,9 @@ class TCSchemeInEligibilityMsgBuilder {
     if(parentHours < sixteenHours) {
       messages("result.tc.not.eligible.single.user.hours.less.than.16")
 
-    } else {messages(defaultInEligibilityMsg)}
+    } else {
+      messageForChildrenBelow16(answers)
+    }
   }
 
   private def getMessageForPartnerJourney(answers: UserAnswers)(implicit messages: Messages) =
@@ -63,7 +62,7 @@ class TCSchemeInEligibilityMsgBuilder {
     if(haveBothLessThan16HoursEach || haveLessThan24HoursCombined) {
       messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
     } else {
-      messages(defaultInEligibilityMsg)
+      messageForChildrenBelow16(answers)
     }
   }
 
@@ -73,7 +72,7 @@ class TCSchemeInEligibilityMsgBuilder {
       {
         messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
       }else {
-      messages(defaultInEligibilityMsg)
+      messageForChildrenBelow16(answers)
     }
   }
 
@@ -82,6 +81,15 @@ class TCSchemeInEligibilityMsgBuilder {
     {
       messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
     }else {
+      messageForChildrenBelow16(answers)
+    }
+  }
+
+  private def messageForChildrenBelow16(answers: UserAnswers)(implicit messages: Messages) = {
+
+    if(answers.childrenBelow16AndExactly16Disabled.isEmpty){
+      messages("result.tc.not.eligible.user.no.child.below.16")
+    } else {
       messages(defaultInEligibilityMsg)
     }
   }

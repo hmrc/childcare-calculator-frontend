@@ -111,7 +111,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(21))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(25))
         when(answers.childrenBelow16AndExactly16Disabled) thenReturn (List())
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
