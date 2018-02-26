@@ -94,7 +94,6 @@
                             }
 
                             @if(model.isEligibleForAllButTfc) {
-                                <p>@messages("")</p>
                                 <p>@messages("result.more.info.para")</p>
                                 <ul class="bullets">
                                     <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
@@ -106,7 +105,7 @@
                                 <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
                             }
 
-                            @if(model.isEligibleOnlyForFreeHoursAndTfc) {
+                            @if(model.isEligibleOnlyForFreeHoursAndTfc || isEligibleOnlyForFreeHoursAndEsc) {
                                 <p>@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
                             }
 

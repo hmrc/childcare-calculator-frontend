@@ -93,7 +93,9 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.para"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.bullet"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all the schemes but TC" in {
