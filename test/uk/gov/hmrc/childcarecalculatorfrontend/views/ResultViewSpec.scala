@@ -87,17 +87,6 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet"))
     }
 
-    "display correct guidance when user is eligible for all the schemes but TFC" in {
-      val model = ResultsViewModel( tc = Some(200), esc = Some(250), freeHours = Some(200))
-      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
-
-      assertContainsMessages(view, messages("result.title"))
-      assertContainsText(view, messages("result.more.info.title"))
-      assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.bullet"))
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
-    }
-
     "display correct guidance when user is eligible for all the schemes but TC" in {
       val model = ResultsViewModel( esc = Some(250), tfc = Some(300), freeHours = Some(200))
       val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
@@ -107,6 +96,17 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsText(view, messages("result.more.info.para"))
       assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.bullet"))
       assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet"))
+    }
+
+    "display correct guidance when user is eligible for all the schemes but TFC" in {
+      val model = ResultsViewModel( tc = Some(200), esc = Some(250), freeHours = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.title"))
+      assertContainsText(view, messages("result.more.info.title"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all schemes but Free Hours" in {
@@ -125,6 +125,18 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       val model = ResultsViewModel(freeHours = None, esc = Some(300), tfc = None, tc = Some(200))
       val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
       assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for Free hours and TFC" in {
+      val model = ResultsViewModel(esc = None, freeHours = Some(300), tc = None, tfc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for Free hours and ESC" in {
+      val model = ResultsViewModel(tfc = None, freeHours = Some(300), tc = None, esc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.para"))
     }
 
     "display correct guidance when user is eligible only for ESC and TFC" in {
@@ -313,9 +325,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertRenderedByCssSelector(view, ".twoYearsOld")
 
-        view.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.title"))
-        view.getElementsByClass("twoYearsOld").text().contains( messages("aboutYourResults.two.years.old.guidance.para1"))
-        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("aboutYourResults.two.years.old.guidance.para1.help.link")
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.title"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.text.before.link"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.link.text"))
+        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.para1.help.link")
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.text.after.link"))
       }
     }
 
@@ -325,25 +339,15 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".twoYearsOld")
-        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.title"))
-        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.para1"))
-
+        assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
         assertNotRenderedById(view, "twoYearsOldHelp")
       }
     }
 
-    "not display guidance for 2 years old" when {
-      "user does not have 2 years old child" in {
-        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = false)
-        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
-        assertNotRenderedByCssSelector(view, ".twoYearsOld")
-        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.title"))
-        assertNotContainsText(view, messages("aboutYourResults.two.years.old.guidance.para1"))
-
-        assertNotRenderedById(view, "twoYearsOldHelp")
-      }
-    }
     "display TFC warning message" when {
       "it is needed" in {
         val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = Some(200),showTFCWarning = true, tfcWarningMessage = "this is a test")

@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils)(implicit request: Request[_], messages: Messages)
@@ -60,6 +61,16 @@
             @resultNotEligible(model)
         }
 
+        @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
+            <div class="twoYearsOld">
+                <h2 class="heading-medium">@messages("results.two.years.old.guidance.title")</h2>
+                <p>@messages("results.two.years.old.guidance.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("results.two.years.old.guidance.para1.help.link")>
+                    @messages("results.two.years.old.guidance.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+                </a> @messages("results.two.years.old.guidance.text.after.link")
+                </p>
+            </div>
+        }
+
         @if(model.noOfEligibleSchemes > 1) {
 
             <h2 class="heading-medium">@messages("result.more.info.title")</h2>
@@ -90,7 +101,7 @@
                 @if(model.isEligibleForAllButTfc) {
                     <p>@messages("result.more.info.para")</p>
                     <ul class="bullets">
-                        <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
+                        <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
                         <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
                     </ul>
                 }

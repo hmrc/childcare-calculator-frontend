@@ -52,15 +52,7 @@
             detailPara4 = Some(messages("result.free.hours.detailPara4")))
     }
 }
-@if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
-    <div class="twoYearsOld">
-        <h2 class="heading-medium">@messages("aboutYourResults.two.years.old.guidance.title")</h2>
-        <p> <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("aboutYourResults.two.years.old.guidance.para1.help.link")>
-            @messages("aboutYourResults.two.years.old.guidance.para1")  <span class="visually-hidden">@messages("site.opens.new.window")</span>
-        </a>
-        </p>
-    </div>
-}
+
 @if(model.tc.isDefined) {
       @components.scheme_result(
         title = messages("result.tc.title"),

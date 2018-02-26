@@ -108,9 +108,7 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
             "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tc.link"),
             "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tc.title"),
             "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.esc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.esc.title")
+            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.title")
           ))
 
         val summary = service.getSummary(test.location, test.scheme)
@@ -132,9 +130,7 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
             "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.hours.link"),
             "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.hours.title"),
             "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.esc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.esc.title")
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.title")
           ))
 
         result must not contain Map(
@@ -151,9 +147,7 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
             "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.hours.link"),
             "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.hours.title"),
             "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.esc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.esc.title")
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.title")
           ))
 
         result must not contain Map(
@@ -192,9 +186,7 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
             "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tc.link"),
             "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tc.title"),
             "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.esc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.esc.title")
+            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.title")
           ))
 
         result must not contain Map(
