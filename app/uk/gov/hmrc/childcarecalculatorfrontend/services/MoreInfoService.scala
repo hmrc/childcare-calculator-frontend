@@ -37,9 +37,7 @@ class MoreInfoService @Inject() (val messages: MessagesApi) extends MoreInfoServ
 
     val taxFreeChildCare = linkData(location, "tfc", r.tfc)
 
-    val childCareVouchers = linkData(location, "esc", r.esc)
-
-    List(freeHours, taxCredits, taxFreeChildCare, childCareVouchers).flatten
+    List(freeHours, taxCredits, taxFreeChildCare).flatten
   }
 
   def getSummary(location: Location, results: ResultsViewModel): Option[String] = (location, results.freeHours, results.tfc) match {
