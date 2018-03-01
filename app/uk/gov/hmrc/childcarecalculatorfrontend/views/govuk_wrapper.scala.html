@@ -60,14 +60,15 @@
       <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
         @if(timeout.getOrElse(true)) {
             <script type="text/javascript" charset="utf-8">
-                $.timeoutDialog({
-                    timeout: 125,
+                ccTimeoutDialog({
+                    timeout: 1800,
                     title: "@messages("timeout.heading")",
                     message: "@messages("timeout.message")",
                     keep_alive_button_text: "@messages("timeout.continue")",
                     sign_out_button_text: "@messages("timeout.exit")",
                     keep_alive_url: '/childcare-calc/session-extend',
-                    logout_url: '/childcare-calc/session-clear-data'
+                    start_again_url: '/childcare-calc/session-clear-data',
+                    logout_url: '/childcare-calc/this-service-has-been-reset'
                 });
                 var dialogOpen;
             </script>

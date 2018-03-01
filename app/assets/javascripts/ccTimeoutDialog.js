@@ -1,6 +1,5 @@
 /* eslint-env jquery */
 
-require('jquery')
 
 Date.now = Date.now || function () { return +new Date() }
 
@@ -21,7 +20,7 @@ function secondsToTime (secs) {
   return obj
 }
 
-module.exports = function (options) {
+function ccTimeoutDialog (options) {
   var settings = {
     timeout: 900,
     countdown: 120,
@@ -30,6 +29,7 @@ module.exports = function (options) {
     message: 'For security reasons, you will be signed out of this service in',
     keep_alive_url: '/keep-alive',
     logout_url: '/sign-out',
+    start_again_url: '/session-clear-data',
     restart_on_yes: true,
     dialog_width: 340,
     close_on_escape: true,
@@ -112,7 +112,7 @@ module.exports = function (options) {
       $(document).on('touchmove', self.handleTouch)
       $(document).on('keydown', self.escPress)
       $('#timeout-keep-signin-btn').on('click', self.closeDialog)
-      $('#timeout-sign-out-btn').on('click', self.signOut)
+      $('#timeout-sign-out-btn').on('click', self.startAgain)
     },
 
     destroyDialog: function () {
@@ -208,6 +208,10 @@ module.exports = function (options) {
 
     signOut: function () {
       window.location = settings.logout_url
+    },
+
+    startAgain: function () {
+      window.location = settings.start_again_url
     }
   }
 
