@@ -47,15 +47,12 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def aboutYourChildRoutes(id: Int)(answers: UserAnswers): Call = {
-
-    def isLast(id: Int, noOfChildren: Int): Boolean =
-      id == (noOfChildren - 1)
+    def isLastChild(id: Int, noOfChildren: Int) = id == (noOfChildren - 1)
 
     for {
       noOfChildren   <- answers.noOfChildren
       aboutYourChild <- answers.aboutYourChild
-    } yield if (isLast(id, noOfChildren)) {
-
+    } yield if (isLastChild(id, noOfChildren)) {
       val childrenOver16 = answers.childrenOver16
       if (childrenOver16.get.nonEmpty) {
         routes.ChildApprovedEducationController.onPageLoad(NormalMode, childrenOver16.get.head._1)
@@ -197,7 +194,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def destinedUrlForSingleChildAged16(answers: UserAnswers): Option[Call] = {
     if (answers.childrenBelow16AndExactly16Disabled.size.equals(1)) {
-
       Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenBelow16AndExactly16Disabled.head))
     } else {
       Some(routeToIncomeInfoPage(answers))
