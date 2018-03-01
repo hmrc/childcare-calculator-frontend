@@ -1383,3 +1383,7 @@ results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
 
+
+youGetSameIncomePreviousYear.title = youGetSameIncomePreviousYear
+youGetSameIncomePreviousYear.heading = youGetSameIncomePreviousYear
+youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYear
