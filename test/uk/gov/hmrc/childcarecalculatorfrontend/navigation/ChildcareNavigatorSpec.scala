@@ -338,7 +338,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   "Are any of your children registered blind" must {
     "user has a single child" when {
 
-      ///////////////////////////////////////////////
       "redirect to `How often do you expect to pay for childcare` when the user answers `Yes` and child age below 16" in {
         val answers: UserAnswers = spy(userAnswers())
         when(answers.noOfChildren).thenReturn(Some(1))
@@ -591,7 +590,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         result mustEqual routes.YourIncomeInfoController.onPageLoad()
       }
     }
-///////////////////////////////////////////////////////////////////////////////////////////
+
       "redirect to Your Income This Year" when {
         "the child is over 16 and is single parent" in {
           val answers: UserAnswers = spy(userAnswers())
