@@ -54,7 +54,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       aboutYourChild <- answers.aboutYourChild
     } yield if (isLastChild(id, noOfChildren)) {
       val childrenOver16 = answers.childrenOver16
-      if (childrenOver16.get.nonEmpty) {
+      if (answers.childrenOver16.fold(false)(c=>c.nonEmpty)) {
         routes.ChildApprovedEducationController.onPageLoad(NormalMode, childrenOver16.get.head._1)
       } else {
         routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
@@ -71,14 +71,13 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
       ints.lift(ints.indexOf(i) + 1)
     }
 
-    def over19(dob: LocalDate): Boolean =
-      dob.isBefore(LocalDate.now.minusYears(19))
+    def childIsOver19(dob: LocalDate) = dob.isBefore(LocalDate.now.minusYears(19))
 
     for {
       childrenOver16    <- answers.childrenOver16
-      approvedEducation <- answers.childApprovedEducation(id)
+      childHasApprovedEducation <- answers.childApprovedEducation(id)
       dob               <- childrenOver16.get(id).map(_.dob)
-    } yield if (approvedEducation && over19(dob)) {
+    } yield if (childHasApprovedEducation && childIsOver19(dob)) {
       routes.ChildStartEducationController.onPageLoad(NormalMode, id)
     } else {
       next(id, childrenOver16).map {
