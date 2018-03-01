@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class ParentEmploymentIncomeCYFormSpec extends FormSpec {
+class TYou extends FormSpec {
 
   val parentEmploymentIncomeCYForm: Form[BigDecimal] = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
 
@@ -33,9 +33,9 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
       form.get shouldBe 1.0
     }
 
-    "bind positive decimal number" in {
-      val form = parentEmploymentIncomeCYForm.bind(Map("value" -> "10.80"))
-      form.get shouldBe 10.80
+    "bind positive decimal number up to the threshold of 999999.99" in {
+      val form = parentEmploymentIncomeCYForm.bind(Map("value" -> "999999.99"))
+      form.get shouldBe 999999.99
     }
 
     "fail to bind numbers below the threshold" in {

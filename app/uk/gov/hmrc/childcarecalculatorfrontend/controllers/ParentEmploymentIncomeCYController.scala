@@ -29,6 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentEmploymentIncom
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
+import uk.gov.hmrc.play.views.html.helpers.form
 
 import scala.concurrent.Future
 
@@ -39,21 +40,21 @@ class ParentEmploymentIncomeCYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: ParentEmploymentIncomeCYForm,
+                                        //form: ParentEmploymentIncomeCYForm,
                                         taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.parentEmploymentIncomeCY match {
-        case None => form()
-        case Some(value) => form().fill(value)
+        case None => ParentEmploymentIncomeCYForm()
+        case Some(value) => ParentEmploymentIncomeCYForm().fill(value)
       }
       Ok(parentEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      form().bindFromRequest().fold(
+      ParentEmploymentIncomeCYForm().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
