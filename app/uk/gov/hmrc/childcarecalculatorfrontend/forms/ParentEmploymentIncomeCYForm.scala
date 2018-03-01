@@ -44,14 +44,14 @@ object ParentEmploymentIncomeCYForm extends FormErrorHelper {
   }
 
 
-  def apply(errorKeyBlank: String = parentEmploymentIncomeCYRequiredErrorKey,
-            errorKeyInvalid: String = parentEmploymentIncomeCYInvalidErrorKey): Form[BigDecimal] =
+  def apply(errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey,
+            errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey): Form[BigDecimal] =
     Form(single("value" -> of(parentEmplymentIncomeFormatter(errorKeyBlank, errorKeyInvalid))
-      .verifying(minimumValue[BigDecimal](1, parentEmploymentIncomeCYInvalidErrorKey))
-      .verifying(maximumValue[BigDecimal](999999.99, parentEmploymentIncomeCYInvalidErrorKey ))))
+      .verifying(minimumValue[BigDecimal](1, parentEmploymentIncomeBlankErrorKey))
+      .verifying(maximumValue[BigDecimal](999999.99, parentEmploymentIncomeInvalidErrorKey ))))
 
 }
-/*
+
 @Singleton
 class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
 
@@ -61,4 +61,4 @@ class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) exte
   override val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
   override val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 }
-*/
+

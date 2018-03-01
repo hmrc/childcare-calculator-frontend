@@ -40,8 +40,8 @@ class ParentEmploymentIncomeCYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        //form: ParentEmploymentIncomeCYForm,
-                                        taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                        taxYearInfo: TaxYearInfo
+                                                                   ) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
