@@ -388,7 +388,5 @@ POST        /survey/do-not-understand                          uk.gov.hmrc.child
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
 
-GET        /youGetSameIncomePreviousYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode = NormalMode)
-POST       /youGetSameIncomePreviousYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode = NormalMode)
-GET        /changeYouGetSameIncomePreviousYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeYouGetSameIncomePreviousYear                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode = CheckMode)
+GET        /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
+POST       /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)

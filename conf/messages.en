@@ -1384,6 +1384,10 @@ results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
 
 
-youGetSameIncomePreviousYear.title = youGetSameIncomePreviousYear
-youGetSameIncomePreviousYear.heading = youGetSameIncomePreviousYear
+youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?
+youGetSameIncomePreviousYear.heading = Did you get the same income for the previous year?
 youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYear
+youGetSameIncomePreviousYear.error = Select yes if you get the same income for the previous year
+youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
+
