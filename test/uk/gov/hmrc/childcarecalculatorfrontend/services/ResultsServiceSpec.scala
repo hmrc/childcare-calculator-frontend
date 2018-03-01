@@ -295,23 +295,6 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         values.freeHours mustBe None
       }
-
-      "User eligible for tc and not tfc" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
-        val answers = spy(userAnswers())
-
-        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
-        val values = Await.result(resultService.getResultsViewModel(answers), Duration.Inf)
-
-        values.showTFCWarning mustBe true
-        values.tfcWarningMessage mustBe messages("result.schemes.tfc.tc.warning")
-      }
     }
 
     "Return View Model with no TFC warning message" when {
@@ -334,14 +317,15 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
     }
 
     "Return View Model with TFC warning message" when {
-      "They are eligible for TC and TFC" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+      "They are eligible for TFC and have TC" in {
+        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 0, None, Some(TaxCreditsEligibility(true, true)))
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
         val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
         val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
                                               tcSchemeIneligibilityMsgBuilder)

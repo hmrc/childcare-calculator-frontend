@@ -306,15 +306,60 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     }
   }
 
-  // TODO 31st August
   def childrenOver16: Option[Map[Int, AboutYourChild]] = {
+    val children16OrOlder = get16YearOldsAndOlder
+    val childrenBetween16And17 = extract16YearOldsWithBirthdayBefore31stAugust(children16OrOlder)
+    children16OrOlder.map{
+      children => children.filterNot {
+        case (x, _) => childrenBetween16And17.getOrElse(Map()).keys.exists(_ == x)
+      }
+    }
+  }
+
+  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]) = {
+    children.map {
+      children16OrOlder =>
+        children16OrOlder.filter {
+          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear-1}-8-31")) &&
+            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-09-1"))
+        }
+    }
+  }
+
+  private def get16YearOldsAndOlder = {
     aboutYourChild.map {
       children =>
         children.filter {
-          case (_, model) =>
+          case (_, model) => {
             model.dob.isBefore(LocalDate.now.minusYears(16))
+          }
         }
     }
+  }
+
+  def numberOfChildrenOver16: Int = childrenOver16.fold(0)(_.size)
+
+   def childrenIdsForAgeExactly16: List[Int] =
+     extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
+
+   def childrenBelow16AndExactly16Disabled:List[Int] = {
+    (childrenIdsForAgeExactly16AndDisabled ++childrenBelow16).sorted
+  }
+
+  def childrenBelow16:List[Int] = {
+  aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toList
+  }
+
+  def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
+
+    childrenIdsForAgeExactly16.filter {
+
+        identity => if(noOfChildren.getOrElse(0)==1) {
+          childrenDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
+        } else {
+          whichChildrenDisability.getOrElse(Set()).contains(identity)|| whichChildrenBlind.getOrElse(Set()).contains(identity)
+        }
+      }
   }
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
@@ -334,6 +379,26 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
           }
       }
     }
+  }
+
+  def singleChildBelow16Yrs:Boolean = {
+    if(noOfChildren .contains(1)){ childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
+    }else{
+      multipleChildrenBelow16Yrs
+    }
+  }
+
+ def multipleChildrenBelow16Yrs: Boolean = {
+
+     val Disabled16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
+       (acc, child) => acc || whichChildrenDisability.getOrElse(Set()).contains(child)
+     }
+
+     val registeredBlind16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
+       (acc, child) => acc || whichChildrenBlind.getOrElse(Set()).contains(child)
+     }
+
+     Disabled16yrChild|| registeredBlind16yrChild
   }
 
   def childrenWithCosts: Option[Set[Int]] = {
@@ -365,37 +430,5 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
         Some(false)
       }
     } yield approved
-  }
-
-  def childrenBelow16AndExactly16Disabled: List[Int] = {
-    (childrenIdsForAgeExactly16AndDisabled ++ childrenBelow16).sorted
-  }
-
-  def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
-    childrenIdsForAgeExactly16.filter {
-      identity =>
-        if (noOfChildren.getOrElse(0) == 1) {
-          childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)
-        } else {
-          whichChildrenDisability.getOrElse(Set()).contains(identity) || whichChildrenBlind.getOrElse(Set()).contains(identity)
-        }
-    }
-  }
-
-  def childrenBelow16: List[Int] = {
-    aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toList
-  }
-
-  def childrenIdsForAgeExactly16: List[Int] =
-    extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
-
-  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]) = {
-    children.map {
-      children16OrOlder =>
-        children16OrOlder.filter {
-          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear-1}-8-31")) &&
-            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-09-1"))
-        }
-    }
   }
 }

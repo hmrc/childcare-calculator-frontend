@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotEligible, YesNoUnsureEnum, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{You, Partner, Both}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 
 class EmploymentSupportedChildcare extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    val No = YesNoUnsureEnum.NO.toString
 
     val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
-    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => !x.equals(No))
-    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => !x.equals(No))
+    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => x.equals(Yes))
+    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => x.equals(Yes))
 
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val whoInPaidEmployment = answers.whoIsInPaidEmployment
@@ -48,7 +47,8 @@ class EmploymentSupportedChildcare extends Scheme {
         case _ => NotEligible
       }
     } else {
-      getEligibility(hasParentChildcareCosts && hasParentChildcareVouchers)
+
+       getEligibility(hasParentChildcareCosts && hasParentChildcareVouchers)
     }
   }
 

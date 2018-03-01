@@ -68,6 +68,9 @@ object ChildcareConstants {
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
 
+  val ninteen = 19
+  val sixteen = 16
+
   val tcSchemeGuidanceLinkUrl = "https://www.gov.uk/topic/benefits-credits/tax-credits"
 
   val universalCredits = "uc"

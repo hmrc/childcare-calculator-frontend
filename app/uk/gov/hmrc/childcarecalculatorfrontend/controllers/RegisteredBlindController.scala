@@ -75,7 +75,7 @@ class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
       noOfChildren <- request.userAnswers.noOfChildren
       name         <- request.userAnswers.aboutYourChild(0).map(_.name)
     } yield block(noOfChildren, name)
-  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withData",Some(request.userAnswers)))))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withData",Some(request.userAnswers),request.uri))))
 
   private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode, noOfChildren: Int)
                   (implicit request: Request[_]): Html =

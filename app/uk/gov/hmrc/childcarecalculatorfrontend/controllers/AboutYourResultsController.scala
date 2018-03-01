@@ -52,9 +52,9 @@ class AboutYourResultsController @Inject()(val appConfig: FrontendAppConfig,
           moreInfoResults.getSummary(request.userAnswers.location.getOrElse(Location.ENGLAND), model)
         ))
       }
-      case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers)))
+      case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers),request.uri))
     }.recover {
-      case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers)))
+      case _ => Redirect(SessionExpiredRouter.route(getClass.getName,"onPageLoad",Some(request.userAnswers),request.uri))
     }
   }
 }

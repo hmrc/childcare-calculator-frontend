@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
@@ -70,10 +71,9 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
       assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
+      assertContainsText(view, messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all the schemes but Vouchers" in {
@@ -83,20 +83,8 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
       assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tax.credit.ineligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance"))
-    }
-
-    "display correct guidance when user is eligible for all the schemes but TFC" in {
-      val model = ResultsViewModel( tc = Some(200), esc = Some(250), freeHours = Some(200))
-      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
-
-      assertContainsMessages(view, messages("result.title"))
-      assertContainsText(view, messages("result.more.info.title"))
-      assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all the schemes but TC" in {
@@ -106,17 +94,61 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       assertContainsMessages(view, messages("result.title"))
       assertContainsText(view, messages("result.more.info.title"))
       assertContainsText(view, messages("result.more.info.para"))
-      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.bullet"))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet"))
+    }
+
+    "display correct guidance when user is eligible for all the schemes but TFC" in {
+      val model = ResultsViewModel( tc = Some(200), esc = Some(250), freeHours = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("result.title"))
+      assertContainsText(view, messages("result.more.info.title"))
+      assertContainsText(view, messages("result.more.info.para"))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
     }
 
     "display correct guidance when user is eligible for all schemes but Free Hours" in {
-      val model = ResultsViewModel( esc = Some(250), tfc = Some(300), tc = Some(200))
+      val model = ResultsViewModel(freeHours = None, esc = Some(250), tfc = Some(300), tc = Some(200))
       val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para"))
+    }
 
-      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance"))
-      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance"))
-      assertNotContainsText(view, messages("result.schemes.free.hours.eligibility.guidance"))
+    "display correct guidance when user is eligible only for Free hours and TC" in {
+      val model = ResultsViewModel(freeHours = Some(30), esc = None, tfc = None, tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.with.tc.para"))
+    }
+
+    "display correct guidance when user is eligible only for ESC and TC" in {
+      val model = ResultsViewModel(freeHours = None, esc = Some(300), tfc = None, tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for Free hours and TFC" in {
+      val model = ResultsViewModel(esc = None, freeHours = Some(300), tc = None, tfc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for Free hours and ESC" in {
+      val model = ResultsViewModel(tfc = None, freeHours = Some(300), tc = None, esc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.free.hours.eligibility.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for ESC and TFC" in {
+      val model = ResultsViewModel(freeHours = None, esc = Some(300), tc = None, tfc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.vouchers.guidance.para"))
+    }
+
+    "display correct guidance when user is eligible only for TC and TFC" in {
+      val model = ResultsViewModel(freeHours = None, tc = Some(300), esc = None, tfc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      assertContainsText(view, messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para"))
     }
 
     "display free hours contents" when {
@@ -126,10 +158,13 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertRenderedByCssSelector(view, ".freeHours")
-
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para1"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
+        view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
       }
     }
 
@@ -140,6 +175,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".freeHours")
+        assertNotContainsText(view, messages("result.free.hours.detail.summary"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara1"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara2"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara3.link.text"))
+        assertNotContainsText(view, messages("result.free.hours.detailPara4"))
       }
     }
 
@@ -150,15 +190,12 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertRenderedByCssSelector(view, ".tc")
-
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detail.summary"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara1"))
         view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc"))
-
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
         view.getElementById("findOutUCEligibility").attr("href") mustBe messages("result.tc.detailPara2.tax.credit.replace.uc.link")
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara3"))
 
       }
     }
@@ -170,7 +207,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".tc")
-        assertNotRenderedById(view, "eligibilityChecker")
+        assertNotContainsText(view, messages("result.tc.detail.summary"))
+        assertNotContainsText(view, messages("result.tc.detailPara1"))
+        assertNotContainsText(view, messages("result.tc.detailPara2.tax.credit.replace.uc"))
+        assertNotContainsText(view, messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
+        assertNotContainsText(view, messages("result.tc.detailPara3"))
 
       }
     }
@@ -181,9 +222,10 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(tfc = Some(2000))
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        assertRenderedByCssSelector(view, ".tfc")
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detail.summary"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara1"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara2"))
       }
     }
 
@@ -194,8 +236,9 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".tfc")
-        assertNotContainsText(view, messages("aboutYourResults.tfc.para1"))
-        assertNotContainsText(view, messages("aboutYourResults.tfc.para2"))
+        assertNotContainsText(view, messages("result.tfc.detail.summary"))
+        assertNotContainsText(view, messages("result.tfc.detailPara1"))
+        assertNotContainsText(view, messages("result.tfc.detailPara2"))
       }
     }
 
@@ -204,9 +247,11 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(esc = Some(2000))
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
+        assertRenderedByCssSelector(view, ".esc")
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
 
@@ -217,9 +262,10 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".esc")
-       // assertNotContainsText(view, messages("aboutYourResults.esc.title"))
-        assertNotContainsText(view, messages("aboutYourResults.esc.para1"))
-        assertNotContainsText(view, messages("aboutYourResults.esc.para2"))
+        assertNotContainsText(view, messages("result.esc.detail.summary"))
+        assertNotContainsText(view, messages("result.esc.detailPara1"))
+        assertNotContainsText(view, messages("result.esc.detailPara2"))
+        assertNotContainsText(view, messages("result.esc.detailPara3"))
       }
     }
 
@@ -230,30 +276,77 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertRenderedByCssSelector(view, ".freeHours")
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.title"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para1"))
-        view.getElementsByClass("freeHours").text().contains(messages("aboutYourResults.free.childcare.hours.para2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
+        view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
+        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
 
         assertRenderedByCssSelector(view, ".tc")
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.title"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para2"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part1"))
-        view.getElementsByClass("tc").text().contains(messages("aboutYourResults.tc.para3.part2"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detail.summary"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara1"))
         view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc"))
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
         view.getElementById("findOutUCEligibility").attr("href") mustBe messages("result.tc.detailPara2.tax.credit.replace.uc.link")
+        view.getElementsByClass("tc").text().contains(messages("result.tc.detailPara3"))
 
         assertRenderedByCssSelector(view, ".tfc")
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.title"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para1"))
-        view.getElementsByClass("tfc").text().contains(messages("aboutYourResults.tfc.para2"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detail.summary"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara1"))
+        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara2"))
+        view.getElementsByClass("tfc").text().contains(messages("result.schemes.tfc.tc.warning"))
 
         assertRenderedByCssSelector(view, ".esc")
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.title"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
-        view.getElementsByClass("esc").text().contains(messages("aboutYourResults.esc.para1"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
+
+    "display more info about the schemes" in {
+      val model = ResultsViewModel(freeHours = Some(15), tc = Some(200))
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+      assertRenderedByCssSelector(view, ".moreInfo")
+
+      view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.title"))
+      view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para1"))
+      view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para2"))
+    }
+
+    "display guidance for 2 years old" when {
+      "user lives in England" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.ENGLAND), childAgedTwo = true)
+
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertRenderedByCssSelector(view, ".twoYearsOld")
+
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.title"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.text.before.link"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.link.text"))
+        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.para1.help.link")
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.text.after.link"))
+      }
+    }
+
+    "not display guidance for 2 years old" when {
+      "user does not live in England" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertNotRenderedByCssSelector(view, ".twoYearsOld")
+        assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
+        assertNotRenderedById(view, "twoYearsOldHelp")
+      }
+    }
+
 
     "display TFC warning message" when {
       "it is needed" in {

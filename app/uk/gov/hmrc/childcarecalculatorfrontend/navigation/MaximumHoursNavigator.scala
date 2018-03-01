@@ -43,7 +43,7 @@ class MaximumHoursNavigator @Inject() (
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     WhoIsInPaidEmploymentId -> whoIsInPaidWorkRoute,
-    ParentWorkHoursId -> (_ => routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(NormalMode)),
+    ParentWorkHoursId -> parentWorkHoursRoute,
     PartnerWorkHoursId -> partnerWorkHoursRoute,
     HasYourTaxCodeBeenAdjustedId -> hasYourTaxCodeBeenAdjusted,
     DoYouKnowYourAdjustedTaxCodeId -> doYouKnowYourAdjustedTaxCodeRoute,
@@ -104,7 +104,15 @@ class MaximumHoursNavigator @Inject() (
     if (answers.whoIsInPaidEmployment.contains(both)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
+      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+    }
+  }
+
+  private def parentWorkHoursRoute(answers: UserAnswers) : Call = {
+    if (answers.whoIsInPaidEmployment.contains(both)) {
+      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+    } else {
+      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     }
   }
 

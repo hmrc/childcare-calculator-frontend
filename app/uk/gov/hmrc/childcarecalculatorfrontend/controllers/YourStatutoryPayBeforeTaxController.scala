@@ -45,7 +45,7 @@ class YourStatutoryPayBeforeTaxController @Inject()(
   val errorKey = "yourStatutoryPayBeforeTax.error"
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers)))
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
 
   private def validateStatutoryPayType[A](block: (String) => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {

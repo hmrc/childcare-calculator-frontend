@@ -52,15 +52,7 @@
             detailPara4 = Some(messages("result.free.hours.detailPara4")))
     }
 }
-@if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
-    <div class="twoYearsOld">
-        <h2 class="heading-medium">@messages("aboutYourResults.two.years.old.guidance.title")</h2>
-        <p> <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("aboutYourResults.two.years.old.guidance.para1.help.link")>
-            @messages("aboutYourResults.two.years.old.guidance.para1")  <span class="visually-hidden">@messages("site.opens.new.window")</span>
-        </a>
-        </p>
-    </div>
-}
+
 @if(model.tc.isDefined) {
       @components.scheme_result(
         title = messages("result.tc.title"),
@@ -71,8 +63,7 @@
         detailSummary = Some(messages("result.tc.detail.summary")),
         detailClass = Some("tc"),
         detailPara1 = Some(messages("result.tc.detailPara1")),
-        detailPara2WithLink = Some(findoutAboutUC),
-        detailPara3 = Some(messages("result.tc.detailPara3")))
+        detailPara2WithLink = Some(findoutAboutUC))
 }
 
 
@@ -86,7 +77,6 @@
         detailSummary = Some(messages("result.tfc.detail.summary")),
         detailClass = Some("tfc"),
         detailPara1 = Some(messages("result.tfc.detailPara1")),
-        detailPara2 = Some(messages("result.tfc.detailPara2")),
         displayWarning = model.showTFCWarning,
         warningMessage = model.tfcWarningMessage)
 }
@@ -101,6 +91,5 @@
         detailSummary = Some(messages("result.esc.detail.summary")),
         detailClass = Some("esc"),
         detailPara1 = Some(messages("result.esc.detailPara1")),
-        detailPara2 = Some(messages("result.esc.detailPara2")),
-        detailPara3 = Some(messages("result.esc.detailPara3")))
+        detailPara2 = Some(messages("result.esc.detailPara2")))
 }

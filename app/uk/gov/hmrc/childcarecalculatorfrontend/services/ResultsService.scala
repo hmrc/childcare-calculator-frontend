@@ -46,13 +46,11 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
     val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
     result.map(results => {
-      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers,
-                                                  setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
-
-      if (result.tc.isDefined && result.tfc.isDefined)
+      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
+      if (result.tfc.isDefined && result.taxCreditsOrUC.contains("tc")) {
         result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.tc.warning"))
-      else {
-        if (result.taxCreditsOrUC == Some("uc") && result.tfc.isDefined)
+      } else {
+        if (result.taxCreditsOrUC.contains("uc") && result.tfc.isDefined)
           result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.uc.warning"))
         else
           result

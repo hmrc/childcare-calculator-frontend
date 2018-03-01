@@ -83,16 +83,6 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
       }
-
-      "we try to get the view model and something goes wrong" in {
-        when(resultService.getResultsViewModel(any())(any(),any(),any())) thenReturn Future.failed(new RuntimeException)
-
-        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map())))
-        val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
-
-        status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
-      }
     }
   }
   val location = Location.ENGLAND

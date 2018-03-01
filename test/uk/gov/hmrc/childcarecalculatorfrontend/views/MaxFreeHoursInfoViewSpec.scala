@@ -25,27 +25,27 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "maxFreeHoursInfo"
 
-  def view = () => maxFreeHoursInfo(frontendAppConfig, Eligible, true, Eligible) (fakeRequest, messages)
+  def view = () => maxFreeHoursInfo(frontendAppConfig, Eligible, Eligible, Eligible) (fakeRequest, messages)
 
   "MaxFreeHoursInfo view" must {
 
     behave like normalPage(view, messageKeyPrefix, "could.get.max.hours", "info", "info.link", "info.link.url", "info.part2", "still.to.check")
 
     "display correct message when only eligible for tax free childcare" in {
-      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, false, NotEligible) (fakeRequest, messages)
+      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, NotEligible, NotEligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
 
     }
 
     "display the correct message when only eligible for childcare vouchers" in {
-      val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, true, NotEligible) (fakeRequest, messages)
+      val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, Eligible, NotEligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
       assertNotContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
       assertNotContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
     }
 
     "display the correct message when only eligible for tax credits" in {
-      val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, false, Eligible) (fakeRequest, messages)
+      val view = maxFreeHoursInfo(frontendAppConfig, NotEligible, NotEligible, Eligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.still.to.check"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.give.more.info"))
@@ -54,7 +54,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
     }
 
     "display correct message when only eligible for tax free childcare, childcare vouchers, tax credits " in {
-      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, true, Eligible) (fakeRequest, messages)
+      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, Eligible, Eligible) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tax_credits"))
@@ -65,7 +65,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
     "display correct message when user selected Universal credits and only eligible for tax free childcare, " +
       "childcare vouchers " in {
 
-      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, true, Eligible, universalCredits ) (fakeRequest, messages)
+      val view = maxFreeHoursInfo(frontendAppConfig, Eligible, Eligible, Eligible, universalCredits ) (fakeRequest, messages)
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.vouchers"))
       assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.still.to.check"))
