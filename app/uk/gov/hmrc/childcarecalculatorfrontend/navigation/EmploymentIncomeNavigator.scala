@@ -43,7 +43,8 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
     PartnerEmploymentIncomePYId -> partnerEmploymentIncomePYRoute,
     EmploymentIncomePYId -> employmentIncomePYRoute,
     BothPaidWorkPYId -> bothPaidWorkPYRoute,
-    WhoWasInPaidWorkPYId -> whoWasInPaidWorkRoute
+    WhoWasInPaidWorkPYId -> whoWasInPaidWorkRoute,
+    YouGetSameIncomePYId -> youGetSameIncomePYRoute
   )
 
   private def partnerPaidWorkCYRoute(answers: UserAnswers) =
@@ -116,6 +117,12 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
       case `you` => routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
       case `partner` => routes.PartnerEmploymentIncomePYController.onPageLoad(NormalMode)
       case `both` => routes.EmploymentIncomePYController.onPageLoad(NormalMode)
+    }
+
+  private def youGetSameIncomePYRoute(answers: UserAnswers) =
+    utils.getCall(answers.youGetSameIncomePY) {
+      case true => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+      case false => routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
     }
 
 }
