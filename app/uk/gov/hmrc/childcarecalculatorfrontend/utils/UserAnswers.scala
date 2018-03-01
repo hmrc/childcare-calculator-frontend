@@ -342,12 +342,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
    def childrenIdsForAgeExactly16: List[Int] =
      extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
 
-
    def childrenBelow16AndExactly16Disabled:List[Int] = {
     (childrenIdsForAgeExactly16AndDisabled ++childrenBelow16).sorted
   }
 
-  def childrenBelow16:List[Int]={
+  def childrenBelow16:List[Int] = {
   aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toList
   }
 
@@ -360,11 +359,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
         } else {
           whichChildrenDisability.getOrElse(Set()).contains(identity)|| whichChildrenBlind.getOrElse(Set()).contains(identity)
         }
-
       }
-
   }
-
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
     whichChildrenDisability.orElse {
@@ -388,12 +384,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def singleChildBelow16Yrs:Boolean = {
     if(noOfChildren .contains(1)){ childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
     }else{
-
       multipleChildrenBelow16Yrs
     }
   }
 
- def multipleChildrenBelow16Yrs: Boolean ={
+ def multipleChildrenBelow16Yrs: Boolean = {
 
      val Disabled16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
        (acc, child) => acc || whichChildrenDisability.getOrElse(Set()).contains(child)
@@ -404,9 +399,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
      }
 
      Disabled16yrChild|| registeredBlind16yrChild
-
   }
-
 
   def childrenWithCosts: Option[Set[Int]] = {
     whoHasChildcareCosts.orElse {
