@@ -309,7 +309,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
   def childrenOver16: Option[Map[Int, AboutYourChild]] = {
     val children16OrOlder = get16YearOldsAndOlder
     val childrenBetween16And17 = extract16YearOldsWithBirthdayBefore31stAugust(children16OrOlder)
-    //Remove 16 Years old children have birth date before 31 Aug
     children16OrOlder.map{
       children => children.filterNot {
         case (x, _) => childrenBetween16And17.getOrElse(Map()).keys.exists(_ == x)
