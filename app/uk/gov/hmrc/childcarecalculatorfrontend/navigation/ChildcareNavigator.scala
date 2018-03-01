@@ -196,7 +196,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
   }
 
   private def destinedUrlForSingleChildAged16(answers: UserAnswers): Option[Call] = {
-    println(".................."+answers.childrenBelow16AndExactly16Disabled)
     if (answers.childrenBelow16AndExactly16Disabled.size.equals(1)) {
 
       Some(routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, answers.childrenBelow16AndExactly16Disabled.head))
