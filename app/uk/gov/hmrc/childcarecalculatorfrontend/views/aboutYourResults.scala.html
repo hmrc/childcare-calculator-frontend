@@ -99,13 +99,13 @@
     @components.button_link(
         messageKey = "aboutYourResults.return.link",
         id = "returnToResults",
-        href = ResultController.onPageLoad()
-    )
+href = ResultController.onPageLoad()
+)
 
-    <div class="panel panel-border-wide survey">
-        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
-            @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a> @messages("results.feedback.survey.text.after.link")
-        </p>
-    </div>
+<div class="panel panel-border-wide survey">
+    <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+        @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a> @messages("results.feedback.survey.text.after.link")
+    </p>
+</div>
 
 }

@@ -19,9 +19,10 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-@(appConfig: FrontendAppConfig, model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils)(implicit request: Request[_], messages: Messages)
 
 @pagetitle = {
     @if(model.noOfEligibleSchemes > 0){
@@ -60,48 +61,97 @@
             @resultNotEligible(model)
         }
 
-        <h2 class="heading-medium">@messages("result.more.info.title")</h2>
-        <p>@messages("result.more.info.para")</p>
+        @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
+            <div class="twoYearsOld">
+                <h2 class="heading-medium">@messages("results.two.years.old.guidance.title")</h2>
+                <p>@messages("results.two.years.old.guidance.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("results.two.years.old.guidance.para1.help.link")>
+                    @messages("results.two.years.old.guidance.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+                </a> @messages("results.two.years.old.guidance.text.after.link")
+                </p>
+            </div>
+        }
 
-        <ul class="bullets">
+        @if(model.noOfEligibleSchemes > 1) {
+
+            <h2 class="heading-medium">@messages("result.more.info.title")</h2>
+
             @if(model.noOfEligibleSchemes == 4) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance")</li>
+                <p>@messages("result.more.info.para")</p>
+                <ul class="bullets">
+                    <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
+                    <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
+                    <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")</li>
+                </ul>
+            } else {
+                @if(model.isEligibleForAllButVouchers) {
+                    <p>@messages("result.more.info.para")</p>
+                    <ul class="bullets">
+                        <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
+                        <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
+                    </ul>
+                }
+                @if(model.isEligibleForAllButTc) {
+                    <p>@messages("result.more.info.para")</p>
+                    <ul class="bullets">
+                        <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
+                        <li>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")</li>
+                    </ul>
+                }
+
+                @if(model.isEligibleForAllButTfc) {
+                    <p>@messages("result.more.info.para")</p>
+                    <ul class="bullets">
+                        <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
+                        <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
+                    </ul>
+                }
+
+                @if(model.isEligibleForAllButFreeHours) {
+                    <p>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
+                }
+
+                @if(model.isEligibleOnlyForFreeHoursAndTc) {
+                    <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
+                }
+
+                @if(model.isEligibleOnlyForTCAndEsc) {
+                    <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
+                }
+
+                @if(model.isEligibleOnlyForFreeHoursAndTfc || model.isEligibleOnlyForFreeHoursAndEsc) {
+                    <p>@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
+                }
+
+                @if(model.isEligibleOnlyForTfcAndEsc) {
+                    <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
+                }
+
+                @if(model.isEligibleOnlyForTCAndTfc) {
+                    <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
+                }
             }
+        }
 
-            @if(model.isEligibleForAllButTc) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.vouchers.guidance")</li>
+        <div class="moreInfo">
+            <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
+            <p>@messages("aboutYourResults.more.info.para1")</p>
+            @if(links.nonEmpty) {
+            <ul class="list list-bullet">
+                @for(link <- links) {
+                <li><a href=@link("link")>@link("title")</a></li>
+                }
+            </ul>
             }
+            <p>@summary.getOrElse("")</p>
+        </div>
 
-
-            @if(model.isEligibleForAllButTfc) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-            }
-
-            @if(model.isEligibleForAllButVouchers) {
-                <li>@messages("result.schemes.free.hours.eligibility.guidance")</li>
-                <li>@messages("result.schemes.tax.credit.ineligibility.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance")</li>
-            }
-
-            @if(model.isEligibleForAllButFreeHours) {
-                <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance")</li>
-                <li>@messages("result.schemes.tfc.ineligibility.taxCredits.and.vouchers.guidance")</li>
-            }
-
-        </ul>
-
-        @components.button_link(
-            messageKey = "result.read.more.button",
-            id = "aboutYourResults",
-            href = AboutYourResultsController.onPageLoad()
-        )
     } else {
         <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
         @resultNotEligible(model)
     }
-
+    <div class="panel panel-border-wide survey">
+        <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+            @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a> @messages("results.feedback.survey.text.after.link")
+        </p>
+    </div>
 }

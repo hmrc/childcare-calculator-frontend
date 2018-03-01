@@ -22,6 +22,15 @@
         para1: Option[String] = None,
         para2: Option[String] = None,
         para3: Option[String] = None,
+        detailSummary: Option[String] = None,
+        detailClass: Option[String] = None,
+        detailPara1: Option[String] = None,
+        detailPara2: Option[String] = None,
+        detailPara2WithLink: Option[Html] = None,
+        detailPara3: Option[String] = None,
+        detailPara3WithLink: Option[Html] = None,
+        detailPara4: Option[String] = None,
+        detailPara5: Option[String] = None,
         notEligibleID1: Option[String] = None,
         notEligibleID2: Option[String] = None,
         displayWarning: Boolean = false,
@@ -41,8 +50,22 @@
             @if(para2.isDefined) {
                 <p @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
             }
+
             @if(para3.isDefined) {
                 <p>@para3</p>
+            }
+
+            @if(detailSummary.isDefined) {
+                <details @if(detailClass.isDefined) {class="@detailClass"}>
+                    <summary>@detailSummary</summary>
+                    <p>@detailPara1</p>
+                    @if(detailPara2.isDefined) {<p>@detailPara2</p>}
+                    @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
+                    @if(detailPara3.isDefined) {<p>@detailPara3</p>}
+                    @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
+                    @if(detailPara4.isDefined) {<p>@detailPara4</p>}
+                    @if(detailPara5.isDefined) {<p>@detailPara5</p>}
+                </details>
             }
             @if(displayWarning) {
                 <div class="notice">

@@ -21,6 +21,7 @@ import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
+import services.{MoreInfoService, MoreInfoServiceInterface}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
@@ -36,6 +37,8 @@ import scala.concurrent.Future
 
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
+  val mockMoreInfoService: MoreInfoServiceInterface = mock[MoreInfoService]
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
                  resultService: ResultsService): ResultController =
     new ResultController(frontendAppConfig,
@@ -44,12 +47,16 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       dataRetrievalAction,
       new DataRequiredActionImpl,
       resultService,
+      mockMoreInfoService,
       new Utils)
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
       when(resultService.getResultsViewModel(any())(any(),any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000)))
+
+      when(mockMoreInfoService.getSchemeContent(any(), any())) thenReturn List.empty
+      when(mockMoreInfoService.getSummary(any(), any())) thenReturn None
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
       val resultPage = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
