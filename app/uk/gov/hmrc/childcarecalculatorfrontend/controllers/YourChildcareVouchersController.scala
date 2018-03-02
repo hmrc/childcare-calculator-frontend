@@ -24,11 +24,13 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourChildcareVouchersForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, YourChildcareVouchersForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourChildcareVouchersId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.yourChildcareVoucherErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourChildcareVouchers
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 
 import scala.concurrent.Future
 
@@ -43,19 +45,20 @@ class YourChildcareVouchersController @Inject()(
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.yourChildcareVouchers match {
-        case None => YourChildcareVouchersForm()
-        case Some(value) => YourChildcareVouchersForm().fill(value)
+        case None => BooleanForm()
+        case Some(value) => BooleanForm().fill(value)
       }
+
       Ok(yourChildcareVouchers(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      YourChildcareVouchersForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
+      BooleanForm(yourChildcareVoucherErrorKey).bindFromRequest().fold(
+        (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(yourChildcareVouchers(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, YourChildcareVouchersId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[Boolean](request.sessionId, YourChildcareVouchersId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourChildcareVouchersId, mode)(new UserAnswers(cacheMap))))
       )
   }
