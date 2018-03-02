@@ -26,7 +26,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object ParentEmploymentIncomeCYForm extends FormErrorHelper {
 
-  def parentEmplymentIncomeFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def parentEmplymentIncomeFormatter(errorKeyBlank: String, errorKeyInvalid: String)
+  = new Formatter[BigDecimal] {
 
     val decimalRegex = """\d+(\.\d{1,2})?"""
 
@@ -45,20 +46,13 @@ object ParentEmploymentIncomeCYForm extends FormErrorHelper {
 
 
   def apply(errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey,
-            errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(parentEmplymentIncomeFormatter(errorKeyBlank, errorKeyInvalid))
+            errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey):
+  Form[BigDecimal] =
+    Form(single("value" -> of(parentEmplymentIncomeFormatter(errorKeyBlank,
+      errorKeyInvalid))
       .verifying(minimumValue[BigDecimal](1, parentEmploymentIncomeBlankErrorKey))
       .verifying(maximumValue[BigDecimal](999999.99, parentEmploymentIncomeInvalidErrorKey ))))
 
 }
 
-@Singleton
-class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
-
-  override val minValue: Double = appConfig.minIncome
-  override val maxValue: Double = appConfig.maxIncome
-
-  override val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
-  override val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
-}
 

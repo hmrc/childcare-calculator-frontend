@@ -27,6 +27,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomeCYFor
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentEmploymentIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
 
 class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
@@ -36,11 +38,12 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ParentEmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new ParentEmploymentIncomeCYController(frontendAppConfig, messagesApi,
+      FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
 
   def viewAsString(form: Form[BigDecimal] =  ParentEmploymentIncomeCYForm()) =
-    parentEmploymentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+    parentEmploymentIncomeCY(frontendAppConfig, form, NormalMode,taxYearInfo)(fakeRequest, messages).toString
 
   val testNumber = 123
 
@@ -59,7 +62,7 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString( new ParentEmploymentIncomeCYForm(frontendAppConfig).apply().fill(testNumber))
+      contentAsString(result) mustBe viewAsString( ParentEmploymentIncomeCYForm().fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -73,13 +76,13 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm =  new ParentEmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("value" -> "invalid value"))
+      val boundForm =  ParentEmploymentIncomeCYForm(parentEmploymentIncomeInvalidErrorKey).bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+    val result = controller().onSubmit(NormalMode)(postRequest)
 
-      status(result) mustBe BAD_REQUEST
-      contentAsString(result) mustBe viewAsString(boundForm)
-    }
+    status(result) mustBe BAD_REQUEST
+    contentAsString(result) mustBe viewAsString(boundForm)
+  }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
