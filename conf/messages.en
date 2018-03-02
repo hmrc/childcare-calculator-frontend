@@ -85,7 +85,6 @@ whatToTellTheCalculator.heading = What you’ll need
 whatToTellTheCalculator.guidance = To check if you are eligible, you’ll need to know information for this year about you and your partner (if you have one) including:
 whatToTellTheCalculator.li.benefits = how much your family gets in benefits
 whatToTellTheCalculator.li.pay = your working hours and how much you get paid (whether employed or in self-employment)
-whatToTellTheCalculator.li.childvouchers = if your employer offers childcare vouchers
 whatToTellTheCalculator.li.weeks = how many weeks you took off work for statutory maternity, paternity, shared parental or adoption and how much you got paid
 whatToTellTheCalculator.para2a = You may be asked the same questions for the previous year.
 whatToTellTheCalculator.para2 = You’ll also need to give information about your children, including:
@@ -1382,4 +1381,12 @@ surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
+
+
+youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?
+youGetSameIncomePreviousYear.heading = Did you get the same income for the previous year?
+youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYear
+youGetSameIncomePreviousYear.error = Select yes if you got the same income for the previous year
+youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
