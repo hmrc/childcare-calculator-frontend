@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.views
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
+import play.api.Logger
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
-class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
+object SessionExpiredRouter {
+  def route[A](area: String, message: String, answers: Option[UserAnswers] = None, uri : String = "N/A", session: String = "N/A") = {
 
-  def view = () => whatToTellTheCalculator(frontendAppConfig)(fakeRequest, messages)
+    val isCacheMapAvailable = answers.fold("No")(c=>if (c.cacheMap == null) "No" else "")
 
-  "whatToTellTheCalculator view" must {
-
-    behave like normalPage(view, "whatToTellTheCalculator", "guidance",
-      "li.benefits", "li.pay", "li.weeks", "para2", "li.costs", "li.benefits.child", "li.ages", "para3")
+    Logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${isCacheMapAvailable} cachemap available - ${session}")
+    routes.SessionExpiredController.onPageLoad()
   }
 }

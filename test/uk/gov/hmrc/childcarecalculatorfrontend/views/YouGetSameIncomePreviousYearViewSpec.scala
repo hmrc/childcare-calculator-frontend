@@ -22,24 +22,34 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerPaidPensionPY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePreviousYear
 
-class PartnerPaidPensionPYViewSpec extends YesNoViewBehaviours {
+class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
 
-  val messageKeyPrefix = "partnerPaidPensionPY"
+  val messageKeyPrefix = "youGetSameIncomePreviousYear"
 
-  def createView = () => partnerPaidPensionPY(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => youGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => partnerPaidPensionPY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => youGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  "PartnerPaidPensionPY view" must {
+  "YouGetSameIncomePreviousYear view" must {
 
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerPaidPensionPYController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YouGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
+    }
+
+    "contain info summary" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.info.summary"))
+    }
   }
 }

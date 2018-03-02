@@ -57,6 +57,12 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
       0 -> "Foo", 1 -> "Bar"
     )
 
+    "redirect to session expired if we can't find name" in {
+      val result = controller(getRequiredData).onPageLoad(NormalMode, 4)(fakeRequest)
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
+
     cases.foreach {
       case (id, name) =>
 
@@ -89,6 +95,13 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual onwardRoute.url
+    }
+
+    "redirect to Session Expired if we can't find the name on submission" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
+      val result = controller(getRequiredData).onSubmit(NormalMode, 4)(postRequest)
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

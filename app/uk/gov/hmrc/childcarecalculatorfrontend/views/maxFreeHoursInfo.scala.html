@@ -22,7 +22,7 @@
 
 @(appConfig: FrontendAppConfig,
 tfcEligibility: Eligibility,
-childcareVouchersEligibility: Boolean,
+childcareVouchersEligibility: Eligibility,
 taxCreditsEligibility: Eligibility,
 taxOrUniversalCredits: String = ""
 )(implicit request: Request[_], messages: Messages)
@@ -48,7 +48,7 @@ taxOrUniversalCredits: String = ""
     <p>@messages("maxFreeHoursInfo.give.more.info")</p>
 
     <ul class="bullets">
-        @if(childcareVouchersEligibility) {
+        @if(childcareVouchersEligibility == Eligible) {
             <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
         }
 

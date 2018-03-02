@@ -25,14 +25,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothPaidPensionPYId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouGetSameIncomePreviousYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidPensionPY
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePreviousYear
 
 import scala.concurrent.Future
 
-class BothPaidPensionPYController @Inject()(appConfig: FrontendAppConfig,
+class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppConfig,
                                          override val messagesApi: MessagesApi,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
@@ -42,21 +42,22 @@ class BothPaidPensionPYController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.bothPaidPensionPY match {
+      val preparedForm = request.userAnswers.youGetSameIncomePreviousYear match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(bothPaidPensionPY(appConfig, preparedForm, mode, taxYearInfo))
+      Ok(youGetSameIncomePreviousYear(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("bothPaidPensionPY.error").bindFromRequest().fold(
+      BooleanForm("youGetSameIncomePreviousYear.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(bothPaidPensionPY(appConfig, formWithErrors, mode, taxYearInfo))),
+          Future.successful(BadRequest(youGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, BothPaidPensionPYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(BothPaidPensionPYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, YouGetSameIncomePreviousYearId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(YouGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
+

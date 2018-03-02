@@ -29,39 +29,41 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
 import scala.concurrent.Future
 
-class ChildcarePayFrequencyController @Inject() (
-                                                  appConfig: FrontendAppConfig,
-                                                  override val messagesApi: MessagesApi,
-                                                  dataCacheConnector: DataCacheConnector,
-                                                  navigator: Navigator,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction
-                                                ) extends FrontendController with I18nSupport with MapFormats {
+class ChildcarePayFrequencyController @Inject()(
+                                                 appConfig: FrontendAppConfig,
+                                                 override val messagesApi: MessagesApi,
+                                                 dataCacheConnector: DataCacheConnector,
+                                                 navigator: Navigator,
+                                                 getData: DataRetrievalAction,
+                                                 requireData: DataRequiredAction
+                                               ) extends FrontendController with I18nSupport with MapFormats {
 
   def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
-      validateIndex(childIndex) {
-        name =>
+      request.userAnswers.aboutYourChild(childIndex) match {
+        case Some(child) => {
           val preparedForm = request.userAnswers.childcarePayFrequency(childIndex) match {
-            case None => ChildcarePayFrequencyForm(name)
-            case Some(value) => ChildcarePayFrequencyForm(name).fill(value)
+            case None => ChildcarePayFrequencyForm(child.name)
+            case Some(value) => ChildcarePayFrequencyForm(child.name).fill(value)
           }
-          Future.successful(Ok(childcarePayFrequency(appConfig, preparedForm, childIndex, name, mode)))
+          Future.successful(Ok(childcarePayFrequency(appConfig, preparedForm, childIndex, child.name, mode)))
+        }
+        case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
       }
   }
 
   def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
     implicit request =>
-      validateIndex(childIndex) {
-        name =>
-          ChildcarePayFrequencyForm(name).bindFromRequest().fold(
+      request.userAnswers.aboutYourChild(childIndex) match {
+        case Some(child) =>{
+          ChildcarePayFrequencyForm(child.name).bindFromRequest().fold(
             (formWithErrors: Form[ChildcarePayFrequency.Value]) =>
-              Future.successful(BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, name, mode))),
+              Future.successful(BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, child.name, mode))),
             (value) =>
               dataCacheConnector.saveInMap[Int, ChildcarePayFrequency.Value](
                 request.sessionId,
@@ -72,6 +74,8 @@ class ChildcarePayFrequencyController @Inject() (
                 Redirect(navigator.nextPage(ChildcarePayFrequencyId(childIndex), mode)(new UserAnswers(cacheMap)))
               }
           )
+        }
+        case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
       }
   }
 
@@ -85,8 +89,9 @@ class ChildcarePayFrequencyController @Inject() (
       if (childrenWithCosts.contains(i)) {
         block(model.name)
       } else {
-        Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri)))
       }
     }
-  }.getOrElse(Future.successful(Redirect(routes.SessionExpiredController.onPageLoad())))
+  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri))))
+
 }

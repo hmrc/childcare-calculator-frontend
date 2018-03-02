@@ -389,3 +389,6 @@ GET         /survey/do-not-understand                          uk.gov.hmrc.child
 POST        /survey/do-not-understand                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onSubmit()
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
+
+GET        /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
+POST       /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)

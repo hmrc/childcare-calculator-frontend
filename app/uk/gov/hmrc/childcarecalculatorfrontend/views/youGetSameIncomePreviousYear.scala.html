@@ -25,7 +25,7 @@
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("partnerPaidPensionPY.title"),
+    title = messages("youGetSameIncomePreviousYear.title"),
     appConfig = appConfig,
     bodyClasses = None) {
 
@@ -33,15 +33,19 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading("partnerPaidPensionPY.heading", "heading-xlarge")
+    @components.heading("youGetSameIncomePreviousYear.heading", "heading-xlarge")
 
-    @helpers.form(action = PartnerPaidPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
+    <div class="panel-indent panel-border-wide panel-info">
+        <p>@messages("youGetSameIncomePreviousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+    </div>
 
-    <p>@messages("partnerPaidPensionPY.tax.year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+    @helpers.form(action = YouGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
+
+    <p>@messages("youGetSameIncomePreviousYear.info.summary")</p>
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
-            label = messages("partnerPaidPensionPY.heading"),
+            label = messages("youGetSameIncomePreviousYear.heading"),
             labelClass = Some("visually-hidden")
         )
 
