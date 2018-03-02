@@ -59,7 +59,7 @@ trait MicroService {
     .settings(
       // concatenate js
       Concat.groups := Seq(
-        "javascripts/childcarecalculatorfrontend-app.js" -> group(Seq("javascripts/show-hide-content.js", "javascripts/ccTimeoutDialog.js", "javascripts/childcarecalculatorfrontend.js", "javascripts/polyfill.js"))
+        "javascripts/childcarecalculatorfrontend-app.js" -> group(Seq("javascripts/show-hide-content.js", "javascripts/childcarecalculatorfrontend.js", "javascripts/polyfill.js"))
       ),
       // prevent removal of unused code which generates warning errors due to use of third-party libs
       UglifyKeys.compressOptions := Seq("unused=false", "dead_code=false"),
