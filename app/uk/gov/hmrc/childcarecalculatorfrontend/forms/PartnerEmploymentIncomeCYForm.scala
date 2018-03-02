@@ -56,13 +56,3 @@ object PartnerEmploymentIncomeCYForm extends FormErrorHelper {
 }
 
 
-/*
-@Singleton
-class PartnerEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
-
-  override val minValue: Double = appConfig.minIncome
-  override val maxValue: Double = appConfig.maxIncome
-
-  override val errorKeyBlank: String = partnerEmploymentIncomeBlankErrorKey
-  override val errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
-}*/
