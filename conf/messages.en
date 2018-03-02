@@ -1227,7 +1227,7 @@ result.schemes.tfc.ineligibility.taxCredits.guidance.para = Tax-Free Childcare c
 result.schemes.tfc.ineligibility.taxCredits.guidance.bullet = Tax-Free Childcare cannot be used with tax credits
 result.schemes.tfc.ineligibility.vouchers.guidance.bullet = Tax-Free Childcare cannot be used with childcare vouchers
 result.schemes.tfc.ineligibility.vouchers.guidance.para = Tax-Free Childcare cannot be used with childcare vouchers.
-result.schemes.tfc.tc.warning = Your tax credits will stop if you apply for Tax-Free Childcare.
+result.schemes.tfc.tc.warning = If you receive Tax Credits and apply for Tax Free Childcare your entitlement will be stopped.
 result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for Tax-Free Childcare.
 
 result.read.more.button = Read more
