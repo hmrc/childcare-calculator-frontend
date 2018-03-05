@@ -259,7 +259,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def yourChildcareVouchers: Option[Boolean] = cacheMap.getEntry[Boolean](YourChildcareVouchersId.toString)
 
-  def partnerChildcareVouchers: Option[String] = cacheMap.getEntry[String](PartnerChildcareVouchersId.toString)
+  def partnerChildcareVouchers: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerChildcareVouchersId.toString)
 
   def whatIsYourTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourTaxCodeId.toString)
 

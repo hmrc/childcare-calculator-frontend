@@ -29,6 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerChildcareVouch
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerChildcareVouchers
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerChildcareVouchersErrorKey
 
 import scala.concurrent.Future
 
@@ -43,19 +45,19 @@ class PartnerChildcareVouchersController @Inject()(
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.partnerChildcareVouchers match {
-        case None => PartnerChildcareVouchersForm()
-        case Some(value) => PartnerChildcareVouchersForm().fill(value)
+        case None => BooleanForm()
+        case Some(value) => BooleanForm().fill(value)
       }
       Ok(partnerChildcareVouchers(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      PartnerChildcareVouchersForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
+      BooleanForm(partnerChildcareVouchersErrorKey).bindFromRequest().fold(
+        (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerChildcareVouchers(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[String](request.sessionId, PartnerChildcareVouchersId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[Boolean](request.sessionId, PartnerChildcareVouchersId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerChildcareVouchersId, mode)(new UserAnswers(cacheMap))))
       )
   }

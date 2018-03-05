@@ -198,7 +198,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
-      getVoucherValue(answers.yourChildcareVouchers)
+
+      val voucherValue = if(answers.yourChildcareVouchers.getOrElse(false)) YesNoUnsureEnum.YES.toString else YesNoUnsureEnum.NO.toString
+
+      getVoucherValue(Some(voucherValue))
     } else {
       getVoucherValue(answers.whoGetsVouchers)
     }
@@ -228,8 +231,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
+
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
-      getVoucherValue(answers.partnerChildcareVouchers, isPartner = true)
+      val voucherValue = if(answers.partnerChildcareVouchers.getOrElse(false)) YesNoUnsureEnum.YES.toString else YesNoUnsureEnum.NO.toString
+
+      getVoucherValue(Some(voucherValue), isPartner = true)
     } else {
       getVoucherValue(answers.whoGetsVouchers, isPartner = true)
     }

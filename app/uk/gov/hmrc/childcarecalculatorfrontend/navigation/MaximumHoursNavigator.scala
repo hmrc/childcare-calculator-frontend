@@ -334,8 +334,8 @@ class MaximumHoursNavigator @Inject() (
 
   private def maximumEarningsRedirection(answers: UserAnswers, maxEarnings: Boolean): Call = {
 
-    def getCallForVoucherValue(voucherValue: String): Call =
-      if (!voucherValue.equals(Yes) && maxEarnings.equals(true)) {
+    def getCallForVoucherValue(voucherValue: Boolean): Call =
+      if (!voucherValue && maxEarnings.equals(true)) {
         routes.FreeHoursResultController.onPageLoad()
       } else {
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
@@ -343,7 +343,7 @@ class MaximumHoursNavigator @Inject() (
 
     (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
       case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
-      case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)
+      case (_, Some(partnerVoucher)) => getCallForVoucherValue(true)
       case _ =>  answers.whoGetsVouchers.fold(
         SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
     }
