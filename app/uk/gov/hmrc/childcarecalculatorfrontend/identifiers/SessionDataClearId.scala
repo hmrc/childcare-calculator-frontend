@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,19 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("session_expired.title"),
-    appConfig = appConfig,
-    timeout = false,
-    bodyClasses = None) {
-
-    <h1 class="heading-xlarge">@messages("session_expired.heading")</h1>
-
-    <p>@messages("session_expired.guidance")</p>
+case object SessionDataClearId extends Identifier {
+  override def toString: String = "sessionDataClear"
 }

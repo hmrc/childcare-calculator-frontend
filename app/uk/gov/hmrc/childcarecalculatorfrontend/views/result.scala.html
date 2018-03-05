@@ -35,6 +35,7 @@
 @main_template(
     title = pagetitle.toString.trim,
     appConfig = appConfig,
+    timeout = false,
     bodyClasses = Some("result")) {
 
     @components.back_link()
