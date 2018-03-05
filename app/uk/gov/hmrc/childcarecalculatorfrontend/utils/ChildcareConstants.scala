@@ -20,7 +20,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 object ChildcareConstants {
 
-
   val England : String = Location.ENGLAND.toString
 
   val YouSelected: String = YouPartnerBothNeitherEnum.YOU.toString
@@ -63,12 +62,16 @@ object ChildcareConstants {
   val freeHoursForWales = 10
   val freeHoursForNI = 12.5
   val eligibleMaxFreeHours = 30
+  val sixteenHours = 16
+  val twentyFoursHours = 24
 
   val totalNoOfHoursAYear = 570
   val noOfFreeHours15 = 15
 
   val ninteen = 19
   val sixteen = 16
+
+  val tcSchemeGuidanceLinkUrl = "https://www.gov.uk/topic/benefits-credits/tax-credits"
 
   val universalCredits = "uc"
   val taxCredits = "tc"
