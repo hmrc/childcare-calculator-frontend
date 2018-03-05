@@ -27,10 +27,7 @@ class EmploymentIncomeCYFormSpec extends FormBehaviours {
     "partnerEmploymentIncomeCY" -> "2"
   )
 
-  override val maxValue: BigDecimal = 100000
-  override val minValue: BigDecimal = 1
-
-  val form = EmploymentIncomeCYForm()
+  val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   "EmploymentIncomeCY form" must {
     behave like questionForm(EmploymentIncomeCY(1, 2))
@@ -42,20 +39,18 @@ class EmploymentIncomeCYFormSpec extends FormBehaviours {
       "partnerEmploymentIncomeCY.blank", "partnerEmploymentIncomeCY.blank")
 
 
-    "not bind when either value is abve the threshold of 999999.99" in {
+    "not bind when either value is above the threshold of 999999.99" in {
       val expectedErrors =
         error("parentEmploymentIncomeCY", parentEmploymentIncomeInvalidErrorKey) ++
         error("partnerEmploymentIncomeCY", partnerEmploymentIncomeInvalidErrorKey)
 
       val data = Map(
-        "parentEmploymentIncomeCY" -> "100000.0",
-        "partnerEmploymentIncomeCY" -> "100000.0"
+        "parentEmploymentIncomeCY" -> "1000000.0",
+        "partnerEmploymentIncomeCY" -> "1000000.0"
       )
 
       checkForError(form, data, expectedErrors)
     }
-
-
   }
 
 }

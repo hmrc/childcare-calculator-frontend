@@ -40,21 +40,22 @@ class ParentEmploymentIncomeCYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
+                                        form: ParentEmploymentIncomeCYForm,
                                         taxYearInfo: TaxYearInfo
                                                                    ) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.parentEmploymentIncomeCY match {
-        case None => ParentEmploymentIncomeCYForm()
-        case Some(value) => ParentEmploymentIncomeCYForm().fill(value)
+        case None => form()
+        case Some(value) => form().fill(value)
       }
       Ok(parentEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      ParentEmploymentIncomeCYForm().bindFromRequest().fold(
+      form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>

@@ -25,18 +25,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 
-object EmploymentIncomeCYForm extends FormErrorHelper {
+class EmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+
+  val minValue: Double = appConfig.minEmploymentIncome
+  val maxValue: Double = appConfig.maxEmploymentIncome
+
 
   def apply(): Form[EmploymentIncomeCY] = Form(
     mapping(
-      "parentEmploymentIncome" ->
-        decimal("parentEmploymentIncomeCY.invalid", parentEmploymentIncomeInvalidErrorKey)
-        .verifying(minimumValue[BigDecimal](1, parentEmploymentIncomeInvalidErrorKey))
-        .verifying(maximumValue[BigDecimal](999999.99, parentEmploymentIncomeInvalidErrorKey)),
-      "partnerEmploymentIncome" ->
-        decimal("partnerEmploymentIncomeCY.invalid", partnerEmploymentIncomeInvalidErrorKey)
-          .verifying(minimumValue[BigDecimal](1, partnerEmploymentIncomeInvalidErrorKey))
-          .verifying(maximumValue[BigDecimal](999999.99, partnerEmploymentIncomeInvalidErrorKey))
+      "parentEmploymentIncomeCY" ->
+        decimal("parentEmploymentIncomeCY.blank", parentEmploymentIncomeBlankErrorKey)
+        .verifying(minimumValue[BigDecimal](minValue, parentEmploymentIncomeInvalidErrorKey))
+        .verifying(maximumValue[BigDecimal](maxValue, parentEmploymentIncomeInvalidErrorKey)),
+      "partnerEmploymentIncomeCY" ->
+        decimal("partnerEmploymentIncomeCY.blank", partnerEmploymentIncomeBlankErrorKey)
+          .verifying(minimumValue[BigDecimal](minValue, partnerEmploymentIncomeInvalidErrorKey))
+          .verifying(maximumValue[BigDecimal](maxValue, partnerEmploymentIncomeInvalidErrorKey))
     ) (EmploymentIncomeCY.apply)(EmploymentIncomeCY.unapply)
   )
 }

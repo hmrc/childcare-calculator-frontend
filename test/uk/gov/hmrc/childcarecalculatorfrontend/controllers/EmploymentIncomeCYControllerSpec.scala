@@ -32,10 +32,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
-
   val taxYearInfo = new TaxYearInfo
 
   val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new EmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, new EmploymentIncomeCYForm(frontendAppConfig), taxYearInfo)
@@ -87,7 +87,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncome", "value 1"), ("partnerEmploymentIncome", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

@@ -24,7 +24,13 @@ import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object ParentEmploymentIncomeCYForm extends FormErrorHelper {
+class ParentEmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+
+  val minValue: Double = appConfig.minEmploymentIncome
+  val maxValue: Double = appConfig.maxEmploymentIncome
+
+  val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
+  val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 
   def parentEmplymentIncomeFormatter(errorKeyBlank: String, errorKeyInvalid: String)
   = new Formatter[BigDecimal] {
@@ -45,14 +51,12 @@ object ParentEmploymentIncomeCYForm extends FormErrorHelper {
   }
 
 
-  def apply(errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey,
-            errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey):
-  Form[BigDecimal] =
-    Form(single("value" -> of(parentEmplymentIncomeFormatter(errorKeyBlank,
-      errorKeyInvalid))
-      .verifying(minimumValue[BigDecimal](1, parentEmploymentIncomeBlankErrorKey))
-      .verifying(maximumValue[BigDecimal](999999.99, parentEmploymentIncomeInvalidErrorKey ))))
-
+  def apply(): Form[BigDecimal] =
+    Form(single("value" -> of(parentEmplymentIncomeFormatter(errorKeyBlank, errorKeyInvalid))
+      .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))
+      .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid))
+    )
+    )
 }
 
 
