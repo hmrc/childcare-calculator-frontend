@@ -23,6 +23,7 @@
 @main_template(
     title = messages("whatToTellTheCalculator.title"),
     appConfig = appConfig,
+    timeout = false,
     bodyClasses = None) {
 
     @components.back_link()
@@ -33,7 +34,6 @@
     <ul class="bullets">
         <li>@messages("whatToTellTheCalculator.li.benefits")</li>
         <li>@messages("whatToTellTheCalculator.li.pay")</li>
-        <li>@messages("whatToTellTheCalculator.li.childvouchers")</li>
         <li>@messages("whatToTellTheCalculator.li.weeks")</li>
     </ul>
 
