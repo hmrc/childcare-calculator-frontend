@@ -23,7 +23,7 @@
   contentHeader: Option[Html] = None,
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
-  timeout: Option[Boolean] = None,
+  timeout: Boolean = true,
   scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
@@ -59,7 +59,7 @@
       gaCalls = None)
       <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
       <script src='@routes.Assets.versioned("javascripts/ccTimeoutDialog.js")'> </script>
-        @if(timeout.getOrElse(true)) {
+        @if(timeout) {
             <script type="text/javascript" charset="utf-8">
                 ccTimeoutDialog({
                     timeout: 1800,
