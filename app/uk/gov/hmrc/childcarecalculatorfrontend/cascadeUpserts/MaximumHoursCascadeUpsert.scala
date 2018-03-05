@@ -48,7 +48,8 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
       PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
-      PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm))
+      PartnerMinimumEarningsId.toString -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
+      SessionDataClearId.toString -> ((v, cm) => clearSessionData(v, cm))
     )
 
   private def storeDoYouLiveWithPartner(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -283,6 +284,11 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       case _ => cacheMap
     }
     store(YourPartnersAgeId.toString, value, mapToStore)
+  }
+
+  private def clearSessionData(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = cacheMap copy (data = Map())
+    store(SessionDataClearId.toString, value, mapToStore)
   }
 
 }
