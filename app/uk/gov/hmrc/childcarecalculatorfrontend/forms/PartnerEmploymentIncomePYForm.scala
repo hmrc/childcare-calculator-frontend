@@ -18,15 +18,42 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
 
+import play.api.data.{Form, FormError}
+import play.api.data.Forms.{of, single}
+import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
 class PartnerEmploymentIncomePYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
 
-  override val minValue: Double = appConfig.minIncome
-  override val maxValue: Double = appConfig.maxIncome
+  val minValue: Double = appConfig.minEmploymentIncome
+  val maxValue: Double = appConfig.maxEmploymentIncome
 
-  override val errorKeyBlank: String = partnerEmploymentIncomePYRequiredErrorKey
-  override val errorKeyInvalid: String = partnerEmploymentIncomePYInvalidErrorKey
+  val errorKeyBlank: String = partnerEmploymentIncomePYRequiredErrorKey
+  val errorKeyInvalid: String = partnerEmploymentIncomePYInvalidErrorKey
+
+  def partnerEmploymentIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String)
+  = new Formatter[BigDecimal] {
+
+    val decimalRegex = """\d+(\.\d{1,2})?"""
+
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
+      data.get(key) match {
+        case None => produceError(key, errorKeyBlank)
+        case Some("") => produceError(key, errorKeyBlank)
+        case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
+        case _ => produceError(key, errorKeyInvalid)
+      }
+    }
+
+    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString())
+  }
+
+  def apply(): Form[BigDecimal] =
+    Form(single("value" -> of(partnerEmploymentIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))
+      .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))
+      .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid))
+    )
+    )
 }

@@ -33,14 +33,14 @@ class ParentEmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
 
-  val employmentIncomeForm = new ParentEmploymentIncomePYForm(frontendAppConfig).apply()
+  val form = new ParentEmploymentIncomePYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentEmploymentIncomePYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, new ParentEmploymentIncomePYForm(frontendAppConfig), taxYearInfo)
 
-  def viewAsString(form: Form[BigDecimal] = employmentIncomeForm) = parentEmploymentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = form) = parentEmploymentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   val testNumber = 123
 
@@ -59,7 +59,7 @@ class ParentEmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(employmentIncomeForm.fill(testNumber))
+      contentAsString(result) mustBe viewAsString(form.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -73,7 +73,7 @@ class ParentEmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = employmentIncomeForm.bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

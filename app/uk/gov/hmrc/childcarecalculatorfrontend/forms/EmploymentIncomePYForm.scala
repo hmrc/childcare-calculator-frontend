@@ -21,23 +21,25 @@ import javax.inject.Inject
 import play.api.data.Form
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomePY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class EmploymentIncomePYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  val minValue: Double = appConfig.minIncome
+  val minValue: Double = appConfig.minEmploymentIncome
+  val maxValue: Double = appConfig.maxEmploymentIncome
 
-  private val parentIncomeInvalidKey = "parentEmploymentIncomePY.invalid"
-  private val partnerIncomeInvalidKey = "partnerEmploymentIncomePY.invalid"
 
   def apply(): Form[EmploymentIncomePY] = Form(
     mapping(
       "parentEmploymentIncomePY" ->
-        decimal("parentEmploymentIncomePY.required", parentIncomeInvalidKey)
-          .verifying(minimumValue[BigDecimal](minValue, parentIncomeInvalidKey)),
+        decimal("parentEmploymentIncomePY.required", parentEmploymentIncomePYRequiredErrorKey)
+          .verifying(minimumValue[BigDecimal](minValue, parentEmploymentIncomePYInvalidErrorKey))
+          .verifying(maximumValue[BigDecimal](maxValue, parentEmploymentIncomePYInvalidErrorKey)),
       "partnerEmploymentIncomePY" ->
-        decimal("partnerEmploymentIncomePY.required", partnerIncomeInvalidKey)
-          .verifying(minimumValue[BigDecimal](minValue, partnerIncomeInvalidKey))
-    )(EmploymentIncomePY.apply)(EmploymentIncomePY.unapply)
+        decimal("partnerEmploymentIncomePY.required", partnerEmploymentIncomePYRequiredErrorKey)
+          .verifying(minimumValue[BigDecimal](minValue, partnerEmploymentIncomePYInvalidErrorKey))
+          .verifying(maximumValue[BigDecimal](maxValue, partnerEmploymentIncomePYInvalidErrorKey))
+    ) (EmploymentIncomePY.apply)(EmploymentIncomePY.unapply)
   )
 }
