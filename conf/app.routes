@@ -5,6 +5,8 @@ GET         /language/:lang                                    uk.gov.hmrc.child
 GET         /this-service-has-been-reset                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionExpiredController.onPageLoad
 GET         /check-your-answers                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.CheckYourAnswersController.onPageLoad
 GET         /unauthorised                                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.UnauthorisedController.onPageLoad
+GET         /session-extend                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionManagementController.extendSession
+GET         /session-clear-data                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionManagementController.clearSessionData
 
 GET         /                                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatToTellTheCalculatorController.onPageLoad
 
@@ -387,3 +389,6 @@ GET         /survey/do-not-understand                          uk.gov.hmrc.child
 POST        /survey/do-not-understand                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onSubmit()
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
+
+GET        /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
+POST       /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
