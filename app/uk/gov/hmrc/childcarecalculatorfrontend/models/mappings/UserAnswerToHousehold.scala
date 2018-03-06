@@ -187,7 +187,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     vouchers.fold(Some(YesNoUnsureEnum.NO)) {
       case ChildcareConstants.Both | `whichParent` => Some(YesNoUnsureEnum.YES)
-      case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
       case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
       case _ => Some(YesNoUnsureEnum.NO)
     }
