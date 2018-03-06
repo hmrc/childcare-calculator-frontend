@@ -343,7 +343,7 @@ class MaximumHoursNavigator @Inject() (
 
     (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
       case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
-      case (_, Some(partnerVoucher)) => getCallForVoucherValue(true)
+      case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)
       case _ =>  answers.whoGetsVouchers.fold(
         SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
     }
