@@ -1229,6 +1229,10 @@ result.schemes.tfc.ineligibility.vouchers.guidance.para = Tax-Free Childcare can
 result.schemes.tfc.tc.warning = If you receive Tax Credits and apply for Tax Free Childcare your entitlement will be stopped.
 result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for Tax-Free Childcare.
 
+
+result.estimates.income.title = Your estimates and changes in your income
+result.estimates.income.para1 = The amount you could get is for the next 12 months. This is an estimate and may be different from what you are getting. If your income changes in that time, you should come back and get another estimate because the amount you could get will also change.
+
 result.read.more.button = Read more
 
 result.you.could.get = You could get
