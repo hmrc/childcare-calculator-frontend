@@ -75,7 +75,10 @@ object YouPartnerBothNeitherNotSureEnum extends YouPartnerBothBaseEnumeration wi
 
 object YesNoUnsureEnum extends Enumeration {
   type YesNoUnsureEnum = Value
-  val YES, NO, NOTSURE = Value
+  val YES = Value("yes")
+  val NO = Value("no")
+  val NOTSURE = Value("notSure")
+
   val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
 
   val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites

@@ -148,16 +148,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
   }
 
-  private def stringToYesNoUnsureEnum(x: Option[String]): Option[YesNoUnsureEnum] = x match {
-    case Some(x) =>
-      x.toLowerCase match {
-        case "yes" => Some(YesNoUnsureEnum.YES)
-        case "no" => Some(YesNoUnsureEnum.NO)
-        case _ => Some(YesNoUnsureEnum.NOTSURE)
-      }
-    case _ => None
-  }
-
   private def stringToAgeEnum(x: Option[String]): Option[AgeEnum] = x match {
     case Some(x) =>
       x.toUpperCase match {
