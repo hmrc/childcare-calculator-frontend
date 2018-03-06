@@ -36,7 +36,7 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.areYouInPaidWork) thenReturn Some(true)
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
-      when(answers.yourChildcareVouchers) thenReturn Some(Yes)
+      when(answers.yourChildcareVouchers) thenReturn Some(YES)
 
       esc.eligibility(answers: UserAnswers) mustBe Eligible
     }
@@ -45,8 +45,8 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.areYouInPaidWork) thenReturn Some(true)
-      when(answers.childcareCosts) thenReturn Some(No)
-      when(answers.yourChildcareVouchers) thenReturn Some(Yes)
+      when(answers.childcareCosts) thenReturn Some(NO)
+      when(answers.yourChildcareVouchers) thenReturn Some(YES)
 
       esc.eligibility(answers: UserAnswers) mustBe NotEligible
     }
@@ -57,7 +57,7 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(You)
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
-      when(answers.yourChildcareVouchers) thenReturn Some(Yes)
+      when(answers.yourChildcareVouchers) thenReturn Some(YES)
 
       esc.eligibility(answers: UserAnswers) mustBe Eligible
     }
@@ -67,7 +67,7 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
-      when(answers.partnerChildcareVouchers) thenReturn Some(Yes)
+      when(answers.partnerChildcareVouchers) thenReturn Some(YES)
 
       esc.eligibility(answers: UserAnswers) mustBe Eligible
     }
@@ -87,7 +87,7 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.areYouInPaidWork) thenReturn Some(true)
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
-      when(answers.yourChildcareVouchers) thenReturn Some(NotSure)
+      when(answers.yourChildcareVouchers) thenReturn Some(NOTSURE)
 
       esc.eligibility(answers: UserAnswers) mustBe NotEligible
     }
@@ -97,7 +97,7 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
-      when(answers.partnerChildcareVouchers) thenReturn Some(NotSure)
+      when(answers.partnerChildcareVouchers) thenReturn Some(NOTSURE)
 
       esc.eligibility(answers: UserAnswers) mustBe NotEligible
     }
