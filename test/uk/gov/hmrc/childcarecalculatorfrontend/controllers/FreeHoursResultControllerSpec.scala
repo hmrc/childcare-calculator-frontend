@@ -93,7 +93,7 @@ class FreeHoursResultControllerSpec extends ControllerSpecBase {
           ChildAgedTwoId.toString -> JsBoolean(false),
           ChildAgedThreeOrFourId.toString -> JsBoolean(true),
           ChildcareCostsId.toString -> JsString(ChildcareConstants.yes),
-          ApprovedProviderId.toString -> JsString(ChildcareConstants.no))
+          ApprovedProviderId.toString -> JsString(ChildcareConstants.NO))
         val answers = new UserAnswers(CacheMap("", validData))
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
         val eligibility = freeHours.eligibility(answers)
