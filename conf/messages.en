@@ -291,9 +291,9 @@ whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of ei
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
-yourChildcareVouchers.YES = Yes
-yourChildcareVouchers.NO = No
-yourChildcareVouchers.NOTSURE = Not Sure
+yourChildcareVouchers.yes = Yes
+yourChildcareVouchers.no = No
+yourChildcareVouchers.notSure = Not Sure
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
 yourChildcareVouchers.error = Select yes if your employer offers childcare vouchers
 
