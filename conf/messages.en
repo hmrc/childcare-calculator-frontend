@@ -136,9 +136,9 @@ approvedProvider.hint  = This is not paid help from an unregistered friend or re
 approvedProvider.hint.link = approved provider
 approvedProvider.hint.link.opens.new.window = (opens in a new window)
 approvedProvider.hint.part2 = such as a registered childminder, playscheme, nursery, out of school club or a home careworker working for a registered agency.
-approvedProvider.yes = Yes
-approvedProvider.no = No
-approvedProvider.notSure = Not sure
+approvedProvider.YES = Yes
+approvedProvider.NO = No
+approvedProvider.NOTSURE = Not sure
 approvedProvider.checkYourAnswersLabel = approvedProvider
 approvedProvider.error = Select yes if your childcare costs are with an approved provider
 
@@ -291,9 +291,9 @@ whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of ei
 
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
-yourChildcareVouchers.yes = Yes
-yourChildcareVouchers.no = No
-yourChildcareVouchers.notSure = Not Sure
+yourChildcareVouchers.YES = Yes
+yourChildcareVouchers.NO = No
+yourChildcareVouchers.NOTSURE = Not Sure
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
 yourChildcareVouchers.error = Select yes if your employer offers childcare vouchers
 

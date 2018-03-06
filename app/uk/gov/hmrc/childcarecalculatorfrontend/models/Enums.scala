@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import play.api.libs.json.{Format, Reads, Writes}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherEnum.{Value, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
 trait YouPartnerBothBaseEnumeration extends Enumeration{
@@ -27,11 +28,6 @@ trait YouPartnerBothBaseEnumeration extends Enumeration{
 
 trait NeitherBaseEnumeration extends Enumeration{
   val NEITHER = Value("neither")
-}
-
-trait YesNoBaseEnumeration extends Enumeration {
-  val YES = Value("yes")
-  val NO = Value("no")
 }
 
 object Location extends Enumeration {
@@ -77,10 +73,9 @@ object YouPartnerBothNeitherNotSureEnum extends YouPartnerBothBaseEnumeration wi
   implicit def enumFormats: Format[YouPartnerBothNeitherNotSureEnum] = EnumUtils.enumFormat(YouPartnerBothNeitherNotSureEnum)
 }
 
-object YesNoUnsureEnum extends Enumeration with YesNoBaseEnumeration {
+object YesNoUnsureEnum extends Enumeration {
   type YesNoUnsureEnum = Value
-  val NOTSURE = Value("notSure")
-
+  val YES, NO, NOTSURE = Value
   val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
 
   val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites
@@ -89,8 +84,10 @@ object YesNoUnsureEnum extends Enumeration with YesNoBaseEnumeration {
 }
 
 
-object YesNoNotYetEnum extends Enumeration with YesNoBaseEnumeration {
+object YesNoNotYetEnum extends Enumeration {
   type YesNoNotYetEnum = Value
+  val YES = Value("yes")
+  val NO = Value("no")
   val NOTYET = Value("notYet")
 
   val enumReads: Reads[YesNoNotYetEnum] = EnumUtils.enumReads(YesNoNotYetEnum)
