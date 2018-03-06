@@ -198,9 +198,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
 
-      val voucherValue = if(answers.yourChildcareVouchers.getOrElse(false)) YesNoUnsureEnum.YES.toString else YesNoUnsureEnum.NO.toString
-
-      getVoucherValue(Some(voucherValue))
+      getVoucherValue(claimantVoucherValue(answers.yourChildcareVouchers))
     } else {
       getVoucherValue(answers.whoGetsVouchers)
     }
@@ -232,9 +230,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val getBenefits = Benefits.populateFromRawData(benefits)
 
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
-      val voucherValue = if(answers.partnerChildcareVouchers.getOrElse(false)) YesNoUnsureEnum.YES.toString else YesNoUnsureEnum.NO.toString
-
-      getVoucherValue(Some(voucherValue), isPartner = true)
+      getVoucherValue(claimantVoucherValue(answers.partnerChildcareVouchers), isPartner = true)
     } else {
       getVoucherValue(answers.whoGetsVouchers, isPartner = true)
     }
@@ -258,8 +254,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       minimumEarnings = minEarnings,
       maximumEarnings = maxEarnings
     )
-
   }
+
+  private def claimantVoucherValue(voucherValue: Option[Boolean]) =
+    Some(if(voucherValue.getOrElse(false)) YesNoUnsureEnum.YES.toString else YesNoUnsureEnum.NO.toString)
 
 }
 
