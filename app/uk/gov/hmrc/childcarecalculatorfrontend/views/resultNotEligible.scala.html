@@ -37,9 +37,10 @@
         @if(!model.tc.isDefined) {
             @components.scheme_result(
                 title = messages("result.tc.title"),
-                para1 = Some(messages("result.tc.not.eligible.para1")),
+                para1 = Some(model.tcSchemeInEligibilityMsg),
                 notEligibleID1 = Some("notEligibleTC1"),
-                notEligibleID2 = Some("notEligibleTC2")
+                notEligibleID2 = Some("notEligibleTC2"),
+                displayTCGuidanceLink = true
             )
         }
    }

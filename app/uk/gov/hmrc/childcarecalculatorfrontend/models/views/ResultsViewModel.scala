@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import play.api.libs.json._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TCSchemeInEligibilityMsgBuilder
 
 case class ResultsViewModel(firstParagraph : String = "",
                             tc: Option[BigDecimal] = None,
@@ -28,7 +29,8 @@ case class ResultsViewModel(firstParagraph : String = "",
                             childAgedTwo: Boolean = false,
                             taxCreditsOrUC: Option[String] = None,
                             showTFCWarning: Boolean = false,
-                            tfcWarningMessage: String = "") {
+                            tfcWarningMessage: String = "",
+                            tcSchemeInEligibilityMsg: String = "") {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
   def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty
