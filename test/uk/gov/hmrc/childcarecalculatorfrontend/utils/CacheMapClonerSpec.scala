@@ -80,6 +80,14 @@ class CacheMapClonerSpec extends SpecBase {
 object CacheMapCloner {
   def cloneSection(data: CacheMap, sectionToClone: Map[String,String]) : CacheMap = {
 
+    val singleParentCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
+      YouPaidPensionCYId.toString -> YouPaidPensionPYId.toString,
+      HowMuchYouPayPensionId.toString -> HowMuchBothPayPensionPYId.toString,
+      YouAnyTheseBenefitsIdCY.toString -> YouAnyTheseBenefitsPYId.toString,
+      BenefitsIncomeCYId.toString -> BothBenefitsIncomePYId.toString,
+      YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString,
+      YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString)
+
     val bothIncomeCurrentYearToPreviousYear = Map(EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
       BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
       WhoPaysIntoPensionId.toString -> WhoPaidIntoPensionPYId.toString,
