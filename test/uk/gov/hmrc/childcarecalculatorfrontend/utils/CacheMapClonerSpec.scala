@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class CacheMapClonerSpec extends SpecBase {
@@ -78,6 +79,18 @@ class CacheMapClonerSpec extends SpecBase {
 
 object CacheMapCloner {
   def cloneSection(data: CacheMap, sectionToClone: Map[String,String]) : CacheMap = {
+
+    val bothIncomeCurrentYearToPreviousYear = Map(EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
+      BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
+      WhoPaysIntoPensionId.toString -> WhoPaidIntoPensionPYId.toString,
+      HowMuchBothPayPensionId.toString -> HowMuchBothPayPensionPYId.toString,
+      BothAnyTheseBenefitsCYId.toString -> BothAnyTheseBenefitsPYId.toString,
+      WhoGetsBenefitsId.toString -> WhosHadBenefitsPYId.toString,
+      BenefitsIncomeCYId.toString -> BothBenefitsIncomePYId.toString,
+      BothOtherIncomeThisYearId.toString -> BothOtherIncomeLYId.toString,
+      WhoGetsOtherIncomeCYId.toString -> WhoOtherIncomePYId.toString,
+      OtherIncomeAmountCYId.toString -> OtherIncomeAmountPYId.toString)
+
     sectionToClone.foldLeft(data)((clonedData,sectionToClone) => {
       clonedData.data.get(sectionToClone._1) match {
         case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> dataToClone))
