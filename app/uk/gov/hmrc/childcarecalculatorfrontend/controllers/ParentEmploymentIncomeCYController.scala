@@ -24,12 +24,12 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomeCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ParentEmploymentIncomeCYForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentEmploymentIncomeCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YesNoEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
-import uk.gov.hmrc.play.views.html.helpers.form
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 import scala.concurrent.Future
 
@@ -54,12 +54,31 @@ class ParentEmploymentIncomeCYController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      form().bindFromRequest().fold(
+
+      val boundForm = form(parentEmploymentIncomeInvalidErrorKey).bindFromRequest()
+
+      validateMaxIncomeEarnings(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[BigDecimal](request.sessionId, ParentEmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ParentEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
       )
+  }
+
+  private def validateMaxIncomeEarnings( boundForm: Form[BigDecimal], userAnswers: UserAnswers) = {
+    userAnswers.yourMaximumEarnings match {
+      case Some(maxEarnings) if !boundForm.hasErrors => {
+        val hasEarningsOverMax = maxEarnings.equals(YesNoEnum.NO.toString)
+        val inputtedParentEmploymentIncomeValue = userAnswers.parentEmploymentIncomeCY.toString
+
+        if(hasEarningsOverMax && inputtedParentEmploymentIncomeValue > "1000000"){
+          boundForm.withError("value", "ERROR")
+        } else {
+          boundForm
+        }
+      }
+      case _ => boundForm
+    }
   }
 }
