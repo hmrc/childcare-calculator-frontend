@@ -32,7 +32,7 @@ class ParentEmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) exten
   val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
   val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 
-  def parentEmplymentIncomeFormatter(errorKeyBlank: String, errorKeyInvalid: String)
+  def parentEmploymentIncomeFormatter(errorKeyBlank: String, errorKeyInvalid: String)
   = new Formatter[BigDecimal] {
 
     val decimalRegex = """\d+(\.\d{1,2})?"""
@@ -52,7 +52,7 @@ class ParentEmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) exten
 
 
   def apply(): Form[BigDecimal] =
-    Form(single("value" -> of(parentEmplymentIncomeFormatter(errorKeyBlank, errorKeyInvalid))
+    Form(single("value" -> of(parentEmploymentIncomeFormatter(errorKeyBlank, errorKeyInvalid))
       .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))
       .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid))
     )

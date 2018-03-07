@@ -63,5 +63,11 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
       checkForError(parentEmpIncomeCYForm, emptyForm, expectedError)
     }
 
+    "fail to bind if regex does not match" in {
+      val expectedError = error("value", errorKeyInvalid)
+      checkForError(parentEmpIncomeCYForm, Map("value" -> "1.0235"), expectedError)
+
+    }
+
   }
 }
