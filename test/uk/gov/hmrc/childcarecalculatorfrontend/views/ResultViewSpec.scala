@@ -62,11 +62,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
       assertContainsMessages(view, messages("result.heading.not.eligible"))
       assertNotContainsText(view, messages("result.more.info.title"))
-      assertContainsText(view, messages("result.estimates.income.title"))
-      assertContainsText(view, messages("result.estimates.income.para1"))
-    }
-
-
+  }
 
     "display correct guidance when user is eligible for all the schemes" in {
       val model = ResultsViewModel( tc = Some(200), tfc = Some(250), esc = Some(230), freeHours = Some(200))
