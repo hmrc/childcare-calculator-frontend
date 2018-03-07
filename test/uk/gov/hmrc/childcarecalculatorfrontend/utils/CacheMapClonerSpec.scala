@@ -57,6 +57,14 @@ class CacheMapClonerSpec extends SpecBase {
 
       result.getEntry[Boolean]("property2") mustBe result.getEntry[Boolean]("property3")
     }
+
+    "be able to overwrite already existing data" in {
+      val data = new CacheMap("id",Map("property1" -> JsBoolean(true), "property2" -> JsBoolean(false)))
+
+      val result = CacheMapCloner.cloneSection(data,Map("property1"->"property2"))
+
+      result.getEntry[Boolean]("property1") mustBe result.getEntry[Boolean]("property2")
+    }
   }
 }
 
