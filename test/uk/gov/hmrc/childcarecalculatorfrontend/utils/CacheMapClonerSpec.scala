@@ -63,10 +63,10 @@ class CacheMapClonerSpec extends SpecBase {
 object CacheMapCloner {
   def cloneSection(data: CacheMap, sectionToClone: Map[String,String]) : CacheMap = {
     sectionToClone.foldLeft(data)((clonedData,sectionToClone) => {
-      if(clonedData.data.get(sectionToClone._1).isDefined)
-        clonedData.copy(data = clonedData.data + (sectionToClone._2 -> clonedData.data.get(sectionToClone._1).get))
-      else
-        clonedData
+      clonedData.data.get(sectionToClone._1) match {
+        case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> dataToClone))
+        case _ => clonedData
+      }
     })
   }
 }
