@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json.{JsBoolean, Json}
+import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -38,13 +38,35 @@ class CacheMapClonerSpec extends SpecBase {
       result.getEntry[Boolean]("property1") mustBe result.getEntry[Boolean]("property3")
       result.getEntry[Boolean]("property2") mustBe result.getEntry[Boolean]("property4")
     }
+
+    "mirror three properties with different types" in {
+      val data = new CacheMap("id", Map("property1" -> JsBoolean(true), "property2" -> JsBoolean(true), "property3" -> JsNumber(2), "property4" -> JsString("Test")))
+
+      val result = CacheMapCloner.cloneSection(data, Map("property1"->"property5", "property2"->"property6", "property3" -> "property7", "property4" -> "property8"))
+
+      result.getEntry[Boolean]("property1") mustBe result.getEntry[Boolean]("property5")
+      result.getEntry[Boolean]("property2") mustBe result.getEntry[Boolean]("property6")
+      result.getEntry[Int]("property3") mustBe result.getEntry[Int]("property7")
+      result.getEntry[String]("property4") mustBe result.getEntry[String]("property8")
+    }
+
+    "be able to handle not existing data" in {
+      val data = new CacheMap("id",Map("property1" -> JsBoolean(true)))
+
+      val result = CacheMapCloner.cloneSection(data,Map("property2"->"property3"))
+
+      result.getEntry[Boolean]("property2") mustBe result.getEntry[Boolean]("property3")
+    }
   }
 }
 
 object CacheMapCloner {
   def cloneSection(data: CacheMap, sectionToClone: Map[String,String]) : CacheMap = {
     sectionToClone.foldLeft(data)((clonedData,sectionToClone) => {
-      clonedData.copy(data = clonedData.data + (sectionToClone._2 -> clonedData.data.get(sectionToClone._1).get))
+      if(clonedData.data.get(sectionToClone._1).isDefined)
+        clonedData.copy(data = clonedData.data + (sectionToClone._2 -> clonedData.data.get(sectionToClone._1).get))
+      else
+        clonedData
     })
   }
 }
