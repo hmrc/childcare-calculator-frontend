@@ -45,7 +45,7 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
 
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.areYouInPaidWork) thenReturn Some(true)
-      when(answers.childcareCosts) thenReturn Some(No)
+      when(answers.childcareCosts) thenReturn Some(NO)
       when(answers.yourChildcareVouchers) thenReturn Some(true)
 
       esc.eligibility(answers: UserAnswers) mustBe NotEligible

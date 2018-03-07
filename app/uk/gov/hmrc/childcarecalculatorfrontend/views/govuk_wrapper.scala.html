@@ -23,6 +23,7 @@
   contentHeader: Option[Html] = None,
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
+  timeout: Boolean = true,
   scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
@@ -57,6 +58,22 @@
       scriptElem = scriptElem,
       gaCalls = None)
       <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
+      <script src='@routes.Assets.versioned("javascripts/ccTimeoutDialog.js")'> </script>
+        @if(timeout) {
+            <script type="text/javascript" charset="utf-8">
+                ccTimeoutDialog({
+                    timeout: 1800,
+                    title: "@messages("timeout.heading")",
+                    message: "@messages("timeout.message")",
+                    keep_alive_button_text: "@messages("timeout.continue")",
+                    sign_out_button_text: "@messages("timeout.exit")",
+                    keep_alive_url: '/childcare-calc/session-extend',
+                    start_again_url: '/childcare-calc/session-clear-data',
+                    logout_url: '/childcare-calc/this-service-has-been-reset'
+                });
+                var dialogOpen;
+            </script>
+        }
 }
 
 @footerTop = {}

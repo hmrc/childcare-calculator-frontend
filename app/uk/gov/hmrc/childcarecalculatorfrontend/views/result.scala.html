@@ -32,9 +32,15 @@
     }
 }
 
+@changesToCircumstancesContent = {
+    <h2 class="heading-medium">@messages("result.changes.to.circumstances.heading")</h2>
+    <p>@messages("result.changes.to.circumstances.para")</p>
+}
+
 @main_template(
     title = pagetitle.toString.trim,
     appConfig = appConfig,
+    timeout = false,
     bodyClasses = Some("result")) {
 
     @components.back_link()
@@ -70,6 +76,8 @@
                 </p>
             </div>
         }
+
+        @changesToCircumstancesContent
 
         @if(model.noOfEligibleSchemes > 1) {
 
@@ -148,6 +156,8 @@
     } else {
         <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
         @resultNotEligible(model)
+
+        @changesToCircumstancesContent
     }
     <div class="panel panel-border-wide survey">
         <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">

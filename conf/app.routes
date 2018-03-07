@@ -5,6 +5,8 @@ GET         /language/:lang                                    uk.gov.hmrc.child
 GET         /this-service-has-been-reset                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionExpiredController.onPageLoad
 GET         /check-your-answers                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.CheckYourAnswersController.onPageLoad
 GET         /unauthorised                                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.UnauthorisedController.onPageLoad
+GET         /session-extend                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionManagementController.extendSession
+GET         /session-clear-data                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.SessionManagementController.clearSessionData
 
 GET         /                                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatToTellTheCalculatorController.onPageLoad
 

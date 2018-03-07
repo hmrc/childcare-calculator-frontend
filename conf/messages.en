@@ -92,6 +92,7 @@ whatToTellTheCalculator.li.costs = what you think your weekly or monthly approve
 whatToTellTheCalculator.li.benefits.child = any benefits they get
 whatToTellTheCalculator.li.ages = their age and any dates they may have started further education or training
 whatToTellTheCalculator.para3 = You can change your answers as many times as you like to recalculate and compare your results.
+whatToTellTheCalculator.para4 = It should take around 5 minutes to complete.
 
 location.title = Where do you live?
 location.heading = Where do you live?
@@ -486,11 +487,10 @@ noOfChildren.checkYourAnswersLabel = noOfChildren
 maxFreeHoursInfo.title = You can get 30 hours free childcare
 maxFreeHoursInfo.heading = You can get 30 hours free childcare
 maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services. Free childcare hours stop when your child starts in reception class.
-maxFreeHoursInfo.info = If you’re here only to find out about 30 hours free childcare, you can
-maxFreeHoursInfo.info.link = read more information
+maxFreeHoursInfo.info = If you are only interested in the free hours scheme, you can
+maxFreeHoursInfo.info.link = read more information about 30 hours free childcare before applying for it
 maxFreeHoursInfo.info.link.opens.new.window = (opens in a new window)
 maxFreeHoursInfo.info.link.url =  https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds
-maxFreeHoursInfo.info.part2 = before applying for it.
 
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you’d buy vouchers from your employer through salary sacrifice.
@@ -1226,8 +1226,10 @@ result.schemes.tfc.ineligibility.taxCredits.guidance.para = Tax-Free Childcare c
 result.schemes.tfc.ineligibility.taxCredits.guidance.bullet = Tax-Free Childcare cannot be used with tax credits
 result.schemes.tfc.ineligibility.vouchers.guidance.bullet = Tax-Free Childcare cannot be used with childcare vouchers
 result.schemes.tfc.ineligibility.vouchers.guidance.para = Tax-Free Childcare cannot be used with childcare vouchers.
-result.schemes.tfc.tc.warning = Your tax credits will stop if you apply for Tax-Free Childcare.
+result.schemes.tfc.tc.warning = If you receive Tax Credits and apply for Tax Free Childcare your entitlement will be stopped.
 result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for Tax-Free Childcare.
+result.changes.to.circumstances.heading = Changes in your income
+result.changes.to.circumstances.para = The estimates for what you could get cover the next 12 months. If your income changes in the next 12 months, you should come back and get another estimate because the amount you could get will also change.
 
 result.read.more.button = Read more
 
@@ -1263,8 +1265,11 @@ result.tc.detailPara2.tax.credit.replace.uc.link = https://www.gov.uk/universal-
 result.tc.detailPara3 = It is for children under 16, under 18 if disabled, or under 19 if in approved education or training.
 
 result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
-
 result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have told us that you were already getting Universal Credit
+result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
+result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get childcare support from tax credits as both you and your partner would each/ need to work 16 hours or more a week.
+result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
+result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.
@@ -1323,7 +1328,6 @@ aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in
 aboutYourResults.esc.para2 = They are for children under 16, or 18 if disabled.
 aboutYourResults.esc.para3 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
 
-
 aboutYourResults.more.info.title = How to apply
 aboutYourResults.more.info.para1 = Read more about the schemes you could get help from and find out how to apply for:
 aboutYourResults.more.info.england.hours.title = 30 hours free childcare
@@ -1380,6 +1384,12 @@ surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
+
+
+timeout.heading = You are about to be timed out
+timeout.message = For your security, we will clear what you have entered in
+timeout.continue = Continue what you were doing
+timeout.exit = Clear what you entered now
 
 
 youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?

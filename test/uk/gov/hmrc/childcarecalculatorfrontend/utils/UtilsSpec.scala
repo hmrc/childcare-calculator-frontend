@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import play.api.libs.json.JsString
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UtilsSpec extends SpecBase {
 
@@ -137,6 +141,16 @@ class UtilsSpec extends SpecBase {
         utils.valueFormatter(28.35) mustBe "28"
         utils.valueFormatter(28.65) mustBe "29"
 
+      }
+    }
+
+    "emptyCacheMap" should {
+      "clear the existing cache map values and initialize an empty map" in {
+        val sessionId = "sessionId"
+        val existingMap = new CacheMap(sessionId, Map(LocationId.toString -> JsString(LocationForm.options.head.value)))
+
+        val utils = new Utils
+        utils.emptyCacheMap(existingMap) mustBe new CacheMap(sessionId, Map())
       }
     }
 

@@ -23,6 +23,7 @@
 @main_template(
     title = messages("whatToTellTheCalculator.title"),
     appConfig = appConfig,
+    timeout = false,
     bodyClasses = None) {
 
     @components.back_link()
@@ -48,6 +49,8 @@
     <div class="panel-indent panel-border-wide panel-info">
         @messages("whatToTellTheCalculator.para3")
     </div>
+
+    <p>@messages("whatToTellTheCalculator.para4")<p>
 
     @components.button_link(
         messageKey = "site.save_and_continue",
