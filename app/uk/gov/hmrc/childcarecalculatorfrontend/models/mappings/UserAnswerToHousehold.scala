@@ -148,16 +148,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
   }
 
-  private def stringToYesNoUnsureEnum(x: Option[String]): Option[YesNoUnsureEnum] = x match {
-    case Some(x) =>
-      x.toLowerCase match {
-        case "yes" => Some(YesNoUnsureEnum.YES)
-        case "no" => Some(YesNoUnsureEnum.NO)
-        case _ => Some(YesNoUnsureEnum.NOTSURE)
-      }
-    case _ => None
-  }
-
   private def stringToAgeEnum(x: Option[String]): Option[AgeEnum] = x match {
     case Some(x) =>
       x.toUpperCase match {
@@ -187,8 +177,8 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     vouchers.fold(Some(YesNoUnsureEnum.NO)) {
       case ChildcareConstants.Both | `whichParent` => Some(YesNoUnsureEnum.YES)
-      case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
-      case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
+      case ChildcareConstants.NOTSURE => Some(YesNoUnsureEnum.NOTSURE)
+      case ChildcareConstants.YES => Some(YesNoUnsureEnum.YES)
       case _ => Some(YesNoUnsureEnum.NO)
     }
   }
