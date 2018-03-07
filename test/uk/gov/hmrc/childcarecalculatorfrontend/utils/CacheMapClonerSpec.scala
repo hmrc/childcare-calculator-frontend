@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
+import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -50,6 +50,14 @@ class CacheMapClonerSpec extends SpecBase {
       result.getEntry[String]("property4") mustBe result.getEntry[String]("property8")
     }
 
+    "be able to handle complex objects" in {
+      val data = new CacheMap("id",Map("property1" -> Json.obj("0" -> Json.toJson(4), "1" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.cloneSection(data,Map("property1"->"property2"))
+
+      result.getEntry[JsValue]("property1") mustBe result.getEntry[JsValue]("property2")
+    }
+
     "be able to handle not existing data" in {
       val data = new CacheMap("id",Map("property1" -> JsBoolean(true)))
 
@@ -59,7 +67,7 @@ class CacheMapClonerSpec extends SpecBase {
     }
 
     "be able to overwrite already existing data" in {
-      val data = new CacheMap("id",Map("property1" -> JsBoolean(true), "property2" -> JsBoolean(false)))
+      val data = new CacheMap("id",Map("property1" -> JsBoolean(true), "property2" -> Json.obj("0" -> Json.toJson(4), "1" -> JsBoolean(true))))
 
       val result = CacheMapCloner.cloneSection(data,Map("property1"->"property2"))
 
