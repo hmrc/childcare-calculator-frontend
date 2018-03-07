@@ -17,18 +17,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.Inject
-
 import play.api.data.Form
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomePY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class EmploymentIncomePYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   val minValue: Double = appConfig.minEmploymentIncome
   val maxValue: Double = appConfig.maxEmploymentIncome
-
 
   def apply(): Form[EmploymentIncomePY] = Form(
     mapping(
@@ -40,6 +38,5 @@ class EmploymentIncomePYForm @Inject()(appConfig: FrontendAppConfig) extends For
         decimal("partnerEmploymentIncomePY.required", partnerEmploymentIncomePYRequiredErrorKey)
           .verifying(minimumValue[BigDecimal](minValue, partnerEmploymentIncomePYInvalidErrorKey))
           .verifying(maximumValue[BigDecimal](maxValue, partnerEmploymentIncomePYInvalidErrorKey))
-    ) (EmploymentIncomePY.apply)(EmploymentIncomePY.unapply)
-  )
+    )(EmploymentIncomePY.apply)(EmploymentIncomePY.unapply))
 }
