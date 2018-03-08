@@ -1231,6 +1231,10 @@ result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for
 result.changes.to.circumstances.heading = Changes in your income
 result.changes.to.circumstances.para = The estimates for what you could get cover the next 12 months. If your income changes in the next 12 months, you should come back and get another estimate because the amount you could get will also change.
 
+
+result.estimates.income.title = Your estimates and changes in your income
+result.estimates.income.para1 = The amount you could get is for the next 12 months. This is an estimate and may be different from what you are getting. If your income changes in that time, you should come back and get another estimate because the amount you could get will also change.
+
 result.read.more.button = Read more
 
 result.you.could.get = You could get
