@@ -23,8 +23,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FormErrorHelper extends Mappings {
 
-//  val errorKeyInvalidMaxEarnings: String
-//  val errorKeyInvalid: String
 
   val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
@@ -79,20 +77,23 @@ class FormErrorHelper extends Mappings {
 
     userAnswers.yourMaximumEarnings match {
       case Some(maxEarnings) if !boundForm.hasErrors => {
-        val inputtedParentEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
+        val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
 
-        if (inputtedParentEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
-
+        if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
+        println("-------------------------------------first one")
           boundForm.withError("value", errorKeyInvalidMaxEarnings)
         }
-        else if (inputtedParentEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
+        else if (inputtedEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
+          println("-------------------------------------second one")
           boundForm.withError("value", errorKeyInvalid)
         }
         else {
+          println("-------------------------------------else one")
           boundForm
         }
       }
       case _ => {
+        println("-------------------------------------second case")
         boundForm
       }
     }
