@@ -18,15 +18,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.{Inject, Singleton}
 
+import play.api.data.Form
+import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
-class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
+class ParentEmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends IncomeFormatter {
 
-  override val minValue: Double = appConfig.minIncome
-  override val maxValue: Double = appConfig.maxIncome
+  val minValue: Double = appConfig.minEmploymentIncome
+  val maxValue: Double = appConfig.maxEmploymentIncome
+  val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
+  val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 
-  override val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
-  override val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
+  def apply(): Form[BigDecimal] =
+    Form(single("value" -> of(formatter(errorKeyBlank, errorKeyInvalid))
+      .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))
+      .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid))))
 }

@@ -36,11 +36,14 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerEmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl,new PartnerEmploymentIncomeCYForm(frontendAppConfig), taxYearInfo)
+    new PartnerEmploymentIncomeCYController(frontendAppConfig, messagesApi,
+      FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo, new PartnerEmploymentIncomeCYForm(frontendAppConfig))
 
   def viewAsString(form: Form[BigDecimal] = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()) =
     partnerEmploymentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+
+  val form = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()
 
   val testNumber = 123
 
@@ -59,7 +62,7 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString( new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()fill(testNumber))
+      contentAsString(result) mustBe viewAsString( form.fill(testNumber))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -73,7 +76,7 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
