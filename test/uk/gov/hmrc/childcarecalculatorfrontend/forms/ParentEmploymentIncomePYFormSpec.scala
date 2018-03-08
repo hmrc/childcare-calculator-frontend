@@ -16,11 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+
 class ParentEmploymentIncomePYFormSpec extends FormSpec {
 
-  val parentEmploymentIncomeForm = new ParentEmploymentIncomePYForm(frontendAppConfig).apply()
-  val errorKeyBlank = "parentEmploymentIncomePY.required"
-  val errorKeyInvalid = "parentEmploymentIncomePY.invalid"
+
+  val parentEmploymentIncomeForm: Form[BigDecimal] = new ParentEmploymentIncomePYForm(frontendAppConfig).apply()
+
+  val errorKeyBlank = parentEmploymentIncomePYRequiredErrorKey
+  val errorKeyInvalid = parentEmploymentIncomePYInvalidErrorKey
 
   "ParentEmploymentIncomePY Form" must {
 
@@ -28,10 +33,9 @@ class ParentEmploymentIncomePYFormSpec extends FormSpec {
       val form = parentEmploymentIncomeForm.bind(Map("value" -> "1.0"))
       form.get shouldBe 1.0
     }
-
-    "bind positive decimal number" in {
-      val form = parentEmploymentIncomeForm.bind(Map("value" -> "10.80"))
-      form.get shouldBe 10.80
+    "bind positive decimal number up to the threshold of 999999.99" in {
+      val form = parentEmploymentIncomeForm.bind(Map("value" -> "999999.99"))
+      form.get shouldBe 999999.99
     }
 
     "fail to bind numbers below the threshold" in {
