@@ -30,6 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YesNoEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormErrorHelper
 
 import scala.concurrent.Future
 
@@ -41,7 +42,7 @@ class ParentEmploymentIncomeCYController @Inject()(
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     form: ParentEmploymentIncomeCYForm,
-                                                    taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                                    taxYearInfo: TaxYearInfo) extends FormErrorHelper with FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -56,7 +57,8 @@ class ParentEmploymentIncomeCYController @Inject()(
     implicit request =>
       val boundForm = form(parentEmploymentIncomeInvalidErrorKey).bindFromRequest()
 
-      validateMaxIncomeEarnings(boundForm, request.userAnswers).fold(
+
+      validateMaxIncomeEarnings(errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm, request.userAnswers).fold(
 
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
@@ -68,27 +70,29 @@ class ParentEmploymentIncomeCYController @Inject()(
 
   }
 
-  private def validateMaxIncomeEarnings(boundForm: Form[BigDecimal], userAnswers: UserAnswers) = {
-
-    val inputtedParentEmploymentIncomeValue = userAnswers.parentEmploymentIncomeCY.getOrElse(BigDecimal(0))
-
-    userAnswers.yourMaximumEarnings match {
-      case Some(maxEarnings) if !boundForm.hasErrors => {
-        if (inputtedParentEmploymentIncomeValue >= BigDecimal(100000) && !maxEarnings) {
-          println("------------------------------------------------------first looooooooooooooooop")
-          boundForm.withError("value", parentEmploymentIncomeInvalidMaxEarningsErrorKey)
-        }
-        else if (inputtedParentEmploymentIncomeValue >= BigDecimal(1000000) && maxEarnings) {
-          println("------------------------------------------------------Second looooooooooooooooop")
-          boundForm.withError("value", "Error")
-        }
-        else {
-          boundForm
-        }
-      }
-      case _ => {
-        boundForm
-      }
-    }
-  }
+//  private def validateMaxIncomeEarnings(boundForm: Form[BigDecimal], userAnswers: UserAnswers) = {
+//
+//    val maxValueFalseMaxEarnings = BigDecimal(100000)
+//    val maxValueTrueMaxEarnings = BigDecimal(1000000)
+//
+//    userAnswers.yourMaximumEarnings match {
+//      case Some(maxEarnings) if !boundForm.hasErrors => {
+//        val inputtedParentEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
+//
+//        if (inputtedParentEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
+//
+//          boundForm.withError("value", parentEmploymentIncomeInvalidMaxEarningsErrorKey)
+//        }
+//        else if (inputtedParentEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
+//          boundForm.withError("value", parentEmploymentIncomeInvalidErrorKey)
+//        }
+//        else {
+//          boundForm
+//        }
+//      }
+//      case _ => {
+//        boundForm
+//      }
+//    }
+//  }
 }
