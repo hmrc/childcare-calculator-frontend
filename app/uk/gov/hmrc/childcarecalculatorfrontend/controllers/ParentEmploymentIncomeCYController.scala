@@ -55,45 +55,19 @@ class ParentEmploymentIncomeCYController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
+
+      val maximumEarnings = request.userAnswers.yourMaximumEarnings
       val boundForm = form().bindFromRequest()
       val errorKeyInvalidMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 
-      validateMaxIncomeEarnings(errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm, request.userAnswers).fold(
+      validateMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
 
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[BigDecimal](request.sessionId, ParentEmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ParentEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
-
       )
-
   }
-
-//  private def validateMaxIncomeEarnings(boundForm: Form[BigDecimal], userAnswers: UserAnswers) = {
-//
-//    val maxValueFalseMaxEarnings = BigDecimal(100000)
-//    val maxValueTrueMaxEarnings = BigDecimal(1000000)
-//
-//    userAnswers.yourMaximumEarnings match {
-//      case Some(maxEarnings) if !boundForm.hasErrors => {
-//        val inputtedParentEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
-//
-//        if (inputtedParentEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
-//
-//          boundForm.withError("value", parentEmploymentIncomeInvalidMaxEarningsErrorKey)
-//        }
-//        else if (inputtedParentEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
-//          boundForm.withError("value", parentEmploymentIncomeInvalidErrorKey)
-//        }
-//        else {
-//          boundForm
-//        }
-//      }
-//      case _ => {
-//        boundForm
-//      }
-//    }
-//  }
 }

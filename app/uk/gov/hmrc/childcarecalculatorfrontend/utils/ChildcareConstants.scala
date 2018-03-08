@@ -138,6 +138,7 @@ object ChildcareConstants {
   val parentEmploymentIncomeInvalidMaxEarningsErrorKey = "parentEmploymentIncomeCY.maxEarnings.invalid"
   val partnerEmploymentIncomeBlankErrorKey = "partnerEmploymentIncomeCY.blank"
   val partnerEmploymentIncomeInvalidErrorKey = "partnerEmploymentIncomeCY.invalid"
+  val partnerEmploymentIncomeInvalidMaxEarningsErrorKey = "partnerEmploymentIncomeCY.maxEarnings.invalid"
   val whoOtherIncomePYErrorKey = "whoOtherIncomePY.error"
 
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"

@@ -545,6 +545,7 @@ partnerEmploymentIncomeCY.heading = How much will your partner get paid this yea
 partnerEmploymentIncomeCY.info = Partner’s pay
 partnerEmploymentIncomeCY.blank = Enter how much your partner will get paid this year
 partnerEmploymentIncomeCY.invalid = Enter numbers between 1 and 999999.99 for how much your partner will get paid this year
+partnerEmploymentIncomeCY.maxEarnings.invalid = Enter numbers between 1 and 99999.99 for how much your partner will get paid this year
 partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay they’ve had.
 partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.

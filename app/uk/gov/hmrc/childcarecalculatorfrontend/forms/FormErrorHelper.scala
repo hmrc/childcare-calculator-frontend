@@ -69,16 +69,19 @@ class FormErrorHelper extends Mappings {
     }
   }
 
-  def validateMaxIncomeEarnings(errorKeyInvalidMaxEarnings: String, errorKeyInvalid: String, boundForm: Form[BigDecimal], userAnswers: UserAnswers) = {
+  def validateMaxIncomeEarnings(maximumEarnings: Option[Boolean],
+                                errorKeyInvalidMaxEarnings: String,
+                                errorKeyInvalid: String,
+                                boundForm: Form[BigDecimal]) = {
 
     val maxValueFalseMaxEarnings = BigDecimal(100000)
     val maxValueTrueMaxEarnings = BigDecimal(1000000)
 
 
-    userAnswers.yourMaximumEarnings match {
+      maximumEarnings match {
       case Some(maxEarnings) if !boundForm.hasErrors => {
         val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
-
+        println("-------------------------------------------"+inputtedEmploymentIncomeValue)
         if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
         println("-------------------------------------first one")
           boundForm.withError("value", errorKeyInvalidMaxEarnings)

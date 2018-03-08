@@ -24,9 +24,10 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerEmploymentIncomeCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{FormErrorHelper, PartnerEmploymentIncomeCYForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerEmploymentIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncomeCY
 
@@ -40,7 +41,7 @@ class PartnerEmploymentIncomeCYController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         taxYearInfo: TaxYearInfo,
-                                        form: PartnerEmploymentIncomeCYForm) extends FrontendController with I18nSupport {
+                                        form: PartnerEmploymentIncomeCYForm) extends FormErrorHelper with FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -53,7 +54,14 @@ class PartnerEmploymentIncomeCYController @Inject()(
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      form().bindFromRequest().fold(
+
+      val maximumEarnings = request.userAnswers.partnerMaximumEarnings
+      val boundForm = form().bindFromRequest()
+      val errorKeyInvalidMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
+      val errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
+
+      validateMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
+
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
