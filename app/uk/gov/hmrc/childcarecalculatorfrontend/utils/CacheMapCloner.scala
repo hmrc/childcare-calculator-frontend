@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import play.api.libs.json.Json
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -61,7 +62,16 @@ object CacheMapCloner {
   def cloneSection(data: CacheMap, sectionToClone: Map[String, String]): CacheMap = {
     sectionToClone.foldLeft(data)((clonedData, sectionToClone) => {
       clonedData.data.get(sectionToClone._1) match {
-        case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> dataToClone))
+        case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
+          complexObjectsMapper.get(sectionToClone._1) match {
+            case Some(data) =>  {
+              data.foldLeft(Json.obj())((clonedResult,property) => {
+                clonedResult + (jsonObjectsMapper.get(property).get->(dataToClone \ property).get)
+              })
+            }
+            case _ => dataToClone
+          }
+        }))
         case _ => clonedData
       }
     })
