@@ -290,16 +290,16 @@ whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax 
 whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
 whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
-yourChildcareVouchers.title = Does your employer offer childcare vouchers?
-yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
+yourChildcareVouchers.title = Do you get childcare vouchers from your employer?
+yourChildcareVouchers.heading = Do you get childcare vouchers from your employer?
 yourChildcareVouchers.YES = Yes
 yourChildcareVouchers.NO = No
 yourChildcareVouchers.NOTSURE = Not Sure
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
 yourChildcareVouchers.error = Select yes if your employer offers childcare vouchers
 
-partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
-partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.title = Does your partner get childcare vouchers from their employer?
+partnerChildcareVouchers.heading = Does your partner get childcare vouchers from their employer?
 partnerChildcareVouchers.YES = Yes
 partnerChildcareVouchers.NO = No
 partnerChildcareVouchers.NOTSURE = Not Sure
@@ -314,13 +314,12 @@ eitherGetsVouchers.NOTSURE = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = Select yes if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = Whose employer offers childcare vouchers?
-whoGetsVouchers.heading = Whose employer offers childcare vouchers?
+whoGetsVouchers.title = Do either of you get childcare vouchers from your employer?
+whoGetsVouchers.heading = Do either of you get childcare vouchers from your employer?
 whoGetsVouchers.you = Yours
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
 whoGetsVouchers.neither = Neither
-whoGetsVouchers.notSure = Not sure
 whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
