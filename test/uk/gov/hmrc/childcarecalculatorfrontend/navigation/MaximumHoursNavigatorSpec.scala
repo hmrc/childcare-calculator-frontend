@@ -396,8 +396,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
       }
 
-      "go to result page when you answer 'no', only parent in paid employment and not eligible for TC and TFC" in {
-        println(" ************** ::: In test ::::::::::::::  ")
+      "go to result page when you answer 'no', only parent in paid employment and not eligible for TC" in {
         val answers = spy(userAnswers())
         val schemes = mock[Schemes]
         val maxHours = mock[MaxFreeHours]
@@ -406,7 +405,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val esc = mock[EmploymentSupportedChildcare]
 
         when(taxCredits.eligibility(any())) thenReturn NotEligible
-        when(tfc.eligibility(any())) thenReturn NotEligible
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(you)
@@ -415,9 +413,27 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
         result mustEqual routes.ResultController.onPageLoad()
       }
+
+      "go to result page when you answer 'no', only partner in paid employment and not eligible for TC" in {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+        val maxHours = mock[MaxFreeHours]
+        val taxCredits = mock[TaxCredits]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+
+        when(taxCredits.eligibility(any())) thenReturn NotEligible
+
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+
+        val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
     }
 
-    "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" in {
+    "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" ignore {
       val answers = spy(userAnswers())
       val schemes = mock[Schemes]
 
