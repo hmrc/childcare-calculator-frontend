@@ -90,5 +90,13 @@ class CacheMapClonerSpec extends SpecBase {
 
       result.getEntry[JsValue]("employmentIncomePY").toString() must include("4")
     }
+
+    "be able to handle missing data when mapping a json object" in {
+      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("test" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.cloneSection(data,Map("employmentIncomeCY"->"employmentIncomePY"))
+
+      result.getEntry[JsValue]("employmentIncomePY").toString() must include("mapping not found")
+    }
   }
 }

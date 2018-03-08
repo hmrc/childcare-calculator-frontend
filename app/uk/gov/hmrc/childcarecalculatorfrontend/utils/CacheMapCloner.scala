@@ -21,6 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 object CacheMapCloner {
+  val mappingError = "mapping not found"
 
   val singleParentCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     YouPaidPensionCYId.toString -> YouPaidPensionPYId.toString,
@@ -66,7 +67,7 @@ object CacheMapCloner {
           complexObjectsMapper.get(sectionToClone._1) match {
             case Some(data) =>  {
               data.foldLeft(Json.obj())((clonedResult,property) => {
-                clonedResult + (jsonObjectsMapper.get(property).get->(dataToClone \ property).get)
+                clonedResult + (jsonObjectsMapper.get(property).getOrElse(mappingError)->(dataToClone \ property).getOrElse(Json.toJson(mappingError)))
               })
             }
             case _ => dataToClone
