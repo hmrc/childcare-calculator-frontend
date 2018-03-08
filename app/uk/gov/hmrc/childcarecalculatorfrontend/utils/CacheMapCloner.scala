@@ -40,6 +40,24 @@ object CacheMapCloner {
     WhoGetsOtherIncomeCYId.toString -> WhoOtherIncomePYId.toString,
     OtherIncomeAmountCYId.toString -> OtherIncomeAmountPYId.toString)
 
+  val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
+    EmploymentIncomePYId.toString -> Seq(ParentEmploymentIncomePYId.toString, PartnerEmploymentIncomePYId.toString),
+    HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
+    HowMuchBothPayPensionPYId.toString -> Seq(HowMuchYouPayPensionPYId.toString, HowMuchPartnerPayPensionPYId.toString),
+    BenefitsIncomeCYId.toString -> Seq("parentBenefitsIncome", "partnerBenefitsIncome"),
+    BothBenefitsIncomePYId.toString -> Seq("parentBenefitsIncomePY", "partnerBenefitsIncomePY"),
+    OtherIncomeAmountCYId.toString -> Seq("parentOtherIncome", "partnerOtherIncome"),
+    OtherIncomeAmountPYId.toString -> Seq("parentOtherIncomeAmountPY", "partnerOtherIncomeAmountPY"))
+
+  val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
+    PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
+    HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
+    HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
+    "parentBenefitsIncome" -> "parentBenefitsIncomePY",
+    "partnerBenefitsIncome" -> "partnerBenefitsIncomePY",
+    "parentOtherIncome" -> "parentOtherIncomeAmountPY",
+    "partnerOtherIncome" -> "partnerOtherIncomeAmountPY")
+
   def cloneSection(data: CacheMap, sectionToClone: Map[String, String]): CacheMap = {
     sectionToClone.foldLeft(data)((clonedData, sectionToClone) => {
       clonedData.data.get(sectionToClone._1) match {
