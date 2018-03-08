@@ -349,7 +349,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
     "not all schemes are determined" when {
 
-      "go to `Which of you gets benefits` when you answer `yes`" ignore {
+      "go to `Which of you gets benefits` when you answer `yes`" in {
         val answers = spy(userAnswers())
         val schemes = mock[Schemes]
 
@@ -359,7 +359,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         result mustEqual routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
       }
 
-      "go to 'what is your age' when you answer 'no'" ignore {
+      "go to 'what is your age' when you answer 'no'" in {
         val answers = spy(userAnswers())
         val schemes = mock[Schemes]
 
@@ -370,7 +370,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
       }
 
-      "go to 'what is your age' when you answer 'no' and partner in paid employment" ignore {
+      "go to 'what is your age' when you answer 'no' and partner in paid employment" in {
         val answers = spy(userAnswers())
         val schemes = mock[Schemes]
 
@@ -418,7 +418,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" ignore {
+    "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" in {
       val answers = spy(userAnswers())
       val schemes = mock[Schemes]
 
