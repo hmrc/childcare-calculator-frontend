@@ -55,7 +55,7 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
 
-      val maximumEarnings = request.userAnswers.yourMaximumEarnings
+      val maximumEarnings = request.userAnswers.eitherOfYouMaximumEarnings
       val boundForm = form().bindFromRequest()
       val errorKeyInvalidMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey

@@ -111,28 +111,34 @@ class FormErrorHelper extends Mappings {
     val maxValueFalseMaxEarnings = BigDecimal(100000)
     val maxValueTrueMaxEarnings = BigDecimal(1000000)
 
-
     maximumEarnings match {
       case Some(maxEarnings) if !boundForm.hasErrors => {
-        val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
-        println("-------------------------------------------"+inputtedEmploymentIncomeValue)
-        if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
-          println("-------------------------------------first one")
-          boundForm.withError("value", errorKeyInvalidMaxEarnings)
+        val valueTest = 0
+        val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0")
+        val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0")
+
+        if (parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
+          Seq(boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidMaxEarnings),
+          boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidMaxEarnings))
+
+
+        }else if (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
+
+          boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidMaxEarnings)
         }
-        else if (inputtedEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
-          println("-------------------------------------second one")
-          boundForm.withError("value", errorKeyInvalid)
+
+       // (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings)) && && !maxEarnings)
+       //   {
+
+     //   }
+        else if (valueTest >= maxValueTrueMaxEarnings && maxEarnings) {
+          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalid)
         }
         else {
-          println("-------------------------------------else one")
           boundForm
         }
       }
-      case _ => {
-        println("-------------------------------------second case")
-        boundForm
-      }
+      case _ => boundForm
     }
   }
 }
