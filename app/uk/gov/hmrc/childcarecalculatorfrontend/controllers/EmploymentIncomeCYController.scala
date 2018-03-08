@@ -60,7 +60,7 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       val errorKeyInvalidMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 
-      validateMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
+      validateBothMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
 
         (formWithErrors: Form[EmploymentIncomeCY]) =>
           Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),

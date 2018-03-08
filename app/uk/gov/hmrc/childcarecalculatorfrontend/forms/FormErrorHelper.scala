@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.{Form, FormError}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
@@ -84,6 +85,39 @@ class FormErrorHelper extends Mappings {
         println("-------------------------------------------"+inputtedEmploymentIncomeValue)
         if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
         println("-------------------------------------first one")
+          boundForm.withError("value", errorKeyInvalidMaxEarnings)
+        }
+        else if (inputtedEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
+          println("-------------------------------------second one")
+          boundForm.withError("value", errorKeyInvalid)
+        }
+        else {
+          println("-------------------------------------else one")
+          boundForm
+        }
+      }
+      case _ => {
+        println("-------------------------------------second case")
+        boundForm
+      }
+    }
+  }
+
+  def validateBothMaxIncomeEarnings(maximumEarnings: Option[Boolean],
+                                errorKeyInvalidMaxEarnings: String,
+                                errorKeyInvalid: String,
+                                boundForm: Form[EmploymentIncomeCY]) = {
+
+    val maxValueFalseMaxEarnings = BigDecimal(100000)
+    val maxValueTrueMaxEarnings = BigDecimal(1000000)
+
+
+    maximumEarnings match {
+      case Some(maxEarnings) if !boundForm.hasErrors => {
+        val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
+        println("-------------------------------------------"+inputtedEmploymentIncomeValue)
+        if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
+          println("-------------------------------------first one")
           boundForm.withError("value", errorKeyInvalidMaxEarnings)
         }
         else if (inputtedEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
