@@ -99,7 +99,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 /*EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
         ParentEmploymentIncomeCYId.toString*/
-    "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" ignore {
+    "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
       val boundForm = form.bind(Map("value" -> "above limit"))
 

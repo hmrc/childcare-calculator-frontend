@@ -33,11 +33,11 @@ class FormErrorHelper extends Mappings {
     value >= minValue && value <= maxValue
   }
 
-  def valueNonEmpty(message :  String): Constraint[String] = Constraint[String]("error.required") { o =>
+  def valueNonEmpty(message: String): Constraint[String] = Constraint[String]("error.required") { o =>
     if (o != null && o.trim.nonEmpty) Valid else Invalid(ValidationError(message))
   }
 
-  def validateDecimalInRange(message :  String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String]("error.required") { o =>
+  def validateDecimalInRange(message: String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String]("error.required") { o =>
     if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid else Invalid(ValidationError(message))
   }
 
@@ -64,7 +64,7 @@ class FormErrorHelper extends Mappings {
   }
 
   def returnOnFirstFailure[T](constraints: Constraint[T]*) = Constraint { field: T =>
-    constraints.toList dropWhile (_(field) == Valid) match {
+    constraints.toList dropWhile (_ (field) == Valid) match {
       case Nil => Valid
       case constraint :: _ => constraint(field)
     }
@@ -78,38 +78,34 @@ class FormErrorHelper extends Mappings {
     val maxValueFalseMaxEarnings = BigDecimal(100000)
     val maxValueTrueMaxEarnings = BigDecimal(1000000)
 
-
-      maximumEarnings match {
+    maximumEarnings match {
       case Some(maxEarnings) if !boundForm.hasErrors => {
         val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
-        println("-------------------------------------------"+inputtedEmploymentIncomeValue)
         if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
-        println("-------------------------------------first one")
           boundForm.withError("value", errorKeyInvalidMaxEarnings)
         }
         else if (inputtedEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
-          println("-------------------------------------second one")
           boundForm.withError("value", errorKeyInvalid)
         }
         else {
-          println("-------------------------------------else one")
           boundForm
         }
       }
       case _ => {
-        println("-------------------------------------second case")
         boundForm
       }
     }
   }
 
   def validateBothMaxIncomeEarnings(maximumEarnings: Option[Boolean],
-                                errorKeyInvalidMaxEarnings: String,
-                                errorKeyInvalid: String,
-                                boundForm: Form[EmploymentIncomeCY]) = {
+                                    errorKeyInvalidMaxEarnings: String,
+                                    errorKeyInvalid: String,
+                                    boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] = {
 
     val maxValueFalseMaxEarnings = BigDecimal(100000)
     val maxValueTrueMaxEarnings = BigDecimal(1000000)
+
+    println(" ************* ::::: form  &&&&&&&&&&&&&&&&&&" +boundForm.hasErrors)
 
     maximumEarnings match {
       case Some(maxEarnings) if !boundForm.hasErrors => {
@@ -118,27 +114,31 @@ class FormErrorHelper extends Mappings {
         val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0")
 
         if (parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
-          Seq(boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidMaxEarnings),
-          boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidMaxEarnings))
+          println(" In first if")
+            boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidMaxEarnings)
+          println(" After form eerrror")
+            boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidMaxEarnings)
 
-
-        }else if (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
-
+        } else if (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
+          println(" In first else if")
           boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidMaxEarnings)
         }
 
-       // (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings)) && && !maxEarnings)
-       //   {
-
-     //   }
         else if (valueTest >= maxValueTrueMaxEarnings && maxEarnings) {
+          println(" In second else if")
           boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalid)
         }
         else {
+          println(" In else")
           boundForm
         }
       }
-      case _ => boundForm
+      case _ => {
+        println(" In default case")
+        boundForm
+      }
+
+
     }
   }
 }
