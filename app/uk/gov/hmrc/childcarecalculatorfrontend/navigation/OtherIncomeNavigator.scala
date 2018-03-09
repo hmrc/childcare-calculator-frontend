@@ -23,14 +23,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotDetermined, NotEligible}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
 
 /**
   * Contains the navigation for current and previous year other income pages
   */
-class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits) extends SubNavigator {
+class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: TaxFreeChildcare) extends SubNavigator {
 
   override protected def routeMap = Map(
     YourOtherIncomeThisYearId -> yourOtherIncomeRouteCY,

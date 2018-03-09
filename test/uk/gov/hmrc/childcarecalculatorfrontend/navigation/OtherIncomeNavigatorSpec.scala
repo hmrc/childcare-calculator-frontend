@@ -23,15 +23,17 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
-  val taxCredits = mock[TaxCredits]
-  val navigator = new OtherIncomeNavigator(new Utils(), taxCredits)
+
+  val taxCredits: TaxCredits = mock[TaxCredits]
+  val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
+  def navigator(tc:TaxCredits = taxCredits, taxFreeChildCare: TaxFreeChildcare = tfc) = new OtherIncomeNavigator(new Utils(), tc, taxFreeChildCare)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -43,6 +45,16 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to YourOtherIncomeAmountCY page when user selects yes" in {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
+
+          navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+        }
+
+        "redirects to results page when user selects no, is in receipt of UC and eligible for TFC " in {
+          val answers = spy(userAnswers())
+          when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
+          when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+          fgfgfg
 
           navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
