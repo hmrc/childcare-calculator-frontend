@@ -98,5 +98,13 @@ class CacheMapClonerSpec extends SpecBase {
 
       result.getEntry[JsValue]("employmentIncomePY").toString() must include("mapping not found")
     }
+
+    "be able to handle custom mappings" in {
+      val data = new CacheMap("id",Map("property1" -> JsBoolean(true)))
+
+      val result = CacheMapCloner.cloneSection(data,Map("property1"->"property2"),Some(Map("property4" -> JsBoolean(true))))
+
+      result.getEntry[Boolean]("property4").get mustBe true
+    }
   }
 }

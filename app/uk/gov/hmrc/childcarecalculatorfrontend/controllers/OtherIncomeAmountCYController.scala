@@ -20,14 +20,15 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{JsBoolean, JsValue}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.OtherIncomeAmountCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.OtherIncomeAmountCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothPaidWorkPYId, OtherIncomeAmountCYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, OtherIncomeAmountCY}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMapCloner, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
 import scala.concurrent.Future
@@ -55,8 +56,10 @@ class OtherIncomeAmountCYController @Inject()(appConfig: FrontendAppConfig,
         (formWithErrors: Form[OtherIncomeAmountCY]) =>
           Future.successful(BadRequest(otherIncomeAmountCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[OtherIncomeAmountCY](request.sessionId, OtherIncomeAmountCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(OtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[OtherIncomeAmountCY](request.sessionId, OtherIncomeAmountCYId.toString, value).map(cacheMap => {
+            val anyoneInPaidEmployment : Boolean = request.userAnswers.whoIsInPaidEmployment.fold(false)(c=>c != "Neither")
+            dataCacheConnector.updateMap(CacheMapCloner.cloneSection(cacheMap,CacheMapCloner.bothIncomeCurrentYearToPreviousYear,Some(Map(BothPaidWorkPYId.toString->JsBoolean(anyoneInPaidEmployment)))))
+            Redirect(navigator.nextPage(OtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap)))})
       )
   }
 }

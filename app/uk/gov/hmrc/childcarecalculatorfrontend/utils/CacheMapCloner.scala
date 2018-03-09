@@ -16,14 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 object CacheMapCloner {
   val mappingError = "mapping not found"
 
-  val singleParentCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
+  val singleParentCurrentYearToPreviousYear = Map(AreYouInPaidWorkId.toString -> ParentPaidWorkPYId.toString,
+    ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     YouPaidPensionCYId.toString -> YouPaidPensionPYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     YouAnyTheseBenefitsIdCY.toString -> YouAnyTheseBenefitsPYId.toString,
@@ -31,12 +32,16 @@ object CacheMapCloner {
     YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString,
     YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString)
 
-  val bothIncomeCurrentYearToPreviousYear = Map(EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
+  val bothIncomeCurrentYearToPreviousYear = Map(WhoIsInPaidEmploymentId.toString -> WhoWasInPaidWorkPYId.toString,
+    EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
     BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
+    HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
+    HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
+    PartnerOtherIncomeAmountCYId.toString -> PartnerOtherIncomeAmountPYId.toString,
     WhoPaysIntoPensionId.toString -> WhoPaidIntoPensionPYId.toString,
     HowMuchBothPayPensionId.toString -> HowMuchBothPayPensionPYId.toString,
     BothAnyTheseBenefitsCYId.toString -> BothAnyTheseBenefitsPYId.toString,
-    WhoGetsBenefitsId.toString -> WhosHadBenefitsPYId.toString,
+    WhosHadBenefitsId.toString -> WhosHadBenefitsPYId.toString,
     BenefitsIncomeCYId.toString -> BothBenefitsIncomePYId.toString,
     BothOtherIncomeThisYearId.toString -> BothOtherIncomeLYId.toString,
     WhoGetsOtherIncomeCYId.toString -> WhoOtherIncomePYId.toString,
@@ -60,8 +65,8 @@ object CacheMapCloner {
     ParentOtherIncomeId.toString -> ParentOtherIncomeAmountPYId.toString,
     PartnerOtherIncomeId.toString -> PartnerOtherIncomeAmountPYId.toString)
 
-  def cloneSection(data: CacheMap, sectionToClone: Map[String, String]): CacheMap = {
-    sectionToClone.foldLeft(data)((clonedData, sectionToClone) => {
+  def cloneSection(data: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String,JsValue]] = None): CacheMap = {
+    val clonedCacheMap = sectionToClone.foldLeft(data)((clonedData, sectionToClone) => {
       clonedData.data.get(sectionToClone._1) match {
         case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
           complexObjectsMapper.get(sectionToClone._1) match {
@@ -75,6 +80,12 @@ object CacheMapCloner {
         }))
         case _ => clonedData
       }
+    })
+
+    customSections.fold(clonedCacheMap)(customSections => {
+      customSections.foldLeft(clonedCacheMap)((clonedCacheMap,section) => {
+        clonedCacheMap.copy(data = clonedCacheMap.data + section)
+      })
     })
   }
 }

@@ -20,14 +20,15 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.JsBoolean
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerOtherIncomeAmountCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerOtherIncomeAmountCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothPaidWorkPYId, PartnerOtherIncomeAmountCYId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMapCloner, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmountCY
 
 import scala.concurrent.Future
@@ -56,8 +57,10 @@ class PartnerOtherIncomeAmountCYController @Inject()(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerOtherIncomeAmountCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[BigDecimal](request.sessionId, PartnerOtherIncomeAmountCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerOtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[BigDecimal](request.sessionId, PartnerOtherIncomeAmountCYId.toString, value).map(cacheMap => {
+            val anyoneInPaidEmployment : Boolean = request.userAnswers.whoIsInPaidEmployment.fold(false)(c=>c != "Neither")
+            dataCacheConnector.updateMap(CacheMapCloner.cloneSection(cacheMap,CacheMapCloner.bothIncomeCurrentYearToPreviousYear,Some(Map(BothPaidWorkPYId.toString->JsBoolean(anyoneInPaidEmployment)))))
+            Redirect(navigator.nextPage(PartnerOtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap)))})
       )
   }
 }
