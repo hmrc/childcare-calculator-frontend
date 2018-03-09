@@ -46,19 +46,19 @@ object CacheMapCloner {
     EmploymentIncomePYId.toString -> Seq(ParentEmploymentIncomePYId.toString, PartnerEmploymentIncomePYId.toString),
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
     HowMuchBothPayPensionPYId.toString -> Seq(HowMuchYouPayPensionPYId.toString, HowMuchPartnerPayPensionPYId.toString),
-    BenefitsIncomeCYId.toString -> Seq("parentBenefitsIncome", "partnerBenefitsIncome"),
-    BothBenefitsIncomePYId.toString -> Seq("parentBenefitsIncomePY", "partnerBenefitsIncomePY"),
-    OtherIncomeAmountCYId.toString -> Seq("parentOtherIncome", "partnerOtherIncome"),
-    OtherIncomeAmountPYId.toString -> Seq("parentOtherIncomeAmountPY", "partnerOtherIncomeAmountPY"))
+    BenefitsIncomeCYId.toString -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
+    BothBenefitsIncomePYId.toString -> Seq(ParentBenefitsIncomePYId.toString, PartnerBenefitsIncomePYId.toString),
+    OtherIncomeAmountCYId.toString -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString),
+    OtherIncomeAmountPYId.toString -> Seq(ParentOtherIncomeAmountPYId.toString, PartnerOtherIncomeAmountPYId.toString))
 
   val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
-    "parentBenefitsIncome" -> "parentBenefitsIncomePY",
-    "partnerBenefitsIncome" -> "partnerBenefitsIncomePY",
-    "parentOtherIncome" -> "parentOtherIncomeAmountPY",
-    "partnerOtherIncome" -> "partnerOtherIncomeAmountPY")
+    ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString,
+    PartnerBenefitsIncomeId.toString -> PartnerBenefitsIncomePYId.toString,
+    ParentOtherIncomeId.toString -> ParentOtherIncomeAmountPYId.toString,
+    PartnerOtherIncomeId.toString -> PartnerOtherIncomeAmountPYId.toString)
 
   def cloneSection(data: CacheMap, sectionToClone: Map[String, String]): CacheMap = {
     sectionToClone.foldLeft(data)((clonedData, sectionToClone) => {
