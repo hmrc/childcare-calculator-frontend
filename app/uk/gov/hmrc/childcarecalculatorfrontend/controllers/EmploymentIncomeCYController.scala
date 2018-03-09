@@ -55,26 +55,21 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
 
-      form().bindFromRequest().fold(
+      val maximumEarnings = request.userAnswers.eitherOfYouMaximumEarnings
+      val boundForm = form().bindFromRequest()
+      val errorKeyInvalidParentMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
+      val errorKeyInvalidPartnerMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
+      val errorParentKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
+      val errorPartnerKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
+
+
+      validateBothMaxIncomeEarnings(maximumEarnings, errorKeyInvalidParentMaxEarnings, errorKeyInvalidPartnerMaxEarnings, errorParentKeyInvalid, errorPartnerKeyInvalid, boundForm).fold(
+
         (formWithErrors: Form[EmploymentIncomeCY]) =>
           Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
       )
-
-    /*  val maximumEarnings = request.userAnswers.eitherOfYouMaximumEarnings
-      val boundForm = form().bindFromRequest()
-      val errorKeyInvalidMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
-      val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
-
-      validateBothMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
-
-        (formWithErrors: Form[EmploymentIncomeCY]) =>
-          Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        (value) =>
-          dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
-      )*/
   }
 }

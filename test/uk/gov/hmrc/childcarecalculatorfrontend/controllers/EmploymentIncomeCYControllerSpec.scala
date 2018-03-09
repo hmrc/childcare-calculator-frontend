@@ -45,14 +45,14 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
   "EmploymentIncomeCY Controller" must {
 
-    "return OK and the correct view for a GET" ignore {
+    "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" ignore {
+    "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
@@ -73,7 +73,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
-    "return a Bad Request and errors when invalid data is submitted" ignore {
+    "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
@@ -83,22 +83,21 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" ignore {
+    "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
 
-    "redirect to Session Expired for a POST if no existing data is found" ignore {
+    "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2"))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
     }
-/*EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString*/
+
     "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
       val boundForm = form.bind(Map("value" -> "above limit"))
@@ -115,7 +114,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages(partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
     }
 
-    "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" ignore {
+    "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000"))
       val boundForm = form.bind(Map("value" -> "above limit"))
 
