@@ -106,5 +106,14 @@ class CacheMapClonerSpec extends SpecBase {
 
       result.getEntry[Boolean]("property4").get mustBe true
     }
+
+    "be able to clear cachemap for cloned routes" in {
+      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("parentEmploymentIncomeCY" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.removeClonedData(data,CacheMapCloner.bothIncomeCurrentYearToPreviousYear)
+
+      result.getEntry[JsValue]("employmentIncomePY") mustBe None
+      result.getEntry[JsValue]("employmentIncomeCY").toString() must include("parentEmploymentIncomeCY")
+    }
   }
 }

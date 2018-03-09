@@ -32,19 +32,22 @@ object CacheMapCloner {
     YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString,
     YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString)
 
-  val bothIncomeCurrentYearToPreviousYear = Map(WhoIsInPaidEmploymentId.toString -> WhoWasInPaidWorkPYId.toString,
+  val bothIncomeCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
+    PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
     EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
-    BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
-    HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
-    HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
+    YouBenefitsIncomeCYId.toString -> YouBenefitsIncomePYId.toString,
+    PartnerBenefitsIncomeCYId.toString -> PartnerBenefitsIncomePYId.toString,
     PartnerOtherIncomeAmountCYId.toString -> PartnerOtherIncomeAmountPYId.toString,
     WhoPaysIntoPensionId.toString -> WhoPaidIntoPensionPYId.toString,
     HowMuchBothPayPensionId.toString -> HowMuchBothPayPensionPYId.toString,
+    HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
+    HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
     BothAnyTheseBenefitsCYId.toString -> BothAnyTheseBenefitsPYId.toString,
     WhosHadBenefitsId.toString -> WhosHadBenefitsPYId.toString,
     BenefitsIncomeCYId.toString -> BothBenefitsIncomePYId.toString,
     BothOtherIncomeThisYearId.toString -> BothOtherIncomeLYId.toString,
     WhoGetsOtherIncomeCYId.toString -> WhoOtherIncomePYId.toString,
+    YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString,
     OtherIncomeAmountCYId.toString -> OtherIncomeAmountPYId.toString)
 
   val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
@@ -66,7 +69,8 @@ object CacheMapCloner {
     PartnerOtherIncomeId.toString -> PartnerOtherIncomeAmountPYId.toString)
 
   def cloneSection(data: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String,JsValue]] = None): CacheMap = {
-    val clonedCacheMap = sectionToClone.foldLeft(data)((clonedData, sectionToClone) => {
+    val cacheMapWithClearedData = removeClonedData(data,sectionToClone)
+    val clonedCacheMap = sectionToClone.foldLeft(cacheMapWithClearedData)((clonedData, sectionToClone) => {
       clonedData.data.get(sectionToClone._1) match {
         case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
           complexObjectsMapper.get(sectionToClone._1) match {
@@ -86,6 +90,12 @@ object CacheMapCloner {
       customSections.foldLeft(clonedCacheMap)((clonedCacheMap,section) => {
         clonedCacheMap.copy(data = clonedCacheMap.data + section)
       })
+    })
+  }
+
+  def removeClonedData(data: CacheMap, sectionToClone: Map[String, String]) = {
+    sectionToClone.foldLeft(data)((clonedData,sectionToClear)=> {
+      clonedData.copy(data = clonedData.data - sectionToClear._2)
     })
   }
 }
