@@ -46,7 +46,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
 
     val eligibleViaHours: Boolean = {
 
-      val overJointHours = parent.hours + partner.hours >= jointHours
+      val overJointHours = parent.hours > 0 && partner.hours > 0 && (parent.hours + partner.hours >= jointHours)
       val overIndividualHours = parent.hours >= individualHours || partner.hours >= individualHours
 
       overIndividualHours && overJointHours
@@ -57,7 +57,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
         (partner.hours >= individualHours && parent.benefits.intersect(applicableBenefits).nonEmpty)
     }
 
-    if (eligibleViaHours || eligibleViaBenefits) {
+    if (eligibleViaBenefits || eligibleViaHours) {
       Eligible
     } else {
       NotEligible

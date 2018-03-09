@@ -37,7 +37,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   def navigator(schemes: Schemes, maxHours: MaxFreeHours, taxCredits: TaxCredits, tfc: TaxFreeChildcare, esc: EmploymentSupportedChildcare): SubNavigator =
     new MaximumHoursNavigator(new Utils, schemes, maxHours, taxCredits, tfc, esc)
 
-  def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(new Utils, schemes, mock[MaxFreeHours], mock[TaxCredits], mock[TaxFreeChildcare], mock[EmploymentSupportedChildcare])
+  def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(new Utils,
+    schemes, mock[MaxFreeHours], mock[TaxCredits], mock[TaxFreeChildcare], mock[EmploymentSupportedChildcare])
 
   def navigator: SubNavigator = navigator(new Schemes())
 
@@ -379,13 +380,51 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
         result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
       }
+
+      "go to result page when you answer 'no', only parent in paid employment and not eligible for TC" in {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+        val maxHours = mock[MaxFreeHours]
+        val taxCredits = mock[TaxCredits]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+
+        when(taxCredits.eligibility(any())) thenReturn NotEligible
+
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+
+        val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
+
+      "go to result page when you answer 'no', only partner in paid employment and not eligible for TC" in {
+        val answers = spy(userAnswers())
+        val schemes = mock[Schemes]
+        val maxHours = mock[MaxFreeHours]
+        val taxCredits = mock[TaxCredits]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+
+        when(taxCredits.eligibility(any())) thenReturn NotEligible
+
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
+
+        val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
     }
 
     "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" in {
       val answers = spy(userAnswers())
       val schemes = mock[Schemes]
+
       when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn None
       when(schemes.allSchemesDetermined(any())) thenReturn false
+
       val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
     }
