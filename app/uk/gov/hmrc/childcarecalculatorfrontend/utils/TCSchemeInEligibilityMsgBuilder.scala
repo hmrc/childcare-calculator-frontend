@@ -67,20 +67,27 @@ class TCSchemeInEligibilityMsgBuilder {
   }
 
   private def messageForPartnerJourneyOnlyPartnerInWork(answers: UserAnswers)(implicit messages: Messages) = {
-
-    if(answers.partnerWorkHours.getOrElse(BigDecimal(0)) < twentyFoursHours)
-      {
+    val parentBenefits = answers.whichBenefitsYouGet
+    if(answers.partnerWorkHours.getOrElse(BigDecimal(0)) < twentyFoursHours) {
+      if(parentBenefits.isDefined) {
+        messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits")
+      } else {
         messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
-      }else {
+      }
+    } else {
       messageForChildrenBelow16(answers)
     }
   }
 
   private def messageForPartnerJourneyOnlyParentInWork(answers: UserAnswers)(implicit messages: Messages) = {
-    if(answers.parentWorkHours.getOrElse(BigDecimal(0)) < twentyFoursHours)
-    {
-      messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
-    }else {
+    val partnerBenefits = answers.whichBenefitsPartnerGet
+    if(answers.parentWorkHours.getOrElse(BigDecimal(0)) < twentyFoursHours) {
+      if(partnerBenefits.isDefined) {
+        messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits")
+      } else {
+        messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
+      }
+    } else {
       messageForChildrenBelow16(answers)
     }
   }
