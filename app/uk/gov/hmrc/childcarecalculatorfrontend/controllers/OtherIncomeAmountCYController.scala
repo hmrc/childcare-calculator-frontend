@@ -56,10 +56,8 @@ class OtherIncomeAmountCYController @Inject()(appConfig: FrontendAppConfig,
         (formWithErrors: Form[OtherIncomeAmountCY]) =>
           Future.successful(BadRequest(otherIncomeAmountCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[OtherIncomeAmountCY](request.sessionId, OtherIncomeAmountCYId.toString, value).map(cacheMap => {
-            val anyoneInPaidEmployment : Boolean = request.userAnswers.whoIsInPaidEmployment.fold(false)(c=>c != "Neither")
-            dataCacheConnector.updateMap(CacheMapCloner.cloneSection(cacheMap,CacheMapCloner.bothIncomeCurrentYearToPreviousYear,Some(Map(BothPaidWorkPYId.toString->JsBoolean(anyoneInPaidEmployment)))))
-            Redirect(navigator.nextPage(OtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap)))})
+          dataCacheConnector.save[OtherIncomeAmountCY](request.sessionId, OtherIncomeAmountCYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(OtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }

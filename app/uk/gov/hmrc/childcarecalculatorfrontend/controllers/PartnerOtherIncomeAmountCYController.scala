@@ -57,10 +57,8 @@ class PartnerOtherIncomeAmountCYController @Inject()(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerOtherIncomeAmountCY(appConfig, formWithErrors, mode))),
         (value) =>
-          dataCacheConnector.save[BigDecimal](request.sessionId, PartnerOtherIncomeAmountCYId.toString, value).map(cacheMap => {
-            val anyoneInPaidEmployment : Boolean = request.userAnswers.whoIsInPaidEmployment.fold(false)(c=>c != "Neither")
-            dataCacheConnector.updateMap(CacheMapCloner.cloneSection(cacheMap,CacheMapCloner.bothIncomeCurrentYearToPreviousYear,Some(Map(BothPaidWorkPYId.toString->JsBoolean(anyoneInPaidEmployment)))))
-            Redirect(navigator.nextPage(PartnerOtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap)))})
+          dataCacheConnector.save[BigDecimal](request.sessionId, PartnerOtherIncomeAmountCYId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(PartnerOtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
