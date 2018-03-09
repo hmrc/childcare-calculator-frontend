@@ -33,7 +33,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
   val taxCredits: TaxCredits = mock[TaxCredits]
   val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-  def navigator(tc:TaxCredits = taxCredits, taxFreeChildCare: TaxFreeChildcare = tfc) = new OtherIncomeNavigator(new Utils(), tc, taxFreeChildCare)
+  def navigator(tc:TaxCredits = taxCredits, tfcScheme: TaxFreeChildcare = tfc) = new OtherIncomeNavigator(new Utils(), tc, tfcScheme)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -46,7 +46,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
 
-          navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
@@ -54,10 +54,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
           when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
-          fgfgfg
 
-          navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+          when(tfc.eligibility(any())) thenReturn Eligible
+
+          navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            routes.ResultController.onPageLoad()
         }
 
         "redirects to the right page when single user selects no to will you get any other income this year" when {
@@ -66,7 +67,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -75,7 +76,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.YourIncomeInfoPYController.onPageLoad()
           }
 
@@ -84,7 +85,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -96,7 +97,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -106,7 +107,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.BothIncomeInfoPYController.onPageLoad()
           }
 
@@ -116,7 +117,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -125,7 +126,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeThisYear) thenReturn None
 
-          navigator.nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
@@ -136,7 +137,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(true)
 
-          navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
@@ -147,7 +148,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(false)
 
-            navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -156,7 +157,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.BothIncomeInfoPYController.onPageLoad()
           }
 
@@ -165,7 +166,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(false)
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -174,7 +175,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeThisYear) thenReturn None
 
-          navigator.nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -184,7 +185,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothOtherIncomeThisYear) thenReturn Some(true)
 
-          navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+          navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
         }
 
@@ -195,7 +196,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
               when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-              navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+              navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.ResultController.onPageLoad()
             }
 
@@ -204,7 +205,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
               when(taxCredits.eligibility(any())) thenReturn Eligible
 
-              navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+              navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.BothIncomeInfoPYController.onPageLoad()
             }
 
@@ -213,7 +214,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
               when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-              navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+              navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.ResultController.onPageLoad()
             }
           }
@@ -223,7 +224,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothOtherIncomeThisYear) thenReturn None
 
-          navigator.nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+          navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -233,7 +234,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoGetsOtherIncomeCY) thenReturn Some("you")
 
-          navigator.nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
@@ -241,7 +242,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoGetsOtherIncomeCY) thenReturn Some("partner")
 
-          navigator.nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
             routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
@@ -249,7 +250,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoGetsOtherIncomeCY) thenReturn Some("both")
 
-          navigator.nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
             routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
@@ -257,7 +258,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoGetsOtherIncomeCY) thenReturn None
 
-          navigator.nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoGetsOtherIncomeCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -269,7 +270,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -278,7 +279,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.YourIncomeInfoPYController.onPageLoad()
           }
 
@@ -287,7 +288,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -299,7 +300,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -309,7 +310,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.BothIncomeInfoPYController.onPageLoad()
           }
 
@@ -319,7 +320,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -335,7 +336,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeLY) thenReturn Some(true)
 
-          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
@@ -344,7 +345,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeLY) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
-          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
 
@@ -353,7 +354,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeLY) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
 
-          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
@@ -361,7 +362,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeLY) thenReturn None
 
-          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
@@ -370,7 +371,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeLY) thenReturn Some(false)
           when(answers.doYouLiveWithPartner) thenReturn None
 
-          navigator.nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -380,7 +381,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeLY) thenReturn Some(true)
 
-          navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
@@ -388,7 +389,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeLY) thenReturn Some(false)
 
-          navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
@@ -396,7 +397,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeLY) thenReturn None
 
-          navigator.nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -406,7 +407,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothOtherIncomeLY) thenReturn Some(true)
 
-          navigator.nextPage(BothOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(BothOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.WhoOtherIncomePYController.onPageLoad(NormalMode)
         }
 
@@ -414,7 +415,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothOtherIncomeLY) thenReturn Some(false)
 
-          navigator.nextPage(BothOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(BothOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
@@ -422,7 +423,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothOtherIncomeLY) thenReturn None
 
-          navigator.nextPage(BothOtherIncomeLYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(BothOtherIncomeLYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -432,7 +433,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoOtherIncomePY) thenReturn Some("you")
 
-          navigator.nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
             routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
@@ -440,7 +441,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoOtherIncomePY) thenReturn Some("partner")
 
-          navigator.nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
             routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
@@ -448,7 +449,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoOtherIncomePY) thenReturn Some("both")
 
-          navigator.nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
             routes.OtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
@@ -456,7 +457,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoOtherIncomePY) thenReturn None
 
-          navigator.nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(WhoOtherIncomePYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -468,7 +469,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
-          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.BothStatutoryPayController.onPageLoad(NormalMode)
         }
 
@@ -478,7 +479,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
-          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
 
@@ -486,7 +487,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.yourOtherIncomeAmountPY) thenReturn None
 
-          navigator.nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(YourOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -499,7 +500,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.BothIncomeInfoPYController.onPageLoad()
           }
 
@@ -509,7 +510,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-            navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -519,7 +520,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -533,7 +534,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
-            navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.BothIncomeInfoPYController.onPageLoad()
           }
 
@@ -543,7 +544,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
-            navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
 
@@ -553,7 +554,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
-            navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
         }
@@ -564,7 +565,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoIsInPaidEmployment) thenReturn Some(you)
           when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
-          navigator.nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
 
@@ -572,7 +573,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerOtherIncomeAmountPY) thenReturn None
 
-          navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+          navigator().nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad()
         }
       }
@@ -583,7 +584,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             val answers = spy(userAnswers())
             when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
-            navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
               routes.BothStatutoryPayController.onPageLoad(NormalMode)
           }
         }
@@ -593,7 +594,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             val answers = spy(userAnswers())
             when(answers.partnerOtherIncomeAmountPY) thenReturn None
 
-            navigator.nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
+            navigator().nextPage(PartnerOtherIncomeAmountPYId, NormalMode).value(answers) mustBe
               routes.SessionExpiredController.onPageLoad()
           }
         }
