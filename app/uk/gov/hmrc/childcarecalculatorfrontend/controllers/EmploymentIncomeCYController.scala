@@ -55,7 +55,6 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
 
-      val maximumEarnings = request.userAnswers.eitherOfYouMaximumEarnings
       val boundForm = form().bindFromRequest()
       val errorKeyInvalidParentMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalidPartnerMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
@@ -63,7 +62,7 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       val errorPartnerKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
 
 
-      validateBothMaxIncomeEarnings(maximumEarnings, errorKeyInvalidParentMaxEarnings, errorKeyInvalidPartnerMaxEarnings, errorParentKeyInvalid, errorPartnerKeyInvalid, boundForm).fold(
+      validateBothMaxIncomeEarnings(maximumEarnings(request.userAnswers), errorKeyInvalidParentMaxEarnings, errorKeyInvalidPartnerMaxEarnings, errorParentKeyInvalid, errorPartnerKeyInvalid, boundForm).fold(
 
         (formWithErrors: Form[EmploymentIncomeCY]) =>
           Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
@@ -71,5 +70,15 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
           dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
       )
+  }
+
+  private def maximumEarnings(answers: UserAnswers) = {
+    answers.whoIsInPaidEmployment match {
+      case Some(You) => answers.yourMaximumEarnings
+      case Some(Partner) => answers.partnerMaximumEarnings
+      case Some(Both) => answers.eitherOfYouMaximumEarnings
+      case _ => None
+
+    }
   }
 }

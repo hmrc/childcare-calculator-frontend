@@ -108,6 +108,7 @@ class FormErrorHelper extends Mappings {
     val maxValueTrueMaxEarnings = BigDecimal(1000000)
 
     println(" ************* ::::: form  &&&&&&&&&&&&&&&&&&" +boundForm.hasErrors)
+    println(" ************* ::::: form  &&&&&&&&&&&&&&&&&&" +maximumEarnings)
 
     maximumEarnings match {
       case Some(maxEarnings) if !boundForm.hasErrors => {
