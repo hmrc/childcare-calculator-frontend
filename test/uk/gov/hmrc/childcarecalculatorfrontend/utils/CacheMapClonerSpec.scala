@@ -74,5 +74,46 @@ class CacheMapClonerSpec extends SpecBase {
 
       result.getEntry[Boolean]("property1") mustBe result.getEntry[Boolean]("property2")
     }
+
+    "be able to clone a json object property name accordingly" in {
+      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("parentEmploymentIncomeCY" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.cloneSection(data,Map("employmentIncomeCY"->"employmentIncomePY"))
+
+      result.getEntry[JsValue]("employmentIncomePY").toString() must include("parentEmploymentIncomePY")
+    }
+
+    "be able to clone a json object property value accordingly" in {
+      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("parentEmploymentIncomeCY" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.cloneSection(data,Map("employmentIncomeCY"->"employmentIncomePY"))
+
+      result.getEntry[JsValue]("employmentIncomePY").toString() must include("4")
+    }
+
+    "be able to handle missing data when mapping a json object" in {
+      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("test" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.cloneSection(data,Map("employmentIncomeCY"->"employmentIncomePY"))
+
+      result.getEntry[JsValue]("employmentIncomePY").toString() must include("mapping not found")
+    }
+
+    "be able to handle custom mappings" in {
+      val data = new CacheMap("id",Map("property1" -> JsBoolean(true)))
+
+      val result = CacheMapCloner.cloneSection(data,Map("property1"->"property2"),Some(Map("property4" -> JsBoolean(true))))
+
+      result.getEntry[Boolean]("property4").get mustBe true
+    }
+
+    "be able to clear cachemap for cloned routes" in {
+      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("parentEmploymentIncomeCY" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+
+      val result = CacheMapCloner.removeClonedData(data,CacheMapCloner.bothIncomeCurrentYearToPreviousYear)
+
+      result.getEntry[JsValue]("employmentIncomePY") mustBe None
+      result.getEntry[JsValue]("employmentIncomeCY").toString() must include("parentEmploymentIncomeCY")
+    }
   }
 }
