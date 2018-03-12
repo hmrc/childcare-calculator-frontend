@@ -355,9 +355,42 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       }
     }
 
+
+    "display guidance for 2 years old" when {
+      "user lives in Scotland" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
+
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertRenderedByCssSelector(view, ".twoYearsOld")
+
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.title"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.text.before.link"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.link.text"))
+        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.scotland.para1.help.link")
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.text.after.link"))
+      }
+    }
+
+    "display guidance for 2 years old" when {
+      "user lives in Wales" in {
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.WALES), childAgedTwo = true)
+
+        val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+        assertRenderedByCssSelector(view, ".twoYearsOld")
+
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.title"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.before.link"))
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.link.text"))
+        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.wales.para1.help.link")
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.after.link"))
+      }
+    }
+
     "not display guidance for 2 years old" when {
       "user does not live in England" in {
-        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.SCOTLAND), childAgedTwo = true)
+        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Some(Location.NORTHERN_IRELAND), childAgedTwo = true)
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
 
         assertNotRenderedByCssSelector(view, ".twoYearsOld")

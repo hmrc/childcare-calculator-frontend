@@ -79,6 +79,28 @@
                 </div>
             }
 
+            @if(model.location.contains(Location.SCOTLAND) && model.childAgedTwo) {
+                <div class="twoYearsOld">
+                    <h2 class="heading-medium">@messages("results.two.years.old.guidance.scotland.title")</h2>
+                    <p>@messages("results.two.years.old.guidance.scotland.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("results.two.years.old.guidance.scotland.para1.help.link")>
+                        @messages("results.two.years.old.guidance.scotland.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+                    </a>
+                        @messages("results.two.years.old.guidance.scotland.text.after.link")
+                    </p>
+                </div>
+            }
+
+            @if(model.location.contains(Location.WALES) && model.childAgedTwo) {
+                <div class="twoYearsOld">
+                    <h2 class="heading-medium">@messages("results.two.years.old.guidance.wales.title")</h2>
+                    <p>@messages("results.two.years.old.guidance.wales.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("results.two.years.old.guidance.wales.para1.help.link")>
+                        @messages("results.two.years.old.guidance.wales.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+                    </a>
+                        @messages("results.two.years.old.guidance.wales.text.after.link")
+                    </p>
+                </div>
+            }
+
             @resultsEstimateInformationContent
 
             @if(model.noOfEligibleSchemes > 1) {
