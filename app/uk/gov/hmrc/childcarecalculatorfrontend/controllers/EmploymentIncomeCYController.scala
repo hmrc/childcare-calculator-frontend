@@ -20,7 +20,6 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -60,9 +59,9 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       val errorKeyInvalidPartnerMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorParentKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
       val errorPartnerKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
+      val maxEarnings = maximumEarnings(request.userAnswers)
 
-
-      validateBothMaxIncomeEarnings(maximumEarnings(request.userAnswers), errorKeyInvalidParentMaxEarnings, errorKeyInvalidPartnerMaxEarnings, errorParentKeyInvalid, errorPartnerKeyInvalid, boundForm).fold(
+      validateBothMaxIncomeEarnings(maxEarnings, errorKeyInvalidParentMaxEarnings, errorKeyInvalidPartnerMaxEarnings, errorParentKeyInvalid, errorPartnerKeyInvalid, boundForm).fold(
 
         (formWithErrors: Form[EmploymentIncomeCY]) =>
           Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
@@ -78,7 +77,6 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       case Some(Partner) => answers.partnerMaximumEarnings
       case Some(Both) => answers.eitherOfYouMaximumEarnings
       case _ => None
-
     }
   }
 }

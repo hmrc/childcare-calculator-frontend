@@ -20,7 +20,6 @@ import play.api.data.{Form, FormError}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FormErrorHelper extends Mappings {
 
@@ -107,40 +106,31 @@ class FormErrorHelper extends Mappings {
     val maxValueFalseMaxEarnings = BigDecimal(100000)
     val maxValueTrueMaxEarnings = BigDecimal(1000000)
 
-    println(" ************* ::::: form  &&&&&&&&&&&&&&&&&&" +boundForm.hasErrors)
-    println(" ************* ::::: form  &&&&&&&&&&&&&&&&&&" +maximumEarnings)
-
     maximumEarnings match {
+
       case Some(maxEarnings) if !boundForm.hasErrors => {
         val valueTest = 0
         val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0")
         val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0")
 
-
         if ((parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings) && (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings) && !maxEarnings) {
-          println(" first if")
-          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings).withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
+          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
+            .withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
 
-        }else if (parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
-          println(" In first else if")
-            boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
+        } else if (parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
+          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
 
         } else if (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
-          println(" In second else if")
           boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
         }
 
         else {
-          println(" In else")
           boundForm
         }
       }
       case _ => {
-        println(" In default case")
         boundForm
       }
-
-
     }
   }
 }

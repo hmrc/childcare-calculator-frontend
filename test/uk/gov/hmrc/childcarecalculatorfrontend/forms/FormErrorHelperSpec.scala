@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelperSpec extends SpecBase {
 
@@ -126,7 +126,59 @@ class FormErrorHelperSpec extends SpecBase {
 
     }
 
+    "return the form with error when both answered max earnings question above 1000000 but input was above 1000000" in {
 
+      val maximumEarnings = Some(true)
+      val errorKeyInvalidPartnerMaxEarnings = "invalid max key"
+      val errorKeyInvalidParentMaxEarnings = "invalid max key"
+      val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
+      val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
+
+      val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "1000000",
+        "partnerEmploymentIncomeCY" -> "1000000"))
+
+      formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
+        errorParentKeyInvalid
+        , errorPartnerKeyInvalid,
+        errorParentKeyInvalid, errorPartnerKeyInvalid,
+        inputForm) mustBe inputForm
+
+    }
+
+    "return the form with error when partner answered max earnings question under 1000000 but input was above 1000000" in {
+
+      val maximumEarnings = Some(true)
+      val errorKeyInvalidPartnerMaxEarnings = "invalid max key"
+      val errorKeyInvalidParentMaxEarnings = "invalid max key"
+      val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
+      val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
+
+      val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "80000",
+        "partnerEmploymentIncomeCY" -> "1000000"))
+
+      formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
+        errorKeyInvalidParentMaxEarnings
+        , errorKeyInvalidPartnerMaxEarnings,
+        errorParentKeyInvalid, errorPartnerKeyInvalid,
+        inputForm) mustBe inputForm
+    }
+
+    "return the form with error when parent answered max earnings question under 1000000 but input was above 1000000" in {
+
+      val maximumEarnings = Some(true)
+      val errorKeyInvalidPartnerMaxEarnings = "invalid max key"
+      val errorKeyInvalidParentMaxEarnings = "invalid max key"
+      val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
+      val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
+
+      val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "1000000",
+        "partnerEmploymentIncomeCY" -> "100000"))
+
+      formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
+        errorKeyInvalidParentMaxEarnings
+        , errorKeyInvalidPartnerMaxEarnings,
+        errorParentKeyInvalid, errorPartnerKeyInvalid,
+        inputForm) mustBe inputForm
+    }
   }
-
 }

@@ -33,6 +33,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+
   val taxYearInfo = new TaxYearInfo
 
   val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
@@ -102,33 +103,38 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
       val boundForm = form.bind(Map("value" -> "above limit"))
 
+
       val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
         ParentEmploymentIncomeCYId.toString -> Json.toJson("100000"),
-        PartnerEmploymentIncomeCYId.toString -> Json.toJson("100000"))
+        PartnerEmploymentIncomeCYId.toString -> Json.toJson("100000"),
+        WhoIsInPaidEmploymentId.toString -> Json.toJson("both"))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages(parentEmploymentIncomeInvalidMaxEarningsErrorKey)
       contentAsString(result) contains messages(partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
     }
+
 
     "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000"))
       val boundForm = form.bind(Map("value" -> "above limit"))
 
       val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString -> Json.toJson("100000"),
-        PartnerEmploymentIncomeCYId.toString -> Json.toJson("1000000"))
+        ParentEmploymentIncomeCYId.toString -> Json.toJson("1000000"),
+        PartnerEmploymentIncomeCYId.toString -> Json.toJson("1000000"),
+        WhoIsInPaidEmploymentId.toString -> Json.toJson("both"))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages(parentEmploymentIncomeInvalidErrorKey)
       contentAsString(result) contains messages(partnerEmploymentIncomeInvalidErrorKey)
     }
-
   }
 }
