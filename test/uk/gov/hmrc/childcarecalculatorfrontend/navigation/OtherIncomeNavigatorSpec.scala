@@ -50,16 +50,32 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to results page when user selects no, is in receipt of UC and eligible for TFC " in {
+        "redirects to results page when single user selects no, is in receipt of UC, eligible for TFC and TC " in {
           val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
           when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
 
           when(tfc.eligibility(any())) thenReturn Eligible
+          when(taxCredits.eligibility(any())) thenReturn Eligible
 
           navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
             routes.ResultController.onPageLoad()
         }
+
+        "redirects to results page when user with partner selects no, is in receipt of UC, eligible for TFC and TC " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
+          when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+
+          when(tfc.eligibility(any())) thenReturn Eligible
+          when(taxCredits.eligibility(any())) thenReturn Eligible
+
+          navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            routes.ResultController.onPageLoad()
+        }
+
 
         "redirects to the right page when single user selects no to will you get any other income this year" when {
           "is not eligible for tax credits" in {
@@ -217,6 +233,20 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.ResultController.onPageLoad()
             }
+
+            "redirects to results page when single user selects no, is in receipt of UC, eligible for TFC and TC " in {
+              val answers = spy(userAnswers())
+              when(answers.doYouLiveWithPartner) thenReturn Some(true)
+              when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
+              when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+
+              when(tfc.eligibility(any())) thenReturn Eligible
+              when(taxCredits.eligibility(any())) thenReturn Eligible
+
+              navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+                routes.ResultController.onPageLoad()
+            }
+
           }
         }
 

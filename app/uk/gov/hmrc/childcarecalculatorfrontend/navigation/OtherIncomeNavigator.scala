@@ -58,7 +58,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
 
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, eligibleCall, notEligibleCall)
+      case false => taxCreditAndTfcEligibility(answers, eligibleCall, notEligibleCall)
     }
   }
 
@@ -71,7 +71,9 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
   private def bothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.bothOtherIncomeThisYear) {
       case true => routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.BothIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+      case false => taxCreditAndTfcEligibility(answers,
+        routes.BothIncomeInfoPYController.onPageLoad(),
+        routes.ResultController.onPageLoad())
     }
 
   private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
@@ -100,18 +102,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
       routes.BothIncomeInfoPYController.onPageLoad(),
       routes.ResultController.onPageLoad())
 
-  private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
-    utils.getCall(answersType) {
-      case _ => processTaxCreditsEligibility(answers, successRoute, failureRoute)
-    }
-  }
 
-  private def processTaxCreditsEligibility(answers: UserAnswers, eligibleCall: Call, notEligibleCall: Call) = {
-    taxCredits.eligibility(answers) match {
-      case Eligible => eligibleCall
-      case NotEligible | NotDetermined => notEligibleCall
-    }
-  }
 
   private def yourOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.yourOtherIncomeLY) {
@@ -156,5 +147,31 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
 
   private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.otherIncomeAmountPY) { case _ => routes.BothStatutoryPayController.onPageLoad(NormalMode) }
+
+  private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
+    utils.getCall(answersType) {
+      case _ => processTaxCreditsEligibility(answers, successRoute, failureRoute)
+    }
+  }
+
+  private def processTaxCreditsEligibility(answers: UserAnswers, eligibleCall: Call, notEligibleCall: Call) = {
+    taxCredits.eligibility(answers) match {
+      case Eligible => eligibleCall
+      case NotEligible | NotDetermined => notEligibleCall
+    }
+  }
+
+  private def taxCreditAndTfcEligibility(answers: UserAnswers,
+                                         eligibleCall: Call,
+                                         notEligibleCall: Call) = {
+
+    val tcEligibility = taxCredits.eligibility(answers)
+    val tfcEligibility = tfc.eligibility(answers)
+
+    (tcEligibility, tfcEligibility) match {
+      case (Eligible, Eligible) => if(answers.taxOrUniversalCredits.contains(universalCredits)) notEligibleCall else eligibleCall
+      case _ => notEligibleCall
+    }
+  }
 
 }
