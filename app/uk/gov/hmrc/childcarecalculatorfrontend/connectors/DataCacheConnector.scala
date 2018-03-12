@@ -100,11 +100,17 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
       }.getOrElse(throw new RuntimeException(s"Couldn't find document with key $cacheId"))
     }
   }
+
+  def updateMap(data: CacheMap) = {
+    sessionRepository().upsert(data)
+  }
 }
 
 @ImplementedBy(classOf[DataCacheConnectorImpl])
 trait DataCacheConnector {
   def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap]
+
+  def updateMap(data: CacheMap)
 
   def remove(cacheId: String, key: String): Future[Boolean]
 

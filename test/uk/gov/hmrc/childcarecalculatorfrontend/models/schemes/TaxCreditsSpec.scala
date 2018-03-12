@@ -42,9 +42,14 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
       taxCredits(household).eligibility(answers) mustEqual NotDetermined
     }
 
-    "return `Eligible` if a user works 24 hours but their partner doesn't work and neither get benefits" in {
+    "return `NotEligible` if a user works 24 hours but their partner doesn't work and neither get benefits" in {
       when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
-      taxCredits(household).eligibility(answers) mustEqual Eligible
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
+    }
+
+    "return `NotEligible` if a partner works 24 hours but parent doesn't work and neither get benefits" in {
+      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
     }
 
     "return `Eligible` if a user works 16 hours and collectively the household works at least 24 hours and they don't claim benefits" in {
@@ -108,6 +113,11 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
 
     "return `NotEligible` if neither parent works 16 hours, even if they work 24 hours total, and they don't claim benefits" in {
       when(household(any())) thenReturn Some(JointHousehold(Parent(12, Set.empty), Parent(12, Set.empty)))
+      taxCredits(household).eligibility(answers) mustEqual NotEligible
+    }
+
+    "return `NotEligible` if only parent works 24 hours and they don't claim benefits" in {
+      when(household(any())) thenReturn Some(JointHousehold(Parent(24, Set.empty), Parent(0, Set.empty)))
       taxCredits(household).eligibility(answers) mustEqual NotEligible
     }
   }
