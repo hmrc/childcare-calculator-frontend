@@ -33,7 +33,7 @@ class DoYouLiveWithPartnerViewSpec extends YesNoViewBehaviours {
 
   "DoYouLiveWithPartner view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix, "para1")
 
     behave like pageWithBackLink(createView)
 
