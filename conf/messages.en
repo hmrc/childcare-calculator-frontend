@@ -211,6 +211,7 @@ freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs
 
 doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
+doYouLiveWithPartner.para1 = This includes if they are posted overseas as a Crown servant, member of the armed forces, a mariner or working offshore.
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = Select yes if you have a partner that you live with
 
