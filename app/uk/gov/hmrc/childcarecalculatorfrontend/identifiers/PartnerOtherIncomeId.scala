@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.views
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
-
-class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
-
-  def view = () => whatToTellTheCalculator(frontendAppConfig)(fakeRequest, messages)
-
-  "whatToTellTheCalculator view" must {
-
-    behave like normalPage(view, "whatToTellTheCalculator", "guidance",
-      "li.benefits", "li.pay", "li.weeks", "para2", "li.costs", "li.benefits.child", "li.ages", "para3")
-  }
+case object PartnerOtherIncomeId extends Identifier {
+  override def toString: String = "partnerOtherIncome"
 }

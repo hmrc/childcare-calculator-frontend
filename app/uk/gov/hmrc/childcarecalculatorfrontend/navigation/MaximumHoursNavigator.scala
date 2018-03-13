@@ -191,14 +191,20 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
+
     if (answers.doYouOrYourPartnerGetAnyBenefits.contains(true)) {
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
+    } else if(isEligibleToGoToResultPage(answers)){
+      routes.ResultController.onPageLoad()
     } else if(answers.whoIsInPaidEmployment.contains(partner)){
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
-    }else if(answers.whoIsInPaidEmployment.contains(you)||answers.whoIsInPaidEmployment.contains(both)){
+    } else if(answers.whoIsInPaidEmployment.contains(you)||answers.whoIsInPaidEmployment.contains(both)){
       routes.YourAgeController.onPageLoad(NormalMode)
-    }else SessionExpiredRouter.route(getClass.getName,"doYouOrYourPartnerGetAnyBenefitsRoute",Some(answers))
+    } else SessionExpiredRouter.route(getClass.getName,"doYouOrYourPartnerGetAnyBenefitsRoute",Some(answers))
   }
+
+  private def isEligibleToGoToResultPage(answers: UserAnswers) = answers.doYouLiveWithPartner.getOrElse(false) && (answers.whoIsInPaidEmployment.contains(you) || answers.whoIsInPaidEmployment.contains(partner)) &&
+                                         taxCredits.eligibility(answers).equals(NotEligible)
 
   private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
     if (answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(partner)) {
