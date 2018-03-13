@@ -1407,6 +1407,8 @@ youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
 
-bothGetSameIncomePreviousYear.title = bothGetSameIncomePreviousYear
-bothGetSameIncomePreviousYear.heading = bothGetSameIncomePreviousYear
+bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
 bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear

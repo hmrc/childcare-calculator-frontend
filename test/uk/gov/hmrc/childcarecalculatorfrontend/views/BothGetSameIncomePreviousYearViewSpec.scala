@@ -21,15 +21,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
 
 class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
 
+  val taxYearInfo = new TaxYearInfo
+
   val messageKeyPrefix = "bothGetSameIncomePreviousYear"
 
-  def createView = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "BothGetSameIncomePreviousYear view" must {
 
@@ -38,5 +41,15 @@ class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
+
+    "contain tax year info" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
+    }
+
+    "contain info summary" in {
+      val doc = asDocument(createView())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.info.summary"))
+    }
   }
 }
