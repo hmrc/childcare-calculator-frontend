@@ -321,6 +321,21 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
+
+          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
+            when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+
+            when(tfc.eligibility(any())) thenReturn Eligible
+            when(taxCredits.eligibility(any())) thenReturn Eligible
+
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+
         }
 
         "redirect to correct page when user has partner" when {
@@ -353,6 +368,21 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
+
+          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
+            when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+
+            when(tfc.eligibility(any())) thenReturn Eligible
+            when(taxCredits.eligibility(any())) thenReturn Eligible
+
+            navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+
         }
       }
     }
@@ -553,6 +583,21 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
+
+          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+            val answers = spy(userAnswers())
+            when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
+            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+
+            when(tfc.eligibility(any())) thenReturn Eligible
+            when(taxCredits.eligibility(any())) thenReturn Eligible
+
+            navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+
         }
       }
 
@@ -587,6 +632,21 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
           }
+
+          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(true)
+            when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
+            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+
+            when(tfc.eligibility(any())) thenReturn Eligible
+            when(taxCredits.eligibility(any())) thenReturn Eligible
+
+            navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
+              routes.ResultController.onPageLoad()
+          }
+
         }
 
         "redirects to SessionExpired page when user provides valid input and " +

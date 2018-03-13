@@ -150,7 +150,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
     utils.getCall(answersType) {
-      case _ => processTaxCreditsEligibility(answers, successRoute, failureRoute)
+      case _ => taxCreditAndTfcEligibility(answers, successRoute, failureRoute)
     }
   }
 
