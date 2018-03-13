@@ -1406,3 +1406,7 @@ youGetSameIncomePreviousYear.error = Select yes if you got the same income for t
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
+
+bothGetSameIncomePreviousYear.title = bothGetSameIncomePreviousYear
+bothGetSameIncomePreviousYear.heading = bothGetSameIncomePreviousYear
+bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
