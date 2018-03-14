@@ -63,6 +63,33 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.ResultController.onPageLoad()
         }
 
+        "redirects to Your Other Income Amount CY page when single user selects no, is not in receipt of UC, eligible for TC but not eligible for TFC " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
+          when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+
+          when(tfc.eligibility(any())) thenReturn NotEligible
+          when(taxCredits.eligibility(any())) thenReturn Eligible
+
+          navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            routes.YourIncomeInfoPYController.onPageLoad()
+        }
+
+        "redirects to Your Other Income Amount CY page when single user selects yes, is not in receipt of UC, eligible for TC but not eligible for TFC " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
+          when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+
+          when(tfc.eligibility(any())) thenReturn NotEligible
+          when(taxCredits.eligibility(any())) thenReturn Eligible
+
+          navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+            routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+        }
+
+
         "redirects to results page when user with partner selects no, is in receipt of UC, eligible for TFC and TC " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -234,7 +261,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
                 routes.ResultController.onPageLoad()
             }
 
-            "redirects to results page when single user selects no, is in receipt of UC, eligible for TFC and TC " in {
+            "redirects to results page when user with partner  selects no, is in receipt of UC, eligible for TFC and TC " in {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
@@ -246,6 +273,35 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.ResultController.onPageLoad()
             }
+
+            "redirects to Both Income Info PY page when user with partner selects no, is not receipt of UC," +
+              " eligible for TC and but not eligible for TC " in {
+              val answers = spy(userAnswers())
+              when(answers.doYouLiveWithPartner) thenReturn Some(true)
+              when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
+              when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+
+              when(tfc.eligibility(any())) thenReturn NotEligible
+              when(taxCredits.eligibility(any())) thenReturn Eligible
+
+              navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+                routes.BothIncomeInfoPYController.onPageLoad()
+            }
+
+            "redirects to Who Gets Other Income CY page when user with partner selects yes, is not receipt of UC," +
+              " eligible for TC and but not eligible for TC " in {
+              val answers = spy(userAnswers())
+              when(answers.doYouLiveWithPartner) thenReturn Some(true)
+              when(answers.bothOtherIncomeThisYear) thenReturn Some(true)
+              when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+
+              when(tfc.eligibility(any())) thenReturn NotEligible
+              when(taxCredits.eligibility(any())) thenReturn Eligible
+
+              navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
+                routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
+            }
+
 
           }
         }

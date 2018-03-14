@@ -167,9 +167,11 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
 
     val tcEligibility = taxCredits.eligibility(answers)
     val tfcEligibility = tfc.eligibility(answers)
+    val hasUniversalCredits = answers.taxOrUniversalCredits.contains(universalCredits)
 
     (tcEligibility, tfcEligibility) match {
-      case (Eligible, Eligible) => if(answers.taxOrUniversalCredits.contains(universalCredits)) notEligibleCall else eligibleCall
+      case (Eligible, Eligible) => if(hasUniversalCredits) notEligibleCall else eligibleCall
+      case (Eligible, NotEligible) => if(!hasUniversalCredits) eligibleCall else notEligibleCall
       case _ => notEligibleCall
     }
   }
