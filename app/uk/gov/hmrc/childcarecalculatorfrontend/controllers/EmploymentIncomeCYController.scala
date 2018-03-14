@@ -53,8 +53,8 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-
       val boundForm = form().bindFromRequest()
+
       val errorKeyInvalidParentMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalidPartnerMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorParentKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey

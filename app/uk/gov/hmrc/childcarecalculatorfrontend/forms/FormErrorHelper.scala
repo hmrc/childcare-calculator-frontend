@@ -25,6 +25,8 @@ class FormErrorHelper extends Mappings {
 
 
   val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+  val maxValueFalseMaxEarnings = BigDecimal(100000)
+  val maxValueTrueMaxEarnings = BigDecimal(1000000)
 
   def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))
 
@@ -73,12 +75,8 @@ class FormErrorHelper extends Mappings {
                                 errorKeyInvalidMaxEarnings: String,
                                 errorKeyInvalid: String,
                                 boundForm: Form[BigDecimal]) = {
-
-    val maxValueFalseMaxEarnings = BigDecimal(100000)
-    val maxValueTrueMaxEarnings = BigDecimal(1000000)
-
     maximumEarnings match {
-      case Some(maxEarnings) if !boundForm.hasErrors => {
+      case Some(maxEarnings) => {
         val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
         if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
           boundForm.withError("value", errorKeyInvalidMaxEarnings)
@@ -102,25 +100,20 @@ class FormErrorHelper extends Mappings {
                                     errorParentKeyInvalid: String,
                                     errorPartnerKeyInvalid: String,
                                     boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] = {
-
-    val maxValueFalseMaxEarnings = BigDecimal(100000)
-    val maxValueTrueMaxEarnings = BigDecimal(1000000)
-
     maximumEarnings match {
 
       case Some(maxEarnings) if !boundForm.hasErrors => {
-        val valueTest = 0
-        val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0")
-        val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0")
 
-        if ((parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings) && (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings) && !maxEarnings) {
+        val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0").toDouble
+        val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0").toDouble
+
+        if ((parentEmpIncomeValue >= maxValueFalseMaxEarnings) && (partnerEmpIncomeValue >= maxValueFalseMaxEarnings) && !maxEarnings) {
           boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
             .withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
-
-        } else if (parentEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
+        } else if ((parentEmpIncomeValue >= maxValueFalseMaxEarnings) && !maxEarnings) {
           boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
 
-        } else if (partnerEmpIncomeValue.toInt >= maxValueFalseMaxEarnings && !maxEarnings) {
+        } else if (partnerEmpIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
           boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
         }
 

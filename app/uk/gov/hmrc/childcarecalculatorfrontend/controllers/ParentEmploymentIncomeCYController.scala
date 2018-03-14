@@ -60,7 +60,6 @@ class ParentEmploymentIncomeCYController @Inject()(
       val boundForm = form().bindFromRequest()
       val errorKeyInvalidMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
-
       validateMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
 
         (formWithErrors: Form[BigDecimal]) =>
