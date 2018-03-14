@@ -66,13 +66,15 @@
             @if(detailSummary.isDefined) {
                 <details @if(detailClass.isDefined) {class="@detailClass"}>
                     <summary>@detailSummary</summary>
-                    <p>@detailPara1</p>
-                    @if(detailPara2.isDefined) {<p>@detailPara2</p>}
-                    @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
-                    @if(detailPara3.isDefined) {<p>@detailPara3</p>}
-                    @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
-                    @if(detailPara4.isDefined) {<p>@detailPara4</p>}
-                    @if(detailPara5.isDefined) {<p>@detailPara5</p>}
+                    <div>
+                        <p>@detailPara1</p>
+                        @if(detailPara2.isDefined) {<p>@detailPara2</p>}
+                        @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
+                        @if(detailPara3.isDefined) {<p>@detailPara3</p>}
+                        @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
+                        @if(detailPara4.isDefined) {<p>@detailPara4</p>}
+                        @if(detailPara5.isDefined) {<p>@detailPara5</p>}
+                    </div>
                 </details>
             }
             @if(displayWarning) {
