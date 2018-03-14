@@ -86,7 +86,7 @@
         <p>@summary.getOrElse("")</p>
     </div>
 
-    @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
+    @if(model.location == Location.ENGLAND && model.childAgedTwo) {
     <div class="twoYearsOld">
         <h2 class="heading-medium">@messages("aboutYourResults.two.years.old.guidance.title")</h2>
         <p>@messages("aboutYourResults.two.years.old.guidance.para1")
@@ -100,7 +100,7 @@
     @components.button_link(
         messageKey = "aboutYourResults.return.link",
         id = "returnToResults",
-href = ResultController.onPageLoad()
+        href = ResultController.onPageLoad()
 )
 
 <div class="panel panel-border-wide survey">

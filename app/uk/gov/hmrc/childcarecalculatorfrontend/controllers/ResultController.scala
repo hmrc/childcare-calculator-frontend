@@ -32,6 +32,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, Util
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.Future
+
 
 @Singleton
 class ResultController @Inject()(val appConfig: FrontendAppConfig,
@@ -45,19 +47,14 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
 
 
   def onPageLoad(): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    resultsService.getResultsViewModel(request.userAnswers).map(model => {
-
-      dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
-
-      request.userAnswers.location match {
-        case Some(_) => Ok(result(
-          appConfig,
-          model,
-          moreInfoResults.getSchemeContent(request.userAnswers.location.getOrElse(Location.ENGLAND), model),
-          moreInfoResults.getSummary(request.userAnswers.location.getOrElse(Location.ENGLAND), model),
-          utils))
-        case None => Redirect(routes.LocationController.onPageLoad(NormalMode))
+    request.userAnswers.location match {
+      case Some(location) =>  {
+        resultsService.getResultsViewModel(request.userAnswers,location).map(model => {
+          dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
+          Ok(result(appConfig, model, moreInfoResults.getSchemeContent(location, model), moreInfoResults.getSummary(location, model), utils))
+        })
       }
-    })
+      case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
+    }
   }
 }
