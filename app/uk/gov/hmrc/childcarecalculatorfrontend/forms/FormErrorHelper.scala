@@ -23,10 +23,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelper extends Mappings {
 
-
   val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-  val maxValueFalseMaxEarnings = BigDecimal(100000)
-  val maxValueTrueMaxEarnings = BigDecimal(1000000)
+  val maxIncome = BigDecimal(100000)
+  val maxEmploymentIncome = BigDecimal(1000000)
 
   def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))
 
@@ -78,10 +77,10 @@ class FormErrorHelper extends Mappings {
     maximumEarnings match {
       case Some(maxEarnings) => {
         val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
-        if (inputtedEmploymentIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
+        if (inputtedEmploymentIncomeValue >= maxIncome && !maxEarnings) {
           boundForm.withError("value", errorKeyInvalidMaxEarnings)
         }
-        else if (inputtedEmploymentIncomeValue >= maxValueTrueMaxEarnings && maxEarnings) {
+        else if (inputtedEmploymentIncomeValue >= maxEmploymentIncome && maxEarnings) {
           boundForm.withError("value", errorKeyInvalid)
         }
         else {
@@ -100,20 +99,21 @@ class FormErrorHelper extends Mappings {
                                     errorParentKeyInvalid: String,
                                     errorPartnerKeyInvalid: String,
                                     boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] = {
+
     maximumEarnings match {
 
       case Some(maxEarnings) if !boundForm.hasErrors => {
+        val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0")
+        val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0")
 
-        val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0").toDouble
-        val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0").toDouble
-
-        if ((parentEmpIncomeValue >= maxValueFalseMaxEarnings) && (partnerEmpIncomeValue >= maxValueFalseMaxEarnings) && !maxEarnings) {
+        if ((parentEmpIncomeValue.toInt >= maxIncome) && (partnerEmpIncomeValue.toInt >= maxIncome) && !maxEarnings) {
           boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
             .withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
-        } else if ((parentEmpIncomeValue >= maxValueFalseMaxEarnings) && !maxEarnings) {
+
+        } else if (parentEmpIncomeValue.toInt >= maxIncome && !maxEarnings) {
           boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
 
-        } else if (partnerEmpIncomeValue >= maxValueFalseMaxEarnings && !maxEarnings) {
+        } else if (partnerEmpIncomeValue.toInt >= maxIncome && !maxEarnings) {
           boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
         }
 
