@@ -25,6 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourResults
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import services.{MoreInfoService, MoreInfoServiceInterface}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -44,7 +45,7 @@ class AboutYourResultsControllerSpec extends ControllerSpecBase with MockitoSuga
 
   "AboutYourResults Controller" must {
     "return OK and the correct view for a GET" in {
-      val model = ResultsViewModel()
+      val model = ResultsViewModel(location = Location.ENGLAND)
       when(mockDataConnector.getEntry[ResultsViewModel](any(), any())(any())) thenReturn Future(Some(model))
       when(mockMoreInfoService.getSchemeContent(any(), any())) thenReturn List.empty
       when(mockMoreInfoService.getSummary(any(), any())) thenReturn None

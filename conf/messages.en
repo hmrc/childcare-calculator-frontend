@@ -1371,11 +1371,23 @@ aboutYourResults.more.info.northern-ireland.esc.title = childcare vouchers
 aboutYourResults.more.info.northern-ireland.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
 aboutYourResults.more.info.summary = You can apply for 30 hours free childcare and Tax-Free Childcare at the same time.
 
-results.two.years.old.guidance.title = Your 2 year old
-results.two.years.old.guidance.text.before.link = If you are on certain benefits, you can
-results.two.years.old.guidance.link.text = find out if you could get 15 hours free childcare a week for your 2 year old
-results.two.years.old.guidance.text.after.link = - this is 570 hours a year.
-results.two.years.old.guidance.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
+results.two.years.old.guidance.england.title = Your 2 year old
+results.two.years.old.guidance.england.text.before.link = If you are on certain benefits, you can
+results.two.years.old.guidance.england.link.text = find out if you could get 15 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.england.text.after.link = - this is 570 hours a year.
+results.two.years.old.guidance.england.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
+
+results.two.years.old.guidance.scotland.title = Your 2 year old
+results.two.years.old.guidance.scotland.text.before.link = If you are on certain benefits, you can
+results.two.years.old.guidance.scotland.link.text = find out if you could get 16 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.scotland.text.after.link = - this is 600 hours a year.
+results.two.years.old.guidance.scotland.para1.help.link =  https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare/
+
+results.two.years.old.guidance.wales.title = Your 2 year old
+results.two.years.old.guidance.wales.text.before.link = If you are on certain benefits, you can
+results.two.years.old.guidance.wales.link.text = find out if you could get 10 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.wales.text.after.link = - this is 390 hours a year.
+results.two.years.old.guidance.wales.para1.help.link =   http://gov.wales/topics/people-and-communities/people/children-and-young-people/childcare/?lang=en
 
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
@@ -1406,3 +1418,9 @@ youGetSameIncomePreviousYear.error = Select yes if you got the same income for t
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
+
+bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
+bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
