@@ -54,8 +54,8 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
           Ok(result(
             appConfig,
             model,
-            moreInfoResults.getSchemeContent(request.userAnswers.location.getOrElse(Location.ENGLAND), model),
-            moreInfoResults.getSummary(request.userAnswers.location.getOrElse(Location.ENGLAND), model),
+            moreInfoResults.getSchemeContent(location, model),
+            moreInfoResults.getSummary(location, model),
             utils))
         })
       }
