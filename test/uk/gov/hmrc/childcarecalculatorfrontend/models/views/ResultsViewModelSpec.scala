@@ -17,17 +17,18 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 class ResultsViewModelSpec extends SpecBase {
 
   "ResultViewModel" must {
     "return correct number of eligible schemes" in {
-      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None)
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None, location = location)
       resultsView.noOfEligibleSchemes mustBe 2
     }
 
     "return number of eligible schemes 0 when there is no eligible scheme" in {
-      val resultsView = ResultsViewModel()
+      val resultsView = ResultsViewModel(location = location)
       resultsView.noOfEligibleSchemes mustBe 0
     }
   }
@@ -35,14 +36,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButVouchers" must {
    "return true" when {
      "user is eligible for all the schemes but vouchers" in {
-       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = None)
+       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = None, location = location)
        resultsView.isEligibleForAllButVouchers mustBe true
      }
    }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleForAllButVouchers mustBe false
       }
     }
@@ -51,14 +52,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButTc" must {
     "return true" when {
       "user is eligible for all the schemes but tax credits" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = Some(100), freeHours = Some(200), esc = Some(200))
+        val resultsView = ResultsViewModel(tc = None, tfc = Some(100), freeHours = Some(200), esc = Some(200), location = location)
         resultsView.isEligibleForAllButTc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleForAllButTc mustBe false
       }
     }
@@ -67,14 +68,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButFreeHours" must {
     "return true" when {
       "user is eligible for all the schemes but free hours" in {
-        val resultsView = ResultsViewModel(freeHours = None, tfc = Some(100), tc = Some(200), esc = Some(200))
+        val resultsView = ResultsViewModel(freeHours = None, tfc = Some(100), tc = Some(200), esc = Some(200), location = location)
         resultsView.isEligibleForAllButFreeHours mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleForAllButTc mustBe false
       }
     }
@@ -83,14 +84,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButTfc" must {
     "return true" when {
       "user is eligible for all the schemes but TFC" in {
-        val resultsView = ResultsViewModel(tc = Some(300), tfc = None, freeHours = Some(200), esc = Some(200))
+        val resultsView = ResultsViewModel(tc = Some(300), tfc = None, freeHours = Some(200), esc = Some(200), location = location)
         resultsView.isEligibleForAllButTfc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleForAllButTfc mustBe false
       }
     }
@@ -99,14 +100,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForFreeHoursAndTFC" must {
     "return true" when {
       "user is eligible for Free hours and TFC" in {
-        val resultsView = ResultsViewModel(esc = None, tc = None, tfc = Some(500), freeHours = Some(200))
+        val resultsView = ResultsViewModel(esc = None, tc = None, tfc = Some(500), freeHours = Some(200), location = location)
         resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe false
       }
     }
@@ -115,14 +116,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForFreeHoursAndTC" must {
     "return true" when {
       "user is eligible for Free hours and TC" in {
-        val resultsView = ResultsViewModel(esc = None, tfc = None, tc = Some(500), freeHours = Some(200))
+        val resultsView = ResultsViewModel(esc = None, tfc = None, tc = Some(500), freeHours = Some(200), location = location)
         resultsView.isEligibleOnlyForFreeHoursAndTc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleOnlyForFreeHoursAndTc mustBe false
       }
     }
@@ -131,14 +132,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForFreeHoursAndESC" must {
     "return true" when {
       "user is eligible for Free hours and ESC" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, esc = Some(500), freeHours = Some(200))
+        val resultsView = ResultsViewModel(tc = None, tfc = None, esc = Some(500), freeHours = Some(200), location = location)
         resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe false
       }
     }
@@ -147,14 +148,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForTCAndTFC" must {
     "return true" when {
       "user is eligible only for TC and TFC" in {
-        val resultsView = ResultsViewModel(tc = Some(500), tfc = Some(200), freeHours = None, esc = None)
+        val resultsView = ResultsViewModel(tc = Some(500), tfc = Some(200), freeHours = None, esc = None, location = location)
         resultsView.isEligibleOnlyForTCAndTfc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleOnlyForTCAndTfc mustBe false
       }
     }
@@ -163,14 +164,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForTCAndESC" must {
     "return true" when {
       "user is only eligible for TC and ESC" in {
-        val resultsView = ResultsViewModel(tc = Some(500), esc = Some(300), tfc = None, freeHours = None)
+        val resultsView = ResultsViewModel(tc = Some(500), esc = Some(300), tfc = None, freeHours = None, location = location)
         resultsView.isEligibleOnlyForTCAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleOnlyForTCAndEsc mustBe false
       }
     }
@@ -179,17 +180,19 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForTFCAndESC" must {
     "return true" when {
       "user is eligible only for TFC and ESC" in {
-        val resultsView = ResultsViewModel(esc = Some(500), tfc = Some(200), freeHours = None, tc = None)
+        val resultsView = ResultsViewModel(esc = Some(500), tfc = Some(200), freeHours = None, tc = None, location = location)
         resultsView.isEligibleOnlyForTfcAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300))
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location)
         resultsView.isEligibleOnlyForTfcAndEsc mustBe false
       }
     }
   }
+
+  val location = Location.ENGLAND
 
 }
