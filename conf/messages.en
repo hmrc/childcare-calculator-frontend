@@ -772,7 +772,7 @@ partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you
 yourIncomeInfoPY.title = Your income for the previous year
 yourIncomeInfoPY.heading = Your income for the previous year
 yourIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-yourIncomeInfoPY.guidance = You will now answer similar questions about your income for the previous year.
+yourIncomeInfoPY.guidance = You will now be asked about your income for the previous year.
 yourIncomeInfoPY.li.income_paid_work = income from paid work
 yourIncomeInfoPY.li.pensions = pension contributions
 yourIncomeInfoPY.li.other_income = other income
@@ -783,7 +783,7 @@ yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 bothIncomeInfoPY.title = You and your partner’s income for the previoys year
 bothIncomeInfoPY.heading = You and your partner’s income for the previous year
 bothIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-bothIncomeInfoPY.guidance = You will now answer similar questions about you and your partner’s income for the previous year.
+bothIncomeInfoPY.guidance = You will now be asked about you and your partner’s income for the previous year.
 bothIncomeInfoPY.li.income_paid_work = income from paid work
 bothIncomeInfoPY.li.pensions = pension contributions
 bothIncomeInfoPY.li.other_income = other income
@@ -1273,6 +1273,8 @@ result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help
 result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have told us that you were already getting Universal Credit
 result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get childcare support from tax credits as both you and your partner would each/ need to work 16 hours or more a week.
+result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits = You cannot get childcare support from tax credits. Although your partner gets a benefit that would make them eligible, you need to work 16 hours or more a week.
+result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits =  You cannot get childcare support from tax credits. Although you get a benefit that would make you eligible, your partner needs to work 16 hours or more a week.
 result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
 result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits
 
@@ -1416,3 +1418,9 @@ youGetSameIncomePreviousYear.error = Select yes if you got the same income for t
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
+
+bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
+bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear

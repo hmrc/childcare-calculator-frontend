@@ -45,7 +45,7 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
       }
     }
 
-    "get the correct message for partner journey" when {
+    "get the correct message" when {
       "both work less than 16 hrs" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -95,6 +95,18 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
       }
 
+      "parent only works 15 hrs and partner get benefits" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(15))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("disabilityBenefits"))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits")
+      }
+
       "partner only works and for 21 hrs " in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -104,6 +116,18 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
+      }
+
+      "partner only works 15 hrs and parent get benefits" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(15))
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("disabilityBenefits"))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits")
       }
 
       "user does not have any child under 16" in {
