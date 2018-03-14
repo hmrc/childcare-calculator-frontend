@@ -51,12 +51,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
       case Some(location) =>  {
         resultsService.getResultsViewModel(request.userAnswers,location).map(model => {
           dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
-          Ok(result(
-            appConfig,
-            model,
-            moreInfoResults.getSchemeContent(location, model),
-            moreInfoResults.getSummary(location, model),
-            utils))
+          Ok(result(appConfig, model, moreInfoResults.getSchemeContent(location, model), moreInfoResults.getSummary(location, model), utils))
         })
       }
       case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
