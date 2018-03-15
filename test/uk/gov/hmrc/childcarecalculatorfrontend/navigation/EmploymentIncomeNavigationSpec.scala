@@ -327,7 +327,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.youGetSameIncomePreviousYear) thenReturn Some(false)
 
-          navigator.nextPage(YouGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
+          navigator.nextPage(YouGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.YourIncomeInfoPYController.onPageLoad()
         }
       }
 
@@ -343,7 +343,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.bothGetSameIncomePreviousYear) thenReturn Some(false)
 
-          navigator.nextPage(BothGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+          navigator.nextPage(BothGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.BothIncomeInfoPYController.onPageLoad()
         }
       }
     }
