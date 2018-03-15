@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -51,34 +52,33 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       Ok(employmentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
+
+      val maxEarnings = maximumEarnings(request.userAnswers)
       val boundForm = form().bindFromRequest()
 
-      val errorKeyInvalidParentMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
-      val errorKeyInvalidPartnerMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
-      val errorKeyInvalidParentMaxEarningsBoth: String = parentEmploymentIncomeBothInvalidMaxEarningsErrorKey
-      val errorKeyInvalidPartnerMaxEarningsBoth: String = partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey
-      val errorParentKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
-      val errorPartnerKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
-      val maxEarnings = maximumEarnings(request.userAnswers)
-
-      validateBothMaxIncomeEarnings(maxEarnings,
-                                errorKeyInvalidParentMaxEarnings,
-                                errorKeyInvalidPartnerMaxEarnings,
-                                errorKeyInvalidParentMaxEarningsBoth,
-                                errorKeyInvalidPartnerMaxEarningsBoth,
-                                errorParentKeyInvalid,
-                                errorPartnerKeyInvalid,
-                                boundForm).fold(
-
-        (formWithErrors: Form[EmploymentIncomeCY]) =>
-          Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
+      validateForm(boundForm, maxEarnings).fold((formWithErrors: Form[EmploymentIncomeCY]) =>
+        Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
+  private def validateForm(boundForm: Form[EmploymentIncomeCY], maxEarnings : Option[Boolean]) =
+    if(boundForm.hasErrors) {
+      boundForm
+    } else {
+      validateBothMaxIncomeEarnings(maxEarnings,
+        parentEmploymentIncomeInvalidMaxEarningsErrorKey,
+        partnerEmploymentIncomeInvalidMaxEarningsErrorKey,
+        parentEmploymentIncomeBothInvalidMaxEarningsErrorKey,
+        partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey,
+        parentEmploymentIncomeInvalidErrorKey,
+        partnerEmploymentIncomeInvalidErrorKey,
+        boundForm)
+    }
 
   private def maximumEarnings(answers: UserAnswers) = {
     answers.whoIsInPaidEmployment match {
