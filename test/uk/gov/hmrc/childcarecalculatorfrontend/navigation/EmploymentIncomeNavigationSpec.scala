@@ -320,7 +320,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.youGetSameIncomePreviousYear) thenReturn Some(true)
 
-          navigator.nextPage(YouGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+          navigator.nextPage(YouGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.YouStatutoryPayController.onPageLoad(NormalMode)
         }
 
         "redirects to parent paid work py controller" in {

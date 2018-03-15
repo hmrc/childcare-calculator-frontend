@@ -122,7 +122,7 @@ class EmploymentIncomeNavigator @Inject() (utils:Utils) extends SubNavigator {
 
   private def youGetSameIncomePYRoute(answers: UserAnswers) =
     utils.getCall(answers.youGetSameIncomePreviousYear) {
-      case true => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
+      case true => routes.YouStatutoryPayController.onPageLoad(NormalMode)
       case false => routes.YourIncomeInfoPYController.onPageLoad()
     }
 
