@@ -1372,23 +1372,29 @@ aboutYourResults.more.info.northern-ireland.esc.title = childcare vouchers
 aboutYourResults.more.info.northern-ireland.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
 aboutYourResults.more.info.summary = You can apply for 30 hours free childcare and Tax-Free Childcare at the same time.
 
-results.two.years.old.guidance.england.title = Your 2 year old
-results.two.years.old.guidance.england.text.before.link = If you are on certain benefits, you can
-results.two.years.old.guidance.england.link.text = find out if you could get 15 hours free childcare a week for your 2 year old
-results.two.years.old.guidance.england.text.after.link = - this is 570 hours a year.
+results.two.years.old.guidance.england.two.freehours = You can get 15 hours free childcare a week in term time when your child is 3 years old – this is 570 hours a year.
+results.two.years.old.guidance.england.title = Free hours for your 2 year old
+results.two.years.old.guidance.england.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.england.link.text = you may be able to get 15 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.england.text.after.link = – this is 570 hours a year.
 results.two.years.old.guidance.england.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
 
-results.two.years.old.guidance.scotland.title = Your 2 year old
-results.two.years.old.guidance.scotland.text.before.link = If you are on certain benefits, you can
-results.two.years.old.guidance.scotland.link.text = find out if you could get 16 hours free childcare a week for your 2 year old
-results.two.years.old.guidance.scotland.text.after.link = - this is 600 hours a year.
+results.two.years.old.guidance.scotland.two.freehours = You can get 16 hours free childcare a week in term time when your child is 3 years old - this is 600 hours a year.
+results.two.years.old.guidance.scotland.title = Free hours for your 2 year old
+results.two.years.old.guidance.scotland.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.scotland.link.text = you may be able to get 16 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.scotland.text.after.link = – this is 600 hours a year.
 results.two.years.old.guidance.scotland.para1.help.link =  https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare/
 
-results.two.years.old.guidance.wales.title = Your 2 year old
-results.two.years.old.guidance.wales.text.before.link = If you are on certain benefits, you can
-results.two.years.old.guidance.wales.link.text = find out if you could get 10 hours free childcare a week for your 2 year old
-results.two.years.old.guidance.wales.text.after.link = - this is 390 hours a year.
+results.two.years.old.guidance.wales.two.freehours = You can get a minimum of 10 hours of funded early education a week in term time when your child is 3 years old – this is 390 hours a year.
+results.two.years.old.guidance.wales.title = Free hours for your 2 year old
+results.two.years.old.guidance.wales.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.wales.link.text = you may be able to get up to 10 hours of funded early education a week for your 2 year old
+results.two.years.old.guidance.wales.text.after.link = – this is 390 hours a year.
 results.two.years.old.guidance.wales.para1.help.link =   http://gov.wales/topics/people-and-communities/people/children-and-young-people/childcare/?lang=en
+
+results.two.years.old.guidance.northernireland.title = Free hours for your 2 year old
+results.two.years.old.guidance.northernireland.two.freehours = You can get 12 and a half hours free preschool education a week in term time when your child is 3 years old - this is 475 hours a year.
 
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
