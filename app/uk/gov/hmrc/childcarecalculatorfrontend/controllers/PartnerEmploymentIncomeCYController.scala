@@ -39,8 +39,8 @@ class PartnerEmploymentIncomeCYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: PartnerEmploymentIncomeCYForm,
-                                        taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                        taxYearInfo: TaxYearInfo,
+                                        form: PartnerEmploymentIncomeCYForm) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>

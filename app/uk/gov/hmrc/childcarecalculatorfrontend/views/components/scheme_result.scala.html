@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
+
 @(
         title: String,
         couldGet: Option[String] = None,
@@ -34,7 +36,8 @@
         notEligibleID1: Option[String] = None,
         notEligibleID2: Option[String] = None,
         displayWarning: Boolean = false,
-        warningMessage: String = ""
+        warningMessage: String = "",
+        displayTCGuidanceLink: Boolean = false
 )(implicit messages: Messages)
 
 
@@ -45,7 +48,12 @@
             <p>@couldGet <span class="heading-xlarge results">@eligibility</span>
                 @periodText</p>
             @if(para1.isDefined) {
-                <p @if(notEligibleID1.isDefined) { id="@notEligibleID1" }>@para1</p>
+            <p @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a rel="external" target="_blank"
+                                                            id="tcGuidanceLink" href=@tcSchemeGuidanceLinkUrl>
+                @messages("result.tc.scheme.guidance.link")<span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span>
+                </a>
+                }
+            </p>
             }
             @if(para2.isDefined) {
                 <p @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
@@ -58,13 +66,15 @@
             @if(detailSummary.isDefined) {
                 <details @if(detailClass.isDefined) {class="@detailClass"}>
                     <summary>@detailSummary</summary>
-                    <p>@detailPara1</p>
-                    @if(detailPara2.isDefined) {<p>@detailPara2</p>}
-                    @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
-                    @if(detailPara3.isDefined) {<p>@detailPara3</p>}
-                    @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
-                    @if(detailPara4.isDefined) {<p>@detailPara4</p>}
-                    @if(detailPara5.isDefined) {<p>@detailPara5</p>}
+                    <div>
+                        <p>@detailPara1</p>
+                        @if(detailPara2.isDefined) {<p>@detailPara2</p>}
+                        @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
+                        @if(detailPara3.isDefined) {<p>@detailPara3</p>}
+                        @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
+                        @if(detailPara4.isDefined) {<p>@detailPara4</p>}
+                        @if(detailPara5.isDefined) {<p>@detailPara5</p>}
+                    </div>
                 </details>
             }
             @if(displayWarning) {

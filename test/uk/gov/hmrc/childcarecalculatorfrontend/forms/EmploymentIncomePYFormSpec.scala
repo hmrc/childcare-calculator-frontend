@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomePY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class EmploymentIncomePYFormSpec extends FormBehaviours {
 
@@ -26,10 +27,8 @@ class EmploymentIncomePYFormSpec extends FormBehaviours {
     "partnerEmploymentIncomePY" -> "2"
   )
 
-  override val maxValue: BigDecimal = 999999.99
-  override val minValue: BigDecimal = 0
-
   val form = new EmploymentIncomePYForm(frontendAppConfig).apply()
+
 
   "EmploymentIncomePY form" must {
     behave like questionForm(EmploymentIncomePY(1, 2))
@@ -40,8 +39,17 @@ class EmploymentIncomePYFormSpec extends FormBehaviours {
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerEmploymentIncomePY",
       "partnerEmploymentIncomePY.required", "partnerEmploymentIncomePY.required")
 
-    behave like formWithDecimalField("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+    "not bind when either value is above the threshold of 999999.99" in {
+      val expectedErrors =
+        error("parentEmploymentIncomePY", parentEmploymentIncomePYInvalidErrorKey) ++
+          error("partnerEmploymentIncomePY", partnerEmploymentIncomePYInvalidErrorKey)
 
-    behave like formWithMinimumValue("parentEmploymentIncomePY", "partnerEmploymentIncomePY")
+      val data = Map(
+        "parentEmploymentIncomePY" -> "1000000.0",
+        "partnerEmploymentIncomePY" -> "1000000.0"
+      )
+
+      checkForError(form, data, expectedErrors)
+    }
   }
 }

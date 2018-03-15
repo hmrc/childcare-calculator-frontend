@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFre
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -35,10 +35,14 @@ import scala.concurrent.Future
 class ResultsService @Inject()(eligibilityService: EligibilityService,
                                freeHours: FreeHours,
                                maxFreeHours: MaxFreeHours,
-                               firstParagraphBuilder: FirstParagraphBuilder) {
-  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
+                               firstParagraphBuilder: FirstParagraphBuilder,
+                               tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder) {
+  def getResultsViewModel(answers: UserAnswers, location: Location)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
+
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
-      location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false))
+      location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
+      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers))
+
     val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
     result.map(results => {

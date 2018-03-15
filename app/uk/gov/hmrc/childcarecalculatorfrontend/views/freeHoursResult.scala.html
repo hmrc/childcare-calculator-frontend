@@ -57,6 +57,7 @@
     @main_template(
         title = messages("freeHoursResult.title"),
         appConfig = appConfig,
+        timeout = false,
         bodyClasses = None) {
 
         @components.back_link()
@@ -144,7 +145,7 @@
 
         </p>
 
-        <div class="feedback">
+        <div class="panel panel-border-wide survey">
             <p><a rel="external" target="_blank" id="feedbackSurveyLink"
             href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
                 @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a>

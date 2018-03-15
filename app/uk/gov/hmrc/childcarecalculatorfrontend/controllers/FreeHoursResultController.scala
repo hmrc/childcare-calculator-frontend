@@ -37,7 +37,6 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
     implicit request =>
 
       val location = utils.getOrException(request.userAnswers.location, Some("freeHoursController"), Some("location"))
-      val checkYourAnswersHelper: CheckYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
       val eligibility = freeHours.eligibility(request.userAnswers)
 
 
@@ -52,7 +51,7 @@ class FreeHoursResultController @Inject()(appConfig: FrontendAppConfig,
       val paidEmployment = checkIfInEmployment(request.userAnswers)
 
       val approvedProvider = request.userAnswers.approvedProvider.fold(false){
-        case ChildcareConstants.no => false
+        case ChildcareConstants.NO => false
         case _ => true
       }
 

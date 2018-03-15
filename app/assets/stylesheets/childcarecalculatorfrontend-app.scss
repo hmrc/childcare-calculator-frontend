@@ -139,11 +139,16 @@ h2.heading-medium {
 
 .feedback p {
     margin: .63158em 0;
-    font-weight: 700
+    font-weight: 700;
 }
 
 .notice .icon {
-  margin-top: -17px
+    margin-top: -17px;
+}
+
+
+.timeout-dialog h1.heading-medium {
+    display: none;
 }
 
 .notice {

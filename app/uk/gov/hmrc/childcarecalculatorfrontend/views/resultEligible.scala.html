@@ -22,8 +22,6 @@
 
 @(model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
 
-@location = @{model.location.getOrElse("")}
-
 @freeHoursContactCouncil = {
     <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
 }
@@ -34,15 +32,15 @@
 
 @if(model.freeHours.isDefined) {
 
-    @defining(if(location.toString.equals(Location.ENGLAND.toString) && model.freeHours.contains(noOfFreeHours15)) {
+    @defining(if(model.location == Location.ENGLAND && model.freeHours.contains(noOfFreeHours15)) {
                 totalNoOfHoursAYear} else {utils.valueFormatter(2*totalNoOfHoursAYear)}) { noOfHoursInAYear =>
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             couldGet = Some(messages("result.you.could.get.up.to")),
             eligibility = Some(model.freeHours.fold("")(hours => if(hours!=freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours")),
-            periodText = if(location.toString.equals(Location.ENGLAND.toString)){
-                            Some(messages(s"result.free.hours.period.$location", noOfHoursInAYear))} else {
-                            Some(messages(s"result.free.hours.period.$location"))},
+            periodText = if(model.location == Location.ENGLAND){
+                            Some(messages(s"result.free.hours.period.${model.location}", noOfHoursInAYear))} else {
+                            Some(messages(s"result.free.hours.period.${model.location}"))},
             para1 = Some(messages("result.free.hours.para1")),
             detailSummary = Some(messages("result.free.hours.detail.summary")),
             detailClass = Some("freeHours"),

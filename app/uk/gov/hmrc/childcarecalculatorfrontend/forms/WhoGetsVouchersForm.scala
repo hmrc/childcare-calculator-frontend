@@ -41,8 +41,7 @@ object WhoGetsVouchersForm extends FormErrorHelper {
   def options = Seq(InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.YOU.toString),
     InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.PARTNER.toString),
     InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.BOTH.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NEITHER.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NOTSURE.toString))
+    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NEITHER.toString))
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

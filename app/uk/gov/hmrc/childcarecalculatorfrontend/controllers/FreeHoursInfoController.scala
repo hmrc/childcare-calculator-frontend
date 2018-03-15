@@ -45,7 +45,7 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
       }
 
       val hasApprovedCosts: Boolean = request.userAnswers.approvedProvider.fold(false) {
-        case Yes | NotSure => true
+        case YES | NOTSURE => true
         case _ => false
       }
 

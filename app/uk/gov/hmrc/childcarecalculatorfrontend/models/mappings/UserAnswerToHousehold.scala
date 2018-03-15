@@ -148,16 +148,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
   }
 
-  private def stringToYesNoUnsureEnum(x: Option[String]): Option[YesNoUnsureEnum] = x match {
-    case Some(x) =>
-      x.toLowerCase match {
-        case "yes" => Some(YesNoUnsureEnum.YES)
-        case "no" => Some(YesNoUnsureEnum.NO)
-        case _ => Some(YesNoUnsureEnum.NOTSURE)
-      }
-    case _ => None
-  }
-
   private def stringToAgeEnum(x: Option[String]): Option[AgeEnum] = x match {
     case Some(x) =>
       x.toUpperCase match {
@@ -187,8 +177,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     }
     vouchers.fold(Some(YesNoUnsureEnum.NO)) {
       case ChildcareConstants.Both | `whichParent` => Some(YesNoUnsureEnum.YES)
-      case ChildcareConstants.NotSure => Some(YesNoUnsureEnum.NOTSURE)
-      case ChildcareConstants.Yes => Some(YesNoUnsureEnum.YES)
+      case ChildcareConstants.YES => Some(YesNoUnsureEnum.YES)
       case _ => Some(YesNoUnsureEnum.NO)
     }
   }
@@ -198,7 +187,8 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
-      getVoucherValue(answers.yourChildcareVouchers)
+
+      getVoucherValue(claimantVoucherValue(answers.yourChildcareVouchers))
     } else {
       getVoucherValue(answers.whoGetsVouchers)
     }
@@ -228,8 +218,9 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
+
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
-      getVoucherValue(answers.partnerChildcareVouchers, isPartner = true)
+      getVoucherValue(claimantVoucherValue(answers.partnerChildcareVouchers), isPartner = true)
     } else {
       getVoucherValue(answers.whoGetsVouchers, isPartner = true)
     }
@@ -253,8 +244,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       minimumEarnings = minEarnings,
       maximumEarnings = maxEarnings
     )
-
   }
+
+  private def claimantVoucherValue(voucherValue: Option[Boolean]) =
+    Some(if(voucherValue.getOrElse(false)) YesNoUnsureEnum.YES.toString else YesNoUnsureEnum.NO.toString)
 
 }
 
@@ -525,7 +518,5 @@ sealed trait StatutoryPay extends TaxYearInfo {
       case _ =>
         None
     }
-
   }
-
 }

@@ -92,6 +92,7 @@ whatToTellTheCalculator.li.costs = what you think your weekly or monthly approve
 whatToTellTheCalculator.li.benefits.child = any benefits they get
 whatToTellTheCalculator.li.ages = their age and any dates they may have started further education or training
 whatToTellTheCalculator.para3 = You can change your answers as many times as you like to recalculate and compare your results.
+whatToTellTheCalculator.para4 = It should take around 5 minutes to complete.
 
 location.title = Where do you live?
 location.heading = Where do you live?
@@ -210,6 +211,7 @@ freeHoursResult.summary.table.approvedChildCareCosts = Approved childcare costs
 
 doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
+doYouLiveWithPartner.para1 = This includes if they are posted overseas as a Crown servant, member of the armed forces, a mariner or working offshore.
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
 doYouLiveWithPartner.error = Select yes if you have a partner that you live with
 
@@ -289,16 +291,16 @@ whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax 
 whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
 whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
-yourChildcareVouchers.title = Does your employer offer childcare vouchers?
-yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
+yourChildcareVouchers.title = Do you get childcare vouchers from your employer?
+yourChildcareVouchers.heading = Do you get childcare vouchers from your employer?
 yourChildcareVouchers.YES = Yes
 yourChildcareVouchers.NO = No
 yourChildcareVouchers.NOTSURE = Not Sure
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
 yourChildcareVouchers.error = Select yes if your employer offers childcare vouchers
 
-partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
-partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.title = Does your partner get childcare vouchers from their employer?
+partnerChildcareVouchers.heading = Does your partner get childcare vouchers from their employer?
 partnerChildcareVouchers.YES = Yes
 partnerChildcareVouchers.NO = No
 partnerChildcareVouchers.NOTSURE = Not Sure
@@ -313,13 +315,12 @@ eitherGetsVouchers.NOTSURE = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = Select yes if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = Whose employer offers childcare vouchers?
-whoGetsVouchers.heading = Whose employer offers childcare vouchers?
+whoGetsVouchers.title = Do either of you get childcare vouchers from your employer?
+whoGetsVouchers.heading = Do either of you get childcare vouchers from your employer?
 whoGetsVouchers.you = Yours
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
 whoGetsVouchers.neither = Neither
-whoGetsVouchers.notSure = Not sure
 whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
@@ -487,11 +488,10 @@ noOfChildren.checkYourAnswersLabel = noOfChildren
 maxFreeHoursInfo.title = You can get 30 hours free childcare
 maxFreeHoursInfo.heading = You can get 30 hours free childcare
 maxFreeHoursInfo.could.get.max.hours = You can get 30 hours free childcare a week for your 3 or 4 year old, which is 1,140 hours a year. You can use the hours in and outside of term time. Your provider may apply charges for additional services. Free childcare hours stop when your child starts in reception class.
-maxFreeHoursInfo.info = If you’re here only to find out about 30 hours free childcare, you can
-maxFreeHoursInfo.info.link = read more information
+maxFreeHoursInfo.info = If you are only interested in the free hours scheme, you can
+maxFreeHoursInfo.info.link = read more information about 30 hours free childcare before applying for it
 maxFreeHoursInfo.info.link.opens.new.window = (opens in a new window)
 maxFreeHoursInfo.info.link.url =  https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds
-maxFreeHoursInfo.info.part2 = before applying for it.
 
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you’d buy vouchers from your employer through salary sacrifice.
@@ -534,7 +534,7 @@ parentEmploymentIncomeCY.title = How much will you get paid this year?
 parentEmploymentIncomeCY.heading = How much will you get paid this year?
 parentEmploymentIncomeCY.info = Your pay
 parentEmploymentIncomeCY.blank = Enter how much you will get paid this year
-parentEmploymentIncomeCY.invalid = How much you will get paid this year must be a number no less than 1
+parentEmploymentIncomeCY.invalid = Enter numbers between 1 and 999999.99 for how much you will get paid this year
 parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
 parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
 parentEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
@@ -543,7 +543,7 @@ partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.info = Partner’s pay
 partnerEmploymentIncomeCY.blank = Enter how much your partner will get paid this year
-partnerEmploymentIncomeCY.invalid = How much your partner will get paid this year must be a number no less than 1
+partnerEmploymentIncomeCY.invalid = Enter numbers between 1 and 999999.99 for how much your partner will get paid this year
 partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay they’ve had.
 partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
@@ -773,7 +773,7 @@ partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you
 yourIncomeInfoPY.title = Your income for the previous year
 yourIncomeInfoPY.heading = Your income for the previous year
 yourIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-yourIncomeInfoPY.guidance = You will now answer similar questions about your income for the previous year.
+yourIncomeInfoPY.guidance = You will now be asked about your income for the previous year.
 yourIncomeInfoPY.li.income_paid_work = income from paid work
 yourIncomeInfoPY.li.pensions = pension contributions
 yourIncomeInfoPY.li.other_income = other income
@@ -784,7 +784,7 @@ yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 bothIncomeInfoPY.title = You and your partner’s income for the previoys year
 bothIncomeInfoPY.heading = You and your partner’s income for the previous year
 bothIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-bothIncomeInfoPY.guidance = You will now answer similar questions about you and your partner’s income for the previous year.
+bothIncomeInfoPY.guidance = You will now be asked about you and your partner’s income for the previous year.
 bothIncomeInfoPY.li.income_paid_work = income from paid work
 bothIncomeInfoPY.li.pensions = pension contributions
 bothIncomeInfoPY.li.other_income = other income
@@ -849,7 +849,8 @@ employmentIncomeCY.parentEmploymentIncome = Your pay
 employmentIncomeCY.partnerEmploymentIncome = Partner’s pay
 employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
 employmentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
-employmentIncomeCY.hint = This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
+employmentIncomeCY.hint = This is the total pay from all your jobs,or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
+
 
 youAnyTheseBenefitsPY.title = Did you get any of these benefits in the previous year?
 youAnyTheseBenefitsPY.heading = Did you get any of these benefits in the previous year?
@@ -995,7 +996,7 @@ parentEmploymentIncomePY.heading = How much did you get paid in the previous yea
 parentEmploymentIncomePY.info = Your pay
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
 parentEmploymentIncomePY.required = Enter how much you got paid in the previous year
-parentEmploymentIncomePY.invalid = How much you got paid in the previous year must be a number no less than 1
+parentEmploymentIncomePY.invalid = Enter numbers between 1 and 999999.99 for how much you got paid in the previous year
 parentEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 parentEmploymentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
@@ -1006,7 +1007,7 @@ partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get 
 partnerEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
 partnerEmploymentIncomePY.required = Enter how much your partner got paid in the previous year
-partnerEmploymentIncomePY.invalid = How much your partner got paid in the previous year must be a number no less than 1
+partnerEmploymentIncomePY.invalid = Enter numbers from 1 to 999999.99 for how much your partner got paid in the previous year
 
 employmentIncomePY.title = How much did you and your partner get paid in the previous year?
 employmentIncomePY.heading = How much did you and your partner get paid in the previous year?
@@ -1227,8 +1228,14 @@ result.schemes.tfc.ineligibility.taxCredits.guidance.para = Tax-Free Childcare c
 result.schemes.tfc.ineligibility.taxCredits.guidance.bullet = Tax-Free Childcare cannot be used with tax credits
 result.schemes.tfc.ineligibility.vouchers.guidance.bullet = Tax-Free Childcare cannot be used with childcare vouchers
 result.schemes.tfc.ineligibility.vouchers.guidance.para = Tax-Free Childcare cannot be used with childcare vouchers.
-result.schemes.tfc.tc.warning = Your tax credits will stop if you apply for Tax-Free Childcare.
+result.schemes.tfc.tc.warning = If you receive Tax Credits and apply for Tax Free Childcare your entitlement will be stopped.
 result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for Tax-Free Childcare.
+result.changes.to.circumstances.heading = Changes in your income
+result.changes.to.circumstances.para = The estimates for what you could get cover the next 12 months. If your income changes in the next 12 months, you should come back and get another estimate because the amount you could get will also change.
+
+
+result.estimates.income.title = Your estimates and changes in your income
+result.estimates.income.para1 = The amount you could get is for the next 12 months. This is an estimate and may be different from what you are getting. If your income changes in that time, you should come back and get another estimate because the amount you could get will also change.
 
 result.read.more.button = Read more
 
@@ -1264,8 +1271,13 @@ result.tc.detailPara2.tax.credit.replace.uc.link = https://www.gov.uk/universal-
 result.tc.detailPara3 = It is for children under 16, under 18 if disabled, or under 19 if in approved education or training.
 
 result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
-
 result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have told us that you were already getting Universal Credit
+result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
+result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get childcare support from tax credits as both you and your partner would each/ need to work 16 hours or more a week.
+result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits = You cannot get childcare support from tax credits. Although your partner gets a benefit that would make them eligible, you need to work 16 hours or more a week.
+result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits =  You cannot get childcare support from tax credits. Although you get a benefit that would make you eligible, your partner needs to work 16 hours or more a week.
+result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
+result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.
@@ -1324,7 +1336,6 @@ aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in
 aboutYourResults.esc.para2 = They are for children under 16, or 18 if disabled.
 aboutYourResults.esc.para3 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
 
-
 aboutYourResults.more.info.title = How to apply
 aboutYourResults.more.info.para1 = Read more about the schemes you could get help from and find out how to apply for:
 aboutYourResults.more.info.england.hours.title = 30 hours free childcare
@@ -1361,11 +1372,29 @@ aboutYourResults.more.info.northern-ireland.esc.title = childcare vouchers
 aboutYourResults.more.info.northern-ireland.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
 aboutYourResults.more.info.summary = You can apply for 30 hours free childcare and Tax-Free Childcare at the same time.
 
-results.two.years.old.guidance.title = Your 2 year old
-results.two.years.old.guidance.text.before.link = If you are on certain benefits, you can
-results.two.years.old.guidance.link.text = find out if you could get 15 hours free childcare a week for your 2 year old
-results.two.years.old.guidance.text.after.link = - this is 570 hours a year.
-results.two.years.old.guidance.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
+results.two.years.old.guidance.england.two.freehours = You can get 15 hours free childcare a week in term time when your child is 3 years old – this is 570 hours a year.
+results.two.years.old.guidance.england.title = Free hours for your 2 year old
+results.two.years.old.guidance.england.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.england.link.text = you may be able to get 15 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.england.text.after.link = – this is 570 hours a year.
+results.two.years.old.guidance.england.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
+
+results.two.years.old.guidance.scotland.two.freehours = You can get 16 hours free childcare a week in term time when your child is 3 years old - this is 600 hours a year.
+results.two.years.old.guidance.scotland.title = Free hours for your 2 year old
+results.two.years.old.guidance.scotland.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.scotland.link.text = you may be able to get 16 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.scotland.text.after.link = – this is 600 hours a year.
+results.two.years.old.guidance.scotland.para1.help.link =  https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare/
+
+results.two.years.old.guidance.wales.two.freehours = You can get a minimum of 10 hours of funded early education a week in term time when your child is 3 years old – this is 390 hours a year.
+results.two.years.old.guidance.wales.title = Free hours for your 2 year old
+results.two.years.old.guidance.wales.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.wales.link.text = you may be able to get up to 10 hours of funded early education a week for your 2 year old
+results.two.years.old.guidance.wales.text.after.link = – this is 390 hours a year.
+results.two.years.old.guidance.wales.para1.help.link =   http://gov.wales/topics/people-and-communities/people/children-and-young-people/childcare/?lang=en
+
+results.two.years.old.guidance.northernireland.title = Free hours for your 2 year old
+results.two.years.old.guidance.northernireland.two.freehours = You can get 12 and a half hours free preschool education a week in term time when your child is 3 years old - this is 475 hours a year.
 
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
@@ -1383,6 +1412,12 @@ results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.window = (opens in a new window)
 
 
+timeout.heading = You are about to be timed out
+timeout.message = For your security, we will clear what you have entered in
+timeout.continue = Continue what you were doing
+timeout.exit = Clear what you entered now
+
+
 youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?
 youGetSameIncomePreviousYear.heading = Did you get the same income for the previous year?
 youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYear
@@ -1390,3 +1425,9 @@ youGetSameIncomePreviousYear.error = Select yes if you got the same income for t
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
+
+bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
+bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
