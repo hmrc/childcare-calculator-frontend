@@ -27,6 +27,10 @@ class FormErrorHelperSpec extends SpecBase {
   val errorKeyInvalidParentMaxEarningsBoth = "invalid both max key"
   val errorKeyInvalidParentMaxEarnings = "invalid max key"
   val errorKeyInvalidPartnerMaxEarningsBoth  = "invalid both max key"
+  val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
+  val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
+  val errorParentKeyInvalidStr = "invalid key"
+  val errorPartnerKeyInvalidStr = "invalid key"
 
 
   "FormErrorHelper" must {
@@ -34,9 +38,6 @@ class FormErrorHelperSpec extends SpecBase {
     "return the form with error when partner answered max earnings question under 100000 but input was above 100000" in {
 
       val maximumEarnings = Some(false)
-
-      val errorParentKeyInvalid = "invalid key"
-      val errorPartnerKeyInvalid = "invalid key"
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "8000",
       "partnerEmploymentIncomeCY" -> "100000"))
@@ -48,8 +49,8 @@ class FormErrorHelperSpec extends SpecBase {
         errorKeyInvalidPartnerMaxEarnings,
         errorKeyInvalidParentMaxEarningsBoth,
         errorKeyInvalidPartnerMaxEarningsBoth,
-        errorParentKeyInvalid,
-        errorPartnerKeyInvalid,
+        errorParentKeyInvalidStr,
+        errorPartnerKeyInvalidStr,
         inputForm) mustBe formWithError
 
     }
@@ -57,8 +58,6 @@ class FormErrorHelperSpec extends SpecBase {
     "return the form with error when parent answered max earnings question under 100000 but input was above 100000" in {
 
       val maximumEarnings = Some(false)
-      val errorParentKeyInvalid = "invalid key"
-      val errorPartnerKeyInvalid = "invalid key"
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "100000",
         "partnerEmploymentIncomeCY" -> "8000"))
@@ -70,8 +69,8 @@ class FormErrorHelperSpec extends SpecBase {
         errorKeyInvalidPartnerMaxEarnings,
         errorKeyInvalidParentMaxEarningsBoth,
         errorKeyInvalidPartnerMaxEarningsBoth,
-        errorParentKeyInvalid,
-        errorPartnerKeyInvalid,
+        errorParentKeyInvalidStr,
+        errorPartnerKeyInvalidStr,
         inputForm) mustBe formWithError
 
     }
@@ -79,8 +78,6 @@ class FormErrorHelperSpec extends SpecBase {
     "return the form with error when both answered max earnings question under 100000 but input was above 100000" in {
 
       val maximumEarnings = Some(false)
-      val errorParentKeyInvalid = "invalid key"
-      val errorPartnerKeyInvalid = "invalid key"
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "100000",
         "partnerEmploymentIncomeCY" -> "100000"))
@@ -93,8 +90,8 @@ class FormErrorHelperSpec extends SpecBase {
         errorKeyInvalidPartnerMaxEarnings,
         errorKeyInvalidParentMaxEarningsBoth,
         errorKeyInvalidPartnerMaxEarningsBoth,
-        errorParentKeyInvalid,
-        errorPartnerKeyInvalid,
+        errorParentKeyInvalidStr,
+        errorPartnerKeyInvalidStr,
         inputForm) mustBe formWithError
 
     }
@@ -102,8 +99,6 @@ class FormErrorHelperSpec extends SpecBase {
     "return the same form without error when both answered max earnings question under 100000 and input was below 100000" in {
 
       val maximumEarnings = Some(false)
-      val errorParentKeyInvalid = "invalid key"
-      val errorPartnerKeyInvalid = "invalid key"
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "8000",
         "partnerEmploymentIncomeCY" -> "8000"))
@@ -113,16 +108,14 @@ class FormErrorHelperSpec extends SpecBase {
           errorKeyInvalidPartnerMaxEarnings,
           errorKeyInvalidParentMaxEarningsBoth,
           errorKeyInvalidPartnerMaxEarningsBoth,
-          errorParentKeyInvalid,
-          errorPartnerKeyInvalid,
+          errorParentKeyInvalidStr,
+          errorPartnerKeyInvalidStr,
         inputForm) mustBe inputForm
     }
 
   "return the form when both answered max earnings question above 1000000 but input was above 1000000" in {
 
       val maximumEarnings = Some(true)
-      val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
-      val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "1000000",
         "partnerEmploymentIncomeCY" -> "1000000"))
@@ -141,8 +134,6 @@ class FormErrorHelperSpec extends SpecBase {
     "return the form with error when partner answered max earnings question under 1000000 but input was above 1000000" in {
 
       val maximumEarnings = Some(true)
-      val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
-      val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "80000",
         "partnerEmploymentIncomeCY" -> "1000000"))
@@ -160,8 +151,6 @@ class FormErrorHelperSpec extends SpecBase {
     "return the form with error when parent answered max earnings question under 1000000 but input was above 1000000" in {
 
       val maximumEarnings = Some(true)
-      val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
-      val errorPartnerKeyInvalid = partnerEmploymentIncomeInvalidErrorKey
 
       val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "1000000",
         "partnerEmploymentIncomeCY" -> "100000"))
