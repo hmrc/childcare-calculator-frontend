@@ -348,6 +348,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertRenderedByCssSelector(view, ".twoYearsOld")
 
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.two.freehours"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.title"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.text.before.link"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.link.text"))
@@ -365,6 +366,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertRenderedByCssSelector(view, ".twoYearsOld")
 
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.two.freehours"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.title"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.text.before.link"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.link.text"))
@@ -381,6 +383,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertRenderedByCssSelector(view, ".twoYearsOld")
 
+        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.two.freehours"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.title"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.before.link"))
         view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.link.text"))
