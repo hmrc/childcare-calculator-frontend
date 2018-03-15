@@ -40,5 +40,5 @@ object FakeDataCacheConnector extends DataCacheConnector {
 
   override def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(implicit fmt: Format[Map[K, V]]) = Future(CacheMap(cacheId, Map()))
 
-  override def updateMap(data: CacheMap): Unit = ???
+  override def updateMap(data: CacheMap): Unit = CacheMap("id", Map())
 }
