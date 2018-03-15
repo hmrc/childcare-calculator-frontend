@@ -66,8 +66,12 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       )
   }
 
-  private def validateForm(boundForm: Form[EmploymentIncomeCY], maxEarnings : Option[Boolean]) =
-    if(boundForm.hasErrors) {
+  private def validateForm(boundForm: Form[EmploymentIncomeCY], maxEarnings : Option[Boolean]) = {
+
+/*    val maxIncome = appConfig.maxIncome
+    val maxEmploymentIncome = appConfig.maxEmploymentIncome*/
+
+    if (boundForm.hasErrors) {
       boundForm
     } else {
       validateBothMaxIncomeEarnings(maxEarnings,
@@ -79,6 +83,7 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
         partnerEmploymentIncomeInvalidErrorKey,
         boundForm)
     }
+  }
 
   private def maximumEarnings(answers: UserAnswers) = {
     answers.whoIsInPaidEmployment match {
