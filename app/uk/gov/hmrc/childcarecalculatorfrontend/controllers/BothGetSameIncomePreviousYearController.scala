@@ -60,6 +60,10 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
               val dataWithPreviousYearIncome = CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
               dataCacheConnector.updateMap(dataWithPreviousYearIncome)
             }
+            else {
+              val removedData = CacheMapCloner.removeClonedDataForPreviousYearIncome(request.userAnswers.cacheMap)
+              dataCacheConnector.updateMap(removedData)
+            }
             Redirect(navigator.nextPage(BothGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap)))})
       )
   }
