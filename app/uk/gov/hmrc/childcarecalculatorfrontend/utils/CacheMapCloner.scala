@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsBoolean, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -68,8 +68,22 @@ object CacheMapCloner {
     ParentOtherIncomeId.toString -> ParentOtherIncomeAmountPYId.toString,
     PartnerOtherIncomeId.toString -> PartnerOtherIncomeAmountPYId.toString)
 
-  def cloneSection(data: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String,JsValue]] = None): CacheMap = {
-    val cacheMapWithClearedData = removeClonedData(data,sectionToClone)
+  def cloneCYIncomeIntoPYIncome(userAnswers: CacheMap) = {
+    userAnswers.getEntry[Boolean](DoYouLiveWithPartnerId.toString) match {
+      case Some(livesWithPartner) => {
+        if (livesWithPartner) {
+          cloneSection(userAnswers,bothIncomeCurrentYearToPreviousYear)
+        }
+        else {
+          cloneSection(userAnswers,singleParentCurrentYearToPreviousYear)
+        }
+      }
+      case _ => userAnswers
+    }
+  }
+
+  def cloneSection(userAnswers: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String,JsValue]] = None): CacheMap = {
+    val cacheMapWithClearedData = removeClonedData(userAnswers,sectionToClone)
     val clonedCacheMap = sectionToClone.foldLeft(cacheMapWithClearedData)((clonedData, sectionToClone) => {
       clonedData.data.get(sectionToClone._1) match {
         case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
