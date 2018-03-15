@@ -34,14 +34,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncom
 import scala.concurrent.Future
 
 class PartnerEmploymentIncomeCYController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        taxYearInfo: TaxYearInfo,
-                                        form: PartnerEmploymentIncomeCYForm) extends FormErrorHelper with FrontendController with I18nSupport {
+                                                     appConfig: FrontendAppConfig,
+                                                     override val messagesApi: MessagesApi,
+                                                     dataCacheConnector: DataCacheConnector,
+                                                     navigator: Navigator,
+                                                     getData: DataRetrievalAction,
+                                                     requireData: DataRequiredAction,
+                                                     taxYearInfo: TaxYearInfo,
+                                                     form: PartnerEmploymentIncomeCYForm) extends FormErrorHelper with FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -61,12 +61,10 @@ class PartnerEmploymentIncomeCYController @Inject()(
       val errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
 
       validateMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
-
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[BigDecimal](request.sessionId, PartnerEmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
-      )
+            Redirect(navigator.nextPage(PartnerEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
   }
 }

@@ -57,18 +57,26 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
 
       val errorKeyInvalidParentMaxEarnings: String = parentEmploymentIncomeInvalidMaxEarningsErrorKey
       val errorKeyInvalidPartnerMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
+      val errorKeyInvalidParentMaxEarningsBoth: String = parentEmploymentIncomeBothInvalidMaxEarningsErrorKey
+      val errorKeyInvalidPartnerMaxEarningsBoth: String = partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey
       val errorParentKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
       val errorPartnerKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
       val maxEarnings = maximumEarnings(request.userAnswers)
 
-      validateBothMaxIncomeEarnings(maxEarnings, errorKeyInvalidParentMaxEarnings, errorKeyInvalidPartnerMaxEarnings, errorParentKeyInvalid, errorPartnerKeyInvalid, boundForm).fold(
+      validateBothMaxIncomeEarnings(maxEarnings,
+        errorKeyInvalidParentMaxEarnings,
+        errorKeyInvalidPartnerMaxEarnings,
+        errorKeyInvalidParentMaxEarningsBoth,
+        errorKeyInvalidPartnerMaxEarningsBoth,
+        errorParentKeyInvalid,
+        errorPartnerKeyInvalid,
+        boundForm).fold(
 
         (formWithErrors: Form[EmploymentIncomeCY]) =>
           Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
-      )
+            Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
   }
 
   private def maximumEarnings(answers: UserAnswers) = {

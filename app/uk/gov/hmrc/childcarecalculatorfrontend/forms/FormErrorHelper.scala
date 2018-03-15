@@ -79,11 +79,9 @@ class FormErrorHelper extends Mappings {
         val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
         if (inputtedEmploymentIncomeValue >= maxIncome && !maxEarnings) {
           boundForm.withError("value", errorKeyInvalidMaxEarnings)
-        }
-        else if (inputtedEmploymentIncomeValue >= maxEmploymentIncome && maxEarnings) {
+        }else if (inputtedEmploymentIncomeValue >= maxEmploymentIncome && maxEarnings) {
           boundForm.withError("value", errorKeyInvalid)
-        }
-        else {
+        }else {
           boundForm
         }
       }
@@ -96,6 +94,8 @@ class FormErrorHelper extends Mappings {
   def validateBothMaxIncomeEarnings(maximumEarnings: Option[Boolean],
                                     errorKeyInvalidParentMaxEarnings: String,
                                     errorKeyInvalidPartnerMaxEarnings: String,
+                                    errorKeyInvalidParentMaxEarningsBoth: String,
+                                    errorKeyInvalidPartnerMaxEarningsBoth: String,
                                     errorParentKeyInvalid: String,
                                     errorPartnerKeyInvalid: String,
                                     boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] = {
@@ -106,14 +106,12 @@ class FormErrorHelper extends Mappings {
         val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0")
         val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0")
 
-        if ((parentEmpIncomeValue.toInt >= maxIncome) && (partnerEmpIncomeValue.toInt >= maxIncome) && !maxEarnings) {
+        if ((parentEmpIncomeValue.toDouble >= maxIncome) && (partnerEmpIncomeValue.toDouble >= maxIncome) && !maxEarnings) {
+          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarningsBoth)
+            .withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarningsBoth)
+        } else if (parentEmpIncomeValue.toDouble >= maxIncome && !maxEarnings) {
           boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
-            .withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
-
-        } else if (parentEmpIncomeValue.toInt >= maxIncome && !maxEarnings) {
-          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
-
-        } else if (partnerEmpIncomeValue.toInt >= maxIncome && !maxEarnings) {
+        } else if (partnerEmpIncomeValue.toDouble >= maxIncome && !maxEarnings) {
           boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
         }
 
