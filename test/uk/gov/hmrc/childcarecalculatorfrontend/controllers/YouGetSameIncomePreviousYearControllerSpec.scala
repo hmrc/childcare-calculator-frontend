@@ -60,7 +60,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
