@@ -88,7 +88,9 @@ object CacheMapCloner {
     BothOtherIncomeThisYearId.toString -> BothOtherIncomeLYId.toString,
     WhoGetsOtherIncomeCYId.toString -> WhoOtherIncomePYId.toString,
     YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString,
-    OtherIncomeAmountCYId.toString -> OtherIncomeAmountPYId.toString)
+    OtherIncomeAmountCYId.toString -> OtherIncomeAmountPYId.toString,
+    BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
+    PartnerPaidPensionCYId.toString -> PartnerPaidPensionPYId.toString)
 
   private val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
     EmploymentIncomePYId.toString -> Seq(ParentEmploymentIncomePYId.toString, PartnerEmploymentIncomePYId.toString),
@@ -120,6 +122,7 @@ object CacheMapCloner {
             case Some(ChildcareConstants.Partner) => {
               checkIfWorkedAtAnyPointThisYear(userAnswers,ParentPaidWorkCYId.toString,ChildcareConstants.Partner)
             }
+            case Some(ChildcareConstants.Both) => ChildcareConstants.Both
             case _ => ChildcareConstants.neither
           }
           cloneSection(userAnswers, bothIncomeCurrentYearToPreviousYear, Some(Map(BothPaidWorkPYId.toString -> JsBoolean(anyoneInPaidEmployment),WhoWasInPaidWorkPYId.toString -> JsString(whoInPaidEmployment))))

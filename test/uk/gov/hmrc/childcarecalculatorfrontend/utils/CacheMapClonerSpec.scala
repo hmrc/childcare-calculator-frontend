@@ -158,6 +158,14 @@ class CacheMapClonerSpec extends SpecBase {
         result.getEntry[Boolean](BothPaidWorkPYId.toString) mustBe Some(false)
       }
 
+      "When we say both are working then both were working PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.BOTH.toString)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[String](WhoWasInPaidWorkPYId.toString) mustBe Some(ChildcareConstants.both)
+      }
+
       "When we say that parent is working but at some point partner has worked this year then both worked PY" in {
         val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true),PartnerPaidWorkCYId.toString -> JsBoolean(true), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.YOU.toString)))
 
