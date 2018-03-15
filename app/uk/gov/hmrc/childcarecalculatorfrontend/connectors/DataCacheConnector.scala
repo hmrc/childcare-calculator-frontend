@@ -101,7 +101,7 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
     }
   }
 
-  def updateMap(data: CacheMap) = {
+  def updateMap(data: CacheMap) : Future[Boolean] = {
     sessionRepository().upsert(data)
   }
 }
@@ -110,7 +110,7 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
 trait DataCacheConnector {
   def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap]
 
-  def updateMap(data: CacheMap)
+  def updateMap(data: CacheMap) : Future[Boolean]
 
   def remove(cacheId: String, key: String): Future[Boolean]
 

@@ -33,12 +33,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePrevi
 import scala.concurrent.Future
 
 class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                                        override val messagesApi: MessagesApi,
+                                                        dataCacheConnector: DataCacheConnector,
+                                                        navigator: Navigator,
+                                                        getData: DataRetrievalAction,
+                                                        requireData: DataRequiredAction,
+                                                        taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -54,17 +54,18 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
       BooleanForm().bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
-        (getsSameIncomeAsLastYear) =>
-          dataCacheConnector.save[Boolean](request.sessionId, BothGetSameIncomePreviousYearId.toString, getsSameIncomeAsLastYear).map(cacheMap => {
-            if (getsSameIncomeAsLastYear) {
-              val dataWithPreviousYearIncome = CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
-              dataCacheConnector.updateMap(dataWithPreviousYearIncome)
-            }
-            else {
-              val removedData = CacheMapCloner.removeClonedDataForPreviousYearIncome(request.userAnswers.cacheMap)
-              dataCacheConnector.updateMap(removedData)
-            }
-            Redirect(navigator.nextPage(BothGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap)))})
-      )
+        (getsSameIncomeAsLastYear) => {
+          val clonedPreviousYearIncomeData = if (getsSameIncomeAsLastYear) {
+            CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
+          }
+          else {
+            CacheMapCloner.removeClonedDataForPreviousYearIncome(request.userAnswers.cacheMap)
+          }
+
+          dataCacheConnector.updateMap(clonedPreviousYearIncomeData).flatMap(_ => {
+            dataCacheConnector.save[Boolean](request.sessionId, BothGetSameIncomePreviousYearId.toString, getsSameIncomeAsLastYear).map(cacheMap =>
+              Redirect(navigator.nextPage(BothGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap))))
+          })
+        })
   }
 }

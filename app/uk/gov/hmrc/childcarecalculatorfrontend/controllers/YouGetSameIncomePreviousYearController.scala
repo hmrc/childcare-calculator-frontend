@@ -54,17 +54,19 @@ class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCon
       BooleanForm("youGetSameIncomePreviousYear.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(youGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
-        (getsSameIncomeAsLastYear) =>
-          dataCacheConnector.save[Boolean](request.sessionId, YouGetSameIncomePreviousYearId.toString, getsSameIncomeAsLastYear).map(cacheMap => {
-            if (getsSameIncomeAsLastYear) {
-              val dataWithPreviousYearIncome = CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
-              dataCacheConnector.updateMap(dataWithPreviousYearIncome)
-            }
-            else {
-              val removedData = CacheMapCloner.removeClonedDataForPreviousYearIncome(request.userAnswers.cacheMap)
-              dataCacheConnector.updateMap(removedData)
-            }
-            Redirect(navigator.nextPage(YouGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap)))})
+        (getsSameIncomeAsLastYear) => {
+          val clonedPreviousYearIncomeData =  if (getsSameIncomeAsLastYear) {
+            CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
+          }
+          else {
+            CacheMapCloner.removeClonedDataForPreviousYearIncome(request.userAnswers.cacheMap)
+          }
+
+          dataCacheConnector.updateMap(clonedPreviousYearIncomeData).flatMap(_ => {
+            dataCacheConnector.save[Boolean](request.sessionId, YouGetSameIncomePreviousYearId.toString, getsSameIncomeAsLastYear).map(cacheMap =>
+              Redirect(navigator.nextPage(YouGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap))))
+          })
+        }
       )
   }
 }
