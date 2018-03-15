@@ -234,4 +234,7 @@ object ChildcareConstants {
 
   val surveyChildcareSupportErrorKey = "surveyChildcareSupport.error"
 
+  val parentEmpIncomeCYFormField = "parentEmploymentIncomeCY"
+  val partnerEmpIncomeCYFormField = "partnerEmploymentIncomeCY"
+  val defaultFormValueField = "value"
 }

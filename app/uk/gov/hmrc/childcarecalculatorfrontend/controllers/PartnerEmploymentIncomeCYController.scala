@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -43,28 +44,38 @@ class PartnerEmploymentIncomeCYController @Inject()(
                                                      taxYearInfo: TaxYearInfo,
                                                      form: PartnerEmploymentIncomeCYForm) extends FormErrorHelper with FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
+
       val preparedForm = request.userAnswers.partnerEmploymentIncomeCY match {
         case None => form()
         case Some(value) => form().fill(value)
       }
+
       Ok(partnerEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
 
-      val maximumEarnings = request.userAnswers.partnerMaximumEarnings
+      val maxEarnings = request.userAnswers.partnerMaximumEarnings
       val boundForm = form().bindFromRequest()
-      val errorKeyInvalidMaxEarnings: String = partnerEmploymentIncomeInvalidMaxEarningsErrorKey
-      val errorKeyInvalid: String = partnerEmploymentIncomeInvalidErrorKey
 
-      validateMaxIncomeEarnings(maximumEarnings, errorKeyInvalidMaxEarnings, errorKeyInvalid, boundForm).fold(
-        (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
+      validateForm(maxEarnings, boundForm).fold((formWithErrors: Form[BigDecimal]) =>
+        Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[BigDecimal](request.sessionId, PartnerEmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
   }
+
+  private def validateForm(maxEarnings: Option[Boolean],
+                           boundForm: Form[BigDecimal]) =
+    if (boundForm.hasErrors) {
+      boundForm
+    } else {
+      validateMaxIncomeEarnings(maxEarnings,
+        partnerEmploymentIncomeInvalidMaxEarningsErrorKey,
+        partnerEmploymentIncomeInvalidErrorKey,
+        boundForm)
+    }
 }

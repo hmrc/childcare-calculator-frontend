@@ -79,9 +79,9 @@ class FormErrorHelper extends Mappings {
           val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
 
           if (inputtedEmploymentIncomeValue >= maxIncome && !maxEarnings) {
-            boundForm.withError("value", errorKeyInvalidMaxEarnings)
+            boundForm.withError(defaultFormValueField, errorKeyInvalidMaxEarnings)
           } else if (inputtedEmploymentIncomeValue >= maxEmploymentIncome && maxEarnings) {
-            boundForm.withError("value", errorKeyInvalid)
+            boundForm.withError(defaultFormValueField, errorKeyInvalid)
           } else {
             boundForm
           }
@@ -102,24 +102,22 @@ class FormErrorHelper extends Mappings {
                                     boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] =
     maximumEarnings match {
 
-      case Some(maxEarnings) if !boundForm.hasErrors => {
+      case Some(maxEarnings) => {
 
-        val parentEmpIncomeValue = boundForm("parentEmploymentIncomeCY").value.getOrElse("0").toDouble
-        val partnerEmpIncomeValue = boundForm("partnerEmploymentIncomeCY").value.getOrElse("0").toDouble
+        val parentEmpIncomeValue = boundForm(parentEmpIncomeCYFormField).value.getOrElse("0").toDouble
+        val partnerEmpIncomeValue = boundForm(partnerEmpIncomeCYFormField).value.getOrElse("0").toDouble
 
         if ((parentEmpIncomeValue >= maxIncome) && (partnerEmpIncomeValue >= maxIncome) && !maxEarnings) {
 
-          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarningsBoth)
-            .withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarningsBoth)
+          boundForm.withError(parentEmpIncomeCYFormField, errorKeyInvalidParentMaxEarningsBoth)
+            .withError(partnerEmpIncomeCYFormField, errorKeyInvalidPartnerMaxEarningsBoth)
         } else if (parentEmpIncomeValue >= maxIncome && !maxEarnings) {
 
-          boundForm.withError("parentEmploymentIncomeCY", errorKeyInvalidParentMaxEarnings)
+          boundForm.withError(parentEmpIncomeCYFormField, errorKeyInvalidParentMaxEarnings)
         } else if (partnerEmpIncomeValue >= maxIncome && !maxEarnings) {
 
-          boundForm.withError("partnerEmploymentIncomeCY", errorKeyInvalidPartnerMaxEarnings)
-        }
-
-        else {
+          boundForm.withError(partnerEmpIncomeCYFormField, errorKeyInvalidPartnerMaxEarnings)
+        } else {
           boundForm
         }
       }

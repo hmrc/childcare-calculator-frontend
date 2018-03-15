@@ -43,7 +43,7 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
                                              form: EmploymentIncomeCYForm,
                                              taxYearInfo: TaxYearInfo) extends FormErrorHelper with FrontendController with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.employmentIncomeCY match {
         case None => form()

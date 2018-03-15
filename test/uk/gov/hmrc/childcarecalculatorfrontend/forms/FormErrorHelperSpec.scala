@@ -23,6 +23,7 @@ class FormErrorHelperSpec extends SpecBase {
 
   val formErrorHelper = new FormErrorHelper()
 
+  val errorKeyInvalidPartnerMaxEarnings = "invalid max key"
 
   "FormErrorHelper" must {
 
@@ -128,35 +129,9 @@ class FormErrorHelperSpec extends SpecBase {
         inputForm) mustBe inputForm
     }
 
-    "return the form with error when form already had error" in {
-
-      val maximumEarnings = Some(false)
-      val errorKeyInvalidPartnerMaxEarnings = "invalid max key"
-      val errorKeyInvalidParentMaxEarnings = "invalid max key"
-      val errorKeyInvalidParentMaxEarningsBoth = "invalid both max key"
-      val errorKeyInvalidPartnerMaxEarningsBoth  = "invalid both max key"
-      val errorParentKeyInvalid = "invalid key"
-      val errorPartnerKeyInvalid = "invalid key"
-
-      val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map("parentEmploymentIncomeCY" -> "errorKeyInvalid",
-        "partnerEmploymentIncomeCY" -> "errorKeyInvalid"))
-
-      formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
-        errorKeyInvalidParentMaxEarnings,
-        errorKeyInvalidPartnerMaxEarnings,
-        errorKeyInvalidParentMaxEarningsBoth,
-        errorKeyInvalidPartnerMaxEarningsBoth,
-        errorParentKeyInvalid,
-        errorPartnerKeyInvalid,
-        inputForm) mustBe inputForm
-
-    }
-
-    "return the form when both answered max earnings question above 1000000 but input was above 1000000" in {
+  "return the form when both answered max earnings question above 1000000 but input was above 1000000" in {
 
       val maximumEarnings = Some(true)
-      val errorKeyInvalidPartnerMaxEarnings = "invalid max key"
-      val errorKeyInvalidParentMaxEarnings = "invalid max key"
       val errorKeyInvalidParentMaxEarningsBoth = "invalid both max key"
       val errorKeyInvalidPartnerMaxEarningsBoth  = "invalid both max key"
       val errorParentKeyInvalid = parentEmploymentIncomeInvalidErrorKey
