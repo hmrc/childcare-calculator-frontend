@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class CacheMapClonerSpec extends SpecBase {
@@ -108,9 +109,9 @@ class CacheMapClonerSpec extends SpecBase {
     }
 
     "be able to clear cachemap for cloned routes" in {
-      val data = new CacheMap("id",Map("employmentIncomeCY" -> Json.obj("parentEmploymentIncomeCY" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
+      val data = new CacheMap("id",Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true),"employmentIncomeCY" -> Json.obj("parentEmploymentIncomeCY" -> Json.toJson(4), "partnerEmploymentIncomeCY" -> JsBoolean(true))))
 
-      val result = CacheMapCloner.removeClonedData(data,CacheMapCloner.bothIncomeCurrentYearToPreviousYear)
+      val result = CacheMapCloner.removeClonedDataForPreviousYearIncome(data)
 
       result.getEntry[JsValue]("employmentIncomePY") mustBe None
       result.getEntry[JsValue]("employmentIncomeCY").toString() must include("parentEmploymentIncomeCY")
@@ -130,6 +131,64 @@ class CacheMapClonerSpec extends SpecBase {
       val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
 
       result.getEntry[Boolean](BothAnyTheseBenefitsPYId.toString) mustBe Some(true)
+    }
+
+    "On single journey, map YourPaidWorkPreviousYear" in {
+      val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false), AreYouInPaidWorkId.toString -> JsBoolean(true)))
+
+      val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+      result.getEntry[Boolean](ParentPaidWorkPYId.toString) mustBe Some(true)
+    }
+
+    "On both journey, map properties that dont correlate between CY -> PY" when {
+      "When we say that both are working CY then both will be working in PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.BOTH.toString)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[Boolean](BothPaidWorkPYId.toString) mustBe Some(true)
+      }
+
+      "When we say that no one is working currently then no one will be working PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true), WhoIsInPaidEmploymentId.toString -> JsString(ChildcareConstants.neither)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[Boolean](BothPaidWorkPYId.toString) mustBe Some(false)
+      }
+
+      "When we say that parent is working but at some point partner has worked this year then both worked PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true),PartnerPaidWorkCYId.toString -> JsBoolean(true), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.YOU.toString)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[String](WhoWasInPaidWorkPYId.toString) mustBe Some(ChildcareConstants.both)
+      }
+
+      "When we say that only parent is working the only parent worked PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true),PartnerPaidWorkCYId.toString -> JsBoolean(false), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.YOU.toString)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[String](WhoWasInPaidWorkPYId.toString) mustBe Some(ChildcareConstants.you)
+      }
+
+      "When we say that partner is working but at some point parent worked this year then both worked PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true),ParentPaidWorkCYId.toString -> JsBoolean(true), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[String](WhoWasInPaidWorkPYId.toString) mustBe Some(ChildcareConstants.both)
+      }
+
+      "When we say that only partner is working then only partner worked PY" in {
+        val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true),ParentPaidWorkCYId.toString -> JsBoolean(false), WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)))
+
+        val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
+
+        result.getEntry[String](WhoWasInPaidWorkPYId.toString) mustBe Some(ChildcareConstants.partner)
+      }
     }
   }
 }

@@ -16,14 +16,54 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json.{JsBoolean, JsValue, Json}
+import play.api.libs.json.{JsBoolean, JsString, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 object CacheMapCloner {
-  val mappingError = "mapping not found"
+  def cloneSection(userAnswers: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String, JsValue]] = None): CacheMap = {
+    val cacheMapWithClearedData = removeClonedData(userAnswers, sectionToClone)
+    val clonedCacheMap = sectionToClone.foldLeft(cacheMapWithClearedData)((clonedData, sectionToClone) => {
+      clonedData.data.get(sectionToClone._1) match {
+        case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
+          complexObjectsMapper.get(sectionToClone._1) match {
+            case Some(data) => {
+              data.foldLeft(Json.obj())((clonedResult, property) => {
+                clonedResult + (jsonObjectsMapper.get(property).getOrElse(mappingError) -> (dataToClone \ property).getOrElse(Json.toJson(mappingError)))
+              })
+            }
+            case _ => dataToClone
+          }
+        }))
+        case _ => clonedData
+      }
+    })
 
-  val singleParentCurrentYearToPreviousYear = Map(AreYouInPaidWorkId.toString -> ParentPaidWorkPYId.toString,
+    customSections.fold(clonedCacheMap)(customSections => {
+      customSections.foldLeft(clonedCacheMap)((clonedCacheMap, section) => {
+        clonedCacheMap.copy(data = clonedCacheMap.data + section)
+      })
+    })
+  }
+
+  def removeClonedDataForPreviousYearIncome(data: CacheMap) = {
+    data.getEntry[Boolean](DoYouLiveWithPartnerId.toString) match {
+      case Some(livesWithPartner) => {
+        if (livesWithPartner) {
+          removeClonedData(data,bothIncomeCurrentYearToPreviousYear)
+        }
+        else{
+          removeClonedData(data,singleParentCurrentYearToPreviousYear)
+        }
+      }
+
+      case _ => data
+    }
+  }
+
+  private val mappingError = "mapping not found"
+
+  private val singleParentCurrentYearToPreviousYear = Map(AreYouInPaidWorkId.toString -> ParentPaidWorkPYId.toString,
     ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     YouPaidPensionCYId.toString -> YouPaidPensionPYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
@@ -32,7 +72,7 @@ object CacheMapCloner {
     YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString,
     YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString)
 
-  val bothIncomeCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
+  private val bothIncomeCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
     EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
     YouBenefitsIncomeCYId.toString -> YouBenefitsIncomePYId.toString,
@@ -50,7 +90,7 @@ object CacheMapCloner {
     YourOtherIncomeAmountCYId.toString -> YourOtherIncomeAmountPYId.toString,
     OtherIncomeAmountCYId.toString -> OtherIncomeAmountPYId.toString)
 
-  val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
+  private val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
     EmploymentIncomePYId.toString -> Seq(ParentEmploymentIncomePYId.toString, PartnerEmploymentIncomePYId.toString),
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
     HowMuchBothPayPensionPYId.toString -> Seq(HowMuchYouPayPensionPYId.toString, HowMuchPartnerPayPensionPYId.toString),
@@ -59,7 +99,7 @@ object CacheMapCloner {
     OtherIncomeAmountCYId.toString -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString),
     OtherIncomeAmountPYId.toString -> Seq(ParentOtherIncomeAmountPYId.toString, PartnerOtherIncomeAmountPYId.toString))
 
-  val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
+  private val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
@@ -72,43 +112,38 @@ object CacheMapCloner {
     userAnswers.getEntry[Boolean](DoYouLiveWithPartnerId.toString) match {
       case Some(livesWithPartner) => {
         if (livesWithPartner) {
-          cloneSection(userAnswers,bothIncomeCurrentYearToPreviousYear)
+          val anyoneInPaidEmployment = userAnswers.getEntry[String](WhoIsInPaidEmploymentId.toString).fold(false)(c => c != ChildcareConstants.neither)
+          val whoInPaidEmployment = userAnswers.getEntry[String](WhoIsInPaidEmploymentId.toString) match {
+            case Some(ChildcareConstants.You) => {
+              checkIfWorkedAtAnyPointThisYear(userAnswers,PartnerPaidWorkCYId.toString,ChildcareConstants.You)
+            }
+            case Some(ChildcareConstants.Partner) => {
+              checkIfWorkedAtAnyPointThisYear(userAnswers,ParentPaidWorkCYId.toString,ChildcareConstants.Partner)
+            }
+            case _ => ChildcareConstants.neither
+          }
+          cloneSection(userAnswers, bothIncomeCurrentYearToPreviousYear, Some(Map(BothPaidWorkPYId.toString -> JsBoolean(anyoneInPaidEmployment),WhoWasInPaidWorkPYId.toString -> JsString(whoInPaidEmployment))))
         }
         else {
-          cloneSection(userAnswers,singleParentCurrentYearToPreviousYear)
+          cloneSection(userAnswers, singleParentCurrentYearToPreviousYear)
         }
       }
       case _ => userAnswers
     }
   }
 
-  def cloneSection(userAnswers: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String,JsValue]] = None): CacheMap = {
-    val cacheMapWithClearedData = removeClonedData(userAnswers,sectionToClone)
-    val clonedCacheMap = sectionToClone.foldLeft(cacheMapWithClearedData)((clonedData, sectionToClone) => {
-      clonedData.data.get(sectionToClone._1) match {
-        case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
-          complexObjectsMapper.get(sectionToClone._1) match {
-            case Some(data) =>  {
-              data.foldLeft(Json.obj())((clonedResult,property) => {
-                clonedResult + (jsonObjectsMapper.get(property).getOrElse(mappingError)->(dataToClone \ property).getOrElse(Json.toJson(mappingError)))
-              })
-            }
-            case _ => dataToClone
-          }
-        }))
-        case _ => clonedData
-      }
-    })
-
-    customSections.fold(clonedCacheMap)(customSections => {
-      customSections.foldLeft(clonedCacheMap)((clonedCacheMap,section) => {
-        clonedCacheMap.copy(data = clonedCacheMap.data + section)
-      })
-    })
+  private def checkIfWorkedAtAnyPointThisYear(userAnswers: CacheMap, memberWorkingAtSomePointCurrentYear: String, memberWorkingAllYear: String) = {
+    val workedThisYear = userAnswers.getEntry[Boolean](memberWorkingAtSomePointCurrentYear).fold(false)(c => c)
+    if (workedThisYear) {
+      ChildcareConstants.Both
+    }
+    else {
+      memberWorkingAllYear
+    }
   }
 
-  def removeClonedData(data: CacheMap, sectionToClone: Map[String, String]) = {
-    sectionToClone.foldLeft(data)((clonedData,sectionToClear)=> {
+  private def removeClonedData(data: CacheMap, sectionToClone: Map[String, String]) = {
+    sectionToClone.foldLeft(data)((clonedData, sectionToClear) => {
       clonedData.copy(data = clonedData.data - sectionToClear._2)
     })
   }
