@@ -64,19 +64,20 @@ class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
       val maxEarnings = maximumEarnings(request.userAnswers)
 
       validateBothMaxIncomeEarnings(maxEarnings,
-        errorKeyInvalidParentMaxEarnings,
-        errorKeyInvalidPartnerMaxEarnings,
-        errorKeyInvalidParentMaxEarningsBoth,
-        errorKeyInvalidPartnerMaxEarningsBoth,
-        errorParentKeyInvalid,
-        errorPartnerKeyInvalid,
-        boundForm).fold(
+                                errorKeyInvalidParentMaxEarnings,
+                                errorKeyInvalidPartnerMaxEarnings,
+                                errorKeyInvalidParentMaxEarningsBoth,
+                                errorKeyInvalidPartnerMaxEarningsBoth,
+                                errorParentKeyInvalid,
+                                errorPartnerKeyInvalid,
+                                boundForm).fold(
 
         (formWithErrors: Form[EmploymentIncomeCY]) =>
           Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>
           dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
+            Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
+      )
   }
 
   private def maximumEarnings(answers: UserAnswers) = {

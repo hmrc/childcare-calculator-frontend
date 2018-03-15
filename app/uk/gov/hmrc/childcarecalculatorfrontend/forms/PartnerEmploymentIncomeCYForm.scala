@@ -32,7 +32,6 @@ class PartnerEmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) exte
 
   def apply(): Form[BigDecimal] =
     Form(single("value" -> of(formatter(errorKeyBlank, errorKeyInvalid))
-      .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))))
+      .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid)))
+      .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid)))
 }
-
-
