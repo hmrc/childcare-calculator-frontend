@@ -19,11 +19,35 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, OtherIncomeAmountCY, OtherIncomeAmountPY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY, OtherIncomeAmountCY, OtherIncomeAmountPY}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
+
+
+  "Partner Paid Work CY" when {
+    "save the data" must {
+
+      "save the data and remove ParentEmploymentIncomeCY page data when user selects yes" in {
+        val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
+          ParentEmploymentIncomeCYId.toString -> JsNumber(1200)))
+
+        val result = cascadeUpsert(PartnerPaidWorkCYId.toString, true, originalCacheMap)
+
+        result.data mustBe Map(PartnerPaidWorkCYId.toString -> JsBoolean(true),
+          EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)))
+      }
+
+      "clear EmploymentIncomeCY page data when user selects no " in {
+        val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
+
+        val result = cascadeUpsert(PartnerPaidWorkCYId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(PartnerPaidWorkCYId.toString -> JsBoolean(false))
+      }
+    }
+  }
 
   "Other Income CY" when {
     "Save YourOtherIncomeThisYear data " must {
