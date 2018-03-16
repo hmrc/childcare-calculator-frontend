@@ -23,7 +23,7 @@ class FormErrorHelperSpec extends SpecBase {
 
   val formErrorHelper = new FormErrorHelper()
   val maxIncome = 100000
-
+  val  errorKeyInvalidMaxEarnings = "invalid max earnings key"
 
   "FormErrorHelper" when {
     "validateBothMaxIncomeEarnings" must {
@@ -39,7 +39,6 @@ class FormErrorHelperSpec extends SpecBase {
         formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
           maxIncome,
           inputForm) mustBe formWithError
-
       }
 
       "return the form with error when parent answered max earnings question under 100000 but input was above 100000" in {
@@ -53,7 +52,6 @@ class FormErrorHelperSpec extends SpecBase {
         formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
           maxIncome,
           inputForm) mustBe formWithError
-
       }
 
       "return the form with error when both answered max earnings question under 100000 but input was above 100000" in {
@@ -91,7 +89,6 @@ class FormErrorHelperSpec extends SpecBase {
         formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings,
           maxIncome,
           inputForm) mustBe inputForm
-
       }
 
       "return the form with error when partner answered max earnings question under 1000000 but input was above 1000000" in {
@@ -142,8 +139,6 @@ class FormErrorHelperSpec extends SpecBase {
 
       "return the form with correct error if user has max earnings below 100,000 but input income value is more than 99,999.9 " in {
 
-        val  errorKeyInvalidMaxEarnings = "invalid max earnings key"
-
         val maximumEarnings = Some(false)
         val inputForm = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map(defaultFormValueField -> "100000"))
 
@@ -156,8 +151,6 @@ class FormErrorHelperSpec extends SpecBase {
       }
 
       "return the original form if user has max earnings over 100,000 and input income value is more than 99,999.9 and below 999,999.9 " in {
-
-        val  errorKeyInvalidMaxEarnings = "invalid max earnings key"
 
         val maximumEarnings = Some(true)
         val inputForm = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply().bind(Map(defaultFormValueField -> "102000"))
