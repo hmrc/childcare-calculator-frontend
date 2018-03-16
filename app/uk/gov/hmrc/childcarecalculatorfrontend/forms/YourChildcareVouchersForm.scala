@@ -19,16 +19,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, YouPartnerBothNeitherEnum, YouPartnerBothNeitherNotSureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-object WhoGetsVouchersForm extends FormErrorHelper {
+object YourChildcareVouchersForm extends FormErrorHelper {
 
-  def WhoGetsVouchersFormatter = new Formatter[String] {
+  def YourChildcareVouchersFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, whoGetsVouchersErrorKey)
+      case None => produceError(key, yourChildcareVoucherErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
 
@@ -36,13 +36,13 @@ object WhoGetsVouchersForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] = 
-    Form(single("value" -> of(WhoGetsVouchersFormatter)))
+    Form(single("value" -> of(YourChildcareVouchersFormatter)))
 
-  def options = Seq(InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.YOU.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.PARTNER.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.BOTH.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NEITHER.toString),
-    InputOption("whoGetsVouchers", YouPartnerBothNeitherNotSureEnum.NOTSURE.toString))
+  def options = Seq(
+    InputOption("yourChildcareVouchers", YesNoUnsureEnum.YES.toString),
+    InputOption("yourChildcareVouchers",  YesNoUnsureEnum.NO.toString),
+    InputOption("yourChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+  )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
