@@ -16,16 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
+import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelper extends Mappings {
 
-  val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-  val maxIncome = BigDecimal(100000)
-  val maxEmploymentIncome = BigDecimal(1000000)
+  val decimalRegex: String = """\d+(\.\d{1,2})?""".r.toString()
 
   def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))
 
@@ -71,8 +69,8 @@ class FormErrorHelper extends Mappings {
   }
 
   def validateMaxIncomeEarnings(maximumEarnings: Option[Boolean],
+                                maxIncome: Double,
                                 errorKeyInvalidMaxEarnings: String,
-                                errorKeyInvalid: String,
                                 boundForm: Form[BigDecimal]): Form[BigDecimal] = {
     maximumEarnings match {
       case Some(maxEarnings) => {
@@ -80,8 +78,6 @@ class FormErrorHelper extends Mappings {
 
           if (inputtedEmploymentIncomeValue >= maxIncome && !maxEarnings) {
             boundForm.withError(defaultFormValueField, errorKeyInvalidMaxEarnings)
-          } else if (inputtedEmploymentIncomeValue >= maxEmploymentIncome && maxEarnings) {
-            boundForm.withError(defaultFormValueField, errorKeyInvalid)
           } else {
             boundForm
           }
@@ -93,12 +89,7 @@ class FormErrorHelper extends Mappings {
   }
 
   def validateBothMaxIncomeEarnings(maximumEarnings: Option[Boolean],
-                                    errorKeyInvalidParentMaxEarnings: String,
-                                    errorKeyInvalidPartnerMaxEarnings: String,
-                                    errorKeyInvalidParentMaxEarningsBoth: String,
-                                    errorKeyInvalidPartnerMaxEarningsBoth: String,
-                                    errorParentKeyInvalid: String,
-                                    errorPartnerKeyInvalid: String,
+                                    maxIncome: Double,
                                     boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] =
     maximumEarnings match {
 
@@ -109,14 +100,14 @@ class FormErrorHelper extends Mappings {
 
         if ((parentEmpIncomeValue >= maxIncome) && (partnerEmpIncomeValue >= maxIncome) && !maxEarnings) {
 
-          boundForm.withError(parentEmpIncomeCYFormField, errorKeyInvalidParentMaxEarningsBoth)
-            .withError(partnerEmpIncomeCYFormField, errorKeyInvalidPartnerMaxEarningsBoth)
+          boundForm.withError(parentEmpIncomeCYFormField, parentEmploymentIncomeBothInvalidMaxEarningsErrorKey)
+            .withError(partnerEmpIncomeCYFormField, partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey)
         } else if (parentEmpIncomeValue >= maxIncome && !maxEarnings) {
 
-          boundForm.withError(parentEmpIncomeCYFormField, errorKeyInvalidParentMaxEarnings)
+          boundForm.withError(parentEmpIncomeCYFormField, parentEmploymentIncomeInvalidMaxEarningsErrorKey)
         } else if (partnerEmpIncomeValue >= maxIncome && !maxEarnings) {
 
-          boundForm.withError(partnerEmpIncomeCYFormField, errorKeyInvalidPartnerMaxEarnings)
+          boundForm.withError(partnerEmpIncomeCYFormField, partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
         } else {
           boundForm
         }

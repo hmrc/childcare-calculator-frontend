@@ -74,8 +74,8 @@ class PartnerEmploymentIncomeCYController @Inject()(
       boundForm
     } else {
       validateMaxIncomeEarnings(maxEarnings,
+        appConfig.maxIncome,
         partnerEmploymentIncomeInvalidMaxEarningsErrorKey,
-        partnerEmploymentIncomeInvalidErrorKey,
         boundForm)
     }
 }

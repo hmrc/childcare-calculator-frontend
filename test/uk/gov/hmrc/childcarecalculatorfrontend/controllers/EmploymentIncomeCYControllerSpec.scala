@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{EmploymentIncomeCYForm, FormErrorHelper}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -39,8 +39,15 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
   val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new EmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new EmploymentIncomeCYForm(frontendAppConfig), taxYearInfo)
+    new EmploymentIncomeCYController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      new EmploymentIncomeCYForm(frontendAppConfig),
+      taxYearInfo,
+      new FormErrorHelper)
 
   def viewAsString(form: Form[EmploymentIncomeCY] = form) = employmentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 

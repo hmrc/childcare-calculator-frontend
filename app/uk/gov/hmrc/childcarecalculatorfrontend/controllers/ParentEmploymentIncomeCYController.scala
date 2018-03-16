@@ -43,7 +43,8 @@ class ParentEmploymentIncomeCYController @Inject()(
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     form: ParentEmploymentIncomeCYForm,
-                                                    taxYearInfo: TaxYearInfo) extends FormErrorHelper with FrontendController with I18nSupport {
+                                                    taxYearInfo: TaxYearInfo,
+                                                    formErrorHelper: FormErrorHelper) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
@@ -71,9 +72,9 @@ class ParentEmploymentIncomeCYController @Inject()(
     if (boundForm.hasErrors) {
       boundForm
     } else {
-      validateMaxIncomeEarnings(maxEarnings,
+      formErrorHelper.validateMaxIncomeEarnings(maxEarnings,
+        appConfig.maxIncome,
         parentEmploymentIncomeInvalidMaxEarningsErrorKey,
-        parentEmploymentIncomeInvalidErrorKey,
         boundForm)
     }
 }

@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomeCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{FormErrorHelper, ParentEmploymentIncomeCYForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, YourMaximumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
@@ -37,9 +37,15 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ParentEmploymentIncomeCYController(frontendAppConfig, messagesApi,
-      FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new ParentEmploymentIncomeCYForm(frontendAppConfig), taxYearInfo)
+    new ParentEmploymentIncomeCYController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      new ParentEmploymentIncomeCYForm(frontendAppConfig),
+      taxYearInfo,
+      new FormErrorHelper)
 
   def viewAsString(form: Form[BigDecimal] =  new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()) =
     parentEmploymentIncomeCY(frontendAppConfig, form, NormalMode,taxYearInfo)(fakeRequest, messages).toString
