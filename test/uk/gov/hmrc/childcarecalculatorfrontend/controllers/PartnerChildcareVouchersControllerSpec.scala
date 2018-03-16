@@ -17,16 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.JsString
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerChildcareVouchersForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerChildcareVouchersId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerChildcareVouchersErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerChildcareVouchers
 
 class PartnerChildcareVouchersControllerSpec extends ControllerSpecBase {
@@ -37,7 +36,7 @@ class PartnerChildcareVouchersControllerSpec extends ControllerSpecBase {
     new PartnerChildcareVouchersController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerChildcareVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = PartnerChildcareVouchersForm()) = partnerChildcareVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "PartnerChildcareVouchers Controller" must {
 
@@ -49,16 +48,16 @@ class PartnerChildcareVouchersControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerChildcareVouchersId.toString -> JsBoolean(true))
+      val validData = Map(PartnerChildcareVouchersId.toString -> JsString(PartnerChildcareVouchersForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(PartnerChildcareVouchersForm().fill(PartnerChildcareVouchersForm.options.head.value))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", PartnerChildcareVouchersForm.options.head.value))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -68,7 +67,7 @@ class PartnerChildcareVouchersControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm(partnerChildcareVouchersErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = PartnerChildcareVouchersForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -84,7 +83,7 @@ class PartnerChildcareVouchersControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", PartnerChildcareVouchersForm.options.head.value))
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
