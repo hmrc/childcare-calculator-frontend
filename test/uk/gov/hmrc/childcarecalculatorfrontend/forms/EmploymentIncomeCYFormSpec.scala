@@ -38,19 +38,6 @@ class EmploymentIncomeCYFormSpec extends FormBehaviours {
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerEmploymentIncomeCY",
       "partnerEmploymentIncomeCY.blank", "partnerEmploymentIncomeCY.blank")
 
-
-    "not bind when either value is above the threshold of 999999.99" in {
-      val expectedErrors =
-        error("parentEmploymentIncomeCY", parentEmploymentIncomeInvalidErrorKey) ++
-        error("partnerEmploymentIncomeCY", partnerEmploymentIncomeInvalidErrorKey)
-
-      val data = Map(
-        "parentEmploymentIncomeCY" -> "1000000.0",
-        "partnerEmploymentIncomeCY" -> "1000000.0"
-      )
-
-      checkForError(form, data, expectedErrors)
-    }
   }
 
 }

@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 import play.api.libs.json.{Format, Reads, Writes}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherEnum.{Value, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumUtils
 
 trait YouPartnerBothBaseEnumeration extends Enumeration{
@@ -83,6 +82,15 @@ object YesNoUnsureEnum extends Enumeration {
   implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
 }
 
+object YesNoEnum extends Enumeration {
+  type YesNoEnum = Value
+  val YES, NO = Value
+  val enumReads: Reads[YesNoEnum] = EnumUtils.enumReads(YesNoEnum)
+
+  val enumWrites: Writes[YesNoEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[YesNoEnum] = EnumUtils.enumFormat(YesNoEnum)
+}
 
 object YesNoNotYetEnum extends Enumeration {
   type YesNoNotYetEnum = Value
