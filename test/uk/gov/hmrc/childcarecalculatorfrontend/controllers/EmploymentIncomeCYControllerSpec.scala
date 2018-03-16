@@ -17,28 +17,37 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.Json
+import play.api.libs.json.{JsBoolean, Json}
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EmploymentIncomeCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{EmploymentIncomeCYForm, FormErrorHelper}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 
 class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+
   val taxYearInfo = new TaxYearInfo
 
   val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new EmploymentIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new EmploymentIncomeCYForm(frontendAppConfig), taxYearInfo)
+    new EmploymentIncomeCYController(frontendAppConfig,
+      messagesApi,
+      FakeDataCacheConnector,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredActionImpl,
+      new EmploymentIncomeCYForm(frontendAppConfig),
+      taxYearInfo,
+      new FormErrorHelper)
 
   def viewAsString(form: Form[EmploymentIncomeCY] = form) = employmentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
@@ -61,6 +70,9 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
+      val validData = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -92,6 +104,44 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+    }
+
+    "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
+      val boundForm = form.bind(Map("value" -> "above limit"))
+
+
+      val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
+        ParentEmploymentIncomeCYId.toString -> Json.toJson("100000"),
+        PartnerEmploymentIncomeCYId.toString -> Json.toJson("100000"),
+        WhoIsInPaidEmploymentId.toString -> Json.toJson("both"))
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages(parentEmploymentIncomeInvalidMaxEarningsErrorKey)
+      contentAsString(result) contains messages(partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
+    }
+
+
+    "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000"))
+      val boundForm = form.bind(Map("value" -> "above limit"))
+
+      val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
+        ParentEmploymentIncomeCYId.toString -> Json.toJson("1000000"),
+        PartnerEmploymentIncomeCYId.toString -> Json.toJson("1000000"),
+        WhoIsInPaidEmploymentId.toString -> Json.toJson("both"))
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages(parentEmploymentIncomeInvalidErrorKey)
+      contentAsString(result) contains messages(partnerEmploymentIncomeInvalidErrorKey)
     }
   }
 }

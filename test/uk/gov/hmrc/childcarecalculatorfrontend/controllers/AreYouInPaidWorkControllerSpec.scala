@@ -91,7 +91,3 @@ class AreYouInPaidWorkControllerSpec extends ControllerSpecBase {
     }
   }
 }
-
-
-
-
