@@ -92,6 +92,7 @@ whatToTellTheCalculator.li.costs = what you think your weekly or monthly approve
 whatToTellTheCalculator.li.benefits.child = any benefits they get
 whatToTellTheCalculator.li.ages = their age and any dates they may have started further education or training
 whatToTellTheCalculator.para3 = You can change your answers as many times as you like to recalculate and compare your results.
+whatToTellTheCalculator.para4 = It should take around 5 minutes to complete.
 
 location.title = Where do you live?
 location.heading = Where do you live?
@@ -290,16 +291,16 @@ whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax 
 whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
 whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
 
-yourChildcareVouchers.title = Do you get childcare vouchers from your employer?
-yourChildcareVouchers.heading = Do you get childcare vouchers from your employer?
+yourChildcareVouchers.title = Does your employer offer childcare vouchers?
+yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
 yourChildcareVouchers.YES = Yes
 yourChildcareVouchers.NO = No
 yourChildcareVouchers.NOTSURE = Not Sure
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
 yourChildcareVouchers.error = Select yes if your employer offers childcare vouchers
 
-partnerChildcareVouchers.title = Does your partner get childcare vouchers from their employer?
-partnerChildcareVouchers.heading = Does your partner get childcare vouchers from their employer?
+partnerChildcareVouchers.title = Does your partner’s employer offer childcare vouchers?
+partnerChildcareVouchers.heading = Does your partner’s employer offer childcare vouchers?
 partnerChildcareVouchers.YES = Yes
 partnerChildcareVouchers.NO = No
 partnerChildcareVouchers.NOTSURE = Not Sure
@@ -314,12 +315,13 @@ eitherGetsVouchers.NOTSURE = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
 eitherGetsVouchers.error = Select yes if either of your employers offer childcare vouchers
 
-whoGetsVouchers.title = Do either of you get childcare vouchers from your employer?
-whoGetsVouchers.heading = Do either of you get childcare vouchers from your employer?
+whoGetsVouchers.title = Whose employer offers childcare vouchers?
+whoGetsVouchers.heading = Whose employer offers childcare vouchers?
 whoGetsVouchers.you = Yours
 whoGetsVouchers.partner = Partner’s
 whoGetsVouchers.both = Both
 whoGetsVouchers.neither = Neither
+whoGetsVouchers.notSure = Not sure
 whoGetsVouchers.error = Select whose employer offers childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
@@ -1375,11 +1377,29 @@ aboutYourResults.more.info.northern-ireland.esc.title = childcare vouchers
 aboutYourResults.more.info.northern-ireland.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
 aboutYourResults.more.info.summary = You can apply for 30 hours free childcare and Tax-Free Childcare at the same time.
 
-results.two.years.old.guidance.title = Your 2 year old
-results.two.years.old.guidance.text.before.link = If you are on certain benefits, you can
-results.two.years.old.guidance.link.text = find out if you could get 15 hours free childcare a week for your 2 year old
-results.two.years.old.guidance.text.after.link = - this is 570 hours a year.
-results.two.years.old.guidance.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
+results.two.years.old.guidance.england.two.freehours = You can get 15 hours free childcare a week in term time when your child is 3 years old – this is 570 hours a year.
+results.two.years.old.guidance.england.title = Free hours for your 2 year old
+results.two.years.old.guidance.england.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.england.link.text = you may be able to get 15 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.england.text.after.link = – this is 570 hours a year.
+results.two.years.old.guidance.england.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
+
+results.two.years.old.guidance.scotland.two.freehours = You can get 16 hours free childcare a week in term time when your child is 3 years old - this is 600 hours a year.
+results.two.years.old.guidance.scotland.title = Free hours for your 2 year old
+results.two.years.old.guidance.scotland.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.scotland.link.text = you may be able to get 16 hours free childcare a week for your 2 year old
+results.two.years.old.guidance.scotland.text.after.link = – this is 600 hours a year.
+results.two.years.old.guidance.scotland.para1.help.link =  https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare/
+
+results.two.years.old.guidance.wales.two.freehours = You can get a minimum of 10 hours of funded early education a week in term time when your child is 3 years old – this is 390 hours a year.
+results.two.years.old.guidance.wales.title = Free hours for your 2 year old
+results.two.years.old.guidance.wales.text.before.link = Depending on your family circumstances,
+results.two.years.old.guidance.wales.link.text = you may be able to get up to 10 hours of funded early education a week for your 2 year old
+results.two.years.old.guidance.wales.text.after.link = – this is 390 hours a year.
+results.two.years.old.guidance.wales.para1.help.link =   http://gov.wales/topics/people-and-communities/people/children-and-young-people/childcare/?lang=en
+
+results.two.years.old.guidance.northernireland.title = Free hours for your 2 year old
+results.two.years.old.guidance.northernireland.two.freehours = You can get 12 and a half hours free preschool education a week in term time when your child is 3 years old - this is 475 hours a year.
 
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
@@ -1410,3 +1430,9 @@ youGetSameIncomePreviousYear.error = Select yes if you got the same income for t
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
+
+bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?
+bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
+bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
+bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear

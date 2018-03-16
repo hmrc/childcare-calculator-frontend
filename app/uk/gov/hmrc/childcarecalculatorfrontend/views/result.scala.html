@@ -68,13 +68,15 @@
                 @resultNotEligible(model)
             }
 
-            @if(model.location.contains(Location.ENGLAND) && model.childAgedTwo) {
+
+            @if(model.location != Location.NORTHERN_IRELAND && model.childAgedTwo) {
                 <div class="twoYearsOld">
-                    <h2 class="heading-medium">@messages("results.two.years.old.guidance.title")</h2>
-                    <p>@messages("results.two.years.old.guidance.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages("results.two.years.old.guidance.para1.help.link")>
-                        @messages("results.two.years.old.guidance.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+                    <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
+                    <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
+                    <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
+                        @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
                     </a>
-                        @messages("results.two.years.old.guidance.text.after.link")
+                        @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
                     </p>
                 </div>
             }

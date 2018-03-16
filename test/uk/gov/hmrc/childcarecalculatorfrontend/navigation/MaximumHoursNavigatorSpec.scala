@@ -312,8 +312,13 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       "lives with partner" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.yourChildcareVouchers) thenReturn Some(true) thenReturn Some(false)
+      when(answers.yourChildcareVouchers) thenReturn
+        Some(YesNoUnsureEnum.YES.toString) thenReturn
+        Some(YesNoUnsureEnum.NO.toString) thenReturn
+        Some(YesNoUnsureEnum.NOTSURE.toString)
 
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
       navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
       navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
@@ -324,8 +329,13 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       "does not lives with partner" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
-      when(answers.yourChildcareVouchers) thenReturn Some(true) thenReturn Some(false)
+      when(answers.yourChildcareVouchers) thenReturn
+        Some(YesNoUnsureEnum.YES.toString) thenReturn
+        Some(YesNoUnsureEnum.NO.toString) thenReturn
+        Some(YesNoUnsureEnum.NOTSURE.toString)
 
+      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
       navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
       navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
@@ -336,8 +346,13 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   "Does Your Partner Employer Offer Childcare Vouchers" when {
     "user with partner will be taken to Do you get any benefits screen from YourChildcareVouchers screen when any selection is done" in {
       val answers = spy(userAnswers())
-      when(answers.partnerChildcareVouchers) thenReturn Some(true) thenReturn Some(false)
+      when(answers.partnerChildcareVouchers) thenReturn
+        Some(YesNoUnsureEnum.YES.toString) thenReturn
+        Some(YesNoUnsureEnum.NO.toString) thenReturn
+        Some(YesNoUnsureEnum.NOTSURE.toString)
 
+      navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
       navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
       navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
@@ -603,6 +618,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
           routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
+
     }
   }
 
@@ -1060,7 +1076,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         "single user where yourChildcareVouchers is yes redirects to your Do you get tax credits or universal credit page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(true)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
           navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1074,7 +1090,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           "redirects to your Do you get tax credits or universal credit page" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(true)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
           navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1104,7 +1120,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           "where yourChildcareVouchers is no or not sure and partner does not satisfy NMW" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
           when(answers.partnerMinimumEarnings) thenReturn Some(false)
           when(answers.yourMaximumEarnings) thenReturn Some(false)
 
@@ -1116,7 +1132,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           "where yourChildcareVouchers is yes only parent is in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.yourChildcareVouchers) thenReturn Some(true)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
           when(answers.yourMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
           navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1130,7 +1146,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           "and yourMaximumEarnings is true " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
           when(answers.yourMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1142,7 +1158,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           "and yourMaximumEarnings  false " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
           when(answers.yourMaximumEarnings) thenReturn Some(false)
 
           navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1154,7 +1170,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         "user with partner redirects to your Do you get tax credits or universal credit page where partnerChildcareVouchers is yes" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.partnerChildcareVouchers) thenReturn Some(true)
+          when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
           when(answers.partnerMaximumEarnings) thenReturn Some(true) thenReturn Some(false)
 
           navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1167,7 +1183,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         "user with partner redirects to your FreeHoursResult page where partnerChildcareVouchers is no or not sure" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.partnerChildcareVouchers) thenReturn Some(false)
+          when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
           when(answers.partnerMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1175,10 +1191,10 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         }
 
-        "user with partner redirects to your Do you get tax credits or universal credit page where partnerChildcareVouchers is no" in {
+        "user with partner redirects to your Do you get tax credits or universal credit page where partnerChildcareVouchers is no or not sure" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.partnerChildcareVouchers) thenReturn Some(false)
+          when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
           when(answers.partnerMaximumEarnings) thenReturn Some(false)
 
           navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1205,8 +1221,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       "Either Of You Maximum earnings" must {
         "redirect to FreeHoursResult page when both selects no to vouchers and yes to maximum earnings " in {
           val answers = spy(userAnswers())
-          when(answers.partnerChildcareVouchers) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
           when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1215,8 +1231,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirect to Tax or Universal Credits page when partner selects no and parent yes for vouchers and yes to maximum earnings" in {
           val answers = spy(userAnswers())
-          when(answers.partnerChildcareVouchers) thenReturn Some(false)
-          when(answers.yourChildcareVouchers) thenReturn Some(true)
+          when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
           when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
@@ -1225,8 +1241,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirect to Tax or Universal Credits page when partner selects no to vouchers and false to maximum earnings" in {
           val answers = spy(userAnswers())
-          when(answers.yourChildcareVouchers) thenReturn Some(false)
-          when(answers.partnerChildcareVouchers) thenReturn Some(true)
+          when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+          when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
           when(answers.eitherOfYouMaximumEarnings) thenReturn Some(false)
 
           navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe

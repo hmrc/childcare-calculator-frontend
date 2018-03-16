@@ -37,10 +37,10 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                maxFreeHours: MaxFreeHours,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder) {
-  def getResultsViewModel(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
+  def getResultsViewModel(answers: UserAnswers, location: Location)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
-      location = answers.location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
+      location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
       tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers))
 
     val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
