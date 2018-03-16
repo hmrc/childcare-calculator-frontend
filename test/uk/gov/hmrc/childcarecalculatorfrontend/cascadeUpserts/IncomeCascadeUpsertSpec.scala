@@ -25,6 +25,28 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
+  "Parent Paid Work CY" when {
+    "save the data" must {
+
+      "save the data and remove ParentEmploymentIncomeCY page data when user selects yes" in {
+        val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
+          PartnerEmploymentIncomeCYId.toString -> JsNumber(1200)))
+
+        val result = cascadeUpsert(ParentPaidWorkCYId.toString, true, originalCacheMap)
+
+        result.data mustBe Map(ParentPaidWorkCYId.toString -> JsBoolean(true),
+          EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)))
+      }
+
+      "clear EmploymentIncomeCY page data when user selects no " in {
+        val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
+
+        val result = cascadeUpsert(ParentPaidWorkCYId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(ParentPaidWorkCYId.toString -> JsBoolean(false))
+      }
+    }
+  }
 
   "Partner Paid Work CY" when {
     "save the data" must {
