@@ -1278,7 +1278,7 @@ result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get 
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits = You cannot get childcare support from tax credits. Although your partner gets a benefit that would make them eligible, you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits =  You cannot get childcare support from tax credits. Although you get a benefit that would make you eligible, your partner needs to work 16 hours or more a week.
 result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
-result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits
+result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits.
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.
@@ -1301,6 +1301,7 @@ result.esc.detailPara3 = They are for children under 16, or under 18 if disabled
 result.esc.not.eligible.para1 = You cannot get help from childcare vouchers. To get help, you or your partner’s employer has to offer them.
 
 result.not.eligible.title = You are not eligible for:
+result.not.eligible.title.ga = You are not eligible for
 
 whoWasInPaidWorkPY.title = Who was in paid work?
 whoWasInPaidWorkPY.heading = Who was in paid work?

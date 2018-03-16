@@ -49,7 +49,7 @@
                 @periodText</p>
             @if(para1.isDefined) {
             <p @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a rel="external" target="_blank"
-                                                            id="tcGuidanceLink" href=@tcSchemeGuidanceLinkUrl>
+                                                            id="tcGuidanceLink" data-journey-click="link - click:@messages("result.not.eligible.title.ga") @title:@messages("result.tc.scheme.guidance.link")" href=@tcSchemeGuidanceLinkUrl>
                 @messages("result.tc.scheme.guidance.link")<span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span>
                 </a>
                 }
@@ -65,7 +65,7 @@
 
             @if(detailSummary.isDefined) {
                 <details @if(detailClass.isDefined) {class="@detailClass"}>
-                    <summary>@detailSummary</summary>
+                    <summary data-journey-click="accordion - click:@detailSummary">@detailSummary</summary>
                     <div>
                         <p>@detailPara1</p>
                         @if(detailPara2.isDefined) {<p>@detailPara2</p>}
