@@ -33,18 +33,33 @@ class ResultsViewModelSpec extends SpecBase {
     }
   }
 
-  "isEligibleOnlyTo15FreeHours" must {
+  "isEligibleOnlyToMinimumFreeHours" must {
     "return true" when {
       "user is eligible only to 15 Free Hours and no other schems" in {
         val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(15), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        resultsView.isEligibleOnlyTo15Hours mustBe true
+        resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
+      }
+
+      "user is eligible only to 10 Free Hours and no other schemes" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(10), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
+      }
+
+      "user is eligible only to 16 Free Hours and no other schemes" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(16), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
+      }
+
+      "user is eligible only to 12.5 Free Hours and no other schemes" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(12.5), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
       }
     }
 
     "return false" when {
       "user is not eligible to 15 Free Hours" in {
         val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(30), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        resultsView.isEligibleOnlyTo15Hours mustBe false
+        resultsView.isEligibleOnlyToMinimumFreeHours mustBe false
       }
     }
   }

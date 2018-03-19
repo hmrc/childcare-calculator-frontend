@@ -145,31 +145,33 @@
                 }
             }
 
-            <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
+            @if(model.isEligibleOnlyToMinimumFreeHours) {
+                <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
 
 
-            <p>
-            @if(!model.hasChildcareCosts) {
-                @messages("freeHoursResult.toBeEligible.childcare.cost.start")
-                <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>
-                .
-                @messages("freeHoursResult.toBeEligible.childcare.cost.end")
-
-            } else {
-                @if(!model.hasCostsWithApprovedProvider) {
-                    @messages("freeHoursResult.toBeEligible.approved.provider.start")
-                    <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>
+                <p>
+                @if(!model.hasChildcareCosts) {
+                    @messages("freeHoursResult.toBeEligible.childcare.cost.start")
+                    <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>
                     .
-                    @messages("freeHoursResult.toBeEligible.approved.provider.end")
+                    @messages("freeHoursResult.toBeEligible.childcare.cost.end")
+
                 } else {
-                    @if(!model.isAnyoneInPaidEmployment) {
-                        @messages("freeHoursResult.toBeEligible.paid.work.start")
-                        @if(model.livesWithPartner) {
-                            <a id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
-                        } else {
-                            <a id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+                    @if(!model.hasCostsWithApprovedProvider) {
+                        @messages("freeHoursResult.toBeEligible.approved.provider.start")
+                        <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>
+                        .
+                        @messages("freeHoursResult.toBeEligible.approved.provider.end")
+                    } else {
+                        @if(!model.isAnyoneInPaidEmployment) {
+                            @messages("freeHoursResult.toBeEligible.paid.work.start")
+                            @if(model.livesWithPartner) {
+                                <a id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+                            } else {
+                                <a id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+                            }
+                            @messages("freeHoursResult.toBeEligible.paid.work.end")
                         }
-                        @messages("freeHoursResult.toBeEligible.paid.work.end")
                     }
                 }
             }
