@@ -674,7 +674,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertContainsText(doc, messagesApi("result.esc.not.eligible.para1"))
       }
 
-      "eligible for 15 free hours for England, gets uc and not eligible for other schemes" in {
+      "eligible for 15 free hours for England, gets uc and not eligible for other schemes" ignore {
         val model = ResultsViewModel(freeHours = Some(15), location = locationEngland, isAnyoneInPaidEmployment = true, hasChildcareCosts = true,livesWithPartner = false,hasCostsWithApprovedProvider = true)
 
         val doc = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
