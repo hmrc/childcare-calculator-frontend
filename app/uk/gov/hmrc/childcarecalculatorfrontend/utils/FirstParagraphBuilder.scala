@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import javax.inject.Inject
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 
 class FirstParagraphBuilder @Inject()(utils: Utils){
 
@@ -95,6 +95,7 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
           val hoursAweek = s" ${Messages("results.firstParagraph.youAndYourPartnerWorkXhoursAweek", yourHours, partnerHours)}"
           s" ${Messages("results.firstParagraph.bothYouAndYourPartnerAre", currentlyInPaidWork, hoursAweek)}"
         }
+        case _ => s" ${Messages("results.firstParagraph.noneOfYouAre")} ${Messages("results.firstParagraph.inPaidWork")}"
       }
     })
   }

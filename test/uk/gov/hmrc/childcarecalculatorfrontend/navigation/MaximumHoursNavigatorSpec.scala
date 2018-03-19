@@ -237,13 +237,13 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "user selects 'No' from are you in paid work" in {
       val answers = spy(userAnswers())
       when(answers.areYouInPaidWork) thenReturn Some(false)
-      navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.ResultController.onPageLoad()
     }
 
     "user selects 'Neither' from who is in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.NEITHER.toString)
-      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.FreeHoursResultController.onPageLoad()
+      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.ResultController.onPageLoad()
     }
   }
 
@@ -1150,7 +1150,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.FreeHoursResultController.onPageLoad()
+            routes.ResultController.onPageLoad()
 
         }
 
@@ -1187,7 +1187,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.FreeHoursResultController.onPageLoad()
+            routes.ResultController.onPageLoad()
 
         }
 
@@ -1226,7 +1226,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true)
 
           navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.FreeHoursResultController.onPageLoad()
+            routes.ResultController.onPageLoad()
         }
 
         "redirect to Tax or Universal Credits page when partner selects no and parent yes for vouchers and yes to maximum earnings" in {

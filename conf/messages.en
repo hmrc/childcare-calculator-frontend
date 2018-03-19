@@ -51,6 +51,7 @@ results.firstParagraph.youWorkXHoursAweek = You work {0} hours a week.
 results.firstParagraph.yourPartnerWorksXHoursAweek = Your partner works {0} hours a week.
 results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and your partner works {1} hours a week.
 results.firstParagraph.onlyYouAre = and only you are {0} {1}
+results.firstParagraph.noneOfYouAre = and none of you are
 results.firstParagraph.youAre = and you are {0} {1}
 results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
 results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
