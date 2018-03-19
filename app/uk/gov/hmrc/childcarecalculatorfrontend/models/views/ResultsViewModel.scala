@@ -33,7 +33,8 @@ case class ResultsViewModel(firstParagraph : String = "",
                             tcSchemeInEligibilityMsg: String = "",
                             hasChildcareCosts: Boolean,
                             hasCostsWithApprovedProvider: Boolean,
-                            isAnyoneInPaidEmployment: Boolean) {
+                            isAnyoneInPaidEmployment: Boolean,
+                            livesWithPartner: Boolean) {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
   def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty

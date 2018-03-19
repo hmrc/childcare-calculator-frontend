@@ -29,31 +29,31 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
     tc = Some(2.0),
     tfc = Some(2.0),
     esc = Some(2.0),
-    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
   private val tcSchemeInvalid = ResultsViewModel(
     tc = None,
     tfc = Some(2.0),
     esc = Some(2.0),
-    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
   private val tfcSchemeInvalid = ResultsViewModel(
     tc = Some(2.0),
     tfc = None,
     esc = Some(2.0),
-    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
   private val escSchemeInvalid = ResultsViewModel(
     tc = Some(2.0),
     tfc = Some(2.0),
     esc = None,
-    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
   private val freeHoursSchemeInvalid = ResultsViewModel(
     tc = Some(2.0),
     tfc = Some(2.0),
     esc = Some(2.0),
-    freeHours = None, location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+    freeHours = None, location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
   case class Results(location: Location, key: String, scheme: ResultsViewModel)
 

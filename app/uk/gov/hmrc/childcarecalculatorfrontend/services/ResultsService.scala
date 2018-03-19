@@ -49,11 +49,16 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       case _ => true
     }
 
+    val livingWithPartner = answers.doYouLiveWithPartner.fold(false)(identity)
+
     val paidEmployment = checkIfInEmployment(answers)
 
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
-      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost, hasCostsWithApprovedProvider = approvedProvider, isAnyoneInPaidEmployment = paidEmployment)
+      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost,
+      hasCostsWithApprovedProvider = approvedProvider,
+      isAnyoneInPaidEmployment = paidEmployment,
+      livesWithPartner = livingWithPartner)
 
     val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
 

@@ -23,12 +23,12 @@ class ResultsViewModelSpec extends SpecBase {
 
   "ResultViewModel" must {
     "return correct number of eligible schemes" in {
-      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
       resultsView.noOfEligibleSchemes mustBe 2
     }
 
     "return number of eligible schemes 0 when there is no eligible scheme" in {
-      val resultsView = ResultsViewModel(location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+      val resultsView = ResultsViewModel(location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
       resultsView.noOfEligibleSchemes mustBe 0
     }
   }
@@ -36,14 +36,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyTo15FreeHours" must {
     "return true" when {
       "user is eligible only to 15 Free Hours and no other schems" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(15), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(15), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyTo15Hours mustBe true
       }
     }
 
     "return false" when {
       "user is not eligible to 15 Free Hours" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(30), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(30), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyTo15Hours mustBe false
       }
     }
@@ -52,14 +52,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButVouchers" must {
    "return true" when {
      "user is eligible for all the schemes but vouchers" in {
-       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
        resultsView.isEligibleForAllButVouchers mustBe true
      }
    }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButVouchers mustBe false
       }
     }
@@ -68,14 +68,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButTc" must {
     "return true" when {
       "user is eligible for all the schemes but tax credits" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = Some(100), freeHours = Some(200), esc = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = Some(100), freeHours = Some(200), esc = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButTc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButTc mustBe false
       }
     }
@@ -84,14 +84,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButFreeHours" must {
     "return true" when {
       "user is eligible for all the schemes but free hours" in {
-        val resultsView = ResultsViewModel(freeHours = None, tfc = Some(100), tc = Some(200), esc = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(freeHours = None, tfc = Some(100), tc = Some(200), esc = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButFreeHours mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButTc mustBe false
       }
     }
@@ -100,14 +100,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForAllButTfc" must {
     "return true" when {
       "user is eligible for all the schemes but TFC" in {
-        val resultsView = ResultsViewModel(tc = Some(300), tfc = None, freeHours = Some(200), esc = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(300), tfc = None, freeHours = Some(200), esc = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButTfc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleForAllButTfc mustBe false
       }
     }
@@ -116,14 +116,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForFreeHoursAndTFC" must {
     "return true" when {
       "user is eligible for Free hours and TFC" in {
-        val resultsView = ResultsViewModel(esc = None, tc = None, tfc = Some(500), freeHours = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(esc = None, tc = None, tfc = Some(500), freeHours = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForFreeHoursAndTfc mustBe false
       }
     }
@@ -132,14 +132,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForFreeHoursAndTC" must {
     "return true" when {
       "user is eligible for Free hours and TC" in {
-        val resultsView = ResultsViewModel(esc = None, tfc = None, tc = Some(500), freeHours = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(esc = None, tfc = None, tc = Some(500), freeHours = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForFreeHoursAndTc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForFreeHoursAndTc mustBe false
       }
     }
@@ -148,14 +148,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleForFreeHoursAndESC" must {
     "return true" when {
       "user is eligible for Free hours and ESC" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, esc = Some(500), freeHours = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = None, esc = Some(500), freeHours = Some(200), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForFreeHoursAndEsc mustBe false
       }
     }
@@ -164,14 +164,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForTCAndTFC" must {
     "return true" when {
       "user is eligible only for TC and TFC" in {
-        val resultsView = ResultsViewModel(tc = Some(500), tfc = Some(200), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(500), tfc = Some(200), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForTCAndTfc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForTCAndTfc mustBe false
       }
     }
@@ -180,14 +180,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForTCAndESC" must {
     "return true" when {
       "user is only eligible for TC and ESC" in {
-        val resultsView = ResultsViewModel(tc = Some(500), esc = Some(300), tfc = None, freeHours = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(500), esc = Some(300), tfc = None, freeHours = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForTCAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForTCAndEsc mustBe false
       }
     }
@@ -196,14 +196,14 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyForTFCAndESC" must {
     "return true" when {
       "user is eligible only for TFC and ESC" in {
-        val resultsView = ResultsViewModel(esc = Some(500), tfc = Some(200), freeHours = None, tc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(esc = Some(500), tfc = Some(200), freeHours = None, tc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForTfcAndEsc mustBe true
       }
     }
 
     "return false" when {
       "user is eligible for all the schemes" in {
-        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(200), esc = Some(300), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyForTfcAndEsc mustBe false
       }
     }

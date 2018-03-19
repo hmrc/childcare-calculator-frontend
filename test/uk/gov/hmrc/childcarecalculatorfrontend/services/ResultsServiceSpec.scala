@@ -39,7 +39,39 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
   "Result Service" must {
     "Return View Model with eligible schemes" when {
-      "cotaining with childcare costs" when {
+      "containing if you live with partner" when {
+        "you live with partner" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.livesWithPartner mustBe true
+        }
+
+        "you don't live with partner" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.livesWithPartner mustBe false
+        }
+      }
+
+      "cotaining childcare costs" when {
         "you have childcare costs" in {
           val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
