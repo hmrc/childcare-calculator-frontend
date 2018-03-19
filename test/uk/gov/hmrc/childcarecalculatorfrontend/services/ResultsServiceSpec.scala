@@ -118,6 +118,51 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
           values.isAnyoneInPaidEmployment mustBe true
         }
+
+        "you are not paid work" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.areYouInPaidWork) thenReturn Some(false)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.isAnyoneInPaidEmployment mustBe false
+        }
+
+        "you live with your partner and one of you works" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.you)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.isAnyoneInPaidEmployment mustBe true
+        }
+
+        "none of you work" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.neither)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.isAnyoneInPaidEmployment mustBe false
+        }
       }
 
       "It is eligible for TC" when {
