@@ -27,7 +27,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 
@@ -38,6 +39,23 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
   "Result Service" must {
     "Return View Model with eligible schemes" when {
+      "Return view model with childcare costs" when {
+        "you have childcare costs" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.hasChildcareCosts mustBe true
+        }
+      }
+
       "It is eligible for TC" when {
         "We are eligible for TC and dont' have UC" in {
           val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))

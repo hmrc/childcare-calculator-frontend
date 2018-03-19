@@ -53,7 +53,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
       when(resultService.getResultsViewModel(any(),any())(any(),any(),any())) thenReturn Future.successful(
-        ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000), location = location))
+        ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true))
 
       when(mockMoreInfoService.getSchemeContent(any(), any())) thenReturn List.empty
       when(mockMoreInfoService.getSummary(any(), any())) thenReturn None
