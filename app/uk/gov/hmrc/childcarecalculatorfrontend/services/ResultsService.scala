@@ -39,14 +39,21 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder) {
   def getResultsViewModel(answers: UserAnswers, location: Location)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
-    val childcareCost: Boolean = answers.childcareCosts.fold(false){
+    val childcareCost = answers.childcareCosts.fold(false){
       case ChildcareConstants.no => false
       case _ => true
     }
 
+    val approvedProvider = answers.approvedProvider.fold(false){
+      case ChildcareConstants.NO => false
+      case _ => true
+    }
+
+    val paidEmployment = checkIfInEmployment(answers)
+
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
-      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost)
+      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost, hasCostsWithApprovedProvider = approvedProvider, isAnyoneInPaidEmployment = paidEmployment)
 
     val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
@@ -75,6 +82,17 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
     }
     else {
       resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
+    }
+  }
+
+  private def checkIfInEmployment(userAnswers: UserAnswers) = {
+    if (userAnswers.areYouInPaidWork.isDefined) {
+      userAnswers.areYouInPaidWork.getOrElse(false)
+    } else {
+      userAnswers.whoIsInPaidEmployment.fold(false){
+        case ChildcareConstants.neither => false
+        case _ => true
+      }
     }
   }
 

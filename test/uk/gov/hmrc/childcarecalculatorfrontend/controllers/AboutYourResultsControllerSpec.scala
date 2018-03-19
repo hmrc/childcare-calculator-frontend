@@ -45,7 +45,7 @@ class AboutYourResultsControllerSpec extends ControllerSpecBase with MockitoSuga
 
   "AboutYourResults Controller" must {
     "return OK and the correct view for a GET" in {
-      val model = ResultsViewModel(location = Location.ENGLAND, hasChildcareCosts = true)
+      val model = ResultsViewModel(location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
       when(mockDataConnector.getEntry[ResultsViewModel](any(), any())(any())) thenReturn Future(Some(model))
       when(mockMoreInfoService.getSchemeContent(any(), any())) thenReturn List.empty
       when(mockMoreInfoService.getSummary(any(), any())) thenReturn None

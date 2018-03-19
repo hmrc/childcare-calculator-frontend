@@ -32,15 +32,15 @@ class ResultEligibleViewSpec extends ViewBehaviours {
 
     "Contain results" when {
       "We have free hours value" in {
-        val model = ResultsViewModel(freeHours = Some(15),location = Location.ENGLAND, hasChildcareCosts = true)
+        val model = ResultsViewModel(freeHours = Some(15),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
         val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "15")
       }
 
       "User is eligible for TC scheme" in {
-        val modelWithLessThan1000 = ResultsViewModel(tc = Some(500),location = Location.ENGLAND, hasChildcareCosts = true)
-        val modelWithMoreThan1000 = ResultsViewModel(tc = Some(1500),location = Location.ENGLAND, hasChildcareCosts = true)
+        val modelWithLessThan1000 = ResultsViewModel(tc = Some(500),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val modelWithMoreThan1000 = ResultsViewModel(tc = Some(1500),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
 
         val viewWithLessThan1000 = asDocument(resultEligible(modelWithLessThan1000, utils)(fakeRequest, messages))
         val viewWithMoreThan1000 = asDocument(resultEligible(modelWithMoreThan1000, utils)(fakeRequest, messages))
@@ -50,8 +50,8 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
      "User is eligible for TFC scheme" in {
-        val modelWithLessThan1000 = ResultsViewModel(tfc = Some(600),location = Location.ENGLAND, hasChildcareCosts = true)
-        val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1600),location = Location.ENGLAND, hasChildcareCosts = true)
+        val modelWithLessThan1000 = ResultsViewModel(tfc = Some(600),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1600),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
 
         val viewWithLessThan1000 = asDocument(resultEligible(modelWithLessThan1000, utils)(fakeRequest, messages))
         val viewWithMoreThan1000 = asDocument(resultEligible(modelWithMoreThan1000, utils)(fakeRequest, messages))
@@ -61,8 +61,8 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
       "User is eligible for ESC scheme" in {
-        val modelWithLessThan1000 = ResultsViewModel(esc = Some(900),location = Location.ENGLAND, hasChildcareCosts = true)
-        val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1900),location = Location.ENGLAND, hasChildcareCosts = true)
+        val modelWithLessThan1000 = ResultsViewModel(esc = Some(900),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
+        val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1900),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
 
 
         val viewWithLessThan1000 = asDocument(resultEligible(modelWithLessThan1000, utils)(fakeRequest, messages))
@@ -76,7 +76,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
 
     "display correct no of free hours and text when user is eligible for free hours" when {
       "location is England and no of hours is 15" in {
-        val model = ResultsViewModel(freeHours = Some(BigDecimal(15)), location = Location.ENGLAND, hasChildcareCosts = true)
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(15)), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
         val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "15")
@@ -88,7 +88,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
       "location is England and no of hours is 30" in {
-        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Location.ENGLAND, hasChildcareCosts = true)
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
         val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "30")
@@ -100,7 +100,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
       "location is Wales" in {
-        val model = ResultsViewModel(freeHours = Some(10), location =Location.WALES, hasChildcareCosts = true)
+        val model = ResultsViewModel(freeHours = Some(10), location =Location.WALES, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
         val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "10")
@@ -113,7 +113,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
       "location is Scotland" in {
-        val model = ResultsViewModel(freeHours = Some(16), location = Location.SCOTLAND, hasChildcareCosts = true)
+        val model = ResultsViewModel(freeHours = Some(16), location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
         val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "16")
@@ -125,7 +125,7 @@ class ResultEligibleViewSpec extends ViewBehaviours {
       }
 
       "location is NI" in {
-        val model = ResultsViewModel(freeHours = Some(12.5), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true)
+        val model = ResultsViewModel(freeHours = Some(12.5), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true)
         val view = asDocument(resultEligible(model, utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "12 and a half hours")

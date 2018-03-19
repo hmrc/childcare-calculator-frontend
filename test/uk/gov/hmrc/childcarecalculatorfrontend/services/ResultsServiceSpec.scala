@@ -39,7 +39,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
   "Result Service" must {
     "Return View Model with eligible schemes" when {
-      "Return view model with childcare costs" when {
+      "cotaining with childcare costs" when {
         "you have childcare costs" in {
           val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
@@ -53,6 +53,70 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
           values.hasChildcareCosts mustBe true
+        }
+
+        "you don't have childcare costs" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.no)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.hasChildcareCosts mustBe false
+        }
+      }
+
+      "containing if your costs are with an approved provider" when {
+        "your costs are with an approved provider" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.hasCostsWithApprovedProvider mustBe true
+        }
+
+        "your costs are not with an approved provider" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.NO)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.hasCostsWithApprovedProvider mustBe false
+        }
+      }
+
+      "contaning if you are in paid employment" when {
+        "you are in paid work" in {
+          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+          val schemeResults = SchemeResults(List(tcScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+
+          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+
+          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+
+          values.isAnyoneInPaidEmployment mustBe true
         }
       }
 
