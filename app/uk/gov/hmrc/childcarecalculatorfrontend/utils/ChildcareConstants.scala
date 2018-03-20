@@ -135,8 +135,12 @@ object ChildcareConstants {
 
   val parentEmploymentIncomeBlankErrorKey = "parentEmploymentIncomeCY.blank"
   val parentEmploymentIncomeInvalidErrorKey = "parentEmploymentIncomeCY.invalid"
+  val parentEmploymentIncomeInvalidMaxEarningsErrorKey = "parentEmploymentIncomeCY.maxEarnings.invalid"
+  val parentEmploymentIncomeBothInvalidMaxEarningsErrorKey = "parentEmploymentIncomeCY.both.maxEarnings.invalid"
   val partnerEmploymentIncomeBlankErrorKey = "partnerEmploymentIncomeCY.blank"
   val partnerEmploymentIncomeInvalidErrorKey = "partnerEmploymentIncomeCY.invalid"
+  val partnerEmploymentIncomeInvalidMaxEarningsErrorKey = "partnerEmploymentIncomeCY.maxEarnings.invalid"
+  val partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey = "partnerEmploymentIncomeCY.both.maxEarnings.invalid"
   val whoOtherIncomePYErrorKey = "whoOtherIncomePY.error"
 
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error"
@@ -230,4 +234,7 @@ object ChildcareConstants {
 
   val surveyChildcareSupportErrorKey = "surveyChildcareSupport.error"
 
+  val parentEmpIncomeCYFormField = "parentEmploymentIncomeCY"
+  val partnerEmpIncomeCYFormField = "partnerEmploymentIncomeCY"
+  val defaultFormValueField = "value"
 }

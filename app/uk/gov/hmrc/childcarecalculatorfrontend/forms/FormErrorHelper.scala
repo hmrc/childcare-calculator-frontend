@@ -16,24 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.FormError
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
+import play.api.data.{Form, FormError}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelper extends Mappings {
 
-  val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+  val decimalRegex: String = """\d+(\.\d{1,2})?""".r.toString()
+
   def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))
 
   def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
     value >= minValue && value <= maxValue
   }
 
-  def valueNonEmpty(message :  String): Constraint[String] = Constraint[String]("error.required") { o =>
+  def valueNonEmpty(message: String): Constraint[String] = Constraint[String]("error.required") { o =>
     if (o != null && o.trim.nonEmpty) Valid else Invalid(ValidationError(message))
   }
 
-  def validateDecimalInRange(message :  String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String]("error.required") { o =>
+  def validateDecimalInRange(message: String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String]("error.required") { o =>
     if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid else Invalid(ValidationError(message))
   }
 
@@ -60,9 +62,57 @@ class FormErrorHelper extends Mappings {
   }
 
   def returnOnFirstFailure[T](constraints: Constraint[T]*) = Constraint { field: T =>
-    constraints.toList dropWhile (_(field) == Valid) match {
+    constraints.toList dropWhile (_ (field) == Valid) match {
       case Nil => Valid
       case constraint :: _ => constraint(field)
     }
   }
+
+  def validateMaxIncomeEarnings(maximumEarnings: Option[Boolean],
+                                maxIncome: Double,
+                                errorKeyInvalidMaxEarnings: String,
+                                boundForm: Form[BigDecimal]): Form[BigDecimal] = {
+    maximumEarnings match {
+      case Some(maxEarnings) => {
+          val inputtedEmploymentIncomeValue = boundForm.value.getOrElse(BigDecimal(0))
+
+          if (inputtedEmploymentIncomeValue >= maxIncome && !maxEarnings) {
+            boundForm.withError(defaultFormValueField, errorKeyInvalidMaxEarnings)
+          } else {
+            boundForm
+          }
+      }
+      case _ => {
+        boundForm
+      }
+    }
+  }
+
+  def validateBothMaxIncomeEarnings(maximumEarnings: Option[Boolean],
+                                    maxIncome: Double,
+                                    boundForm: Form[EmploymentIncomeCY]): Form[EmploymentIncomeCY] =
+    maximumEarnings match {
+
+      case Some(maxEarnings) => {
+
+        val parentEmpIncomeValue = boundForm(parentEmpIncomeCYFormField).value.getOrElse("0").toDouble
+        val partnerEmpIncomeValue = boundForm(partnerEmpIncomeCYFormField).value.getOrElse("0").toDouble
+
+        if ((parentEmpIncomeValue >= maxIncome) && (partnerEmpIncomeValue >= maxIncome) && !maxEarnings) {
+
+          boundForm.withError(parentEmpIncomeCYFormField, parentEmploymentIncomeBothInvalidMaxEarningsErrorKey)
+            .withError(partnerEmpIncomeCYFormField, partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey)
+        } else if (parentEmpIncomeValue >= maxIncome && !maxEarnings) {
+
+          boundForm.withError(parentEmpIncomeCYFormField, parentEmploymentIncomeInvalidMaxEarningsErrorKey)
+        } else if (partnerEmpIncomeValue >= maxIncome && !maxEarnings) {
+
+          boundForm.withError(partnerEmpIncomeCYFormField, partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
+        } else {
+          boundForm
+        }
+      }
+
+      case _ => boundForm
+    }
 }
