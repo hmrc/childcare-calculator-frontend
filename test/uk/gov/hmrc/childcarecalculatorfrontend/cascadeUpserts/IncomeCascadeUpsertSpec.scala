@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY, OtherIncomeAmountCY, OtherIncomeAmountPY}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, northernIreland, partner, you}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
@@ -28,9 +28,21 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
   "Parent Paid Work CY" when {
     "save the data" must {
 
-      "save the data and remove ParentEmploymentIncomeCY page data when user selects yes" in {
+      "save the data and page data when user accesses the page first time and selects yes" in {
+        val originalCacheMap = new CacheMap("id", Map(LocationId.toString -> JsString(northernIreland)))
+
+        val result = cascadeUpsert(ParentPaidWorkCYId.toString, true, originalCacheMap)
+
+        result.data mustBe Map(ParentPaidWorkCYId.toString -> JsBoolean(true),
+          LocationId.toString -> JsString(northernIreland))
+      }
+
+      "save the data and remove PartnerEmploymentIncomeCY, BothPaidPensionCY, WhoPaysIntoPension  page data when user selects yes" in {
         val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-          PartnerEmploymentIncomeCYId.toString -> JsNumber(1200)))
+          PartnerEmploymentIncomeCYId.toString -> JsNumber(1200),
+          BothPaidPensionCYId.toString -> JsBoolean(true),
+          ParentPaidWorkCYId.toString -> JsBoolean(false),
+          WhoPaysIntoPensionId.toString -> JsString(you)))
 
         val result = cascadeUpsert(ParentPaidWorkCYId.toString, true, originalCacheMap)
 
@@ -38,8 +50,22 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
           EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)))
       }
 
-      "clear EmploymentIncomeCY page data when user selects no " in {
-        val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
+      "save the page data when user accesses the page first time and select when user selects no " in {
+        val originalCacheMap = new CacheMap("id", Map(LocationId.toString -> JsString(northernIreland)))
+
+        val result = cascadeUpsert(ParentPaidWorkCYId.toString, false, originalCacheMap)
+
+        result.data mustBe Map(ParentPaidWorkCYId.toString -> JsBoolean(false),
+          LocationId.toString -> JsString(northernIreland))
+      }
+
+
+      "clear EmploymentIncomeCY, PartnerPaidPensionCY, HowMuchPartnerPayPension, HowMuchYouPayPensionId, HowMuchBothPayPensionId" +
+        " page data when user change the selection from yes to no" in {
+        val originalCacheMap = new CacheMap("id", Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
+          ParentPaidWorkCYId.toString -> JsBoolean(true),
+          HowMuchYouPayPensionId.toString -> JsNumber(2300),
+          HowMuchBothPayPensionId.toString -> Json.toJson(HowMuchBothPayPension(23, 23))))
 
         val result = cascadeUpsert(ParentPaidWorkCYId.toString, false, originalCacheMap)
 

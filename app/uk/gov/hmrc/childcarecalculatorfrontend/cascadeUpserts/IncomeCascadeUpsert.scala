@@ -172,9 +172,13 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
   }
 
   private def storeParentPaidWorkCY(value: JsValue, cacheMap: CacheMap): CacheMap  = {
+   val existingValue = cacheMap.data.get(ParentPaidWorkCYId.toString)
+
     val mapToStore= value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - EmploymentIncomeCYId.toString)
-      case JsBoolean(true) => cacheMap copy (data = cacheMap.data - PartnerEmploymentIncomeCYId.toString)
+      case JsBoolean(false) if existingValue.contains(JsBoolean(true)) => cacheMap copy (data = cacheMap.data - EmploymentIncomeCYId.toString -
+                                  PartnerPaidPensionCYId.toString - HowMuchYouPayPensionId.toString - HowMuchBothPayPensionId.toString)
+      case JsBoolean(true) if existingValue.contains(JsBoolean(false)) => cacheMap copy (data = cacheMap.data -
+                                  PartnerEmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString)
       case _ => cacheMap
     }
 
