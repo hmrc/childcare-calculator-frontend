@@ -37,7 +37,9 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
       BothOtherIncomeLYId.toString -> ((v, cm) => storeBothOtherIncomePY(v, cm)),
       WhoOtherIncomePYId.toString -> ((v, cm) => storeWhoOtherIncomePY(v, cm)),
       BothPaidWorkPYId.toString -> ((v, cm) => storeBothPaidWorkPY(v, cm)),
-      WhoWasInPaidWorkPYId.toString -> ((v, cm) => storeWhoWasInPaidWork(v, cm))
+      WhoWasInPaidWorkPYId.toString -> ((v, cm) => storeWhoWasInPaidWork(v, cm)),
+      ParentPaidWorkCYId.toString -> ((v, cm) => storeParentPaidWorkCY(v, cm)),
+      PartnerPaidWorkCYId.toString -> ((v, cm) => storePartnerPaidWorkCY(v, cm))
     )
 
   private def storeYourOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -157,6 +159,36 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
 
     store(WhoWasInPaidWorkPYId.toString, value, mapToStore)
+  }
+  
+  private def storePartnerPaidWorkCY(value: JsValue, cacheMap: CacheMap): CacheMap  = {
+    val existingValue = cacheMap.data.get(PartnerPaidWorkCYId.toString)
+
+    val mapToStore= value match {
+      case JsBoolean(false) if existingValue.contains(JsBoolean(true)) => cacheMap copy (data = cacheMap.data - EmploymentIncomeCYId.toString -
+                                          BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchPartnerPayPensionId.toString -
+                                          HowMuchBothPayPensionId.toString)
+
+      case JsBoolean(true) if existingValue.contains(JsBoolean(false)) => cacheMap copy (data = cacheMap.data -
+                                                  ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString)
+      case _ => cacheMap
+    }
+
+    store(PartnerPaidWorkCYId.toString, value, mapToStore)
+  }
+
+  private def storeParentPaidWorkCY(value: JsValue, cacheMap: CacheMap): CacheMap  = {
+   val existingValue = cacheMap.data.get(ParentPaidWorkCYId.toString)
+
+    val mapToStore= value match {
+      case JsBoolean(false) if existingValue.contains(JsBoolean(true)) => cacheMap copy (data = cacheMap.data - EmploymentIncomeCYId.toString -
+                                  PartnerPaidPensionCYId.toString - HowMuchYouPayPensionId.toString - HowMuchBothPayPensionId.toString)
+      case JsBoolean(true) if existingValue.contains(JsBoolean(false)) => cacheMap copy (data = cacheMap.data -
+                                  PartnerEmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString)
+      case _ => cacheMap
+    }
+
+    store(ParentPaidWorkCYId.toString, value, mapToStore)
   }
 
 }

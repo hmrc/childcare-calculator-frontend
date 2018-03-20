@@ -314,6 +314,38 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           navigator.nextPage(EmploymentIncomePYId, NormalMode).value(answers) mustBe routes.BothPaidPensionPYController.onPageLoad(NormalMode)
         }
       }
+
+      "You get the same Income PY Route" must {
+        "redirects to have you had statutory pay when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.youGetSameIncomePreviousYear) thenReturn Some(true)
+
+          navigator.nextPage(YouGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.YouStatutoryPayController.onPageLoad(NormalMode)
+        }
+
+        "redirects to parent paid work py controller" in {
+          val answers = spy(userAnswers())
+          when(answers.youGetSameIncomePreviousYear) thenReturn Some(false)
+
+          navigator.nextPage(YouGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.YourIncomeInfoPYController.onPageLoad()
+        }
+      }
+
+      "Both get the same Income PY Route" must {
+        "redirects to have you had statutory pay when user selects yes" in {
+          val answers = spy(userAnswers())
+          when(answers.bothGetSameIncomePreviousYear) thenReturn Some(true)
+
+          navigator.nextPage(BothGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.BothStatutoryPayController.onPageLoad(NormalMode)
+        }
+
+        "redirects to have you had statutory pay when user selects no" in {
+          val answers = spy(userAnswers())
+          when(answers.bothGetSameIncomePreviousYear) thenReturn Some(false)
+
+          navigator.nextPage(BothGetSameIncomePreviousYearId, NormalMode).value(answers) mustBe routes.BothIncomeInfoPYController.onPageLoad()
+        }
+      }
     }
   }
 }

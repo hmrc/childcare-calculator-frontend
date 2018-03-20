@@ -73,7 +73,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(taxCredits.eligibility(any())) thenReturn Eligible
 
           navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.YourIncomeInfoPYController.onPageLoad()
+            routes.YouGetSameIncomePreviousYearController.onPageLoad()
         }
 
         "redirects to Your Other Income Amount CY page when single user selects yes, is not in receipt of UC, eligible for TC but not eligible for TFC " in {
@@ -120,7 +120,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.YourIncomeInfoPYController.onPageLoad()
+              routes.YouGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "is not determined" in {
@@ -151,7 +151,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "is not determined" in {
@@ -201,7 +201,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "is not determined" in {
@@ -249,7 +249,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn Eligible
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.BothIncomeInfoPYController.onPageLoad()
+                routes.BothGetSameIncomePreviousYearController.onPageLoad()
             }
 
             "it is not determined if they are eligible for tax credits" in {
@@ -285,7 +285,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn Eligible
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.BothIncomeInfoPYController.onPageLoad()
+                routes.BothGetSameIncomePreviousYearController.onPageLoad()
             }
 
             "redirects to Who Gets Other Income CY page when user with partner selects yes, is not receipt of UC," +
@@ -366,7 +366,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.YourIncomeInfoPYController.onPageLoad()
+              routes.YouGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "tax credits eligibility is not determined" in {
@@ -403,7 +403,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.YourIncomeInfoPYController.onPageLoad()
+              routes.YouGetSameIncomePreviousYearController.onPageLoad()
           }
         }
 
@@ -425,7 +425,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "tax credits eligibility is not determined" in {
@@ -463,7 +463,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
         }
@@ -644,7 +644,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "both not eligible for tax credits" in {
@@ -693,7 +693,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
           "partner is not eligible for tax credits" in {
@@ -741,7 +741,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.BothIncomeInfoPYController.onPageLoad()
+              routes.BothGetSameIncomePreviousYearController.onPageLoad()
           }
 
         }
