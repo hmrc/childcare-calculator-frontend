@@ -51,7 +51,7 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm().bindFromRequest().fold(
+      BooleanForm("bothGetSameIncomePreviousYear.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
         (getsSameIncomeAsLastYear) => {
