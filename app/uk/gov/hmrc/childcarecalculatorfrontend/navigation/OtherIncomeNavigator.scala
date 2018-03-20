@@ -53,7 +53,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
 
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val eligibleCall = if (hasPartner) { routes.BothGetSameIncomePreviousYearController.onPageLoad()}
-                      else {routes.YouGetSameIncomePreviousYearController.onPageLoad()}
+                      else {routes.YourIncomeInfoPYController.onPageLoad()}
     val notEligibleCall = routes.ResultController.onPageLoad()
 
     utils.getCall(answers.yourOtherIncomeThisYear) {
@@ -86,7 +86,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) = {
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val successRoute = if (hasPartner) { routes.BothGetSameIncomePreviousYearController.onPageLoad()}
-                      else {routes.YouGetSameIncomePreviousYearController.onPageLoad()}
+                      else {routes.YourIncomeInfoPYController.onPageLoad()}
     val failureRoute =   routes.ResultController.onPageLoad()
 
     processCall(answers, answers.yourOtherIncomeAmountCY, successRoute, failureRoute)
