@@ -22,72 +22,79 @@
 
 @(model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
 
-@freeHoursContactCouncil = {
-    <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
-}
-
-@findoutAboutUC = {
-    <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
-}
-
-@if(model.freeHours.isDefined) {
-
-    @defining(if(model.location == Location.ENGLAND && model.freeHours.contains(noOfFreeHours15)) {
-                totalNoOfHoursAYear} else {utils.valueFormatter(2*totalNoOfHoursAYear)}) { noOfHoursInAYear =>
-        @components.scheme_result(
-            title = messages("result.free.hours.title"),
-            couldGet = Some(messages("result.you.could.get.up.to")),
-            eligibility = Some(model.freeHours.fold("")(hours => if(hours!=freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours")),
-            periodText = if(model.location == Location.ENGLAND){
-                            Some(messages(s"result.free.hours.period.${model.location}", noOfHoursInAYear))} else {
-                            Some(messages(s"result.free.hours.period.${model.location}"))},
-            para1 = Some(messages("result.free.hours.para1")),
-            detailSummary = Some(messages("result.free.hours.detail.summary")),
-            detailClass = Some("freeHours"),
-            detailPara1 = Some(messages("result.free.hours.detailPara1")),
-            detailPara2 = Some(messages("result.free.hours.detailPara2")),
-            detailPara3WithLink = Some(freeHoursContactCouncil),
-            detailPara4 = Some(messages("result.free.hours.detailPara4")))
+    @freeHoursContactCouncil = {
+        <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>
+            .</p>
     }
-}
 
-@if(model.tc.isDefined) {
-      @components.scheme_result(
-        title = messages("result.tc.title"),
-        couldGet = Some(messages("result.you.could.get")),
-        eligibility = Some("£" + model.tc.fold("")(value => utils.valueFormatter(value))),
-        periodText = Some(messages("result.tc.period")),
-        para1 = Some(messages("result.tc.para1")),
-        detailSummary = Some(messages("result.tc.detail.summary")),
-        detailClass = Some("tc"),
-        detailPara1 = Some(messages("result.tc.detailPara1")),
-        detailPara2WithLink = Some(findoutAboutUC))
-}
+    @findoutAboutUC = {
+        <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>
+            .</p>
+    }
+
+    @if(model.freeHours.isDefined) {
+
+        @defining(if(model.location == Location.ENGLAND && model.freeHours.contains(noOfFreeHours15)) {
+            totalNoOfHoursAYear
+        } else {
+            utils.valueFormatter(2 * totalNoOfHoursAYear)
+        }) { noOfHoursInAYear =>
+            @components.scheme_result(
+                title = messages("result.free.hours.title"),
+                couldGet = Some(messages("result.you.could.get.up.to")),
+                eligibility = Some(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours")),
+                periodText = if(model.location == Location.ENGLAND) {
+                    Some(messages(s"result.free.hours.period.${model.location}", noOfHoursInAYear))
+                } else {
+                    Some(messages(s"result.free.hours.period.${model.location}"))
+                },
+                para1 = Some(messages("result.free.hours.para1")),
+                detailSummary = Some(messages("result.free.hours.detail.summary")),
+                detailClass = Some("freeHours"),
+                detailPara1 = Some(messages("result.free.hours.detailPara1")),
+                detailPara2 = Some(messages("result.free.hours.detailPara2")),
+                detailPara3WithLink = Some(freeHoursContactCouncil),
+                detailPara4 = Some(messages("result.free.hours.detailPara4")))
+        }
+    }
+
+    @if(model.tc.isDefined) {
+        @components.scheme_result(
+            title = messages("result.tc.title"),
+            couldGet = Some(messages("result.you.could.get")),
+            eligibility = Some("£" + model.tc.fold("")(value => utils.valueFormatter(value))),
+            periodText = Some(messages("result.tc.period")),
+            para1 = Some(messages("result.tc.para1")),
+            detailSummary = Some(messages("result.tc.detail.summary")),
+            detailClass = Some("tc"),
+            detailPara1 = Some(messages("result.tc.detailPara1")),
+            detailPara2WithLink = Some(findoutAboutUC))
+    }
 
 
-@if(model.tfc.isDefined) {
-    @components.scheme_result(
-        title = messages("result.tfc.title"),
-        couldGet = Some(messages("result.you.could.get")),
-        eligibility = Some("£" + model.tfc.fold("")(value => utils.valueFormatter(value))),
-        periodText = Some(messages("result.tfc.period")),
-        para1 = Some(messages("result.tfc.para1")),
-        detailSummary = Some(messages("result.tfc.detail.summary")),
-        detailClass = Some("tfc"),
-        detailPara1 = Some(messages("result.tfc.detailPara1")),
-        displayWarning = model.showTFCWarning,
-        warningMessage = model.tfcWarningMessage)
-}
+    @if(model.tfc.isDefined) {
+        @components.scheme_result(
+            title = messages("result.tfc.title"),
+            couldGet = Some(messages("result.you.could.get")),
+            eligibility = Some("£" + model.tfc.fold("")(value => utils.valueFormatter(value))),
+            periodText = Some(messages("result.tfc.period")),
+            para1 = Some(messages("result.tfc.para1")),
+            detailSummary = Some(messages("result.tfc.detail.summary")),
+            detailClass = Some("tfc"),
+            detailPara1 = Some(messages("result.tfc.detailPara1")),
+            displayWarning = model.showTFCWarning,
+            warningMessage = model.tfcWarningMessage)
+    }
 
-@if(model.esc.isDefined) {
-    @components.scheme_result(
-        title = messages("result.esc.title"),
-        couldGet = Some(messages("result.you.could.get")),
-        eligibility = Some("£" + model.esc.fold("")(value => utils.valueFormatter(value))),
-        periodText = Some(messages("result.esc.period")),
-        para1 = Some(messages("result.esc.para1")),
-        detailSummary = Some(messages("result.esc.detail.summary")),
-        detailClass = Some("esc"),
-        detailPara1 = Some(messages("result.esc.detailPara1")),
-        detailPara2 = Some(messages("result.esc.detailPara2")))
-}
+    @if(model.esc.isDefined) {
+        @components.scheme_result(
+            title = messages("result.esc.title"),
+            couldGet = Some(messages("result.you.could.get")),
+            eligibility = Some("£" + model.esc.fold("")(value => utils.valueFormatter(value))),
+            periodText = Some(messages("result.esc.period")),
+            para1 = Some(messages("result.esc.para1")),
+            detailSummary = Some(messages("result.esc.detail.summary")),
+            detailClass = Some("esc"),
+            detailPara1 = Some(messages("result.esc.detailPara1")),
+            detailPara2 = Some(messages("result.esc.detailPara2")))
+    }
