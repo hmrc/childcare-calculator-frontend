@@ -33,15 +33,25 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
   }
 
   private def buildFirstSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val numberOfChildren = answers.noOfChildren.getOrElse(0)
-    val childOrChildren = if (numberOfChildren == 1) Messages("results.firstParagraph.aChild") else Messages("results.firstParagraph.children")
-    val numberOfChildrenMessage = if (numberOfChildren == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
-    s"$paragraph${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
+    answers.noOfChildren match {
+      case Some(numberOfChildren) => {
+        val childOrChildren = if (numberOfChildren == 1) Messages("results.firstParagraph.aChild") else Messages("results.firstParagraph.children")
+        val numberOfChildrenMessage = if (numberOfChildren == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
+        s"$paragraph${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
+      }
+      case _ => ""
+    }
   }
 
   private def buildSecondSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val childcareCosts = CalculateChildcareCosts(answers)
-    val section2 = if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}${utils.valueFormatter(childcareCosts)}."
+    val section2 =  answers.noOfChildren match {
+      case Some(_) => {
+        val childcareCosts = CalculateChildcareCosts(answers)
+        if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}${utils.valueFormatter(childcareCosts)}."
+      }
+      case _ => ""
+    }
+
     s"$paragraph$section2"
   }
 
