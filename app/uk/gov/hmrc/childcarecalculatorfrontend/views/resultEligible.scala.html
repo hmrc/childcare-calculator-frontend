@@ -22,16 +22,13 @@
 
 @(model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
 
-    @freeHoursContactCouncil = {
-        <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>
-            .</p>
-    }
+@freeHoursContactCouncil = {
+    <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
+}
 
-    @findoutAboutUC = {
-        <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>
-            .</p>
-    }
-
+@findoutAboutUC = {
+    <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" data-journey-click="link - click:@messages("result.tc.title"):@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text")" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
+}
     @if(model.freeHours.isDefined) {
 
         @defining(if(model.location == Location.ENGLAND && model.freeHours.contains(noOfFreeHours15)) {

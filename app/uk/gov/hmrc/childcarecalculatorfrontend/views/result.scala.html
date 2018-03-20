@@ -74,7 +74,7 @@
                 <div class="twoYearsOld">
                     <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
                     <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
-                    <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" href = @messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
+                    <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href=@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
                         @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
                     </a>
                         @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
@@ -151,7 +151,7 @@
                 @if(links.nonEmpty) {
                     <ul class="list list-bullet">
                     @for(link <- links) {
-                        <li><a href=@link("link")>@link("title")</a></li>
+                        <li><a target="_blank" rel="external" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span class="visually-hidden">@messages("site.opens.new.window")</span></a></li>
                     }
                     </ul>
                 }

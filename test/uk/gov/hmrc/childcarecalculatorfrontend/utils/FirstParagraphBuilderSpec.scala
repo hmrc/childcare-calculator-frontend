@@ -46,7 +46,7 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
      "The number of children field is empty" in {
        val answers = new UserAnswers(new CacheMap("id", Map()))
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("you don’t have children")
+       paragraphBuilder.buildFirstParagraph(answers) mustBe ""
      }
 
      "You have one child" in {
@@ -59,13 +59,13 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
    "Loading the Childcare Costs section" when {
 
      "We have childcare costs at monthly aggregation" in {
-       val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString)),ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(25)))))
+       val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2),ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString)),ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(25)))))
 
        paragraphBuilder.buildFirstParagraph(answers) must include("yearly childcare costs of around £300.")
      }
 
      "We have more than one childcare cost at monthly aggregation" in {
-       val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
+       val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2),ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
          "2"->JsString(ChildcarePayFrequency.MONTHLY.toString),
          "3"->JsString(ChildcarePayFrequency.MONTHLY.toString)),
          ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(20),"2" -> JsNumber(10),"3"-> JsNumber(5)))))
@@ -74,14 +74,14 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
      }
 
      "We have one childcare cost at weekly aggregation" in {
-       val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
+       val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2),ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
          ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(4)))))
 
        paragraphBuilder.buildFirstParagraph(answers) must include("yearly childcare costs of around £208.")
      }
 
      "We have one childcare cost at weekly aggregation and one childcare cost at monthly aggregation" in {
-       val answers = new UserAnswers(new CacheMap("id", Map(ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
+       val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2),ChildcarePayFrequencyId.toString -> Json.obj("1"->JsString(ChildcarePayFrequency.MONTHLY.toString),
          "2"->JsString(ChildcarePayFrequency.MONTHLY.toString),
          "3"->JsString(ChildcarePayFrequency.WEEKLY.toString)),
          ExpectedChildcareCostsId.toString -> Json.obj("1" -> JsNumber(20),"2" -> JsNumber(10),"3"-> JsNumber(10)))))
@@ -90,9 +90,21 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
      }
 
      "We have children but no childcare costs" in {
-       val answers = new UserAnswers(new CacheMap("id", Map()))
+       val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(1))))
+
+       paragraphBuilder.buildFirstParagraph(answers) must include("you have one child.")
+     }
+
+     "You have 0 children and no childcare costs" in {
+       val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(0))))
 
        paragraphBuilder.buildFirstParagraph(answers) must include("you don’t have children.")
+     }
+
+     "There is no data about children or childcare costs" in {
+       val answers = new UserAnswers(new CacheMap("id", Map()))
+
+       paragraphBuilder.buildFirstParagraph(answers) mustBe ""
      }
    }
 

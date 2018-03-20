@@ -35,7 +35,7 @@ private object AppDependencies {
     "uk.gov.hmrc" %% "play-ui" % playUiVersion,
     "uk.gov.hmrc" %% "http-caching-client" % httpCachingClientVersion,
     "uk.gov.hmrc" %% "play-conditional-form-mapping" % playConditionalFormMappingVersion,
-    "uk.gov.hmrc" %% "bootstrap-play-25" % "1.3.0",
+    "uk.gov.hmrc" %% "bootstrap-play-25" % "1.5.0",
     "uk.gov.hmrc" %% "play-language" % playLanguageVersion
   )
 
