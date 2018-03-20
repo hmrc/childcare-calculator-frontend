@@ -1296,10 +1296,10 @@ result.tfc.not.eligible = You cannot get help from Tax-Free Childcare. To get he
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice.
 result.esc.para1 = Each parent can take some of their pay as childcare vouchers and not pay tax or National Insurance on that amount. You could take up to £55, £28 or £25 a week in vouchers, depending on how much you earn.
-result.esc.para2 = Employers can only offer them to new claimants until the end of March 2018.
+result.esc.para2 = Employers can only offer them to new claimants until October 2018.
 result.esc.detail.summary = How childcare vouchers work
 result.esc.detailPara1 = The amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
-result.esc.detailPara2 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
+result.esc.detailPara2 = Employers can only offer them to new claimants until October 2018, as they are being replaced by Tax-Free Childcare.
 result.esc.detailPara3 = They are for children under 16, or under 18 if disabled.
 
 result.esc.not.eligible.para1 = You cannot get help from childcare vouchers. To get help, you or your partner’s employer has to offer them.
@@ -1340,7 +1340,7 @@ aboutYourResults.tfc.para2 = It is for children under 12, or 18 if disabled.
 aboutYourResults.esc.title = Childcare vouchers
 aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
 aboutYourResults.esc.para2 = They are for children under 16, or 18 if disabled.
-aboutYourResults.esc.para3 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
+aboutYourResults.esc.para3 = Employers can only offer them to new claimants until October 2018, as they are being replaced by Tax-Free Childcare.
 
 aboutYourResults.more.info.title = How to apply
 aboutYourResults.more.info.para1 = Read more about the schemes you could get help from and find out how to apply for:
