@@ -65,7 +65,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ChildAgedThreeOrFourId.toString -> JsBoolean(true))
       }
 
-      "remove all the data for subsequent pages the when user changes the selection from yes to no" in {
+      "remove all the data for subsequent pages when user changes the selection from yes to no" in {
         val originalCacheMap = new CacheMap("id", Map(
           LocationId.toString -> JsString(England),
           ChildAgedTwoId.toString -> JsBoolean(false),
@@ -113,7 +113,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ChildcareCostsId.toString -> JsString(yes))
       }
 
-      "remove all the data for subsequent pages the when user changes the selection from yes to no" in {
+      "remove all the data for subsequent pages when user changes the selection from yes to no" in {
         val originalCacheMap = new CacheMap("id", Map(
           LocationId.toString -> JsString(England),
           ChildAgedTwoId.toString -> JsBoolean(false),

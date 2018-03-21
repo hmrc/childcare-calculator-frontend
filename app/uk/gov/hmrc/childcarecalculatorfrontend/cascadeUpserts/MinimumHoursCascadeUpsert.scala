@@ -29,9 +29,10 @@ class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
   lazy val No: String = YesNoNotYetEnum.NO.toString
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
-    Map(LocationId.toString -> ((v, cm) => storeLocation(v, cm)),
+    Map(
+      LocationId.toString -> ((v, cm) => storeLocation(v, cm)),
       ChildcareCostsId.toString -> ((v,cm) => storeChildcareCosts(v,cm)),
-        ApprovedProviderId.toString -> ((v,cm) => storeApprovedProvider(v,cm))
+      ApprovedProviderId.toString -> ((v,cm) => storeApprovedProvider(v,cm))
     )
 
   private def storeLocation(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -53,15 +54,15 @@ class MinimumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val existingChildCareCostValue = cacheMap.data.get(ChildcareCostsId.toString)
 
     val mapToStore = value match {
-        case JsString(No) if !existingChildCareCostValue.contains(JsString(NO)) => {
-          cacheMap copy (data = Map(LocationId.toString -> locationValue,
-            ChildAgedTwoId.toString -> childAgedTwoValue,
-            ChildAgedThreeOrFourId.toString -> childAgedThreeOrFourValue))
-        }
-        case _ => {
-          cacheMap
-        }
+      case JsString(No) if !existingChildCareCostValue.contains(JsString(NO)) => {
+        cacheMap copy (data = Map(LocationId.toString -> locationValue,
+          ChildAgedTwoId.toString -> childAgedTwoValue,
+          ChildAgedThreeOrFourId.toString -> childAgedThreeOrFourValue))
       }
+      case _ => {
+        cacheMap
+      }
+    }
 
     store(ChildcareCostsId.toString, value, mapToStore)
   }
