@@ -55,8 +55,10 @@ class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCon
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("youGetSameIncomePreviousYear.error").bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(youGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
+        (formWithErrors: Form[Boolean]) => {
+          val summary = incomeSummary.load(request.userAnswers)
+          Future.successful(BadRequest(youGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo, Some(summary))))
+        },
         (getsSameIncomeAsLastYear) => {
           val clonedPreviousYearIncomeData =  if (getsSameIncomeAsLastYear) {
             CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)

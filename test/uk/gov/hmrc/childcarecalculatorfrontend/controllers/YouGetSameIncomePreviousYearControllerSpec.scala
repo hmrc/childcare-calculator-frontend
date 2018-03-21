@@ -43,7 +43,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
     new YouGetSameIncomePreviousYearController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo, new IncomeSummary(new Utils()))
 
-  def viewAsString(form: Form[Boolean] = BooleanForm(), summary: Option[Map[String,String]] = None) = youGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo, summary)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = youGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo, mapSummary)(fakeRequest, messages).toString
 
   "YouGetSameIncomePreviousYear Controller" must {
 
@@ -51,7 +51,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString(summary = mapSummary)
+      contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
@@ -60,7 +60,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true),mapSummary)
+      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
     "redirect to the next page when valid data is submitted and clone data" in {
