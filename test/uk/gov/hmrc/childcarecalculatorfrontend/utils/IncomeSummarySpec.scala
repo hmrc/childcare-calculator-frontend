@@ -100,6 +100,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
   val incomeSummary = new IncomeSummary()
   val answers = spy(userAnswers())
+  override implicit val messages: Messages = messagesApi.preferred(fakeRequest)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
@@ -118,15 +119,15 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
     }
 
     private def loadHowMuchYouPayPension(userAnswers: UserAnswers, result: Map[String, String]) = {
-      loadSectionAmount(userAnswers.YouPaidPensionCY,result,("Paid into a pension" -> "No"),"Your pension payments a month",userAnswers.howMuchYouPayPension)
+      loadSectionAmount(userAnswers.YouPaidPensionCY,result,("Paid into a pension" -> Messages("site.no")),"Your pension payments a month",userAnswers.howMuchYouPayPension)
     }
 
     private def loadYourOtherIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      loadSectionAmount(userAnswers.yourOtherIncomeThisYear,result,("Other income" -> "No"),"Your other income",userAnswers.yourOtherIncomeAmountCY)
+      loadSectionAmount(userAnswers.yourOtherIncomeThisYear,result,("Other income" -> Messages("site.no")),"Your other income",userAnswers.yourOtherIncomeAmountCY)
     }
 
     private def loadYourBenefitsIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      loadSectionAmount(userAnswers.youAnyTheseBenefits,result,("Income from benefits" -> "No"),"Your benefits income",userAnswers.youBenefitsIncomeCY)
+      loadSectionAmount(userAnswers.youAnyTheseBenefits,result,("Income from benefits" -> Messages("site.no")),"Your benefits income",userAnswers.youBenefitsIncomeCY)
     }
 
     private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: Map[String,String], conditionNotMet: (String,String), textForIncome: String, incomeSection: Option[BigDecimal]) = {
