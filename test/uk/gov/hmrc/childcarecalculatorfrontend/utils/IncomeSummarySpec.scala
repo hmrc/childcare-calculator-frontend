@@ -3,6 +3,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.mockito.Mockito.{spy, when}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
+import play.api.i18n.Messages
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -103,7 +104,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
   class IncomeSummary {
-    def load(userAnswers: UserAnswers): Map[String, String] = {
+    def load(userAnswers: UserAnswers)(implicit messages: Messages): Map[String, String] = {
       val result: Map[String, String] = Map()
       val parentIncome = loadParentIncome(userAnswers, _: Map[String, String])
       val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])

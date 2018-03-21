@@ -1438,3 +1438,11 @@ bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to
 bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
 bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
 bothGetSameIncomePreviousYear.error = Select yes if you and your partner got the same income for the previous year
+
+incomeSummary.yourIncome = Your income
+incomeSummary.paidIntoPension = Paid into a pension
+incomeSummary.pensionPaymentsAmonth = "Your pension payments a month"
+incomeSummary.yourOtherIncome = "Your other income"
+incomeSummary.yourBenefitsIncome = "Your benefits income"
+incomeSummary.otherIncome = Other income
+incomeSummary.incomeFromBenefits = Income from benefits
