@@ -1,5 +1,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
+import javax.inject.Inject
+
 import org.mockito.Mockito.{spy, when}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -10,6 +12,20 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
   "Your Income Summary" should {
+    "Format values appropriately" in {
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(200000))
+
+      val result = incomeSummary.load(answers)
+
+      result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£200,000")
+    }
+    "Add £ symbol to numeric values" in {
+      when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(200000))
+
+      val result = incomeSummary.load(answers)
+
+      result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£200,000")
+    }
     "Handle a single parent journey" when {
       "The income section" when {
         "has an income" in {
@@ -17,7 +33,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("30")
+          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£30")
         }
       }
 
@@ -28,7 +44,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get(Messages("incomeSummary.pensionPaymentsAmonth")) mustBe Some("300")
+          result.get(Messages("incomeSummary.pensionPaymentsAmonth")) mustBe Some("£300")
         }
 
         "does not have a pension" in {
@@ -53,7 +69,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get(Messages("incomeSummary.yourOtherIncome")) mustBe Some("300")
+          result.get(Messages("incomeSummary.yourOtherIncome")) mustBe Some("£300")
         }
 
         "does not have another income" in {
@@ -77,7 +93,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get(Messages("incomeSummary.yourBenefitsIncome")) mustBe Some("500")
+          result.get(Messages("incomeSummary.yourBenefitsIncome")) mustBe Some("£500")
         }
 
         "does not have benefits" in {
@@ -98,13 +114,13 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
   }
 
 
-  val incomeSummary = new IncomeSummary()
+  val incomeSummary = new IncomeSummary(new Utils())
   val answers = spy(userAnswers())
   override implicit val messages: Messages = messagesApi.preferred(fakeRequest)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  class IncomeSummary {
+  class IncomeSummary @Inject()(utils: Utils) {
     def load(userAnswers: UserAnswers)(implicit messages: Messages): Map[String, String] = {
       val result: Map[String, String] = Map()
       val parentIncome = loadParentIncome(userAnswers, _: Map[String, String])
@@ -115,7 +131,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
     }
 
     private def loadParentIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      userAnswers.parentEmploymentIncomeCY.foldLeft(result)((result, income) => result + (Messages("incomeSummary.yourIncome") -> income.toString()))
+      userAnswers.parentEmploymentIncomeCY.foldLeft(result)((result, income) => result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(income)}"))
     }
 
     private def loadHowMuchYouPayPension(userAnswers: UserAnswers, result: Map[String, String]) = {
@@ -134,7 +150,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
       conditionToCheckAmount match {
         case Some(conditionMet) => {
           if (conditionMet) {
-            incomeSection.foldLeft(result)((result, income) => result + (textForIncome -> income.toString()))
+            incomeSection.foldLeft(result)((result, income) => result + (textForIncome -> s"£${utils.valueFormatter(income)}"))
           }
           else {
             result + conditionNotMet
