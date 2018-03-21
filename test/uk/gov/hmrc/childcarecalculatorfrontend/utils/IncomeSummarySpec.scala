@@ -37,6 +37,12 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           result.get("Paid into a pension") mustBe Some("No")
         }
+
+        "there is no data about pension" in {
+          val result = incomeSummary.load(answers)
+
+          result.get("Paid into a pension") mustBe Some("No")
+        }
       }
 
       "Your other income section" when {
@@ -56,6 +62,11 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           result.get("Other income") mustBe Some("No")
         }
+        "there is no data about another income" in {
+          val result = incomeSummary.load(answers)
+
+          result.get("Other income") mustBe Some("No")
+        }
       }
 
       "Your benefits section" when {
@@ -71,6 +82,12 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         "does not have benefits" in {
           when(answers.youAnyTheseBenefits) thenReturn Some(false)
 
+          val result = incomeSummary.load(answers)
+
+          result.get("Income from benefits") mustBe Some("No")
+        }
+
+        "there is no data about benefits" in {
           val result = incomeSummary.load(answers)
 
           result.get("Income from benefits") mustBe Some("No")
@@ -100,44 +117,28 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
     }
 
     private def loadHowMuchYouPayPension(userAnswers: UserAnswers, result: Map[String, String]) = {
-      userAnswers.YouPaidPensionCY match {
-        case Some(paysPension) => {
-          if (paysPension) {
-            userAnswers.howMuchYouPayPension.foldLeft(result)((result, income) => result + ("Your pension payments a month" -> income.toString()))
-          }
-          else {
-            result + ("Paid into a pension" -> "No")
-          }
-        }
-        case _ => result
-      }
+      loadSectionAmount(userAnswers.YouPaidPensionCY,result,("Paid into a pension" -> "No"),"Your pension payments a month",userAnswers.howMuchYouPayPension)
     }
 
     private def loadYourOtherIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      userAnswers.yourOtherIncomeThisYear match {
-        case Some(hasOtherIncome) => {
-          if (hasOtherIncome) {
-            userAnswers.yourOtherIncomeAmountCY.foldLeft(result)((result, income) => result + ("Your other income" -> income.toString()))
-          }
-          else {
-            result + ("Other income" -> "No")
-          }
-        }
-        case _ => result
-      }
+      loadSectionAmount(userAnswers.yourOtherIncomeThisYear,result,("Other income" -> "No"),"Your other income",userAnswers.yourOtherIncomeAmountCY)
     }
 
     private def loadYourBenefitsIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      userAnswers.youAnyTheseBenefits match {
-        case Some(hasBenefits) => {
-          if (hasBenefits) {
-            userAnswers.youBenefitsIncomeCY.foldLeft(result)((result, income) => result + ("Your benefits income" -> income.toString()))
+      loadSectionAmount(userAnswers.youAnyTheseBenefits,result,("Income from benefits" -> "No"),"Your benefits income",userAnswers.youBenefitsIncomeCY)
+    }
+
+    private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: Map[String,String], conditionNotMet: (String,String), textForIncome: String, incomeSection: Option[BigDecimal]) = {
+      conditionToCheckAmount match {
+        case Some(conditionMet) => {
+          if (conditionMet) {
+            incomeSection.foldLeft(result)((result, income) => result + (textForIncome -> income.toString()))
           }
           else {
-            result + ("Income from benefits" -> "No")
+            result + conditionNotMet
           }
         }
-        case _ => result
+        case _ => result + conditionNotMet
       }
     }
   }
