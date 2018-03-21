@@ -17,7 +17,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Your income") mustBe Some("30")
+          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("30")
         }
       }
 
@@ -28,7 +28,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Your pension payments a month") mustBe Some("300")
+          result.get(Messages("incomeSummary.pensionPaymentsAmonth")) mustBe Some("300")
         }
 
         "does not have a pension" in {
@@ -36,13 +36,13 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Paid into a pension") mustBe Some("No")
+          result.get(Messages("incomeSummary.paidIntoPension")) mustBe Some(Messages("site.no"))
         }
 
         "there is no data about pension" in {
           val result = incomeSummary.load(answers)
 
-          result.get("Paid into a pension") mustBe Some("No")
+          result.get(Messages("incomeSummary.paidIntoPension")) mustBe Some(Messages("site.no"))
         }
       }
 
@@ -53,7 +53,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Your other income") mustBe Some("300")
+          result.get(Messages("incomeSummary.yourOtherIncome")) mustBe Some("300")
         }
 
         "does not have another income" in {
@@ -61,12 +61,12 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Other income") mustBe Some("No")
+          result.get(Messages("incomeSummary.otherIncome")) mustBe Some(Messages("site.no"))
         }
         "there is no data about another income" in {
           val result = incomeSummary.load(answers)
 
-          result.get("Other income") mustBe Some("No")
+          result.get(Messages("incomeSummary.otherIncome")) mustBe Some(Messages("site.no"))
         }
       }
 
@@ -77,7 +77,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Your benefits income") mustBe Some("500")
+          result.get(Messages("incomeSummary.yourBenefitsIncome")) mustBe Some("500")
         }
 
         "does not have benefits" in {
@@ -85,13 +85,13 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           val result = incomeSummary.load(answers)
 
-          result.get("Income from benefits") mustBe Some("No")
+          result.get(Messages("incomeSummary.incomeFromBenefits")) mustBe Some(Messages("site.no"))
         }
 
         "there is no data about benefits" in {
           val result = incomeSummary.load(answers)
 
-          result.get("Income from benefits") mustBe Some("No")
+          result.get(Messages("incomeSummary.incomeFromBenefits")) mustBe Some(Messages("site.no"))
         }
       }
     }
@@ -115,19 +115,19 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
     }
 
     private def loadParentIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      userAnswers.parentEmploymentIncomeCY.foldLeft(result)((result, income) => result + ("Your income" -> income.toString()))
+      userAnswers.parentEmploymentIncomeCY.foldLeft(result)((result, income) => result + (Messages("incomeSummary.yourIncome") -> income.toString()))
     }
 
     private def loadHowMuchYouPayPension(userAnswers: UserAnswers, result: Map[String, String]) = {
-      loadSectionAmount(userAnswers.YouPaidPensionCY,result,("Paid into a pension" -> Messages("site.no")),"Your pension payments a month",userAnswers.howMuchYouPayPension)
+      loadSectionAmount(userAnswers.YouPaidPensionCY,result,(Messages("incomeSummary.paidIntoPension") -> Messages("site.no")),Messages("incomeSummary.pensionPaymentsAmonth"),userAnswers.howMuchYouPayPension)
     }
 
     private def loadYourOtherIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      loadSectionAmount(userAnswers.yourOtherIncomeThisYear,result,("Other income" -> Messages("site.no")),"Your other income",userAnswers.yourOtherIncomeAmountCY)
+      loadSectionAmount(userAnswers.yourOtherIncomeThisYear,result,(Messages("incomeSummary.otherIncome") -> Messages("site.no")),Messages("incomeSummary.yourOtherIncome"),userAnswers.yourOtherIncomeAmountCY)
     }
 
     private def loadYourBenefitsIncome(userAnswers: UserAnswers, result: Map[String, String]) = {
-      loadSectionAmount(userAnswers.youAnyTheseBenefits,result,("Income from benefits" -> Messages("site.no")),"Your benefits income",userAnswers.youBenefitsIncomeCY)
+      loadSectionAmount(userAnswers.youAnyTheseBenefits,result,(Messages("incomeSummary.incomeFromBenefits") -> Messages("site.no")),Messages("incomeSummary.yourBenefitsIncome"),userAnswers.youBenefitsIncomeCY)
     }
 
     private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: Map[String,String], conditionNotMet: (String,String), textForIncome: String, incomeSection: Option[BigDecimal]) = {

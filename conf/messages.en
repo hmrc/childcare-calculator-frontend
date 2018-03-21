@@ -1441,8 +1441,8 @@ bothGetSameIncomePreviousYear.error = Select yes if you and your partner got the
 
 incomeSummary.yourIncome = Your income
 incomeSummary.paidIntoPension = Paid into a pension
-incomeSummary.pensionPaymentsAmonth = "Your pension payments a month"
-incomeSummary.yourOtherIncome = "Your other income"
-incomeSummary.yourBenefitsIncome = "Your benefits income"
+incomeSummary.pensionPaymentsAmonth = Your pension payments a month
+incomeSummary.yourOtherIncome = Your other income
+incomeSummary.yourBenefitsIncome = Your benefits income
 incomeSummary.otherIncome = Other income
 incomeSummary.incomeFromBenefits = Income from benefits
