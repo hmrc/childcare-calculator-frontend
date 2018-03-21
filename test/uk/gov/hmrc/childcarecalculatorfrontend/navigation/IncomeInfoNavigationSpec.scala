@@ -89,11 +89,11 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
           when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(partner) thenReturn Some(both)
 
           navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+            routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
           navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+            routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
           navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+            routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
         }
 
         "return sessionExpired page when user lives with partner and value is not present" in {
