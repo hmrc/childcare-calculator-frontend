@@ -123,10 +123,10 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
   class IncomeSummary @Inject()(utils: Utils) {
     def load(userAnswers: UserAnswers)(implicit messages: Messages): Map[String, String] = {
       val result: Map[String, String] = Map()
-      val parentIncome = loadParentIncome(userAnswers, _: Map[String, String])
-      val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])
-      val parentOtherIncome = loadYourOtherIncome(userAnswers, _: Map[String, String])
-      val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
+      lazy val parentIncome = loadParentIncome(userAnswers, _: Map[String, String])
+      lazy val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])
+      lazy val parentOtherIncome = loadYourOtherIncome(userAnswers, _: Map[String, String])
+      lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
       (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
     }
 
