@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouGetSameIncomePreviousYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMapCloner, TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePreviousYear
 
 import scala.concurrent.Future
@@ -54,9 +54,19 @@ class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCon
       BooleanForm("youGetSameIncomePreviousYear.error").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(youGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
-        (value) =>
-          dataCacheConnector.save[Boolean](request.sessionId, YouGetSameIncomePreviousYearId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YouGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap))))
+        (getsSameIncomeAsLastYear) => {
+          val clonedPreviousYearIncomeData =  if (getsSameIncomeAsLastYear) {
+            CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
+          }
+          else {
+            CacheMapCloner.removeClonedDataForPreviousYearIncome(request.userAnswers.cacheMap)
+          }
+
+          dataCacheConnector.updateMap(clonedPreviousYearIncomeData).flatMap(_ => {
+            dataCacheConnector.save[Boolean](request.sessionId, YouGetSameIncomePreviousYearId.toString, getsSameIncomeAsLastYear).map(cacheMap =>
+              Redirect(navigator.nextPage(YouGetSameIncomePreviousYearId, mode)(new UserAnswers(cacheMap))))
+          })
+        }
       )
   }
 }

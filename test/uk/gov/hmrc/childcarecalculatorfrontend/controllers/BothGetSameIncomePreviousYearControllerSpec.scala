@@ -59,8 +59,17 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the next page when valid data is submitted and clone data" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+
+      val result = controller().onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(onwardRoute.url)
+    }
+
+    "clear cloned data" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +79,7 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm().bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("bothGetSameIncomePreviousYear.error").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

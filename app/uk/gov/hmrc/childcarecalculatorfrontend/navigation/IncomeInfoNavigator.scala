@@ -56,7 +56,7 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
 
     if(hasPartner) {
-      routes.BothPaidWorkPYController.onPageLoad(NormalMode)
+      routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
     }else {
       SessionExpiredRouter.route(getClass.getName,"nextPageUrlPY",Some(userAnswers))
     }

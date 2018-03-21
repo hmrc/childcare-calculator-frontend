@@ -1438,3 +1438,4 @@ bothGetSameIncomePreviousYear.heading = Did you and your partner get the same in
 bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
 bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
+bothGetSameIncomePreviousYear.error = Select yes if you and your partner got the same income for the previous year
