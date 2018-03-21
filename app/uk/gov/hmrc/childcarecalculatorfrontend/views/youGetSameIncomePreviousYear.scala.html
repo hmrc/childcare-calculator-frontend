@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo, incomeSummary: Map[String,String] = Map())(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("youGetSameIncomePreviousYear.title"),
@@ -41,7 +41,18 @@
 
     @helpers.form(action = YouGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
 
-    <p>@messages("youGetSameIncomePreviousYear.info.summary")</p>
+        <p>@messages("youGetSameIncomePreviousYear.info.summary")</p>
+
+        <table>
+            <tbody>
+            @incomeSummary.map(c => {
+                    <tr>
+                        <th>{s"${c._1}"}</th>
+                        <td>{s"${c._2}"}</td>
+                    </tr>
+            })
+            </tbody>
+        </table>
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
