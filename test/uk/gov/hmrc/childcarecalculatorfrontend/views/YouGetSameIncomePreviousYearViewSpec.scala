@@ -44,7 +44,7 @@ class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours with Guic
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YouGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
 
     "contain your income info" in {
-      val view = () => youGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Map("Income" -> "£250"))(fakeRequest, messages)
+      val view = () => youGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(Map("Income" -> "£250")))(fakeRequest, messages)
       val doc = asDocument(view())
       assertContainsText(doc, "£250")
     }

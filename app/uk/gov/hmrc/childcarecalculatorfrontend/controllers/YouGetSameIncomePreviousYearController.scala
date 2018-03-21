@@ -49,7 +49,7 @@ class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCon
 
       val summary = incomeSummary.load(request.userAnswers)
 
-      Ok(youGetSameIncomePreviousYear(appConfig, preparedForm, mode, taxYearInfo, summary))
+      Ok(youGetSameIncomePreviousYear(appConfig, preparedForm, mode, taxYearInfo, Some(summary)))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {

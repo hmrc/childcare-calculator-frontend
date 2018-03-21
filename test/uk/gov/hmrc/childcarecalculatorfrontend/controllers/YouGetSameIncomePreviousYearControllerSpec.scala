@@ -26,20 +26,24 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouGetSameIncomePreviousYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{IncomeSummary, TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePreviousYear
 
 class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
 
+  val incomeSummary = new IncomeSummary(new Utils())
+
+  val mapSummary = Some(incomeSummary.load(new UserAnswers(CacheMap("id",Map()))))
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YouGetSameIncomePreviousYearController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
+      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo, new IncomeSummary(new Utils()))
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = youGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm(), summary: Option[Map[String,String]] = None) = youGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo, summary)(fakeRequest, messages).toString
 
   "YouGetSameIncomePreviousYear Controller" must {
 
@@ -47,7 +51,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe viewAsString()
+      contentAsString(result) mustBe viewAsString(summary = mapSummary)
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
@@ -56,7 +60,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true),mapSummary)
     }
 
     "redirect to the next page when valid data is submitted and clone data" in {
