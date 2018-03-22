@@ -24,7 +24,7 @@ import org.scalatestplus.play.PlaySpec
 import play.api.i18n.Messages
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
@@ -148,6 +148,51 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
       "The income section" when {
         "Have an income for both" in {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
+          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(BigDecimal(350),BigDecimal(250)))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£350")
+          result.get(Messages("incomeSummary.partnersIncome")) mustBe Some("£250")
+        }
+
+        "Only parent works" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
+          when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(350))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£350")
+        }
+
+        "Only partner works" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
+          when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(350))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.partnersIncome")) mustBe Some("£350")
+        }
+
+        "Only parent works but partner has worked at some point in the same year" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
+          when(answers.partnerPaidWorkCY) thenReturn Some(true)
+          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(BigDecimal(350),BigDecimal(250)))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£350")
+          result.get(Messages("incomeSummary.partnersIncome")) mustBe Some("£250")
+        }
+
+        "Only partner works but parent has worked at some point in the same yar" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
+          when(answers.parentPaidWorkCY) thenReturn Some(true)
           when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(BigDecimal(350),BigDecimal(250)))
 
           val result = incomeSummary.load(answers)

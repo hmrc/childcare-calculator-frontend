@@ -27,13 +27,29 @@ class IncomeSummary @Inject()(utils: Utils) {
     lazy val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])
     lazy val parentOtherIncome = loadYourOtherIncome(userAnswers, _: Map[String, String])
     lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
+    lazy val partnerIncome = loadPartnerIncome(userAnswers, _: Map[String, String])
 
     userAnswers.doYouLiveWithPartner match {
       case Some(livesWithPartner) => {
         if (livesWithPartner) {
-          userAnswers.employmentIncomeCY.foldLeft(result)((result,incomes) =>
-            result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(incomes.parentEmploymentIncomeCY)}",
-            Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(incomes.partnerEmploymentIncomeCY)}"))
+          userAnswers.whoIsInPaidEmployment match {
+            case Some(whoInPaidEmployment) => {
+              whoInPaidEmployment match {
+                case ChildcareConstants.you => {
+                  val partnerWorkedAtAnyPointThisYear = userAnswers.partnerPaidWorkCY.fold(false)(c => c)
+
+                  if (partnerWorkedAtAnyPointThisYear) loadBothIncome(userAnswers, result) else parentIncome(result)
+                }
+                case ChildcareConstants.partner => {
+                  val parentWorkedAtAnyPointThisYear = userAnswers.parentPaidWorkCY.fold(false)(c => c)
+
+                  if (parentWorkedAtAnyPointThisYear) loadBothIncome(userAnswers, result) else partnerIncome(result)
+                }
+                case ChildcareConstants.both => loadBothIncome(userAnswers, result)
+              }
+            }
+            case _ => result
+          }
         }
         else{
           (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
@@ -41,6 +57,16 @@ class IncomeSummary @Inject()(utils: Utils) {
       }
       case _ => result
     }
+  }
+
+  private def loadBothIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+    userAnswers.employmentIncomeCY.foldLeft(result)((result, incomes) =>
+      result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(incomes.parentEmploymentIncomeCY)}",
+        Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(incomes.partnerEmploymentIncomeCY)}"))
+  }
+
+  private def loadPartnerIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+    userAnswers.partnerEmploymentIncomeCY.foldLeft(result)((result, income) => result + (Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(income)}"))
   }
 
   private def loadParentIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
