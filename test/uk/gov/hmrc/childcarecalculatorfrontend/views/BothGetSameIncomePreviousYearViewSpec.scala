@@ -24,6 +24,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{bothGetSameIncomePreviousYear, youGetSameIncomePreviousYear}
 
+import scala.collection.immutable.ListMap
+
 class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
@@ -43,7 +45,7 @@ class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
 
     "contain your income info" in {
-      val view = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(Map("Income" -> "£250")))(fakeRequest, messages)
+      val view = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(ListMap("Income" -> "£250")))(fakeRequest, messages)
       val doc = asDocument(view())
       assertContainsText(doc, "£250")
     }

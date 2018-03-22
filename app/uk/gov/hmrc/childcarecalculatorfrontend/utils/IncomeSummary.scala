@@ -20,17 +20,19 @@ import javax.inject.Inject
 
 import play.api.i18n.Messages
 
+import scala.collection.immutable.ListMap
+
 class IncomeSummary @Inject()(utils: Utils) {
-  def load(userAnswers: UserAnswers)(implicit messages: Messages): Map[String, String] = {
-    val result: Map[String, String] = Map()
-    lazy val parentIncome = loadParentIncome(userAnswers, _: Map[String, String])
-    lazy val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])
-    lazy val parentOtherIncome = loadYourOtherIncome(userAnswers, _: Map[String, String])
-    lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
-    lazy val bothIncome = loadBothIncomeSection(userAnswers, _: Map[String, String])
-    lazy val bothPension = loadBothPension(userAnswers, _: Map[String, String])
-    lazy val bothBenefits = loadBothBenefits(userAnswers, _: Map[String, String])
-    lazy val bothOtherIncome = loadBothOtherIncome(userAnswers, _: Map[String, String])
+  def load(userAnswers: UserAnswers)(implicit messages: Messages): ListMap[String, String] = {
+    val result: ListMap[String, String] = ListMap()
+    lazy val parentIncome = loadParentIncome(userAnswers, _: ListMap[String, String])
+    lazy val parentPension = loadHowMuchYouPayPension(userAnswers, _: ListMap[String, String])
+    lazy val parentOtherIncome = loadYourOtherIncome(userAnswers, _: ListMap[String, String])
+    lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: ListMap[String, String])
+    lazy val bothIncome = loadBothIncomeSection(userAnswers, _: ListMap[String, String])
+    lazy val bothPension = loadBothPension(userAnswers, _: ListMap[String, String])
+    lazy val bothBenefits = loadBothBenefits(userAnswers, _: ListMap[String, String])
+    lazy val bothOtherIncome = loadBothOtherIncome(userAnswers, _: ListMap[String, String])
 
     userAnswers.doYouLiveWithPartner match {
       case Some(livesWithPartner) => {
@@ -45,7 +47,7 @@ class IncomeSummary @Inject()(utils: Utils) {
     }
   }
 
-  private def loadBothOtherIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit message: Messages) = {
+  private def loadBothOtherIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit message: Messages) = {
     userAnswers.bothOtherIncomeThisYear match {
       case Some(anyoneGetsOtherIncome) => {
         if (anyoneGetsOtherIncome) {
@@ -72,7 +74,7 @@ class IncomeSummary @Inject()(utils: Utils) {
     }
   }
 
-  private def loadBothBenefits(userAnswers: UserAnswers, result: Map[String, String])(implicit message: Messages) = {
+  private def loadBothBenefits(userAnswers: UserAnswers, result: ListMap[String, String])(implicit message: Messages) = {
     userAnswers.bothAnyTheseBenefitsCY match {
       case Some(anyGotBenefits) => {
         if (anyGotBenefits) {
@@ -99,7 +101,7 @@ class IncomeSummary @Inject()(utils: Utils) {
     }
   }
 
-  private def loadBothPension(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadBothPension(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     userAnswers.bothPaidPensionCY match {
       case Some(anyPaidPension) => {
         if (anyPaidPension) {
@@ -126,7 +128,7 @@ class IncomeSummary @Inject()(utils: Utils) {
     }
   }
 
-  private def loadBothIncomeSection(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadBothIncomeSection(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     userAnswers.whoIsInPaidEmployment match {
       case Some(whoInPaidEmployment) => {
         whoInPaidEmployment match {
@@ -147,33 +149,33 @@ class IncomeSummary @Inject()(utils: Utils) {
     }
   }
 
-  private def loadBothIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadBothIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     userAnswers.employmentIncomeCY.foldLeft(result)((result, incomes) =>
       result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(incomes.parentEmploymentIncomeCY)}",
         Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(incomes.partnerEmploymentIncomeCY)}"))
   }
 
-  private def loadPartnerIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadPartnerIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     userAnswers.partnerEmploymentIncomeCY.foldLeft(result)((result, income) => result + (Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(income)}"))
   }
 
-  private def loadParentIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadParentIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     userAnswers.parentEmploymentIncomeCY.foldLeft(result)((result, income) => result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(income)}"))
   }
 
-  private def loadHowMuchYouPayPension(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadHowMuchYouPayPension(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     loadSectionAmount(userAnswers.YouPaidPensionCY, result, (Messages("incomeSummary.paidIntoPension") -> Messages("site.no")), Messages("incomeSummary.pensionPaymentsAmonth"), userAnswers.howMuchYouPayPension)
   }
 
-  private def loadYourOtherIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadYourOtherIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     loadSectionAmount(userAnswers.yourOtherIncomeThisYear, result, (Messages("incomeSummary.otherIncome") -> Messages("site.no")), Messages("incomeSummary.yourOtherIncome"), userAnswers.yourOtherIncomeAmountCY)
   }
 
-  private def loadYourBenefitsIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {
+  private def loadYourBenefitsIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     loadSectionAmount(userAnswers.youAnyTheseBenefits, result, (Messages("incomeSummary.incomeFromBenefits") -> Messages("site.no")), Messages("incomeSummary.yourBenefitsIncome"), userAnswers.youBenefitsIncomeCY)
   }
 
-  private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: Map[String, String], conditionNotMet: (String, String), textForIncome: String, incomeSection: Option[BigDecimal])(implicit messages: Messages) = {
+  private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: ListMap[String, String], conditionNotMet: (String, String), textForIncome: String, incomeSection: Option[BigDecimal])(implicit messages: Messages) = {
     conditionToCheckAmount match {
       case Some(conditionMet) => {
         if (conditionMet) {
