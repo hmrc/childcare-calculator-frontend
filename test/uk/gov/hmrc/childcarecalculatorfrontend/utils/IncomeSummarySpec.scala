@@ -24,11 +24,13 @@ import org.scalatestplus.play.PlaySpec
 import play.api.i18n.Messages
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
   "Your Income Summary" should {
     "Format values appropriately" in {
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(200000))
 
       val result = incomeSummary.load(answers)
@@ -36,6 +38,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
       result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£200,000")
     }
     "Add £ symbol to numeric values" in {
+      when(answers.doYouLiveWithPartner) thenReturn Some(false)
       when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(200000))
 
       val result = incomeSummary.load(answers)
@@ -45,6 +48,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
     "Handle a single parent journey" when {
       "The income section" when {
         "has an income" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(30))
 
           val result = incomeSummary.load(answers)
@@ -55,6 +59,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
       "The pension section" when {
         "has a pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.YouPaidPensionCY) thenReturn Some(true)
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(300))
 
@@ -64,6 +69,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "does not have a pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.YouPaidPensionCY) thenReturn Some(false)
 
           val result = incomeSummary.load(answers)
@@ -72,6 +78,8 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "there is no data about pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
           val result = incomeSummary.load(answers)
 
           result.get(Messages("incomeSummary.paidIntoPension")) mustBe Some(Messages("site.no"))
@@ -80,6 +88,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
       "Your other income section" when {
         "has another income" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
           when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(300))
 
@@ -89,6 +98,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "does not have another income" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
 
           val result = incomeSummary.load(answers)
@@ -96,6 +106,8 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
           result.get(Messages("incomeSummary.otherIncome")) mustBe Some(Messages("site.no"))
         }
         "there is no data about another income" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
           val result = incomeSummary.load(answers)
 
           result.get(Messages("incomeSummary.otherIncome")) mustBe Some(Messages("site.no"))
@@ -104,6 +116,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
       "Your benefits section" when {
         "has benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.youAnyTheseBenefits) thenReturn Some(true)
           when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(500))
 
@@ -113,6 +126,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "does not have benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.youAnyTheseBenefits) thenReturn Some(false)
 
           val result = incomeSummary.load(answers)
@@ -121,9 +135,25 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         }
 
         "there is no data about benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+
           val result = incomeSummary.load(answers)
 
           result.get(Messages("incomeSummary.incomeFromBenefits")) mustBe Some(Messages("site.no"))
+        }
+      }
+    }
+
+    "Handle a joint journey" when {
+      "The income section" when {
+        "Have an income for both" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(BigDecimal(350),BigDecimal(250)))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.yourIncome")) mustBe Some("£350")
+          result.get(Messages("incomeSummary.partnersIncome")) mustBe Some("£250")
         }
       }
     }

@@ -27,7 +27,20 @@ class IncomeSummary @Inject()(utils: Utils) {
     lazy val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])
     lazy val parentOtherIncome = loadYourOtherIncome(userAnswers, _: Map[String, String])
     lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
-    (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
+
+    userAnswers.doYouLiveWithPartner match {
+      case Some(livesWithPartner) => {
+        if (livesWithPartner) {
+          userAnswers.employmentIncomeCY.foldLeft(result)((result,incomes) =>
+            result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(incomes.parentEmploymentIncomeCY)}",
+            Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(incomes.partnerEmploymentIncomeCY)}"))
+        }
+        else{
+          (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
+        }
+      }
+      case _ => result
+    }
   }
 
   private def loadParentIncome(userAnswers: UserAnswers, result: Map[String, String])(implicit messages: Messages) = {

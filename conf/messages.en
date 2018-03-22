@@ -1440,6 +1440,7 @@ bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousY
 bothGetSameIncomePreviousYear.error = Select yes if you and your partner got the same income for the previous year
 
 incomeSummary.yourIncome = Your income
+incomeSummary.partnersIncome = Partner’s income
 incomeSummary.paidIntoPension = Paid into a pension
 incomeSummary.pensionPaymentsAmonth = Your pension payments a month
 incomeSummary.yourOtherIncome = Your other income
