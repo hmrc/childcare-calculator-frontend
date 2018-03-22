@@ -65,7 +65,7 @@
 
             @if(detailSummary.isDefined) {
                 <details @if(detailClass.isDefined) {class="@detailClass"}>
-                    <summary data-journey-click="accordion - click:@title:@detailSummary">@detailSummary</summary>
+                    <summary data-journey-click="accordion - click:@title:@detailSummary"><span class="summary">@detailSummary</span></summary>
                     <div>
                         <p>@detailPara1</p>
                         @if(detailPara2.isDefined) {<p>@detailPara2</p>}
