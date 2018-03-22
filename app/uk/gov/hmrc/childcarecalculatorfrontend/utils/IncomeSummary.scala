@@ -38,7 +38,7 @@ class IncomeSummary @Inject()(utils: Utils) {
           (bothIncome andThen bothPension andThen bothBenefits andThen bothOtherIncome) (result)
         }
         else {
-          (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
+          (parentIncome andThen parentPension andThen parentBenefitsIncome andThen parentOtherIncome) (result)
         }
       }
       case _ => result
