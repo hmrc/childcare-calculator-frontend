@@ -405,6 +405,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val esc = mock[EmploymentSupportedChildcare]
 
         when(taxCredits.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any()))  thenReturn NotEligible
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(you)
@@ -423,6 +424,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val esc = mock[EmploymentSupportedChildcare]
 
         when(taxCredits.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any()))  thenReturn NotEligible
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
@@ -431,7 +433,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val result = navigator(schemes, maxHours, taxCredits, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
         result mustEqual routes.ResultController.onPageLoad()
       }
-    }
+
+  }
 
     "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" in {
       val answers = spy(userAnswers())
