@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import javax.inject.Inject
-
 import org.mockito.Mockito.{spy, when}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
