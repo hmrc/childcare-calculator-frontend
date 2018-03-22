@@ -48,6 +48,7 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleOnlyForTCAndEsc: Boolean = esc.nonEmpty && tc.nonEmpty && tfc.isEmpty && freeHours.isEmpty
   def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.isEmpty && tc.isEmpty
   def isEligibleOnlyToMinimumFreeHours = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours == Some(15) || freeHours == Some(10) || freeHours == Some(16) || freeHours == Some(12.5))
+  def isEligibleOnlyToMaximumFreeHours = esc.isEmpty && tfc.isEmpty && tc.isEmpty && freeHours == Some(30)
 }
 
 object ResultsViewModel {
