@@ -103,26 +103,58 @@ class IncomeSummary @Inject()(utils: Utils) {
   }
 
   private def loadBothPension(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
-    userAnswers.bothPaidPensionCY match {
-      case Some(anyPaidPension) => {
-        if (anyPaidPension) {
-          userAnswers.whoPaysIntoPension match {
-            case Some(whoPaysIntoPension) => {
-              whoPaysIntoPension match {
-                case ChildcareConstants.you => userAnswers.howMuchYouPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
-                case ChildcareConstants.partner => userAnswers.howMuchPartnerPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
-                case ChildcareConstants.both => {
-                  userAnswers.howMuchBothPayPension.foldLeft(result)((result, pensions) =>
-                    result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchYouPayPension)}",
-                      Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchPartnerPayPension)}"))
+
+    userAnswers.whoIsInPaidEmployment match {
+      case Some(whoIsInPaidEmployment) => {
+        whoIsInPaidEmployment match {
+          case ChildcareConstants.partner => {
+            val paysIntoPension = userAnswers.PartnerPaidPensionCY.fold(false)(c => c)
+
+            if (paysIntoPension) {
+              userAnswers.howMuchPartnerPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
+            }
+            else{
+              result + (Messages("incomeSummary.paidIntoPension") -> Messages("site.no"))
+            }
+          }
+
+          case ChildcareConstants.you => {
+            val paysIntoPension = userAnswers.YouPaidPensionCY.fold(false)(c => c)
+
+            if (paysIntoPension) {
+              userAnswers.howMuchYouPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
+            }
+            else{
+              result + (Messages("incomeSummary.paidIntoPension") -> Messages("site.no"))
+            }
+          }
+
+          case ChildcareConstants.both => {
+            userAnswers.bothPaidPensionCY match {
+              case Some(anyPaidPension) => {
+                if (anyPaidPension) {
+                  userAnswers.whoPaysIntoPension match {
+                    case Some(whoPaysIntoPension) => {
+                      whoPaysIntoPension match {
+                        case ChildcareConstants.you => userAnswers.howMuchYouPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
+                        case ChildcareConstants.partner => userAnswers.howMuchPartnerPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
+                        case ChildcareConstants.both => {
+                          userAnswers.howMuchBothPayPension.foldLeft(result)((result, pensions) =>
+                            result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchYouPayPension)}",
+                              Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchPartnerPayPension)}"))
+                        }
+                      }
+                    }
+                    case _ => result
+                  }
+                }
+                else {
+                  result + (Messages("incomeSummary.paidIntoPension") -> Messages("site.no"))
                 }
               }
+              case _ => result
             }
-            case _ => result
           }
-        }
-        else {
-          result + (Messages("incomeSummary.paidIntoPension") -> Messages("site.no"))
         }
       }
       case _ => result

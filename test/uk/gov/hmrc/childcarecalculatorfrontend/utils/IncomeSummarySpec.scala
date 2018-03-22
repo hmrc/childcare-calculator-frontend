@@ -159,6 +159,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
           when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(350))
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
 
           val result = incomeSummary.load(answers)
 
@@ -204,6 +205,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         "None of them pay into a pension" in {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.bothPaidPensionCY) thenReturn Some(false)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
 
           val result = incomeSummary.load(answers)
 
@@ -215,6 +217,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
           when(answers.bothPaidPensionCY) thenReturn Some(true)
           when(answers.whoPaysIntoPension) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
           when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(300))
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
 
           val result = incomeSummary.load(answers)
 
@@ -226,6 +229,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
           when(answers.bothPaidPensionCY) thenReturn Some(true)
           when(answers.whoPaysIntoPension) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
           when(answers.howMuchPartnerPayPension) thenReturn Some(BigDecimal(300))
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
 
           val result = incomeSummary.load(answers)
 
@@ -237,11 +241,54 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
           when(answers.bothPaidPensionCY) thenReturn Some(true)
           when(answers.whoPaysIntoPension) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
           when(answers.howMuchBothPayPension) thenReturn Some(HowMuchBothPayPension(BigDecimal(300),BigDecimal(350)))
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
 
           val result = incomeSummary.load(answers)
 
           result.get(Messages("incomeSummary.pensionPaymentsAmonth")) mustBe Some("£300")
           result.get(Messages("incomeSummary.partnerPensionPaymentsAmonth")) mustBe Some("£350")
+        }
+
+        "Only parent works and pays pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
+          when(answers.YouPaidPensionCY) thenReturn Some(true)
+          when(answers.howMuchYouPayPension) thenReturn Some(BigDecimal(300))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.pensionPaymentsAmonth")) mustBe Some("£300")
+        }
+
+        "Only parent works and doens't pay pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
+          when(answers.YouPaidPensionCY) thenReturn Some(false)
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.paidIntoPension")) mustBe Some("No")
+        }
+
+        "Only partner works and pays pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
+          when(answers.PartnerPaidPensionCY) thenReturn Some(true)
+          when(answers.howMuchPartnerPayPension) thenReturn Some(BigDecimal(300))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.partnerPensionPaymentsAmonth")) mustBe Some("£300")
+        }
+
+        "Only partner works and doesn't pay pension" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
+          when(answers.PartnerPaidPensionCY) thenReturn Some(false)
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.paidIntoPension")) mustBe Some("No")
         }
       }
 
