@@ -42,7 +42,8 @@ class EmploymentSupportedChildcare extends Scheme {
           getEligibility(hasParentChildcareCosts && hasPartnerChildcareVouchers)
         }
         case Some(_) => {
-          getEligibility(hasParentChildcareCosts && bothChildcareVouchers.contains(Both))
+          getEligibility(hasParentChildcareCosts &&
+            (bothChildcareVouchers.contains(Both) || bothChildcareVouchers.contains(You) || bothChildcareVouchers.contains(Partner)))
         }
         case _ => NotEligible
       }

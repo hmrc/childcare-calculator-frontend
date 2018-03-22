@@ -196,9 +196,7 @@ class MaximumHoursNavigator @Inject() (
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
     } else if(isEligibleToGoToResultPage(answers)) {
       routes.ResultController.onPageLoad()
-    } else if (esc.eligibility(answers).equals(Eligible)) {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-    }else if(answers.whoIsInPaidEmployment.contains(partner)){
+    } else if(answers.whoIsInPaidEmployment.contains(partner)){
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
     } else if(answers.whoIsInPaidEmployment.contains(you)||answers.whoIsInPaidEmployment.contains(both)){
       routes.YourAgeController.onPageLoad(NormalMode)
