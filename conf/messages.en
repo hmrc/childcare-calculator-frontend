@@ -1443,6 +1443,7 @@ incomeSummary.yourIncome = Your income
 incomeSummary.partnersIncome = Partner’s income
 incomeSummary.paidIntoPension = Paid into a pension
 incomeSummary.pensionPaymentsAmonth = Your pension payments a month
+incomeSummary.partnerPensionPaymentsAmonth = Partner’s pension payments a month
 incomeSummary.yourOtherIncome = Your other income
 incomeSummary.yourBenefitsIncome = Your benefits income
 incomeSummary.otherIncome = Other income

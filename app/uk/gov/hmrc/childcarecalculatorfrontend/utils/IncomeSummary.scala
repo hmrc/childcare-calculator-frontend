@@ -27,32 +27,64 @@ class IncomeSummary @Inject()(utils: Utils) {
     lazy val parentPension = loadHowMuchYouPayPension(userAnswers, _: Map[String, String])
     lazy val parentOtherIncome = loadYourOtherIncome(userAnswers, _: Map[String, String])
     lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
-    lazy val partnerIncome = loadPartnerIncome(userAnswers, _: Map[String, String])
+    lazy val bothIncome = loadBothIncomeSection(userAnswers, _: Map[String,String])
+    lazy val bothPension = loadBothPension(userAnswers, _: Map[String,String])
 
     userAnswers.doYouLiveWithPartner match {
       case Some(livesWithPartner) => {
         if (livesWithPartner) {
-          userAnswers.whoIsInPaidEmployment match {
-            case Some(whoInPaidEmployment) => {
-              whoInPaidEmployment match {
-                case ChildcareConstants.you => {
-                  val partnerWorkedAtAnyPointThisYear = userAnswers.partnerPaidWorkCY.fold(false)(c => c)
+          (bothIncome andThen bothPension)(result)
+        }
+        else{
+          (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
+        }
+      }
+      case _ => result
+    }
+  }
 
-                  if (partnerWorkedAtAnyPointThisYear) loadBothIncome(userAnswers, result) else parentIncome(result)
+  private def loadBothPension(userAnswers: UserAnswers, result: Map[String,String])(implicit messages: Messages) = {
+    userAnswers.bothPaidPensionCY match {
+      case Some(anyPaidPension) => {
+        if (anyPaidPension) {
+          userAnswers.whoPaysIntoPension match {
+            case Some(whoPaysIntoPension) => {
+              whoPaysIntoPension match {
+                case ChildcareConstants.you => userAnswers.howMuchYouPayPension.foldLeft(result)((result,pension) => result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
+                case ChildcareConstants.partner => userAnswers.howMuchPartnerPayPension.foldLeft(result)((result,pension) => result + (Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
+                case ChildcareConstants.both => {
+                  userAnswers.howMuchBothPayPension.foldLeft(result)((result, pensions) =>
+                    result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchYouPayPension)}",
+                      Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchPartnerPayPension)}"))
                 }
-                case ChildcareConstants.partner => {
-                  val parentWorkedAtAnyPointThisYear = userAnswers.parentPaidWorkCY.fold(false)(c => c)
-
-                  if (parentWorkedAtAnyPointThisYear) loadBothIncome(userAnswers, result) else partnerIncome(result)
-                }
-                case ChildcareConstants.both => loadBothIncome(userAnswers, result)
               }
             }
             case _ => result
           }
         }
         else{
-          (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
+          result + (Messages("incomeSummary.paidIntoPension") -> Messages("site.no"))
+        }
+      }
+      case _ => result
+    }
+  }
+
+  private def loadBothIncomeSection(userAnswers: UserAnswers, result: Map[String,String])(implicit messages: Messages) = {
+    userAnswers.whoIsInPaidEmployment match {
+      case Some(whoInPaidEmployment) => {
+        whoInPaidEmployment match {
+          case ChildcareConstants.you => {
+            val partnerWorkedAtAnyPointThisYear = userAnswers.partnerPaidWorkCY.fold(false)(c => c)
+
+            if (partnerWorkedAtAnyPointThisYear) loadBothIncome(userAnswers, result) else loadParentIncome(userAnswers,result)
+          }
+          case ChildcareConstants.partner => {
+            val parentWorkedAtAnyPointThisYear = userAnswers.parentPaidWorkCY.fold(false)(c => c)
+
+            if (parentWorkedAtAnyPointThisYear) loadBothIncome(userAnswers, result) else loadPartnerIncome(userAnswers,result)
+          }
+          case ChildcareConstants.both => loadBothIncome(userAnswers, result)
         }
       }
       case _ => result
