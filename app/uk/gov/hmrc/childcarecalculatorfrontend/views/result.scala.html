@@ -33,7 +33,6 @@
     }
 
     @resultsEstimateInformationContent = {
-        <h2 class="heading-medium">@messages("result.estimates.income.title")</h2>
         <p>@messages("result.estimates.income.para1")</p>
     }
 
@@ -49,6 +48,7 @@
         @components.heading(pagetitle.toString, "heading-xlarge")
 
         <p>@model.firstParagraph</p>
+        @resultsEstimateInformationContent
 
         @if(model.noOfEligibleSchemes > 0) {
 
@@ -81,7 +81,7 @@
                 </div>
             }
 
-            @resultsEstimateInformationContent
+
 
             @if(model.noOfEligibleSchemes > 1) {
 
