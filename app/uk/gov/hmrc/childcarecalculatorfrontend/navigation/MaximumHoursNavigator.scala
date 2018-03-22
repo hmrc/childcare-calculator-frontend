@@ -87,7 +87,7 @@ class MaximumHoursNavigator @Inject() (
     if (answers.areYouInPaidWork.contains(true)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      routes.FreeHoursResultController.onPageLoad()
+      routes.ResultController.onPageLoad()
     }
   }
 
@@ -96,7 +96,7 @@ class MaximumHoursNavigator @Inject() (
     answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
       case `you` => routes.ParentWorkHoursController.onPageLoad(NormalMode)
       case `partner` | `both` => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-      case `neither` => routes.FreeHoursResultController.onPageLoad()
+      case `neither` => routes.ResultController.onPageLoad()
     }
   }
 
@@ -342,7 +342,7 @@ class MaximumHoursNavigator @Inject() (
 
     def getCallForVoucherValue(voucherValue: String): Call =
       if (!voucherValue.equals(YES) && maxEarnings.equals(true)) {
-        routes.FreeHoursResultController.onPageLoad()
+        routes.ResultController.onPageLoad()
       } else {
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       }

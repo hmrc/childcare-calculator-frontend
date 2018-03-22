@@ -155,6 +155,14 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
        paragraphBuilder.buildFirstParagraph(answers) must include("and you are both")
      }
 
+     "Neither in paid work" in {
+       val answers = spy(userAnswers())
+       when(answers.doYouLiveWithPartner) thenReturn Some(true)
+       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.NEITHER.toString)
+
+       paragraphBuilder.buildFirstParagraph(answers) must include("and none of you are currently in paid work")
+     }
+
      "You live on your own and you are in paid work" in {
        val answers = spy(userAnswers())
        when(answers.doYouLiveWithPartner) thenReturn Some(false)
