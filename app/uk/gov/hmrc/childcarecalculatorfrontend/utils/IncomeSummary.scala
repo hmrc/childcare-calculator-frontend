@@ -155,6 +155,8 @@ class IncomeSummary @Inject()(utils: Utils) {
               case _ => result
             }
           }
+
+          case _ => result
         }
       }
       case _ => result
