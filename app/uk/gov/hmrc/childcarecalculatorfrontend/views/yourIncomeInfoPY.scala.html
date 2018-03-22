@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @(appConfig: FrontendAppConfig, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
@@ -38,6 +37,5 @@
 
             @components.button_link(
             messageKey = "site.save_and_continue",
-            href = routes.ParentPaidWorkPYController.onPageLoad(NormalMode)
-)
+            href = routes.YouGetSameIncomePreviousYearController.onPageLoad())
 }
