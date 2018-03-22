@@ -87,7 +87,7 @@ class MaximumHoursNavigator @Inject() (
     if (answers.areYouInPaidWork.contains(true)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      routes.FreeHoursResultController.onPageLoad()
+      routes.ResultController.onPageLoad()
     }
   }
 
@@ -96,7 +96,7 @@ class MaximumHoursNavigator @Inject() (
     answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
       case `you` => routes.ParentWorkHoursController.onPageLoad(NormalMode)
       case `partner` | `both` => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-      case `neither` => routes.FreeHoursResultController.onPageLoad()
+      case `neither` => routes.ResultController.onPageLoad()
     }
   }
 
@@ -194,7 +194,7 @@ class MaximumHoursNavigator @Inject() (
 
     if (answers.doYouOrYourPartnerGetAnyBenefits.contains(true)) {
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
-    } else if(isEligibleToGoToResultPage(answers)){
+    } else if(isEligibleToGoToResultPage(answers)) {
       routes.ResultController.onPageLoad()
     } else if(answers.whoIsInPaidEmployment.contains(partner)){
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
@@ -204,7 +204,7 @@ class MaximumHoursNavigator @Inject() (
   }
 
   private def isEligibleToGoToResultPage(answers: UserAnswers) = answers.doYouLiveWithPartner.getOrElse(false) && (answers.whoIsInPaidEmployment.contains(you) || answers.whoIsInPaidEmployment.contains(partner)) &&
-                                         taxCredits.eligibility(answers).equals(NotEligible)
+                                         taxCredits.eligibility(answers).equals(NotEligible) && esc.eligibility(answers).equals(NotEligible)
 
   private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
     if (answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(partner)) {
@@ -342,7 +342,7 @@ class MaximumHoursNavigator @Inject() (
 
     def getCallForVoucherValue(voucherValue: String): Call =
       if (!voucherValue.equals(YES) && maxEarnings.equals(true)) {
-        routes.FreeHoursResultController.onPageLoad()
+        routes.ResultController.onPageLoad()
       } else {
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       }

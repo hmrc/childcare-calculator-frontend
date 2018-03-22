@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFre
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,9 +39,26 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder) {
   def getResultsViewModel(answers: UserAnswers, location: Location)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
+    val childcareCost = answers.childcareCosts.fold(false){
+      case ChildcareConstants.no => false
+      case _ => true
+    }
+
+    val approvedProvider = answers.approvedProvider.fold(false){
+      case ChildcareConstants.NO => false
+      case _ => true
+    }
+
+    val livingWithPartner = answers.doYouLiveWithPartner.fold(false)(identity)
+
+    val paidEmployment = checkIfInEmployment(answers)
+
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
-      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers))
+      tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost,
+      hasCostsWithApprovedProvider = approvedProvider,
+      isAnyoneInPaidEmployment = paidEmployment,
+      livesWithPartner = livingWithPartner)
 
     val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
@@ -70,6 +87,17 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
     }
     else {
       resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
+    }
+  }
+
+  private def checkIfInEmployment(userAnswers: UserAnswers) = {
+    if (userAnswers.areYouInPaidWork.isDefined) {
+      userAnswers.areYouInPaidWork.getOrElse(false)
+    } else {
+      userAnswers.whoIsInPaidEmployment.fold(false){
+        case ChildcareConstants.neither => false
+        case _ => true
+      }
     }
   }
 
