@@ -29,14 +29,42 @@ class IncomeSummary @Inject()(utils: Utils) {
     lazy val parentBenefitsIncome = loadYourBenefitsIncome(userAnswers, _: Map[String, String])
     lazy val bothIncome = loadBothIncomeSection(userAnswers, _: Map[String,String])
     lazy val bothPension = loadBothPension(userAnswers, _: Map[String,String])
+    lazy val bothBenefits = loadBothBenefits(userAnswers, _: Map[String,String])
 
     userAnswers.doYouLiveWithPartner match {
       case Some(livesWithPartner) => {
         if (livesWithPartner) {
-          (bothIncome andThen bothPension)(result)
+          (bothIncome andThen bothPension andThen bothBenefits)(result)
         }
         else{
           (parentIncome andThen parentPension andThen parentOtherIncome andThen parentBenefitsIncome) (result)
+        }
+      }
+      case _ => result
+    }
+  }
+
+  private def loadBothBenefits(userAnswers: UserAnswers, result: Map[String,String])(implicit message: Messages) = {
+    userAnswers.bothAnyTheseBenefitsCY match {
+      case Some(anyGotBenefits) => {
+        if (anyGotBenefits) {
+          userAnswers.whoGetsBenefits match {
+            case Some(whoGetsBenefits) => {
+              whoGetsBenefits match {
+                case ChildcareConstants.you => userAnswers.youBenefitsIncomeCY.foldLeft(result)((result,benefitAmount) => result + (Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
+                case ChildcareConstants.partner => userAnswers.youBenefitsIncomeCY.foldLeft(result)((result,benefitAmount) => result + (Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
+                case ChildcareConstants.both => {
+                  userAnswers.benefitsIncomeCY.foldLeft(result)((result, benefits) =>
+                    result + (Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefits.parentBenefitsIncome)}",
+                      Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefits.partnerBenefitsIncome)}"))
+                }
+              }
+            }
+            case _ => result
+          }
+        }
+        else{
+          result + (Messages("incomeSummary.incomeFromBenefits") -> Messages("site.no"))
         }
       }
       case _ => result

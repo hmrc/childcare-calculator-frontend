@@ -24,7 +24,7 @@ import org.scalatestplus.play.PlaySpec
 import play.api.i18n.Messages
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, HowMuchBothPayPension, YouPartnerBothNeitherEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, EmploymentIncomeCY, HowMuchBothPayPension, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
@@ -244,6 +244,51 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
           result.get(Messages("incomeSummary.pensionPaymentsAmonth")) mustBe Some("£300")
           result.get(Messages("incomeSummary.partnerPensionPaymentsAmonth")) mustBe Some("£350")
+        }
+      }
+
+      "Benefits section" when {
+        "None of them get benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(false)
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.incomeFromBenefits")) mustBe Some("No")
+        }
+
+        "Only parent gets benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
+          when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
+          when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(300))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.yourBenefitsIncome")) mustBe Some("£300")
+        }
+
+        "Only partner gets benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
+          when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
+          when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(300))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.partnerBenefitsIncome")) mustBe Some("£300")
+        }
+
+        "Both get benefits" in {
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
+          when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
+          when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY(BigDecimal(300),BigDecimal(350)))
+
+          val result = incomeSummary.load(answers)
+
+          result.get(Messages("incomeSummary.yourBenefitsIncome")) mustBe Some("£300")
+          result.get(Messages("incomeSummary.partnerBenefitsIncome")) mustBe Some("£350")
         }
       }
     }
