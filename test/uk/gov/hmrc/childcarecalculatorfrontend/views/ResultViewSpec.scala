@@ -340,6 +340,14 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       view.getElementsByClass("moreInfo").text().contains(messages("aboutYourResults.more.info.para2"))
     }
 
+    "not display more info about the schemes when only eligible to free hours" in {
+      val model = ResultsViewModel(freeHours = Some(15), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+      assertNotContainsText(view,messages("aboutYourResults.more.info.title"))
+    }
+
     "display guidance for 2 years old" when {
       "user lives in England" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200),location = locationEngland, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
