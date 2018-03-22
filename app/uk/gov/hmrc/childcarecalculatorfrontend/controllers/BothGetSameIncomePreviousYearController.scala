@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothGetSameIncomePreviousYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMapCloner, TaxYearInfo, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMapCloner, IncomeSummary, TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
 
 import scala.concurrent.Future
@@ -38,7 +38,7 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
                                                         navigator: Navigator,
                                                         getData: DataRetrievalAction,
                                                         requireData: DataRequiredAction,
-                                                        taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                                        taxYearInfo: TaxYearInfo, incomeSummary: IncomeSummary) extends FrontendController with I18nSupport {
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {
     implicit request =>
@@ -46,14 +46,19 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(bothGetSameIncomePreviousYear(appConfig, preparedForm, mode, taxYearInfo))
+
+      val summary = incomeSummary.load(request.userAnswers)
+
+      Ok(bothGetSameIncomePreviousYear(appConfig, preparedForm, mode, taxYearInfo, Some(summary)))
   }
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("bothGetSameIncomePreviousYear.error").bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(bothGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo))),
+        (formWithErrors: Form[Boolean]) => {
+          val summary = incomeSummary.load(request.userAnswers)
+          Future.successful(BadRequest(bothGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo, Some(summary))))
+        },
         (getsSameIncomeAsLastYear) => {
           val clonedPreviousYearIncomeData = if (getsSameIncomeAsLastYear) {
             CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)

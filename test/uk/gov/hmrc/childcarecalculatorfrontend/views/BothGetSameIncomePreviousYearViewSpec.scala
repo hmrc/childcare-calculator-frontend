@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{bothGetSameIncomePreviousYear, youGetSameIncomePreviousYear}
 
 class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
 
@@ -41,6 +41,12 @@ class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
+
+    "contain your income info" in {
+      val view = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(Map("Income" -> "£250")))(fakeRequest, messages)
+      val doc = asDocument(view())
+      assertContainsText(doc, "£250")
+    }
 
     "contain tax year info" in {
       val doc = asDocument(createView())

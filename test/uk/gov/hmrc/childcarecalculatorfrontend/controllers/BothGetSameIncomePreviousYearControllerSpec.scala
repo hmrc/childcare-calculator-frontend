@@ -26,20 +26,24 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothGetSameIncomePreviousYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{IncomeSummary, TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
 
 class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
 
+  val incomeSummary = new IncomeSummary(new Utils())
+
+  val mapSummary = Some(incomeSummary.load(new UserAnswers(CacheMap("id",Map()))))
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new BothGetSameIncomePreviousYearController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
+      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo, new IncomeSummary(new Utils()))
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo, mapSummary)(fakeRequest, messages).toString
 
   "BothGetSameIncomePreviousYear Controller" must {
 
