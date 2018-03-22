@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import javax.inject.Inject
 
 import play.api.i18n.Messages
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 import scala.collection.immutable.ListMap
 
@@ -78,12 +79,12 @@ class IncomeSummary @Inject()(utils: Utils) {
     userAnswers.bothAnyTheseBenefitsCY match {
       case Some(anyGotBenefits) => {
         if (anyGotBenefits) {
-          userAnswers.whoGetsBenefits match {
+          userAnswers.whosHadBenefits match {
             case Some(whoGetsBenefits) => {
               whoGetsBenefits match {
-                case ChildcareConstants.you => userAnswers.youBenefitsIncomeCY.foldLeft(result)((result, benefitAmount) => result + (Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
-                case ChildcareConstants.partner => userAnswers.youBenefitsIncomeCY.foldLeft(result)((result, benefitAmount) => result + (Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
-                case ChildcareConstants.both => {
+                case YouPartnerBothEnum.YOU => userAnswers.youBenefitsIncomeCY.foldLeft(result)((result, benefitAmount) => result + (Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
+                case YouPartnerBothEnum.PARTNER => userAnswers.partnerBenefitsIncomeCY.foldLeft(result)((result, benefitAmount) => result + (Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
+                case YouPartnerBothEnum.BOTH => {
                   userAnswers.benefitsIncomeCY.foldLeft(result)((result, benefits) =>
                     result + (Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefits.parentBenefitsIncome)}",
                       Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefits.partnerBenefitsIncome)}"))

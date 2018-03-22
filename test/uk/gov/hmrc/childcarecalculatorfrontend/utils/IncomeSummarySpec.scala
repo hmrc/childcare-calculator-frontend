@@ -258,7 +258,7 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         "Only parent gets benefits" in {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
-          when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothNeitherEnum.YOU.toString)
+          when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.YOU)
           when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(300))
 
           val result = incomeSummary.load(answers)
@@ -269,18 +269,18 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
         "Only partner gets benefits" in {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
-          when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothNeitherEnum.PARTNER.toString)
-          when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(300))
+          when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.PARTNER)
+          when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(380))
 
           val result = incomeSummary.load(answers)
 
-          result.get(Messages("incomeSummary.partnerBenefitsIncome")) mustBe Some("£300")
+          result.get(Messages("incomeSummary.partnerBenefitsIncome")) mustBe Some("£380")
         }
 
         "Both get benefits" in {
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
-          when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothNeitherEnum.BOTH.toString)
+          when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.BOTH)
           when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY(BigDecimal(300),BigDecimal(350)))
 
           val result = incomeSummary.load(answers)
