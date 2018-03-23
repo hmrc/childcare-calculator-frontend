@@ -31,6 +31,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar with SpecBase {
   "TC Scheme Ineligibility Message Builder" must {
+    "get default message" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.areYouInPaidWork) thenReturn Some(true)
+
+      tcSchemeMessageBuilder.getMessage(answers) mustBe
+        messages("result.tc.not.eligible.para1")
+    }
 
     "get the correct message for single journey" when {
       "parent work for less than 16 hours per week" in {
