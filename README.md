@@ -1,6 +1,6 @@
 # childcare-calculator-frontend
 
- [ ![Download](https://api.bintray.com/packages/hmrc/releases/cc-frontend/images/download.svg) ]
+ [ ![Download](https://api.bintray.com/packages/hmrc/releases/childcare-calculator-frontend/images/download.svg) ]
  (https://bintray.com/hmrc/releases/childcare-calculator-frontend/_latestVersion)
 
 The Childcare Calculator will help parents quickly self-assess the options for their childcare support, allowing them to
