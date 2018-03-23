@@ -64,6 +64,19 @@ class ResultsViewModelSpec extends SpecBase {
     }
   }
 
+  "isEligibleToMaximumFreeHours" must{
+    "return true" when {
+      "user is eligible to 30 free hours" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(30), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        resultsView.isEligibleToMaximumFreeHours mustBe true
+      }
+      "user is not eligible to 30 free hours" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(15), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        resultsView.isEligibleToMaximumFreeHours mustBe false
+      }
+    }
+  }
+
   "isEligibleForAllButVouchers" must {
    "return true" when {
      "user is eligible for all the schemes but vouchers" in {
