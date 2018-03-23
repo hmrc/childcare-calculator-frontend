@@ -72,6 +72,11 @@ To run the test coverage suite `scoverage`
 **NOTE:** Cucumber/acceptance tests are available in a separate project at:
 `https://github.com/hmrc/childcare-calculator-acceptance-tests`
 
+#### Performance Tests
+
+**NOTE:** Performance tests are available in a separate project at:
+`https://github.com/hmrc/childcare-calculator-performance-tests`
+
 ## Messages
 
 To provide messages files with variables that are passed in then use the following format:
