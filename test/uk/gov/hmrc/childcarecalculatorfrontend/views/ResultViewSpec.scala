@@ -35,11 +35,29 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
     behave like normalPage(createView(),"result")
 
     "Contain results" when {
-      "We have introductory paragraph" in {
-        val model = ResultsViewModel("This is the first paragraph",location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      "We have introductory paragraph when we are eligible to anything other than freehours on its own" in {
+        val model = ResultsViewModel("This is the first paragraph",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
 
         assertContainsMessages(view, "This is the first paragraph")
+      }
+
+
+
+      "With no introductary paragraph" when {
+        "we are only entitled to free hours" in {
+          val model = ResultsViewModel("This is the first paragraph",freeHours = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertNotContainsText(view, "This is the first paragraph")
+        }
+
+        "we are not entitled to anything" in {
+          val model = ResultsViewModel("This is the first paragraph",location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertNotContainsText(view, "This is the first paragraph")
+        }
       }
 
       "We have free hours value" in {
