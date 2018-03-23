@@ -34,7 +34,6 @@
     }
 
     @resultsEstimateInformationContent = {
-        <h2 class="heading-medium">@messages("result.estimates.income.title")</h2>
         <p>@messages("result.estimates.income.para1")</p>
     }
 
@@ -52,6 +51,7 @@
         @if(model.isEligibleOnlyToMinimumFreeHours == false && model.noOfEligibleSchemes > 0) {
             <p>@model.firstParagraph</p>
         }
+        @resultsEstimateInformationContent
 
         @if(model.noOfEligibleSchemes > 0) {
 
@@ -84,7 +84,7 @@
                 </div>
             }
 
-            @resultsEstimateInformationContent
+
 
             @if(model.noOfEligibleSchemes > 1) {
 
