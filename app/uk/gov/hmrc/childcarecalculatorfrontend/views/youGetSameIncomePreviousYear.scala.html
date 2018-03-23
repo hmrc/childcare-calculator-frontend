@@ -21,13 +21,14 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+@import scala.collection.immutable.ListMap
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo, incomeSummary: Option[ListMap[String,String]] = None)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("youGetSameIncomePreviousYear.title"),
     appConfig = appConfig,
-    bodyClasses = None) {
+    bodyClasses = Some("sameIncomePY")) {
 
     @components.back_link()
 
@@ -41,7 +42,24 @@
 
     @helpers.form(action = YouGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
 
-    <p>@messages("youGetSameIncomePreviousYear.info.summary")</p>
+        <p>@messages("youGetSameIncomePreviousYear.info.summary")</p>
+
+        @{
+            incomeSummary.map(summary => {
+                <table>
+                    <tbody>
+                    {
+                        summary.map(section => {
+                            <tr>
+                                <th>{s"${section._1}"}</th>
+                                <td>{s"${section._2}"}</td>
+                            </tr>
+                        })
+                    }
+                    </tbody>
+                </table>
+            })
+        }
 
         @components.input_yes_no(
             InputViewModel[Boolean]("value", form),
