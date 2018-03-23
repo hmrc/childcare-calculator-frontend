@@ -38,11 +38,17 @@
         <p>@messages("result.estimates.income.para1")</p>
     }
 
+    @gaCalls(send: String, pageview: String) = {
+        ga('create', '@appConfig.analyticsToken', '@appConfig.analyticsHost');
+        ga('send', 'pageview', { 'anonymizeIp': true });
+        ga('dimension6', 'tfc=true|esc=true|tc=true|freehours=true');
+    }
 
     @main_template(
         title = pagetitle.toString.trim,
         appConfig = appConfig,
         timeout = false,
+        gaCalls = Some(gaCalls),
         bodyClasses = Some("result")) {
 
         @components.back_link()
