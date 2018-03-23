@@ -49,7 +49,7 @@
 
         @components.heading(pagetitle.toString, "heading-xlarge")
 
-        @if(model.isEligibleOnlyToMinimumFreeHours == false) {
+        @if(model.isEligibleOnlyToMinimumFreeHours == false && model.noOfEligibleSchemes > 0) {
             <p>@model.firstParagraph</p>
         }
 
