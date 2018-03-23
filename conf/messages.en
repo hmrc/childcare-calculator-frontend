@@ -56,8 +56,8 @@ results.firstParagraph.youAre = and you are {0} {1}
 results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
 results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
 
-session_expired.title = For your security, we cleared the details
-session_expired.heading = For your security, we cleared the details
+session_expired.title = For your security, we cleared your details
+session_expired.heading = For your security, we cleared your details
 session_expired.guidance = You can
 session_expired.link.text= go back and start again.
 
