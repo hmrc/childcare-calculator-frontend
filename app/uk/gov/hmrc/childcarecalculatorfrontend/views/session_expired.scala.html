@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 
 @(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
@@ -26,5 +27,7 @@
 
     <h1 class="heading-xlarge">@messages("session_expired.heading")</h1>
 
-    <p>@messages("session_expired.guidance")</p>
+    <p>@messages("session_expired.guidance")
+        <a href="@WhatToTellTheCalculatorController.onPageLoad" data-journey-click="link - click:@messages("session_expired.heading"):@messages("session_expired.link.text")">@messages("session_expired.link.text")</a>
+    </p>
 }

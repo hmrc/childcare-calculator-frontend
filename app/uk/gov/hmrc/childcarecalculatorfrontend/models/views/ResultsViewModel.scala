@@ -30,7 +30,11 @@ case class ResultsViewModel(firstParagraph : String = "",
                             taxCreditsOrUC: Option[String] = None,
                             showTFCWarning: Boolean = false,
                             tfcWarningMessage: String = "",
-                            tcSchemeInEligibilityMsg: String = "") {
+                            tcSchemeInEligibilityMsg: String = "",
+                            hasChildcareCosts: Boolean,
+                            hasCostsWithApprovedProvider: Boolean,
+                            isAnyoneInPaidEmployment: Boolean,
+                            livesWithPartner: Boolean) {
 
   def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
   def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty
@@ -43,7 +47,8 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleOnlyForTCAndTfc: Boolean = tfc.nonEmpty && tc.nonEmpty && freeHours.isEmpty && esc.isEmpty
   def isEligibleOnlyForTCAndEsc: Boolean = esc.nonEmpty && tc.nonEmpty && tfc.isEmpty && freeHours.isEmpty
   def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.isEmpty && tc.isEmpty
-
+  def isEligibleOnlyToMinimumFreeHours = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours == Some(15) || freeHours == Some(10) || freeHours == Some(16) || freeHours == Some(12.5))
+  def isEligibleToMaximumFreeHours =  freeHours == Some(30)
 }
 
 object ResultsViewModel {
