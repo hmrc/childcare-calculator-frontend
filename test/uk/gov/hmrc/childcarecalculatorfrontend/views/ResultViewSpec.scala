@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.jsoup.nodes.Element
 import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
@@ -33,6 +34,62 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
   "Result view" must {
 
     behave like normalPage(createView(),"result")
+
+
+    "Contain Google Analytic tags" when {
+      "Including default tags" when {
+        "with google token" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "'create', 'google-test-token', 'auto'")
+        }
+
+        "with send pageview" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "'send', 'pageview', { 'anonymizeIp': true }")
+        }
+      }
+
+      "Including custom tags" when {
+        "with number of eligible schemes" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),tfc = Some(2),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "'gaDimensionKey', {noOfEligibleScheme:3")
+        }
+
+        "with flag for freehours eligibility" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "isEligibleToFreeHours:true")
+        }
+
+        "with flag for tc eligibility" in {
+          val model = ResultsViewModel("Test",tc = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "isEligibleToTC:true")
+        }
+
+        "with flag for tfc eligibility" in {
+          val model = ResultsViewModel("Test",tfc = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "isEligibleToTFC:true")
+        }
+
+        "with flag for esc eligibility" in {
+          val model = ResultsViewModel("Test",esc = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "isEligibleToESC:true")
+        }
+      }
+    }
 
     "Contain results" when {
       "We have introductory paragraph when we are eligible to anything other than freehours on its own" in {
