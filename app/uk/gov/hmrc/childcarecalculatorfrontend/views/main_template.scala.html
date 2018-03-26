@@ -17,32 +17,34 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
 @(title: String,
-  appConfig: FrontendAppConfig,
-  sidebarLinks: Option[Html] = None,
-  contentHeader: Option[Html] = None,
-  bodyClasses: Option[String] = None,
-  mainClass: Option[String] = None,
-  timeout: Boolean = true,
-  scriptElem: Option[Html] = None)(mainContent: Html)(implicit request : Request[_], messages: Messages)
+        appConfig: FrontendAppConfig,
+        sidebarLinks: Option[Html] = None,
+        contentHeader: Option[Html] = None,
+        bodyClasses: Option[String] = None,
+        mainClass: Option[String] = None,
+        timeout: Boolean = true,
+        urBanner: Boolean = false,
+        scriptElem: Option[Html] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
 
-@import uk.gov.hmrc.play.views.html.layouts
+    @import uk.gov.hmrc.play.views.html.layouts
 
-@serviceInfoContent = {}
+    @serviceInfoContent = {}
 
-@sidebar = {
+    @sidebar = {
     @if(sidebarLinks.isDefined) {
         @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
     }
-}
+    }
 
-@govuk_wrapper(appConfig = appConfig,
-               title = title + " - " + Messages("site.service_name") + " - GOV.UK",
-               mainClass = mainClass,
-               bodyClasses = bodyClasses,
-               sidebar = sidebar,
-               contentHeader = contentHeader,
-               mainContent = layouts.article(mainContent),
-               serviceInfoContent = serviceInfoContent,
-               timeout = timeout,
-               scriptElem = scriptElem
-)
+    @govuk_wrapper(appConfig = appConfig,
+        title = title + " - " + Messages("site.service_name") + " - GOV.UK",
+        mainClass = mainClass,
+        bodyClasses = bodyClasses,
+        sidebar = sidebar,
+        contentHeader = contentHeader,
+        mainContent = layouts.article(mainContent),
+        serviceInfoContent = serviceInfoContent,
+        timeout = timeout,
+        urBanner = urBanner,
+        scriptElem = scriptElem
+    )

@@ -24,11 +24,12 @@
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
   timeout: Boolean = true,
+  urBanner: Boolean = true,
   scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
-@import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
+
 
 @head = {
     @uiLayouts.head(
@@ -50,7 +51,7 @@
 
 @afterHeader = {}
 
-@bodyEnd = {
+   @bodyEnd = {
     @uiLayouts.footer(
       analyticsToken = Some(appConfig.analyticsToken),
       analyticsHost = appConfig.analyticsHost,
@@ -79,14 +80,34 @@
 @footerTop = {}
 @footerLinks = {}
 
+
+
 @betaBanner = {
+
+    @if(urBanner){
+        <div id="urBanner" class="ur-panel" >
+            <div class="grid-row">
+                <div class="column-two-thirds">
+                    <p class="bold-small">@messages("urBanner.title")</p>
+                    <p><a href=@messages("urBanner.message.link")>@messages("urBanner.message") <span class="visually-hidden">
+                        @messages("site.opens.new.window ")</span></a></p>
+                </div>
+                <div class="column-one-third f-right">
+                    <p id="urBannerLinkNo">@messages("urBanner.message.noThanks.link")</p>
+                </div>
+            </div>
+        </div>
+    }
+
+
     @uiLayouts.betaBanner(
         userLoggedIn = false,
         betaFeedbackUrl = appConfig.betaFeedbackUrl,
         betaFeedbackUnauthenticatedUrl = appConfig.betaFeedbackUnauthenticatedUrl,
-        showFeedbackLinkInBetaBanner = true
-    )
+        showFeedbackLinkInBetaBanner = true)
+
 }
+
 
 @serviceInfo = {
     @uiLayouts.serviceInfo(

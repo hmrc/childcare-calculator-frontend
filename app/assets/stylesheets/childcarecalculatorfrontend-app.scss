@@ -171,3 +171,20 @@ h2.heading-medium {
 .sameIncomePY table th{
     font-weight: 700;
 }
+
+.ur-panel {
+  background-color: #005ea5;
+  color: #fff;
+  padding: 10px 20px;
+}
+.ur-panel a:link, .ur-panel a:visited {
+  color: #fff;
+  font-size: 16px;
+}
+
+.f-right p {
+  float: right;
+  font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+}
