@@ -39,8 +39,9 @@
 
     @gaCalls(send: String, pageview: String) = {
         ga('create', '@appConfig.analyticsToken', '@appConfig.analyticsHost');
-        ga('send', 'pageview', { 'anonymizeIp': true });
-        ga('@appConfig.analyticsDimensionKey', {noOfEligibleScheme:@model.noOfEligibleSchemes,isEligibleToFreeHours:@model.freeHours.isDefined,isEligibleToTC:@model.tc.isDefined,isEligibleToTFC:@model.tfc.isDefined,isEligibleToESC:@model.esc.isDefined} );
+        ga('set', 'anonymizeIp', true);
+        ga('set', '@appConfig.analyticsDimensionKey', 'noOfEligibleScheme:@model.noOfEligibleSchemes,isEligibleToFreeHours:@model.freeHours.isDefined,isEligibleToTC:@model.tc.isDefined,isEligibleToTFC:@model.tfc.isDefined,isEligibleToESC:@model.esc.isDefined');
+        ga('send', 'pageview');
     }
 
     @main_template(
