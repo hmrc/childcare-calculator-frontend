@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
@@ -31,7 +32,11 @@
                 @messages("freeHoursResult.info.OtherSchemes.approved.text")
             } else {
                 @if(!model.isAnyoneInPaidEmployment) {
-                    @messages("freeHoursResult.info.OtherSchemes.paidwork.text")
+                    @if(model.location == Location.ENGLAND){
+                        @messages("freeHoursResult.info.OtherSchemes.england.paidwork.text")
+                    } else{
+                        @messages("freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text")
+                    }
                 }
             }
         }
