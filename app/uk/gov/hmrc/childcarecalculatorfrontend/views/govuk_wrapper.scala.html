@@ -24,6 +24,7 @@
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
   timeout: Boolean = true,
+  gaCalls: Option[(String, String) => play.twirl.api.Html] = None,
   scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
@@ -56,7 +57,7 @@
       analyticsHost = appConfig.analyticsHost,
       ssoUrl = None,
       scriptElem = scriptElem,
-      gaCalls = None)
+      gaCalls = gaCalls)
       <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
       <script src='@routes.Assets.versioned("javascripts/ccTimeoutDialog.js")'> </script>
         @if(timeout) {
