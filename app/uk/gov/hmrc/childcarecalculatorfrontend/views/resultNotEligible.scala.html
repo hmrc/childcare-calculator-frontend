@@ -36,8 +36,11 @@
                         @messages("freeHoursResult.info.OtherSchemes.england.paidwork.text")
                     } else{
                         @messages("freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text")
+
                     }
+
                 }
+
             }
         }
     }
@@ -49,6 +52,8 @@
             para1 = Some(messages("result.free.hours.not.eligible")),
             notEligibleID1 = Some("notEligibleFreeHours"))
     }
+
+
 
     @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
         @if(model.taxCreditsOrUC.contains(universalCredits)) {
@@ -85,22 +90,24 @@
                 notEligibleID2 = Some("notEligibleESC2"))
         }
 
-        @if(model.location != Location.NORTHERN_IRELAND && model.childAgedTwo && !model.tc.isDefined && !model.tfc.isDefined && !model.esc.isDefined) {
-            <div class="twoYearsOld">
-                <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
-                <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
-                <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href=@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
-                    @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
-                    </a>
-                    @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
-                </p>
-            </div>
-        }
 
     }else{
         @components.scheme_result(
             title = messages("freeHoursResult.info.OtherSchemes"),
             para1 = Some(otherChildcareSchemesContent.toString))
+
+}
+
+    @if(model.location != Location.NORTHERN_IRELAND && model.childAgedTwo && !model.tc.isDefined && !model.tfc.isDefined && !model.esc.isDefined) {
+        <div class="twoYearsOld">
+            <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
+            <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
+            <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href=@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
+                @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+            </a>
+                @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
+            </p>
+        </div>
     }
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider || !model.isAnyoneInPaidEmployment) {
