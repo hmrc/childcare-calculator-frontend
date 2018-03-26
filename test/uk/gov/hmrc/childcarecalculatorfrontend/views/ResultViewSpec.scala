@@ -421,6 +421,60 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
         assertNotRenderedById(view, "twoYearsOldHelp")
       }
+//////////////////////////////
+
+      "display guidance for 2 years old" when {
+        "user lives in England" in {
+          val model = ResultsViewModel(freeHours = None, tc = None, tfc=None, esc=None,location = locationEngland, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = false)
+
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+          assertRenderedByCssSelector(view, ".twoYearsOld")
+
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.two.freehours"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.title"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.text.before.link"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.link.text"))
+          view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.england.para1.help.link")
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.england.text.after.link"))
+        }
+      }
+
+
+      "display guidance for 2 years old" when {
+        "user lives in Scotland" in {
+          val model = ResultsViewModel(freeHours = None, tc = None, tfc=None, esc=None, location = Location.SCOTLAND, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+          assertRenderedByCssSelector(view, ".twoYearsOld")
+
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.two.freehours"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.title"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.text.before.link"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.link.text"))
+          view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.scotland.para1.help.link")
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.scotland.text.after.link"))
+        }
+      }
+
+
+      "display guidance for 2 years old" when {
+        "user lives in Wales and not eligible for any schemes" in {
+          val model = ResultsViewModel(freeHours = None, tc = None, tfc=None, esc=None, location = Location.WALES, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+
+          assertRenderedByCssSelector(view, ".twoYearsOld")
+
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.two.freehours"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.title"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.before.link"))
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.link.text"))
+          view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.wales.para1.help.link")
+          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.after.link"))
+        }
+      }
     }
 
 
