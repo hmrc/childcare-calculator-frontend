@@ -34,7 +34,6 @@
     }
 
     @resultsEstimateInformationContent = {
-        <h2 class="heading-medium">@messages("result.estimates.income.title")</h2>
         <p>@messages("result.estimates.income.para1")</p>
     }
 
@@ -55,9 +54,10 @@
 
         @components.heading(pagetitle.toString, "heading-xlarge")
 
-        @if(model.isEligibleOnlyToMinimumFreeHours == false) {
+        @if(model.isEligibleOnlyToMinimumFreeHours == false && model.noOfEligibleSchemes > 0) {
             <p>@model.firstParagraph</p>
         }
+        @resultsEstimateInformationContent
 
         @if(model.noOfEligibleSchemes > 0) {
 
@@ -90,7 +90,7 @@
                 </div>
             }
 
-            @resultsEstimateInformationContent
+
 
             @if(model.noOfEligibleSchemes > 1) {
 
@@ -153,7 +153,7 @@
                 }
             }
 
-            @if(model.isEligibleOnlyToMinimumFreeHours == false){
+            @if(model.isEligibleToMaximumFreeHours == true){
                 <div class="moreInfo">
                     <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
                     <p>@messages("aboutYourResults.more.info.para1")</p>
