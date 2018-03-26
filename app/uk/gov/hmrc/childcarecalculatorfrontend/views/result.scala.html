@@ -40,7 +40,7 @@
     @gaCalls(send: String, pageview: String) = {
         ga('create', '@appConfig.analyticsToken', '@appConfig.analyticsHost');
         ga('send', 'pageview', { 'anonymizeIp': true });
-        ga('dimension65', {noOfEligibleScheme:@model.noOfEligibleSchemes,isEligibleToFreeHours:@model.freeHours.isDefined,isEligibleToTC:@model.tc.isDefined,isEligibleToTFC:@model.tfc.isDefined,isEligibleToESC:@model.esc.isDefined} );
+        ga('@appConfig.analyticsDimensionKey', {noOfEligibleScheme:@model.noOfEligibleSchemes,isEligibleToFreeHours:@model.freeHours.isDefined,isEligibleToTC:@model.tc.isDefined,isEligibleToTFC:@model.tfc.isDefined,isEligibleToESC:@model.esc.isDefined} );
     }
 
     @main_template(
