@@ -103,6 +103,21 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
       result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.england.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.england.hours.title"))
     }
 
+    "not return free hours link if we are not entitled to maximum free hours and we live in WALES" in {
+      val result = service.getSchemeContent(Location.WALES,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), esc = Some(2.0), freeHours = Some(10), location = Location.WALES, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
+      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.wales.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.wales.hours.title"))
+    }
+
+    "not return free hours link if we are not entitled to maximum free hours and we live in SCOTLAND" in {
+      val result = service.getSchemeContent(Location.SCOTLAND,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), esc = Some(2.0), freeHours = Some(16), location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
+      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.scotland.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.scotland.hours.title"))
+    }
+
+    "not return free hours link if we are not entitled to maximum free hours and we live in NORTHERN IRELAND" in {
+      val result = service.getSchemeContent(Location.NORTHERN_IRELAND,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), esc = Some(2.0), freeHours = Some(12.5), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
+      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.northern-ireland.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.northern-ireland.hours.title"))
+    }
+
     for (test <- allValid) {
       s"return correct footer information for ${test.key} when all schemes are valid" in {
 
