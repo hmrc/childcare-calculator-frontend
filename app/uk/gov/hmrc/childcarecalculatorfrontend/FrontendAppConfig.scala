@@ -35,6 +35,7 @@ class FrontendAppConfig @Inject() (override val configuration: Configuration) ex
 
   lazy val analyticsToken = loadConfig(s"google-analytics.token")
   lazy val analyticsHost = loadConfig(s"google-analytics.host")
+  lazy val analyticsDimensionKey = loadConfig(s"google-analytics.dimensionKey")
   lazy val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   lazy val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
   lazy val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
