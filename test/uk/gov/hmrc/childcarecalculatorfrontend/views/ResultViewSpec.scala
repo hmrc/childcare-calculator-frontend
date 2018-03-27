@@ -423,7 +423,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
         assertNotRenderedById(view, "twoYearsOldHelp")
       }
-//////////////////////////////
+
 
       "display guidance for 2 years old" when {
         "user lives in England" in {
