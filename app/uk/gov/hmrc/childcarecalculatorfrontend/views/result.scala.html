@@ -20,6 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils)(implicit request: Request[_], messages: Messages)
@@ -33,22 +34,31 @@
     }
 
     @resultsEstimateInformationContent = {
-        <h2 class="heading-medium">@messages("result.estimates.income.title")</h2>
         <p>@messages("result.estimates.income.para1")</p>
     }
 
+    @gaCalls(send: String, pageview: String) = {
+        ga('create', '@appConfig.analyticsToken', '@appConfig.analyticsHost');
+        ga('set', 'anonymizeIp', true);
+        ga('set', '@appConfig.analyticsDimensionKey', 'noOfEligibleScheme:@model.noOfEligibleSchemes,isEligibleToFreeHours:@model.freeHours.isDefined,isEligibleToTC:@model.tc.isDefined,isEligibleToTFC:@model.tfc.isDefined,isEligibleToESC:@model.esc.isDefined');
+        ga('send', 'pageview');
+    }
 
     @main_template(
         title = pagetitle.toString.trim,
         appConfig = appConfig,
         timeout = false,
+        gaCalls = Some(gaCalls),
         bodyClasses = Some("result")) {
 
         @components.back_link()
 
         @components.heading(pagetitle.toString, "heading-xlarge")
 
-        <p>@model.firstParagraph</p>
+        @if(model.isEligibleOnlyToMinimumFreeHours == false && model.noOfEligibleSchemes > 0) {
+            <p>@model.firstParagraph</p>
+        }
+        @resultsEstimateInformationContent
 
         @if(model.noOfEligibleSchemes > 0) {
 
@@ -81,7 +91,7 @@
                 </div>
             }
 
-            @resultsEstimateInformationContent
+
 
             @if(model.noOfEligibleSchemes > 1) {
 
@@ -144,19 +154,18 @@
                 }
             }
 
-            <div class="moreInfo">
-                <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
-                <p>@messages("aboutYourResults.more.info.para1")</p>
-                @if(links.nonEmpty) {
-                    <ul class="list list-bullet">
-                    @for(link <- links) {
-                        <li><a target="_blank" rel="external" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span class="visually-hidden">@messages("site.opens.new.window")</span></a></li>
-                    }
-                    </ul>
-                }
-                <p>@summary.getOrElse("")</p>
-            </div>
-
+            @if(links.nonEmpty){
+                <div class="moreInfo">
+                    <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
+                    <p>@messages("aboutYourResults.more.info.para1")</p>
+                        <ul class="list list-bullet">
+                        @for(link <- links) {
+                            <li><a target="_blank" rel="external" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span class="visually-hidden">@messages("site.opens.new.window")</span></a></li>
+                        }
+                        </ul>
+                    <p>@summary.getOrElse("")</p>
+                </div>
+            }
         } else {
             <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
             @resultNotEligible(model)

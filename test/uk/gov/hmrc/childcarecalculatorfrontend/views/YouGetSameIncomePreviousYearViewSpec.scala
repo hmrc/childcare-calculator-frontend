@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
@@ -24,7 +25,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePreviousYear
 
-class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
+import scala.collection.immutable.ListMap
+
+class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours with GuiceOneAppPerSuite {
 
   val taxYearInfo = new TaxYearInfo
 
@@ -41,6 +44,12 @@ class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YouGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
+
+    "contain your income info" in {
+      val view = () => youGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(ListMap("Income" -> "£250")))(fakeRequest, messages)
+      val doc = asDocument(view())
+      assertContainsText(doc, "£250")
+    }
 
     "contain tax year info" in {
       val doc = asDocument(createView())

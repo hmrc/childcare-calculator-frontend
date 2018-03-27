@@ -55,7 +55,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad()
       } else {
-        routes.FreeHoursResultController.onPageLoad()
+        routes.ResultController.onPageLoad()
       }
     } else {
       routes.ApprovedProviderController.onPageLoad(NormalMode)
@@ -69,7 +69,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad()
       } else {
-        routes.FreeHoursResultController.onPageLoad()
+        routes.ResultController.onPageLoad()
       }
     } else {
       if (freeHours.eligibility(answers) == Eligible) {

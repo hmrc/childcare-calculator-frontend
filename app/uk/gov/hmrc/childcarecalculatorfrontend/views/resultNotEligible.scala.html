@@ -16,47 +16,110 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
+
+
+
+
 
 @(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
 
-@if(!model.freeHours.isDefined) {
-    @components.scheme_result(
-    title = messages("result.free.hours.title"),
-    para1 = Some(messages("result.free.hours.not.eligible")),
-    notEligibleID1 = Some("notEligibleFreeHours"))
-}
+    @otherChildcareSchemesContent = {
+        @if(!model.hasChildcareCosts) {
+            @messages("freeHoursResult.info.OtherSchemes.childcare.cost.text")
+        } else {
+            @if(!model.hasCostsWithApprovedProvider) {
+                @messages("freeHoursResult.info.OtherSchemes.approved.text")
+            } else {
+                @if(!model.isAnyoneInPaidEmployment) {
+                    @if(model.location == Location.ENGLAND){
+                        @messages("freeHoursResult.info.OtherSchemes.england.paidwork.text")
+                    } else{
+                        @messages("freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text")
+                    }
+                }
+            }
+        }
+    }
 
-@if(model.taxCreditsOrUC.contains(universalCredits)) {
-    @components.scheme_result(
-        title = messages("result.tc.title"),
-        para1 = Some(messages("result.uc.not.eligible.para")),
-        notEligibleID1 = Some("notEligibleTC1")
-    )
-} else {
 
-        @if(!model.tc.isDefined) {
+    @if(!model.freeHours.isDefined) {
+        @components.scheme_result(
+            title = messages("result.free.hours.title"),
+            para1 = Some(messages("result.free.hours.not.eligible")),
+            notEligibleID1 = Some("notEligibleFreeHours"))
+    }
+
+    @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
+        @if(model.taxCreditsOrUC.contains(universalCredits)) {
             @components.scheme_result(
                 title = messages("result.tc.title"),
-                para1 = Some(model.tcSchemeInEligibilityMsg),
-                notEligibleID1 = Some("notEligibleTC1"),
-                notEligibleID2 = Some("notEligibleTC2"),
-                displayTCGuidanceLink = true
+                para1 = Some(messages("result.uc.not.eligible.para")),
+                notEligibleID1 = Some("notEligibleTC1")
             )
+        } else {
+
+            @if(!model.tc.isDefined) {
+                @components.scheme_result(
+                    title = messages("result.tc.title"),
+                    para1 = Some(model.tcSchemeInEligibilityMsg),
+                    notEligibleID1 = Some("notEligibleTC1"),
+                    notEligibleID2 = Some("notEligibleTC2"),
+                    displayTCGuidanceLink = true
+                )
+            }
         }
-   }
 
+        @if(!model.tfc.isDefined) {
+            @components.scheme_result(
+                title = messages("result.tfc.title"),
+                para1 = Some(messages("result.tfc.not.eligible")),
+                notEligibleID1 = Some("notEligibleTFC"))
+        }
 
-@if(!model.tfc.isDefined) {
-    @components.scheme_result(
-    title = messages("result.tfc.title"),
-    para1 = Some(messages("result.tfc.not.eligible")),
-    notEligibleID1 = Some("notEligibleTFC"))
-}
+        @if(!model.esc.isDefined) {
+            @components.scheme_result(
+                title = messages("result.esc.title"),
+                para1 = Some(messages("result.esc.not.eligible.para1")),
+                notEligibleID1 = Some("notEligibleESC1"),
+                notEligibleID2 = Some("notEligibleESC2"))
+        }
+    }else{
+        @components.scheme_result(
+            title = messages("freeHoursResult.info.OtherSchemes"),
+            para1 = Some(otherChildcareSchemesContent.toString))
+    }
 
-@if(!model.esc.isDefined) {
-    @components.scheme_result(
-    title = messages("result.esc.title"),
-    para1 = Some(messages("result.esc.not.eligible.para1")),
-    notEligibleID1 = Some("notEligibleESC1"),
-    notEligibleID2 = Some("notEligibleESC2"))
-}
+    @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider || !model.isAnyoneInPaidEmployment) {
+
+        <h2 class="heading-medium">@messages("freeHoursResult.toBeEligible.heading")</h2>
+
+        <p>
+        @if(!model.hasChildcareCosts) {
+            @messages("freeHoursResult.toBeEligible.childcare.cost.start")
+            <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>
+            .
+            @messages("freeHoursResult.toBeEligible.childcare.cost.end")
+
+        } else {
+            @if(!model.hasCostsWithApprovedProvider) {
+                @messages("freeHoursResult.toBeEligible.approved.provider.start")
+                <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>
+                .
+                @messages("freeHoursResult.toBeEligible.approved.provider.end")
+            } else {
+                @if(!model.isAnyoneInPaidEmployment) {
+                    @messages("freeHoursResult.toBeEligible.paid.work.start")
+                    @if(model.livesWithPartner) {
+                        <a id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+                    } else {
+                        <a id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
+                    }
+                    @messages("freeHoursResult.toBeEligible.paid.work.end")
+                }
+            }
+        }
+        </p>
+    }

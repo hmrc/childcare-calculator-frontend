@@ -114,6 +114,7 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
 
           navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
         }
+
       }
 
       "Whos Had Benefits CY Route" must {
@@ -121,21 +122,24 @@ class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whosHadBenefits) thenReturn Some(YOU)
 
-          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to partnerBenefitsIncomeCY page when user selects partner option" in {
           val answers = spy(userAnswers())
           when(answers.whosHadBenefits) thenReturn Some(PARTNER)
 
-          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to benefitsIncomeCY page when user selects both option" in {
           val answers = spy(userAnswers())
           when(answers.whosHadBenefits) thenReturn Some(BOTH)
 
-          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
+          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
+            routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {

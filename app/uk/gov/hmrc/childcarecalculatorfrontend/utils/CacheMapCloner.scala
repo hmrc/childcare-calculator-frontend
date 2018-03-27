@@ -50,7 +50,8 @@ object CacheMapCloner {
     data.getEntry[Boolean](DoYouLiveWithPartnerId.toString) match {
       case Some(livesWithPartner) => {
         if (livesWithPartner) {
-          removeClonedData(data,bothIncomeCurrentYearToPreviousYear)
+         val mapWithNoClonedData = removeClonedData(data,bothIncomeCurrentYearToPreviousYear)
+          mapWithNoClonedData.copy(data = mapWithNoClonedData.data - BothPaidWorkPYId.toString - WhoWasInPaidWorkPYId.toString)
         }
         else{
           removeClonedData(data,singleParentCurrentYearToPreviousYear)

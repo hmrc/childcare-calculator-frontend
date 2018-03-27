@@ -23,6 +23,7 @@
   bodyClasses: Option[String] = None,
   mainClass: Option[String] = None,
   timeout: Boolean = true,
+  gaCalls: Option[(String, String) => play.twirl.api.Html] = None,
   scriptElem: Option[Html] = None)(mainContent: Html)(implicit request : Request[_], messages: Messages)
 
 @import uk.gov.hmrc.play.views.html.layouts
@@ -44,5 +45,6 @@
                mainContent = layouts.article(mainContent),
                serviceInfoContent = serviceInfoContent,
                timeout = timeout,
+               gaCalls = gaCalls,
                scriptElem = scriptElem
 )
