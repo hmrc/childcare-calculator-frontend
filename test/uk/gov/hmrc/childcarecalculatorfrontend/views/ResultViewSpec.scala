@@ -404,7 +404,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
     "display more info about the schemes" in {
       val model = ResultsViewModel(freeHours = Some(30), tc = Some(200), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      val view = asDocument(result(frontendAppConfig, model,List(Map("title"->"test","link"->"test")) , None, new Utils )(fakeRequest, messages))
 
       assertRenderedByCssSelector(view, ".moreInfo")
 

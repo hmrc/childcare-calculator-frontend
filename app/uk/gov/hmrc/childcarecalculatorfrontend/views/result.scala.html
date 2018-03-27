@@ -154,17 +154,15 @@
                 }
             }
 
-            @if(model.isEligibleToMaximumFreeHours == true){
+            @if(links.nonEmpty){
                 <div class="moreInfo">
                     <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
                     <p>@messages("aboutYourResults.more.info.para1")</p>
-                    @if(links.nonEmpty) {
                         <ul class="list list-bullet">
                         @for(link <- links) {
                             <li><a target="_blank" rel="external" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span class="visually-hidden">@messages("site.opens.new.window")</span></a></li>
                         }
                         </ul>
-                    }
                     <p>@summary.getOrElse("")</p>
                 </div>
             }
