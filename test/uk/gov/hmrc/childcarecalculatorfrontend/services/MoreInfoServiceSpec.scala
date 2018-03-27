@@ -98,6 +98,11 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
 
   "MoreInfoService" should {
 
+    "not return free hours link if we are not entitled to maximum free hours in England" in {
+      val result = service.getSchemeContent(Location.ENGLAND,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), esc = Some(2.0), freeHours = Some(15), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
+      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.england.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.england.hours.title"))
+    }
+
     for (test <- allValid) {
       s"return correct footer information for ${test.key} when all schemes are valid" in {
 

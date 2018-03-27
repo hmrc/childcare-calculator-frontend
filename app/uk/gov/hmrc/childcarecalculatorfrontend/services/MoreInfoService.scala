@@ -23,6 +23,9 @@ import play.api.i18n.MessagesApi
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
+
+import scala.math.BigDecimal
 
 @Singleton
 class MoreInfoService @Inject() (val messages: MessagesApi) extends MoreInfoServiceInterface{
@@ -31,7 +34,15 @@ class MoreInfoService @Inject() (val messages: MessagesApi) extends MoreInfoServ
 
     val location = locationValue(l)
 
-    val freeHours = linkData(location, "hours", r.freeHours)
+    val maximumFreeHours = BigDecimal(30)
+
+    val freeHours = (l,r.freeHours) match {
+      case (Location.ENGLAND,Some(`maximumFreeHours`)) => linkData(location, "hours", r.freeHours)
+      case (Location.WALES,_) => linkData(location, "hours", r.freeHours)
+      case (Location.SCOTLAND,_) => linkData(location, "hours", r.freeHours)
+      case (Location.NORTHERN_IRELAND,_) => linkData(location, "hours", r.freeHours)
+      case _ => None
+    }
 
     val taxCredits = linkData(location, "tc", r.tc)
 
