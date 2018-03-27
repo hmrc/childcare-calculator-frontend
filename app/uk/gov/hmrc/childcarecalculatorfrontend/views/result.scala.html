@@ -72,7 +72,7 @@
             }
 
 
-            @if(model.location != Location.NORTHERN_IRELAND && model.childAgedTwo) {
+            @if(model.location != Location.NORTHERN_IRELAND && model.childAgedTwo && model.childAgedThreeOrFour) {
                 <div class="twoYearsOld">
                     <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
                     <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
