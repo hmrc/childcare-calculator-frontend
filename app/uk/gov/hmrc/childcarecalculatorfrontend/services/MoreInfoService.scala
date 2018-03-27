@@ -30,24 +30,17 @@ import scala.math.BigDecimal
 @Singleton
 class MoreInfoService @Inject() (val messages: MessagesApi) extends MoreInfoServiceInterface{
 
-  def getSchemeContent(l: Location, r: ResultsViewModel): List[Map[String, String]] = {
-
-    val location = locationValue(l)
-
-    val maximumFreeHours = BigDecimal(30)
-
-    val freeHours = (l,r.freeHours) match {
-      case (Location.ENGLAND,Some(`maximumFreeHours`)) => linkData(location, "hours", r.freeHours)
-      case (Location.WALES,_) => linkData(location, "hours", r.freeHours)
-      case (Location.SCOTLAND,_) => linkData(location, "hours", r.freeHours)
-      case (Location.NORTHERN_IRELAND,_) => linkData(location, "hours", r.freeHours)
+  def getSchemeContent(userLocation: Location, model: ResultsViewModel): List[Map[String, String]] = {
+    val freeHours = (userLocation,model.freeHours) match {
+      case (Location.ENGLAND,Some(ChildcareConstants.maxFreeHours)) => linkData(userLocation.toString, "hours", model.freeHours)
+      case (Location.WALES,_) => linkData(userLocation.toString, "hours", model.freeHours)
+      case (Location.SCOTLAND,_) => linkData(userLocation.toString, "hours", model.freeHours)
+      case (Location.NORTHERN_IRELAND,_) => linkData(userLocation.toString, "hours", model.freeHours)
       case _ => None
     }
 
-    val taxCredits = linkData(location, "tc", r.tc)
-
-    val taxFreeChildCare = linkData(location, "tfc", r.tfc)
-
+    val taxCredits = linkData(userLocation.toString, "tc", model.tc)
+    val taxFreeChildCare = linkData(userLocation.toString, "tfc", model.tfc)
     List(freeHours, taxCredits, taxFreeChildCare).flatten
   }
 
@@ -69,14 +62,6 @@ class MoreInfoService @Inject() (val messages: MessagesApi) extends MoreInfoServ
     }
     case _ => None
   }
-
-  private def locationValue(location: Location): String = location match {
-    case Location.ENGLAND => "england"
-    case Location.WALES=> "wales"
-    case Location.SCOTLAND => "scotland"
-    case Location.NORTHERN_IRELAND => "northern-ireland"
-  }
-
 }
 
 @ImplementedBy(classOf[MoreInfoService])

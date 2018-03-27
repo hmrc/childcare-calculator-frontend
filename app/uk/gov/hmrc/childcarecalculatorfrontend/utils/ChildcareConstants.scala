@@ -20,6 +20,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 object ChildcareConstants {
 
+  val maxFreeHours = BigDecimal(30)
   val England : String = Location.ENGLAND.toString
 
   val YouSelected: String = YouPartnerBothNeitherEnum.YOU.toString
