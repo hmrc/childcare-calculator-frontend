@@ -1456,5 +1456,5 @@ incomeSummary.incomeFromBenefits = Income from benefits
 
 urBanner.title = Help improve GOV.UK
 urBanner.message = Get involved in making government services better
-urBanner.message.link = #
+urBanner.message.link = https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143
 urBanner.message.noThanks.link = No thanks
