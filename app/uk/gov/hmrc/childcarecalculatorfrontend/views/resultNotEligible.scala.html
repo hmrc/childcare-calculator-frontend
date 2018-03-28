@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 
-@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+@(model: ResultsViewModel, hasTwoYearOldInfoBeenDisplayed: Boolean = false)(implicit request: Request[_], messages: Messages)
 
     @otherChildcareSchemesContent = {
         @if(!model.hasChildcareCosts) {
@@ -98,7 +98,7 @@
 
 }
 
-    @if(model.showTwoYearOldInfo) {
+    @if(model.showTwoYearOldInfo && hasTwoYearOldInfoBeenDisplayed == false) {
         <div class="twoYearsOld">
             <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
             <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
