@@ -24,7 +24,7 @@
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
   timeout: Boolean = true,
-  urBanner: Boolean = true,
+  urBanner: Boolean = false,
   scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
