@@ -44,6 +44,19 @@
     timeout = false,
     urBanner = true,
     bodyClasses = Some("result")) {
+    @gaCalls(send: String, pageview: String) = {
+        ga('create', '@appConfig.analyticsToken', '@appConfig.analyticsHost');
+        ga('set', 'anonymizeIp', true);
+        ga('set', '@appConfig.analyticsDimensionKey', 'noOfEligibleScheme:@model.noOfEligibleSchemes,isEligibleToFreeHours:@model.freeHours.isDefined,isEligibleToTC:@model.tc.isDefined,isEligibleToTFC:@model.tfc.isDefined,isEligibleToESC:@model.esc.isDefined');
+        ga('send', 'pageview');
+    }
+
+    @main_template(
+        title = pagetitle.toString.trim,
+        appConfig = appConfig,
+        timeout = false,
+        gaCalls = Some(gaCalls),
+        bodyClasses = Some("result")) {
 
     @components.back_link()
 
@@ -145,6 +158,22 @@
             }
         }
 
+            @if(links.nonEmpty){
+                <div class="moreInfo">
+                    <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
+                    <p>@messages("aboutYourResults.more.info.para1")</p>
+                        <ul class="list list-bullet">
+                        @for(link <- links) {
+                            <li><a target="_blank" rel="external" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span class="visually-hidden">@messages("site.opens.new.window")</span></a></li>
+                        }
+                        </ul>
+                    <p>@summary.getOrElse("")</p>
+                </div>
+            }
+        } else {
+            <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
+            @resultNotEligible(model)
+        }
         @if(model.isEligibleToMaximumFreeHours == true) {
             <div class="moreInfo">
                 <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>

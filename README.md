@@ -8,7 +8,7 @@ make a decision on which scheme will best suit their needs. The Childcare Calcul
 the users, inform them of their eligibility and how much support that they could receive for the Tax-Free Childcare (TFC),
 Tax Credits (TC) and Employer-Supported Childcare (ESC) schemes.
 
-The Childcare Calculator invokes cc-eligibility microservice([Eligibility documentation](https://github.com/hmrc/cc-eligibility/blob/master/README.md)) and cc-calculator microservice([Calculator documentation](https://github.com/hmrc/cc-calculator/blob/master/README.md)) to get the desired results.
+The Childcare Calculator invokes cc-eligibility microservice([Eligibility documentation](https://github.com/hmrc/cc-eligibility/blob/master/README.md)).
 
 The Childcare Calculator Frontend service, collects data input by the users from the fields on the presented pages.
 This data is collated and passed to the Childcare Calculator backend processes. The results are returned to the Childcare

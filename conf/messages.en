@@ -110,7 +110,7 @@ location.error = Select where you live
 childAgedTwo.title = Do you have any children aged 2?
 childAgedTwo.heading = Do you have any children aged 2?
 childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to 15 hours free childcare a week in term time – this is 570 hours a year.
-childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to 12 and a half hours of free early education a week in term time – this is 380 hours a year.
+childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to a minimum of 10 hours of funded early education a week in term time – this is 390 hours a year.
 childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours free childcare a week in term time – this is 600 hours a year.
 childAgedTwo.checkYourAnswersLabel = Do you have any children aged 2?
 childAgedTwo.error = Select yes if you have any children aged 2
@@ -174,7 +174,9 @@ freeHoursResult.info.OtherSchemes = Other childcare schemes
 
 freeHoursResult.info.OtherSchemes.childcare.cost.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
 freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
-freeHoursResult.info.OtherSchemes.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes 30 hours free childcare, childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
+freeHoursResult.info.OtherSchemes.england.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes 30 hours free childcare, childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
+freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
+
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
 freeHoursResult.info.entitled.wales = 10 hours

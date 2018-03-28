@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.jsoup.nodes.Element
 import org.scalatest.mockito.MockitoSugar
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
@@ -28,11 +29,74 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
   val locationEngland = Location.ENGLAND
-  def createView() = () => result(frontendAppConfig, ResultsViewModel(tc = Some(400),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true), List.empty, None, new Utils)(fakeRequest, messages)
+  val locationScotland = Location.SCOTLAND
+  def createView() = () => result(frontendAppConfig: FrontendAppConfig, ResultsViewModel(tc = Some(400),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true), List.empty, None, new Utils)(fakeRequest, messages)
 
   "Result view" must {
 
     behave like normalPage(createView(),"result")
+
+
+    "Contain Google Analytic tags" when {
+      "Including default tags" when {
+        "with google token" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+          assertContainsText(view, s"'create', '${frontendAppConfig.analyticsToken}', 'auto'")
+        }
+
+        "with send anonymizeIP" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "'set', 'anonymizeIp', true")
+        }
+        "with send pageview" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, "'send', 'pageview'")
+        }
+      }
+
+      "Including custom tags" when {
+        "with number of eligible schemes" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15), tc = Some(200),tfc = Some(2),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, s"'set', '${frontendAppConfig.analyticsDimensionKey}', 'noOfEligibleScheme:3,isEligibleToFreeHours:true,isEligibleToTC:true,isEligibleToTFC:true,isEligibleToESC:false'")
+        }
+
+        "with flag for freehours eligibility" in {
+          val model = ResultsViewModel("Test",freeHours = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, s"'set', '${frontendAppConfig.analyticsDimensionKey}', 'noOfEligibleScheme:1,isEligibleToFreeHours:true,isEligibleToTC:false,isEligibleToTFC:false,isEligibleToESC:false'")
+        }
+
+        "with flag for tc eligibility" in {
+          val model = ResultsViewModel("Test",tc = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, s"'set', '${frontendAppConfig.analyticsDimensionKey}', 'noOfEligibleScheme:1,isEligibleToFreeHours:false,isEligibleToTC:true,isEligibleToTFC:false,isEligibleToESC:false'")
+
+        }
+
+        "with flag for tfc eligibility" in {
+          val model = ResultsViewModel("Test",tfc = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, s"'set', '${frontendAppConfig.analyticsDimensionKey}', 'noOfEligibleScheme:1,isEligibleToFreeHours:false,isEligibleToTC:false,isEligibleToTFC:true,isEligibleToESC:false'")
+        }
+
+        "with flag for esc eligibility" in {
+          val model = ResultsViewModel("Test",esc = Some(15),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+          val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+          assertContainsText(view, s"'set', '${frontendAppConfig.analyticsDimensionKey}', 'noOfEligibleScheme:1,isEligibleToFreeHours:false,isEligibleToTC:false,isEligibleToTFC:false,isEligibleToESC:true'")
+        }
+      }
+    }
 
     "Contain results" when {
       "We have introductory paragraph when we are eligible to anything other than freehours on its own" in {
@@ -340,7 +404,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
     "display more info about the schemes" in {
       val model = ResultsViewModel(freeHours = Some(30), tc = Some(200), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+      val view = asDocument(result(frontendAppConfig, model,List(Map("title"->"test","link"->"test")) , None, new Utils )(fakeRequest, messages))
 
       assertRenderedByCssSelector(view, ".moreInfo")
 
@@ -477,7 +541,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.paidwork.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.england.paidwork.text"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.start"))
         paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
         paidWorkLink.text mustBe messagesApi("freeHoursResult.toBeEligible.paid.work.link.text")
@@ -517,13 +581,39 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
 
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
-        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.paidwork.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.england.paidwork.text"))
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.start"))
         paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
         paidWorkLink.text mustBe messagesApi("freeHoursResult.toBeEligible.paid.work.link.text")
         assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.end"))
       }
 
+
+      "contain correct guidance when not eligible for other schemes when not paid work and lives in england" in {
+        val model = ResultsViewModel(freeHours = Some(15), location = locationEngland, isAnyoneInPaidEmployment = false, hasChildcareCosts = true,livesWithPartner = false,hasCostsWithApprovedProvider = true)
+        val doc = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+        val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.england.paidwork.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.start"))
+        paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
+        paidWorkLink.text mustBe messagesApi("freeHoursResult.toBeEligible.paid.work.link.text")
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.end"))
+      }
+
+      "contain correct guidance when not eligible for other schemes when not paid work and lives in scotland" in {
+        val model = ResultsViewModel(freeHours = Some(16), location = locationScotland, isAnyoneInPaidEmployment = false, hasChildcareCosts = true,livesWithPartner = false,hasCostsWithApprovedProvider = true)
+        val doc = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
+        val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
+
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.heading"))
+        assertContainsText(doc, messagesApi("freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text"))
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.start"))
+        paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
+        paidWorkLink.text mustBe messagesApi("freeHoursResult.toBeEligible.paid.work.link.text")
+        assertContainsText(doc, messagesApi("freeHoursResult.toBeEligible.paid.work.end"))
+      }
       "contain correct guidance when not eligible for location northern-ireland" in {
         val model = ResultsViewModel(location = Location.NORTHERN_IRELAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = false,livesWithPartner = false,hasCostsWithApprovedProvider = false)
         val doc = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils )(fakeRequest, messages))
