@@ -101,6 +101,11 @@ $(document).ready(function() {
       window.onafterprint = function(){
           afterPrintCall();
       }
+
+      $('#urBannerLinkNo').click(function(){
+        $('#urBanner').addClass('hidden');
+      });
+
   });
 
 
@@ -134,16 +139,5 @@ $(document).ready(function() {
           if ( e.which == 38 || e.which == 40 || e.which == 188 )
               e.preventDefault();
       });
-
-
-
-
-         $('#urBannerLinkNo').click(function(){
-             $('#urBanner').addClass('hidden');
-         });
-
-
-
-
 
   }
