@@ -79,7 +79,7 @@
             }
 
 
-            @if(model.showTwoYearOldInfo && model.twoYearOldSectionAlreadyDisplayed == false) {
+            @if(model.showTwoYearOldInfo && model.isEligibleToAllSchemes == false) {
                 <div class="twoYearsOld">
                     <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
                     <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
