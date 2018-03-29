@@ -15,17 +15,18 @@
  *@
 
 @(appConfig: uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig,
-  title: String,
-  mainClass: Option[String] = None,
-  mainDataAttributes: Option[Html] = None,
-  bodyClasses: Option[String] = None,
-  sidebar: Html = HtmlFormat.empty,
-  contentHeader: Option[Html] = None,
-  mainContent: Html = HtmlFormat.empty,
-  serviceInfoContent: Html = HtmlFormat.empty,
-  timeout: Boolean = true,
-  gaCalls: Option[(String, String) => play.twirl.api.Html] = None,
-  scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
+        title: String,
+        mainClass: Option[String] = None,
+        mainDataAttributes: Option[Html] = None,
+        bodyClasses: Option[String] = None,
+        sidebar: Html = HtmlFormat.empty,
+        contentHeader: Option[Html] = None,
+        mainContent: Html = HtmlFormat.empty,
+        serviceInfoContent: Html = HtmlFormat.empty,
+        timeout: Boolean = true,
+        gaCalls: Option[(String, String) => play.twirl.api.Html] = None,
+        urBanner: Boolean = false,
+        scriptElem: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
@@ -33,35 +34,35 @@
 
 @head = {
     @uiLayouts.head(
-      linkElem = None,
-      headScripts = None)
-    <meta name="format-detection" content="telephone=no" />
-    <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/childcarecalculatorfrontend-app.css")' />
+        linkElem = None,
+        headScripts = None)
+        <meta name="format-detection" content="telephone=no" />
+        <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/childcarecalculatorfrontend-app.css")' />
 }
 
 @headerNavLinks = {}
 
 @insideHeader = {
     @uiLayouts.header_nav(
-      navTitle = Some(messages("site.service_name")),
-      navTitleLink = None,
-      showBetaLink = false,
-      navLinks = Some(headerNavLinks))
+        navTitle = Some(messages("site.service_name")),
+        navTitleLink = None,
+        showBetaLink = false,
+        navLinks = Some(headerNavLinks))
 }
 
 @afterHeader = {}
 
 @bodyEnd = {
     @uiLayouts.footer(
-      analyticsToken = Some(appConfig.analyticsToken),
-      analyticsHost = appConfig.analyticsHost,
-      ssoUrl = None,
-      scriptElem = scriptElem,
-      gaCalls = gaCalls)
-      <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
-      <script src='@routes.Assets.versioned("javascripts/ccTimeoutDialog.js")'> </script>
-        @if(timeout) {
-            <script type="text/javascript" charset="utf-8">
+        analyticsToken = Some(appConfig.analyticsToken),
+        analyticsHost = appConfig.analyticsHost,
+        ssoUrl = None,
+        scriptElem = scriptElem,
+        gaCalls = gaCalls)
+        <script src='@routes.Assets.versioned("javascripts/childcarecalculatorfrontend-app.min.js")'> </script>
+        <script src='@routes.Assets.versioned("javascripts/ccTimeoutDialog.js")'> </script>
+    @if(timeout) {
+        <script type="text/javascript" charset="utf-8">
                 ccTimeoutDialog({
                     timeout: 1800,
                     title: "@messages("timeout.heading")",
@@ -73,32 +74,49 @@
                     logout_url: '/childcare-calc/this-service-has-been-reset'
                 });
                 var dialogOpen;
-            </script>
-        }
+        </script>
+    }
 }
 
 @footerTop = {}
 @footerLinks = {}
 
+
 @betaBanner = {
+    @if(urBanner) {
+        <div id="urBanner" class="ur-panel" >
+            <div class="grid-row">
+                <div class="column-two-thirds">
+                    <p class="bold-small">@messages("urBanner.title")</p>
+                    <p><a target="_blank" rel="external" data-journey-click="link - click :@messages("urBanner.title"):@messages("urBanner.message")"
+                    href=@messages("urBanner.message.link")>@messages("urBanner.message")
+                        <span class="visually-hidden">@messages("site.opens.new.window ")</span></a></p>
+                </div>
+                <div class="column-one-third f-right">
+                    <p id="urBannerLinkNo">@messages("urBanner.message.noThanks.link")</p>
+                </div>
+            </div>
+        </div>
+    }
+
     @uiLayouts.betaBanner(
         userLoggedIn = false,
         betaFeedbackUrl = appConfig.betaFeedbackUrl,
         betaFeedbackUnauthenticatedUrl = appConfig.betaFeedbackUnauthenticatedUrl,
-        showFeedbackLinkInBetaBanner = true
-    )
+        showFeedbackLinkInBetaBanner = true)
+
 }
+
 
 @serviceInfo = {
     @uiLayouts.serviceInfo(
-      betaBanner = betaBanner,
-      includeGridWrapper = false,
-      serviceInfoContent = Some(serviceInfoContent),
-      includeHMRCBranding = false)
+        betaBanner = betaBanner,
+        includeGridWrapper = false,
+        serviceInfoContent = Some(serviceInfoContent),
+        includeHMRCBranding = false)
 }
 
 @mainContentHeader = {
-
     @if(appConfig.languageTranslationEnabled) {
         @views.html.language_selection(
             appConfig.languageMap,
@@ -114,12 +132,12 @@
 
 @content = {
     @uiLayouts.main_content(
-      article = mainContent,
-      mainClass = mainClass,
-      mainDataAttributes = mainDataAttributes,
-      mainContentHeader = mainContentHeader,
-      serviceInfo = serviceInfo,
-      sidebar = sidebar)
+        article = mainContent,
+        mainClass = mainClass,
+        mainDataAttributes = mainDataAttributes,
+        mainContentHeader = mainContentHeader,
+        serviceInfo = serviceInfo,
+        sidebar = sidebar)
 }
 
 @hmrcGovUkTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links()), true)(content)
