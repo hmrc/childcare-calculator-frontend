@@ -50,7 +50,7 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.isEmpty && tc.isEmpty
   def isEligibleOnlyToMinimumFreeHours = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours == Some(15) || freeHours == Some(10) || freeHours == Some(16) || freeHours == Some(12.5))
   def isEligibleToMaximumFreeHours =  freeHours == Some(30)
-  def isEligibleToAllSchemes = noOfEligibleSchemes < 4
+  def isEligibleToAllSchemes = noOfEligibleSchemes == 4
   def showTwoYearOldInfo = {
     if (childAgedTwo) {
       location match {

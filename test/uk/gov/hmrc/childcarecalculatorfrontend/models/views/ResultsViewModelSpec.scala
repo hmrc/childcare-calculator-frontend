@@ -24,7 +24,7 @@ class ResultsViewModelSpec extends SpecBase {
   "ResultViewModel" must {
     "let you know if you are eligible to all schemes" in {
       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(3), esc = Some(2), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-      resultsView.isEligibleToAllSchemes mustBe false
+      resultsView.isEligibleToAllSchemes mustBe true
     }
 
     "return correct number of eligible schemes" in {
