@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{result, resultNotEligible}
 
 class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
@@ -99,6 +99,13 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
           assertContainsText(view, s"'set', '${frontendAppConfig.analyticsDimensionKey}', 'noOfEligibleScheme:1,isEligibleToFreeHours:false,isEligibleToTC:false,isEligibleToTFC:false,isEligibleToESC:true'")
         }
       }
+    }
+
+    "contain two year old section" in {
+      val model = ResultsViewModel(esc = Some(30), tc = Some(30), tfc = Some(30), freeHours = Some(15), taxCreditsOrUC = None, location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true)
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("results.two.years.old.guidance.england.title"))
     }
 
     "Contain results" when {
