@@ -73,5 +73,23 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
         view.getElementById("notEligibleESC1").text() mustBe messages("result.esc.not.eligible.para1")
       }
     }
+
+    "contain two year old section" when {
+      "its not been displayed already" in {
+        val model = ResultsViewModel(esc = Some(30), taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true)
+        val view = asDocument(resultNotEligible(model,false)(fakeRequest, messages))
+
+        assertContainsMessages(view, messages("results.two.years.old.guidance.england.title"))
+      }
+    }
+
+    "not contain two year old section" when {
+      "its been displayed already" in {
+        val model = ResultsViewModel(esc = Some(30), taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true)
+        val view = asDocument(resultNotEligible(model,true)(fakeRequest, messages))
+
+        assertNotContainsText(view, messages("results.two.years.old.guidance.england.title"))
+      }
+    }
   }
 }

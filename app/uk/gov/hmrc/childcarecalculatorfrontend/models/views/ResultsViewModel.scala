@@ -27,6 +27,7 @@ case class ResultsViewModel(firstParagraph : String = "",
                             freeHours:Option[BigDecimal] = None,
                             location:Location.Value,
                             childAgedTwo: Boolean = false,
+                            childAgedThreeOrFour: Boolean = false,
                             taxCreditsOrUC: Option[String] = None,
                             showTFCWarning: Boolean = false,
                             tfcWarningMessage: String = "",
@@ -49,6 +50,24 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.isEmpty && tc.isEmpty
   def isEligibleOnlyToMinimumFreeHours = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours == Some(15) || freeHours == Some(10) || freeHours == Some(16) || freeHours == Some(12.5))
   def isEligibleToMaximumFreeHours =  freeHours == Some(30)
+  def showTwoYearOldInfo = {
+    if (childAgedTwo) {
+      location match {
+        case Location.NORTHERN_IRELAND => false
+        case _ => {
+          if (noOfEligibleSchemes == 0) {
+            if (childAgedThreeOrFour) false else true
+          }
+          else {
+            true
+          }
+        }
+      }
+    }
+    else {
+      false
+    }
+  }
 }
 
 object ResultsViewModel {

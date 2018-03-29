@@ -75,11 +75,11 @@
             @if(model.noOfEligibleSchemes < 4) {
 
                 <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
-                @resultNotEligible(model)
+                @resultNotEligible(model,true)
             }
 
 
-            @if(model.location != Location.NORTHERN_IRELAND && model.childAgedTwo) {
+            @if(model.showTwoYearOldInfo) {
                 <div class="twoYearsOld">
                     <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
                     <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>

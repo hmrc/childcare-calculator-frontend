@@ -18,13 +18,11 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 
-
-
-
-@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+@(model: ResultsViewModel, hasTwoYearOldInfoBeenDisplayed: Boolean = false)(implicit request: Request[_], messages: Messages)
 
     @otherChildcareSchemesContent = {
         @if(!model.hasChildcareCosts) {
@@ -38,8 +36,11 @@
                         @messages("freeHoursResult.info.OtherSchemes.england.paidwork.text")
                     } else{
                         @messages("freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text")
+
                     }
+
                 }
+
             }
         }
     }
@@ -51,6 +52,8 @@
             para1 = Some(messages("result.free.hours.not.eligible")),
             notEligibleID1 = Some("notEligibleFreeHours"))
     }
+
+
 
     @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
         @if(model.taxCreditsOrUC.contains(universalCredits)) {
@@ -86,10 +89,25 @@
                 notEligibleID1 = Some("notEligibleESC1"),
                 notEligibleID2 = Some("notEligibleESC2"))
         }
+
+
     }else{
         @components.scheme_result(
             title = messages("freeHoursResult.info.OtherSchemes"),
             para1 = Some(otherChildcareSchemesContent.toString))
+
+}
+
+    @if(model.showTwoYearOldInfo && hasTwoYearOldInfoBeenDisplayed == false) {
+        <div class="twoYearsOld">
+            <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
+            <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
+            <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href=@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
+                @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+            </a>
+                @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
+            </p>
+        </div>
     }
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider || !model.isAnyoneInPaidEmployment) {
