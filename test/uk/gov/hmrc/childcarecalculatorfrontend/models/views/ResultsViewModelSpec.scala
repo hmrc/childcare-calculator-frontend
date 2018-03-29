@@ -18,11 +18,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
 
 class ResultsViewModelSpec extends SpecBase {
 
   "ResultViewModel" must {
+    "let you know whether if the 2 year old section has already been displayed once or not" in {
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(3), esc = Some(2), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      resultsView.twoYearOldSectionAlreadyDisplayed mustBe false
+    }
+
     "return correct number of eligible schemes" in {
       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
       resultsView.noOfEligibleSchemes mustBe 2
