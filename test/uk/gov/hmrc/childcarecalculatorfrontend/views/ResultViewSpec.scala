@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{result, resultNotEligible}
 
 class ResultViewSpec extends ViewBehaviours with MockitoSugar {
 
@@ -101,6 +101,20 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       }
     }
 
+    "contain two year old section" in {
+      val model = ResultsViewModel(esc = Some(30), taxCreditsOrUC = None, location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true)
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("results.two.years.old.guidance.england.title"))
+    }
+
+    "not repeat two year old section" in {
+      val model = ResultsViewModel(esc = Some(30), taxCreditsOrUC = None, location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true)
+      val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils)(fakeRequest, messages))
+
+      assertContainsMessages(view, messages("results.two.years.old.guidance.england.title"))
+    }
+    
     "Contain results" when {
       "We have introductory paragraph when we are eligible to anything other than freehours on its own" in {
         val model = ResultsViewModel("This is the first paragraph",freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)

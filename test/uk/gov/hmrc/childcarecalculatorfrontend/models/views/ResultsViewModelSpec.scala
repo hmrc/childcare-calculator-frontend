@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
 
 class ResultsViewModelSpec extends SpecBase {
 
