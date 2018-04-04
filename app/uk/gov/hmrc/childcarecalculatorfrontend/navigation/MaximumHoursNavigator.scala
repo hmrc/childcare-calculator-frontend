@@ -45,12 +45,6 @@ class MaximumHoursNavigator @Inject() (
     WhoIsInPaidEmploymentId -> whoIsInPaidWorkRoute,
     ParentWorkHoursId -> parentWorkHoursRoute,
     PartnerWorkHoursId -> partnerWorkHoursRoute,
-    HasYourTaxCodeBeenAdjustedId -> hasYourTaxCodeBeenAdjusted,
-    DoYouKnowYourAdjustedTaxCodeId -> doYouKnowYourAdjustedTaxCodeRoute,
-    WhatIsYourTaxCodeId -> whatIsYourTaxCodeRoute,
-    HasYourPartnersTaxCodeBeenAdjustedId -> hasYourPartnersTaxCodeBeenAdjusted,
-    DoYouKnowYourPartnersAdjustedTaxCodeId -> doYouKnowPartnersTaxCodeRoute,
-    WhatIsYourPartnersTaxCodeId -> whatIsYourPartnersTaxCodeRoute,
     YourChildcareVouchersId -> yourChildcareVoucherRoute,
     PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
@@ -116,61 +110,6 @@ class MaximumHoursNavigator @Inject() (
     }
   }
 
-  private def hasYourTaxCodeBeenAdjusted(answers: UserAnswers): Call = {
-    if (answers.hasYourTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)) {
-      routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    }
-  }
-
-  private def doYouKnowYourAdjustedTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.doYouKnowYourAdjustedTaxCode.contains(true)) {
-      routes.WhatIsYourTaxCodeController.onPageLoad(NormalMode)
-    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    }
-  }
-
-  private def doYouKnowPartnersTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.doYouKnowYourPartnersAdjustedTaxCode.contains(true)) {
-      routes.WhatIsYourPartnersTaxCodeController.onPageLoad(NormalMode)
-    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(partner)) {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-  private def whatIsYourTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
-      routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(NormalMode)
-    } else {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-  private def hasYourPartnersTaxCodeBeenAdjusted(answers: UserAnswers): Call = {
-    if (answers.hasYourPartnersTaxCodeBeenAdjusted.contains(YesNoUnsureEnum.YES.toString)) {
-      routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(NormalMode)
-    } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(partner)) {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-  private def whatIsYourPartnersTaxCodeRoute(answers: UserAnswers): Call = {
-    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
-      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
 
   private def yourChildcareVoucherRoute(answers: UserAnswers): Call =
     utils.getCall(answers.doYouLiveWithPartner) {

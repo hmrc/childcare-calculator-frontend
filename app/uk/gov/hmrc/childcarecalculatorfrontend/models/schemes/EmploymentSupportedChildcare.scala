@@ -26,6 +26,7 @@ class EmploymentSupportedChildcare extends Scheme {
   override def eligibility(answers: UserAnswers): Eligibility = {
 
     val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
+    val childcareCostsNotYet: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.NOTYET.toString)
     val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => x.equals(YES))
     val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => x.equals(YES))
 
@@ -36,20 +37,20 @@ class EmploymentSupportedChildcare extends Scheme {
     if (hasPartner) {
       whoInPaidEmployment match {
         case Some(You) => {
-          getEligibility(hasParentChildcareCosts && hasParentChildcareVouchers)
+          getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasParentChildcareVouchers)
         }
         case Some(Partner) => {
-          getEligibility(hasParentChildcareCosts && hasPartnerChildcareVouchers)
+          getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasPartnerChildcareVouchers)
         }
         case Some(_) => {
-          getEligibility(hasParentChildcareCosts &&
+          getEligibility((hasParentChildcareCosts || childcareCostsNotYet) &&
             (bothChildcareVouchers.contains(Both) || bothChildcareVouchers.contains(You) || bothChildcareVouchers.contains(Partner)))
         }
         case _ => NotEligible
       }
     } else {
 
-       getEligibility(hasParentChildcareCosts && hasParentChildcareVouchers)
+       getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasParentChildcareVouchers)
     }
   }
 

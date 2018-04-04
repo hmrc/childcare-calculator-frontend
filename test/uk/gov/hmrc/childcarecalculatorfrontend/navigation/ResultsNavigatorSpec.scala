@@ -54,7 +54,7 @@ class ResultsNavigatorSpec extends WordSpec with MustMatchers with OptionValues 
     }
   }
 
-  lazy val resultPage: Call = routes.FreeHoursResultController.onPageLoad()
+  lazy val resultPage: Call = routes.ResultController.onPageLoad()
 
   def navigator(s: Schemes): SubNavigator = new SubNavigator with ResultsNavigator {
 

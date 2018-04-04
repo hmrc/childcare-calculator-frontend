@@ -255,47 +255,6 @@ partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
 partnerWorkHours.para1 = This is the hours worked in all their paid jobs, zero hours contracts and self-employment.
 
-hasYourTaxCodeBeenAdjusted.title = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.heading = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.YES = Yes
-hasYourTaxCodeBeenAdjusted.NO = No
-hasYourTaxCodeBeenAdjusted.NOTSURE = Not sure
-hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your tax code been adjusted?
-hasYourTaxCodeBeenAdjusted.info = It would be adjusted if you have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, you’re probably on the tax code of 1150L. That tax code will be used if you’re not sure.
-hasYourTaxCodeBeenAdjusted.error = Select yes if your tax code has been adjusted
-
-doYouKnowYourAdjustedTaxCode.title = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.heading = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel = Do you know your adjusted tax code?
-doYouKnowYourAdjustedTaxCode.error = Select yes if you know your adjusted tax code
-
-whatIsYourTaxCode.title = What’s your tax code?
-whatIsYourTaxCode.heading = What’s your tax code?
-whatIsYourTaxCode.hint = For example, 1150W1
-whatIsYourTaxCode.checkYourAnswersLabel = What’s your tax code?
-whatIsYourTaxCode.blank = Enter your tax code
-whatIsYourTaxCode.invalid = Your tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, X, 0T, BR, D0, D1, NT, W1 or M1
-
-hasYourPartnersTaxCodeBeenAdjusted.title = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.heading = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.info = It would be adjusted if they have company benefits such as a company car, company accommodation or a company loan, or if paying tax owed from a previous year. If not, they’re probably on the tax code of 1150L. That tax code will be used if you’re not sure.
-hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel = Has your partner’s tax code been adjusted?
-hasYourPartnersTaxCodeBeenAdjusted.YES = Yes
-hasYourPartnersTaxCodeBeenAdjusted.NO = No
-hasYourPartnersTaxCodeBeenAdjusted.NOTSURE = Not sure
-hasYourPartnersTaxCodeBeenAdjusted.error = Select yes if your partner’s tax code has been adjusted
-
-doYouKnowYourPartnersAdjustedTaxCode.title = Do you know your partner’s adjusted tax code?
-doYouKnowYourPartnersAdjustedTaxCode.heading = Do you know your partner’s adjusted tax code?
-doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel = Do you know your partner’s adjusted tax code?
-doYouKnowYourPartnersAdjustedTaxCode.error = Select yes if you know your partner’s adjusted tax code
-
-whatIsYourPartnersTaxCode.title = What’s your partner’s tax code?
-whatIsYourPartnersTaxCode.heading = What’s your partner’s tax code?
-whatIsYourPartnersTaxCode.checkYourAnswersLabel = What’s your partner’s tax code?
-whatIsYourPartnersTaxCode.blank = Enter your partner’s tax code
-whatIsYourPartnersTaxCode.invalid = Your partner’s tax code must consist of either 3 or 4 numbers followed by either L, M, N, S, T, OT, BR, DO, D1, NT, W1 or M1
-
 yourChildcareVouchers.title = Does your employer offer childcare vouchers?
 yourChildcareVouchers.heading = Does your employer offer childcare vouchers?
 yourChildcareVouchers.YES = Yes
@@ -1455,3 +1414,8 @@ incomeSummary.partnerBenefitsIncome = Partner’s benefits income
 incomeSummary.yourBenefitsIncome = Your benefits income
 incomeSummary.otherIncome = Other income
 incomeSummary.incomeFromBenefits = Income from benefits
+
+urBanner.title = Help improve GOV.UK
+urBanner.message = Get involved in making government services better
+urBanner.message.link = https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143
+urBanner.message.noThanks.link = No thanks

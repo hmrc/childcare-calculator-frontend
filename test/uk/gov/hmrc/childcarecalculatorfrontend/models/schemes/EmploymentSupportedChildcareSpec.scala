@@ -72,6 +72,17 @@ class EmploymentSupportedChildcareSpec extends SchemeSpec{
       esc.eligibility(answers: UserAnswers) mustBe Eligible
     }
 
+    "return Eligible when joint claim partner, do not have childcare costs yet and can get childcare vouchers" in{
+
+      when(answers.doYouLiveWithPartner) thenReturn Some(true)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NOTYET.toString)
+      when(answers.partnerChildcareVouchers) thenReturn Some(YES)
+
+      esc.eligibility(answers: UserAnswers) mustBe Eligible
+    }
+
+
 
     "return Eligible when joint claim, both work, partner has the childcare costs and can get childcare vouchers" in{
 

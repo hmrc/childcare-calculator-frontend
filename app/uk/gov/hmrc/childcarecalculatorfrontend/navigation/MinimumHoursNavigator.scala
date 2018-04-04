@@ -31,7 +31,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     this(freeHours, new Schemes(schemes: _*))
   }
 
-  override protected lazy val resultLocation: Call = routes.FreeHoursResultController.onPageLoad()
+  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,

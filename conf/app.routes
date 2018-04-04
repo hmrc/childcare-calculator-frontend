@@ -26,7 +26,7 @@ GET         /approved-provider                                 uk.gov.hmrc.child
 POST        /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /free-hours-info                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
-GET         /free-hours-result                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+
 
 GET         /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode ?= NormalMode)
@@ -42,24 +42,6 @@ POST        /parent-work-hours                                 uk.gov.hmrc.child
 
 GET         /partner-work-hours                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /partner-work-hours                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /your-tax-code-been-adjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-tax-code-been-adjusted                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourTaxCodeBeenAdjustedController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /your-adjusted-tax-code                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-adjusted-tax-code                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourAdjustedTaxCodeController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /what-is-your-tax-code                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /what-is-your-tax-code                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourTaxCodeController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partners-tax-code-been-adjusted                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partners-tax-code-been-adjusted                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.HasYourPartnersTaxCodeBeenAdjustedController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partners-adjusted-tax-code                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partners-adjusted-tax-code                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouKnowYourPartnersAdjustedTaxCodeController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /what-is-partners-tax-code                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourPartnersTaxCodeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /what-is-partners-tax-code                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatIsYourPartnersTaxCodeController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode ?= NormalMode)
@@ -379,8 +361,6 @@ POST        /partner-statutory-pay-per-week                    uk.gov.hmrc.child
 
 GET         /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /about-your-results                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
 
 GET         /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onPageLoad()
 POST        /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onSubmit()
