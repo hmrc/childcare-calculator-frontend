@@ -26,7 +26,7 @@ GET         /approved-provider                                 uk.gov.hmrc.child
 POST        /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /free-hours-info                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
-GET         /free-hours-result                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+
 
 GET         /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode ?= NormalMode)
@@ -361,8 +361,6 @@ POST        /partner-statutory-pay-per-week                    uk.gov.hmrc.child
 
 GET         /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /about-your-results                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourResultsController.onPageLoad()
 
 GET         /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onPageLoad()
 POST        /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onSubmit()
