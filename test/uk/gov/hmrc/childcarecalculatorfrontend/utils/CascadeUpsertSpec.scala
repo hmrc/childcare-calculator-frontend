@@ -47,17 +47,6 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
   }
 
 
-  "apply method" must {
-    "save the data for the existing key" in {
-      val originalCacheMap = new CacheMap("id",
-        Map(DoYouKnowYourAdjustedTaxCodeId.toString -> JsString(no),
-        WhatIsYourTaxCodeId.toString -> JsString("1100L")))
-
-      val result = cascadeUpsert(HasYourTaxCodeBeenAdjustedId.toString, no, originalCacheMap)
-      result.data mustBe Map(HasYourTaxCodeBeenAdjustedId.toString -> JsString(no))
-    }
-  }
-
  "addRepeatedValue" when {
     "the key doesn't already exist" must {
       "add the key to the cache map and save the value in a sequence" in {

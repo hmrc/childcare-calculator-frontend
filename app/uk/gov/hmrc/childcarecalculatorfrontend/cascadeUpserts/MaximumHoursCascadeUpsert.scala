@@ -35,10 +35,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
       AreYouInPaidWorkId.toString -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
-      HasYourTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourTaxCodeBeenAdjusted(v, cm)),
-      DoYouKnowYourAdjustedTaxCodeId.toString -> ((v, cm) => storeDoYouKnowYourAdjustedTaxCode(v, cm)),
-      HasYourPartnersTaxCodeBeenAdjustedId.toString -> ((v, cm) => storeHasYourPartnersTaxCodeBeenAdjusted(v, cm)),
-      DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> ((v, cm) => storeDoYouKnowYourPartnersAdjustedTaxCode(v, cm)),
       DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v, cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
       WhoGetsBenefitsId.toString -> ((v, cm) => storeWhoGetsBenefits(v, cm)),
       DoYouGetAnyBenefitsId.toString -> ((v, cm) => storeDoYouGetAnyBenefits(v, cm)),
@@ -159,41 +155,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(WhoIsInPaidEmploymentId.toString, value, mapToStore)
   }
 
-  private def storeHasYourTaxCodeBeenAdjusted(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsString(no) || value == JsString(notSure)) {
-      cacheMap copy (data = cacheMap.data - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString)
-    } else {
-      cacheMap
-    }
-    store(HasYourTaxCodeBeenAdjustedId.toString, value, mapToStore)
-  }
-
-  private def storeDoYouKnowYourAdjustedTaxCode(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(false)) {
-      cacheMap copy (data = cacheMap.data - WhatIsYourTaxCodeId.toString)
-    } else {
-      cacheMap
-    }
-    store(DoYouKnowYourAdjustedTaxCodeId.toString, value, mapToStore)
-  }
-
-  private def storeDoYouKnowYourPartnersAdjustedTaxCode(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(false)) {
-      cacheMap copy (data = cacheMap.data - WhatIsYourPartnersTaxCodeId.toString)
-    } else {
-      cacheMap
-    }
-    store(DoYouKnowYourPartnersAdjustedTaxCodeId.toString, value, mapToStore)
-  }
-
-  private def storeHasYourPartnersTaxCodeBeenAdjusted(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if  (value == JsString(no) || value == JsString(notSure)) {
-      cacheMap copy (data = cacheMap.data - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString)
-    } else {
-      cacheMap
-    }
-    store(HasYourPartnersTaxCodeBeenAdjustedId.toString, value, mapToStore)
-  }
 
   private def storeYouOrYourPartnerGetAnyBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsBoolean(false)) {

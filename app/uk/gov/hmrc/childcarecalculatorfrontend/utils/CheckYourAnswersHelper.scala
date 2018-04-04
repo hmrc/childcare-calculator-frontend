@@ -408,14 +408,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("partnerChildcareVouchers.checkYourAnswersLabel", s"partnerChildcareVouchers.$x", true, routes.PartnerChildcareVouchersController.onPageLoad(CheckMode).url)
   }
 
-  def whatIsYourPartnersTaxCode: Option[AnswerRow] = userAnswers.whatIsYourPartnersTaxCode map {
-    x => AnswerRow("whatIsYourPartnersTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourPartnersTaxCodeController.onPageLoad(CheckMode).url)
-  }
-
-  def whatIsYourTaxCode: Option[AnswerRow] = userAnswers.whatIsYourTaxCode map {
-    x => AnswerRow("whatIsYourTaxCode.checkYourAnswersLabel", s"$x", false, routes.WhatIsYourTaxCodeController.onPageLoad(CheckMode).url)
-  }
-
   def whoGetsBenefits: Option[AnswerRow] = userAnswers.whoGetsBenefits map {
     x => AnswerRow("whoGetsBenefits.checkYourAnswersLabel", s"whoGetsBenefits.$x", true, routes.WhoGetsBenefitsController.onPageLoad(CheckMode).url)
   }
@@ -428,29 +420,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
     x => AnswerRow("doYouGetAnyBenefits.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.DoYouGetAnyBenefitsController.onPageLoad(CheckMode).url)
   }
 
-  def doYouKnowYourPartnersAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourPartnersAdjustedTaxCode map {
-    x => AnswerRow("doYouKnowYourPartnersAdjustedTaxCode.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.DoYouKnowYourPartnersAdjustedTaxCodeController.onPageLoad(CheckMode).url)
-  }
-
   def areYouInPaidWork: Option[AnswerRow] = userAnswers.areYouInPaidWork map {
     x => AnswerRow("areYouInPaidWork.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.AreYouInPaidWorkController.onPageLoad(CheckMode).url)
   }
 
   def whoGetsVouchers: Option[AnswerRow] = userAnswers.whoGetsVouchers map {
     x => AnswerRow("whoGetsVouchers.checkYourAnswersLabel", s"whoGetsVouchers.$x", true, routes.WhoGetsVouchersController.onPageLoad(CheckMode).url)
-  }
-
-
-  def hasYourTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourTaxCodeBeenAdjusted map {
-    x => AnswerRow("hasYourTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourTaxCodeBeenAdjusted.$x", true, routes.HasYourTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
-  }
-
-  def hasYourPartnersTaxCodeBeenAdjusted: Option[AnswerRow] = userAnswers.hasYourPartnersTaxCodeBeenAdjusted map {
-    x => AnswerRow("hasYourPartnersTaxCodeBeenAdjusted.checkYourAnswersLabel", s"hasYourPartnersTaxCodeBeenAdjusted.$x", true, routes.HasYourPartnersTaxCodeBeenAdjustedController.onPageLoad(CheckMode).url)
-  }
-
-  def doYouKnowYourAdjustedTaxCode: Option[AnswerRow] = userAnswers.doYouKnowYourAdjustedTaxCode map {
-    x => AnswerRow("doYouKnowYourAdjustedTaxCode.checkYourAnswersLabel", if (x) "site.yes" else "site.no", true, routes.DoYouKnowYourAdjustedTaxCodeController.onPageLoad(CheckMode).url)
   }
 
   def partnerWorkHours: Option[AnswerRow] = userAnswers.partnerWorkHours map {
