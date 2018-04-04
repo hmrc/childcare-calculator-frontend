@@ -26,7 +26,7 @@ GET         /approved-provider                                 uk.gov.hmrc.child
 POST        /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /free-hours-info                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
-GET         /free-hours-result                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursResultController.onPageLoad
+
 
 GET         /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode ?= NormalMode)
