@@ -77,35 +77,35 @@ class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
     }
 
 
-    "fail to bind when the date is more than 2 years and 1 day before 6th April 2017 " in {
+    "fail to bind when the date is more than 2 years and 1 day before 6th April 2018 " in {
       val mockTaxYearInfo = mock[TaxYearResolver]
-      val taxYearStart = new LocalDate(2017: Int, 4: Int, 5: Int)
+      val taxYearStart = new LocalDate(2018: Int, 4: Int, 5: Int)
 
       when(mockTaxYearInfo.startOfCurrentTaxYear) thenReturn taxYearStart
 
       val data = Map(
         "date.day" -> "5",
         "date.month" -> "4",
-        "date.year" -> "2015"
+        "date.year" -> "2016"
       )
 
-      val expectedError = error("date", "yourStatutoryStartDate.error.past-over-2-years", statutoryType, "2017")
+      val expectedError = error("date", "yourStatutoryStartDate.error.past-over-2-years", statutoryType, "2018")
       checkForError(form, data, expectedError)
     }
 
-    "successfully bind when the date is exactly 2 years before 6th April 2017" in {
+    "successfully bind when the date is exactly 2 years before 6th April 2018" in {
       val mockTaxYearInfo = mock[TaxYearResolver]
-      val taxYearStart = new LocalDate(2017: Int, 4: Int, 6: Int)
+      val taxYearStart = new LocalDate(2018: Int, 4: Int, 6: Int)
 
       when(mockTaxYearInfo.startOfCurrentTaxYear) thenReturn taxYearStart
 
       val data: Map[String, String] = Map(
         "date.day" -> "6",
         "date.month" -> "4",
-        "date.year" -> "2015"
+        "date.year" -> "2016"
       )
 
-      form.bind(data).get shouldEqual new LocalDate(2015: Int, 4: Int, 6: Int)
+      form.bind(data).get shouldEqual new LocalDate(2016: Int, 4: Int, 6: Int)
     }
 
   }
