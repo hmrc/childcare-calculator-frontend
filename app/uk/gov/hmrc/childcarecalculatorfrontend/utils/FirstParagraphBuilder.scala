@@ -36,7 +36,14 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
     answers.noOfChildren match {
       case Some(numberOfChildren) => {
         val childOrChildren = if (numberOfChildren == 1) Messages("results.firstParagraph.aChild") else Messages("results.firstParagraph.children")
-        val numberOfChildrenMessage = if (numberOfChildren == 0) Messages("results.firstParagraph.dontHave") else Messages("results.firstParagraph.have")
+        val numberOfChildrenMessage = {
+          if (numberOfChildren == 0) {
+            Messages("results.firstParagraph.dontHave")
+          }
+          else {
+            if (numberOfChildren > 1) s"${Messages("results.firstParagraph.have")} $numberOfChildren" else Messages("results.firstParagraph.have")
+          }
+        }
         s"$paragraph${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
       }
       case _ => ""

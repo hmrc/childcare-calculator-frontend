@@ -31,10 +31,10 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase {
  "First Paragraph Builder" must {
    "Loading the Do You Have Children section" when {
-     "You have children" in {
+     "You have two children" in {
        val answers = new UserAnswers(new CacheMap("id", Map(NoOfChildrenId.toString -> JsNumber(2))))
 
-       paragraphBuilder.buildFirstParagraph(answers) must include("you have children")
+       paragraphBuilder.buildFirstParagraph(answers) must include("you have 2 children")
      }
 
      "You don’t have children" in {
