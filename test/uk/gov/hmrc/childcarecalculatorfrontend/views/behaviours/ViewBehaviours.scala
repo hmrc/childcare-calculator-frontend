@@ -54,9 +54,9 @@ trait ViewBehaviours extends ViewSpecBase {
           assertRenderedByCssSelector(doc, ".beta-banner")
         }
 
-        "not display HMRC branding" in {
+        "Display HMRC branding" in {
           val doc = asDocument(view())
-          assertNotRenderedByCssSelector(doc, ".organisation-logo")
+          assertRenderedByCssSelector(doc, ".organisation-logo")
         }
       }
     }
@@ -116,9 +116,9 @@ trait ViewBehaviours extends ViewSpecBase {
           assertRenderedByCssSelector(doc, ".beta-banner")
         }
 
-        "not display HMRC branding" in {
+        "Display HMRC branding" in {
           val doc = asDocument(view())
-          assertNotRenderedByCssSelector(doc, ".organisation-logo")
+          assertRenderedByCssSelector(doc, ".organisation-logo")
         }
       }
     }
