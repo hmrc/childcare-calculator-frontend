@@ -63,9 +63,9 @@ class YouStatutoryPayViewSpec extends YesNoViewBehaviours {
       assertRenderedByCssSelector(doc, ".beta-banner")
     }
 
-    "not display HMRC branding" in {
+    "Display HMRC branding" in {
       val doc = asDocument(createView())
-      assertNotRenderedByCssSelector(doc, ".organisation-logo")
+      assertRenderedByCssSelector(doc, ".organisation-logo")
     }
 
     behave like pageWithBackLink(createView)
