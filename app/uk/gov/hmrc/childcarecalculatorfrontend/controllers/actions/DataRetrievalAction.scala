@@ -36,10 +36,7 @@ class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnect
         case Some(sessionId) =>
           dataCacheConnector.fetch(sessionId.toString).map {
             case None => OptionalDataRequest(request, sessionId.toString, None)
-            case Some(data) =>  {
-              Logger.warn(s"ChildcareCalculatorNavigationAudit - request ${request.uri} - sessionId ${sessionId.value.toString}")
-              OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
-            }
+            case Some(data) => OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
           }
       }
   }
