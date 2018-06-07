@@ -18,12 +18,12 @@ echo "GET        /changeLocation               uk.gov.hmrc.childcarecalculatorfr
 echo "POST       /changeLocation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "location.title = location" >> ../conf/messages.en
-echo "location.heading = location" >> ../conf/messages.en
-echo "location.option1 = location" Option 1 >> ../conf/messages.en
-echo "location.option2 = location" Option 2 >> ../conf/messages.en
-echo "location.checkYourAnswersLabel = location" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "location.title = location" >> ../conf/messages
+echo "location.heading = location" >> ../conf/messages
+echo "location.option1 = location" Option 1 >> ../conf/messages
+echo "location.option2 = location" Option 2 >> ../conf/messages
+echo "location.checkYourAnswersLabel = location" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

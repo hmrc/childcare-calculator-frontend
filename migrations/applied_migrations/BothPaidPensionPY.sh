@@ -12,10 +12,10 @@ echo "GET        /changeBothPaidPensionPY                       uk.gov.hmrc.chil
 echo "POST       /changeBothPaidPensionPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "bothPaidPensionPY.title = bothPaidPensionPY" >> ../conf/messages.en
-echo "bothPaidPensionPY.heading = bothPaidPensionPY" >> ../conf/messages.en
-echo "bothPaidPensionPY.checkYourAnswersLabel = bothPaidPensionPY" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "bothPaidPensionPY.title = bothPaidPensionPY" >> ../conf/messages
+echo "bothPaidPensionPY.heading = bothPaidPensionPY" >> ../conf/messages
+echo "bothPaidPensionPY.checkYourAnswersLabel = bothPaidPensionPY" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

@@ -8,9 +8,9 @@ echo "" >> ../conf/app.routes
 echo "GET        /yourIncomeInfo               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "yourIncomeInfo.title = yourIncomeInfo" >> ../conf/messages.en
-echo "yourIncomeInfo.heading = yourIncomeInfo" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "yourIncomeInfo.title = yourIncomeInfo" >> ../conf/messages
+echo "yourIncomeInfo.heading = yourIncomeInfo" >> ../conf/messages
 
 echo "Moving test files from generated-test/ to test/"
 rsync -avm --include='*.scala' -f 'hide,! */' ../generated-test/ ../test/

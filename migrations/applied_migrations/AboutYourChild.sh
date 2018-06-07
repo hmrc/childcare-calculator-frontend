@@ -12,12 +12,12 @@ echo "GET        /changeAboutYourChild                       uk.gov.hmrc.childca
 echo "POST       /changeAboutYourChild                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "aboutYourChild.title = aboutYourChild" >> ../conf/messages.en
-echo "aboutYourChild.heading = aboutYourChild" >> ../conf/messages.en
-echo "aboutYourChild.field1 = Field 1" >> ../conf/messages.en
-echo "aboutYourChild.field2 = Field 2" >> ../conf/messages.en
-echo "aboutYourChild.checkYourAnswersLabel = aboutYourChild" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "aboutYourChild.title = aboutYourChild" >> ../conf/messages
+echo "aboutYourChild.heading = aboutYourChild" >> ../conf/messages
+echo "aboutYourChild.field1 = Field 1" >> ../conf/messages
+echo "aboutYourChild.field2 = Field 2" >> ../conf/messages
+echo "aboutYourChild.checkYourAnswersLabel = aboutYourChild" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

@@ -8,9 +8,9 @@ echo "" >> ../conf/app.routes
 echo "GET        /maxFreeHoursResult               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursResultController.onPageLoad()" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "maxFreeHoursResult.title = maxFreeHoursResult" >> ../conf/messages.en
-echo "maxFreeHoursResult.heading = maxFreeHoursResult" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "maxFreeHoursResult.title = maxFreeHoursResult" >> ../conf/messages
+echo "maxFreeHoursResult.heading = maxFreeHoursResult" >> ../conf/messages
 
 echo "Moving test files from generated-test/ to test/"
 rsync -avm --include='*.scala' -f 'hide,! */' ../generated-test/ ../test/

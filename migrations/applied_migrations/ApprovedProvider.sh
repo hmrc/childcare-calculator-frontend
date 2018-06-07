@@ -12,12 +12,12 @@ echo "GET        /changeApprovedProvider               uk.gov.hmrc.childcarecalc
 echo "POST       /changeApprovedProvider               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "approvedProvider.title = approvedProvider" >> ../conf/messages.en
-echo "approvedProvider.heading = approvedProvider" >> ../conf/messages.en
-echo "approvedProvider.option1 = approvedProvider" Option 1 >> ../conf/messages.en
-echo "approvedProvider.option2 = approvedProvider" Option 2 >> ../conf/messages.en
-echo "approvedProvider.checkYourAnswersLabel = approvedProvider" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "approvedProvider.title = approvedProvider" >> ../conf/messages
+echo "approvedProvider.heading = approvedProvider" >> ../conf/messages
+echo "approvedProvider.option1 = approvedProvider" Option 1 >> ../conf/messages
+echo "approvedProvider.option2 = approvedProvider" Option 2 >> ../conf/messages
+echo "approvedProvider.checkYourAnswersLabel = approvedProvider" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

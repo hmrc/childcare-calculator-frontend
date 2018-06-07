@@ -12,10 +12,10 @@ echo "GET        /changeHowMuchYouPayPension               uk.gov.hmrc.childcare
 echo "POST       /changeHowMuchYouPayPension               uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "howMuchYouPayPension.title = howMuchYouPayPension" >> ../conf/messages.en
-echo "howMuchYouPayPension.heading = howMuchYouPayPension" >> ../conf/messages.en
-echo "howMuchYouPayPension.checkYourAnswersLabel = howMuchYouPayPension" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "howMuchYouPayPension.title = howMuchYouPayPension" >> ../conf/messages
+echo "howMuchYouPayPension.heading = howMuchYouPayPension" >> ../conf/messages
+echo "howMuchYouPayPension.checkYourAnswersLabel = howMuchYouPayPension" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

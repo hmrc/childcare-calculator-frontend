@@ -12,10 +12,10 @@ echo "GET        /changeChildStartEducation               uk.gov.hmrc.childcarec
 echo "POST       /changeChildStartEducation               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "childStartEducation.title = childStartEducation" >> ../conf/messages.en
-echo "childStartEducation.heading = childStartEducation" >> ../conf/messages.en
-echo "childStartEducation.checkYourAnswersLabel = childStartEducation" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "childStartEducation.title = childStartEducation" >> ../conf/messages
+echo "childStartEducation.heading = childStartEducation" >> ../conf/messages
+echo "childStartEducation.checkYourAnswersLabel = childStartEducation" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\
