@@ -12,9 +12,9 @@ echo "GET        /changeParentPaidWorkCY                       uk.gov.hmrc.child
 echo "POST       /changeParentPaidWorkCY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "parentPaidWorkCY.title = parentPaidWorkCY" >> ../conf/messages.en
-echo "parentPaidWorkCY.heading = parentPaidWorkCY" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "parentPaidWorkCY.title = parentPaidWorkCY" >> ../conf/messages
+echo "parentPaidWorkCY.heading = parentPaidWorkCY" >> ../conf/messages
 echo "parentPaidWorkCY.checkYourAnswersLabel = parentPaidWorkCY" >> ../conf/messages.en
 
 echo "Adding helper line into UserAnswers"

@@ -12,10 +12,10 @@ echo "GET        /changePartnerStatutoryPayPerWeek               uk.gov.hmrc.chi
 echo "POST       /changePartnerStatutoryPayPerWeek               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "partnerStatutoryPayPerWeek.title = partnerStatutoryPayPerWeek" >> ../conf/messages.en
-echo "partnerStatutoryPayPerWeek.heading = partnerStatutoryPayPerWeek" >> ../conf/messages.en
-echo "partnerStatutoryPayPerWeek.checkYourAnswersLabel = partnerStatutoryPayPerWeek" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "partnerStatutoryPayPerWeek.title = partnerStatutoryPayPerWeek" >> ../conf/messages
+echo "partnerStatutoryPayPerWeek.heading = partnerStatutoryPayPerWeek" >> ../conf/messages
+echo "partnerStatutoryPayPerWeek.checkYourAnswersLabel = partnerStatutoryPayPerWeek" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

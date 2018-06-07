@@ -12,12 +12,12 @@ echo "GET        /changePartnerChildcareVouchers               uk.gov.hmrc.child
 echo "POST       /changePartnerChildcareVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "partnerChildcareVouchers.title = partnerChildcareVouchers" >> ../conf/messages.en
-echo "partnerChildcareVouchers.heading = partnerChildcareVouchers" >> ../conf/messages.en
-echo "partnerChildcareVouchers.option1 = partnerChildcareVouchers" Option 1 >> ../conf/messages.en
-echo "partnerChildcareVouchers.option2 = partnerChildcareVouchers" Option 2 >> ../conf/messages.en
-echo "partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "partnerChildcareVouchers.title = partnerChildcareVouchers" >> ../conf/messages
+echo "partnerChildcareVouchers.heading = partnerChildcareVouchers" >> ../conf/messages
+echo "partnerChildcareVouchers.option1 = partnerChildcareVouchers" Option 1 >> ../conf/messages
+echo "partnerChildcareVouchers.option2 = partnerChildcareVouchers" Option 2 >> ../conf/messages
+echo "partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

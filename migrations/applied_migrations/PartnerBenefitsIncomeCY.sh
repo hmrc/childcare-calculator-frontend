@@ -12,10 +12,10 @@ echo "GET        /changePartnerBenefitsIncomeCY               uk.gov.hmrc.childc
 echo "POST       /changePartnerBenefitsIncomeCY               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "partnerBenefitsIncomeCY.title = partnerBenefitsIncomeCY" >> ../conf/messages.en
-echo "partnerBenefitsIncomeCY.heading = partnerBenefitsIncomeCY" >> ../conf/messages.en
-echo "partnerBenefitsIncomeCY.checkYourAnswersLabel = partnerBenefitsIncomeCY" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "partnerBenefitsIncomeCY.title = partnerBenefitsIncomeCY" >> ../conf/messages
+echo "partnerBenefitsIncomeCY.heading = partnerBenefitsIncomeCY" >> ../conf/messages
+echo "partnerBenefitsIncomeCY.checkYourAnswersLabel = partnerBenefitsIncomeCY" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

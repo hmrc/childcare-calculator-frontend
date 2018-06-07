@@ -12,10 +12,10 @@ echo "GET        /changeAreYouInPaidWork                       uk.gov.hmrc.child
 echo "POST       /changeAreYouInPaidWork                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "areYouInPaidWork.title = areYouInPaidWork" >> ../conf/messages.en
-echo "areYouInPaidWork.heading = areYouInPaidWork" >> ../conf/messages.en
-echo "areYouInPaidWork.checkYourAnswersLabel = areYouInPaidWork" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "areYouInPaidWork.title = areYouInPaidWork" >> ../conf/messages
+echo "areYouInPaidWork.heading = areYouInPaidWork" >> ../conf/messages
+echo "areYouInPaidWork.checkYourAnswersLabel = areYouInPaidWork" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

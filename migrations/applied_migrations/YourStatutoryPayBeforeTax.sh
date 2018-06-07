@@ -12,12 +12,12 @@ echo "GET        /changeYourStatutoryPayBeforeTax               uk.gov.hmrc.chil
 echo "POST       /changeYourStatutoryPayBeforeTax               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "yourStatutoryPayBeforeTax.title = yourStatutoryPayBeforeTax" >> ../conf/messages.en
-echo "yourStatutoryPayBeforeTax.heading = yourStatutoryPayBeforeTax" >> ../conf/messages.en
-echo "yourStatutoryPayBeforeTax.option1 = yourStatutoryPayBeforeTax" Option 1 >> ../conf/messages.en
-echo "yourStatutoryPayBeforeTax.option2 = yourStatutoryPayBeforeTax" Option 2 >> ../conf/messages.en
-echo "yourStatutoryPayBeforeTax.checkYourAnswersLabel = yourStatutoryPayBeforeTax" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "yourStatutoryPayBeforeTax.title = yourStatutoryPayBeforeTax" >> ../conf/messages
+echo "yourStatutoryPayBeforeTax.heading = yourStatutoryPayBeforeTax" >> ../conf/messages
+echo "yourStatutoryPayBeforeTax.option1 = yourStatutoryPayBeforeTax" Option 1 >> ../conf/messages
+echo "yourStatutoryPayBeforeTax.option2 = yourStatutoryPayBeforeTax" Option 2 >> ../conf/messages
+echo "yourStatutoryPayBeforeTax.checkYourAnswersLabel = yourStatutoryPayBeforeTax" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

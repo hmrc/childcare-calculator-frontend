@@ -12,12 +12,12 @@ echo "GET        /changeOtherIncomeAmountPY                       uk.gov.hmrc.ch
 echo "POST       /changeOtherIncomeAmountPY                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountPYController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "otherIncomeAmountPY.title = otherIncomeAmountPY" >> ../conf/messages.en
-echo "otherIncomeAmountPY.heading = otherIncomeAmountPY" >> ../conf/messages.en
-echo "otherIncomeAmountPY.field1 = Field 1" >> ../conf/messages.en
-echo "otherIncomeAmountPY.field2 = Field 2" >> ../conf/messages.en
-echo "otherIncomeAmountPY.checkYourAnswersLabel = otherIncomeAmountPY" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "otherIncomeAmountPY.title = otherIncomeAmountPY" >> ../conf/messages
+echo "otherIncomeAmountPY.heading = otherIncomeAmountPY" >> ../conf/messages
+echo "otherIncomeAmountPY.field1 = Field 1" >> ../conf/messages
+echo "otherIncomeAmountPY.field2 = Field 2" >> ../conf/messages
+echo "otherIncomeAmountPY.checkYourAnswersLabel = otherIncomeAmountPY" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

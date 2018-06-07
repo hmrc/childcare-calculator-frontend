@@ -12,12 +12,12 @@ echo "GET        /changeVouchers               uk.gov.hmrc.childcarecalculatorfr
 echo "POST       /changeVouchers               uk.gov.hmrc.childcarecalculatorfrontend.controllers.VouchersController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "vouchers.title = vouchers" >> ../conf/messages.en
-echo "vouchers.heading = vouchers" >> ../conf/messages.en
-echo "vouchers.option1 = vouchers" Option 1 >> ../conf/messages.en
-echo "vouchers.option2 = vouchers" Option 2 >> ../conf/messages.en
-echo "vouchers.checkYourAnswersLabel = vouchers" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "vouchers.title = vouchers" >> ../conf/messages
+echo "vouchers.heading = vouchers" >> ../conf/messages
+echo "vouchers.option1 = vouchers" Option 1 >> ../conf/messages
+echo "vouchers.option2 = vouchers" Option 2 >> ../conf/messages
+echo "vouchers.checkYourAnswersLabel = vouchers" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\

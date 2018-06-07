@@ -12,10 +12,10 @@ echo "GET        /changePartnerMaximumEarnings                       uk.gov.hmrc
 echo "POST       /changePartnerMaximumEarnings                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
-echo "" >> ../conf/messages.en
-echo "partnerMaximumEarnings.title = partnerMaximumEarnings" >> ../conf/messages.en
-echo "partnerMaximumEarnings.heading = partnerMaximumEarnings" >> ../conf/messages.en
-echo "partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings" >> ../conf/messages.en
+echo "" >> ../conf/messages
+echo "partnerMaximumEarnings.title = partnerMaximumEarnings" >> ../conf/messages
+echo "partnerMaximumEarnings.heading = partnerMaximumEarnings" >> ../conf/messages
+echo "partnerMaximumEarnings.checkYourAnswersLabel = partnerMaximumEarnings" >> ../conf/messages
 
 echo "Adding helper line into UserAnswers"
 awk '/class/ {\
