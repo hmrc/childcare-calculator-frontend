@@ -16,18 +16,23 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
-import javax.inject.{Inject, Singleton}
 
+import reactivemongo.bson.{BSONDocument, BSONObjectID, BSONValue}
+import javax.inject.{Inject, Singleton}
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.{Configuration, Logger}
 import play.api.libs.json.{JsValue, Json}
 import play.modules.reactivemongo.MongoDbConnection
-import reactivemongo.api.DefaultDB
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.{BSONDocument, BSONObjectID}
+import reactivemongo.api.{Cursor, DefaultDB}
+import reactivemongo.bson._
 import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.libs.json.Writes.StringWrites
+import reactivemongo.api.indexes.{Index, IndexType}
+import reactivemongo.bson.BSONDocument
+import reactivemongo.play.json.ImplicitBSONHandlers._
 import uk.gov.hmrc.mongo.ReactiveRepository
-import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
+
+
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,7 +42,7 @@ case class DatedCacheMap(id: String,
                          lastUpdated: DateTime = DateTime.now(DateTimeZone.UTC))
 
 object DatedCacheMap {
-  implicit val dateFormat = ReactiveMongoFormats.dateTimeFormats
+
   implicit val formats = Json.format[DatedCacheMap]
 
   def apply(cacheMap: CacheMap): DatedCacheMap = DatedCacheMap(cacheMap.id, cacheMap.data)
@@ -69,7 +74,7 @@ class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
   def upsert(cm: CacheMap): Future[Boolean] = {
     val selector = BSONDocument("id" -> cm.id)
     val cmDocument = Json.toJson(DatedCacheMap(cm))
-    val modifier = BSONDocument("$set" -> cmDocument)
+    val modifier = BSONDocument("$set" -> cmDocument.as[BSONValue])
 
     collection.update(selector, modifier, upsert = true).map { lastError =>
       lastError.ok
@@ -77,8 +82,9 @@ class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
   }
 
   def get(id: String): Future[Option[CacheMap]] = {
-    collection.find(Json.obj("id" -> id)).cursor[CacheMap]().collect[Seq]().map { (cmSeq: Seq[CacheMap]) =>
-      if (cmSeq.length != 1) {
+    collection.find(Json.obj("id" -> id)).cursor[CacheMap]().collect[Seq](Int.MaxValue, Cursor.FailOnError[Seq[CacheMap]]()).map { (cmSeq: Seq[CacheMap]) =>
+
+    if (cmSeq.length != 1) {
         None
       } else {
         Some(cmSeq.head)
