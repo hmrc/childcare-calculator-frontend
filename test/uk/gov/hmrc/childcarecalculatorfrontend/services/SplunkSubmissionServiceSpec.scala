@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import org.mockito.{ArgumentCaptor, Matchers}
+
+import org.mockito.{ArgumentCaptor, ArgumentMatchers}
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
@@ -45,7 +46,7 @@ class SplunkSubmissionServiceSpec extends PlaySpec with MockitoSugar with ScalaF
 
       val eventCaptor = ArgumentCaptor.forClass(classOf[DataEvent])
 
-      when(mockConnector.sendEvent(Matchers.any())(Matchers.any(), Matchers.any())).thenReturn(Future.successful(AuditResult.Success))
+      when(mockConnector.sendEvent(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Future.successful(AuditResult.Success))
 
       val submissionService = new SplunkSubmissionService(mockConnector)
 
@@ -69,7 +70,7 @@ class SplunkSubmissionServiceSpec extends PlaySpec with MockitoSugar with ScalaF
 
     "receive SubmissionFailed when audit event fails" in {
 
-      when(mockConnector.sendEvent(Matchers.any())(Matchers.any(), Matchers.any())).thenReturn(Future.successful(AuditResult.Failure("")))
+      when(mockConnector.sendEvent(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Future.successful(AuditResult.Failure("")))
 
       val submission = new SplunkSubmissionService(mockConnector)
 

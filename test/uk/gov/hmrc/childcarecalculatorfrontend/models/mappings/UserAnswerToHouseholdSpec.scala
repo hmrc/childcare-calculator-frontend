@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
 import org.joda.time.LocalDate
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue

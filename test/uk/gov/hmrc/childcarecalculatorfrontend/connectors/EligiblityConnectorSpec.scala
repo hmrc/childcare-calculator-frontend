@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
-import org.mockito.Matchers.{any, anyString}
-import org.mockito.Mockito.when
+import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers._
 import org.scalatest.mockito.MockitoSugar
 import play.api.test.FakeRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
