@@ -25,6 +25,7 @@ import play.api.i18n.Messages
 import play.api.libs.json._
 import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -103,11 +104,23 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
       }
 
+      "parent only works and for 25 hrs" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(25))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
+      }
+
       "parent only works 15 hrs and partner get benefits" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(You)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(15))
+        when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.PARTNER)
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("disabilityBenefits"))
         when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
 
@@ -115,12 +128,49 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits")
       }
 
+      "parent works 25 hrs and partner get benefits with no valid children" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(25))
+        when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.PARTNER)
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("disabilityBenefits"))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List()
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.user.no.child.below.16")
+      }
+
+      "parent works 25 hrs and partner get benefits with valid children" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(25))
+        when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.PARTNER)
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set("disabilityBenefits"))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(1)
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.para1")
+      }
+
       "partner only works and for 21 hrs " in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(21))
-        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(2)
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List()
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
+      }
+
+      "partner only works and for 25 hrs " in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(25))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List()
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum")
@@ -136,6 +186,32 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
 
         tcSchemeMessageBuilder.getMessage(answers) mustBe
           messages("result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits")
+      }
+
+      "partner only works 25 hrs and parent get benefits with no valid children" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(25))
+        when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.YOU)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("disabilityBenefits"))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List()
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.user.no.child.below.16")
+      }
+
+      "partner only works 25 hrs and parent get benefits with valid children" in {
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(25))
+        when(answers.whosHadBenefits) thenReturn Some(YouPartnerBothEnum.YOU)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set("disabilityBenefits"))
+        when(answers.childrenBelow16AndExactly16Disabled) thenReturn List(1)
+
+        tcSchemeMessageBuilder.getMessage(answers) mustBe
+          messages("result.tc.not.eligible.para1")
       }
 
       "user does not have any child under 16" in {

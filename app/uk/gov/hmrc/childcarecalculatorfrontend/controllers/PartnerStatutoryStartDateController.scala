@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -73,7 +72,6 @@ class PartnerStatutoryStartDateController @Inject()(
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
-
           PartnerStatutoryStartDateForm(statutoryType).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(partnerStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
