@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@()(implicit messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 <div class="js-visible">
-  <p><a id="back-link" class="link-back" href="#">@messages("site.back")</a></p>
+  <p><a id="back-link" class="link-back" href="#" onclick="ga('send', 'event', 'link-click', '@request.uri', 'Back')">@messages("site.back")</a></p>
 </div>

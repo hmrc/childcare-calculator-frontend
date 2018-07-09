@@ -17,8 +17,7 @@
 @(
 messageKey: String = "",
 href: Call,
-id: String = "target-page-link")(implicit messages: Messages)
+id: String = "target-page-link")(implicit request: Request[_], messages: Messages)
 
-
-    <a id ="@id" href="@href" role="button" class="button">@messages(messageKey)</a>
+    <a id ="@id" href="@href" role="button" class="button"  onclick="ga('send', 'event', 'button-click', '@request.uri', 'Continue')">@messages(messageKey)</a>
 
