@@ -35,6 +35,9 @@
 
     @components.heading("taxOrUniversalCredits.heading", "heading-xlarge")
 
+    <script type="text/javascript" src='@routes.Assets.versioned("javascript/ccc.js")'></script>
+
+
     @helpers.form(action = TaxOrUniversalCreditsController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.input_radio(
