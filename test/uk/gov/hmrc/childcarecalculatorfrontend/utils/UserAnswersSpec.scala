@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.joda.time.LocalDate
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over16,under16,over16WithBirthdayBefore31stOfAugust,over19}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over16,under16,over16WithBirthdayBefore31stOfAugust,over19,exact16}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -104,22 +104,22 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val over19 = LocalDate.now.minusYears(19)
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now().minusYears(16))),
-          "1" -> Json.toJson(AboutYourChild("Bar", LocalDate.now().minusYears(16))),
+          "0" -> Json.toJson(AboutYourChild("Foo", exact16)),
+          "1" -> Json.toJson(AboutYourChild("Bar", exact16)),
           "2" -> Json.toJson(AboutYourChild("Quux", over19))
         )
       )
 
       val parametersMap = Map(
-        0 -> AboutYourChild("Foo", LocalDate.now().minusYears(16)),
-        1 -> AboutYourChild("Bar", LocalDate.now().minusYears(16)),
+        0 -> AboutYourChild("Foo", exact16),
+        1 -> AboutYourChild("Bar", exact16),
         2 -> AboutYourChild("Quux", over19))
 
 
       val result = helper(answers).extract16YearOldsWithBirthdayBefore31stAugust(Some(parametersMap))
 
-      result.value must contain(0 -> AboutYourChild("Foo", LocalDate.now().minusYears(16)))
-      result.value must contain(1 -> AboutYourChild("Bar", LocalDate.now().minusYears(16)))
+      result.value must contain(0 -> AboutYourChild("Foo", exact16))
+      result.value must contain(1 -> AboutYourChild("Bar", exact16))
     }
   }
 
