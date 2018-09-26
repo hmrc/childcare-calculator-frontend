@@ -335,7 +335,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
       children =>
         children.filter {
           case (_, model) => {
-            model.dob.isBefore(LocalDate.now.minusYears(16).plusDays(1))
+            model.dob.isBefore(LocalDate.now.minusYears(16))
           }
         }
     }
