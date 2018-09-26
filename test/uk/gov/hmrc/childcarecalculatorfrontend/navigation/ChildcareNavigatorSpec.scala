@@ -20,8 +20,9 @@ import org.joda.time.LocalDate
 import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito._
+import play.api.Logger
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over19,over16WithBirthdayBefore31stOfAugust}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over16WithBirthdayBefore31stOfAugust, over19}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
@@ -672,7 +673,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.noOfChildren).thenReturn(Some(2))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", LocalDate.now().minusMonths(10)))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1)
@@ -716,7 +717,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.registeredBlind).thenReturn(Some(true))
       when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusYears(2)),1 -> AboutYourChild("Dan", LocalDate.now().minusYears(2)),2 -> AboutYourChild("Tan", dob16))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob),1 -> AboutYourChild("Dan", dob),2 -> AboutYourChild("Tan", dob16))))
 
 
       val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
@@ -873,7 +874,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         i.toString -> Json.toJson(AboutYourChild(name, dob))
     }.toMap)
 
-  private lazy val dob16: LocalDate = LocalDate.now.minusYears(17).minusDays(1)
+  private lazy val dob16: LocalDate = LocalDate.now.minusYears(16).minusDays(1)
   private lazy val dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
   private lazy val dob: LocalDate = LocalDate.now.minusYears(1)
+
+
 }
