@@ -156,7 +156,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
@@ -181,7 +181,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -207,7 +207,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -234,7 +234,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -262,7 +262,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -303,7 +303,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourStatutoryWeeks) thenReturn Some(4)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
@@ -342,7 +342,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
@@ -386,7 +386,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
@@ -429,7 +429,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
@@ -989,7 +989,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.UNDER18.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -1016,7 +1016,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -1029,7 +1029,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
-      "has a single parent notsure about vouchers" in {
+      "has a single parent who gets vouchers" in {
         val parent = Claimant(
           hours = Some(BigDecimal(54.9)),
           escVouchers = Some(YesNoUnsureEnum.YES),
@@ -1043,7 +1043,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.OVERTWENTYFOUR.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -1053,7 +1053,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.parentEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
         when(utils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
 
-        userAnswerToHousehold.convert(answers).parent.escVouchers.get mustBe YesNoUnsureEnum.NOTSURE
+        userAnswerToHousehold.convert(answers).parent.escVouchers.get mustBe YesNoUnsureEnum.NO
       }
 
       "has a single parent with neither self employed or apprentice" in {
@@ -1070,7 +1070,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
         when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.yourChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
         when(answers.yourAge) thenReturn Some(AgeEnum.UNDER18.toString)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
@@ -1130,7 +1130,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(32.1))
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
-        when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.YES.toString)
+        when(answers.partnerChildcareVouchers) thenReturn Some(true)
         when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
         when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(21000.0))
         when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
@@ -1150,7 +1150,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.partnerWorkHours) thenReturn Some(BigDecimal(32.1))
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
-        when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NO.toString)
+        when(answers.partnerChildcareVouchers) thenReturn Some(false)
         when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
         when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(21000.0))
         when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
@@ -1160,26 +1160,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
         val result = userAnswerToHousehold.convert(answers)
         result.parent.escVouchers.get mustEqual YesNoUnsureEnum.NO
         result.partner.get.escVouchers.get mustEqual YesNoUnsureEnum.NO
-      }
-
-      "has a parent and partner and only partner works and is not sure about having vouchers" in {
-        val answers = spy(userAnswers())
-
-        when(answers.location) thenReturn Some(Location.WALES)
-        when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(32.1))
-        when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONETOTWENTYFOUR.toString)
-        when(answers.partnerChildcareVouchers) thenReturn Some(YesNoUnsureEnum.NOTSURE.toString)
-        when(answers.partnerEmploymentIncomeCY) thenReturn Some(BigDecimal(32000.0))
-        when(answers.partnerEmploymentIncomePY) thenReturn Some(BigDecimal(21000.0))
-        when(answers.yourPartnersAge) thenReturn Some(AgeEnum.EIGHTEENTOTWENTY.toString)
-        when(answers.partnerMinimumEarnings) thenReturn Some(true)
-        when(answers.partnerMaximumEarnings) thenReturn Some(false)
-
-        val result = userAnswerToHousehold.convert(answers)
-        result.parent.escVouchers.get mustEqual YesNoUnsureEnum.NO
-        result.partner.get.escVouchers.get mustEqual YesNoUnsureEnum.NOTSURE
       }
 
       "has a parent and partner containing only current year incomes" in {

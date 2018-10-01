@@ -40,8 +40,7 @@ object YourChildcareVouchersForm extends FormErrorHelper {
 
   def options = Seq(
     InputOption("yourChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    InputOption("yourChildcareVouchers",  YesNoUnsureEnum.NO.toString),
-    InputOption("yourChildcareVouchers",  YesNoUnsureEnum.NOTSURE.toString)
+    InputOption("yourChildcareVouchers",  YesNoUnsureEnum.NO.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
