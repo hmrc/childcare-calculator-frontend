@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AreYouInPaidWorkId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, UserAnswers}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.areYouInPaidWorkErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
 import scala.concurrent.Future

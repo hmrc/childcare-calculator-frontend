@@ -29,6 +29,10 @@
 @findoutAboutUC = {
     <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" data-journey-click="link - click:@messages("result.tc.title"):@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text")" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
 }
+
+@vouchersWork = {
+    <p>@messages("result.esc.detailPara2.start") <a id="vouchersClosed" href=@messages("result.esc.detailPara2.link")>@messages("result.esc.detailPara2.link.text")</a>@messages("result.esc.detailPara2.end")</p>
+}
     @if(model.freeHours.isDefined) {
 
         @defining(if(model.location == Location.ENGLAND && model.freeHours.contains(noOfFreeHours15)) {
@@ -90,8 +94,9 @@
             eligibility = Some("£" + model.esc.fold("")(value => utils.valueFormatter(value))),
             periodText = Some(messages("result.esc.period")),
             para1 = Some(messages("result.esc.para1")),
+            para2 = Some(vouchersWork),
             detailSummary = Some(messages("result.esc.detail.summary")),
             detailClass = Some("esc"),
-            detailPara1 = Some(messages("result.esc.detailPara1")),
-            detailPara2 = Some(messages("result.esc.detailPara2")))
+            detailPara1 = Some(messages("result.esc.detailPara1"))
+        )
     }

@@ -279,8 +279,8 @@ class MaximumHoursNavigator @Inject() (
 
   private def maximumEarningsRedirection(answers: UserAnswers, maxEarnings: Boolean): Call = {
 
-    def getCallForVoucherValue(voucherValue: String): Call =
-      if (!voucherValue.equals(YES) && maxEarnings.equals(true)) {
+    def getCallForVoucherValue(voucherValue: Boolean): Call =
+      if (!voucherValue.equals(true) && maxEarnings.equals(true)) {
         routes.ResultController.onPageLoad()
       } else {
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)

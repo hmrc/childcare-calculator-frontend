@@ -356,7 +356,10 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertRenderedByCssSelector(view, ".esc")
         view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
         view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.start"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.link.text"))
+        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.end"))
+        view.getElementById("vouchersClosed").attr("href") mustBe messages("result.esc.detailPara2.link")
         view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
@@ -370,7 +373,10 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertNotRenderedByCssSelector(view, ".esc")
         assertNotContainsText(view, messages("result.esc.detail.summary"))
         assertNotContainsText(view, messages("result.esc.detailPara1"))
-        assertNotContainsText(view, messages("result.esc.detailPara2"))
+        assertNotContainsText(view, messages("result.esc.detailPara2.start"))
+        assertNotContainsText(view, messages("result.esc.detailPara2.link.text"))
+        assertNotContainsText(view, messages("result.esc.detailPara2.end"))
+        assertNotContainsText(view, messages("result.esc.detailPara2.link"))
         assertNotContainsText(view, messages("result.esc.detailPara3"))
       }
     }
@@ -407,7 +413,6 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertRenderedByCssSelector(view, ".esc")
         view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
         view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2"))
         view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }

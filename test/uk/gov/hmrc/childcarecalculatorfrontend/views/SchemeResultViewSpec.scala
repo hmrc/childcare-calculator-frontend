@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.scheme_result
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
@@ -31,7 +32,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
           eligibility = Some("100"),
           periodText = Some("a month"),
           para1 = Some("some text"),
-          para2 = Some("some more text"),
+          para2 = Some(Html("some more text")),
           para3 = Some("some even more text")
         )(messages))
 
@@ -45,7 +46,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
           eligibility = Some("100"),
           periodText = Some("a month"),
           para1 = Some("some text"),
-          para2 = Some("some more text"),
+          para2 = Some(Html("some more text")),
           para3 = Some("some even more text")
         )(messages))
 
@@ -69,7 +70,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
         eligibility = Some("100"),
         periodText = Some("a month"),
         para1 = Some("some text"),
-        para2 = Some("some more text"),
+        para2 = Some(Html("some more text")),
         para3 = Some("some even more text"),
         displayTCGuidanceLink = true
       )(messages))
