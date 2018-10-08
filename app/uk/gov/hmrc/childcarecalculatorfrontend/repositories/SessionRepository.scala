@@ -31,8 +31,7 @@ import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers._
 import uk.gov.hmrc.mongo.ReactiveRepository
-
-
+import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -42,7 +41,7 @@ case class DatedCacheMap(id: String,
                          lastUpdated: DateTime = DateTime.now(DateTimeZone.UTC))
 
 object DatedCacheMap {
-
+  implicit val dateFormat = ReactiveMongoFormats.dateTimeFormats
   implicit val formats = Json.format[DatedCacheMap]
 
   def apply(cacheMap: CacheMap): DatedCacheMap = DatedCacheMap(cacheMap.id, cacheMap.data)
