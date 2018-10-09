@@ -172,10 +172,10 @@ freeHoursResult.heading = Your eligibility for childcare support
 freeHoursResult.info.freHours = Free hours
 freeHoursResult.info.OtherSchemes = Other childcare schemes
 
-freeHoursResult.info.OtherSchemes.childcare.cost.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
-freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
+freeHoursResult.info.OtherSchemes.childcare.cost.text = You do not currently have or expect to have any childcare costs, so you cannot get any help from the other childcare schemes. This includes Tax-Free Childcare or childcare support from tax credits.
+freeHoursResult.info.OtherSchemes.approved.text = You do not currently have or expect to have any approved childcare costs, so you cannot get any help from the other childcare schemes. This includes Tax-Free Childcare or childcare support from tax credits.
 freeHoursResult.info.OtherSchemes.england.paidwork.text = You would not get help from other childcare schemes because you are not currently in paid work. This includes 30 hours free childcare, Tax-Free Childcare or childcare support from tax credits.
-freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes childcare vouchers, Tax-Free Childcare or childcare support from tax credits.
+freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text = You would not get help from other childcare schemes, because you are not currently in paid work. This includes Tax-Free Childcare or childcare support from tax credits.
 
 freeHoursResult.info.entitled.england = 15 hours
 freeHoursResult.info.entitled.scotland = 16 hours
