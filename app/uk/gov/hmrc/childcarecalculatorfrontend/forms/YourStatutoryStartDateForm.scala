@@ -19,8 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import org.joda.time.LocalDate
 import play.api.data.{Form, FormError}
 import play.api.data.Forms._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.time.TaxYearResolver
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearResolver
 
 object YourStatutoryStartDateForm extends FormErrorHelper {
 

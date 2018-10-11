@@ -8,8 +8,8 @@ object FrontendBuild extends Build with MicroService {
 }
 
 private object AppDependencies {
-  import play.core.PlayVersion
   import play.sbt.PlayImport._
+  import play.core.PlayVersion
 
   private val playHealthVersion = "2.2.0"
   private val bootstrapPlayVersion = "3.7.0"
@@ -26,6 +26,9 @@ private object AppDependencies {
   private val playReactivemongoVersion = "6.2.0"
   private val playConditionalFormMappingVersion = "0.2.0"
   private val playLanguageVersion = "3.4.0"
+  private val wiremockVersion = "2.6.0"
+  private val playSchedulingVersion = "4.1.0"
+  private val mongoLockVersion = "5.1.0"
 
   val compile = Seq(
     ws,
@@ -37,7 +40,9 @@ private object AppDependencies {
     "uk.gov.hmrc" %% "http-caching-client" % httpCachingClientVersion,
     "uk.gov.hmrc" %% "play-conditional-form-mapping" % playConditionalFormMappingVersion,
     "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlayVersion,
-    "uk.gov.hmrc" %% "play-language" % playLanguageVersion
+    "uk.gov.hmrc" %% "play-language" % playLanguageVersion,
+    "uk.gov.hmrc" %% "play-scheduling" % playSchedulingVersion,
+    "uk.gov.hmrc" %% "mongo-lock" % mongoLockVersion
   )
 
   trait TestDependencies {
@@ -45,20 +50,35 @@ private object AppDependencies {
     lazy val test : Seq[ModuleID] = ???
   }
 
+  def testDeps(scope: String): Seq[ModuleID] = {
+    Seq(
+      "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
+      "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
+      "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusPlayVersion % scope,
+      "org.pegdown" % "pegdown" % pegdownVersion % scope,
+      "org.jsoup" % "jsoup" % "1.10.3" % scope,
+      "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
+      "org.mockito" % "mockito-core" % mockitoCoreVersion % scope,
+      "org.scalacheck" %% "scalacheck" % scalaCheckVersion % scope
+    )
+  }
+
   object Test {
-    def apply() = new TestDependencies {
-      override lazy val test = Seq(
-        "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
-        "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
-        "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusPlayVersion % scope,
-        "org.pegdown" % "pegdown" % pegdownVersion % scope,
-        "org.jsoup" % "jsoup" % "1.10.3" % scope,
-        "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-        "org.mockito" % "mockito-core" % mockitoCoreVersion % scope,
-        "org.scalacheck" %% "scalacheck" % scalaCheckVersion % scope
-      )
+    def apply(): Seq[ModuleID] = new TestDependencies {
+      override lazy val test = testDeps(scope)
     }.test
   }
 
-  def apply() = compile ++ Test()
+  object IntegrationTest {
+    def apply() = new TestDependencies {
+      override lazy val test = testDeps("it")
+    }.test ++ Seq(
+      "com.github.tomakehurst" % "wiremock" % wiremockVersion % "it",
+      "uk.gov.hmrc"           %% "reactivemongo-test" % "3.1.0" % "it",
+      "uk.gov.hmrc"           %% "hmrctest" % hmrcTestVersion % "it",
+      "org.scalatestplus.play"  %% "scalatestplus-play" % scalaTestPlusPlayVersion % "it"
+    )
+  }
+
+  def apply() = compile ++ Test() ++ IntegrationTest()
 }

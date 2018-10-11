@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package guice
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import com.google.inject.AbstractModule
-import com.google.inject.name.Names
-import uk.gov.hmrc.childcarecalculatorfrontend.jobs.ClearDataJobImpl
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{EligibilityService, SubmissionService}
-import uk.gov.hmrc.play.scheduling.ScheduledJob
+import org.joda.time._
 
-class EligibilitySubmissionModule extends AbstractModule {
-  override def configure() = {
-    bind(classOf[SubmissionService]).to(classOf[EligibilityService])
-    bind(classOf[ScheduledJob]).annotatedWith(Names.named("clear-data-job")).to(classOf[ClearDataJobImpl])
-  }
+trait DateTimeUtils {
+  def now = DateTime.now.withZone(DateTimeZone.UTC)
+
+  def daysBetween(start: LocalDate, end: LocalDate): Int =
+    Days.daysBetween(start.toDateTimeAtStartOfDay(DateTimeZone.UTC), end.toDateTimeAtStartOfDay(DateTimeZone.UTC)).getDays
+
+  def isEqualOrAfter(date:LocalDate, laterDate:LocalDate):Boolean = date.isEqual(laterDate) || date.isBefore(laterDate)
 }
+
+object DateTimeUtils extends DateTimeUtils

@@ -20,7 +20,6 @@ import javax.inject.Inject
 
 import org.joda.time.DateTimeFieldType.year
 import org.joda.time.LocalDate
-import uk.gov.hmrc.time.TaxYearResolver
 
 class TaxYearInfo @Inject()() {
 
