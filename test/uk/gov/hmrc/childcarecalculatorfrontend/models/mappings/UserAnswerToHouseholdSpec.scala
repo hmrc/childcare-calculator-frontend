@@ -22,14 +22,12 @@ import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, TaxYearResolver, UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
-import uk.gov.hmrc.time.TaxYearResolver
 
 class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
 
