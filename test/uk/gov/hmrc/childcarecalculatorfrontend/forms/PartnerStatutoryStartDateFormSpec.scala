@@ -18,8 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import org.joda.time.LocalDate
 import org.scalatest.mockito.MockitoSugar
+import uk.gov.hmrc.time.TaxYearResolver
 import org.mockito.Mockito._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearResolver
 
 class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 

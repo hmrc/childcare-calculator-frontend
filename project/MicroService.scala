@@ -49,7 +49,7 @@ trait MicroService {
     .settings(defaultSettings(): _*)
     .settings(scoverageSettings: _*)
     .settings(
-      scalacOptions ++= Seq("-unchecked", "-feature"),
+      scalacOptions ++= Seq("-Xfatal-warnings", "-feature"),
       libraryDependencies ++= appDependencies,
       retrieveManaged := true,
       evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
@@ -58,8 +58,6 @@ trait MicroService {
         Resolver.jcenterRepo
       )
     )
-    .configs(IntegrationTest)
-    .settings(integrationTestSettings())
     .settings(
       // concatenate js
       Concat.groups := Seq(

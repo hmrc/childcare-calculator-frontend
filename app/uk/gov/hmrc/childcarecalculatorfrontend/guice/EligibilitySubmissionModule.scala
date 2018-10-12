@@ -17,14 +17,9 @@
 package guice
 
 import com.google.inject.AbstractModule
-import com.google.inject.name.Names
-import uk.gov.hmrc.childcarecalculatorfrontend.jobs.ClearDataJobImpl
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{EligibilityService, SubmissionService}
-import uk.gov.hmrc.play.scheduling.ScheduledJob
 
 class EligibilitySubmissionModule extends AbstractModule {
-  override def configure() = {
+  override def configure() =
     bind(classOf[SubmissionService]).to(classOf[EligibilityService])
-    bind(classOf[ScheduledJob]).annotatedWith(Names.named("clear-data-job")).to(classOf[ClearDataJobImpl])
-  }
 }

@@ -90,15 +90,6 @@ class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
       }
     }
   }
-
-  def clearStaleData(clearAmount: Int): Future[Int] = {
-    val query = Json.obj("lastUpdated" -> Json.obj("$type" -> "long"))
-
-    Future.sequence(
-      for (_ <- 1 to clearAmount)
-        yield collection.remove(query, firstMatchOnly = true) map (_.ok)
-    ) map (_.count (_ == true))
-  }
 }
 
 @Singleton
