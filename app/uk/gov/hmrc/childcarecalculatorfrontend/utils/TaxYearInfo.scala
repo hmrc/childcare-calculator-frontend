@@ -17,22 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import javax.inject.Inject
-
-import org.joda.time.DateTimeFieldType.year
 import org.joda.time.LocalDate
-import uk.gov.hmrc.time.TaxYearResolver
+import uk.gov.hmrc.time.TaxYear
 
 class TaxYearInfo @Inject()() {
 
-  lazy val currentTaxYearStart: String = TaxYearResolver.startOfCurrentTaxYear.get(year).toString
+  private lazy val currentTaxYear: TaxYear = TaxYear.current
 
-  lazy val currentTaxYearEnd: String = TaxYearResolver.endOfCurrentTaxYear.get(year).toString
+  lazy val currentTaxYearStart: String = currentTaxYear.starts.toString
+  lazy val currentTaxYearEndDate: LocalDate = currentTaxYear.finishes
+  lazy val currentTaxYearEnd: String = currentTaxYearEndDate.toString
 
-  lazy val currentTaxYearEndDate: LocalDate = TaxYearResolver.endOfCurrentTaxYear
+  private lazy val previousTaxYear: TaxYear = currentTaxYear.previous
 
-  lazy val previousTaxYearStart: String = (TaxYearResolver.startOfCurrentTaxYear.get(year) - 1).toString
-
-  lazy val previousTaxYearEnd: String = (TaxYearResolver.endOfCurrentTaxYear.get(year) - 1).toString
-
-  lazy val previousTaxYearEndDate: LocalDate = TaxYearResolver.endOfCurrentTaxYear.minusYears(1)
+  lazy val previousTaxYearStart: String = previousTaxYear.starts.toString
+  lazy val previousTaxYearEndDate: LocalDate = previousTaxYear.finishes
+  lazy val previousTaxYearEnd: String = previousTaxYearEndDate.toString
 }
