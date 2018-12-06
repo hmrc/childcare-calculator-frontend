@@ -19,19 +19,18 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 import org.joda.time.LocalDate
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
-import uk.gov.hmrc.time.TaxYearResolver
 
-class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
+class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with BeforeAndAfterEach {
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
@@ -39,12 +38,16 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar {
   val utils: Utils = mock[Utils]
   val taxCredits: TaxCredits = mock[TaxCredits]
 
-  val mockTaxYearResolver = mock[TaxYearResolver]
-  val mockTaxYearInfo = mock[TaxYearInfo]
+  val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
 
   def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
   val todaysDate: LocalDate = LocalDate.now()
+
+  override def beforeEach(): Unit = {
+    reset(frontendAppConfig, utils, taxCredits, mockTaxYearInfo)
+    super.beforeEach()
+  }
 
   "UserAnswerToHousehold" should {
 

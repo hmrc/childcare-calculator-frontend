@@ -12,20 +12,21 @@ private object AppDependencies {
   import play.sbt.PlayImport._
 
   private val playHealthVersion = "2.2.0"
-  private val bootstrapPlayVersion = "3.7.0"
+  private val bootstrapPlayVersion = "4.1.0"
   private val logbackJsonLoggerVersion = "3.1.0"
   private val govukTemplateVersion = "5.22.0"
-  private val playUiVersion = "7.22.0"
-  private val hmrcTestVersion = "3.1.0"
+  private val playUiVersion = "7.27.0-play-25"
+  private val hmrcTestVersion = "3.3.0"
   private val scalaTestVersion = "3.0.1"
   private val scalaCheckVersion = "1.13.4"
   private val scalaTestPlusPlayVersion = "2.0.1"
   private val pegdownVersion = "1.6.0"
   private val mockitoCoreVersion = "2.18.3"
-  private val httpCachingClientVersion = "7.1.0"
+  private val httpCachingClientVersion = "8.0.0"
   private val playReactivemongoVersion = "6.2.0"
   private val playConditionalFormMappingVersion = "0.2.0"
   private val playLanguageVersion = "3.4.0"
+  private val taxYearVersion = "0.4.0"
 
   val compile = Seq(
     ws,
@@ -37,7 +38,8 @@ private object AppDependencies {
     "uk.gov.hmrc" %% "http-caching-client" % httpCachingClientVersion,
     "uk.gov.hmrc" %% "play-conditional-form-mapping" % playConditionalFormMappingVersion,
     "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlayVersion,
-    "uk.gov.hmrc" %% "play-language" % playLanguageVersion
+    "uk.gov.hmrc" %% "play-language" % playLanguageVersion,
+    "uk.gov.hmrc" %% "tax-year" % taxYearVersion
   )
 
   trait TestDependencies {
