@@ -21,8 +21,8 @@ import play.api.data.Form
 class YourOtherIncomeAmountPYFormSpec extends FormSpec {
 
   val yourOtherIncomeAmountPYForm: Form[BigDecimal] = new YourOtherIncomeAmountPYForm(frontendAppConfig).apply()
-  val errorKeyBlank = "parentOtherIncomeAmountPY.required"
-  val errorKeyInvalid = "parentOtherIncomeAmountPY.invalid"
+  val errorKeyBlank = "parentOtherIncomeAmountPY.error.required"
+  val errorKeyInvalid = "parentOtherIncomeAmountPY.error.invalid"
 
   "YourOtherIncomeAmountPY Form" must {
 

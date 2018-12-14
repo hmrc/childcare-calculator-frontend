@@ -32,15 +32,15 @@ class HowMuchBothPayPensionFormSpec extends FormBehaviours {
     behave like questionForm(HowMuchBothPayPension(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchYouPayPension",
-      "howMuchYouPayPension.required", "howMuchYouPayPension.required")
+      "howMuchYouPayPension.error.required", "howMuchYouPayPension.error.required")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchPartnerPayPension",
-      "howMuchPartnerPayPension.required", "howMuchPartnerPayPension.required")
+      "howMuchPartnerPayPension.error.required", "howMuchPartnerPayPension.error.required")
 
     "not bind when either value is above the threshold of 9999.99" in {
       val expectedErrors =
-        error("howMuchYouPayPension", "howMuchYouPayPension.invalid") ++
-        error("howMuchPartnerPayPension", "howMuchPartnerPayPension.invalid")
+        error("howMuchYouPayPension", "howMuchYouPayPension.error.invalid") ++
+        error("howMuchPartnerPayPension", "howMuchPartnerPayPension.error.invalid")
 
       val data = Map(
         "howMuchYouPayPension" -> "10000.0",

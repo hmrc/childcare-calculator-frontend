@@ -83,7 +83,7 @@ class YouGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("youGetSameIncomePreviousYear.error", 0).bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("youGetSameIncomePreviousYear.error.notCompleted", 0).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

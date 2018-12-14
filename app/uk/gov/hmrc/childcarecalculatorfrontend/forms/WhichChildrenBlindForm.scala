@@ -24,6 +24,6 @@ object WhichChildrenBlindForm extends FormErrorHelper {
   def apply(options: Int*): Form[Set[Int]] =
     Form(
       "value" -> set(number.verifying("error.unknown", options.contains _))
-        .verifying("whichChildrenBlind.error", _.nonEmpty)
+        .verifying("whichChildrenBlind.error.notCompleted", _.nonEmpty)
     )
 }

@@ -25,7 +25,7 @@ class WithErrorsSpec extends WordSpec with MustMatchers with EitherValues {
     import play.api.data.Forms._
     single(
       "foo" -> nonEmptyText
-        .replaceError("error.required", "my.custom.error")
+        .replaceError("error.required", "my.custom.error.notCompleted")
     )
   }
 
@@ -34,7 +34,7 @@ class WithErrorsSpec extends WordSpec with MustMatchers with EitherValues {
     "replace an error message if it exists" in {
       val result = mapping.bind(Map.empty)
       result.left.value mustNot contain(FormError("foo", "error.required"))
-      result.left.value must contain(FormError("foo", "my.custom.error"))
+      result.left.value must contain(FormError("foo", "my.custom.error.notCompleted"))
     }
 
     "successfully bind the original mapping" in {
@@ -43,10 +43,10 @@ class WithErrorsSpec extends WordSpec with MustMatchers with EitherValues {
     }
 
     "replace an error message from an inner binding" in {
-      val newMapping = mapping.replaceError(FormError("foo", "my.custom.error"), FormError("bar", "my.custom.error"))
+      val newMapping = mapping.replaceError(FormError("foo", "my.custom.error.notCompleted"), FormError("bar", "my.custom.error.notCompleted"))
       val result = newMapping.bind(Map.empty)
-      result.left.value must contain(FormError("bar", "my.custom.error"))
-      result.left.value mustNot contain(FormError("foo", "my.custom.error"))
+      result.left.value must contain(FormError("bar", "my.custom.error.notCompleted"))
+      result.left.value mustNot contain(FormError("foo", "my.custom.error.notCompleted"))
       result.left.value mustNot contain(FormError("foo", "error.required"))
     }
   }

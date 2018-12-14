@@ -42,7 +42,7 @@ class YourStatutoryPayBeforeTaxController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
 
-  val errorKey = "yourStatutoryPayBeforeTax.error"
+  val errorKey = "yourStatutoryPayBeforeTax.error.notCompleted"
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))

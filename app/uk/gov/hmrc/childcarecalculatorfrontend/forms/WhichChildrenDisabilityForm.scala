@@ -28,6 +28,6 @@ object WhichChildrenDisabilityForm extends FormErrorHelper {
       "value" -> set(
         number.verifying("error.invalid", validValues.toSet.contains _)
       )
-        .verifying("whichChildrenDisability.error", _.nonEmpty)
+        .verifying("whichChildrenDisability.error.notCompleted", _.nonEmpty)
     )
 }

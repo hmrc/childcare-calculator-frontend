@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 class NoOfChildrenFormSpec extends FormSpec {
 
   val errorKeyBlank = "blank"
-  val errorKeyNonNumeric = "error.non_numeric"
+  val errorKeyNonNumeric: String = noOfChildrenNotInteger
   val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
 
   "NoOfChildren Form" must {
@@ -57,7 +57,7 @@ class NoOfChildrenFormSpec extends FormSpec {
     }
 
     "fail to bind a blank value" in {
-      val expectedError = error("value", noOfChildrenErrorKey)
+      val expectedError = error("value", noOfChildrenRequiredErrorKey)
       checkForError(NoOfChildrenForm, Map("value" -> ""), expectedError)
     }
 

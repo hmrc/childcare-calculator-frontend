@@ -22,8 +22,8 @@ import play.api.data.format.Formatter
 
 object YourStatutoryPayPerWeekForm extends FormErrorHelper {
 
-  val requiredKey = "yourStatutoryPayPerWeek.required"
-  val invalidKey = "yourStatutoryPayPerWeek.invalid"
+  val requiredKey = "yourStatutoryPayPerWeek.error.required"
+  val invalidKey = "yourStatutoryPayPerWeek.error.invalid"
 
   def apply(statutoryType: String): Form[BigDecimal] =
     Form(

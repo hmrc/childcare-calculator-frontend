@@ -21,8 +21,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEK
 
 class ExpectedChildcareCostsFormSpec extends FormSpec {
 
-  val errorKeyBlank = "expectedChildcareCosts.error"
-  val errorKeyInvalid = "expectedChildcareCosts.invalid"
+  val errorKeyBlank = "expectedChildcareCosts.error.notCompleted"
+  val errorKeyInvalid = "expectedChildcareCosts.error.invalid"
   val firstName = "name"
   val frequency = WEEKLY
   val form = ExpectedChildcareCostsForm(frequency, firstName)

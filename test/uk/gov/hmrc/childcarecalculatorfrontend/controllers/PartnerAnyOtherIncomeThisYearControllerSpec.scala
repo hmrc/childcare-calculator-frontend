@@ -70,7 +70,7 @@ class PartnerAnyOtherIncomeThisYearControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("partnerAnyOtherIncomeThisYear.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("partnerAnyOtherIncomeThisYear.error.notCompleted").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

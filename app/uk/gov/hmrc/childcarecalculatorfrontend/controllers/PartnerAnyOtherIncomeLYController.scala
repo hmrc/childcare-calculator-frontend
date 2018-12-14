@@ -51,7 +51,7 @@ class PartnerAnyOtherIncomeLYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("partnerAnyOtherIncomeLY.error").bindFromRequest().fold(
+      BooleanForm("partnerAnyOtherIncomeLY.error.notCompleted").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerAnyOtherIncomeLY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>

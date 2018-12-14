@@ -30,6 +30,6 @@ class WhichChildrenBlindFormSpec extends CheckboxBehaviours[Int] {
 
     behave like aCheckboxForm(invalid = "error.unknown")
 
-    behave like aMandatoryCheckboxForm("whichChildrenBlind.error")
+    behave like aMandatoryCheckboxForm("whichChildrenBlind.error.notCompleted")
   }
 }

@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 class PartnerStatutoryPayPerWeekFormSpec extends FormSpec {
 
   val statutoryType = "maternity"
-  val errorKeyRequired = "partnerStatutoryPayPerWeek.required"
-  val errorKeyInvalid = "partnerStatutoryPayPerWeek.invalid"
+  val errorKeyRequired = "partnerStatutoryPayPerWeek.error.required"
+  val errorKeyInvalid = "partnerStatutoryPayPerWeek.error.invalid"
 
   "PartnerStatutoryPayPerWeek Form" must {
 

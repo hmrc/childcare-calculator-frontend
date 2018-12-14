@@ -54,7 +54,7 @@ class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCon
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("youGetSameIncomePreviousYear.error").bindFromRequest().fold(
+      BooleanForm("youGetSameIncomePreviousYear.error.notCompleted").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) => {
           val summary = incomeSummary.load(request.userAnswers)
           Future.successful(BadRequest(youGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo, Some(summary))))

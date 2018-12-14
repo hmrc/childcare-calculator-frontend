@@ -26,7 +26,7 @@ object ExpectedChildcareCostsForm extends FormErrorHelper {
   def apply(frequency: ChildcarePayFrequency.Value, name: String): Form[BigDecimal] =
     Form(
       "value" ->
-        decimal("expectedChildcareCosts.error", "expectedChildcareCosts.invalid", frequency, name)
-          .verifying(inRange[BigDecimal](1, 9999.99, "expectedChildcareCosts.invalid", frequency, name))
+        decimal("expectedChildcareCosts.error.notCompleted", "expectedChildcareCosts.error.invalid", frequency, name)
+          .verifying(inRange[BigDecimal](1, 9999.99, "expectedChildcareCosts.error.invalid", frequency, name))
     )
 }

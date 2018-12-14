@@ -91,7 +91,7 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted for a user with a single child" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("registeredBlind.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("registeredBlind.error.notCompleted").bind(Map("value" -> "invalid value"))
       val result = controller(getRequiredData(1)).onSubmit(NormalMode)(postRequest)
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe singleViewAsString(boundForm)
@@ -99,7 +99,7 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted for a user with multiple children" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("registeredBlind.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("registeredBlind.error.notCompleted").bind(Map("value" -> "invalid value"))
       val result = controller(getRequiredData(2)).onSubmit(NormalMode)(postRequest)
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)

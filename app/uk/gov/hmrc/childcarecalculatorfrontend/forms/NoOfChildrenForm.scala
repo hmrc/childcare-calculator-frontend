@@ -17,8 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import javax.inject.Inject
-
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
@@ -27,16 +26,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def noOfChildrenFormatter(errorKeyBlank: String, errorKeyDecimal: String, errorKeyNonNumeric: String) = new Formatter[Int] {
-
+  def noOfChildrenFormatter(errorKeyBlank: String, errorKeyNonNumeric: String): Formatter[Int] = new Formatter[Int] {
     val intRegex: String = "([0-9]{1,3})".r.toString()
     val minAmountChildren: Double = appConfig.minAmountChildren
     val maxAmountChildren: Double = appConfig.maxAmountChildren
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
       data.get(key) match {
         case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, noOfChildrenErrorKey)
+        case Some("") => produceError(key, errorKeyBlank)
 
         case Some(s) if s.matches(intRegex) =>
           val value = s.toInt
@@ -52,6 +50,7 @@ class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormError
     def unbind(key: String, value: Int) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = noOfChildrenRequiredErrorKey, errorKeyDecimal: String = "error.integer", errorKeyNonNumeric: String = "error.non_numeric"): Form[Int] =
-    Form(single("value" -> of(noOfChildrenFormatter(errorKeyBlank, errorKeyDecimal, errorKeyNonNumeric))))
+  def apply(errorKeyBlank: String = noOfChildrenRequiredErrorKey,
+            errorKeyNonNumeric: String = noOfChildrenNotInteger): Form[Int] =
+    Form(single("value" -> of(noOfChildrenFormatter(errorKeyBlank, errorKeyNonNumeric))))
 }

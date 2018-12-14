@@ -24,14 +24,14 @@ class PartnerStatutoryWeeksFormSpec extends FormSpec {
 
   val errorInvalid = error(
     "value",
-    "partnerStatutoryWeeks.invalid",
+    "partnerStatutoryWeeks.error.invalid",
     frontendAppConfig.minNoWeeksStatPay,
     frontendAppConfig.maxNoWeeksMaternityPay,
     statutoryType.toString)
 
   val errorRequired = error(
     "value",
-    "partnerStatutoryWeeks.required",
+    "partnerStatutoryWeeks.error.required",
     frontendAppConfig.minNoWeeksStatPay,
     frontendAppConfig.maxNoWeeksMaternityPay,
     statutoryType.toString)

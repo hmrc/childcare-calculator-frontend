@@ -33,11 +33,11 @@ class EmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends For
   def apply(): Form[EmploymentIncomeCY] = Form(
     mapping(
       "parentEmploymentIncomeCY" ->
-        decimal("parentEmploymentIncomeCY.blank", parentEmploymentIncomeBlankErrorKey)
+        decimal("parentEmploymentIncomeCY.error.blank", parentEmploymentIncomeBlankErrorKey)
           .verifying(minimumValue[BigDecimal](minValue, parentEmploymentIncomeInvalidErrorKey))
           .verifying(maximumValue[BigDecimal](maxValue, parentEmploymentIncomeInvalidErrorKey)),
       "partnerEmploymentIncomeCY" ->
-        decimal("partnerEmploymentIncomeCY.blank", partnerEmploymentIncomeBlankErrorKey)
+        decimal("partnerEmploymentIncomeCY.error.blank", partnerEmploymentIncomeBlankErrorKey)
           .verifying(minimumValue[BigDecimal](minValue, partnerEmploymentIncomeInvalidErrorKey))
           .verifying(maximumValue[BigDecimal](maxValue, partnerEmploymentIncomeInvalidErrorKey)))
     (EmploymentIncomeCY.apply)(EmploymentIncomeCY.unapply))

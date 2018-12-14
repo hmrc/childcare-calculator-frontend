@@ -35,10 +35,10 @@ class OtherIncomeAmountCYFormSpec extends FormBehaviours {
     behave like questionForm(OtherIncomeAmountCY(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("parentOtherIncome",
-      "parentOtherIncome.required", "parentOtherIncome.required")
+      "parentOtherIncome.error.required", "parentOtherIncome.error.required")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerOtherIncome",
-      "partnerOtherIncome.required", "partnerOtherIncome.required")
+      "partnerOtherIncome.error.required", "partnerOtherIncome.error.required")
 
     behave like formWithDecimalField("parentOtherIncome", "partnerOtherIncome")
 

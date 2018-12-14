@@ -59,7 +59,7 @@ class ChildrenDisabilityBenefitsController @Inject()(appConfig: FrontendAppConfi
     implicit request =>
       withData {
         case (noOfChildren, name) =>
-          BooleanForm("childrenDisabilityBenefits.error").bindFromRequest().fold(
+          BooleanForm("childrenDisabilityBenefits.error.notCompleted").bindFromRequest().fold(
             (formWithErrors: Form[Boolean]) =>
               Future.successful(BadRequest(view(appConfig, formWithErrors, name, mode, noOfChildren))),
             (value) =>
