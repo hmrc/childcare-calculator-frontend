@@ -79,7 +79,7 @@ class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("childApprovedEducation.error", "Foo").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("childApprovedEducation.error.notCompleted", "Foo").bind(Map("value" -> "invalid value"))
 
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 

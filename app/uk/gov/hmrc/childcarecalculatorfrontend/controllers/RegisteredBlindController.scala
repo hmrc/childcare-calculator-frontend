@@ -59,7 +59,7 @@ class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
     implicit request =>
       withData {
         case (noOfChildren, name) =>
-          BooleanForm("registeredBlind.error").bindFromRequest().fold(
+          BooleanForm("registeredBlind.error.notCompleted").bindFromRequest().fold(
             (formWithErrors: Form[Boolean]) =>
               Future.successful(BadRequest(view(appConfig, formWithErrors, name, mode, noOfChildren))),
             (value) =>

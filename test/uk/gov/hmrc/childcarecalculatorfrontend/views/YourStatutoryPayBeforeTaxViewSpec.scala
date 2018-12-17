@@ -29,7 +29,7 @@ class YourStatutoryPayBeforeTaxViewSpec extends YesNoViewBehaviours {
 
   val statutoryType = "maternity"
 
-  def createView = () => yourStatutoryPayBeforeTax(frontendAppConfig, BooleanForm("yourStatutoryPayBeforeTax.error", statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => yourStatutoryPayBeforeTax(frontendAppConfig, BooleanForm("yourStatutoryPayBeforeTax.error.notCompleted", statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Boolean]) => yourStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 

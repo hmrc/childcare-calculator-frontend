@@ -105,7 +105,7 @@ location.scotland = Scotland
 location.wales = Wales
 location.northern-ireland = Northern Ireland
 location.checkYourAnswersLabel = Where do you live?
-location.error = Select where you live
+location.error.notCompleted = Select where you live
 
 childAgedTwo.title = Do you have any children aged 2?
 childAgedTwo.heading = Do you have any children aged 2?
@@ -113,7 +113,7 @@ childAgedTwo.guidance.england = Some 2 year olds in England could be entitled to
 childAgedTwo.guidance.wales = Some 2 year olds in Wales could be entitled to a minimum of 10 hours of funded early education a week in term time – this is around 390 hours a year.
 childAgedTwo.guidance.scotland = Some 2 year olds in Scotland could be entitled to 16 hours funded early learning and childcare a week – this is around 600 hours a year, depending on how you use them.
 childAgedTwo.checkYourAnswersLabel = Do you have any children aged 2?
-childAgedTwo.error = Select yes if you have any children aged 2
+childAgedTwo.error.notCompleted = Select yes if you have any children aged 2
 
 childAgedThreeOrFour.title = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.heading = Do you have any children aged 3 or 4?
@@ -122,7 +122,7 @@ childAgedThreeOrFour.guidance.scotland = All 3 or 4 year olds in Scotland are en
 childAgedThreeOrFour.guidance.wales = All 3 and 4 year olds in Wales are entitled to 10 hours of free early education a week in term time - this is around 390 hours a year.
 childAgedThreeOrFour.guidance.northern-ireland = All 3 and 4 year olds in Northern Ireland are entitled to 12 and a half hours of free preschool education a week in term time – this is 475 hours a year.
 childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
-childAgedThreeOrFour.error = Select yes if you have any children aged 3 or 4
+childAgedThreeOrFour.error.notCompleted = Select yes if you have any children aged 3 or 4
 
 childcareCosts.title = Do you have childcare costs?
 childcareCosts.heading = Do you have childcare costs?
@@ -130,7 +130,7 @@ childcareCosts.yes = Yes
 childcareCosts.no = No
 childcareCosts.notYet = Not yet but maybe in the future
 childcareCosts.checkYourAnswersLabel = Do you have childcare costs?
-childcareCosts.error = Select yes if you have childcare costs
+childcareCosts.error.notCompleted = Select yes if you have childcare costs
 
 approvedProvider.title = Are your childcare costs with an approved provider?
 approvedProvider.title.future = Will your future childcare costs be with an approved provider?
@@ -144,7 +144,7 @@ approvedProvider.YES = Yes
 approvedProvider.NO = No
 approvedProvider.NOTSURE = Not sure
 approvedProvider.checkYourAnswersLabel = approvedProvider
-approvedProvider.error = Select yes if your childcare costs are with an approved provider
+approvedProvider.error.notCompleted = Select yes if your childcare costs are with an approved provider
 
 freeHoursInfo.title = You can get free hours
 freeHoursInfo.heading = You can get free hours
@@ -218,18 +218,18 @@ doYouLiveWithPartner.title = Do you have a partner that you live with?
 doYouLiveWithPartner.heading = Do you have a partner that you live with?
 doYouLiveWithPartner.para1 = This includes if they are posted overseas as a Crown servant, member of the armed forces, a mariner or working offshore.
 doYouLiveWithPartner.checkYourAnswersLabel = Do you have a partner that you live with?
-doYouLiveWithPartner.error = Select yes if you have a partner that you live with
+doYouLiveWithPartner.error.notCompleted = Select yes if you have a partner that you live with
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
 areYouInPaidWork.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
-areYouInPaidWork.error = Select yes if you are in paid work
+areYouInPaidWork.error.notCompleted = Select yes if you are in paid work
 
 paidEmployment.title = Are you, your partner, or both of you in paid work?
 paidEmployment.heading = Are you, your partner, or both of you in paid work?
 paidEmployment.checkYourAnswersLabel = Are you, your partner, or both of you in paid work?
-paidEmployment.error = Select yes if you, your partner, or both of you are in paid work
+paidEmployment.error.notCompleted = Select yes if you, your partner, or both of you are in paid work
 
 whoIsInPaidEmployment.title = Who’s in paid work?
 whoIsInPaidEmployment.heading = Who’s in paid work?
@@ -239,17 +239,17 @@ whoIsInPaidEmployment.partner = Partner
 whoIsInPaidEmployment.neither = Neither
 whoIsInPaidEmployment.both = Both
 whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
-whoIsInPaidEmployment.error = Select who’s in paid work
+whoIsInPaidEmployment.error.notCompleted = Select who’s in paid work
 
-parentWorkHours.blank = Enter how many hours a week you usually work
-parentWorkHours.invalid = How many hours a week you usually work must be a number from 1 to 99.9
+parentWorkHours.error.blank = Enter how many hours a week you usually work
+parentWorkHours.error.invalid = How many hours a week you usually work must be a number from 1 to 99.9
 parentWorkHours.title = How many hours a week do you usually work?
 parentWorkHours.heading = How many hours a week do you usually work?
 parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
 parentWorkHours.para1 = This is the hours worked in all your paid jobs, zero hours contracts and self-employment.
 
-partnerWorkHours.blank = Enter how many hours a week your partner usually works
-partnerWorkHours.invalid = How many hours a week your partner usually works must be a number from 1 to 99.9
+partnerWorkHours.error.blank = Enter how many hours a week your partner usually works
+partnerWorkHours.error.invalid = How many hours a week your partner usually works must be a number from 1 to 99.9
 partnerWorkHours.title = How many hours a week does your partner usually work?
 partnerWorkHours.heading = How many hours a week does your partner usually work?
 partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
@@ -260,14 +260,14 @@ yourChildcareVouchers.heading = Do you get childcare vouchers from your employer
 yourChildcareVouchers.YES = Yes
 yourChildcareVouchers.NO = No
 yourChildcareVouchers.checkYourAnswersLabel = yourChildcareVouchers
-yourChildcareVouchers.error = Select yes if you get childcare vouchers
+yourChildcareVouchers.error.notCompleted = Select yes if you get childcare vouchers
 
 partnerChildcareVouchers.title = Does your partner get childcare vouchers from their employer?
 partnerChildcareVouchers.heading = Does your partner get childcare vouchers from their employer?
 partnerChildcareVouchers.YES = Yes
 partnerChildcareVouchers.NO = No
 partnerChildcareVouchers.checkYourAnswersLabel = partnerChildcareVouchers
-partnerChildcareVouchers.error = Select yes if your partner gets childcare vouchers
+partnerChildcareVouchers.error.notCompleted = Select yes if your partner gets childcare vouchers
 
 eitherGetsVouchers.title = Do either of your employers offer childcare vouchers?
 eitherGetsVouchers.heading = Do either of your employers offer childcare vouchers?
@@ -275,7 +275,7 @@ eitherGetsVouchers.YES = Yes
 eitherGetsVouchers.NO = No
 eitherGetsVouchers.NOTSURE = Not sure
 eitherGetsVouchers.checkYourAnswersLabel = vouchers
-eitherGetsVouchers.error = Select yes if either of your employers offer childcare vouchers
+eitherGetsVouchers.error.notCompleted = Select yes if either of your employers offer childcare vouchers
 
 whoGetsVouchers.title = Do either of you get childcare vouchers from your employer?
 whoGetsVouchers.heading = Do either of you get childcare vouchers from your employer?
@@ -283,13 +283,13 @@ whoGetsVouchers.you = You
 whoGetsVouchers.partner = Partner
 whoGetsVouchers.both = Both
 whoGetsVouchers.neither = Neither
-whoGetsVouchers.error = Select who gets childcare vouchers
+whoGetsVouchers.error.notCompleted = Select who gets childcare vouchers
 whoGetsVouchers.checkYourAnswersLabel = whoGetsVouchers
 
 doYouGetAnyBenefits.title = Do you get any of these benefits?
 doYouGetAnyBenefits.heading = Do you get any of these benefits?
 doYouGetAnyBenefits.checkYourAnswersLabel = Do you get any of these benefits?
-doYouGetAnyBenefits.error = Select yes if you get any of these benefits
+doYouGetAnyBenefits.error.notCompleted = Select yes if you get any of these benefits
 doYouGetAnyBenefits.li.incomeSupport = Income Support
 doYouGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
 doYouGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
@@ -302,7 +302,7 @@ doYouGetAnyBenefits.li.carersAllowance = Carer’s Allowance
 doYouOrYourPartnerGetAnyBenefits.title = Do you or your partner get any of these benefits?
 doYouOrYourPartnerGetAnyBenefits.heading = Do you or your partner get any of these benefits?
 doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel = Do you or your partner get any of these benefits?
-doYouOrYourPartnerGetAnyBenefits.error = Select yes if you or your partner get any benefits
+doYouOrYourPartnerGetAnyBenefits.error.notCompleted = Select yes if you or your partner get any benefits
 doYouOrYourPartnerGetAnyBenefits.li.incomeSupport = Income Support
 doYouOrYourPartnerGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
 doYouOrYourPartnerGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
@@ -318,7 +318,7 @@ whoGetsBenefits.you = You
 whoGetsBenefits.partner = Partner
 whoGetsBenefits.both = Both
 whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
-whoGetsBenefits.error = Select who gets benefits
+whoGetsBenefits.error.notCompleted = Select who gets benefits
 
 whichBenefitsYouGet.title = Which benefits do you get?
 whichBenefitsYouGet.heading = Which benefits do you get?
@@ -327,7 +327,7 @@ whichBenefitsYouGet.disabilityBenefits = Disability benefits
 whichBenefitsYouGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsYouGet.error = Select which benefits you get
+whichBenefitsYouGet.error.notCompleted = Select which benefits you get
 whichBenefits.select.all = Select all that apply.
 
 whichBenefitsPartnerGet.title = Which benefits does your partner get?
@@ -337,7 +337,7 @@ whichBenefitsPartnerGet.disabilityBenefits = Disability benefits
 whichBenefitsPartnerGet.highRateDisabilityBenefits = High rate disability benefits
 whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
 whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
-whichBenefitsPartnerGet.error = Select which benefits your partner gets
+whichBenefitsPartnerGet.error.notCompleted = Select which benefits your partner gets
 
 whichBenefitsList.typeof.income.benefits = Types of income benefits
 whichBenefitsList.typeof.income.support = Income Support
@@ -363,7 +363,7 @@ yourPartnersAge.UNDER18 = Under 18
 yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
 yourPartnersAge.TWENTYONETOTWENTYFOUR = 21 to 24
 yourPartnersAge.OVERTWENTYFOUR = 25 or over
-yourPartnersAge.error = Select your partner’s age
+yourPartnersAge.error.notCompleted = Select your partner’s age
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
 
 yourAge.title = What’s your age?
@@ -372,19 +372,19 @@ yourAge.UNDER18 = Under 18
 yourAge.EIGHTEENTOTWENTY = 18 to 20
 yourAge.TWENTYONETOTWENTYFOUR = 21 to 24
 yourAge.OVERTWENTYFOUR = 25 or over
-yourAge.error = Select your age
+yourAge.error.notCompleted = Select your age
 yourAge.checkYourAnswersLabel = What’s your age?
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.hint = This is your total weekly pay, or profit from self-employment, before tax and National Insurance is taken off. If you’re off work for maternity, paternity, adoption or sick pay, it’s how much you earned before that.
-yourMinimumEarnings.error = Select yes if you will earn an average of £{0} or more a week
+yourMinimumEarnings.error.notCompleted = Select yes if you will earn an average of £{0} or more a week
 yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.hint = This is their total weekly pay, or profit from self-employment, before tax and National Insurance is taken off. If they’re off work for maternity, paternity, adoption or sick pay, it’s how much they earned before that.
-partnerMinimumEarnings.error = Select yes if your partner will earn an average of £{0} or more a week
+partnerMinimumEarnings.error.notCompleted = Select yes if your partner will earn an average of £{0} or more a week
 partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
 areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
@@ -393,7 +393,7 @@ areYouSelfEmployedOrApprentice.selfEmployed = Self-employed
 areYouSelfEmployedOrApprentice.apprentice = Apprentice
 areYouSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 areYouSelfEmployedOrApprentice.checkYourAnswersLabel = areYouSelfEmployedOrApprentice
-areYouSelfEmployedOrApprentice.error = You must tell the calculator if you are self-employed or an apprentice
+areYouSelfEmployedOrApprentice.error.notCompleted = You must tell the calculator if you are self-employed or an apprentice
 
 partnerSelfEmployedOrApprentice.title = Is your partner an apprentice or self-employed?
 partnerSelfEmployedOrApprentice.heading = Is your partner an apprentice or self-employed?
@@ -401,33 +401,33 @@ partnerSelfEmployedOrApprentice.selfEmployed = Self-employed
 partnerSelfEmployedOrApprentice.apprentice = Apprentice
 partnerSelfEmployedOrApprentice.neither = Neither self-employed or an apprentice
 partnerSelfEmployedOrApprentice.checkYourAnswersLabel = partnerSelfEmployedOrApprentice
-partnerSelfEmployedOrApprentice.error = You must tell the calculator if your partner is an apprentice or self-employed
+partnerSelfEmployedOrApprentice.error.notCompleted = You must tell the calculator if your partner is an apprentice or self-employed
 
 partnerSelfEmployed.title = Has your partner been self-employed less than 12 months?
 partnerSelfEmployed.heading = Has your partner been self-employed less than 12 months?
 partnerSelfEmployed.checkYourAnswersLabel = Has your partner been self-employed less than 12 months?
-partnerSelfEmployed.error = Select yes if your partner has been self-employed less than 12 months
+partnerSelfEmployed.error.notCompleted = Select yes if your partner has been self-employed less than 12 months
 
 yourSelfEmployed.title = Have you been self-employed less than 12 months?
 yourSelfEmployed.heading = Have you been self-employed less than 12 months?
 yourSelfEmployed.checkYourAnswersLabel = Have you been self-employed less than 12 months?
-yourSelfEmployed.error = Select yes if you’ve been self-employed less than 12 months
+yourSelfEmployed.error.notCompleted = Select yes if you’ve been self-employed less than 12 months
 
 yourMaximumEarnings.title = Will you earn more than £100,000 a year?
 yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
 yourMaximumEarnings.hint = This is the total pay from all your jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
-yourMaximumEarnings.error = Select yes if you will earn more than £100,000 a year
+yourMaximumEarnings.error.notCompleted = Select yes if you will earn more than £100,000 a year
 yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
 partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
 partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
 partnerMaximumEarnings.hint = This is the total pay from all their jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
-partnerMaximumEarnings.error = Select yes if your partner will earn more than £100,000 a year
+partnerMaximumEarnings.error.notCompleted = Select yes if your partner will earn more than £100,000 a year
 partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
 
 eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
 eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
-eitherOfYouMaximumEarnings.error = Select yes if either of you will earn more than £100,000 a year
+eitherOfYouMaximumEarnings.error.notCompleted = Select yes if either of you will earn more than £100,000 a year
 eitherOfYouMaximumEarnings.para1 = This is the total pay from all your jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
 eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
@@ -436,15 +436,16 @@ taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
 taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
 taxOrUniversalCredits.uc = Universal Credit
 taxOrUniversalCredits.none = None of these
-taxOrUniversalCredits.error = Select if you get Tax Credits or Universal Credit
+taxOrUniversalCredits.error.notCompleted = Select if you get Tax Credits or Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
 
 noOfChildren.title = How many children do you have?
 noOfChildren.heading = How many children do you have?
 noOfChildren.hint.text = Only include children under the age of 20 that you’re responsible for.
-noOfChildren.error = How many children you have must be a number from 1 to 19
-noOfChildren.required = Enter how many children you have
+noOfChildren.error.notCompleted = How many children you have must be a number from 1 to 19
+noOfChildren.error.required = Enter how many children you have
+noOfChildren.error.non_numeric = Give a value using only numbers
 noOfChildren.checkYourAnswersLabel = noOfChildren
 
 maxFreeHoursInfo.title = You can get 30 hours free childcare
@@ -468,7 +469,7 @@ yourOtherIncomeThisYear.heading = Will you get any other income this year?
 yourOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 yourOtherIncomeThisYear.hint.text = This could be from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 yourOtherIncomeThisYear.checkYourAnswersLabel = yourOtherIncomeThisYear
-yourOtherIncomeThisYear.error = Select yes if you will get any other income this year
+yourOtherIncomeThisYear.error.notCompleted = Select yes if you will get any other income this year
 
 yourIncomeInfo.title = Your income this year
 yourIncomeInfo.heading = Your income this year
@@ -495,10 +496,10 @@ partnerIncomeInfo.li.birth_or_adoption = weeks taken off work while on statutory
 parentEmploymentIncomeCY.title = How much will you get paid this year?
 parentEmploymentIncomeCY.heading = How much will you get paid this year?
 parentEmploymentIncomeCY.info = Your pay
-parentEmploymentIncomeCY.blank = Enter how much you will get paid this year
-parentEmploymentIncomeCY.invalid = Enter numbers between 1 and 999999.99 for how much you will get paid this year
-parentEmploymentIncomeCY.maxEarnings.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that you will not earn more than £100,000 a year
-parentEmploymentIncomeCY.both.maxEarnings.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
+parentEmploymentIncomeCY.error.blank = Enter how much you will get paid this year
+parentEmploymentIncomeCY.error.invalid = Enter numbers between 1 and 999999.99 for how much you will get paid this year
+parentEmploymentIncomeCY.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that you will not earn more than £100,000 a year
+parentEmploymentIncomeCY.both.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
 parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
 parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
 parentEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
@@ -506,32 +507,32 @@ parentEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 partnerEmploymentIncomeCY.title = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.heading = How much will your partner get paid this year?
 partnerEmploymentIncomeCY.info = Partner’s pay
-partnerEmploymentIncomeCY.blank = Enter how much your partner will get paid this year
-partnerEmploymentIncomeCY.invalid = Enter numbers between 1 and 999999.99 for how much your partner will get paid this year
-partnerEmploymentIncomeCY.maxEarnings.invalid = Enter numbers from 1 to 99999.99 for how much your partner will get paid this year as you previously selected that your partner will not earn more than £100,000 a year
-partnerEmploymentIncomeCY.both.maxEarnings.invalid = Enter numbers from 1 to 99999.99 for how much your partner will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
+partnerEmploymentIncomeCY.error.blank = Enter how much your partner will get paid this year
+partnerEmploymentIncomeCY.error.invalid = Enter numbers between 1 and 999999.99 for how much your partner will get paid this year
+partnerEmploymentIncomeCY.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much your partner will get paid this year as you previously selected that your partner will not earn more than £100,000 a year
+partnerEmploymentIncomeCY.both.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much your partner will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
 partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay they’ve had.
 partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 
-employmentIncome.invalid = Enter a number between 0 and 999999.99
+employmentIncome.error.invalid = Enter a number between 0 and 999999.99
 
 parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
-parentPaidWorkCY.error = Select yes if you had any paid work this year
+parentPaidWorkCY.error.notCompleted = Select yes if you had any paid work this year
 parentPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
 partnerPaidWorkCY.title = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.heading = Your partner isn’t working now, but have they had any paid work this year?
 partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work this year?
-partnerPaidWorkCY.error = Select yes if your partner had any paid work this year
+partnerPaidWorkCY.error.notCompleted = Select yes if your partner had any paid work this year
 partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
 bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
 bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
-bothPaidWorkCY.error = Select yes if you and your partner had any paid work this year
+bothPaidWorkCY.error.notCompleted = Select yes if you and your partner had any paid work this year
 bothPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
 whoPaysIntoPension.title = Who’s paying into a pension?
@@ -539,7 +540,7 @@ whoPaysIntoPension.heading = Who’s paying into a pension?
 whoPaysIntoPension.you = You
 whoPaysIntoPension.partner = Partner
 whoPaysIntoPension.both = Both
-whoPaysIntoPension.error = Select who pays into a pension
+whoPaysIntoPension.error.notCompleted = Select who pays into a pension
 whoPaysIntoPension.checkYourAnswersLabel = Who pays into a pension?
 
 whoGetsOtherIncomeCY.title = Who will get other income?
@@ -548,7 +549,7 @@ whoGetsOtherIncomeCY.you = You
 whoGetsOtherIncomeCY.partner = Partner
 whoGetsOtherIncomeCY.both = Both
 whoGetsOtherIncomeCY.checkYourAnswersLabel = Who will get other income?
-whoGetsOtherIncomeCY.error = Select who will get other income
+whoGetsOtherIncomeCY.error.notCompleted = Select who will get other income
 
 youAnyTheseBenefitsCY.title = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.heading = Have you had any of these benefits this year?
@@ -565,7 +566,7 @@ youAnyTheseBenefitsCY.li.attendance = Attendance allowance
 youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 
 youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
-youAnyTheseBenefitsCY.error = Select yes if you’ve had any of these benefits this year
+youAnyTheseBenefitsCY.error.notCompleted = Select yes if you’ve had any of these benefits this year
 youAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you get Carer’s Allowance
 
 partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
@@ -580,7 +581,7 @@ partnerAnyTheseBenefitsCY.li.attendance = Attendance allowance
 partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
-partnerAnyTheseBenefitsCY.error = Select yes if your partner had any of these benefits this year
+partnerAnyTheseBenefitsCY.error.notCompleted = Select yes if your partner had any of these benefits this year
 partnerAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that your partner get Carer’s Allowance
 
 bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
@@ -599,7 +600,7 @@ bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 
 
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
-bothAnyTheseBenefitsCY.error = Select yes if you or your partner had any of these benefits this year
+bothAnyTheseBenefitsCY.error.notCompleted = Select yes if you or your partner had any of these benefits this year
 bothAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you, your partner or both get Carer’s Allowance
 
 partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
@@ -607,30 +608,30 @@ partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income t
 partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
-partnerAnyOtherIncomeThisYear.error = Select yes if your partner will get any other income this year
+partnerAnyOtherIncomeThisYear.error.notCompleted = Select yes if your partner will get any other income this year
 
 bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 bothOtherIncomeThisYear.hint.text = This could be from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 bothOtherIncomeThisYear.checkYourAnswersLabel = bothOtherIncomeThisYear
-bothOtherIncomeThisYear.error = Select yes if you, your partner, or both of you will get any other income this year
+bothOtherIncomeThisYear.error.notCompleted = Select yes if you, your partner, or both of you will get any other income this year
 
 YouPaidPensionCY.title = Are you paying into a work pension this year?
 YouPaidPensionCY.heading = Are you paying into a work pension this year?
 YouPaidPensionCY.year.start.end.date = This year is 6 April {0} to 5 April {1}.
 YouPaidPensionCY.checkYourAnswersLabel = YouPaidPensionCY
-YouPaidPensionCY.error = Select yes if you are paying into a work pension this year
+YouPaidPensionCY.error.notCompleted = Select yes if you are paying into a work pension this year
 
 PartnerPaidPensionCY.title = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.heading = Has your partner paid into a work pension this year?
 PartnerPaidPensionCY.checkYourAnswersLabel = Has your partner paid into a work pension this year?
-PartnerPaidPensionCY.error = Select yes if your partner is paying into a work pension this year
+PartnerPaidPensionCY.error.notCompleted = Select yes if your partner is paying into a work pension this year
 
 bothPaidPensionCY.title = Are you, your partner, or both of you paying into a work pension this year?
 bothPaidPensionCY.heading = Are you, your partner, or both of you paying into a work pension this year?
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
-bothPaidPensionCY.error = Select yes if you, your partner, or both of you are paying into a work pension this year
+bothPaidPensionCY.error.notCompleted = Select yes if you, your partner, or both of you are paying into a work pension this year
 bothPaidPensionCY.tax.year = This year is 6 April {0} to 5 April {1}.
 bothPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 
@@ -640,40 +641,40 @@ whosHadBenefits.you = You
 whosHadBenefits.partner = Partner
 whosHadBenefits.both = Both
 whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
-whosHadBenefits.error = Select who’s had benefits
+whosHadBenefits.error.notCompleted = Select who’s had benefits
 
 youPaidPensionPY.title = Did you pay into a work pension in the previous year?
 youPaidPensionPY.heading = Did you pay into a work pension in the previous year?
 youPaidPensionPY.checkYourAnswersLabel = Did you pay into a work pension in the previous year?
-youPaidPensionPY.error = Select yes if you paid into your work pension in the previous year
+youPaidPensionPY.error.notCompleted = Select yes if you paid into your work pension in the previous year
 youPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 partnerPaidPensionPY.title = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.heading = Did your partner pay into a work pension in the previous year?
 partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension in the previous year?
-partnerPaidPensionPY.error = Select yes if your partner paid into a work pension in the previous year
+partnerPaidPensionPY.error.notCompleted = Select yes if your partner paid into a work pension in the previous year
 partnerPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 
 bothPaidPensionPY.title = Did you, your partner, or both of you pay into a work pension in the previous year?
 bothPaidPensionPY.heading = Did you, your partner, or both of you pay into a work pension in the previous year?
 bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension in the previous year?
-bothPaidPensionPY.error = Select yes if you, your partner, or both of you paid into a work pension in the previous year
+bothPaidPensionPY.error.notCompleted = Select yes if you, your partner, or both of you paid into a work pension in the previous year
 
 parentPaidWorkPY.title = Were you in paid work in the previous year?
 parentPaidWorkPY.heading = Were you in paid work in the previous year?
 parentPaidWorkPY.checkYourAnswersLabel = Were you in paid work in the previous year?
-parentPaidWorkPY.error = Select yes if you had any paid work in the previous year
+parentPaidWorkPY.error.notCompleted = Select yes if you had any paid work in the previous year
 parentPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
 partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work in the previous year?
 partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work in the previous year?
 partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work last year?
-partnerPaidWorkPY.error = Select yes if your partner had any paid work in the previous year
+partnerPaidWorkPY.error.notCompleted = Select yes if your partner had any paid work in the previous year
 partnerPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
 bothPaidWorkPY.title = Were you, your partner, or both of you in paid work in the previous year?
 bothPaidWorkPY.heading = Were you, your partner, or both of you in paid work in the previous year?
 bothPaidWorkPY.checkYourAnswersLabel = Were you, your partner, or both of you in paid work in the previous year?
-bothPaidWorkPY.error = Select yes if you, your partner, or both of you were in paid work in the previous year
+bothPaidWorkPY.error.notCompleted = Select yes if you, your partner, or both of you were in paid work in the previous year
 bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 bothPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
@@ -682,14 +683,14 @@ partnerAnyOtherIncomeLY.heading = Did your partner get any other income in the p
 partnerAnyOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
 partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
 partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
-partnerAnyOtherIncomeLY.error = Select yes if your partner got any other income in the previous year
+partnerAnyOtherIncomeLY.error.notCompleted = Select yes if your partner got any other income in the previous year
 
 yourOtherIncomeLY.title = Did you get any other income in the previous year?
 yourOtherIncomeLY.heading = Did you get any other income in the previous year?
 yourOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
 yourOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
-yourOtherIncomeLY.error = Select yes if you got any other income in the previous year
+yourOtherIncomeLY.error.notCompleted = Select yes if you got any other income in the previous year
 
 partnerBenefitsIncomeCY.title = How much will your partner get in benefits this year?
 partnerBenefitsIncomeCY.heading = How much will your partner get in benefits this year?
@@ -700,30 +701,30 @@ youBenefitsIncomeCY.title = How much will you get in benefits this year?
 youBenefitsIncomeCY.heading = How much will you get in benefits this year?
 youBenefitsIncomeCY.info = Your benefits income
 youBenefitsIncomeCY.checkYourAnswersLabel = How much will you get in benefits this year?
-youBenefitsIncomeCY.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
-youBenefitsIncomeCY.required = Enter how much you will get in benefits this year
+youBenefitsIncomeCY.error.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
+youBenefitsIncomeCY.error.required = Enter how much you will get in benefits this year
 
 howMuchYouPayPension.title = How much do you pay into your pension a month?
 howMuchYouPayPension.heading = How much do you pay into your pension a month?
 howMuchYouPayPension.info = Your pension
 howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
-howMuchYouPayPension.invalid = Enter numbers between 1 and 9999.99 for how much you pay into your pension a month
-howMuchYouPayPension.required = Enter how much you pay into your pension a month
+howMuchYouPayPension.error.invalid = Enter numbers between 1 and 9999.99 for how much you pay into your pension a month
+howMuchYouPayPension.error.required = Enter how much you pay into your pension a month
 
 howMuchPartnerPayPension.title = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.heading = How much does your partner pay into their pension a month?
 howMuchPartnerPayPension.info = Partner’s pension
 howMuchPartnerPayPension.checkYourAnswersLabel = How much does your partner pay into their pension a month?
-howMuchPartnerPayPension.required = Enter how much your partner pays into their pension a month
-howMuchPartnerPayPension.invalid = Enter numbers between 1 and 9999.99 for how much your partner pays into their pension a month
+howMuchPartnerPayPension.error.required = Enter how much your partner pays into their pension a month
+howMuchPartnerPayPension.error.invalid = Enter numbers between 1 and 9999.99 for how much your partner pays into their pension a month
 
 howMuchBothPayPension.title = How much do you and your partner pay into your pensions a month?
 howMuchBothPayPension.heading = How much do you and your partner pay into your pensions a month?
 howMuchBothPayPension.yourPension = Your pension
 howMuchBothPayPension.partnerPension = Partner’s pension
 howMuchBothPayPension.checkYourAnswersLabel = How much do you and your partner pay into your pension a month?
-howMuchBothPayPension.invalid = Please only enter a numerical value of up to two decimal places
-howMuchBothPayPension.required = Please tell the calculator how much you both pay into your pensions a month
+howMuchBothPayPension.error.invalid = Please only enter a numerical value of up to two decimal places
+howMuchBothPayPension.error.required = Please tell the calculator how much you both pay into your pensions a month
 
 benefitsIncomeCY.title = How much will you and your partner get in benefits this year?
 benefitsIncomeCY.heading = How much will you and your partner get in benefits this year?
@@ -731,10 +732,10 @@ benefitsIncomeCY.parentBenefitsIncome = Your benefits income
 benefitsIncomeCY.partnerBenefitsIncome = Partner’s benefits income
 benefitsIncomeCY.checkYourAnswersLabel = How much will you and your partner get in benefits this year?
 
-parentBenefitsIncome.required = Enter how much you will get in benefits this year
-partnerBenefitsIncome.required = Enter how much your partner will get in benefits this year
-parentBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
-partnerBenefitsIncome.invalid = Enter numbers from 1 to 9999.99 for how much your partner will get in benefits this year
+parentBenefitsIncome.error.required = Enter how much you will get in benefits this year
+partnerBenefitsIncome.error.required = Enter how much your partner will get in benefits this year
+parentBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
+partnerBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how much your partner will get in benefits this year
 
 yourIncomeInfoPY.title = Your income for the previous year
 yourIncomeInfoPY.heading = Your income for the previous year
@@ -763,7 +764,7 @@ bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other 
 bothOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
 bothOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
 bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
-bothOtherIncomeLY.error = Select yes if you, your partner, or both of you got any other income in the previous year
+bothOtherIncomeLY.error.notCompleted = Select yes if you, your partner, or both of you got any other income in the previous year
 
 whoOtherIncomePY.title = Who got other income?
 whoOtherIncomePY.heading = Who got other income?
@@ -771,14 +772,14 @@ whoOtherIncomePY.you = You
 whoOtherIncomePY.partner = Partner
 whoOtherIncomePY.both = Both
 whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
-whoOtherIncomePY.error = Select who got other income
+whoOtherIncomePY.error.notCompleted = Select who got other income
 
 whoPaidIntoPensionPY.title = Who paid into a pension?
 whoPaidIntoPensionPY.heading = Who paid into a pension?
 whoPaidIntoPensionPY.you = You
 whoPaidIntoPensionPY.partner = Partner
 whoPaidIntoPensionPY.both = Both
-whoPaidIntoPensionPY.error = Select who paid into a pension
+whoPaidIntoPensionPY.error.notCompleted = Select who paid into a pension
 whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
 whosHadBenefitsPY.title = Who got benefits income?
@@ -787,7 +788,7 @@ whosHadBenefitsPY.you = You
 whosHadBenefitsPY.partner = Partner
 whosHadBenefitsPY.both = Both
 whosHadBenefitsPY.checkYourAnswersLabel = Who’s had benefits last year?
-whosHadBenefitsPY.error = Select who got benefits
+whosHadBenefitsPY.error.notCompleted = Select who got benefits
 
 otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?
@@ -799,15 +800,15 @@ yourOtherIncomeAmountCY.title = How much will your other income be this year?
 yourOtherIncomeAmountCY.heading = How much will your other income be this year?
 yourOtherIncomeAmountCY.info = Your other income
 yourOtherIncomeAmountCY.checkYourAnswersLabel = How much will your other income be this year?
-parentOtherIncome.required = Enter how much your other income will be this year
-parentOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your other income will be this year
+parentOtherIncome.error.required = Enter how much your other income will be this year
+parentOtherIncome.error.invalid = Enter numbers from 1 to 99999.99 for how much your other income will be this year
 
 partnerOtherIncomeAmountCY.title = How much will your partner’s other income be this year?
 partnerOtherIncomeAmountCY.heading = How much will your partner’s other income be this year?
 partnerOtherIncomeAmountCY.info = Partner’s other income
 partnerOtherIncomeAmountCY.checkYourAnswersLabel = How much will your partner other income be this year?
-partnerOtherIncome.required = Enter how much your partner’s other income will be this year
-partnerOtherIncome.invalid = Enter numbers from 1 to 99999.99 for how much your partner’s other income will be this year
+partnerOtherIncome.error.required = Enter how much your partner’s other income will be this year
+partnerOtherIncome.error.invalid = Enter numbers from 1 to 99999.99 for how much your partner’s other income will be this year
 
 employmentIncomeCY.title = How much will you and your partner get paid this year?
 employmentIncomeCY.heading = How much will you and your partner get paid this year?
@@ -834,7 +835,7 @@ youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 
 
 youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits in the previous year?
-youAnyTheseBenefitsPY.error = Select yes if you had any of these benefits in the previous year
+youAnyTheseBenefitsPY.error.notCompleted = Select yes if you had any of these benefits in the previous year
 
 partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits in the previous year?
 partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits in the previous year?
@@ -848,7 +849,7 @@ partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
 partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
-partnerAnyTheseBenefitsPY.error = Select yes if your partner had any of these benefits in the previous year
+partnerAnyTheseBenefitsPY.error.notCompleted = Select yes if your partner had any of these benefits in the previous year
 
 bothAnyTheseBenefitsPY.title = Did you, your partner, or both of you get any of these benefits in the previous year?
 bothAnyTheseBenefitsPY.heading = Did you, your partner, or both of you get any of these benefits in the previous year?
@@ -866,7 +867,7 @@ bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
 bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
-bothAnyTheseBenefitsPY.error = Select yes if you or your partner had any of these benefits in the previous year
+bothAnyTheseBenefitsPY.error.notCompleted = Select yes if you or your partner had any of these benefits in the previous year
 
 bothBenefitsIncomePY.title = What was you and your partner’s benefits income in the previous year?
 bothBenefitsIncomePY.heading = What was you and your partner’s benefits income in the previous year?
@@ -874,14 +875,14 @@ bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income
 bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income
 bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner get in benefits last year?
 
-parentBenefitsIncomePY.required = Enter how much your benefits income was in the previous year
-partnerBenefitsIncomePY.required = Enter how much your partner’s benefits income was in the previous year
-parentBenefitsIncomePY.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
-partnerBenefitsIncomePY.invalid = Enter numbers from 1 to 9999.99 for your partner’s benefits income in the previous year
+parentBenefitsIncomePY.error.required = Enter how much your benefits income was in the previous year
+partnerBenefitsIncomePY.error.required = Enter how much your partner’s benefits income was in the previous year
+parentBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
+partnerBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your partner’s benefits income in the previous year
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
-registeredBlind.error = Select yes if any of your children are registered blind
+registeredBlind.error.notCompleted = Select yes if any of your children are registered blind
 registeredBlind.checkYourAnswersLabel = registeredBlind
 
 partnerBenefitsIncomePY.title = What was your partner’s benefits income?
@@ -905,40 +906,40 @@ howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
 howMuchYouPayPensionPY.info = Your pension
 howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
 howMuchYouPayPensionPY.yourPension = You
-howMuchYouPayPensionPY.required = Enter how much you paid into your pension a month
-howMuchYouPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much you paid into your pension a month
+howMuchYouPayPensionPY.error.required = Enter how much you paid into your pension a month
+howMuchYouPayPensionPY.error.invalid = Enter numbers from 1 to 9999.99 for how much you paid into your pension a month
 
 howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.info = Partner’s pension
 howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
 howMuchPartnerPayPensionPY.partnerPension = Partner
-howMuchPartnerPayPensionPY.required = Enter how much your partner paid into their pension a month
-howMuchPartnerPayPensionPY.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.error.required = Enter how much your partner paid into their pension a month
+howMuchPartnerPayPensionPY.error.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into their pension a month
 
 childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?
 childDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
 childDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
-childDisabilityBenefits.error = Select yes if {0} gets any of these disability benefits
+childDisabilityBenefits.error.notCompleted = Select yes if {0} gets any of these disability benefits
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.heading = How often do you pay or expect to pay {0}’s childcare costs?
 childcarePayFrequency.weekly = Weekly
 childcarePayFrequency.monthly = Monthly
 childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
-childcarePayFrequency.error = Select how often you pay or expect to pay for childcare costs
+childcarePayFrequency.error.notCompleted = Select how often you pay or expect to pay for childcare costs
 
 yourOtherIncomeAmountPY.title = How much was your other income?
 yourOtherIncomeAmountPY.heading = How much was your other income?
 yourOtherIncomeAmountPY.info = Your other income
 yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
-parentOtherIncomeAmountPY.required = Enter how much your other income was in the previous year
-parentOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your other income in the previous year
+parentOtherIncomeAmountPY.error.required = Enter how much your other income was in the previous year
+parentOtherIncomeAmountPY.error.invalid = Enter numbers from 1 to 99999.99 for your other income in the previous year
 
-partnerOtherIncomeAmountPY.required = Enter how much your partner’s other income was
-partnerOtherIncomeAmountPY.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income
+partnerOtherIncomeAmountPY.error.required = Enter how much your partner’s other income was
+partnerOtherIncomeAmountPY.error.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income
 partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
 partnerOtherIncomeAmountPY.info = Partner’s other income
@@ -955,14 +956,14 @@ childrenDisabilityBenefits.heading = Do any of your children get any of these di
 childrenDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
 childrenDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childrenDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
-childrenDisabilityBenefits.error = Select yes if any of your children get any of these disability benefits
+childrenDisabilityBenefits.error.notCompleted = Select yes if any of your children get any of these disability benefits
 
 parentEmploymentIncomePY.title = How much did you get paid in the previous year?
 parentEmploymentIncomePY.heading = How much did you get paid in the previous year?
 parentEmploymentIncomePY.info = Your pay
 parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
-parentEmploymentIncomePY.required = Enter how much you got paid in the previous year
-parentEmploymentIncomePY.invalid = Enter numbers between 1 and 999999.99 for how much you got paid in the previous year
+parentEmploymentIncomePY.error.required = Enter how much you got paid in the previous year
+parentEmploymentIncomePY.error.invalid = Enter numbers between 1 and 999999.99 for how much you got paid in the previous year
 parentEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 parentEmploymentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
@@ -972,8 +973,8 @@ partnerEmploymentIncomePY.info = Partner’s pay
 partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid in the previous year?
 partnerEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
-partnerEmploymentIncomePY.required = Enter how much your partner got paid in the previous year
-partnerEmploymentIncomePY.invalid = Enter numbers from 1 to 999999.99 for how much your partner got paid in the previous year
+partnerEmploymentIncomePY.error.required = Enter how much your partner got paid in the previous year
+partnerEmploymentIncomePY.error.invalid = Enter numbers from 1 to 999999.99 for how much your partner got paid in the previous year
 
 employmentIncomePY.title = How much did you and your partner get paid in the previous year?
 employmentIncomePY.heading = How much did you and your partner get paid in the previous year?
@@ -1003,11 +1004,11 @@ aboutYourChild.error.past = Date of birth must not be more than 20 years in the 
 childApprovedEducation.title = Is your child in approved education or training?
 childApprovedEducation.heading = Is your child {0} in approved education or training?
 childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
-childApprovedEducation.error = Select yes if {0} is in approved education or training
+childApprovedEducation.error.notCompleted = Select yes if {0} is in approved education or training
 
 childRegisteredBlind.title = Is your child registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
-childRegisteredBlind.error = Select yes if {0} is registered blind
+childRegisteredBlind.error.notCompleted = Select yes if {0} is registered blind
 childRegisteredBlind.checkYourAnswersLabel = childRegisteredBlind
 
 childStartEducation.title = When did your child start their education or training?
@@ -1024,17 +1025,17 @@ whichChildrenDisability.heading = Who gets disability benefits?
 whichChildrenDisability.checkYourAnswersLabel = Who gets disability benefits?
 whichChildrenDisability.summary = Help with benefits
 whichChildrenDisability.selectAll = Select all who get them.
-whichChildrenDisability.error = Select who gets disability benefits
+whichChildrenDisability.error.notCompleted = Select who gets disability benefits
 
 whichChildrenBlind.title = Who’s registered blind?
 whichChildrenBlind.heading = Who’s registered blind?
 whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
-whichChildrenBlind.error = Select who’s registered blind
+whichChildrenBlind.error.notCompleted = Select who’s registered blind
 
 whoHasChildcareCosts.title = Who has childcare costs?
 whoHasChildcareCosts.heading = Who has childcare costs?
 whoHasChildcareCosts.checkYourAnswersLabel = Who has childcare costs?
-whoHasChildcareCosts.error = Select who has childcare costs
+whoHasChildcareCosts.error.notCompleted = Select who has childcare costs
 
 whichDisabilityBenefits.title = Which disability benefits does your child get?
 whichDisabilityBenefits.heading = Which disability benefits does {0} get?
@@ -1048,7 +1049,7 @@ whichDisabilityBenefits.pip = Personal Independence Payment
 whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
 whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
-whichDisabilityBenefits.error = Select yes if {0} gets any of these disability benefits
+whichDisabilityBenefits.error.notCompleted = Select yes if {0} gets any of these disability benefits
 
 expectedChildcareCosts.title = What are your expected childcare costs?
 expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
@@ -1057,20 +1058,20 @@ expectedChildcareCosts.label = Your expected {0} childcare costs be for {1}
 expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
 expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
 expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare costs?
-expectedChildcareCosts.error = Enter your {0} childcare costs for {1}
-expectedChildcareCosts.invalid = Your expected {0} childcare costs for {1} must be a number from 1 to 9999.99
+expectedChildcareCosts.error.notCompleted = Enter your {0} childcare costs for {1}
+expectedChildcareCosts.error.invalid = Your expected {0} childcare costs for {1} must be a number from 1 to 9999.99
 
 whoGotStatutoryPay.title = Who got statutory pay?
 whoGotStatutoryPay.heading = Who got statutory pay?
 whoGotStatutoryPay.you = You
 whoGotStatutoryPay.partner = Partner
 whoGotStatutoryPay.both = Both
-whoGotStatutoryPay.error = Select who got statutory pay
+whoGotStatutoryPay.error.notCompleted = Select who got statutory pay
 
 youStatutoryPay.title = Have you had statutory pay since 6 April {0}?
 youStatutoryPay.heading = Have you had statutory pay since 6 April {0}?
 youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April {0}?
-youStatutoryPay.required = Select yes if you have had statutory pay since 6 April {0}
+youStatutoryPay.error.required = Select yes if you have had statutory pay since 6 April {0}
 
 statutoryPay.guidance = Statutory pay is:
 statutoryPay.li.maternity = maternity
@@ -1082,22 +1083,22 @@ statutoryPay.guidance_extra = It could have started before this date and overlap
 bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April {0}?
 bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April {0}?
 bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.required = Select yes if you, your partner, or both of you have had statutory pay since 6th April {0}
+bothStatutoryPay.error.required = Select yes if you, your partner, or both of you have had statutory pay since 6th April {0}
 
 partnerStatutoryPay.title = Has your partner had statutory pay since 6 April {0}?
 partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April {0}?
 partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay since 6 April {0}?
 partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April {0} and continued to get it after this date.
-partnerStatutoryPay.required = Select yes if your partner had statutory pay since 6 April {0}
+partnerStatutoryPay.error.required = Select yes if your partner had statutory pay since 6 April {0}
 
 partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
 partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.error = Select what kind of statutory pay your partner got
+partnerStatutoryPayType.error.notCompleted = Select what kind of statutory pay your partner got
 partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
 
 yourStatutoryPayType.title = What kind of statutory pay did you get?
 yourStatutoryPayType.heading = What kind of statutory pay did you get?
-yourStatutoryPayType.error = Select what kind of statutory pay you got
+yourStatutoryPayType.error.notCompleted = Select what kind of statutory pay you got
 yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
 
 statutoryPayType.maternity = Maternity
@@ -1112,14 +1113,14 @@ statutoryPayTypeLower.shared-parental = shared parental
 
 yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
 yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.required = Enter how many weeks of {2} pay you took
-yourStatutoryWeeks.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay you took
+yourStatutoryWeeks.error.required = Enter how many weeks of {2} pay you took
+yourStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay you took
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
 partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
 partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
-partnerStatutoryWeeks.required = Enter how many weeks of {2} pay your partner took
-partnerStatutoryWeeks.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
+partnerStatutoryWeeks.error.required = Enter how many weeks of {2} pay your partner took
+partnerStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
 statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks
@@ -1148,27 +1149,27 @@ partnerStatutoryStartDate.error.past-over-2-years = Date your partner’s {0} pa
 yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
+yourStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
 
 partnerStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.error = Select yes if this {0} pay was less than £100 before tax
+partnerStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
 
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.info = Your {0} pay a week before tax
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
-yourStatutoryPayPerWeek.required = Enter how much {0} pay you got a week
-yourStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your {0} pay
+yourStatutoryPayPerWeek.error.required = Enter how much {0} pay you got a week
+yourStatutoryPayPerWeek.error.invalid = Enter numbers from 1 to 99.99 for your {0} pay
 
 partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
 partnerStatutoryPayPerWeek.info = Partner’s {0} pay a week before tax
 partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
-partnerStatutoryPayPerWeek.required = Enter how much {0} pay your partner got a week
-partnerStatutoryPayPerWeek.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
+partnerStatutoryPayPerWeek.error.required = Enter how much {0} pay your partner got a week
+partnerStatutoryPayPerWeek.error.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs
@@ -1277,7 +1278,7 @@ whoWasInPaidWorkPY.you = You
 whoWasInPaidWorkPY.partner = Partner
 whoWasInPaidWorkPY.both = Both
 whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
-whoWasInPaidWorkPY.error = Select who was in paid work
+whoWasInPaidWorkPY.error.notCompleted = Select who was in paid work
 
 aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
@@ -1368,12 +1369,12 @@ results.two.years.old.guidance.northernireland.two.freehours = You can get 12 an
 surveyDoNotUnderstand.title = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.heading = Can you tell us why you don’t understand?
 surveyDoNotUnderstand.guidance = Do not include any personal or financial information like your National Insurance number or bank details.
-surveyDoNotUnderstand.error = Enter why you don’t understand
+surveyDoNotUnderstand.error.notCompleted = Enter why you don’t understand
 surveyDoNotUnderstand.checkYourAnswersLabel = surveyDoNotUnderstand
 
 surveyChildcareSupport.title = Do you understand your childcare support options?
 surveyChildcareSupport.heading = Do you understand your childcare support options?
-surveyChildcareSupport.error = Select yes if you understand your childcare support options
+surveyChildcareSupport.error.notCompleted = Select yes if you understand your childcare support options
 surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 
 results.feedback.survey.link.text = What did you think of this service?
@@ -1390,7 +1391,7 @@ timeout.exit = Clear what you entered now
 youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?
 youGetSameIncomePreviousYear.heading = Did you get the same income for the previous year?
 youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYear
-youGetSameIncomePreviousYear.error = Select yes if you got the same income for the previous year
+youGetSameIncomePreviousYear.error.notCompleted = Select yes if you got the same income for the previous year
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
 
@@ -1400,7 +1401,7 @@ bothGetSameIncomePreviousYear.heading = Did you and your partner get the same in
 bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
 bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
-bothGetSameIncomePreviousYear.error = Select yes if you and your partner got the same income for the previous year
+bothGetSameIncomePreviousYear.error.notCompleted = Select yes if you and your partner got the same income for the previous year
 
 incomeSummary.yourIncome = Your income
 incomeSummary.partnersIncome = Partner’s income

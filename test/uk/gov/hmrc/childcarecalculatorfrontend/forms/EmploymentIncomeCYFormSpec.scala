@@ -33,10 +33,10 @@ class EmploymentIncomeCYFormSpec extends FormBehaviours {
     behave like questionForm(EmploymentIncomeCY(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("parentEmploymentIncomeCY",
-      "parentEmploymentIncomeCY.blank", "parentEmploymentIncomeCY.blank")
+      "parentEmploymentIncomeCY.error.blank", "parentEmploymentIncomeCY.error.blank")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerEmploymentIncomeCY",
-      "partnerEmploymentIncomeCY.blank", "partnerEmploymentIncomeCY.blank")
+      "partnerEmploymentIncomeCY.error.blank", "partnerEmploymentIncomeCY.error.blank")
 
   }
 

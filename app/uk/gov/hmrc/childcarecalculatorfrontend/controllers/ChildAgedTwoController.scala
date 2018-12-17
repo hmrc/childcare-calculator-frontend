@@ -61,7 +61,7 @@ class ChildAgedTwoController @Inject()(appConfig: FrontendAppConfig,
       if (request.userAnswers.location.isEmpty) {
         Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
       } else {
-        BooleanForm("childAgedTwo.error").bindFromRequest().fold(
+        BooleanForm("childAgedTwo.error.notCompleted").bindFromRequest().fold(
           (formWithErrors: Form[Boolean]) =>
             Future.successful(BadRequest(childAgedTwo(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
           (value) =>

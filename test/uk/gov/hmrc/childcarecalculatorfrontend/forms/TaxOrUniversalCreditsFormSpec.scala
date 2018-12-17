@@ -29,6 +29,6 @@ class TaxOrUniversalCreditsFormSpec extends FormBehaviours {
   "TaxOrUniversalCredits form" must {
     behave like questionForm[String](TaxOrUniversalCreditsForm.options.head.value)
 
-    behave like formWithOptionFieldError("value", "taxOrUniversalCredits.error", TaxOrUniversalCreditsForm.options.map{x => x.value}:_*)
+    behave like formWithOptionFieldError("value", "taxOrUniversalCredits.error.notCompleted", TaxOrUniversalCreditsForm.options.map{x => x.value}:_*)
   }
 }

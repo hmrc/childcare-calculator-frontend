@@ -35,7 +35,7 @@ class YouStatutoryPayControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo()
 
-  def myForm: Form[Boolean] = BooleanForm("youStatutoryPay.required", taxYearInfo.previousTaxYearStart)
+  def myForm: Form[Boolean] = BooleanForm("youStatutoryPay.error.required", taxYearInfo.previousTaxYearStart)
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YouStatutoryPayController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),

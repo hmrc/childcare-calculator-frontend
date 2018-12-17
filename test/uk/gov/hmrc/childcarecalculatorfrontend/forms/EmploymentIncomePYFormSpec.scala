@@ -34,10 +34,10 @@ class EmploymentIncomePYFormSpec extends FormBehaviours {
     behave like questionForm(EmploymentIncomePY(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("parentEmploymentIncomePY",
-      "parentEmploymentIncomePY.required", "parentEmploymentIncomePY.required")
+      "parentEmploymentIncomePY.error.required", "parentEmploymentIncomePY.error.required")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerEmploymentIncomePY",
-      "partnerEmploymentIncomePY.required", "partnerEmploymentIncomePY.required")
+      "partnerEmploymentIncomePY.error.required", "partnerEmploymentIncomePY.error.required")
 
     "not bind when either value is above the threshold of 999999.99" in {
       val expectedErrors =

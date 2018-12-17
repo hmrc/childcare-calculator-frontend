@@ -32,15 +32,15 @@ class BenefitsIncomeCYFormSpec extends FormBehaviours {
     behave like questionForm(BenefitsIncomeCY(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("parentBenefitsIncome",
-      "parentBenefitsIncome.required", "parentBenefitsIncome.required")
+      "parentBenefitsIncome.error.required", "parentBenefitsIncome.error.required")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerBenefitsIncome",
-      "partnerBenefitsIncome.required", "partnerBenefitsIncome.required")
+      "partnerBenefitsIncome.error.required", "partnerBenefitsIncome.error.required")
 
     "not bind when either value is above the threshold of 9999.99" in {
       val expectedErrors =
-        error("parentBenefitsIncome", "parentBenefitsIncome.invalid") ++
-          error("partnerBenefitsIncome", "partnerBenefitsIncome.invalid")
+        error("parentBenefitsIncome", "parentBenefitsIncome.error.invalid") ++
+          error("partnerBenefitsIncome", "partnerBenefitsIncome.error.invalid")
 
       val data = Map(
         "parentBenefitsIncome" -> "10000.0",

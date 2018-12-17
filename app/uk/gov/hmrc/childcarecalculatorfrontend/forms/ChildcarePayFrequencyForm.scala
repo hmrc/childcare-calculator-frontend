@@ -35,7 +35,7 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
   private def ChildcarePayFrequencyFormatter(name: String) = new Formatter[ChildcarePayFrequency.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(ChildcarePayFrequency.withName(s))
-      case None => produceError(key, "childcarePayFrequency.error", name)
+      case None => produceError(key, "childcarePayFrequency.error.notCompleted", name)
       case _ => produceError(key, "error.unknown")
     }
 

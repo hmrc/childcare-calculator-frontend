@@ -38,7 +38,7 @@ class PartnerStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
     Some(CacheMap("id", statutoryTypeNameValuePair))
   )
 
-  val myForm = BooleanForm("yourStatutoryPayBeforeTax.error", statutoryType.toString)
+  val myForm = BooleanForm("partnerStatutoryPayBeforeTax.error.notCompleted", statutoryType.toString)
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryPayBeforeTaxController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),

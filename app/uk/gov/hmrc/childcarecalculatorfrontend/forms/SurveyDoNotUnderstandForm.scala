@@ -38,6 +38,6 @@ object SurveyDoNotUnderstandForm extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = "surveyDoNotUnderstand.error", errorKeyInvalid: String = "error.bigDecimal"): Form[String] =
+  def apply(errorKeyBlank: String = "surveyDoNotUnderstand.error.notCompleted", errorKeyInvalid: String = "error.bigDecimal"): Form[String] =
     Form(single("value" -> of(surveyDoNotUnderstandFormatter(errorKeyBlank, errorKeyInvalid))))
 }

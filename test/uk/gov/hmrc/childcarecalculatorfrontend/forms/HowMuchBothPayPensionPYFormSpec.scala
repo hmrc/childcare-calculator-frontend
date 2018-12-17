@@ -32,10 +32,10 @@ class HowMuchBothPayPensionPYFormSpec extends FormBehaviours {
     behave like questionForm(HowMuchBothPayPensionPY(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchYouPayPensionPY",
-      "howMuchYouPayPensionPY.required", "howMuchYouPayPensionPY.required")
+      "howMuchYouPayPensionPY.error.required", "howMuchYouPayPensionPY.error.required")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("howMuchPartnerPayPensionPY",
-      "howMuchPartnerPayPensionPY.required", "howMuchPartnerPayPensionPY.required")
+      "howMuchPartnerPayPensionPY.error.required", "howMuchPartnerPayPensionPY.error.required")
 
     "fail to bind if either value is below the threshold of 1" in {
       val data = Map(
@@ -44,8 +44,8 @@ class HowMuchBothPayPensionPYFormSpec extends FormBehaviours {
       )
 
       val expectedErrors =
-        error("howMuchYouPayPensionPY", "howMuchYouPayPensionPY.invalid") ++
-          error("howMuchPartnerPayPensionPY", "howMuchPartnerPayPensionPY.invalid")
+        error("howMuchYouPayPensionPY", "howMuchYouPayPensionPY.error.invalid") ++
+          error("howMuchPartnerPayPensionPY", "howMuchPartnerPayPensionPY.error.invalid")
 
       checkForError(form, data, expectedErrors)
     }
@@ -57,8 +57,8 @@ class HowMuchBothPayPensionPYFormSpec extends FormBehaviours {
       )
 
       val expectedErrors =
-        error("howMuchYouPayPensionPY", "howMuchYouPayPensionPY.invalid") ++
-          error("howMuchPartnerPayPensionPY", "howMuchPartnerPayPensionPY.invalid")
+        error("howMuchYouPayPensionPY", "howMuchYouPayPensionPY.error.invalid") ++
+          error("howMuchPartnerPayPensionPY", "howMuchPartnerPayPensionPY.error.invalid")
 
       checkForError(form, data, expectedErrors)
     }

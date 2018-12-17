@@ -27,7 +27,7 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
   private def whichDisabilityBenefitsFormatter = new Formatter[DisabilityBenefits.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(DisabilityBenefits.withName(s))
-      case None => produceError(key, "whichDisabilityBenefits.error")
+      case None => produceError(key, "whichDisabilityBenefits.error.notCompleted")
       case _ => produceError(key, "error.unknown")
     }
 
@@ -40,7 +40,7 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
     case set if set.nonEmpty =>
       Valid
     case _ =>
-      Invalid("whichDisabilityBenefits.error", name)
+      Invalid("whichDisabilityBenefits.error.notCompleted", name)
   }
 
   def apply(name: String): Form[Set[DisabilityBenefits.Value]] =

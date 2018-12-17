@@ -56,7 +56,7 @@ class YouPaidPensionCYControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm("YouPaidPensionCY.error").fill(true))
+      contentAsString(result) mustBe viewAsString(BooleanForm("YouPaidPensionCY.error.notCompleted").fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -70,7 +70,7 @@ class YouPaidPensionCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("YouPaidPensionCY.error").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("YouPaidPensionCY.error.notCompleted").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

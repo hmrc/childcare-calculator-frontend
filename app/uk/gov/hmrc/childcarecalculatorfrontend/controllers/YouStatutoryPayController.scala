@@ -41,7 +41,7 @@ class YouStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
                                           requireData: DataRequiredAction,
                                           taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
 
-  val requiredKey = "youStatutoryPay.required"
+  val requiredKey = "youStatutoryPay.error.required"
   val requiredKeyArg = taxYearInfo.previousTaxYearStart
 
   def onPageLoad(mode: Mode) = (getData andThen requireData) {

@@ -70,7 +70,7 @@ class ChildApprovedEducationController @Inject() (
     implicit request =>
       validateIndex(childIndex) {
         name =>
-          BooleanForm("childApprovedEducation.error", name).bindFromRequest().fold(
+          BooleanForm("childApprovedEducation.error.notCompleted", name).bindFromRequest().fold(
             (formWithErrors: Form[Boolean]) =>
               Future.successful(BadRequest(childApprovedEducation(appConfig, formWithErrors, mode, childIndex, name))),
             (value) =>

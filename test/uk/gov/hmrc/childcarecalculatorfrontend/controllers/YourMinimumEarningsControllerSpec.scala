@@ -61,7 +61,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm("yourMinimumEarnings.error", 0).fill(true))
+      contentAsString(result) mustBe viewAsString(BooleanForm("yourMinimumEarnings.error.notCompleted", 0).fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -77,7 +77,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
-      val boundForm = BooleanForm("yourMinimumEarnings.error", 0).bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("yourMinimumEarnings.error.notCompleted", 0).bind(Map("value" -> "invalid value"))
       setUpMock()
 
       val result = controller().onSubmit(NormalMode)(postRequest)

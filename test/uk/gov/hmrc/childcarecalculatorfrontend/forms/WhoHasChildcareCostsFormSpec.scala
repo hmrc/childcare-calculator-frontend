@@ -30,6 +30,6 @@ class WhoHasChildcareCostsFormSpec extends CheckboxBehaviours[Int] {
 
     behave like aCheckboxForm(invalid = "error.unknown")
 
-    behave like aMandatoryCheckboxForm("whoHasChildcareCosts.error")
+    behave like aMandatoryCheckboxForm("whoHasChildcareCosts.error.notCompleted")
   }
 }

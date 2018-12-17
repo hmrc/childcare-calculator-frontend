@@ -51,7 +51,7 @@ class BothPaidPensionCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode) = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm("bothPaidPensionCY.error").bindFromRequest().fold(
+      BooleanForm("bothPaidPensionCY.error.notCompleted").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothPaidPensionCY(appConfig, formWithErrors, mode, taxYearInfo))),
         (value) =>

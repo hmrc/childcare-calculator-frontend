@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 
 trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
-  val form = BooleanForm("yourMinimumEarnings.error", 0)
+  val form = BooleanForm("yourMinimumEarnings.error.notCompleted", 0)
 
   def yesNoPage(createView: (Form[Boolean]) => HtmlFormat.Appendable,
                 messageKeyPrefix: String,

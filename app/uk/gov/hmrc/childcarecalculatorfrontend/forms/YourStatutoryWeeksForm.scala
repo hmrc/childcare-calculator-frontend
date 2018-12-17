@@ -38,8 +38,8 @@ class YourStatutoryWeeksForm @Inject()(appConfig: FrontendAppConfig) extends For
 
     Form(
       "value" ->
-        int("yourStatutoryWeeks.required", "yourStatutoryWeeks.invalid", minWeeks, maxWeeks, statutoryTypeMessage)
-          .verifying(inRange[Int](minWeeks, maxWeeks, "yourStatutoryWeeks.invalid", minWeeks, maxWeeks, statutoryTypeMessage))
+        int("yourStatutoryWeeks.error.required", "yourStatutoryWeeks.error.invalid", minWeeks, maxWeeks, statutoryTypeMessage)
+          .verifying(inRange[Int](minWeeks, maxWeeks, "yourStatutoryWeeks.error.invalid", minWeeks, maxWeeks, statutoryTypeMessage))
     )
   }
 }

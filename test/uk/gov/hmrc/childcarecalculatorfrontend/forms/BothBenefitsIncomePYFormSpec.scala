@@ -32,10 +32,10 @@ class BothBenefitsIncomePYFormSpec extends FormBehaviours {
     behave like questionForm(BothBenefitsIncomePY(1, 2))
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("parentBenefitsIncomePY",
-      "parentBenefitsIncomePY.required", "parentBenefitsIncomePY.required")
+      "parentBenefitsIncomePY.error.required", "parentBenefitsIncomePY.error.required")
 
     behave like formWithMandatoryTextFieldWithErrorMsgs("partnerBenefitsIncomePY",
-      "partnerBenefitsIncomePY.required", "partnerBenefitsIncomePY.required")
+      "partnerBenefitsIncomePY.error.required", "partnerBenefitsIncomePY.error.required")
   }
 
   "fail to bind if either value is below the threshold of 1" in {
@@ -45,8 +45,8 @@ class BothBenefitsIncomePYFormSpec extends FormBehaviours {
     )
 
     val expectedErrors =
-      error("parentBenefitsIncomePY", "parentBenefitsIncomePY.invalid") ++
-        error("partnerBenefitsIncomePY", "partnerBenefitsIncomePY.invalid")
+      error("parentBenefitsIncomePY", "parentBenefitsIncomePY.error.invalid") ++
+        error("partnerBenefitsIncomePY", "partnerBenefitsIncomePY.error.invalid")
 
     checkForError(form, data, expectedErrors)
   }
@@ -58,8 +58,8 @@ class BothBenefitsIncomePYFormSpec extends FormBehaviours {
     )
 
     val expectedErrors =
-      error("parentBenefitsIncomePY", "parentBenefitsIncomePY.invalid") ++
-        error("partnerBenefitsIncomePY", "partnerBenefitsIncomePY.invalid")
+      error("parentBenefitsIncomePY", "parentBenefitsIncomePY.error.invalid") ++
+        error("partnerBenefitsIncomePY", "partnerBenefitsIncomePY.error.invalid")
 
     checkForError(form, data, expectedErrors)
   }

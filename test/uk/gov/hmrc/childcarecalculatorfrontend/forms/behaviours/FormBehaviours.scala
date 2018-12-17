@@ -32,7 +32,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
 
   private def minimumValue(field: String): Assertion = {
     val data = validData + (field -> (minValue - 1).toString())
-    val expectedError = error(field, s"$field.invalid")
+    val expectedError = error(field, s"$field.error.invalid")
     checkForError(form, data, expectedError)
   }
 
@@ -63,7 +63,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
 
       s"fail to bind when $field is blank" in {
         val data = validData + (field -> "")
-        val expectedError = error(field, s"$field.required")
+        val expectedError = error(field, s"$field.error.required")
         checkForError(form, data, expectedError)
       }
     }
@@ -265,7 +265,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
     for (field <- fields) {
       s"fail to bind when $field is not a decimal" in {
         val data = validData + (field -> "invalid")
-        val expectedError = error(field, s"$field.invalid")
+        val expectedError = error(field, s"$field.error.invalid")
         checkForError(form, data, expectedError)
       }
     }
@@ -287,7 +287,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
 
       s"fail to bind when $field is greater than maximum value" in {
         val data = validData + (field -> (maxValue+1).toString())
-        val expectedError = error(field, s"$field.invalid")
+        val expectedError = error(field, s"$field.error.invalid")
         checkForError(form, data, expectedError)
       }
     }

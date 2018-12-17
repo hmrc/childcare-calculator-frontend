@@ -25,6 +25,6 @@ object WhoHasChildcareCostsForm extends FormErrorHelper {
   def apply(options: Int*): Form[Set[Int]] =
     Form(
       "value" -> set(number.verifying("error.unknown", options.contains _))
-          .verifying("whoHasChildcareCosts.error", _.nonEmpty)
+          .verifying("whoHasChildcareCosts.error.notCompleted", _.nonEmpty)
     )
 }

@@ -30,6 +30,6 @@ class WhichChildrenDisabilityFormSpec extends CheckboxBehaviours[Int] {
 
     behave like aCheckboxForm()
 
-    behave like aMandatoryCheckboxForm("whichChildrenDisability.error")
+    behave like aMandatoryCheckboxForm("whichChildrenDisability.error.notCompleted")
   }
 }

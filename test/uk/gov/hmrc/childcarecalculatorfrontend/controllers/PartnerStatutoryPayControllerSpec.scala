@@ -35,7 +35,7 @@ class PartnerStatutoryPayControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo()
 
-  def myForm: Form[Boolean] = BooleanForm("partnerStatutoryPay.required", taxYearInfo.previousTaxYearStart)
+  def myForm: Form[Boolean] = BooleanForm("partnerStatutoryPay.error.required", taxYearInfo.previousTaxYearStart)
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerStatutoryPayController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),

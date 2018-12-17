@@ -22,6 +22,12 @@ $(document).ready(function() {
     window.history.back();
   })
 
+  $('[data-metrics]').each(function() {
+    var metrics = $(this).attr('data-metrics');
+    var parts = metrics.split('.error.');
+    ga('send', 'event', 'userError', parts[0], parts[1]);
+  });
+
   // =====================================================
   // Adds data-focuses attribute to all containers of inputs listed in an error summary
   // This allows validatorFocus to bring viewport to correct scroll point

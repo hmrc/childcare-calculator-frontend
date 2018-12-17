@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object PartnerStatutoryPayTypeForm extends FormErrorHelper {
 
-  val errorKey = "partnerStatutoryPayType.error"
+  val errorKey = "partnerStatutoryPayType.error.notCompleted"
 
   def apply(): Form[StatutoryPayTypeEnum.Value] =
     Form(single("value" -> of(StatutoryPayTypeFormatter)))
