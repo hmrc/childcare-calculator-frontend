@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
             "Foo" -> LocalDate.now().minusYears(15).minusMonths(1),
-            "Bar" -> LocalDate.now().minusYears(16).minusMonths(6)
+            "Bar" -> LocalDate.now().minusYears(15).minusMonths(6)
           )
         )
         val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
@@ -355,7 +355,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No` and child age below 16" in {
         val answers: UserAnswers = spy(userAnswers())
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2003-1-1")))))
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
@@ -368,7 +368,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No, disable child age 16 and dob before august" in {
         val answers: UserAnswers = spy(userAnswers())
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2003-1-1")))))
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
 
@@ -381,7 +381,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No, blind child age 16 and dob before august" in {
         val answers: UserAnswers = spy(userAnswers())
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2002-1-1")))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.parse("2003-1-1")))))
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childDisabilityBenefits).thenReturn(Some(false))
 
@@ -874,7 +874,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         i.toString -> Json.toJson(AboutYourChild(name, dob))
     }.toMap)
 
-  private lazy val dob16: LocalDate = LocalDate.now.minusYears(16).minusDays(1)
+  private lazy val dob16: LocalDate = if (LocalDate.now().getMonthOfYear <= 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
   private lazy val dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
   private lazy val dob: LocalDate = LocalDate.now.minusYears(1)
 

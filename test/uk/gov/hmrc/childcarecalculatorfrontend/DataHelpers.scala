@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ object DataGenerator {
   val over19 = LocalDate.now.minusYears(19).minusDays(1)
   val testBeforeAugust: Int = LocalDate.now.minusYears(16).getYear
   val exact16 = new LocalDate(testBeforeAugust, 6, 1)
-  val over16 = LocalDate.now.minusYears(16).minusDays(1)
+  val over16 = if (LocalDate.now().getMonthOfYear <= 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
   val exact15 = LocalDate.now.minusYears(15).plusMonths(1)
   val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
   else LocalDate.now.minusYears(16)
