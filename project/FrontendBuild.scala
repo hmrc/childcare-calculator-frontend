@@ -12,8 +12,8 @@ private object AppDependencies {
   import play.sbt.PlayImport._
 
   private val playHealthVersion = "3.9.0-play-25"
-  private val bootstrapPlayVersion = "4.3.0"
-  private val logbackJsonLoggerVersion = "4.1.0"
+  private val bootstrapPlayVersion = "4.6.0"
+  private val logbackJsonLoggerVersion = "4.2.0"
   private val govukTemplateVersion = "5.26.0-play-25"
   private val playUiVersion = "7.27.0-play-25"
   private val hmrcTestVersion = "3.3.0"
