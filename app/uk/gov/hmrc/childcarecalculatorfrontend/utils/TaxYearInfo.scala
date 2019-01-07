@@ -24,13 +24,13 @@ class TaxYearInfo @Inject()() {
 
   private lazy val currentTaxYear: TaxYear = TaxYear.current
 
-  lazy val currentTaxYearStart: String = currentTaxYear.starts.toString
+  lazy val currentTaxYearStart: String = currentTaxYear.starts.getYear.toString
   lazy val currentTaxYearEndDate: LocalDate = currentTaxYear.finishes
-  lazy val currentTaxYearEnd: String = currentTaxYearEndDate.toString
+  lazy val currentTaxYearEnd: String = currentTaxYearEndDate.getYear.toString
 
   private lazy val previousTaxYear: TaxYear = currentTaxYear.previous
 
-  lazy val previousTaxYearStart: String = previousTaxYear.starts.toString
+  lazy val previousTaxYearStart: String = previousTaxYear.starts.getYear.toString
   lazy val previousTaxYearEndDate: LocalDate = previousTaxYear.finishes
-  lazy val previousTaxYearEnd: String = previousTaxYearEndDate.toString
+  lazy val previousTaxYearEnd: String = previousTaxYearEndDate.getYear.toString
 }
