@@ -17,12 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{AnyContent, Result}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichChildrenDisabilityId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
@@ -32,17 +31,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisabilit
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class WhichChildrenDisabilityController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       withValues {
         values =>
@@ -55,7 +55,7 @@ class WhichChildrenDisabilityController @Inject()(
       }
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       withValues {
         values =>
@@ -63,7 +63,7 @@ class WhichChildrenDisabilityController @Inject()(
             (formWithErrors: Form[_]) => {
               Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, options(values), mode)))
             },
-            (value) => {
+            value => {
               dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
                 cacheMap =>
                   Redirect(navigator.nextPage(WhichChildrenDisabilityId, mode)(new UserAnswers (cacheMap)))

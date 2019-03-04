@@ -28,13 +28,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BenefitsIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, BenefitsIncomeCY}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefitsIncomeCY
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BenefitsIncomeCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new BenefitsIncomeCYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[BenefitsIncomeCY] = BenefitsIncomeCYForm()) = benefitsIncomeCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

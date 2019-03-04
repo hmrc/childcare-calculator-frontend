@@ -8,7 +8,7 @@ window.onload = function() {
     });
 
 
-    function getCheckedGAValue (value) {
+    function getCheckedGAValue value {
         if(value === "tc") {
             return "Tax credits (includes Working and Child Tax Credit)"
         } else if (value === "uc") {

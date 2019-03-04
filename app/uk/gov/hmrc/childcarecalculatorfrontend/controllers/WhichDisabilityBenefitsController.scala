@@ -17,11 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{RequestHeader, Result}
+import play.api.i18n.{I18nSupport, Lang}
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichDisabilityBenefitsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
@@ -31,19 +30,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefit
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class WhichDisabilityBenefitsController @Inject() (
                                                     appConfig: FrontendAppConfig,
-                                                    override val messagesApi: MessagesApi,
+                                                    mcc: MessagesControllerComponents,
                                                     dataCacheConnector: DataCacheConnector,
                                                     navigator: Navigator,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction
-                                                 ) extends FrontendController with I18nSupport with MapFormats {
+                                                 ) extends FrontendController(mcc) with I18nSupport with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
+      implicit val lang: Lang = request.lang
       withValidIndex(childIndex) {
         name =>
           val answer = request.userAnswers.whichDisabilityBenefits(childIndex)
@@ -55,8 +56,9 @@ class WhichDisabilityBenefitsController @Inject() (
         }
   }
 
-  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
+      implicit val lang: Lang = request.lang
       withValidIndex(childIndex) {
         name =>
           WhichDisabilityBenefitsForm(name).bindFromRequest().fold(

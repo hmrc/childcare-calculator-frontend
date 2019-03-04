@@ -31,13 +31,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, Childcare
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ExpectedChildcareCostsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new ExpectedChildcareCostsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(
                     form: Form[BigDecimal] = ExpectedChildcareCostsForm(WEEKLY, "Foo"),

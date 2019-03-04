@@ -19,6 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.Json
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -29,13 +31,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ChildStartEducationController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new ChildStartEducationController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   val date = new LocalDate(2017, 2, 1)
   val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)

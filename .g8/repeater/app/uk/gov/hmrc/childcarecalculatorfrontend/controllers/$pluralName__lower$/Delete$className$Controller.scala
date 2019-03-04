@@ -17,13 +17,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$pluralName;format="lo
 import scala.concurrent.Future
 
 class Delete$className;format="cap"$Controller @Inject()(appConfig: FrontendAppConfig,
-                                                  override val messagesApi: MessagesApi,
+                                                  mcc: MessagesControllerComponents,
                                                   dataCacheConnector: DataCacheConnector,
                                                   navigator: Navigator,
                                                   getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                  requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
 
-  def onPageLoad(index: Int, mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(index: Int, mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       request.userAnswers.$pluralName;format="decap"$.flatMap(x => x.lift(index)) match {
         case None => NotFound
@@ -31,7 +31,7 @@ class Delete$className;format="cap"$Controller @Inject()(appConfig: FrontendAppC
       }
   }
 
-  def onSubmit(index: Int, mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(index: Int, mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       request.userAnswers.$pluralName;format="decap"$.flatMap(x => x.lift(index)) match {
         case None => Future.successful(NotFound)
@@ -39,8 +39,8 @@ class Delete$className;format="cap"$Controller @Inject()(appConfig: FrontendAppC
           BooleanForm().bindFromRequest().fold(
             (formWithErrors: Form[Boolean]) =>
               Future.successful(BadRequest(delete$className$(index, $className;format="decap"$, appConfig, formWithErrors, mode))),
-            (value) =>
-              if (value) {
+            value =>
+              if value {
               dataCacheConnector.removeFromCollection[$className$](request.sessionId, $pluralName$Id.toString, $className;format="decap"$).map(cacheMap =>
                 Redirect(navigator.nextPage(Delete$className$Id, mode)(new UserAnswers(cacheMap))))
               } else {

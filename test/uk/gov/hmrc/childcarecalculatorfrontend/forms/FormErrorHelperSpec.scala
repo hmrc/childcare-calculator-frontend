@@ -21,7 +21,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class FormErrorHelperSpec extends SpecBase {
 
-  val formErrorHelper = new FormErrorHelper()
+  class TestObject extends FormErrorHelper
+
+  val formErrorHelper = new TestObject
   val maxIncome = 100000
   val  errorKeyInvalidMaxEarnings = "invalid max earnings key"
 

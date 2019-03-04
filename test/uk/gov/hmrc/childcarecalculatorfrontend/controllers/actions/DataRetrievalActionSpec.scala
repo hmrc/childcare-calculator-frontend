@@ -16,11 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
-import java.io.FileNotFoundException
-
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
-import org.scalatest.{RecoverMethods, Succeeded}
+import org.scalatest.RecoverMethods
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.Request
@@ -29,15 +27,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.http.SessionKeys
 import uk.gov.hmrc.http.cache.client.CacheMap
-import uk.gov.hmrc.http.logging.SessionId
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.Success
+import scala.concurrent.Future
 
 class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutures with RecoverMethods {
 
-  class Harness(dataCacheConnector: DataCacheConnector) extends DataRetrievalActionImpl(dataCacheConnector) {
+  class Harness(dataCacheConnector: DataCacheConnector) extends DataRetrievalActionImpl(dataCacheConnector, mcc) {
     def callTransform[A](request: Request[A]): Future[OptionalDataRequest[A]] = transform(request)
   }
 

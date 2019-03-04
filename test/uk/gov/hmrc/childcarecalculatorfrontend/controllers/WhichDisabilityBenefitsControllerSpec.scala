@@ -33,6 +33,8 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.util.Random
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with OptionValues {
 
   "WhichDisabilityBenefits Controller" must {
@@ -152,8 +154,8 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichDisabilityBenefitsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new WhichDisabilityBenefitsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[Set[DisabilityBenefits.Value]]): String =
     viewAsString(form, 0, "Foo")
@@ -168,7 +170,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
                     index: Int,
                     name: String
                   ): String =
-    whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages).toString
+    whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang).toString
 
   def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = {
     if (cases.size == 1) {

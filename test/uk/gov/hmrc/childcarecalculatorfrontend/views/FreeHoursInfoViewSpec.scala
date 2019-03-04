@@ -33,8 +33,8 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
     Seq(ENGLAND, SCOTLAND, WALES).foreach { location =>
       s"display correct content when user with location $location and have child aged 2" in {
         val view = freeHoursInfo(frontendAppConfig, true,false,false,false, location)(fakeRequest, messages)
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$location"))
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.li.2year"))
+        assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.para1.$location"))
+        assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.li.2year"))
       }
     }
 
@@ -42,15 +42,15 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
       s"display correct content when user with location $location and don't have child aged 2" in {
         val view = freeHoursInfo(frontendAppConfig, false,false,false,false, location)(fakeRequest, messages)
         val doc = asDocument(view)
-        assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$location"))
-        assertNotContainsText(doc, messagesApi(s"$messageKeyPrefix.para2.$location"))
+        assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.para1.$location"))
+        assertNotContainsText(doc, messages(s"$messageKeyPrefix.para2.$location"))
       }
     }
 
     "display correct information when user in England has a 3 year old child" in {
       val view = freeHoursInfo(frontendAppConfig, false, true, true, true, ENGLAND)(fakeRequest, messages)
       val doc = asDocument(view)
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.england"))
+      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.para1.england"))
     }
 
 
@@ -58,12 +58,12 @@ class FreeHoursInfoViewSpec extends ViewBehaviours {
       val view = freeHoursInfo(frontendAppConfig, false,true,true,false, ENGLAND, true)(fakeRequest, messages)
       val doc = asDocument(view)
 
-      assertContainsText(asDocument(view), messagesApi(s"$messageKeyPrefix.para1.$ENGLAND"))
-      assertNotContainsText(doc, messagesApi(s"$messageKeyPrefix.para2.$ENGLAND"))
-      assertContainsText(doc, messagesApi("freeHoursInfo.no.approved.para"))
-      assertContainsText(doc, messagesApi("freeHoursInfo.no.childcare.para.end"))
-      assertContainsText(doc, messagesApi("freeHoursInfo.no.approved.para.link"))
-      assertContainsText(doc, messagesApi("freeHoursInfo.li.30hours"))
+      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.para1.$ENGLAND"))
+      assertNotContainsText(doc, messages(s"$messageKeyPrefix.para2.$ENGLAND"))
+      assertContainsText(doc, messages("freeHoursInfo.no.approved.para"))
+      assertContainsText(doc, messages("freeHoursInfo.no.childcare.para.end"))
+      assertContainsText(doc, messages("freeHoursInfo.no.approved.para.link"))
+      assertContainsText(doc, messages("freeHoursInfo.li.30hours"))
       assertNotRenderedByCssSelector(doc, "bullets")
     }
    }

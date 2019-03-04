@@ -29,6 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothStatutoryPay
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class BothStatutoryPayControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -38,8 +40,8 @@ class BothStatutoryPayControllerSpec extends ControllerSpecBase {
   def myForm: Form[Boolean] = BooleanForm("bothStatutoryPay.error.required", taxYearInfo.previousTaxYearStart)
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BothStatutoryPayController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
+    new BothStatutoryPayController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo)
 
   def viewAsString(form: Form[Boolean] = myForm) = bothStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 

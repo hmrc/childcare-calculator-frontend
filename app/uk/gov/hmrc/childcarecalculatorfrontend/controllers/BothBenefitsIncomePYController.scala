@@ -17,29 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BothBenefitsIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothBenefitsIncomePYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, BothBenefitsIncomePY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BothBenefitsIncomePY, Mode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothBenefitsIncomePY
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class BothBenefitsIncomePYController @Inject()(appConfig: FrontendAppConfig,
-                                                  override val messagesApi: MessagesApi,
+                                               mcc: MessagesControllerComponents,
                                                   dataCacheConnector: DataCacheConnector,
                                                   navigator: Navigator,
                                                   getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                  requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.bothBenefitsIncomePY match {
         case None => BothBenefitsIncomePYForm()
@@ -48,12 +49,12 @@ class BothBenefitsIncomePYController @Inject()(appConfig: FrontendAppConfig,
       Ok(bothBenefitsIncomePY(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BothBenefitsIncomePYForm().bindFromRequest().fold(
         (formWithErrors: Form[BothBenefitsIncomePY]) =>
           Future.successful(BadRequest(bothBenefitsIncomePY(appConfig, formWithErrors, mode))),
-        (value) =>
+        value =>
           dataCacheConnector.save[BothBenefitsIncomePY](request.sessionId, BothBenefitsIncomePYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(BothBenefitsIncomePYId, mode)(new UserAnswers(cacheMap))))
       )

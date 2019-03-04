@@ -387,7 +387,6 @@ class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
 
   val incomeSummary = new IncomeSummary(new Utils())
   val answers = spy(userAnswers())
-  override implicit val messages: Messages = messagesApi.preferred(fakeRequest)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 }

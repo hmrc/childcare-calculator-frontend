@@ -17,9 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SessionDataClearId
@@ -28,14 +27,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class SessionManagementController @Inject()(val appConfig: FrontendAppConfig,
-                                            val messagesApi: MessagesApi,
+                                            mcc: MessagesControllerComponents,
                                             dataCacheConnector: DataCacheConnector,
                                             navigator: Navigator,
                                             getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                            requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
   def extendSession: Action[AnyContent] = Action.async {
     Future.successful(Ok("OK"))

@@ -45,7 +45,7 @@ class PartnerIncomeInfoViewSpec extends ViewBehaviours {
     val doc = asDocument(createViewWithNextPageLink(testCall))
     val continueLink = doc.getElementById("target-page-link")
 
-    assertContainsText(doc, messagesApi("site.save_and_continue"))
+    assertContainsText(doc, messages("site.save_and_continue"))
     continueLink.attr("href") mustBe testCall.url
 
   }

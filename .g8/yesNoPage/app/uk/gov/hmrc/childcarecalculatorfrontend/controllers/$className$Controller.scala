@@ -17,13 +17,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$className;format="dec
 import scala.concurrent.Future
 
 class $className;format="cap"$Controller @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
+                                         mcc: MessagesControllerComponents,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
                                          getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                         requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.$className;format="decap"$ match {
         case None => BooleanForm()
@@ -32,12 +32,12 @@ class $className;format="cap"$Controller @Inject()(appConfig: FrontendAppConfig,
       Ok($className;format="decap"$(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BooleanForm().bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest($className;format="decap"$(appConfig, formWithErrors, mode))),
-        (value) =>
+        value =>
           dataCacheConnector.save[Boolean](request.sessionId, $className$Id.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage($className$Id, mode)(new UserAnswers(cacheMap))))
       )

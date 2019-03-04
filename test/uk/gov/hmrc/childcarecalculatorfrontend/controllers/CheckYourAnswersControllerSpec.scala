@@ -21,10 +21,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.check_your_answers
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new CheckYourAnswersController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+    new CheckYourAnswersController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction)
 
   "Check Your Answers Controller" must {
     "return 200 and the correct view for a GET" in {

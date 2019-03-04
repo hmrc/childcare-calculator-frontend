@@ -17,30 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothGetSameIncomePreviousYearId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMapCloner, IncomeSummary, TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppConfig,
-                                                        override val messagesApi: MessagesApi,
+                                                        mcc: MessagesControllerComponents,
                                                         dataCacheConnector: DataCacheConnector,
                                                         navigator: Navigator,
                                                         getData: DataRetrievalAction,
                                                         requireData: DataRequiredAction,
-                                                        taxYearInfo: TaxYearInfo, incomeSummary: IncomeSummary) extends FrontendController with I18nSupport {
+                                                        taxYearInfo: TaxYearInfo, incomeSummary: IncomeSummary) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.bothGetSameIncomePreviousYear match {
         case None => BooleanForm()
@@ -52,14 +53,14 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
       Ok(bothGetSameIncomePreviousYear(appConfig, preparedForm, mode, taxYearInfo, Some(summary)))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("bothGetSameIncomePreviousYear.error.notCompleted").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) => {
           val summary = incomeSummary.load(request.userAnswers)
           Future.successful(BadRequest(bothGetSameIncomePreviousYear(appConfig, formWithErrors, mode, taxYearInfo, Some(summary))))
         },
-        (getsSameIncomeAsLastYear) => {
+        getsSameIncomeAsLastYear => {
           val clonedPreviousYearIncomeData = if (getsSameIncomeAsLastYear) {
             CacheMapCloner.cloneCYIncomeIntoPYIncome(request.userAnswers.cacheMap)
           }

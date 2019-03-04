@@ -32,6 +32,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerMinimumEarning
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   val mockUtils = mock[Utils]
@@ -39,8 +41,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerMinimumEarningsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, mockUtils)
+    new PartnerMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, mockUtils)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
 

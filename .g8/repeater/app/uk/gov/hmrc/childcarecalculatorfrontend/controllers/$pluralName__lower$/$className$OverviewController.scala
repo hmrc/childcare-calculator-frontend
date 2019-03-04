@@ -15,9 +15,9 @@ class $className$OverviewController @Inject()(val appConfig: FrontendAppConfig,
                                           val messagesApi: MessagesApi,
                                           navigator: Navigator,
                                           getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                          requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val viewModel = $className$OverviewViewModel(
         request.userAnswers.$pluralName;format="decap"$.getOrElse(Seq()),

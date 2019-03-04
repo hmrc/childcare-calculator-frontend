@@ -29,6 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{IncomeSummary, TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
@@ -40,8 +42,8 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BothGetSameIncomePreviousYearController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo, new IncomeSummary(new Utils()))
+    new BothGetSameIncomePreviousYearController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo, new IncomeSummary(new Utils()))
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo, mapSummary)(fakeRequest, messages).toString
 

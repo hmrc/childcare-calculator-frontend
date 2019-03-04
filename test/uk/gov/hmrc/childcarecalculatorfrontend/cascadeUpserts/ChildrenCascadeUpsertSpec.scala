@@ -19,6 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import org.joda.time.LocalDate
 import play.api.libs.json._
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, DataGenerator, SpecBase}

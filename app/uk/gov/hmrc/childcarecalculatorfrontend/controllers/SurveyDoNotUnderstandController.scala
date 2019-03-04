@@ -17,33 +17,34 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.Logger
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService, SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class SurveyDoNotUnderstandController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        splunkSubmissionService: SplunkSubmissionServiceInterface) extends FrontendController with I18nSupport {
+                                        splunkSubmissionService: SplunkSubmissionServiceInterface) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad() = (getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.surveyDoNotUnderstand match {
         case None => SurveyDoNotUnderstandForm()
@@ -52,12 +53,12 @@ class SurveyDoNotUnderstandController @Inject()(
       Ok(surveyDoNotUnderstand(appConfig, preparedForm))
   }
 
-  def onSubmit() = (getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       SurveyDoNotUnderstandForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
-        (value) => {
+        value => {
 
           val data = Map("reasonForNotUnderstanding" -> value)
 

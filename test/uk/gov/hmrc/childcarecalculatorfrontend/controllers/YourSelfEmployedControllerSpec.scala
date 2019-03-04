@@ -29,13 +29,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourSelfEmployed
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class YourSelfEmployedControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourSelfEmployedController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new YourSelfEmployedController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = yourSelfEmployed(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

@@ -30,13 +30,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Wh
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with OptionValues {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichChildrenDisabilityController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new WhichChildrenDisabilityController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   val requiredData: Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(

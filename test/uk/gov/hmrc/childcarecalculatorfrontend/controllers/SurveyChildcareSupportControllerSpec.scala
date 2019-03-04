@@ -28,13 +28,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyCh
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new SurveyChildcareSupportController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new FakeSplunkSubmissionService)
+    new SurveyChildcareSupportController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = surveyChildcareSupport(frontendAppConfig, form)(fakeRequest, messages).toString
 

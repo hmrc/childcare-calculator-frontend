@@ -1,13 +1,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$className;format="decap"$
 
 class $className$ControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new $className$Controller(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+    new $className$Controller(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredAction)
 
   "$className$ Controller" must {
     "return OK and the correct view for a GET" in {

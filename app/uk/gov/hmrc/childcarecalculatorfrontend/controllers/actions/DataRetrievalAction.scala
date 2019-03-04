@@ -17,30 +17,34 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
 import com.google.inject.{ImplementedBy, Inject}
-import play.api.Logger
-import play.api.mvc.{ActionBuilder, ActionTransformer, Request}
+import play.api.mvc.{ActionBuilder, ActionTransformer, AnyContent, BodyParser, MessagesControllerComponents, Request}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnector) extends DataRetrievalAction {
+class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnector,
+                                    val mcc: MessagesControllerComponents)
+                                   (implicit ec: ExecutionContext) extends DataRetrievalAction {
+
+  override protected def executionContext: ExecutionContext = mcc.executionContext
+  override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
 
   override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = {
-    implicit val hc = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-      hc.sessionId match {
-        case None => Future.failed(new IllegalStateException())
-        case Some(sessionId) =>
-          dataCacheConnector.fetch(sessionId.toString).map {
-            case None => OptionalDataRequest(request, sessionId.toString, None)
-            case Some(data) => OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
-          }
-      }
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    hc.sessionId match {
+      case None => Future.failed(new IllegalStateException())
+      case Some(sessionId) =>
+        dataCacheConnector.fetch(sessionId.toString).map {
+          case None => OptionalDataRequest(request, sessionId.toString, None)
+          case Some(data) => OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
+        }
+    }
   }
 }
 
 @ImplementedBy(classOf[DataRetrievalActionImpl])
-trait DataRetrievalAction extends ActionTransformer[Request, OptionalDataRequest] with ActionBuilder[OptionalDataRequest]
+trait DataRetrievalAction extends ActionTransformer[Request, OptionalDataRequest] with ActionBuilder[OptionalDataRequest, AnyContent]

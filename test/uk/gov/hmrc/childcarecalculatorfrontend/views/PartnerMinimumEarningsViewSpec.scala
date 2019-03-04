@@ -35,7 +35,7 @@ class PartnerMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
   "PartnerMinimumEarnings view" must {
 
-    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messagesApi("partnerMinimumEarnings.heading", 0))
+    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messages("partnerMinimumEarnings.heading", 0))
 
     behave like pageWithBackLink(createView)
 
@@ -51,8 +51,8 @@ class PartnerMinimumEarningsViewSpec extends YesNoViewBehaviours {
       val amount = BigDecimal(40)
       val doc = asDocument(createViewWithAmount(amount))
 
-      assertContainsText(doc, messagesApi("partnerMinimumEarnings.hint"))
-      assertContainsText(doc, messagesApi("partnerMinimumEarnings.heading", amount))
+      assertContainsText(doc, messages("partnerMinimumEarnings.hint"))
+      assertContainsText(doc, messages("partnerMinimumEarnings.heading", amount))
     }
   }
 }

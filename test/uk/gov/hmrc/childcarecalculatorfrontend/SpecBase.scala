@@ -17,20 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend
 
 import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice._
-import play.api.i18n.{Messages, MessagesApi}
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
+import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.inject.Injector
+import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.FakeRequest
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
+
+  implicit val application: Application = app
 
   def injector: Injector = app.injector
 
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
-  def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+  def mcc: MessagesControllerComponents = injector.instanceOf[MessagesControllerComponents]
 
-  def fakeRequest = FakeRequest("", "")
+  def fakeRequest: FakeRequest[AnyContent] = FakeRequest("", "")
+
+  def lang: Lang = Lang("en")
+
+  def messagesApi : MessagesApi = injector.instanceOf[MessagesApi]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 }

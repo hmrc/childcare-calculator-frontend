@@ -20,6 +20,9 @@ import com.google.inject.AbstractModule
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{EligibilityService, SubmissionService}
 
 class EligibilitySubmissionModule extends AbstractModule {
-  override def configure() =
+
+  override def configure(): Unit = {
     bind(classOf[SubmissionService]).to(classOf[EligibilityService])
+  }
+
 }

@@ -28,13 +28,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhosHadBenefitsPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefitsPY
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhosHadBenefitsPYControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhosHadBenefitsPYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new WhosHadBenefitsPYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[_] = WhosHadBenefitsPYForm()) = whosHadBenefitsPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

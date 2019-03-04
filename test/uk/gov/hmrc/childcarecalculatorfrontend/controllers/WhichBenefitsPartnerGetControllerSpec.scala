@@ -28,15 +28,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGet
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhichBenefitsPartnerGetControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichBenefitsPartnerGetController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new WhichBenefitsPartnerGetController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsPartnerGetForm()) = whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsPartnerGetForm()) = whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang).toString
 
   "WhichBenefitsPartnerGet Controller" must {
 

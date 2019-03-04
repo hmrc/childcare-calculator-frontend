@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
 @import uk.gov.hmrc.play.views.html._
 
-@(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages, lang: Lang)
 
 @main_template(
     title = messages("whichDisabilityBenefits.title"),

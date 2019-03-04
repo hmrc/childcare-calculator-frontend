@@ -28,14 +28,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerOtherIncomeAmo
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmountCY
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class PartnerOtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
   val partnerOtherIncomeAmountCYForm = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerOtherIncomeAmountCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new PartnerOtherIncomeAmountCYForm(frontendAppConfig))
+    new PartnerOtherIncomeAmountCYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new PartnerOtherIncomeAmountCYForm(frontendAppConfig))
 
   def viewAsString(form: Form[BigDecimal] = partnerOtherIncomeAmountCYForm) = partnerOtherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

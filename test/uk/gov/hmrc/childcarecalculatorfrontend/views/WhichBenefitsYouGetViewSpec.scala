@@ -34,7 +34,7 @@ class WhichBenefitsYouGetViewSpec extends ViewBehaviours with CheckboxViewBehavi
   def form: Form[Set[String]] = WhichBenefitsYouGetForm()
 
   def createView(form: Form[Set[String]] = form): Html =
-    whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+    whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
 
   "WhichBenefitsYouGet view" must {
 
@@ -48,21 +48,21 @@ class WhichBenefitsYouGetViewSpec extends ViewBehaviours with CheckboxViewBehavi
 
   "whichBenefitsYouGet view " must {
     s"display correct content when loaded" in {
-      val view = whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.income.benefits"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.income.support"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.jobseeker.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.employer.support.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.pension.credit"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefits"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefit.living.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefit.attendance.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.disability.benefit.personal.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefits"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.living.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.personal.payment"))
-      assertContainsText(asDocument(view), messagesApi("whichBenefitsList.typeof.higher.rate.benefit.independent.payment"))
+      val view = whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.benefits"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.support"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.jobseeker.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.employer.support.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.pension.credit"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.disability.benefits"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.disability.benefit.living.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.disability.benefit.attendance.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.disability.benefit.personal.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.higher.rate.benefits"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.higher.rate.benefit.living.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.higher.rate.benefit.personal.payment"))
+      assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.higher.rate.benefit.independent.payment"))
     }
   }
 }

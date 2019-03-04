@@ -17,16 +17,18 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class YourIncomeInfoPYControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourIncomeInfoPYController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
+    new YourIncomeInfoPYController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction, taxYearInfo)
 
   "YourIncomeInfoPY Controller" must {
     "return OK and the correct view for a GET" in {

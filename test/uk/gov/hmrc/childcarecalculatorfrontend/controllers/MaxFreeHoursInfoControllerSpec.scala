@@ -22,12 +22,14 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.{JsBoolean, JsNumber, JsString}
 import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{EmploymentSupportedChildcare, TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
 
@@ -39,9 +41,9 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new MaxFreeHoursInfoController(frontendAppConfig,
-      messagesApi,
+      mcc,
       dataRetrievalAction,
-      new DataRequiredActionImpl,
+      new DataRequiredAction,
       tfc,
       tc,
       esc)

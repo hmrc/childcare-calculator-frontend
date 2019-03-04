@@ -16,15 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
-import play.api.mvc.Request
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.Application
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
-class FakeDataRetrievalAction(cacheMapToReturn: Option[CacheMap]) extends DataRetrievalAction {
+class FakeDataRetrievalAction(cacheMapToReturn: Option[CacheMap])(implicit app: Application) extends DataRetrievalAction {
+
+  override def executionContext: ExecutionContext = global
+  override def parser: BodyParser[AnyContent] = app.injector.instanceOf[MessagesControllerComponents].parsers.defaultBodyParser
+
   override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = cacheMapToReturn match {
     case None => Future(OptionalDataRequest(request, "id", None))
     case Some(cacheMap)=> Future(OptionalDataRequest(request, "id", Some(new UserAnswers(cacheMap))))

@@ -234,6 +234,6 @@ class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar wit
   val answers: UserAnswers = spy(userAnswers())
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]
-  override implicit val messages: Messages = messagesApi.preferred(fakeRequest)
+
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 }

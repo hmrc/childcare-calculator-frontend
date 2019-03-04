@@ -31,12 +31,12 @@ trait ViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view())
           val nav = doc.getElementById("proposition-menu")
           val span = nav.children.first
-          span.text mustBe messagesApi("site.service_name")
+          span.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
           val doc = asDocument(view())
-          assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title")+" - "+messagesApi("site.service_name")+" - GOV.UK")
+          assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title")+" - "+messages("site.service_name")+" - GOV.UK")
         }
 
         "display the correct page title" in {
@@ -93,12 +93,12 @@ trait ViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view())
           val nav = doc.getElementById("proposition-menu")
           val span = nav.children.first
-          span.text mustBe messagesApi("site.service_name")
+          span.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
           val doc = asDocument(view())
-          assertEqualsValue(doc, "title", title + " - " + messagesApi("site.service_name") + " - GOV.UK")
+          assertEqualsValue(doc, "title", title + " - " + messages("site.service_name") + " - GOV.UK")
         }
 
         "display the correct page title" in {

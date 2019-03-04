@@ -17,20 +17,21 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import com.google.inject.Inject
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CheckYourAnswersHelper
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.check_your_answers
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 class CheckYourAnswersController @Inject()(appConfig: FrontendAppConfig,
-                                           override val messagesApi: MessagesApi,
+                                           mcc: MessagesControllerComponents,
                                            getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                           requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
 
-  def onPageLoad() = (getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
       val sections = Seq(AnswerSection(None, Seq(

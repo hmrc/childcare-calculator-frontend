@@ -20,7 +20,9 @@ import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class SessionManagementControllerSpec extends ControllerSpecBase {
 
@@ -28,11 +30,11 @@ class SessionManagementControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): SessionManagementController =
     new SessionManagementController(frontendAppConfig,
-      messagesApi,
+      mcc,
       FakeDataCacheConnector,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
-      new DataRequiredActionImpl)
+      new DataRequiredAction)
 
   "SessionManagement Controller" must {
     "return 200 for a GET" in {
