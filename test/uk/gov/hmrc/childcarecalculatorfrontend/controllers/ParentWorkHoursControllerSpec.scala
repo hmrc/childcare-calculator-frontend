@@ -28,6 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentWorkHoursId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentWorkHours
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -35,8 +37,8 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
   val parentWorkHoursForm = new ParentWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ParentWorkHoursController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new ParentWorkHoursForm(frontendAppConfig))
+    new ParentWorkHoursController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new ParentWorkHoursForm(frontendAppConfig))
 
   def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

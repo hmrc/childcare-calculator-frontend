@@ -21,25 +21,27 @@ import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class FormErrorHelper extends Mappings {
+trait FormErrorHelper extends Mappings {
+
+  private val requiredField: String = "error.required"
 
   val decimalRegex: String = """\d+(\.\d{1,2})?""".r.toString()
 
-  def produceError(key: String, error: String, args: Any*) = Left(Seq(FormError(key, error, args)))
+  def produceError(key: String, error: String, args: Any*): Left[Seq[FormError], Nothing] = Left(Seq(FormError(key, error, args)))
 
   def validateInRange(value: BigDecimal, minValue: BigDecimal, maxValue: BigDecimal): Boolean = {
     value >= minValue && value <= maxValue
   }
 
-  def valueNonEmpty(message: String): Constraint[String] = Constraint[String]("error.required") { o =>
+  def valueNonEmpty(message: String): Constraint[String] = Constraint[String](requiredField) { o =>
     if (o != null && o.trim.nonEmpty) Valid else Invalid(ValidationError(message))
   }
 
-  def validateDecimalInRange(message: String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String]("error.required") { o =>
+  def validateDecimalInRange(message: String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] = Constraint[String](requiredField) { o =>
     if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid else Invalid(ValidationError(message))
   }
 
-  def validateDecimal(message: String): Constraint[String] = Constraint[String]("error.required") { o =>
+  def validateDecimal(message: String): Constraint[String] = Constraint[String](requiredField) { o =>
     if (o.matches(decimalRegex)) Valid else Invalid(ValidationError(message))
   }
 
@@ -61,7 +63,7 @@ class FormErrorHelper extends Mappings {
     }
   }
 
-  def returnOnFirstFailure[T](constraints: Constraint[T]*) = Constraint { field: T =>
+  def returnOnFirstFailure[T](constraints: Constraint[T]*): Constraint[T] = Constraint { field: T =>
     constraints.toList dropWhile (_ (field) == Valid) match {
       case Nil => Valid
       case constraint :: _ => constraint(field)

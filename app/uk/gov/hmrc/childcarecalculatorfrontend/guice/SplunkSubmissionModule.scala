@@ -20,7 +20,9 @@ import com.google.inject.AbstractModule
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService, SplunkSubmissionServiceInterface}
 
 class SplunkSubmissionModule extends AbstractModule {
-  override def configure() = {
+
+  override def configure(): Unit = {
     bind(classOf[SplunkSubmissionServiceInterface]).to(classOf[SplunkSubmissionService])
   }
+
 }

@@ -17,37 +17,37 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{RequestHeader, Result}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryWeeksId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class YourStatutoryWeeksController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        yourStatutoryWeeksForm: YourStatutoryWeeksForm) extends FrontendController with I18nSupport {
+                                        yourStatutoryWeeksForm: YourStatutoryWeeksForm) extends FrontendController(mcc)with I18nSupport {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
 
-  private def validateStatutoryPayType[A](block: (StatutoryPayTypeEnum.Value) => Future[Result])
+  private def validateStatutoryPayType[A](block: StatutoryPayTypeEnum.Value => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {
 
     request.userAnswers.yourStatutoryPayType.map {
@@ -55,7 +55,7 @@ class YourStatutoryWeeksController @Inject()(
     }.getOrElse(sessionExpired("validateStatutoryPayType",Some(request.userAnswers)))
   }
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
@@ -70,7 +70,7 @@ class YourStatutoryWeeksController @Inject()(
       }
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
@@ -80,7 +80,7 @@ class YourStatutoryWeeksController @Inject()(
           yourStatutoryWeeksForm(statutoryType, viewModel.statutoryTypeMessage).bindFromRequest().fold(
             (formWithErrors: Form[Int]) =>
               Future.successful(BadRequest(yourStatutoryWeeks(appConfig, formWithErrors, mode, viewModel))),
-            (value) =>
+            value =>
               dataCacheConnector.save[Int](request.sessionId, YourStatutoryWeeksId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(YourStatutoryWeeksId, mode)(new UserAnswers(cacheMap))))
           )

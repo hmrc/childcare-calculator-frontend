@@ -28,13 +28,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoPaysIntoPensionId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaysIntoPension
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhoPaysIntoPensionControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhoPaysIntoPensionController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new WhoPaysIntoPensionController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[String] = WhoPaysIntoPensionForm()) = whoPaysIntoPension(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

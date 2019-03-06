@@ -17,32 +17,34 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import org.joda.time.LocalDate
+import play.api.libs.json.JodaWrites._
+import play.api.libs.json.JodaReads._
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{RequestHeader, Result}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildStartEducationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ChildStartEducationController @Inject() (
                                                 appConfig: FrontendAppConfig,
-                                                override val messagesApi: MessagesApi,
+                                                mcc: MessagesControllerComponents,
                                                 dataCacheConnector: DataCacheConnector,
                                                 navigator: Navigator,
                                                 getData: DataRetrievalAction,
                                                 requireData: DataRequiredAction
-                                             ) extends FrontendController with I18nSupport with MapFormats {
+                                             ) extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
@@ -58,7 +60,7 @@ class ChildStartEducationController @Inject() (
     } yield block(name, child.dob)
   }.getOrElse(sessionExpired("validateIndex",Some(request.userAnswers)))
 
-  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
@@ -70,14 +72,14 @@ class ChildStartEducationController @Inject() (
       }
   }
 
-  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
           ChildStartEducationForm(dob).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(childStartEducation(appConfig, formWithErrors, mode, childIndex, name))),
-            (value) =>
+            value =>
               dataCacheConnector.saveInMap[Int, LocalDate](
                 request.sessionId,
                 ChildStartEducationId.toString,

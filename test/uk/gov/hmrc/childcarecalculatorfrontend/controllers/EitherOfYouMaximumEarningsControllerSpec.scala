@@ -28,13 +28,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EitherOfYouMaximumEar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherOfYouMaximumEarnings
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class EitherOfYouMaximumEarningsControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new EitherOfYouMaximumEarningsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new EitherOfYouMaximumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = eitherOfYouMaximumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

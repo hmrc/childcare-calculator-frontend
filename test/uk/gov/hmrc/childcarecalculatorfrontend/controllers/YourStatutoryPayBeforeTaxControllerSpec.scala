@@ -28,6 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayBefo
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayBeforeTax
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class YourStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -41,8 +43,8 @@ class YourStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
   val myForm = BooleanForm("yourStatutoryPayBeforeTax.error.notCompleted", statutoryType.toString)
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
-    new YourStatutoryPayBeforeTaxController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new YourStatutoryPayBeforeTaxController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[Boolean] = myForm) = yourStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 

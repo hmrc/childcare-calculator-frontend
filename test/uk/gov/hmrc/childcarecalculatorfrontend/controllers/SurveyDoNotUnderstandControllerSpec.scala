@@ -31,13 +31,15 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.Future
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new SurveyDoNotUnderstandController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new FakeSplunkSubmissionService())
+    new SurveyDoNotUnderstandController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService())
 
   def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages).toString
 

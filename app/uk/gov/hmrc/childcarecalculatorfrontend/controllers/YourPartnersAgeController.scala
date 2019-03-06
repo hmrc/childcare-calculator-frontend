@@ -17,29 +17,29 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourPartnersAgeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourPartnersAgeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourPartnersAge
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class YourPartnersAgeController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
@@ -55,7 +55,7 @@ class YourPartnersAgeController @Inject()(
       YourPartnersAgeForm().bindFromRequest().fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(yourPartnersAge(appConfig, formWithErrors, mode))),
-        (value) =>
+        value =>
           dataCacheConnector.save[String](request.sessionId, YourPartnersAgeId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YourPartnersAgeId, mode)(new UserAnswers(cacheMap))))
       )

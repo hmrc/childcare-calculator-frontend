@@ -19,11 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
+import play.api.i18n.Lang
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
-import services.{MoreInfoService, MoreInfoServiceInterface}
+import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
@@ -31,21 +32,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
-  val mockMoreInfoService: MoreInfoServiceInterface = mock[MoreInfoService]
+  val mockMoreInfoService: MoreInfoService = mock[MoreInfoService]
+
+  implicit val l: Lang = mock[Lang]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
                  resultService: ResultsService): ResultController =
     new ResultController(frontendAppConfig,
-      messagesApi,
+      mcc,
       FakeDataCacheConnector,
       dataRetrievalAction,
-      new DataRequiredActionImpl,
+      new DataRequiredAction,
       resultService,
       mockMoreInfoService,
       new Utils)
@@ -55,8 +57,8 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       when(resultService.getResultsViewModel(any(),any())(any(),any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
 
-      when(mockMoreInfoService.getSchemeContent(any(), any())) thenReturn List.empty
-      when(mockMoreInfoService.getSummary(any(), any())) thenReturn None
+      when(mockMoreInfoService.getSchemeContent(any(), any())(any())) thenReturn List.empty
+      when(mockMoreInfoService.getSummary(any(), any())(any())) thenReturn None
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
       val resultPage = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)

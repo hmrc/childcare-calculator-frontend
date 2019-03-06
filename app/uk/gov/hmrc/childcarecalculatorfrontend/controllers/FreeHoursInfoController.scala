@@ -17,21 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{NOTSURE, YES}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

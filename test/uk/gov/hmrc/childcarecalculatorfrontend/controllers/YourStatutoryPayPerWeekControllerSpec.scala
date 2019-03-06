@@ -34,6 +34,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{yourStatutoryPayPerWeek, yourStatutoryPayType}
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
@@ -46,11 +48,11 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryPayPerWeekController(frontendAppConfig,
-      messagesApi,
+      mcc,
       FakeDataCacheConnector,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
-      new DataRequiredActionImpl)
+      new DataRequiredAction)
 
   def viewAsString(form: Form[BigDecimal] = YourStatutoryPayPerWeekForm(statutoryType)) =
     yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString

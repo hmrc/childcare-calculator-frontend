@@ -17,6 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -167,13 +169,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
 
   def yourOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeLYId.toString)
 
-  def aboutYourChild(index: Int): Option[AboutYourChild] = {
-    aboutYourChild.flatMap(_.get(index))
-  }
+  def aboutYourChild(index: Int): Option[AboutYourChild] = aboutYourChild.flatMap(_.get(index))
 
-  def aboutYourChild: Option[Map[Int, AboutYourChild]] = {
-    cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
-  }
+  def aboutYourChild: Option[Map[Int, AboutYourChild]] = cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
 
   def bothPaidPensionPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidPensionPYId.toString)
 

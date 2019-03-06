@@ -28,12 +28,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEn
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new FreeHoursInfoController(frontendAppConfig, messagesApi, dataRetrievalAction, new DataRequiredActionImpl)
+    new FreeHoursInfoController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction)
 
   "FreeHoursInfo Controller" must {
 

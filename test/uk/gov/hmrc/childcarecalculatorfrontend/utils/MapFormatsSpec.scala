@@ -17,8 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.scalatest.{EitherValues, MustMatchers, WordSpec}
-import play.api.data.validation.ValidationError
-import play.api.libs.json.{JsError, JsPath, Json}
+import play.api.libs.json.{JsPath, Json, JsonValidationError}
 
 class MapFormatsSpec extends WordSpec with MustMatchers with EitherValues with MapFormats {
 
@@ -46,7 +45,7 @@ class MapFormatsSpec extends WordSpec with MustMatchers with EitherValues with M
 
       val result = Json.fromJson[Map[Int, String]](json).asEither
 
-      result.left.value must contain (JsPath -> Seq(ValidationError("Failed to convert map keys into ints")))
+      result.left.value must contain (JsPath -> Seq(JsonValidationError("Failed to convert map keys into ints")))
     }
   }
 

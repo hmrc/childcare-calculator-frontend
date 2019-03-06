@@ -17,15 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Result
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectedChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ExpectedChildcareCostsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum.NOTYET
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
@@ -33,18 +31,19 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ExpectedChildcareCostsController @Inject() (
                                                    appConfig: FrontendAppConfig,
-                                                   override val messagesApi: MessagesApi,
+                                                   mcc: MessagesControllerComponents,
                                                    dataCacheConnector: DataCacheConnector,
                                                    navigator: Navigator,
                                                    getData: DataRetrievalAction,
                                                    requireData: DataRequiredAction
-                                                 ) extends FrontendController with I18nSupport with MapFormats {
+                                                 ) extends FrontendController(mcc) with I18nSupport with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validIndex(childIndex) {
         case (hasCosts, name, frequency) =>
@@ -56,14 +55,14 @@ class ExpectedChildcareCostsController @Inject() (
       }
   }
 
-  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validIndex(childIndex) {
         case (hasCosts, name, frequency) =>
           ExpectedChildcareCostsForm(frequency, name).bindFromRequest().fold(
             (formWithErrors: Form[BigDecimal]) =>
               Future.successful(BadRequest(expectedChildcareCosts(appConfig, formWithErrors, hasCosts, childIndex, frequency, name, mode))),
-            (value) =>
+            value =>
               dataCacheConnector.saveInMap[Int, BigDecimal](
                 request.sessionId,
                 ExpectedChildcareCostsId.toString,

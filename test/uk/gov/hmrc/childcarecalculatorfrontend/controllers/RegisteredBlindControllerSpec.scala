@@ -30,13 +30,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.registeredBlind
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new RegisteredBlindController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new RegisteredBlindController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def singleViewAsString(form: Form[Boolean] = BooleanForm()) =
     childRegisteredBlind(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString

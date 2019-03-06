@@ -31,6 +31,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionValues {
 
   "WhichChildrenBlind Controller" must {
@@ -115,8 +117,8 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichChildrenBlindController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new WhichChildrenBlindController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   val defaultValues = Map("Foo" -> "0", "Bar" -> "1")
   def viewAsString(

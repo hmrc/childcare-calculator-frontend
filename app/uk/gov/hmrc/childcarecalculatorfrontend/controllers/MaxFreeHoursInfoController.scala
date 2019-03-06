@@ -17,27 +17,23 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{EmploymentSupportedChildcare, TaxCredits, TaxFreeChildcare}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
-                                           val messagesApi: MessagesApi,
+                                           mcc: MessagesControllerComponents,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
                                            tfc: TaxFreeChildcare,
                                            tc: TaxCredits,
                                            esc: EmploymentSupportedChildcare
-                                          ) extends FrontendController with I18nSupport {
+                                          ) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
 

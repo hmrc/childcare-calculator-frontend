@@ -47,7 +47,7 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
                   index: Int,
                   name: String
                 ): Html =
-    whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages)
+    whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang)
 
   lazy val cases: Seq[(Int, String)] = {
     val names: Stream[String] = Stream.continually(Random.alphanumeric.take(5).mkString)

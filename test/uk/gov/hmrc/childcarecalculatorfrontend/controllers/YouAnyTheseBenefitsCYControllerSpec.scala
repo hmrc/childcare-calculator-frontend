@@ -31,6 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
@@ -39,8 +40,8 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YouAnyTheseBenefitsCYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, taxYearInfo)
+    new YouAnyTheseBenefitsCYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = youAnyTheseBenefitsCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 

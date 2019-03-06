@@ -17,33 +17,33 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Result
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenBlindForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichChildrenBlindId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class WhichChildrenBlindController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
+    implicit request: DataRequest[_] =>
       withValues {
         values =>
           val answer = request.userAnswers.whichChildrenBlind
@@ -55,15 +55,15 @@ class WhichChildrenBlindController @Inject()(
       }
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
+    implicit request: DataRequest[_] =>
       withValues {
         values =>
           WhichChildrenBlindForm(values.values.toSeq: _*).bindFromRequest().fold(
             (formWithErrors: Form[_]) => {
               Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, options(values))))
             },
-            (value) => {
+            value => {
               dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenBlindId.toString, value).map {
                 cacheMap =>
                   Redirect(navigator.nextPage(WhichChildrenBlindId, mode)(new UserAnswers(cacheMap)))

@@ -17,13 +17,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$pluralName;format="lo
 import scala.concurrent.Future
 
 class Edit$className;format="cap"$Controller @Inject()(appConfig: FrontendAppConfig,
-                                                  override val messagesApi: MessagesApi,
+                                                  mcc: MessagesControllerComponents,
                                                   dataCacheConnector: DataCacheConnector,
                                                   navigator: Navigator,
                                                   getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                                  requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
 
-  def onPageLoad(index: Int, mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(index: Int, mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       request.userAnswers.$pluralName;format="decap"$.flatMap(x => x.lift(index)) match {
         case None => NotFound
@@ -31,7 +31,7 @@ class Edit$className;format="cap"$Controller @Inject()(appConfig: FrontendAppCon
       }
   }
 
-  def onSubmit(index: Int, mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(index: Int, mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       request.userAnswers.$pluralName;format="decap"$.flatMap(x => x.lift(index)) match {
         case None => Future.successful(NotFound)
@@ -39,7 +39,7 @@ class Edit$className;format="cap"$Controller @Inject()(appConfig: FrontendAppCon
           $className$Form().bindFromRequest().fold(
             (formWithErrors: Form[$className$]) =>
               Future.successful(BadRequest(edit$className$(index, appConfig, formWithErrors, mode))),
-            (value) =>
+            value =>
               dataCacheConnector.replaceInCollection[$className$](request.sessionId, $pluralName$Id.toString, index, value).map(cacheMap =>
                 Redirect(navigator.nextPage(Edit$className$Id, mode)(new UserAnswers(cacheMap)))
               )

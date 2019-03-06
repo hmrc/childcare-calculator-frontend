@@ -30,13 +30,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Ch
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with OptionValues {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ChildcarePayFrequencyController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new ChildcarePayFrequencyController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[ChildcarePayFrequency.Value] = ChildcarePayFrequencyForm("Foo"), id: Int = 0, name: String = "Foo") =
     childcarePayFrequency(frontendAppConfig, form, id, name, NormalMode)(fakeRequest, messages).toString

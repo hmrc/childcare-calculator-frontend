@@ -17,30 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{AnyContent, RequestHeader, Result}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.{I18nSupport, Messages}
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayPerWeekForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryPayPerWeekId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class YourStatutoryPayPerWeekController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
@@ -53,7 +53,7 @@ class YourStatutoryPayPerWeekController @Inject()(
     }.getOrElse(sessionExpired("validateStatutoryPayType",Some(request.userAnswers)))
   }
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
@@ -67,7 +67,7 @@ class YourStatutoryPayPerWeekController @Inject()(
 
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
@@ -75,7 +75,7 @@ class YourStatutoryPayPerWeekController @Inject()(
           YourStatutoryPayPerWeekForm(statutoryType).bindFromRequest().fold(
             (formWithErrors: Form[BigDecimal]) =>
               Future.successful(BadRequest(yourStatutoryPayPerWeek(appConfig, formWithErrors, mode, statutoryType))),
-            (value) =>
+            value =>
               dataCacheConnector.save[BigDecimal](request.sessionId, YourStatutoryPayPerWeekId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(YourStatutoryPayPerWeekId, mode)(new UserAnswers(cacheMap))))
           )

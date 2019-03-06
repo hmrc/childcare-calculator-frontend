@@ -17,31 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.NoOfChildrenForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.NoOfChildrenId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class NoOfChildrenController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: NoOfChildrenForm) extends FrontendController with I18nSupport {
+                                        form: NoOfChildrenForm) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.noOfChildren match {
         case None => form()
@@ -50,13 +51,13 @@ class NoOfChildrenController @Inject()(
       Ok(noOfChildren(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request => {
       form().bindFromRequest().fold(
         (formWithErrors: Form[Int]) => {
           Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode)))
         },
-        (value) => {
+        value => {
           dataCacheConnector.save[Int](request.sessionId, NoOfChildrenId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(NoOfChildrenId, mode)(new UserAnswers(cacheMap))))
         }

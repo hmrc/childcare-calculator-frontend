@@ -20,12 +20,14 @@ import play.api.libs.json.{JsBoolean, JsString}
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
 
@@ -35,10 +37,10 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerIncomeInfoController(frontendAppConfig,
-      messagesApi,
+      mcc,
       dataRetrievalAction,
       new FakeNavigator(onwardRoute),
-      new DataRequiredActionImpl,
+      new DataRequiredAction,
       taxYearInfo)
 
   "PartnerIncomeInfo Controller" must {

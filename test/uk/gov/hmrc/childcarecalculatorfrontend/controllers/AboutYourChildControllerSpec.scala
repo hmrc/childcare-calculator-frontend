@@ -19,24 +19,25 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsNumber, Json}
-import play.api.test.FakeRequest
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{AboutYourChildForm, NoOfChildrenForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, NoOfChildrenId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
+import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class AboutYourChildControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new AboutYourChildController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new AboutYourChildController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()) = aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages).toString
 

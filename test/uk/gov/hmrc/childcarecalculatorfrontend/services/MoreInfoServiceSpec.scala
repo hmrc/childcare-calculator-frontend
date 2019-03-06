@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import org.scalatestplus.play.PlaySpec
+import play.api.i18n.Lang
 import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
@@ -24,6 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 
 class MoreInfoServiceSpec extends PlaySpec with SpecBase {
+
+  implicit val l: Lang = lang
 
   private val allSchemesValid = ResultsViewModel(
     tc = Some(2.0),
@@ -52,7 +55,7 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
 
   case class Results(location: Location, key: String, scheme: ResultsViewModel)
 
-  private val summaryContent = messagesApi("aboutYourResults.more.info.summary")
+  private val summaryContent = messages("aboutYourResults.more.info.summary")
 
   private val allValid = List(
     Results(Location.ENGLAND, "england", allSchemesValid),
@@ -88,22 +91,22 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
 
     "not return free hours link if we are not entitled to maximum free hours in England" in {
       val result = service.getSchemeContent(Location.ENGLAND,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), freeHours = Some(15), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
-      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.england.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.england.hours.title"))
+      result must not contain Map("link" -> messages(s"aboutYourResults.more.info.england.hours.link"), "title" -> messages(s"aboutYourResults.more.info.england.hours.title"))
     }
 
     "not return free hours link if we are not entitled to maximum free hours and we live in WALES" in {
       val result = service.getSchemeContent(Location.WALES,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), freeHours = Some(10), location = Location.WALES, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
-      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.wales.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.wales.hours.title"))
+      result must not contain Map("link" -> messages(s"aboutYourResults.more.info.wales.hours.link"), "title" -> messages(s"aboutYourResults.more.info.wales.hours.title"))
     }
 
     "not return free hours link if we are not entitled to maximum free hours and we live in SCOTLAND" in {
       val result = service.getSchemeContent(Location.SCOTLAND,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), freeHours = Some(16), location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
-      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.scotland.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.scotland.hours.title"))
+      result must not contain Map("link" -> messages(s"aboutYourResults.more.info.scotland.hours.link"), "title" -> messages(s"aboutYourResults.more.info.scotland.hours.title"))
     }
 
     "not return free hours link if we are not entitled to maximum free hours and we live in NORTHERN IRELAND" in {
       val result = service.getSchemeContent(Location.NORTHERN_IRELAND,ResultsViewModel(tc = Some(2.0), tfc = Some(2.0), freeHours = Some(12.5), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
-      result must not contain Map("link" -> messagesApi(s"aboutYourResults.more.info.northern-ireland.hours.link"), "title" -> messagesApi(s"aboutYourResults.more.info.northern-ireland.hours.title"))
+      result must not contain Map("link" -> messages(s"aboutYourResults.more.info.northern-ireland.hours.link"), "title" -> messages(s"aboutYourResults.more.info.northern-ireland.hours.title"))
     }
 
     for (test <- allValid) {
@@ -111,12 +114,12 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
 
         service.getSchemeContent(test.location, test.scheme) must contain(
           Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.hours.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.hours.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tc.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${test.key}.tfc.title")
+            "link" -> messages(s"aboutYourResults.more.info.${test.key}.hours.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${test.key}.hours.title"),
+            "link" -> messages(s"aboutYourResults.more.info.${test.key}.tc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${test.key}.tc.title"),
+            "link" -> messages(s"aboutYourResults.more.info.${test.key}.tfc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${test.key}.tfc.title")
           ))
 
         val summary = service.getSummary(test.location, test.scheme)
@@ -135,16 +138,16 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
         val result = service.getSchemeContent(testTC.location, testTC.scheme)
         result must contain(
           Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.hours.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.hours.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tfc.title")
+            "link" -> messages(s"aboutYourResults.more.info.${testTC.key}.hours.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testTC.key}.hours.title"),
+            "link" -> messages(s"aboutYourResults.more.info.${testTC.key}.tfc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testTC.key}.tfc.title")
 
           ))
 
         result must not contain Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTC.key}.tc.title"))
+            "link" -> messages(s"aboutYourResults.more.info.${testTC.key}.tc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testTC.key}.tc.title"))
       }
     }
 
@@ -153,15 +156,15 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
         val result = service.getSchemeContent(testTFC.location, testTFC.scheme)
         result must contain(
           Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.hours.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.hours.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tc.title")
+            "link" -> messages(s"aboutYourResults.more.info.${testTFC.key}.hours.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testTFC.key}.hours.title"),
+            "link" -> messages(s"aboutYourResults.more.info.${testTFC.key}.tc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testTFC.key}.tc.title")
           ))
 
         result must not contain Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testTFC.key}.tfc.title"))
+            "link" -> messages(s"aboutYourResults.more.info.${testTFC.key}.tfc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testTFC.key}.tfc.title"))
 
         service.getSummary(testTFC.location, testTFC.scheme) must not contain
           summaryContent
@@ -173,15 +176,15 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
         val result = service.getSchemeContent(testFreeHours.location, testFreeHours.scheme)
         result must contain(
           Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tc.title"),
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.title")
+            "link" -> messages(s"aboutYourResults.more.info.${testFreeHours.key}.tc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testFreeHours.key}.tc.title"),
+            "link" -> messages(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testFreeHours.key}.tfc.title")
           ))
 
         result must not contain Map(
-            "link" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.hours.link"),
-            "title" -> messagesApi(s"aboutYourResults.more.info.${testFreeHours.key}.hours.title"))
+            "link" -> messages(s"aboutYourResults.more.info.${testFreeHours.key}.hours.link"),
+            "title" -> messages(s"aboutYourResults.more.info.${testFreeHours.key}.hours.title"))
 
         service.getSummary(testFreeHours.location, testFreeHours.scheme) must not contain
           summaryContent

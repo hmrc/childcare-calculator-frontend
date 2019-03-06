@@ -29,6 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, Norma
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class EmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
@@ -37,8 +39,8 @@ class EmploymentIncomePYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new EmploymentIncomePYController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new EmploymentIncomePYForm(frontendAppConfig), taxYearInfo)
+    new EmploymentIncomePYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new EmploymentIncomePYForm(frontendAppConfig), taxYearInfo)
 
   def viewAsString(form: Form[EmploymentIncomePY] = employmentIncomeForm) = employmentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 

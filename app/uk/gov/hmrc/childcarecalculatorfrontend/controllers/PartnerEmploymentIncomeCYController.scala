@@ -17,32 +17,33 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.{FormErrorHelper, PartnerEmploymentIncomeCYForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerEmploymentIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerEmploymentIncomeInvalidMaxEarningsErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncomeCY
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PartnerEmploymentIncomeCYController @Inject()(
                                                      appConfig: FrontendAppConfig,
-                                                     override val messagesApi: MessagesApi,
+                                                     mcc: MessagesControllerComponents,
                                                      dataCacheConnector: DataCacheConnector,
                                                      navigator: Navigator,
                                                      getData: DataRetrievalAction,
                                                      requireData: DataRequiredAction,
                                                      taxYearInfo: TaxYearInfo,
-                                                     form: PartnerEmploymentIncomeCYForm) extends FormErrorHelper with FrontendController with I18nSupport {
+                                                     form: PartnerEmploymentIncomeCYForm)
+  extends FrontendController(mcc) with FormErrorHelper with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
@@ -63,7 +64,7 @@ class PartnerEmploymentIncomeCYController @Inject()(
 
       validateForm(maxEarnings, boundForm).fold((formWithErrors: Form[BigDecimal]) =>
         Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        (value) =>
+        value =>
           dataCacheConnector.save[BigDecimal](request.sessionId, PartnerEmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
   }

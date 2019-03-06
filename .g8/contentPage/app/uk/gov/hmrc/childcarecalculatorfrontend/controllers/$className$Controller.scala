@@ -13,7 +13,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$className;format="dec
 class $className$Controller @Inject()(val appConfig: FrontendAppConfig,
                                       val messagesApi: MessagesApi,
                                       getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                      requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
     Ok($className;format="decap"$(appConfig))

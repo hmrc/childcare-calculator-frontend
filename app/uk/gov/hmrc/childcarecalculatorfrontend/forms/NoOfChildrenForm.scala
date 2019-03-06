@@ -28,8 +28,8 @@ class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormError
 
   def noOfChildrenFormatter(errorKeyBlank: String, errorKeyNonNumeric: String): Formatter[Int] = new Formatter[Int] {
     val intRegex: String = "([0-9]{1,3})".r.toString()
-    val minAmountChildren: Double = appConfig.minAmountChildren
-    val maxAmountChildren: Double = appConfig.maxAmountChildren
+    val minAmountChildren: Int = appConfig.minAmountChildren
+    val maxAmountChildren: Int = appConfig.maxAmountChildren
 
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
       data.get(key) match {

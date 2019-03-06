@@ -17,11 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhosHadBenefitsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YouPartnerBothEnum}
@@ -30,17 +30,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class WhosHadBenefitsController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController with I18nSupport {
+                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.whosHadBenefits match {
         case None => WhosHadBenefitsForm()
@@ -49,12 +50,12 @@ class WhosHadBenefitsController @Inject()(
       Ok(whosHadBenefits(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       WhosHadBenefitsForm().bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(whosHadBenefits(appConfig, formWithErrors, mode))),
-        (value) =>
+        value =>
           dataCacheConnector.save[YouPartnerBothEnum.Value](request.sessionId, WhosHadBenefitsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(WhosHadBenefitsId, mode)(new UserAnswers(cacheMap))))
       )

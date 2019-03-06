@@ -17,30 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothPaidPensionPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidPensionPY
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class BothPaidPensionPYController @Inject()(appConfig: FrontendAppConfig,
-                                         override val messagesApi: MessagesApi,
+                                            mcc: MessagesControllerComponents,
                                          dataCacheConnector: DataCacheConnector,
                                          navigator: Navigator,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                         taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.bothPaidPensionPY match {
         case None => BooleanForm()
@@ -49,12 +50,12 @@ class BothPaidPensionPYController @Inject()(appConfig: FrontendAppConfig,
       Ok(bothPaidPensionPY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BooleanForm("bothPaidPensionPY.error.notCompleted").bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothPaidPensionPY(appConfig, formWithErrors, mode, taxYearInfo))),
-        (value) =>
+        value =>
           dataCacheConnector.save[Boolean](request.sessionId, BothPaidPensionPYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(BothPaidPensionPYId, mode)(new UserAnswers(cacheMap))))
       )

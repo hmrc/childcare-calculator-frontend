@@ -32,6 +32,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 import uk.gov.hmrc.http.cache.client.CacheMap
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionValues {
 
   "WhoHasChildcareCosts Controller" must {
@@ -136,9 +138,9 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhoHasChildcareCostsController(frontendAppConfig, messagesApi,
+    new WhoHasChildcareCostsController(frontendAppConfig, mcc,
       FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+      dataRetrievalAction, new DataRequiredAction)
 
   val defaultValues = Map("Foo" -> "0", "Bar" ->"1")
 

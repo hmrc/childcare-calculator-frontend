@@ -17,37 +17,39 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{RequestHeader, Result}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.{I18nSupport, Messages}
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourStatutoryStartDateId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class YourStatutoryStartDateController @Inject()(
                                         appConfig: FrontendAppConfig,
-                                        override val messagesApi: MessagesApi,
+                                        mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction
-                                      ) extends FrontendController with I18nSupport {
+                                      ) extends FrontendController(mcc) with I18nSupport {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
 
-  private def validateStatutoryPayType[A](block: (String) => Future[Result])
+  private def validateStatutoryPayType[A](block: String => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {
 
     request.userAnswers.yourStatutoryPayType.map {
@@ -55,7 +57,7 @@ class YourStatutoryStartDateController @Inject()(
     }.getOrElse(sessionExpired("validateStatutoryPayType",Some(request.userAnswers)))
   }
 
-  def onPageLoad(mode: Mode) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
@@ -68,7 +70,7 @@ class YourStatutoryStartDateController @Inject()(
       }
   }
 
-  def onSubmit(mode: Mode) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateStatutoryPayType {
         statutoryType =>
@@ -76,7 +78,7 @@ class YourStatutoryStartDateController @Inject()(
           YourStatutoryStartDateForm(statutoryType).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(yourStatutoryStartDate(appConfig, formWithErrors, mode, statutoryType))),
-            (value) =>
+            value =>
               dataCacheConnector.save[LocalDate](request.sessionId, YourStatutoryStartDateId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(YourStatutoryStartDateId, mode)(new UserAnswers(cacheMap))))
           )

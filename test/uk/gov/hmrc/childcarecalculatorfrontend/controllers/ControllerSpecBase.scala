@@ -20,7 +20,6 @@ import play.api.libs.json.JsString
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.FakeDataRetrievalAction
-import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum
 
 trait ControllerSpecBase extends SpecBase {
 

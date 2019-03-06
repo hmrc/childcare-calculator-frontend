@@ -28,13 +28,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.NoOfChildrenId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new NoOfChildrenController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new NoOfChildrenForm(frontendAppConfig))
+    new NoOfChildrenController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new NoOfChildrenForm(frontendAppConfig))
 
   def viewAsString(form: Form[Int] = NoOfChildrenForm) = noOfChildren(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 

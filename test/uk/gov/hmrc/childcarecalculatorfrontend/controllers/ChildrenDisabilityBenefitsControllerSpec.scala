@@ -30,13 +30,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenDisabilityBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childDisabilityBenefits
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ChildrenDisabilityBenefitsController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new ChildrenDisabilityBenefitsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def singleViewAsString(form: Form[Boolean] = BooleanForm()): String =
     childDisabilityBenefits(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString

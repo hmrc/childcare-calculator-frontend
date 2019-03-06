@@ -50,14 +50,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
           val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
-          assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title.future")+" - "+messagesApi("site.service_name")+" - GOV.UK")
+          assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title.future")+" - "+messages("site.service_name")+" - GOV.UK")
         }
 
         "we have selected 'Yes'" in {
           val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
-          assertEqualsValue(doc, "title", messagesApi(s"$messageKeyPrefix.title")+" - "+messagesApi("site.service_name")+" - GOV.UK")
+          assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title")+" - "+messages("site.service_name")+" - GOV.UK")
         }
       }
 
@@ -66,14 +66,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
           val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
-          assertEqualsValue(doc, "h1", messagesApi(s"$messageKeyPrefix.heading.future"))
+          assertEqualsValue(doc, "h1", messages(s"$messageKeyPrefix.heading.future"))
         }
 
         "we have selected 'Yes'" in {
           val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
-          assertEqualsValue(doc, "h1", messagesApi(s"$messageKeyPrefix.heading"))
+          assertEqualsValue(doc, "h1", messages(s"$messageKeyPrefix.heading"))
         }
       }
 
@@ -82,14 +82,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
           val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
-          assertEqualsValue(doc, "legend", messagesApi(s"$messageKeyPrefix.heading.future"))
+          assertEqualsValue(doc, "legend", messages(s"$messageKeyPrefix.heading.future"))
         }
 
         "we have selected 'Yes'" in {
           val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
-          assertEqualsValue(doc, "legend", messagesApi(s"$messageKeyPrefix.heading"))
+          assertEqualsValue(doc, "legend", messages(s"$messageKeyPrefix.heading"))
         }
       }
     }

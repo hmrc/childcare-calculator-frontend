@@ -19,6 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.joda.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.JodaWrites._
+import play.api.libs.json.JodaReads._
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -28,6 +30,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayT
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
 import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
@@ -40,8 +44,8 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
   )
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
-    new PartnerStatutoryStartDateController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl)
+    new PartnerStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction)
 
   def viewAsString(form: Form[LocalDate] = PartnerStatutoryStartDateForm(statutoryType)) =
     partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString

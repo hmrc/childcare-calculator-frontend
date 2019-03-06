@@ -17,12 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{RequestHeader, Result}
+import play.api.i18n.I18nSupport
+import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildApprovedEducationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
@@ -32,16 +31,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ChildApprovedEducationController @Inject() (
                                                    appConfig: FrontendAppConfig,
-                                                   override val messagesApi: MessagesApi,
+                                                   mcc: MessagesControllerComponents,
                                                    dataCacheConnector: DataCacheConnector,
                                                    navigator: Navigator,
                                                    getData: DataRetrievalAction,
                                                    requireData: DataRequiredAction
-                                                ) extends FrontendController with I18nSupport with MapFormats {
+                                                ) extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
@@ -54,7 +54,7 @@ class ChildApprovedEducationController @Inject() (
     }.getOrElse(sessionExpired("validateIndex",Some(request.userAnswers)))
   }
 
-  def onPageLoad(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
         name =>
@@ -66,14 +66,14 @@ class ChildApprovedEducationController @Inject() (
       }
   }
 
-  def onSubmit(mode: Mode, childIndex: Int) = (getData andThen requireData).async {
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
         name =>
           BooleanForm("childApprovedEducation.error.notCompleted", name).bindFromRequest().fold(
             (formWithErrors: Form[Boolean]) =>
               Future.successful(BadRequest(childApprovedEducation(appConfig, formWithErrors, mode, childIndex, name))),
-            (value) =>
+            value =>
               dataCacheConnector.saveInMap[Int, Boolean](
                 request.sessionId,
                 ChildApprovedEducationId.toString,

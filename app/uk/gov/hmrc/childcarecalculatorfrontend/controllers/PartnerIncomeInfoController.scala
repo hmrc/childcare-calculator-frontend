@@ -17,9 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerIncomeInfoId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
@@ -30,11 +29,11 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class PartnerIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
-                                            val messagesApi: MessagesApi,
+                                            mcc: MessagesControllerComponents,
                                             getData: DataRetrievalAction,
                                             navigator: Navigator,
                                             requireData: DataRequiredAction,
-                                            taxYearInfo: TaxYearInfo) extends FrontendController with I18nSupport {
+                                            taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
     Ok(partnerIncomeInfo(appConfig, navigator.nextPage(PartnerIncomeInfoId, NormalMode)(request.userAnswers), taxYearInfo))

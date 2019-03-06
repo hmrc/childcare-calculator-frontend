@@ -30,6 +30,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATER
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
@@ -45,8 +47,8 @@ class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
   val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, MATERNITY)
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
-    new PartnerStatutoryWeeksController(frontendAppConfig, messagesApi, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredActionImpl, new PartnerStatutoryWeeksForm(frontendAppConfig))
+    new PartnerStatutoryWeeksController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction, new DataRequiredAction, new PartnerStatutoryWeeksForm(frontendAppConfig))
 
   def viewAsString(form: Form[Int] = form) = partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages).toString
 

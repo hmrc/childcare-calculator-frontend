@@ -17,34 +17,33 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ParentEmploymentIncomeCYForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{FormErrorHelper, ParentEmploymentIncomeCYForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentEmploymentIncomeCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, YesNoEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.parentEmploymentIncomeInvalidMaxEarningsErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{parentEmploymentIncomeInvalidErrorKey, _}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormErrorHelper
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ParentEmploymentIncomeCYController @Inject()(
                                                     appConfig: FrontendAppConfig,
-                                                    override val messagesApi: MessagesApi,
+                                                    mcc: MessagesControllerComponents,
                                                     dataCacheConnector: DataCacheConnector,
                                                     navigator: Navigator,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     form: ParentEmploymentIncomeCYForm,
-                                                    taxYearInfo: TaxYearInfo,
-                                                    formErrorHelper: FormErrorHelper) extends FrontendController with I18nSupport {
+                                                    taxYearInfo: TaxYearInfo)
+  extends FrontendController(mcc) with I18nSupport with FormErrorHelper {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
@@ -63,7 +62,7 @@ class ParentEmploymentIncomeCYController @Inject()(
 
       validateForm(maxEarnings, boundForm).fold((formWithErrors: Form[BigDecimal]) =>
         Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        (value) =>
+        value =>
           dataCacheConnector.save[BigDecimal](request.sessionId, ParentEmploymentIncomeCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ParentEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
   }
@@ -72,7 +71,7 @@ class ParentEmploymentIncomeCYController @Inject()(
     if (boundForm.hasErrors) {
       boundForm
     } else {
-      formErrorHelper.validateMaxIncomeEarnings(maxEarnings,
+      validateMaxIncomeEarnings(maxEarnings,
         appConfig.maxIncome,
         parentEmploymentIncomeInvalidMaxEarningsErrorKey,
         boundForm)

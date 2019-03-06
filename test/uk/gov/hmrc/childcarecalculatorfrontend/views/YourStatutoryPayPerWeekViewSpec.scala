@@ -58,6 +58,6 @@ class YourStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
 
   "show correct statutory pay type" in {
     val doc = asDocument(createViewWithStatutoryType(statutoryType))
-    assertContainsText(doc, messagesApi(s"$messageKeyPrefix.heading", statutoryType))
+    assertContainsText(doc, messages(s"$messageKeyPrefix.heading", statutoryType))
   }
 }

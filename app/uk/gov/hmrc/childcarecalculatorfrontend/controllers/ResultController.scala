@@ -17,33 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import services.MoreInfoServiceInterface
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 
 @Singleton
 class ResultController @Inject()(val appConfig: FrontendAppConfig,
-                                 val messagesApi: MessagesApi,
+                                 mcc: MessagesControllerComponents,
                                  dataCacheConnector: DataCacheConnector,
                                  getData: DataRetrievalAction,
                                  requireData: DataRequiredAction,
                                  resultsService: ResultsService,
-                                 moreInfoResults: MoreInfoServiceInterface,
-                                 utils: Utils) extends FrontendController with I18nSupport {
+                                 moreInfoResults: MoreInfoService,
+                                 utils: Utils) extends FrontendController(mcc) with I18nSupport {
 
 
   def onPageLoad(): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
@@ -51,7 +50,10 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
       case Some(location) =>  {
         resultsService.getResultsViewModel(request.userAnswers,location).map(model => {
           dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
-          Ok(result(appConfig, model, moreInfoResults.getSchemeContent(location, model), moreInfoResults.getSummary(location, model), utils))
+          Ok(result(appConfig, model,
+            moreInfoResults.getSchemeContent(location, model)(request.lang),
+            moreInfoResults.getSummary(location, model)(request.lang), utils)
+          )
         })
       }
       case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
