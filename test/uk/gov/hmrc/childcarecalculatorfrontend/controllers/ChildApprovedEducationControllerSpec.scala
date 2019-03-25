@@ -18,37 +18,41 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, Json}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.Call
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildApprovedEducationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ChildApprovedEducationController =
     new ChildApprovedEducationController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = childApprovedEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    childApprovedEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
 
-  val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
-  val requiredData = Map(
+  private val testDate: LocalDate = LocalDate.parse("2019-01-01")
+
+  val validBirthday: LocalDate = new LocalDate(testDate.minusYears(17).getYear, 2, 1)
+  val requiredData: Map[String, JsObject] = Map(
     AboutYourChildId.toString -> Json.obj(
       "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),
       "1" -> Json.toJson(AboutYourChild("Bar", LocalDate.now))
     )
   )
-  val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
+  val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)), Some(testDate))
 
   "ChildApprovedEducation Controller" must {
 
@@ -63,7 +67,7 @@ class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
       val validData = requiredData + (ChildApprovedEducationId.toString -> Json.obj(
         "0" -> true
       ))
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
 

@@ -36,16 +36,28 @@ case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert{
 }
 
 object DataGenerator {
-  val over19 = LocalDate.now.minusYears(19).minusDays(1)
-  val testBeforeAugust: Int = LocalDate.now.minusYears(16).getYear
-  val exact16 = new LocalDate(testBeforeAugust, 6, 1)
-  val over16 = if (LocalDate.now().getMonthOfYear <= 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-  val exact15 = LocalDate.now.minusYears(15).plusMonths(1)
-  val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-  else LocalDate.now.minusYears(16)
+  val ageOf19YearsAgo: LocalDate => LocalDate = (date : LocalDate) =>
+    date.minusYears(19).minusDays(1)
+  val ageOf16WithBirthdayBefore31stAugust: LocalDate => LocalDate = (date : LocalDate) =>
+    if (date.getMonthOfYear > 8) {
+      LocalDate.parse(s"${date.minusYears(16).getYear}-07-31")
+    } else {
+      date.minusYears(16)
+    }
+  val ageOfOver16Relative: LocalDate => LocalDate = (date : LocalDate) =>
+    if (date.getMonthOfYear <= 8) {
+      date.minusYears(17)
+    } else {
+      date.minusYears(16)
+    }
+  val ageUnder16Relative: LocalDate => LocalDate = (date : LocalDate) =>
+    date.minusYears(1)
+  val ageExactly16Relative: LocalDate => LocalDate = (date : LocalDate) =>
+    new LocalDate(date.minusYears(16).getYear, 6, 1)
+  val ageExactly15Relative: LocalDate => LocalDate = (date : LocalDate) =>
+    new LocalDate(date.minusYears(15).getYear, 6, 1)
 
-  val under16 = LocalDate.now
-  val childStartEducationDate = new LocalDate(2017, 2, 1)
+  private val childStartEducationDate = new LocalDate(2017, 2, 1)
 
   lazy val disabilityBenefits: String = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
@@ -53,14 +65,17 @@ object DataGenerator {
   lazy val weekly: String = ChildcarePayFrequency.WEEKLY.toString
   lazy val monthly: String = ChildcarePayFrequency.MONTHLY.toString
 
+  private val sampleDate = LocalDate.parse("2019-01-01")
+
   val sample = new CacheMap("id", Map(
     NoOfChildrenId.toString -> JsNumber(5),
     AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", over19)),
-      "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-      "2" -> Json.toJson(AboutYourChild("Quux", exact15)),
-      "3" -> Json.toJson(AboutYourChild("Baz", under16)),
-      "4" -> Json.toJson(AboutYourChild("Raz", under16))),
+      "0" -> Json.toJson(AboutYourChild("Foo", sampleDate)),
+      "1" -> Json.toJson(AboutYourChild("Bar", sampleDate)),
+      "2" -> Json.toJson(AboutYourChild("Quux", sampleDate)),
+      "3" -> Json.toJson(AboutYourChild("Baz", sampleDate)),
+      "4" -> Json.toJson(AboutYourChild("Raz", sampleDate))
+    ),
     ChildApprovedEducationId.toString -> Json.obj(
       "0" -> true,
       "1" -> true

@@ -21,17 +21,19 @@ import org.joda.time.LocalDate
 import play.api.libs.json._
 import play.api.libs.json.JodaReads._
 import play.api.libs.json.JodaWrites._
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{ageExactly15Relative, ageOf16WithBirthdayBefore31stAugust, ageOf19YearsAgo, ageOfOver16Relative}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, DataGenerator, SpecBase}
 
 class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
-  val over19 = LocalDate.now.minusYears(19).minusDays(1)
-  val over16 = LocalDate.now.minusYears(16).minusDays(1)
-  val exact15 = LocalDate.now.minusYears(15).plusMonths(1)
-  val under16 = LocalDate.now
+  private val testDate: LocalDate = LocalDate.parse("2014-01-01")
 
-  val childStartEducationDate = new LocalDate(2017, 2, 1)
+  private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
+  private val ageOfOver16: LocalDate        = ageOfOver16Relative(testDate)
+  private val ageOfExactly15: LocalDate     = ageExactly15Relative(testDate)
+
+  private val childStartEducationDate: LocalDate = new LocalDate(2017, 2, 1)
 
   lazy val disabilityBenefits: String = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
@@ -57,7 +59,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
     "Save aboutYourChild data " must {
       "remove child education data when there is no child age above 16" in {
-        val result = cascadeUpsert(AboutYourChildId.toString, Map("0" -> Json.toJson(AboutYourChild("Foo", under16))), DataGenerator.sample)
+        val result = cascadeUpsert(AboutYourChildId.toString, Map("0" -> Json.toJson(AboutYourChild("Foo", ageOfExactly15))), DataGenerator.sample)
 
         result.data.get(ChildApprovedEducationId.toString) mustBe None
         result.data.get(ChildStartEducationId.toString) mustBe None
@@ -73,8 +75,8 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         result.data.get(ChildStartEducationId.toString) mustBe None
       }
       "remove childEducationStartDate data when children with age above 19 and below 20 selects no for childApprovedEducation" in {
-        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", over19)), "1" -> Json.toJson(AboutYourChild("Bar", over19)),
-          "2" -> Json.toJson(AboutYourChild("Raz", over19)), "3" -> Json.toJson(AboutYourChild("Baz", over16)), "4" -> Json.toJson(AboutYourChild("Quux", under16))))
+        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", ageOf19)), "1" -> Json.toJson(AboutYourChild("Bar", ageOf19)),
+          "2" -> Json.toJson(AboutYourChild("Raz", ageOf19)), "3" -> Json.toJson(AboutYourChild("Baz", ageOfOver16)), "4" -> Json.toJson(AboutYourChild("Quux", ageOfExactly15))))
           .overWriteObject(ChildStartEducationId.toString, Json.obj("0" -> childStartEducationDate, "1" -> childStartEducationDate, "2" -> childStartEducationDate))
 
         val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> false)), sampleData.sample)
@@ -82,8 +84,8 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       }
 
       "remove childEducationStartDate data when children with age above 19 and below 20 and children between 16 to 18 selects no for childApprovedEducation" in {
-        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", over19)),
-          "1" -> Json.toJson(AboutYourChild("Bar", over19)), "2" -> Json.toJson(AboutYourChild("Raz", over19)), "3" -> Json.toJson(AboutYourChild("Baz", over16))))
+        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", ageOf19)),
+          "1" -> Json.toJson(AboutYourChild("Bar", ageOf19)), "2" -> Json.toJson(AboutYourChild("Raz", ageOf19)), "3" -> Json.toJson(AboutYourChild("Baz", ageOfOver16))))
           .overWriteObject(ChildApprovedEducationId.toString, Json.obj("0" -> true, "1" -> true, "2" -> true, "3" -> false))
           .overWriteObject(ChildStartEducationId.toString, Json.obj("0" -> childStartEducationDate, "1" -> childStartEducationDate, "2" -> childStartEducationDate))
 

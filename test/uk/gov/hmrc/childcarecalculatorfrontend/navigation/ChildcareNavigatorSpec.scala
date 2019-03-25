@@ -17,12 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import org.joda.time.LocalDate
+import org.mockito.Mockito._
 import org.scalatest.OptionValues
 import org.scalatest.mockito.MockitoSugar
-import org.mockito.Mockito._
-import play.api.Logger
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over16WithBirthdayBefore31stOfAugust, over19}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{ageExactly15Relative, ageOf16WithBirthdayBefore31stAugust, ageOf19YearsAgo, ageOfOver16Relative}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
@@ -32,7 +31,30 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSugar {
 
-  val navigator: SubNavigator = new ChildcareNavigator(new Utils())
+  private val testDate: LocalDate = LocalDate.parse("2014-01-01")
+
+  val navigator: SubNavigator = new ChildcareNavigator(new Utils()) {
+    override def now: LocalDate = testDate
+  }
+
+  private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
+  private val ageOfOver16: LocalDate        = ageOfOver16Relative(testDate)
+  private val ageOf16Before31Aug: LocalDate = ageOf16WithBirthdayBefore31stAugust(testDate)
+  private val ageOfExactly15: LocalDate     = ageExactly15Relative(testDate)
+  private lazy val dob: LocalDate           = testDate.minusYears(1)
+
+  private def userAnswers(data: (String, JsValue)*): UserAnswers =
+    new UserAnswers(CacheMap("", data.toMap))
+  private def userAnswersOverride(data: (String, JsValue)*)(newDate : LocalDate): UserAnswers =
+    new UserAnswers(CacheMap("", data.toMap)) {
+      override def now = newDate
+    }
+
+  private def aboutYourChildren(children: (String, LocalDate)*): (String, JsValue) =
+    AboutYourChildId.toString -> Json.toJson(children.zipWithIndex.map {
+      case ((name, dateOfBirth), i) =>
+        i.toString -> Json.toJson(AboutYourChild(name, dateOfBirth))
+    }.toMap)
 
   "Number of children" must {
     "redirect to `About your child`" in {
@@ -41,17 +63,20 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 
+  private val foo = "Foo"
+  private val bar = "Bar"
+
   "About your child" must {
 
     "this isn't the last child" when {
       "redirect to `About your child` for the next index" in {
-        val answers: UserAnswers = userAnswers(
+        val answers: UserAnswers = userAnswersOverride(
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
-            "Foo" -> dob,
-            "Bar" -> dob
+            foo -> dob,
+            bar -> dob
           )
-        )
+        )(testDate)
         val result = navigator.nextPage(AboutYourChildId(0), NormalMode).value(answers)
         result mustEqual routes.AboutYourChildController.onPageLoad(NormalMode, 1)
       }
@@ -60,25 +85,25 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     "this is the last child" when {
 
       "redirect to `Approved education or training` when there is at least one child over 16" in {
-        val answers: UserAnswers = userAnswers(
+        val answers: UserAnswers = userAnswersOverride(
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
-            "Foo" -> dob16,
-            "Bar" -> dob
+            foo -> ageOfOver16,
+            bar -> dob
           )
-        )
+        )(testDate)
         val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
         result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 0)
       }
 
       "redirect to `Do any children get disability benefits` when there are no children over 16" in {
-        val answers: UserAnswers = userAnswers(
+        val answers: UserAnswers = userAnswersOverride(
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
-            "Foo" -> LocalDate.now().minusYears(15).minusMonths(1),
-            "Bar" -> LocalDate.now().minusYears(15).minusMonths(6)
+            foo -> ageOfExactly15,
+            bar -> ageOfExactly15
           )
-        )
+        )(testDate)
         val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
         result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
       }
@@ -87,7 +112,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     "redirect to `SessionExpired` when no answer for `noOfChildren` is given" in {
       val answers: UserAnswers = userAnswers(
         aboutYourChildren(
-          "Foo" -> dob,
+          foo -> dob,
           "bar" -> dob
         )
       )
@@ -120,29 +145,29 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       }
 
       "redirect to `Approved education or training` if child is under 19 and this is not the last child" in {
-        val answers: UserAnswers = userAnswers(
+        val answers: UserAnswers = userAnswersOverride(
           aboutYourChildren(
-            "Foo" -> dob16,
+            foo -> ageOfOver16,
             "Spoon" -> dob,
-            "Bar" -> dob16,
+            bar -> ageOfOver16,
             "Baz" -> dob
           ),
           ChildApprovedEducationId.toString -> Json.obj(
             "0" -> true
           )
-        )
+        )(testDate)
         val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
         result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 2)
       }
 
       "redirect to `Do your children get disability benefits` if child is under 19 and this is the last child" in {
-        val answers: UserAnswers = userAnswers(
+        val answers: UserAnswers = userAnswersOverride(
           defaultAboutYourChildren,
           ChildApprovedEducationId.toString -> Json.obj(
             "0" -> true,
             "2" -> true
           )
-        )
+        )(testDate)
         val result = navigator.nextPage(ChildApprovedEducationId(2), NormalMode).value(answers)
         result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
       }
@@ -195,9 +220,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     def defaultAboutYourChildren: (String, JsValue) =
       aboutYourChildren(
-        "Foo" -> dob19,
+        foo -> ageOf19,
         "Spoon" -> dob,
-        "Bar" -> dob16,
+        bar -> ageOfOver16,
         "Baz" -> dob
       )
   }
@@ -216,9 +241,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     lazy val answers: UserAnswers = userAnswers(
       aboutYourChildren(
-        "Foo" -> dob19,
+        foo -> ageOf19,
         "Spoon" -> dob,
-        "Bar" -> dob16,
+        bar -> ageOfOver16,
         "Baz" -> dob
       )
     )
@@ -341,13 +366,15 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `Yes` and child age below 16" in {
         val answers: UserAnswers = spy(userAnswers())
+
         when(answers.noOfChildren).thenReturn(Some(1))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.childDisabilityBenefits).thenReturn(Some(false))
         when(answers.registeredBlind).thenReturn(Some(true))
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.now).thenReturn(testDate)
 
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", over16WithBirthdayBefore31stOfAugust))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOf16Before31Aug))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
@@ -427,64 +454,60 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         "redirect to Childcare Pay Frequency if the user answers 'No' to " +
           "registered blind and 1 child is 16 years and dob is before august and disabled" in{
 
-          val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-            LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-          } else {LocalDate.now.minusYears(16)}
-
-
-
           val answers: UserAnswers = spy(userAnswers())
 
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-                1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-                2 -> AboutYourChild("Quux", over19))))
+
+          when(answers.aboutYourChild).thenReturn(Some(
+            Map(0 -> AboutYourChild(foo, ageOf19),
+              1 -> AboutYourChild(bar, ageOf16Before31Aug),
+              2 -> AboutYourChild("Quux", ageOf19)
+            )
+          ))
           when(answers.noOfChildren).thenReturn(Some(3))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
           when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.now).thenReturn(testDate)
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 1)
         }
 
 
-          "redirect to Childcare Pay Frequency if the user answers 'No' to " +
-            "registered blind and more than 1 child is 16 years and dob is before august but only 1 is disabled " in{
+        "redirect to Childcare Pay Frequency if the user answers 'No' to " +
+          "registered blind and more than 1 child is 16 years and dob is before august but only 1 is disabled " in{
 
-            val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-              LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-            } else {LocalDate.now.minusYears(16)}
+          val answers: UserAnswers = spy(userAnswers())
 
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug),
+            1 -> AboutYourChild(bar, ageOf19),
+            2 -> AboutYourChild(bar, ageOf16Before31Aug),
+            3 -> AboutYourChild("Quux", ageOf19))))
+          when(answers.noOfChildren).thenReturn(Some(4))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.now).thenReturn(testDate)
 
-
-            val answers: UserAnswers = spy(userAnswers())
-
-            when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust),
-              1 -> AboutYourChild("Bar", over19),
-              2 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-             3 -> AboutYourChild("Quux", over19))))
-            when(answers.noOfChildren).thenReturn(Some(4))
-            when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-            when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
-            when(answers.registeredBlind).thenReturn(Some(false))
-
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-            result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
-          }
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+        }
 
         "redirect to Partner Income Info when user answers 'No' to registered blind and " +
           "1 child is 16 years and dob is before august and same child is not disabled" in{
 
+
           val answers: UserAnswers = spy(userAnswers())
 
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-            2 -> AboutYourChild("Quux", over19))))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf19),
+            1 -> AboutYourChild(bar, ageOf16Before31Aug),
+            2 -> AboutYourChild("Quux", ageOf19))))
           when(answers.noOfChildren).thenReturn(Some(3))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 2)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+          when(answers.now).thenReturn(testDate)
 
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
@@ -492,21 +515,19 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         }
 
         "redirect to Your Income Info when single user answers 'No' to registerd blind and " +
-          "1 child is 16 years and dob is before august and not disable " in{
-
-          lazy val disabilityBenefits = DisabilityBenefits.DISABILITY_BENEFITS
-          lazy val higherRateDisabilityBenefits = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS
+          "1 child is 16 years and dob is before august and not disable " in {
 
           val answers: UserAnswers = spy(userAnswers())
 
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-            2 -> AboutYourChild("Quux", over19))))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf19),
+            1 -> AboutYourChild(bar, ageOf16Before31Aug),
+            2 -> AboutYourChild("Quux", ageOf19))))
           when(answers.noOfChildren).thenReturn(Some(3))
           when(answers.childrenDisabilityBenefits).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+          when(answers.now).thenReturn(testDate)
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.YourIncomeInfoController.onPageLoad()
@@ -517,14 +538,16 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
           val answers: UserAnswers = spy(userAnswers())
 
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-            2 -> AboutYourChild("Quux", over19))))
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf19),
+            1 -> AboutYourChild(bar, ageOf16Before31Aug),
+            2 -> AboutYourChild("Quux", ageOf19))))
           when(answers.noOfChildren).thenReturn(Some(3))
           when(answers.childrenDisabilityBenefits).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+          when(answers.now).thenReturn(testDate)
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
@@ -535,16 +558,17 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
           val answers: UserAnswers = spy(userAnswers())
 
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-            2 -> AboutYourChild("Quux", over19),
-            3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
+
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf19),
+            1 -> AboutYourChild(bar, ageOf16Before31Aug),
+            2 -> AboutYourChild("Quux", ageOf19),
+            3 -> AboutYourChild("Max", ageOf16Before31Aug))))
           when(answers.noOfChildren).thenReturn(Some(4))
           when(answers.childrenDisabilityBenefits).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-
+          when(answers.now).thenReturn(testDate)
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
@@ -555,42 +579,43 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
           val answers: UserAnswers = spy(userAnswers())
 
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-            1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-            2 -> AboutYourChild("Quux", over19),
-            3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf19),
+            1 -> AboutYourChild(bar, ageOf16Before31Aug),
+            2 -> AboutYourChild("Quux", ageOf19),
+            3 -> AboutYourChild("Max", ageOf16Before31Aug))))
           when(answers.noOfChildren).thenReturn(Some(4))
           when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
           when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1,3)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.now).thenReturn(testDate)
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
         }
 
 
-      "redirects to Your Income Info when user answers 'No' and more than " +
-        "1 child is 16 years and dob is before august and same children are not disable" in{
+        "redirects to Your Income Info when user answers 'No' and more than " +
+          "1 child is 16 years and dob is before august and same children are not disable" in{
 
-        val answers: UserAnswers = spy(userAnswers())
+          val answers: UserAnswers = spy(userAnswers())
 
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Foo", over19),
-          1 -> AboutYourChild("Bar", over16WithBirthdayBefore31stOfAugust),
-          2 -> AboutYourChild("Quux", over19),
-          3 -> AboutYourChild("Max", over16WithBirthdayBefore31stOfAugust))))
-        when(answers.noOfChildren).thenReturn(Some(4))
-        when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
-        when(answers.whichChildrenDisability).thenReturn(Some(Set(0)))
-        when(answers.registeredBlind).thenReturn(Some(false))
-        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild(foo, ageOf19),
+            1 -> AboutYourChild(bar, ageOf16Before31Aug),
+            2 -> AboutYourChild("Quux", ageOf19),
+            3 -> AboutYourChild("Max", ageOf16Before31Aug))))
+          when(answers.noOfChildren).thenReturn(Some(4))
+          when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
+          when(answers.whichChildrenDisability).thenReturn(Some(Set(0)))
+          when(answers.registeredBlind).thenReturn(Some(false))
+          when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+          when(answers.now).thenReturn(testDate)
 
-
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.YourIncomeInfoController.onPageLoad()
+          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          result mustEqual routes.YourIncomeInfoController.onPageLoad()
+        }
       }
-    }
 
       "redirect to Your Income This Year" when {
         "the child is over 16 and is single parent" in {
@@ -599,7 +624,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16))))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16))))
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.YourIncomeInfoController.onPageLoad()
@@ -613,7 +638,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16))))
+          when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16))))
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
           result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
@@ -638,7 +663,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16),1 -> AboutYourChild("Dan", ageOfOver16))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.YourIncomeInfoController.onPageLoad()
@@ -650,7 +675,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16),1 -> AboutYourChild("Dan", ageOfOver16))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
@@ -662,7 +687,10 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", LocalDate.now().minusMonths(3)),1 -> AboutYourChild("Dan", LocalDate.now().minusMonths(10)))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(
+          0 -> AboutYourChild("Test", testDate.minusMonths(3)),
+          1 -> AboutYourChild("Dan", testDate.minusMonths(10))
+        )))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
@@ -673,7 +701,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.noOfChildren).thenReturn(Some(2))
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob))))
+        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16),1 -> AboutYourChild("Dan", dob))))
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1)
@@ -717,7 +745,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.registeredBlind).thenReturn(Some(true))
       when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob),1 -> AboutYourChild("Dan", dob),2 -> AboutYourChild("Tan", dob16))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob),1 -> AboutYourChild("Dan", dob),2 -> AboutYourChild("Tan", ageOfOver16))))
 
 
       val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
@@ -726,21 +754,25 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
 
 
-      "redirect to `Childcare Pay Frequency` for single parent and 1 child age below 16" in {
+    "redirect to `Childcare Pay Frequency` for single parent and 1 child age below 16" in {
 
-        val answers: UserAnswers = spy(userAnswers())
-        when(answers.noOfChildren).thenReturn(Some(3))
-        when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
-        when(answers.registeredBlind).thenReturn(Some(true))
-        when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
-        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-        when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", LocalDate.now().minusYears(2)),2 -> AboutYourChild("Tan", dob16))))
+      val answers: UserAnswers = spy(userAnswers())
+      when(answers.noOfChildren).thenReturn(Some(3))
+      when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
+      when(answers.registeredBlind).thenReturn(Some(true))
+      when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      when(answers.aboutYourChild).thenReturn(Some(Map(
+        0 -> AboutYourChild("Test", ageOfOver16),
+        1 -> AboutYourChild("Dan", testDate.minusYears(2)),
+        2 -> AboutYourChild("Tan", ageOfOver16)
+      )))
 
 
-        val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
 
-        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1)
-      }
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode,1)
+    }
 
 
     "redirect to 'Your Income This Year' when single user with multiple children and all above 16" in {
@@ -750,7 +782,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.registeredBlind).thenReturn(Some(true))
       when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16),1 -> AboutYourChild("Dan", ageOfOver16))))
 
       val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
@@ -763,7 +795,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.registeredBlind).thenReturn(Some(true))
       when(answers.whichChildrenBlind).thenReturn(Some(Set(0)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", dob16),1 -> AboutYourChild("Dan", dob16))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16),1 -> AboutYourChild("Dan", ageOfOver16))))
 
       val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
       result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
@@ -816,7 +848,11 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to Your Income This Year for a user when only one child is younger than 16" in {
       val answers = mock[UserAnswers]
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Over16",dob19))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(
+        0 -> AboutYourChild("Over16",ageOf19),
+        1 -> AboutYourChild("Under16",testDate),
+        2 -> AboutYourChild("Over16",ageOf19)
+      )))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
       val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
@@ -824,7 +860,11 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to next child for a user when two children are younger than 16" in {
       val answers = mock[UserAnswers]
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Under16",dob19))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(
+        0 -> AboutYourChild("Over16",ageOf19),
+        1 -> AboutYourChild("Under16",testDate),
+        2 -> AboutYourChild("Under16",ageOf19)
+      )))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
       val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
@@ -832,7 +872,11 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to Childcare Pay Frequency when two of the children are younger than 16 and we've entered details for the first under 16" in {
       val answers = mock[UserAnswers]
-      when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Over16",dob19), 1 -> AboutYourChild("Under16",LocalDate.now()), 2 -> AboutYourChild("Over16",LocalDate.now()))))
+      when(answers.aboutYourChild).thenReturn(Some(Map(
+        0 -> AboutYourChild("Over16",ageOf19),
+        1 -> AboutYourChild("Under16",testDate),
+        2 -> AboutYourChild("Over16",testDate)
+      )))
       when(answers.childrenWithCosts).thenReturn(Some(Set(1,2)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
@@ -864,19 +908,4 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       result mustEqual routes.SessionExpiredController.onPageLoad()
     }
   }
-
-  private def userAnswers(data: (String, JsValue)*): UserAnswers =
-    new UserAnswers(CacheMap("", data.toMap))
-
-  private def aboutYourChildren(children: (String, LocalDate)*): (String, JsValue) =
-    AboutYourChildId.toString -> Json.toJson(children.zipWithIndex.map {
-      case ((name, dob), i) =>
-        i.toString -> Json.toJson(AboutYourChild(name, dob))
-    }.toMap)
-
-  private lazy val dob16: LocalDate = if (LocalDate.now().getMonthOfYear <= 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-  private lazy val dob19: LocalDate = LocalDate.now.minusYears(19).minusDays(1)
-  private lazy val dob: LocalDate = LocalDate.now.minusYears(1)
-
-
 }

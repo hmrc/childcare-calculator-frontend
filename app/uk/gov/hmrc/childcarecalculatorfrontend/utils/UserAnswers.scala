@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
+class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
   def bothGetSameIncomePreviousYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothGetSameIncomePreviousYearId.toString)
 
   def youGetSameIncomePreviousYear: Option[Boolean] = cacheMap.getEntry[Boolean](YouGetSameIncomePreviousYearId.toString)
@@ -322,8 +322,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     children.map {
       children16OrOlder =>
         children16OrOlder.filter {
-          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${LocalDate.now().getYear-1}-8-31")) &&
-            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${LocalDate.now().getYear}-09-1"))
+          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear-1}-8-31")) &&
+            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${now.getYear}-09-1"))
         }
     }
   }
@@ -332,9 +332,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     aboutYourChild.map {
       children =>
         children.filter {
-          case (_, model) => {
-            model.dob.isBefore(LocalDate.now.minusYears(16))
-          }
+          case (_, model) =>model.dob.isBefore(now.minusYears(16))
         }
     }
   }
@@ -348,9 +346,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats {
     (childrenIdsForAgeExactly16AndDisabled ++childrenBelow16).sorted
   }
 
-  def childrenBelow16:List[Int] = {
-  aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(LocalDate.now.minusYears(16))).keys.toList
-  }
+  def childrenBelow16:List[Int] =
+    aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(now.minusYears(16))).keys.toList
 
   def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
 

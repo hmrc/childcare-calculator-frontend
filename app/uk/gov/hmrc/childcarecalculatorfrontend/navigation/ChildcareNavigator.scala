@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
-
 import org.joda.time.LocalDate
 import play.api.Logger
 import play.api.mvc.Call
@@ -25,11 +24,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{DateTimeUtils, SessionExpiredRouter, UserAnswers, Utils}
 
 
-class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
+class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with DateTimeUtils {
 
   override protected lazy val routeMap: PartialFunction[Identifier, UserAnswers => Call] = {
     case NoOfChildrenId => _ => routes.AboutYourChildController.onPageLoad(NormalMode, 0)
@@ -64,14 +62,14 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }.getOrElse(SessionExpiredRouter.route(getClass.getName,"aboutYourChildRoutes",Some(answers)))
 
-  private def childApprovedEducationRoutes(id: Int)(answers: UserAnswers): Call = {
+  private def     childApprovedEducationRoutes(id: Int)(answers: UserAnswers): Call = {
 
     def next(i: Int, childrenOver16: Map[Int, AboutYourChild]): Option[Int] = {
       val ints: Seq[Int] = childrenOver16.keys.toSeq
       ints.lift(ints.indexOf(i) + 1)
     }
 
-    def childIsOver19(dob: LocalDate) = dob.isBefore(LocalDate.now.minusYears(19))
+    def childIsOver19(dob: LocalDate) = dob.isBefore(now.minusYears(19))
 
     for {
       childrenOver16    <- answers.childrenOver16

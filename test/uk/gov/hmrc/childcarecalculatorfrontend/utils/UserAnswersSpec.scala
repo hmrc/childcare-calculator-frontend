@@ -19,12 +19,27 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.joda.time.LocalDate
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{over16,under16,over16WithBirthdayBefore31stOfAugust,over19,exact16}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
+
+  private val testDate: LocalDate           = LocalDate.parse("2019-01-01")
+  private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
+  private val ageOf16Before31Aug: LocalDate = ageOf16WithBirthdayBefore31stAugust(testDate)
+  private val ageOf16Over: LocalDate        = ageOfOver16Relative(testDate)
+  private val ageOfUnder16: LocalDate       = ageUnder16Relative(testDate)
+  private val ageOfExactly16: LocalDate     = ageExactly16Relative(testDate)
+
+  def cacheMap(answers: (String, JsValue)*): CacheMap =
+    CacheMap("", Map(answers: _*))
+
+  def helper(map: CacheMap = cacheMap()): UserAnswers =
+    new UserAnswers(map) {
+      override def now: LocalDate = testDate
+    }
 
   "return partner when user lives with partner and the answer to whoIsInPaidEmployment returns 'partner'" in {
     val answers: CacheMap = cacheMap(
@@ -57,15 +72,17 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     helper(answers).isYouPartnerOrBoth(Some("you")) mustEqual "you"
   }
 
+  private val quux = "Quux"
+  private val foo = "Foo"
+  private val bar = "Bar"
+
   ".childrenOver16" must {
 
     "return no children over 16" in {
-      val under16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now().minusYears(16).minusMonths(1) else LocalDate.now()
-
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", under16)),
-          "1" -> Json.toJson(AboutYourChild("Baz", under16))
+          "0" -> Json.toJson(AboutYourChild(foo, ageOfUnder16)),
+          "1" -> Json.toJson(AboutYourChild("Baz", ageOfUnder16))
         )
       )
 
@@ -78,18 +95,20 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16)),
-          "4" -> Json.toJson(AboutYourChild("Josh", over19))
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Over)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Over)),
+          "4" -> Json.toJson(AboutYourChild("Josh", ageOf19))
         )
       )
 
       val result = helper(answers).childrenOver16
-      result.value must contain(0 -> AboutYourChild("Foo", over16))
-      result.value must contain(3 -> AboutYourChild("Baz", over16))
-      result.value must contain(4 -> AboutYourChild("Josh", over19))
+      result.value must contain(0 -> AboutYourChild(
+        foo, ageOf16Over))
+      result.value must contain(3 -> AboutYourChild("Baz", ageOf16Over))
+      result.value must contain(4 -> AboutYourChild("Josh", ageOf19))
     }
 
     "return `None` when there are no children defined" in {
@@ -100,35 +119,35 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
   ".extract16YearsOldWithBirthdayBefore31stAugust" must {
     "return the number of children of 16 years and dob before 31st August" in {
-
-      val over19 = LocalDate.now.minusYears(19)
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", exact16)),
-          "1" -> Json.toJson(AboutYourChild("Bar", exact16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", over19))
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOfExactly16)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfExactly16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf19))
         )
       )
 
       val parametersMap = Map(
-        0 -> AboutYourChild("Foo", exact16),
-        1 -> AboutYourChild("Bar", exact16),
-        2 -> AboutYourChild("Quux", over19))
+        0 -> AboutYourChild(
+          foo, ageOfExactly16),
+        1 -> AboutYourChild(bar, ageOfExactly16),
+        2 -> AboutYourChild(quux, ageOf19))
 
 
       val result = helper(answers).extract16YearOldsWithBirthdayBefore31stAugust(Some(parametersMap))
 
-      result.value must contain(0 -> AboutYourChild("Foo", exact16))
-      result.value must contain(1 -> AboutYourChild("Bar", exact16))
+      result.value must contain(0 -> AboutYourChild(
+        foo, ageOfExactly16))
+      result.value must contain(1 -> AboutYourChild(bar, ageOfExactly16))
     }
   }
 
-  ".is16ThisYearAndDateOfBirthIsAfter31stAugust" must{
+  ".is16ThisYearAndDateOfBirthIsAfter31stAugust" must {
     "not return any children who are over 16 but Birthday is before 31st of August" in {
-      val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31") else LocalDate.now.minusYears(16)
-
       val answers: CacheMap = cacheMap(
-        AboutYourChildId.toString -> Json.obj("0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)))
+        AboutYourChildId.toString -> Json.obj("0" -> Json.toJson(AboutYourChild(
+          foo, ageOf16Before31Aug)))
       )
       val result = helper(answers).childrenOver16
       result.get.size mustBe 0
@@ -140,10 +159,11 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
 
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Over)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))
         )
       )
 
@@ -158,69 +178,73 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
   }
 
-    ".singleChildBelow16Yrs" must {
-      "return true when the child aged exactly 16 and birthday before 31st of August are disabled" in {
+  ".singleChildBelow16Yrs" must {
+    "return true when the child aged exactly 16 and birthday before 31st of August are disabled" in {
 
-        val answers: CacheMap = cacheMap(
-          NoOfChildrenId.toString -> JsNumber(4),
-          AboutYourChildId.toString -> Json.obj(
-            "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-            "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-            "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Over)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
-        val result: Boolean = helper(answers).singleChildBelow16Yrs
-        result mustEqual true
-      }
-
-      "return false when the child aged exactly 16 and birthday before 31st of August are not  disabled" in {
-
-        val answers: CacheMap = cacheMap(
-          NoOfChildrenId.toString -> JsNumber(4),
-          AboutYourChildId.toString -> Json.obj(
-            "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-            "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-            "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-          WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)))
-
-        val result: Boolean = helper(answers).singleChildBelow16Yrs
-        result mustEqual false
-      }
-
-      "return false when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
-
-        val answers: CacheMap = cacheMap(
-          NoOfChildrenId.toString -> JsNumber(4),
-          AboutYourChildId.toString -> Json.obj(
-            "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-            "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-            "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-          WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
-
-        val result: Boolean = helper(answers).singleChildBelow16Yrs
-        result mustEqual false
-      }
-
-      "return true when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
-
-        val answers: CacheMap = cacheMap(
-          NoOfChildrenId.toString -> JsNumber(4),
-          AboutYourChildId.toString -> Json.obj(
-            "0" -> Json.toJson(AboutYourChild("Foo", over16)),
-            "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-            "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-            "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-          WhichChildrenBlindId.toString -> Json.toJson(Seq(2,3)))
-
-        val result: Boolean = helper(answers).singleChildBelow16Yrs
-        result mustEqual true
-      }
+      val result: Boolean = helper(answers).singleChildBelow16Yrs
+      result mustEqual true
     }
+
+    "return false when the child aged exactly 16 and birthday before 31st of August are not  disabled" in {
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Over)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)))
+
+      val result: Boolean = helper(answers).singleChildBelow16Yrs
+      result mustEqual false
+    }
+
+    "return false when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Over)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
+
+      val result: Boolean = helper(answers).singleChildBelow16Yrs
+      result mustEqual false
+    }
+
+    "return true when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Over)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(2, 3)))
+
+      val result: Boolean = helper(answers).singleChildBelow16Yrs
+      result mustEqual true
+    }
+  }
 
 
   ".multipleChildrenBelow16Yrs" must {
@@ -229,12 +253,13 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
 
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,2,3)))
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2, 3)))
 
       val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
       result mustEqual true
@@ -245,12 +270,13 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
 
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(0,2,3)))
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(0, 2, 3)))
 
       val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
       result mustEqual true
@@ -261,11 +287,12 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1,2)),
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1, 2)),
         WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
 
       val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
@@ -273,100 +300,105 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
   }
 
-".childrenIdsForAgeExactly16AndDisabled" must {
-  "returns list with children exactly 16 years with dob before august and blind" in {
+  ".childrenIdsForAgeExactly16AndDisabled" must {
+    "returns list with children exactly 16 years with dob before august and blind" in {
 
-    val answers: CacheMap = cacheMap(
-      NoOfChildrenId.toString -> JsNumber(4),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-        "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-        "2" -> Json.toJson(AboutYourChild("Quux", under16)),
-        "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-      WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1,2)),
-      WhichChildrenBlindId.toString -> Json.toJson(Seq(0,2,1,3)))
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1, 2)),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(0, 2, 1, 3)))
 
-    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
-    result mustEqual Seq(0,3)
-  }
-
-  "returns list with children exactly 16 years with dob before august and disable " in {
-
-    val answers: CacheMap = cacheMap(
-      NoOfChildrenId.toString -> JsNumber(4),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-        "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-        "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
-        "3" -> Json.toJson(AboutYourChild("Baz", under16))),
-      WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,2,3)),
-      WhichChildrenBlindId.toString -> Json.toJson(Seq(1,3)))
-
-    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
-    result mustEqual Seq(0,2)
-  }
-
-  "returns empty list with children exactly 16 years with dob before august and not disable " in {
-    val over16 = if (LocalDate.now().getMonthOfYear < 8) LocalDate.now.minusYears(17) else LocalDate.now.minusYears(16)
-    val under16 = LocalDate.now
-    val over16WithBirthdayBefore31stOfAugust = if (LocalDate.now().getMonthOfYear > 8) {
-      LocalDate.parse(s"${LocalDate.now.minusYears(16).getYear}-07-31")
-    } else {
-      LocalDate.now.minusYears(16)
+      val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+      result mustEqual Seq(0, 3)
     }
 
-    val answers: CacheMap = cacheMap(
-      NoOfChildrenId.toString -> JsNumber(4),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-        "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-        "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
-        "3" -> Json.toJson(AboutYourChild("Baz", under16))))
+    "returns list with children exactly 16 years with dob before august and disable " in {
 
-    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
-    result mustEqual Seq()
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Before31Aug)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOfUnder16))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2, 3)),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(1, 3)))
+
+      val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+      result mustEqual Seq(0, 2)
+    }
+
+    "returns empty list with children exactly 16 years with dob before august and not disable " in {
+      val ageOf16Over = if (testDate.getMonthOfYear < 8) {
+        testDate.minusYears(17)
+      } else {
+        testDate.minusYears(16)
+      }
+      val ageOfUnder16 = testDate.minusYears(1)
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Before31Aug)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOfUnder16))))
+
+      val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+      result mustEqual Seq()
+    }
+
+    "returns list with single child exactly 16 years with dob before august and disabled" in {
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug))),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+        RegisteredBlindId.toString -> JsBoolean(false))
+
+      val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+      result mustEqual Seq(0)
+    }
+
+    "returns list with single child exactly 16 years with dob before august and blind" in {
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug))),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        RegisteredBlindId.toString -> JsBoolean(true))
+
+      val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+      result mustEqual Seq(0)
+    }
+
+    "returns empty list for single child exactly 16 years with dob before august and not blind or disabled" in {
+
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug))),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        RegisteredBlindId.toString -> JsBoolean(false))
+
+      val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
+      result mustEqual Seq()
+    }
+
   }
-
-  "returns list with single child exactly 16 years with dob before august and disabled" in {
-
-    val answers: CacheMap = cacheMap(
-      NoOfChildrenId.toString -> JsNumber(1),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust))),
-      ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
-      RegisteredBlindId.toString -> JsBoolean(false))
-
-    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
-    result mustEqual Seq(0)
-  }
-
-  "returns list with single child exactly 16 years with dob before august and blind" in {
-
-    val answers: CacheMap = cacheMap(
-      NoOfChildrenId.toString -> JsNumber(1),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust))),
-      ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
-      RegisteredBlindId.toString -> JsBoolean(true))
-
-    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
-    result mustEqual Seq(0)
-  }
-
-  "returns empty list for single child exactly 16 years with dob before august and not blind or disabled" in {
-
-    val answers: CacheMap = cacheMap(
-      NoOfChildrenId.toString -> JsNumber(1),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust))),
-      ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
-      RegisteredBlindId.toString -> JsBoolean(false))
-
-    val result: List[Int] = helper(answers).childrenIdsForAgeExactly16AndDisabled
-    result mustEqual Seq()
-  }
-
-}
 
   ".childrenBelow16AndExactly16Disabled" when {
     "return the list of children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
@@ -374,14 +406,15 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
-          "3" -> Json.toJson(AboutYourChild("Baz", under16))),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,3)))
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Before31Aug)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOfUnder16))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
       val result: List[Int] = helper(answers).childrenBelow16AndExactly16Disabled
-      result mustEqual Seq(0,1,3)
+      result mustEqual Seq(0, 1, 3)
     }
 
     "return empty list when children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
@@ -389,41 +422,43 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over16WithBirthdayBefore31stOfAugust)),
-          "1" -> Json.toJson(AboutYourChild("Bar", over16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16))),
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(1,3)))
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOf16Over)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Before31Aug)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Over))),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(1, 3)))
 
       val result: List[Int] = helper(answers).childrenBelow16AndExactly16Disabled
       result mustEqual Seq()
     }
   }
 
-  ".childrenBelow16" must{
-    "returns list of children id's whose age is less than 16" in{
+  ".childrenBelow16" must {
+    "returns list of children id's whose age is less than 16" in {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over19)),
-          "1" -> Json.toJson(AboutYourChild("Bar", under16)),
-          "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
-          "3" -> Json.toJson(AboutYourChild("Baz", under16))),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,3)))
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf19)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Before31Aug)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOfUnder16))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
       val result: List[Int] = helper(answers).childrenBelow16
-      result mustEqual Seq(1,3)
+      result mustEqual Seq(1, 3)
     }
 
-    "returns empty list   when chidren are over or exactly 16" in{
+    "returns empty list   when chidren are over or exactly 16" in {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", over19)),
-          "1" -> Json.toJson(AboutYourChild("Bar", over19)),
-          "2" -> Json.toJson(AboutYourChild("Quux", over16WithBirthdayBefore31stOfAugust)),
-          "3" -> Json.toJson(AboutYourChild("Baz", over16WithBirthdayBefore31stOfAugust))),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0,3)))
+          "0" -> Json.toJson(AboutYourChild(foo, ageOf19)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOf19)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Before31Aug)),
+          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
       val result: List[Int] = helper(answers).childrenBelow16
       result mustEqual Seq()
@@ -534,7 +569,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     val yesNoNotYetPositive: Seq[String] = Seq(YesNoNotYetEnum.YES.toString, YesNoNotYetEnum.NOTYET.toString)
     val yesNoUnsurePositive: Seq[String] = Seq(YesNoUnsureEnum.YES.toString, YesNoUnsureEnum.NOTSURE.toString)
 
-    for(costs <- yesNoNotYetPositive; provider <- yesNoUnsurePositive) {
+    for (costs <- yesNoNotYetPositive; provider <- yesNoUnsurePositive) {
       s"return `true` if user has costs: $costs, and approved costs: $provider" in {
         val answers = helper(cacheMap(
           ChildcareCostsId.toString -> JsString(costs),
@@ -575,10 +610,4 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       answers.hasApprovedCosts mustNot be(defined)
     }
   }
-
-  def cacheMap(answers: (String, JsValue)*): CacheMap =
-    CacheMap("", Map(answers: _*))
-
-  def helper(map: CacheMap = cacheMap()): UserAnswers =
-    new UserAnswers(map)
 }
