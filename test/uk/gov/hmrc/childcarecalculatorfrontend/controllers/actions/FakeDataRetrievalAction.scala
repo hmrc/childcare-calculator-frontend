@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
+import org.joda.time.LocalDate
 import play.api.Application
-import play.api.mvc._
+import play.api.mvc.{Request, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -25,13 +26,19 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeDataRetrievalAction(cacheMapToReturn: Option[CacheMap])(implicit app: Application) extends DataRetrievalAction {
+class FakeDataRetrievalAction(cacheMapToReturn: Option[CacheMap], timeReplacement: Option[LocalDate] = None)
+                             (implicit app: Application) extends DataRetrievalAction {
 
   override def executionContext: ExecutionContext = global
-  override def parser: BodyParser[AnyContent] = app.injector.instanceOf[MessagesControllerComponents].parsers.defaultBodyParser
+  override def parser: BodyParser[AnyContent]     = app.injector.instanceOf[MessagesControllerComponents].parsers.defaultBodyParser
 
-  override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = cacheMapToReturn match {
-    case None => Future(OptionalDataRequest(request, "id", None))
-    case Some(cacheMap)=> Future(OptionalDataRequest(request, "id", Some(new UserAnswers(cacheMap))))
+  override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = {
+    val userAnswers: Option[UserAnswers] = cacheMapToReturn map {
+      new UserAnswers(_) {
+        override def now: LocalDate = timeReplacement.getOrElse(LocalDate.now())
+      }
+    }
+
+    Future(OptionalDataRequest(request, "id", userAnswers))
   }
 }

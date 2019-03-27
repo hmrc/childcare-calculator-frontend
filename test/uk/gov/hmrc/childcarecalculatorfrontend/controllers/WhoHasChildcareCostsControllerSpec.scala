@@ -19,10 +19,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.joda.time.LocalDate
 import org.scalatest.OptionValues
 import play.api.data.Form
-import play.api.libs.json.{JsValue, Json}
 import play.api.libs.json.Json.JsValueWrapper
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.Call
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{exact15, over16, over16WithBirthdayBefore31stOfAugust, over19, under16}
+import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
@@ -36,6 +37,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionValues {
 
+  private val testDate: LocalDate           = LocalDate.parse("2019-01-01")
+  private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
+  private val ageOf16Before31Aug: LocalDate = ageOf16WithBirthdayBefore31stAugust(testDate)
+  private val ageOfExactly15: LocalDate     = ageExactly15Relative(testDate)
+
   "WhoHasChildcareCosts Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -46,18 +52,22 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
     }
 
     "return OK and only display the children that are under 16 and exact 16 with DOB before 31st august and disabled" in {
-      val children = Map("Over16" -> "0", "Under16_1" -> "1", "Under16_2" -> "2","exact16WithBirthdayBefore31stAugust" ->"3")
-
+      val children = Map(
+        "Over16" -> "0",
+        "Under16_1" -> "1",
+        "Under16_2" -> "2",
+        "exact16WithBirthdayBefore31stAugust" -> "3"
+      )
 
       val dataWithOneChildOver16 = requiredData(children) + (AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Over16", over19)),
-        "1" -> Json.toJson(AboutYourChild("Under16_1", exact15)),
-        "2" -> Json.toJson(AboutYourChild("Under16_2", exact15)),
-        "3" -> Json.toJson(AboutYourChild("exact16WithBirthdayBefore31stAugust", over16WithBirthdayBefore31stOfAugust)))) +
+        "0" -> Json.toJson(AboutYourChild("Over16", ageOf19)),
+        "1" -> Json.toJson(AboutYourChild("Under16_1", ageOfExactly15)),
+        "2" -> Json.toJson(AboutYourChild("Under16_2", ageOfExactly15)),
+        "3" -> Json.toJson(AboutYourChild("exact16WithBirthdayBefore31stAugust", ageOf16Before31Aug)))) +
         (WhichChildrenBlindId.toString -> Json.toJson(Seq(2))) +
         (WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)), Some(testDate))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
@@ -77,7 +87,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
           val validData = requiredData(values) + (
             WhoHasChildcareCostsId.toString -> Json.toJson(Seq(value.toInt))
             )
-          val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+          val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
 
           val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
@@ -135,19 +145,21 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
     }
   }
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute: Call = {
+    routes.WhatToTellTheCalculatorController.onPageLoad()
+  }
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): WhoHasChildcareCostsController =
     new WhoHasChildcareCostsController(frontendAppConfig, mcc,
       FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction)
 
-  val defaultValues = Map("Foo" -> "0", "Bar" ->"1")
+  val defaultValues: Map[String, String] = Map("Foo" -> "0", "Bar" ->"1")
 
   def viewAsString(
                     form: Form[_] = WhoHasChildcareCostsForm(0, 1),
                     values: Map[String, String] = defaultValues
-                  ) =
+                  ): String =
     whoHasChildcareCosts(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
 
 
@@ -161,7 +173,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
   )
 
   def getRequiredData(values: Map[String, String]): DataRetrievalAction =
-    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(values))))
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(values))), Some(testDate))
 
   def getRequiredData: DataRetrievalAction = getRequiredData(defaultValues)
 

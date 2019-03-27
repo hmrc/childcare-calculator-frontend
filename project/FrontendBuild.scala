@@ -10,22 +10,25 @@ object FrontendBuild extends Build with MicroService {
 }
 
 private object AppDependencies {
-  private val playHealthVersion = "3.10.0-play-26"
-  private val bootstrapPlayVersion = "0.36.0"
+  private val playHealthVersion = "3.12.0-play-26"
+  private val bootstrapPlayVersion = "0.37.0"
   private val logbackJsonLoggerVersion = "4.2.0"
   private val govukTemplateVersion = "5.27.0-play-26"
-  private val playUiVersion = "7.31.0-play-26"
-  private val hmrcTestVersion = "3.4.0-play-26"
+  private val playUiVersion = "7.33.0-play-26"
+  private val hmrcTestVersion = "3.6.0-play-26"
   private val scalaTestVersion = "3.0.5"
   private val scalaCheckVersion = "1.13.4"
   private val scalaTestPlusPlayVersion = "2.0.1"
   private val pegdownVersion = "1.6.0"
   private val mockitoCoreVersion = "2.23.4"
-  private val httpCachingClientVersion = "8.0.0"
-  private val playReactivemongoVersion = "7.14.0-play-26"
+  private val httpCachingClientVersion = "8.1.0"
+  private val playReactivemongoVersion = "7.16.0-play-26"
   private val playConditionalFormMappingVersion = "0.2.0"
   private val playLanguageVersion = "3.4.0"
   private val taxYearVersion = "0.4.0"
+  private val playJavaVersion = "2.6.12"
+  private val httpVerbsVersion = "9.4.0-play-26"
+
   private val hmrc = "uk.gov.hmrc"
   private val typesafe = "com.typesafe.play"
 
@@ -41,6 +44,8 @@ private object AppDependencies {
     hmrc %% "bootstrap-play-26" % bootstrapPlayVersion,
     hmrc %% "play-language" % playLanguageVersion,
     hmrc %% "tax-year" % taxYearVersion,
+    hmrc %% "http-verbs" % httpVerbsVersion,
+    typesafe %% "play-java" % playJavaVersion,
     typesafe %% "play-json" % "2.6.13",
     typesafe %% "play-json-joda" % "2.6.13"
   )
