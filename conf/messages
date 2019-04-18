@@ -1248,12 +1248,13 @@ result.tc.scheme.guidance.link = You may be eligible for help through other elem
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.
-result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child. You get a £2 government top-up for every £8 you pay in childcare.
+result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child aged 11 or under, or up to £4,000 a year for each child aged 16 or under if they are disabled. You get a £2 government top-up for every £8 you pay in childcare.
 result.tfc.detail.summary = How Tax-Free Childcare works
 result.tfc.detailPara1 = You’ll create an online childcare account to pay into, get top-ups paid into and use it to pay your approved provider directly. For example, for every £8 paid into the account the government will pay a £2 top-up that would give you £10 towards your childcare costs for each child. You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 a year if they are disabled.
-result.tfc.detailPara2 = It is for children under 12, or under 17 if disabled.
+result.tfc.detailPara2 = The child or children must usually live with you. They stop being eligible on 1 September after their 11th birthday.
 
 result.tfc.not.eligible = You cannot get help from Tax-Free Childcare. To get help, you need to earn at least 16 times the National Minimum Wage a week and not earn more than £100,000 a year. This applies to both if you live with a partner.
+result.tfc.not.eligible2 = Children are not eligible from 1 September after their 11th birthday, or after their 16th birthday if disabled.
 
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice.

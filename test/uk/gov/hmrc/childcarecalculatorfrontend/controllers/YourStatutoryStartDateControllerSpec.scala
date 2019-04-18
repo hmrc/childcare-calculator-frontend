@@ -30,6 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayType
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.time.TaxYear
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -42,6 +43,10 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
   private val retrievalAction = new FakeDataRetrievalAction(
     Some(CacheMap("id", statutoryTypeNameValuePair))
   )
+
+  val previousTaxYear = new TaxYear(LocalDate.now().getYear).previous.currentYear
+
+  val currentTaxYear =  new TaxYear(LocalDate.now().getYear).currentYear
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
@@ -61,13 +66,13 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+      val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(previousTaxYear, 2, 1)),
         YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm(statutoryType).fill(new LocalDate(2017, 2, 1)))
+      contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm(statutoryType).fill(new LocalDate(previousTaxYear, 2, 1)))
     }
 
     "populate the view correctly on a GET request" in {
@@ -91,7 +96,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "date.day"   -> "1",
         "date.month" -> "2",
-        "date.year"  -> "2017"
+        "date.year"  -> previousTaxYear.toString
       )
 
       val result = controller().onSubmit(NormalMode)(postRequest)
