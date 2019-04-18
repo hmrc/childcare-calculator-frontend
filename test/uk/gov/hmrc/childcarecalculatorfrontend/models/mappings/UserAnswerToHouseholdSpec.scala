@@ -29,6 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.time.TaxYear
 
 class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with BeforeAndAfterEach {
 
@@ -39,6 +40,10 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
   val taxCredits: TaxCredits = mock[TaxCredits]
 
   val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
+
+  val previousTaxYear = new TaxYear(LocalDate.now().getYear).previous.currentYear
+
+  val currentTaxYear =  new TaxYear(LocalDate.now().getYear).currentYear
 
   def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
@@ -294,12 +299,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
@@ -333,12 +333,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2018, 5, 1)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(currentTaxYear, 5, 1)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
@@ -377,12 +372,8 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2018, 3, 21)
+        val statutoryStartDate = new LocalDate(currentTaxYear, 3, 21)
 
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
@@ -420,12 +411,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 3, 21)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 3, 21)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
@@ -469,12 +455,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
@@ -528,12 +509,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
@@ -586,12 +562,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
@@ -643,12 +614,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
@@ -700,12 +666,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
@@ -757,12 +718,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2018, 5, 1)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(currentTaxYear, 5, 1)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
@@ -814,12 +770,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2018, 3, 21)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(currentTaxYear, 3, 21)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
@@ -873,12 +824,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2017, 4, 6)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(previousTaxYear, 4, 6)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
@@ -939,12 +885,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = new LocalDate(2018, 3, 21)
-
-        when(mockTaxYearInfo.currentTaxYearStart) thenReturn "2018"
-        when(mockTaxYearInfo.currentTaxYearEndDate) thenReturn new LocalDate(2019, 4, 5)
-        when(mockTaxYearInfo.previousTaxYearStart) thenReturn "2017"
-        when(mockTaxYearInfo.previousTaxYearEndDate) thenReturn new LocalDate(2018, 4, 5)
+        val statutoryStartDate = new LocalDate(currentTaxYear, 3, 21)
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))

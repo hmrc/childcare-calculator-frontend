@@ -30,6 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayT
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.time.TaxYear
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -42,6 +43,9 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
   private val retrievalAction = new FakeDataRetrievalAction(
     Some(CacheMap("id", statutoryTypeNameValuePair))
   )
+
+  val previousTaxYear = new TaxYear(LocalDate.now().getYear).previous.currentYear
+
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
@@ -64,21 +68,21 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val validData = Map(PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+      val validData = Map(PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(previousTaxYear, 2, 1)),
         PartnerStatutoryPayTypeId.toString -> JsString(PartnerStatutoryPayTypeForm.options.head.value)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerStatutoryStartDateForm(statutoryType).fill(new LocalDate(2017, 2, 1)))
+      contentAsString(result) mustBe viewAsString(PartnerStatutoryStartDateForm(statutoryType).fill(new LocalDate(previousTaxYear, 2, 1)))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "date.day"   -> "1",
         "date.month" -> "2",
-        "date.year"  -> "2017"
+        "date.year"  -> previousTaxYear.toString
       )
 
       val result = controller().onSubmit(NormalMode)(postRequest)

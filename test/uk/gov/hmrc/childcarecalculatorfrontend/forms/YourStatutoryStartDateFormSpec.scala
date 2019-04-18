@@ -25,10 +25,15 @@ class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 
   val statutoryType = "maternity"
 
+  val previousTaxYear = new TaxYear(LocalDate.now().getYear).previous.currentYear
+
+  val currentTaxYear =  new TaxYear(LocalDate.now().getYear).currentYear
+
+
   val validData: Map[String, String] = Map(
     "date.day"   -> "1",
     "date.month" -> "2",
-    "date.year"  -> "2017"
+    "date.year"  -> previousTaxYear.toString
   )
 
   val form = YourStatutoryStartDateForm(statutoryType)
@@ -36,7 +41,7 @@ class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
   "YourStatutoryStartDate Form" must {
 
     "successfully bind when the date is valid" in {
-      form.bind(validData).get shouldEqual new LocalDate(2017: Int, 2: Int, 1: Int)
+      form.bind(validData).get shouldEqual new LocalDate(previousTaxYear: Int, 2: Int, 1: Int)
     }
 
     "fail to bind when the date is omitted" in {
@@ -77,35 +82,35 @@ class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
     }
 
 
-    "fail to bind when the date is more than 2 years and 1 day before 6th April 2018 " in {
+    "fail to bind when the date is more than 2 years and 1 day before 6th April of the current tax year " in {
       val mockTaxYearInfo = mock[TaxYear]
-      val taxYearStart = new LocalDate(2018: Int, 4: Int, 5: Int)
+      val taxYearStart = new LocalDate(currentTaxYear: Int, 4: Int, 5: Int)
 
       when(mockTaxYearInfo.starts) thenReturn taxYearStart
 
       val data = Map(
         "date.day" -> "5",
         "date.month" -> "4",
-        "date.year" -> "2016"
+        "date.year" -> (previousTaxYear-1).toString
       )
 
-      val expectedError = error("date", "yourStatutoryStartDate.error.past-over-2-years", statutoryType, "2018")
+      val expectedError = error("date", "yourStatutoryStartDate.error.past-over-2-years", statutoryType, currentTaxYear.toString)
       checkForError(form, data, expectedError)
     }
 
-    "successfully bind when the date is exactly 2 years before 6th April 2018" in {
+    "successfully bind when the date is exactly 2 years before 6th April of the current tax year" in {
       val mockTaxYearInfo = mock[TaxYear]
-      val taxYearStart = new LocalDate(2018: Int, 4: Int, 6: Int)
+      val taxYearStart = new LocalDate(currentTaxYear: Int, 4: Int, 6: Int)
 
       when(mockTaxYearInfo.starts) thenReturn taxYearStart
 
       val data: Map[String, String] = Map(
         "date.day" -> "6",
         "date.month" -> "4",
-        "date.year" -> "2016"
+        "date.year" -> (previousTaxYear-1).toString
       )
 
-      form.bind(data).get shouldEqual new LocalDate(2016: Int, 4: Int, 6: Int)
+      form.bind(data).get shouldEqual new LocalDate(previousTaxYear-1: Int, 4: Int, 6: Int)
     }
 
   }
