@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.twirl.api.Html
+import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.scheme_result
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
@@ -29,7 +30,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
         val view = asDocument(scheme_result(
           title = "You are eligible",
           couldGet = Some("you could get"),
-          eligibility = Some("100"),
+          eligibility = Some(EligibilityModel("100", "")),
           periodText = Some("a month"),
           para1 = Some("some text"),
           para2 = Some(Html("some more text")),
@@ -43,7 +44,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
         val view = asDocument(scheme_result(
           title = "You are eligible",
           couldGet = Some("you could get"),
-          eligibility = Some("100"),
+          eligibility = Some(EligibilityModel("100", "")),
           periodText = Some("a month"),
           para1 = Some("some text"),
           para2 = Some(Html("some more text")),
@@ -67,7 +68,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
       val view = asDocument(scheme_result(
         title = "You are eligible",
         couldGet = Some("you could get"),
-        eligibility = Some("100"),
+        eligibility = Some(EligibilityModel("100", "")),
         periodText = Some("a month"),
         para1 = Some("some text"),
         para2 = Some(Html("some more text")),

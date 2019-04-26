@@ -15,11 +15,12 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
 
 @(
         title: String,
         couldGet: Option[String] = None,
-        eligibility: Option[String] = None,
+        eligibility: Option[EligibilityModel] = None,
         periodText: Option[String] = None,
         para1: Option[String] = None,
         para2: Option[Html] = None,
@@ -45,7 +46,7 @@
     <div class="column-full">
         <div class="panel panel-border-wide @if(eligibility.isDefined) {green} else {red}">
             <h3 class="heading-medium results--heading">@title</h3>
-            <p>@couldGet <span class="heading-xlarge results">@eligibility</span>
+            <p>@couldGet <span class="heading-xlarge results" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</span>
                 @periodText</p>
             @if(para1.isDefined) {
             <p @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a rel="external" target="_blank"
