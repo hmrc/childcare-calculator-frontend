@@ -22,7 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 
-@(model: ResultsViewModel)(implicit request: Request[_], messages: Messages)
+@(model: ResultsViewModel, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
     @otherChildcareSchemesContent = {
         @if(!model.hasChildcareCosts) {
@@ -46,7 +46,7 @@
     }
 
 
-    @if(!model.freeHours.isDefined) {
+    @if(model.freeHours.isEmpty) {
         @components.scheme_result(
             title = messages("result.free.hours.title"),
             para1 = Some(messages("result.free.hours.not.eligible")),
@@ -56,6 +56,8 @@
 
 
     @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
+
+    @if(!hideTC) {
         @if(model.taxCreditsOrUC.contains(universalCredits)) {
             @components.scheme_result(
                 title = messages("result.tc.title"),
@@ -64,7 +66,7 @@
             )
         } else {
 
-            @if(!model.tc.isDefined) {
+            @if(model.tc.isEmpty) {
                 @components.scheme_result(
                     title = messages("result.tc.title"),
                     para1 = Some(model.tcSchemeInEligibilityMsg),
@@ -74,8 +76,9 @@
                 )
             }
         }
+    }
 
-        @if(!model.tfc.isDefined) {
+        @if(model.tfc.isEmpty) {
             @components.scheme_result(
                 title = messages("result.tfc.title"),
                 para1 = Some(messages("result.tfc.not.eligible")),
@@ -83,7 +86,7 @@
                 notEligibleID1 = Some("notEligibleTFC"))
         }
 
-        @if(!model.esc.isDefined) {
+        @if(model.esc.isEmpty) {
             @components.scheme_result(
                 title = messages("result.esc.title"),
                 para1 = Some(messages("result.esc.not.eligible.para1")),

@@ -25,7 +25,7 @@ class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
 
   "whatToTellTheCalculator view" must {
 
-    behave like normalPage(view, "whatToTellTheCalculator", "guidance",
-      "li.benefits", "li.pay", "li.weeks", "para2", "li.costs", "li.benefits.child", "li.ages", "para3", "para4")
+    behave like normalPage(view, "whatToTellTheCalculator", "guidanceA", "guidanceB",
+      "li.dob", "li.costs", "li.benefits", "time", "indent", "tcUc", "p1.a", "p1.link", "p1.b", "p2.a", "p2.link")
   }
 }

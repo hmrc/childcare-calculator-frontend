@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.Lang
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
@@ -57,11 +57,11 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       when(resultService.getResultsViewModel(any(),any())(any(),any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
 
-      when(mockMoreInfoService.getSchemeContent(any(), any())(any())) thenReturn List.empty
+      when(mockMoreInfoService.getSchemeContent(any(), any(), any())(any())) thenReturn List.empty
       when(mockMoreInfoService.getSummary(any(), any())(any())) thenReturn None
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
-      val resultPage = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
+      val resultPage = controller(getRelevantData, resultService).onPageLoad(false)(fakeRequest)
       status(resultPage) mustBe OK
       contentAsString(resultPage) must include("15")
       contentAsString(resultPage) must include("500")
@@ -72,7 +72,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
     "redirect to Location controller when there is no location data" in {
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithNoLocation))
-      val result = controller(getRelevantData, resultService).onPageLoad()(fakeRequest)
+      val result = controller(getRelevantData, resultService).onPageLoad(false)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).get mustBe routes.LocationController.onPageLoad(NormalMode).url
@@ -80,7 +80,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
     "redirect to Session Expired" when {
       "we do a GET and no data is found" in {
-        val result = controller(dontGetAnyData, resultService).onPageLoad()(fakeRequest)
+        val result = controller(dontGetAnyData, resultService).onPageLoad(false)(fakeRequest)
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)

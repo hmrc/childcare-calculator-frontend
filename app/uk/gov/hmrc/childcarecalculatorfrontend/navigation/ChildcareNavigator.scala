@@ -226,12 +226,12 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
   private def expectedChildcareCostsRoutes(id: Int)(answers: UserAnswers): Call = {
     answers.doYouLiveWithPartner.map(hasPartner => answers.childrenWithCosts match {
-      case Some(childrenWithCosts) => checkNextChildWithCosts(id, hasPartner, childrenWithCosts)
-      case _ => routeBasedIfPartnerOrNot(hasPartner)
+      case Some(childrenWithCosts) => checkNextChildWithCosts(id, hasPartner, childrenWithCosts, answers)
+      case _ => isEligibleForTaxCredits(answers, hasPartner)
     })
   }.getOrElse(SessionExpiredRouter.route(getClass.getName,"expectedChildcareCostsRoutes",Some(answers)))
 
-  private def checkNextChildWithCosts(id: Int, hasPartner: Boolean, childrenWithCosts: Set[Int]) = {
+  private def checkNextChildWithCosts(id: Int, hasPartner: Boolean, childrenWithCosts: Set[Int], answers: UserAnswers) = {
     def next: Option[Int] = {
       val children: Seq[Int] = childrenWithCosts.toSeq
       children.lift(children.indexOf(id) + 1)
@@ -240,7 +240,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
       nextId =>
         routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, nextId)
     }.getOrElse {
-      routeBasedIfPartnerOrNot(hasPartner)
+      isEligibleForTaxCredits(answers, hasPartner)
     }
   }
 
@@ -252,4 +252,18 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
     }
   }
 
+  private[navigation] def isEligibleForTaxCredits(answers: UserAnswers, hasPartner: Boolean): Call = {
+    if (answers.hasVouchers){
+      routeBasedIfPartnerOrNot(hasPartner)
+    } else {
+      val isOnHighRateDisabilityBenefits =
+        (answers.whichBenefitsYouGet.getOrElse(Set()) ++ answers.whichBenefitsPartnerGet.getOrElse(Set())) contains "highRateDisabilityBenefits"
+
+      (answers.taxOrUniversalCredits, isOnHighRateDisabilityBenefits) match {
+        case (Some("tc"), _) => routeBasedIfPartnerOrNot(hasPartner)
+        case (_, false) => routes.ResultController.onPageLoad(true)
+        case _ => routeBasedIfPartnerOrNot(hasPartner)
+      }
+    }
+  }
 }

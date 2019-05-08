@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.ModelFactory
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible}

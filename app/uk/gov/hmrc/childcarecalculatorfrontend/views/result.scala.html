@@ -23,7 +23,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-@(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
     @pagetitle = {
         @if(model.noOfEligibleSchemes > 0) {
@@ -71,11 +71,11 @@
             }
             </h2>
 
-            @resultEligible(model, utils)
+            @resultEligible(model, utils, hideTC)
 
             @if(model.noOfEligibleSchemes < 4) {
                 <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
-                @resultNotEligible(model)
+                @resultNotEligible(model, hideTC)
             }
 
 
@@ -97,7 +97,7 @@
 
                 <h2 class="heading-medium">@messages("result.more.info.title")</h2>
 
-                @if(model.noOfEligibleSchemes == 4) {
+                @if(model.noOfEligibleSchemes == 4  && !hideTC) {
                     <p>@messages("result.more.info.para")</p>
                     <ul class="bullets">
                         <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
@@ -105,14 +105,14 @@
                         <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")</li>
                     </ul>
                 } else {
-                    @if(model.isEligibleForAllButVouchers) {
+                    @if(model.isEligibleForAllButVouchers && !hideTC) {
                         <p>@messages("result.more.info.para")</p>
                         <ul class="bullets">
                             <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
                             <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
                         </ul>
                     }
-                    @if(model.isEligibleForAllButTc) {
+                    @if(model.isEligibleForAllButTc && !hideTC) {
                         <p>@messages("result.more.info.para")</p>
                         <ul class="bullets">
                             <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
@@ -120,7 +120,7 @@
                         </ul>
                     }
 
-                    @if(model.isEligibleForAllButTfc) {
+                    @if(model.isEligibleForAllButTfc && !hideTC) {
                         <p>@messages("result.more.info.para")</p>
                         <ul class="bullets">
                             <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
@@ -128,15 +128,15 @@
                         </ul>
                     }
 
-                    @if(model.isEligibleForAllButFreeHours) {
+                    @if(model.isEligibleForAllButFreeHours && !hideTC) {
                         <p>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
                     }
 
-                    @if(model.isEligibleOnlyForFreeHoursAndTc) {
+                    @if(model.isEligibleOnlyForFreeHoursAndTc && !hideTC) {
                         <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
                     }
 
-                    @if(model.isEligibleOnlyForTCAndEsc) {
+                    @if(model.isEligibleOnlyForTCAndEsc && !hideTC) {
                         <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
                     }
 
@@ -148,7 +148,7 @@
                         <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
                     }
 
-                    @if(model.isEligibleOnlyForTCAndTfc) {
+                    @if(model.isEligibleOnlyForTCAndTfc && !hideTC) {
                         <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
                     }
                 }
@@ -160,7 +160,7 @@
                     <p>@messages("aboutYourResults.more.info.para1")</p>
                         <ul class="list list-bullet">
                         @for(link <- links) {
-                            <li><a target="_blank" rel="external" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span class="visually-hidden">@messages("site.opens.new.window")</span></a></li>
+                            <li><a target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span>@messages("site.opens.new.window")</span></a></li>
                         }
                         </ul>
                     <p>@summary.getOrElse("")</p>
@@ -168,7 +168,7 @@
             }
         } else {
             <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
-            @resultNotEligible(model)
+            @resultNotEligible(model, hideTC)
         }
 
         <div class="panel panel-border-wide survey">

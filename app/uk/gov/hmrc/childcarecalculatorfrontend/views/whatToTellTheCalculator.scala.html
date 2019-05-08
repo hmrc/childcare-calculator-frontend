@@ -29,28 +29,23 @@
     @components.back_link()
 
     <h1 class="heading-xlarge">@messages("whatToTellTheCalculator.heading")</h1>
-
-    <p>@messages("whatToTellTheCalculator.guidance")</p>
+    <p>@messages("whatToTellTheCalculator.guidanceA")</p>
+    <p>@messages("whatToTellTheCalculator.guidanceB")</p>
     <ul class="bullets">
-        <li>@messages("whatToTellTheCalculator.li.benefits")</li>
-        <li>@messages("whatToTellTheCalculator.li.pay")</li>
-        <li>@messages("whatToTellTheCalculator.li.weeks")</li>
-    </ul>
-
-    <p>@messages("whatToTellTheCalculator.para2a")<p>
-
-    <p>@messages("whatToTellTheCalculator.para2")</p>
-    <ul class="bullets">
+        <li>@messages("whatToTellTheCalculator.li.dob")</li>
         <li>@messages("whatToTellTheCalculator.li.costs")</li>
-        <li>@messages("whatToTellTheCalculator.li.benefits.child")</li>
-        <li>@messages("whatToTellTheCalculator.li.ages")</li>
+        <li>@messages("whatToTellTheCalculator.li.benefits")</li>
     </ul>
+
+    <p>@messages("whatToTellTheCalculator.time")<p>
 
     <div class="panel-indent panel-border-wide panel-info">
-        @messages("whatToTellTheCalculator.para3")
+        @messages("whatToTellTheCalculator.indent")
     </div>
 
-    <p>@messages("whatToTellTheCalculator.para4")</p>
+    <h2>@messages("whatToTellTheCalculator.tcUc")</h2>
+    <p>@messages("whatToTellTheCalculator.p1.a") <a href="https://www.gov.uk/working-tax-credit">@messages("whatToTellTheCalculator.p1.link")</a> @messages("whatToTellTheCalculator.p1.b")</p>
+    <p>@messages("whatToTellTheCalculator.p2.a") <a href="https://www.gov.uk/help-with-childcare-costs/universal-credit"> @messages("whatToTellTheCalculator.p2.link")</a>.</p>
 
     @components.button_link(
         messageKey = "site.save_and_continue",

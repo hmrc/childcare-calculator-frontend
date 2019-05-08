@@ -37,7 +37,8 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
                                maxFreeHours: MaxFreeHours,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder) {
-  def getResultsViewModel(answers: UserAnswers, location: Location)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
+  def getResultsViewModel(answers: UserAnswers, location: Location)
+                         (implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
     val childcareCost = answers.childcareCosts.fold(false){
       case ChildcareConstants.no => false
@@ -60,9 +61,9 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
       isAnyoneInPaidEmployment = paidEmployment,
       livesWithPartner = livingWithPartner)
 
-    val result: Future[SchemeResults] = eligibilityService.eligibility(answers)
+    val schemeResults: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
-    result.map(results => {
+    schemeResults.map(results => {
       val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
       if (result.tfc.isDefined && result.taxCreditsOrUC.contains("tc")) {
         result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.tc.warning"))

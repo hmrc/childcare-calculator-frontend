@@ -45,14 +45,15 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                  utils: Utils) extends FrontendController(mcc) with I18nSupport {
 
 
-  def onPageLoad(): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+  def onPageLoad(hideTC: Boolean): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
     request.userAnswers.location match {
       case Some(location) =>  {
         resultsService.getResultsViewModel(request.userAnswers,location).map(model => {
           dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
           Ok(result(appConfig, model,
-            moreInfoResults.getSchemeContent(location, model)(request.lang),
-            moreInfoResults.getSummary(location, model)(request.lang), utils)
+            moreInfoResults.getSchemeContent(location, model, hideTC)(request.lang),
+            moreInfoResults.getSummary(location, model)(request.lang), utils,
+            hideTC)
           )
         })
       }

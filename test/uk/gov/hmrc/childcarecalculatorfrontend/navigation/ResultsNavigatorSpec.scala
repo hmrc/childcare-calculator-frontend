@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes

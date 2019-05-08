@@ -42,7 +42,7 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
         tfc.eligibility(request.userAnswers),
         esc.eligibility(request.userAnswers),
         tc.eligibility(request.userAnswers),
-        request.userAnswers.taxOrUniversalCredits.getOrElse(""))
+        request.userAnswers)
       )
   }
 }
