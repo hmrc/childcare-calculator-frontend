@@ -430,4 +430,21 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
       }
     } yield approved
   }
+
+
+  def hasVouchers: Boolean = Seq(yourChildcareVouchers, partnerChildcareVouchers, checkVouchersForBoth).flatten.contains(true)
+
+  def checkVouchersForBoth: Option[Boolean] =  whoGetsVouchers match {
+    case None => None
+    case Some("neither") => Some(false)
+    case _ => Some(true)
+  }
+
+  def max30HoursEnglandContent: Option[Boolean] = {
+    (location,hasVouchers) match {
+      case (Some(Location.ENGLAND), true) => Some(true)
+      case (Some(Location.ENGLAND), false) => Some(false)
+      case (_, _) => None
+    }
+  }
 }

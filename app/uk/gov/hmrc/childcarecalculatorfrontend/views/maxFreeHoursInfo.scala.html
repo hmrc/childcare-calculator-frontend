@@ -20,11 +20,12 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 @(appConfig: FrontendAppConfig,
 tfcEligibility: Eligibility,
 childcareVouchersEligibility: Eligibility,
 taxCreditsEligibility: Eligibility,
-taxOrUniversalCredits: String = ""
+userAnswers: UserAnswers
 )(implicit request: Request[_], messages: Messages)
 
 @main_template(
@@ -38,29 +39,55 @@ taxOrUniversalCredits: String = ""
 
     <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
     <p>@messages("maxFreeHoursInfo.info")
-        <a href=@messages("maxFreeHoursInfo.info.link.url") target="_blank" rel="external" data-journey-click="link - click:@messages("maxFreeHoursInfo.heading"):@messages("maxFreeHoursInfo.info.link")">
+        <a href=@messages("maxFreeHoursInfo.info.link.url") data-journey-click="link - click:@messages("maxFreeHoursInfo.heading"):@messages("maxFreeHoursInfo.info.link")">
             @messages("maxFreeHoursInfo.info.link") <span class="visually-hidden">@messages("maxFreeHoursInfo.info.link.opens.new.window")</span>
         </a>.
     </p>
 
     <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
 
-    <p>@messages("maxFreeHoursInfo.give.more.info")</p>
 
-    <ul class="bullets">
-        @if(childcareVouchersEligibility == Eligible) {
-            <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
+    @if(userAnswers.max30HoursEnglandContent.isDefined){
+        @if(userAnswers.max30HoursEnglandContent.contains(true)){
+            <p>@messages("maxFreeHoursInfo.england.hasVouchers.info")</p>
         }
 
-        @if(tfcEligibility == Eligible) {
-            <li>@messages("maxFreeHoursInfo.li.tfc")</li>
+        @if(userAnswers.max30HoursEnglandContent.contains(false)){
+            <p>@messages("maxFreeHoursInfo.england.noVouchers.info")</p>
         }
 
-        @if(taxOrUniversalCredits != universalCredits && taxCreditsEligibility.equals(Eligible)) {
-            <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
-        }
+        <ul class="bullets">
+            <li>@messages("maxFreeHoursInfo.england.li.childcare")</li>
+            <li>@messages("maxFreeHoursInfo.england.li.otherChildren")</li>
+        </ul>
 
-    </ul>
+        <p>
+            @messages("maxFreeHoursInfo.england.p1")
+            <a href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
+            @messages("maxFreeHoursInfo.england.p1.only")
+            @messages("maxFreeHoursInfo.england.p2")
+            <a href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
+        </p>
+    }
+
+    @if(userAnswers.max30HoursEnglandContent.isEmpty){
+        <p>@messages("maxFreeHoursInfo.give.more.info")</p>
+
+        <ul class="bullets">
+            @if(childcareVouchersEligibility == Eligible) {
+                <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
+            }
+
+            @if(tfcEligibility == Eligible) {
+                <li>@messages("maxFreeHoursInfo.li.tfc")</li>
+            }
+
+            @if(userAnswers.taxOrUniversalCredits.getOrElse("") != universalCredits && taxCreditsEligibility.equals(Eligible)) {
+                <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
+            }
+
+        </ul>
+    }
 
     @components.button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
 

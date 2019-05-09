@@ -21,7 +21,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 
 
-@(model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
+@(model: ResultsViewModel, utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
 @freeHoursContactCouncil = {
     <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
@@ -60,7 +60,7 @@
         }
     }
 
-    @if(model.tc.isDefined) {
+    @if(model.tc.isDefined && !hideTC) {
         @components.scheme_result(
             title = messages("result.tc.title"),
             couldGet = Some(messages("result.you.could.get")),

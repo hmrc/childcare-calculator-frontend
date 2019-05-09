@@ -29,13 +29,13 @@ import scala.math.BigDecimal
 @Singleton
 class MoreInfoService @Inject() (val messages: MessagesApi) {
 
-  def getSchemeContent(userLocation: Location, model: ResultsViewModel)(implicit lang: Lang): List[Map[String, String]] = {
+  def getSchemeContent(userLocation: Location, model: ResultsViewModel, hideTC: Boolean)(implicit lang: Lang): List[Map[String, String]] = {
     val freeHours = (userLocation,model.freeHours) match {
       case (Location.ENGLAND,Some(ChildcareConstants.maxFreeHours)) => linkData(userLocation.toString, "hours", model.freeHours)
       case _ => None
     }
 
-    val taxCredits = linkData(userLocation.toString, "tc", model.tc)
+    val taxCredits = if(hideTC) None else linkData(userLocation.toString, "tc", model.tc)
     val taxFreeChildCare = linkData(userLocation.toString, "tfc", model.tfc)
 
     List(freeHours, taxCredits, taxFreeChildCare).flatten

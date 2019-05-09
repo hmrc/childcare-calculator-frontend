@@ -19,21 +19,22 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{ageExactly15Relative, ageOf16WithBirthdayBefore31stAugust, ageOf19YearsAgo, ageOfOver16Relative}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode, WhichBenefitsEnum, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSugar {
 
   private val testDate: LocalDate = LocalDate.parse("2014-01-01")
 
-  val navigator: SubNavigator = new ChildcareNavigator(new Utils()) {
+  val navigator: ChildcareNavigator = new ChildcareNavigator(new Utils()) {
     override def now: LocalDate = testDate
   }
 
@@ -256,7 +257,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
   "Do any of your children get disability benefits" must {
 
-    "redirect to `Any children blind` when the user ansers `No` when the user has 1 child" in {
+    "redirect to `Any children blind` when the user answers `No` when the user has 1 child" in {
       val answers: UserAnswers = userAnswers(
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
         NoOfChildrenId.toString -> JsNumber(1)
@@ -265,7 +266,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
     }
 
-    "redirect to `Any children blind` when the user ansers `No` when the user has more than 1 child" in {
+    "redirect to `Any children blind` when the user answers `No` when the user has more than 1 child" in {
       val answers: UserAnswers = userAnswers(
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
         NoOfChildrenId.toString -> JsNumber(2)
@@ -837,12 +838,18 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   }
 
   "What are your expected childcare costs" must {
+    def setupNavigator(value: Call): ChildcareNavigator = new ChildcareNavigator(new Utils()) {
+      override def now: LocalDate = testDate
+      override def isEligibleForTaxCredits(answers: UserAnswers, hasPartner: Boolean): Call = value
+    }
+
+    val yourIncomeNavigator = setupNavigator(routes.YourIncomeInfoController.onPageLoad())
 
     "redirect to `Your income this year` for a single user when this is the last child" in {
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      val result = navigator.nextPage(ExpectedChildcareCostsId(4), NormalMode).value(answers)
+      val result = yourIncomeNavigator.nextPage(ExpectedChildcareCostsId(4), NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
 
@@ -854,7 +861,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         2 -> AboutYourChild("Over16",ageOf19)
       )))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
+      val result = yourIncomeNavigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
 
@@ -866,7 +873,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         2 -> AboutYourChild("Under16",ageOf19)
       )))
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      val result = navigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
+      val result = yourIncomeNavigator.nextPage(ExpectedChildcareCostsId(1), NormalMode).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
 
@@ -885,10 +892,11 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
 
     "redirect to `Your partner's income this year` for a partner user when this is the last child" in {
+      val partnerNavigator = setupNavigator(routes.PartnerIncomeInfoController.onPageLoad())
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(Some(Set(0, 3, 4)))
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-      val result = navigator.nextPage(ExpectedChildcareCostsId(4), NormalMode).value(answers)
+      val result = partnerNavigator.nextPage(ExpectedChildcareCostsId(4), NormalMode).value(answers)
       result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
     }
 
@@ -906,6 +914,94 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.doYouLiveWithPartner).thenReturn(None)
       val result = navigator.nextPage(ExpectedChildcareCostsId(3), NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  "isEligibleForTaxCredits" must {
+    "redirect to the results page" when {
+      "taxOrUniversal is not 'tc', neither parent or partner is on severe disability premium" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(false)
+        when(answers.whichBenefitsYouGet).thenReturn(Some(Set(WhichBenefitsEnum.CARERSALLOWANCE.toString)))
+        when(answers.whichBenefitsPartnerGet).thenReturn(Some(Set(WhichBenefitsEnum.DISABILITYBENEFITS.toString, WhichBenefitsEnum.INCOMEBENEFITS.toString)))
+        when(answers.taxOrUniversalCredits).thenReturn(Some("uc"))
+
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
+        result mustEqual routes.ResultController.onPageLoad(true)
+      }
+
+      "taxOrUniversal is not 'tc', neither parent or partner is on benefits" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(false)
+        when(answers.whichBenefitsYouGet).thenReturn(None)
+        when(answers.whichBenefitsPartnerGet).thenReturn(None)
+        when(answers.taxOrUniversalCredits).thenReturn(Some("none"))
+
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
+        result mustEqual routes.ResultController.onPageLoad(true)
+      }
+
+      "taxOrUniversal is not 'tc', hasVouchers is false, the user has a partner" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(false)
+        when(answers.whichBenefitsYouGet).thenReturn(None)
+        when(answers.whichBenefitsPartnerGet).thenReturn(None)
+        when(answers.taxOrUniversalCredits).thenReturn(Some("uc"))
+
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = true)
+        result mustEqual routes.ResultController.onPageLoad(true)
+      }
+    }
+
+    "redirect to the 'PartnerIncomeInfoController' page" when {
+      "hasVouchers is false, taxOrUniversal is 'tc' and the user has a partner" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(false)
+        when(answers.whichBenefitsYouGet).thenReturn(None)
+        when(answers.whichBenefitsPartnerGet).thenReturn(Some(Set(WhichBenefitsEnum.INCOMEBENEFITS.toString)))
+        when(answers.taxOrUniversalCredits).thenReturn(Some("tc"))
+
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = true)
+        result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+      }
+
+      "hasVouchers is false and the user has a partner that is severely disabled" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(false)
+        when(answers.whichBenefitsYouGet).thenReturn(None)
+        when(answers.whichBenefitsPartnerGet).thenReturn(Some(Set(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
+        when(answers.taxOrUniversalCredits).thenReturn(Some("uc"))
+
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = true)
+        result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+      }
+
+      "hasVouchers is true and the user has a partner" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(true)
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = true)
+        result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
+      }
+    }
+
+    "redirect to the 'YourIncomeInfoController' page" when {
+      "hasVouchers is false, taxOrUniversal is 'tc' and the user is single" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(false)
+        when(answers.whichBenefitsYouGet).thenReturn(None)
+        when(answers.whichBenefitsPartnerGet).thenReturn(Some(Set(WhichBenefitsEnum.INCOMEBENEFITS.toString)))
+        when(answers.taxOrUniversalCredits).thenReturn(Some("tc"))
+
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
+        result mustEqual routes.YourIncomeInfoController.onPageLoad()
+      }
+
+      "hasVouchers is true and the user is single" in {
+        val answers = mock[UserAnswers]
+        when(answers.hasVouchers).thenReturn(true)
+        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
+        result mustEqual routes.YourIncomeInfoController.onPageLoad()
+      }
     }
   }
 }

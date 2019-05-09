@@ -41,6 +41,12 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
       override def now: LocalDate = testDate
     }
 
+  def vouchersHelper(map: CacheMap = cacheMap(), checkVouchersBoth: Option[Boolean] = None): UserAnswers =
+    new UserAnswers(map) {
+      override def now: LocalDate = testDate
+      override def checkVouchersForBoth: Option[Boolean] = checkVouchersBoth
+    }
+
   "return partner when user lives with partner and the answer to whoIsInPaidEmployment returns 'partner'" in {
     val answers: CacheMap = cacheMap(
       WhoIsInPaidEmploymentId.toString -> JsString("partner"),
@@ -608,6 +614,103 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
         ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.YES.toString)
       ))
       answers.hasApprovedCosts mustNot be(defined)
+    }
+  }
+
+  "checkVouchersForBoth" must {
+    "return false when whoWorks is 'neither'" in {
+      val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("neither")))
+      answers.checkVouchersForBoth mustEqual Some(false)
+    }
+
+    "return None when whoWorks is 'None'" in {
+      val answers = helper(cacheMap())
+      answers.checkVouchersForBoth mustEqual None
+    }
+
+    "return true when whoWorks is 'you'" in {
+      val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("you")))
+      answers.checkVouchersForBoth mustEqual Some(true)
+    }
+
+    "return true when whoWorks is 'partner'" in {
+      val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("partner")))
+      answers.checkVouchersForBoth mustEqual Some(true)
+    }
+  }
+
+  "hasVouchers" must {
+    "return true" when {
+      "'you' receive vouchers" in {
+        val answers = helper(cacheMap(YourChildcareVouchersId.toString -> JsBoolean(true)))
+        answers.hasVouchers mustEqual true
+      }
+
+      "'partner' receives vouchers" in {
+        val answers = helper(cacheMap(PartnerChildcareVouchersId.toString -> JsBoolean(true)))
+        answers.hasVouchers mustEqual true
+      }
+
+      "both work but 'you' receive vouchers" in {
+        val answers = vouchersHelper(cacheMap(), checkVouchersBoth = Some(true))
+        answers.hasVouchers mustEqual true
+      }
+
+      "both work but the 'partner' receive vouchers" in {
+        val answers = vouchersHelper(cacheMap(), checkVouchersBoth = Some(true))
+        answers.hasVouchers mustEqual true
+      }
+
+      "both work but 'both' receive vouchers" in {
+        val answers = vouchersHelper(cacheMap(), checkVouchersBoth = Some(true))
+        answers.hasVouchers mustEqual true
+      }
+    }
+
+    "return false" when {
+      "'you' don't receive vouchers" in {
+        val answers = helper(cacheMap(YourChildcareVouchersId.toString -> JsBoolean(false)))
+        answers.hasVouchers mustEqual false
+      }
+
+      "'partner' doesn't receive vouchers" in {
+        val answers = helper(cacheMap(PartnerChildcareVouchersId.toString -> JsBoolean(false)))
+        answers.hasVouchers mustEqual false
+      }
+
+      "both work but neither receive vouchers" in {
+        val answers = vouchersHelper(cacheMap(), checkVouchersBoth = Some(false))
+        answers.hasVouchers mustEqual false
+      }
+    }
+  }
+
+  "max30HoursEnglandContent" must {
+    "return Some(true) when the location is England and hasVouchers is true" in {
+      val answers = helper(cacheMap(
+        LocationId.toString -> JsString("england"),
+        PartnerChildcareVouchersId.toString -> JsBoolean(true)
+      ))
+
+      answers.max30HoursEnglandContent mustEqual Some(true)
+    }
+
+    "return Some(false) when the location is England and hasVouchers is false" in {
+      val answers = helper(cacheMap(
+        LocationId.toString -> JsString("england"),
+        PartnerChildcareVouchersId.toString -> JsBoolean(false)
+      ))
+
+      answers.max30HoursEnglandContent mustEqual Some(false)
+    }
+
+    "return None when the location is not England" in {
+      val answers = helper(cacheMap(
+        LocationId.toString -> JsString("scotland"),
+        PartnerChildcareVouchersId.toString -> JsBoolean(true)
+      ))
+
+      answers.max30HoursEnglandContent mustEqual None
     }
   }
 }
