@@ -61,7 +61,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       when(mockMoreInfoService.getSummary(any(), any())(any())) thenReturn None
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
-      val resultPage = controller(getRelevantData, resultService).onPageLoad(false)(fakeRequest)
+      val resultPage = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
       status(resultPage) mustBe OK
       contentAsString(resultPage) must include("15")
       contentAsString(resultPage) must include("500")
@@ -72,7 +72,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
     "redirect to Location controller when there is no location data" in {
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithNoLocation))
-      val result = controller(getRelevantData, resultService).onPageLoad(false)(fakeRequest)
+      val result = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).get mustBe routes.LocationController.onPageLoad(NormalMode).url
@@ -80,7 +80,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
     "redirect to Session Expired" when {
       "we do a GET and no data is found" in {
-        val result = controller(dontGetAnyData, resultService).onPageLoad(false)(fakeRequest)
+        val result = controller(dontGetAnyData, resultService).onPageLoad(fakeRequest)
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)

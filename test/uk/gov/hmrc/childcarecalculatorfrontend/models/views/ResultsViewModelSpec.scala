@@ -24,35 +24,60 @@ class ResultsViewModelSpec extends SpecBase {
   "ResultViewModel" must {
     "let you know if you are eligible to all schemes" in {
       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = Some(3), esc = Some(2), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-      resultsView.isEligibleToAllSchemes mustBe true
+      resultsView.isEligibleToAllSchemes(false) mustBe true
+    }
+
+    "let you know if you are eligible to all schemes for hideTC" in {
+      val resultsView = ResultsViewModel(tfc = Some(100), freeHours = Some(3), esc = Some(2), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      resultsView.isEligibleToAllSchemes(true) mustBe true
     }
 
     "return correct number of eligible schemes" in {
       val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-      resultsView.noOfEligibleSchemes mustBe 2
+      resultsView.noOfEligibleSchemes(false) mustBe 2
+    }
+
+    "return correct number of eligible schemes for hideTC" in {
+      val resultsView = ResultsViewModel(tc = Some(200), tfc = Some(100), freeHours = None, esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      resultsView.noOfEligibleSchemes(true) mustBe 1
     }
 
     "return number of eligible schemes 0 when there is no eligible scheme" in {
       val resultsView = ResultsViewModel(location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-      resultsView.noOfEligibleSchemes mustBe 0
+      resultsView.noOfEligibleSchemes(false) mustBe 0
+    }
+
+    "return number of eligible schemes 0 when there is no eligible scheme with hideTC" in {
+      val resultsView = ResultsViewModel(location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      resultsView.noOfEligibleSchemes(true) mustBe 0
     }
 
     "display information about your two year old" when {
       "user does not live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme" in {
         val model = ResultsViewModel(tc = Some(200), location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = true)
-        model.showTwoYearOldInfo mustBe true
+        model.showTwoYearOldInfo(false) mustBe true
       }
 
       "user does not live in Northern Ireland, has a two year old and does not have a three year old and not eligible to any scheme " in {
         val model = ResultsViewModel(location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = false)
-        model.showTwoYearOldInfo mustBe true
+        model.showTwoYearOldInfo(false) mustBe true
+      }
+
+      "user does not live in Northern Ireland, has a two year old and does not have a three year old and not eligible to any scheme with hideTC" in {
+        val model = ResultsViewModel(location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = false)
+        model.showTwoYearOldInfo(true) mustBe true
       }
     }
 
     "not display information about your two year old" when {
       "user does live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme" in {
         val model = ResultsViewModel(tc = Some(200), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = true)
-        model.showTwoYearOldInfo mustBe false
+        model.showTwoYearOldInfo(false) mustBe false
+      }
+
+      "user does live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme with hideTC" in {
+        val model = ResultsViewModel(tc = Some(200), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = true)
+        model.showTwoYearOldInfo(true) mustBe false
       }
     }
   }
