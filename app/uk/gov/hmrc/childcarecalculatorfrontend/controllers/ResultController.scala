@@ -18,17 +18,19 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -45,19 +47,32 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                  utils: Utils) extends FrontendController(mcc) with I18nSupport {
 
 
-  def onPageLoad(hideTC: Boolean): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+
+
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
     request.userAnswers.location match {
-      case Some(location) =>  {
-        resultsService.getResultsViewModel(request.userAnswers,location).map(model => {
-          dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
-          Ok(result(appConfig, model,
-            moreInfoResults.getSchemeContent(location, model, hideTC)(request.lang),
-            moreInfoResults.getSummary(location, model)(request.lang), utils,
-            hideTC)
-          )
-        })
-      }
+      case Some(location) => renderResultsPage(hideTC = false, location)
       case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
     }
+  }
+
+  def onPageLoadHideTC: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+    request.userAnswers.location match {
+      case Some(location) => renderResultsPage(hideTC = true, location)
+      case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
+    }
+  }
+
+  private def renderResultsPage(hideTC: Boolean, location: Location.Value)(implicit request: DataRequest[_], hc: HeaderCarrier) = {
+    resultsService.getResultsViewModel(request.userAnswers, location).map(model => {
+      dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
+
+      val amendedModel = if (hideTC) model.copy(tc = None) else model
+      Ok(result(appConfig, amendedModel,
+        moreInfoResults.getSchemeContent(location, amendedModel, hideTC)(request.lang),
+        moreInfoResults.getSummary(location, amendedModel)(request.lang), utils,
+        hideTC)
+      )
+    })
   }
 }
