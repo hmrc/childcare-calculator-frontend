@@ -61,6 +61,17 @@ userAnswers: UserAnswers
             <li>@messages("maxFreeHoursInfo.england.li.otherChildren")</li>
         </ul>
 
+        @if(userAnswers.max30HoursEnglandContent.contains(true)){
+        <p>
+            @messages("maxFreeHoursInfo.england.p1.voucher")
+            <a href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
+            @messages("maxFreeHoursInfo.england.p1.only")
+            @messages("maxFreeHoursInfo.england.p2")
+            <a href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
+        </p>
+        }
+
+        @if(userAnswers.max30HoursEnglandContent.contains(false)){
         <p>
             @messages("maxFreeHoursInfo.england.p1")
             <a href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
@@ -68,6 +79,7 @@ userAnswers: UserAnswers
             @messages("maxFreeHoursInfo.england.p2")
             <a href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
         </p>
+        }
     }
 
     @if(userAnswers.max30HoursEnglandContent.isEmpty){
