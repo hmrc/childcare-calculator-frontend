@@ -86,7 +86,7 @@ class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.england.hasVouchers.info"))
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.england.li.otherChildren"))
-      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.england.p1"))
+      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.england.p1.voucher"))
     }
 
     "display the alternate message when max30HoursEnglandContent is false" in {
