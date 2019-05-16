@@ -29,10 +29,8 @@ import scala.concurrent.Future
 
 class EligibilityConnector @Inject()(appConfig: FrontendAppConfig, http: HttpClient) {
 
-  def postUrl(key: String): String = s"""${key}"""
-
   def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemeResults] = {
-    http.POST[Household, SchemeResults](postUrl(appConfig.eligibilityUrl), eligibilityInput)
+    http.POST[Household, SchemeResults](appConfig.eligibilityUrl, eligibilityInput)
   }
 
 }

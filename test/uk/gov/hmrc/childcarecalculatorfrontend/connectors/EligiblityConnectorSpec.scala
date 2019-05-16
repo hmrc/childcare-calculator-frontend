@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.FakeRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
@@ -29,34 +30,38 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EligiblityConnectorSpec extends UnitSpec with MockitoSugar {
+class EligiblityConnectorSpec extends UnitSpec with MockitoSugar with ScalaFutures {
   val mockHttp = mock[HttpClient]
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   implicit val request = FakeRequest()
   implicit val hc = HeaderCarrier()
   implicit val ec = ExecutionContext
 
-  def mockConnector = new EligibilityConnector(frontendAppConfig, mockHttp)
+  def mockConnector: EligibilityConnector = new EligibilityConnector(frontendAppConfig, mockHttp)
 
   "Eligibility Connector" should {
 
     "get eligibility result" in {
 
-      val schemesResult = mock[SchemeResults]
+      val schemesResult = SchemeResults (schemes = Nil)
 
       when(
-        mockHttp.POST[Household, SchemeResults](anyString(), any(),any())(any(), any(), any(), any())
+        mockHttp.POST[Household, SchemeResults](any(), any(), any())(any(), any(), any(), any())
       ).thenReturn(Future.successful(schemesResult))
 
-      val res = await(mockConnector.getEligibility(
+      val res = mockConnector.getEligibility(
         Household(
+          credits = None,
           location = Location.ENGLAND,
           children = List.empty,
           parent = Claimant(),
           partner = None
-        )))
+        ))
 
-      res shouldBe schemesResult
+      whenReady(res) { value =>
+        value shouldBe schemesResult
+      }
+
     }
   }
 }

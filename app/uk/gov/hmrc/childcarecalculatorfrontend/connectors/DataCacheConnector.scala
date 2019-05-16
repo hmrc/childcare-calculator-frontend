@@ -60,6 +60,10 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
   }
 
   def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(implicit fmt: Format[A]): Future[CacheMap] = {
+
+    import play.api.libs.json.JodaReads._
+    import play.api.libs.json.JodaWrites._
+
     sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
       optionalCacheMap.fold(throw new Exception(s"Couldn't find document with key $cacheId")) {cacheMap =>
         val newSeq = cacheMap.data(collectionKey).as[Seq[A]].filterNot(x => x == item)
@@ -74,6 +78,9 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
   }
 
   def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = {
+    import play.api.libs.json.JodaReads._
+    import play.api.libs.json.JodaWrites._
+
     sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
       optionalCacheMap.fold(throw new Exception(s"Couldn't find document with key $cacheId")) {cacheMap =>
         val oldSeq = cacheMap.data.lift(collectionKey).map(_.as[Seq[A]]).getOrElse(Seq.empty)
@@ -90,6 +97,9 @@ class DataCacheConnectorImpl @Inject()(val sessionRepository: SessionRepository,
 
   def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)
                         (implicit fmt: Format[Map[K, V]]): Future[CacheMap] = {
+    import play.api.libs.json.JodaReads._
+    import play.api.libs.json.JodaWrites._
+
     sessionRepository().get(cacheId).flatMap {
       _.map {
         cacheMap =>
