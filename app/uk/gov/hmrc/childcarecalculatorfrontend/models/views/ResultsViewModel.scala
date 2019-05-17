@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.TCSchemeInEligibilityMsgBuilder
 
 case class ResultsViewModel(firstParagraph : String = "",
                             tc: Option[BigDecimal] = None,
