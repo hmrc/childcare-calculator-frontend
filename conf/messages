@@ -461,7 +461,7 @@ maxFreeHoursInfo.info.link.url =  https://www.gov.uk/help-with-childcare-costs/f
 
 maxFreeHoursInfo.could.get.tfc = You could get Tax-Free Childcare. This scheme has the same eligibility as the 30 free hours that you already qualify for. You can answer more questions to see how much you could get - the government pays £2 into a childcare account for every £8 you pay into it.
 maxFreeHoursInfo.could.get.esc = You could also get childcare vouchers. Employers can only offer this scheme until April 2018. You can answer more questions about your childcare costs to see how much you could save - you’d buy vouchers from your employer through salary sacrifice.
-maxFreeHoursInfo.li.vouchers = childcare vouchers
+maxFreeHoursInfo.li.vouchers = childcare vouchers (existing users only)
 maxFreeHoursInfo.li.tfc = Tax-Free Childcare
 maxFreeHoursInfo.li.tax_credits = tax credits
 maxFreeHoursInfo.still.to.check = Still to check
