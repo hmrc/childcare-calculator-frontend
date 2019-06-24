@@ -77,9 +77,9 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
 
   lazy val maxNoWeeksSharedParentalPay: Int = config.getInt("noWeeksStatPay.sharedParental")
 
-
   lazy val maxAmountChildren: Int = config.getInt("amountChildren.max")
 
   lazy val minAmountChildren: Int = config.getInt("amountChildren.min")
 
+  lazy val navigationAudit: Boolean = config.getBoolean("feature.navigationAudit")
 }
