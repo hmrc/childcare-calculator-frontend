@@ -17,7 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
 import com.google.inject.{ImplementedBy, Inject}
+import play.Logger
 import play.api.mvc.{ActionBuilder, ActionTransformer, AnyContent, BodyParser, MessagesControllerComponents, Request}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -27,19 +29,25 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnector,
-                                    val mcc: MessagesControllerComponents)
-                                   (implicit ec: ExecutionContext) extends DataRetrievalAction {
+                                        val mcc: MessagesControllerComponents,
+                                        val appConfig: FrontendAppConfig)
+                                       (implicit ec: ExecutionContext) extends DataRetrievalAction {
 
   override protected def executionContext: ExecutionContext = mcc.executionContext
   override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
 
   override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+    if (appConfig.navigationAudit) {
+      Logger.warn(s"ChildcareCalculatorNavigationAudit - sessionId : ${hc.sessionId.getOrElse("missing").toString}, request : ${request.uri}")
+    }
+
     hc.sessionId match {
       case None => Future.failed(new IllegalStateException())
       case Some(sessionId) =>
         dataCacheConnector.fetch(sessionId.toString).map {
-          case None => OptionalDataRequest(request, sessionId.toString, None)
+          case None       => OptionalDataRequest(request, sessionId.toString, None)
           case Some(data) => OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
         }
     }

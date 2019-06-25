@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 import org.joda.time.LocalDate
+import play.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -46,16 +47,21 @@ class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
 
-      val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
+      if (request.userAnswers.yourPartnersAge.isEmpty) {
+        Logger.warn(s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourPartnersAgeController.onPageLoad(mode).url}")
+        Redirect(routes.YourPartnersAgeController.onPageLoad(mode))
+      } else {
+        val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
 
-      val preparedForm = request.userAnswers.partnerMinimumEarnings match {
-        case None => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
-        case Some(value) => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).fill(value)
+        val preparedForm = request.userAnswers.partnerMinimumEarnings match {
+          case None => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
+          case Some(value) => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).fill(value)
+        }
+        Ok(partnerMinimumEarnings(appConfig,
+          preparedForm,
+          mode,
+          earningsForAge))
       }
-      Ok(partnerMinimumEarnings(appConfig,
-        preparedForm,
-        mode,
-        earningsForAge))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
