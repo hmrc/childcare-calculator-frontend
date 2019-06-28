@@ -18,16 +18,18 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
 import play.api.libs.json.JodaReads._
-import play.api.libs.json.JodaWrites._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.util.Try
+
+// scalastyle:off number.of.methods
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
   def bothGetSameIncomePreviousYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothGetSameIncomePreviousYearId.toString)
 
   def youGetSameIncomePreviousYear: Option[Boolean] = cacheMap.getEntry[Boolean](YouGetSameIncomePreviousYearId.toString)
-
 
   def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry[String](SurveyDoNotUnderstandId.toString)
 
@@ -447,4 +449,28 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
       case (_, _) => None
     }
   }
+
+  def isOnHighRateDisabilityBenefits: Boolean =
+    whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
+
+  def isOnSevereDisabilityPremium: Boolean =
+    whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
+
+  def isAlreadyReceivingTaxCredits: Boolean =
+    taxOrUniversalCredits match {
+      case Some(credit) if credit == TaxOrUniversalCreditsEnum.TC.toString  => true
+      case None                                                             => false
+      case _                                                                => false
+    }
+
+  def isGettingChildVouchers: Boolean =
+    (yourChildcareVouchers, partnerChildcareVouchers, whoGetsVouchers) match {
+      case ( Some(true), _, _ )                                                   => true
+      case ( _, Some(true), _ )                                                   => true
+      case ( _, _, Some(who)) if Try(YouPartnerBothEnum.withName(who)).isSuccess  => true
+      case ( _, _, _ )                                                            => false
+    }
+
+  def notEligibleForTaxCredits: Boolean = !isOnSevereDisabilityPremium && !isAlreadyReceivingTaxCredits && isGettingChildVouchers
+
 }

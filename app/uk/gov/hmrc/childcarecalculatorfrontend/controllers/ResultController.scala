@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
@@ -46,14 +46,12 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                  moreInfoResults: MoreInfoService,
                                  utils: Utils) extends FrontendController(mcc) with I18nSupport {
 
-
-
-
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    request.userAnswers.location match {
-      case Some(location) => renderResultsPage(hideTC = false, location)
-      case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
-    }
+  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async {
+    implicit request =>
+      request.userAnswers.location match {
+        case Some(location) => renderResultsPage(hideTC = request.userAnswers.notEligibleForTaxCredits, location)
+        case None           => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
+      }
   }
 
   def onPageLoadHideTC: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
@@ -75,4 +73,6 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
       )
     })
   }
+
+
 }

@@ -917,7 +917,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 
-  "isEligibleForTaxCredits" must {
+  "notEligibleForTaxCredits" must {
     "redirect to the results page" when {
       "taxOrUniversal is not 'tc', neither parent or partner is on severe disability premium" in {
         val answers = mock[UserAnswers]
@@ -1005,3 +1005,4 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 }
+
