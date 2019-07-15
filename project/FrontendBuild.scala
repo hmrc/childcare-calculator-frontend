@@ -10,13 +10,11 @@ object FrontendBuild extends Build with MicroService {
 }
 
 private object AppDependencies {
-  private val playHealthVersion = "3.14.0-play-26"
-  private val bootstrapPlayVersion = "0.39.0"
-  private val logbackJsonLoggerVersion = "4.6.0"
+  private val bootstrapPlayVersion = "0.42.0"
   private val govukTemplateVersion = "5.36.0-play-26"
   private val playUiVersion = "7.40.0-play-26"
   private val hmrcTestVersion = "3.9.0-play-26"
-  private val scalaTestVersion = "3.0.7"
+  private val scalaTestVersion = "3.0.8"
   private val scalaCheckVersion = "1.14.0"
   private val scalaTestPlusPlayVersion = "3.1.2"
   private val pegdownVersion = "1.6.0"
@@ -27,7 +25,6 @@ private object AppDependencies {
   private val playLanguageVersion = "3.4.0"
   private val taxYearVersion = "0.4.0"
   private val playJavaVersion = "2.6.12"
-  private val httpVerbsVersion = "9.8.0-play-26"
 
   private val hmrc = "uk.gov.hmrc"
   private val typesafe = "com.typesafe.play"
@@ -35,16 +32,13 @@ private object AppDependencies {
   val compile: Seq[ModuleID] = Seq(
     ws,
     hmrc %% "simple-reactivemongo" % playReactivemongoVersion,
-    hmrc %% "logback-json-logger" % logbackJsonLoggerVersion,
     hmrc %% "govuk-template" % govukTemplateVersion,
-    hmrc %% "play-health" % playHealthVersion,
     hmrc %% "play-ui" % playUiVersion,
     hmrc %% "http-caching-client" % httpCachingClientVersion,
     hmrc %% "play-conditional-form-mapping" % playConditionalFormMappingVersion,
     hmrc %% "bootstrap-play-26" % bootstrapPlayVersion,
     hmrc %% "play-language" % playLanguageVersion,
     hmrc %% "tax-year" % taxYearVersion,
-    hmrc %% "http-verbs" % httpVerbsVersion,
     typesafe %% "play-java" % playJavaVersion,
     typesafe %% "play-json" % "2.7.3",
     typesafe %% "play-json-joda" % "2.7.3"
