@@ -11,7 +11,7 @@ object FrontendBuild extends Build with MicroService {
 
 private object AppDependencies {
   private val bootstrapPlayVersion = "0.42.0"
-  private val govukTemplateVersion = "5.36.0-play-26"
+  private val govukTemplateVersion = "5.37.0-play-26"
   private val playUiVersion = "7.40.0-play-26"
   private val hmrcTestVersion = "3.9.0-play-26"
   private val scalaTestVersion = "3.0.8"
@@ -23,7 +23,7 @@ private object AppDependencies {
   private val playReactivemongoVersion = "7.20.0-play-26"
   private val playConditionalFormMappingVersion = "1.1.0-play-26"
   private val playLanguageVersion = "3.4.0"
-  private val taxYearVersion = "0.4.0"
+  private val taxYearVersion = "0.6.0"
   private val playJavaVersion = "2.6.12"
 
   private val hmrc = "uk.gov.hmrc"
