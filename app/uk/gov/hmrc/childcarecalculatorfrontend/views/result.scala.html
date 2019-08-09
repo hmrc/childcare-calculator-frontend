@@ -91,13 +91,11 @@
                 </div>
             }
 
-
-
             @if(model.noOfEligibleSchemes(hideTC) > 1) {
 
                 <h2 class="heading-medium">@messages("result.more.info.title")</h2>
 
-                @if(model.noOfEligibleSchemes(hideTC) == 4  && !hideTC) {
+                @if(model.noOfEligibleSchemes(hideTC) == 4) {
                     <p>@messages("result.more.info.para")</p>
                     <ul class="bullets">
                         <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
@@ -105,14 +103,14 @@
                         <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")</li>
                     </ul>
                 } else {
-                    @if(model.isEligibleForAllButVouchers && !hideTC) {
+                    @if(model.isEligibleForAllButVouchers) {
                         <p>@messages("result.more.info.para")</p>
                         <ul class="bullets">
                             <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
                             <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
                         </ul>
                     }
-                    @if(model.isEligibleForAllButTc && !hideTC) {
+                    @if(model.isEligibleForAllButTc) {
                         <p>@messages("result.more.info.para")</p>
                         <ul class="bullets">
                             <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
@@ -120,7 +118,7 @@
                         </ul>
                     }
 
-                    @if(model.isEligibleForAllButTfc && !hideTC) {
+                    @if(model.isEligibleForAllButTfc) {
                         <p>@messages("result.more.info.para")</p>
                         <ul class="bullets">
                             <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
@@ -128,15 +126,15 @@
                         </ul>
                     }
 
-                    @if(model.isEligibleForAllButFreeHours && !hideTC) {
+                    @if(model.isEligibleForAllButFreeHours) {
                         <p>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
                     }
 
-                    @if(model.isEligibleOnlyForFreeHoursAndTc && !hideTC) {
+                    @if(model.isEligibleOnlyForFreeHoursAndTc) {
                         <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
                     }
 
-                    @if(model.isEligibleOnlyForTCAndEsc && !hideTC) {
+                    @if(model.isEligibleOnlyForTCAndEsc) {
                         <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
                     }
 
@@ -148,7 +146,7 @@
                         <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
                     }
 
-                    @if(model.isEligibleOnlyForTCAndTfc && !hideTC) {
+                    @if(model.isEligibleOnlyForTCAndTfc) {
                         <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
                     }
                 }
