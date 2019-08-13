@@ -73,7 +73,7 @@
 
             @resultEligible(model, utils, hideTC)
 
-            @if(model.noOfEligibleSchemes(hideTC) < 4) {
+            @if(!model.isEligibleToAllSchemes(hideTC)) {
                 <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
                 @resultNotEligible(model, hideTC)
             }
