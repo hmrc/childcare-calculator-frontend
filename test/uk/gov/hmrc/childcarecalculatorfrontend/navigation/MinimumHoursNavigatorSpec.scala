@@ -32,11 +32,10 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
-  "go to Child Aged Two from Location when the location is England, Scotland or Wales" in {
+  "go to Child Aged Two from Location when the location is England and Scotland" in {
     val answers = spy(userAnswers())
-    when(answers.location) thenReturn Some(ENGLAND) thenReturn Some(WALES) thenReturn Some(SCOTLAND)
+    when(answers.location) thenReturn Some(ENGLAND) thenReturn Some(SCOTLAND)
 
-    navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
   }
@@ -44,6 +43,12 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   "go to Child Aged Three or Four from Location when the location is Northern Ireland" in {
     val answers = spy(userAnswers())
     when(answers.location) thenReturn Some(NORTHERN_IRELAND)
+    navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
+  }
+
+  "go to Child Aged Three or Four from Location when the location is Wales" in {
+    val answers = spy(userAnswers())
+    when(answers.location) thenReturn Some(WALES)
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
   }
 

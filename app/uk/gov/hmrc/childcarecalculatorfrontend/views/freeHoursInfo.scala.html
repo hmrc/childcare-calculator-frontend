@@ -47,7 +47,7 @@ isEligibleForOnlyOneScheme: Boolean = false)(implicit request: Request[_], messa
             <li>@messages("freeHoursInfo.li.30hours")</li>
         }
 
-        @if(isChildAgedTwo && location != Location.NORTHERN_IRELAND) {
+        @if((isChildAgedTwo && location != Location.NORTHERN_IRELAND) || (isChildAgedTwo && location != Location.WALES)) {
             <li>@messages("freeHoursInfo.li.2year")</li>
         }
 
