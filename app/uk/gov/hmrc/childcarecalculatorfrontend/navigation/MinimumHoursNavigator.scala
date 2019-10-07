@@ -42,7 +42,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   )
 
   private def locationRoute(answers: UserAnswers): Call = {
-    if (answers.location.contains(Location.NORTHERN_IRELAND)) {
+    if (answers.location.contains(Location.NORTHERN_IRELAND) || answers.location.contains(Location.WALES)) {
       routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
     } else {
       routes.ChildAgedTwoController.onPageLoad(NormalMode)

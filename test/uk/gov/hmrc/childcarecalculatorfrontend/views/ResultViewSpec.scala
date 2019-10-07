@@ -471,20 +471,18 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       }
     }
 
-    "display guidance for 2 years old" when {
+    "do not display guidance for 2 years old" when {
       "user lives in Wales" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = Location.WALES, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
         val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages))
 
-        assertRenderedByCssSelector(view, ".twoYearsOld")
-
-        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.two.freehours"))
-        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.title"))
-        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.before.link"))
-        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.link.text"))
-        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.wales.para1.help.link")
-        view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.after.link"))
+        assertNotRenderedByCssSelector(view, ".twoYearsOld")
+        assertNotRenderedById(view, "twoYearsOldHelp")
+        assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
+        assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
       }
     }
 
@@ -538,20 +536,18 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
       }
 
 
-      "display guidance for 2 years old" when {
+      "do not display guidance for 2 years old" when {
         "user lives in Wales and not eligible for any schemes" in {
           val model = ResultsViewModel(freeHours = None, tc = None, tfc=None, esc=None, location = Location.WALES, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
           val view = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages))
 
-          assertRenderedByCssSelector(view, ".twoYearsOld")
-
-          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.two.freehours"))
-          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.title"))
-          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.before.link"))
-          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.link.text"))
-          view.getElementById("twoYearsOldHelp").attr("href") mustBe messages("results.two.years.old.guidance.wales.para1.help.link")
-          view.getElementsByClass("twoYearsOld").text().contains( messages("results.two.years.old.guidance.wales.text.after.link"))
+          assertNotRenderedByCssSelector(view, ".twoYearsOld")
+          assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
+          assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
+          assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
+          assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
+          assertNotRenderedById(view, "twoYearsOldHelp")
         }
       }
     }
@@ -723,7 +719,7 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         assertContainsText(doc, messages("results.two.years.old.guidance.scotland.text.after.link"))
       }
 
-      "contain correct guidance when not eligible for other schemes has 2 year old child and not in paid work, lives in wales" in {
+      "contain guidance when not eligible for other schemes has 2 year old child and not in paid work, lives in wales" in {
         val model = ResultsViewModel(freeHours = None, location = locationWales, childAgedTwo=true, isAnyoneInPaidEmployment = false, hasChildcareCosts = true,livesWithPartner = false,hasCostsWithApprovedProvider = true)
         val doc = asDocument(result(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages))
         val paidWorkLink: Element = doc.getElementById("free-hours-results-paid-work-link")
@@ -734,12 +730,12 @@ class ResultViewSpec extends ViewBehaviours with MockitoSugar {
         paidWorkLink.attr("href") mustBe routes.AreYouInPaidWorkController.onPageLoad(NormalMode).url
         paidWorkLink.text mustBe messages("freeHoursResult.toBeEligible.paid.work.link.text")
         assertContainsText(doc, messages("freeHoursResult.toBeEligible.paid.work.end"))
-        assertContainsText(doc, messages("results.two.years.old.guidance.wales.two.freehours"))
-        assertContainsText(doc, messages("results.two.years.old.guidance.wales.title"))
-        assertContainsText(doc, messages("results.two.years.old.guidance.wales.text.before.link"))
-        assertContainsText(doc, messages("results.two.years.old.guidance.wales.link.text"))
-        assertContainsText(doc, messages("results.two.years.old.guidance.wales.para1.help.link"))
-        assertContainsText(doc, messages("results.two.years.old.guidance.wales.text.after.link"))
+        assertNotContainsText(doc, messages("results.two.years.old.guidance.wales.two.freehours"))
+        assertNotContainsText(doc, messages("results.two.years.old.guidance.wales.title"))
+        assertNotContainsText(doc, messages("results.two.years.old.guidance.wales.text.before.link"))
+        assertNotContainsText(doc, messages("results.two.years.old.guidance.wales.link.text"))
+        assertNotContainsText(doc, messages("results.two.years.old.guidance.wales.para1.help.link"))
+        assertNotContainsText(doc, messages("results.two.years.old.guidance.wales.text.after.link"))
       }
 
 

@@ -58,6 +58,7 @@ case class ResultsViewModel(firstParagraph : String = "",
     if (childAgedTwo) {
       location match {
         case Location.NORTHERN_IRELAND => false
+        case Location.WALES => false
         case _ => {
           if (noOfEligibleSchemes(hideTC) == 0) {
             if (childAgedThreeOrFour) false else true
