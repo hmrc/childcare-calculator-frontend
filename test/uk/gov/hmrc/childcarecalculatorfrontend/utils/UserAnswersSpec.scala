@@ -777,7 +777,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
         ))
 
-        answers.isOnHighRateDisabilityBenefits mustEqual true
+        answers.isOnSevereDisabilityPremium mustEqual true
       }
 
       "'partner' is on severe disability premium" in {
@@ -785,7 +785,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
         ))
 
-        answers.isOnHighRateDisabilityBenefits mustEqual true
+        answers.isOnSevereDisabilityPremium mustEqual true
       }
 
       "'both' are on severe disability premium" in {
@@ -794,7 +794,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
         ))
 
-        answers.isOnHighRateDisabilityBenefits mustEqual true
+        answers.isOnSevereDisabilityPremium mustEqual true
       }
     }
 
@@ -804,7 +804,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString)))
         ))
 
-        answers.isOnHighRateDisabilityBenefits mustEqual false
+        answers.isOnSevereDisabilityPremium mustEqual false
       }
 
       "'partner' is NOT on severe disability premium" in {
@@ -812,7 +812,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
         ))
 
-        answers.isOnHighRateDisabilityBenefits mustEqual false
+        answers.isOnSevereDisabilityPremium mustEqual false
       }
 
       "'both' are NOT on severe disability premium" in {
@@ -821,7 +821,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
           WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
         ))
 
-        answers.isOnHighRateDisabilityBenefits mustEqual false
+        answers.isOnSevereDisabilityPremium mustEqual false
       }
     }
 

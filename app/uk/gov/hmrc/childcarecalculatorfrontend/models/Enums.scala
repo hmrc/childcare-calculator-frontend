@@ -131,24 +131,13 @@ object SelfEmployedOrApprenticeOrNeitherEnum extends Enumeration {
   implicit def enumFormats: Format[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumFormat(SelfEmployedOrApprenticeOrNeitherEnum)
 }
 
-
-/**
-  * It may seem odd that the SEVEREDISABILITYPREMIUM has the same value as HIGHRATEDISABILITYBENEFITS but this is
-  * because the text on the screen was changed from "High rate disability benefits" to "Severe disability premium"
-  * but the underlining value was left as "highRateDisabilityBenefits" [DL-1623: New divert journey].
-  *
-  * The reason for this temporary comment is a future JIRA [ DL-???? ] will provide both options
-  * "High rate disability benefits" and "Severe disability premium" and will require a new value to be defined
-  *
-  * This comment should be removed when DL-???? has been applied
-  */
 object WhichBenefitsEnum extends Enumeration {
   type WhichBenefitsEnum = Value
 
   val INCOMEBENEFITS = Value("incomeBenefits")
   val DISABILITYBENEFITS = Value("disabilityBenefits")
   val HIGHRATEDISABILITYBENEFITS = Value("highRateDisabilityBenefits")
-  val SEVEREDISABILITYPREMIUM = HIGHRATEDISABILITYBENEFITS
+  val SEVEREDISABILITYPREMIUM = Value("severeDisabilityPremium")
   val CARERSALLOWANCE = Value("carersAllowance")
 
   val enumReads: Reads[WhichBenefitsEnum] = EnumUtils.enumReads(WhichBenefitsEnum)
