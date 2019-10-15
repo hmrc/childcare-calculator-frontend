@@ -23,6 +23,8 @@ import play.api.data.validation.{Invalid, Valid, Constraint}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
 
+import scala.collection.immutable.ListMap
+
 object WhichBenefitsPartnerGetForm extends FormErrorHelper {
 
   def WhichBenefitsPartnerGetFormatter = new Formatter[String] {
@@ -48,10 +50,10 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
         .verifying(constraint())
     )
 
-  lazy val options: Map[String, String] = WhichBenefitsEnum.values.map {
+  lazy val options: ListMap[String, String] = ListMap.empty ++ WhichBenefitsEnum.values.map {
     value =>
-      s"whichBenefitsPartnerGet.$value" -> value.toString
-  }.toMap
+      s"whichBenefitsYouGet.$value" -> value.toString
+  }
 
   def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
 }

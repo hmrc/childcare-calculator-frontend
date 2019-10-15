@@ -256,10 +256,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
     if (answers.hasVouchers){
       routeBasedIfPartnerOrNot(hasPartner)
     } else {
-      val isOnHighRateDisabilityBenefits =
-        (answers.whichBenefitsYouGet.getOrElse(Set()) ++ answers.whichBenefitsPartnerGet.getOrElse(Set())) contains "highRateDisabilityBenefits"
-
-      (answers.taxOrUniversalCredits, isOnHighRateDisabilityBenefits) match {
+      (answers.taxOrUniversalCredits, answers.isOnSevereDisabilityPremium) match {
         case (Some("tc"), _) => routeBasedIfPartnerOrNot(hasPartner)
         case (_, false) => routes.ResultController.onPageLoadHideTC()
         case _ => routeBasedIfPartnerOrNot(hasPartner)
