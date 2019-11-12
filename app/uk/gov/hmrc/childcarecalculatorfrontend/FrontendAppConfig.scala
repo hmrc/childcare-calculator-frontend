@@ -41,6 +41,7 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
   lazy val surveyUrl: String = loadConfig("feedback-survey-frontend.host")
   lazy val surveyThankYouUrl: String = loadConfig("feedback-survey-frontend.thankYou")
+  lazy val googleTagManagerId = loadConfig(s"google-tag-manager.id")
 
   lazy val authUrl: String = config.baseUrl("auth")
   lazy val loginUrl: String = loadConfig("urls.login")
