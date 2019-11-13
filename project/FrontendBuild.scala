@@ -11,14 +11,14 @@ object FrontendBuild extends Build with MicroService {
 
 private object AppDependencies {
   private val bootstrapPlayVersion = "1.1.0"
-  private val govukTemplateVersion = "5.43.0-play-26"
-  private val playUiVersion = "8.2.0-play-26"
+  private val govukTemplateVersion = "5.44.0-play-26"
+  private val playUiVersion = "8.3.0-play-26"
   private val hmrcTestVersion = "3.9.0-play-26"
   private val scalaTestVersion = "3.0.8"
   private val scalaCheckVersion = "1.14.0"
   private val scalaTestPlusPlayVersion = "3.1.2"
   private val pegdownVersion = "1.6.0"
-  private val mockitoCoreVersion = "2.27.0"
+  private val mockitoCoreVersion = "3.1.0"
   private val httpCachingClientVersion = "9.0.0-play-26"
   private val playReactivemongoVersion = "7.20.0-play-26"
   private val playConditionalFormMappingVersion = "1.2.0-play-26"
@@ -56,7 +56,7 @@ private object AppDependencies {
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
         "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusPlayVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
-        "org.jsoup" % "jsoup" % "1.11.3" % scope,
+        "org.jsoup" % "jsoup" % "1.12.1" % scope,
         typesafe %% "play-test" % PlayVersion.current % scope,
         "org.mockito" % "mockito-core" % mockitoCoreVersion % scope,
         "org.scalacheck" %% "scalacheck" % scalaCheckVersion % scope
