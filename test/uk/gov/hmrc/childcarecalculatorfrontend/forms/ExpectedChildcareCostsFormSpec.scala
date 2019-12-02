@@ -39,6 +39,16 @@ class ExpectedChildcareCostsFormSpec extends FormSpec {
       result.get shouldEqual 10.80
     }
 
+    "bind negative decimal number" in {
+      val result = form.bind(Map("value" -> "-2.00"))
+      result.errors.head.message shouldBe "expectedChildcareCosts.error.invalid"
+    }
+
+    "bind zero decimal number" in {
+      val result = form.bind(Map("value" -> "00.00"))
+      result.errors.head.message shouldBe "expectedChildcareCosts.error.invalid"
+    }
+
     "bind the upper bound" in {
       val result = form.bind(Map("value" -> "9999.99"))
       result.get shouldEqual 9999.99

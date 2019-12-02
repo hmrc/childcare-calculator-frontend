@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.validation.{Constraints, Invalid}
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class FormErrorHelperSpec extends SpecBase {
+class FormErrorHelperSpec extends SpecBase with Mappings {
 
   class TestObject extends FormErrorHelper
 
@@ -163,6 +164,80 @@ class FormErrorHelperSpec extends SpecBase {
           inputForm) mustBe inputForm
       }
 
+      "return taxcode from letter/character string" in {
+        val objectUnderTest = new TestObject()
+        objectUnderTest.getTaxCodeLetter("999999") mustBe "99"
+        objectUnderTest.getTaxCodeLetter("99999") mustBe "9"
+        objectUnderTest.getTaxCodeLetter("999A9") mustBe "A9"
+        objectUnderTest.getTaxCodeLetter("4444") mustBe "4"
+      }
+
+      "validate value in range" in {
+        val objectUnderTest = new TestObject()
+        val decimalSmallValue = BigDecimal(5)
+        val decimalZero = BigDecimal(0)
+        val decimalTen = BigDecimal(10)
+        objectUnderTest.validateInRange(decimalSmallValue, decimalZero, decimalTen) mustBe true
+        objectUnderTest.validateInRange(decimalZero, decimalZero, decimalTen) mustBe true
+      }
+
+      "validate value not in range" in {
+        val objectUnderTest = new TestObject()
+        val decimal50 = BigDecimal(50)
+        val decimalZero = BigDecimal(0)
+        val decimalTen = BigDecimal(10)
+        objectUnderTest.validateInRange(decimal50, decimalZero, decimalTen) mustBe false
+        objectUnderTest.validateInRange(decimal50, decimalZero, decimalTen) mustBe false
+      }
+
+      "validate and handle first on failure" in {
+        val objectUnderTest = new TestObject()
+        val constraints = List(Constraints.nonEmpty, Constraints.maxLength(1))
+        val result = objectUnderTest.returnOnFirstFailure(constraints: _*)("ee")
+        result.asInstanceOf[Invalid].errors.head.message mustBe "error.maxLength"
+      }
+
+      "validate both Max Income Earnings form with validation error" in {
+        val objectUnderTest = new TestObject()
+
+        val formFieldMap = Map("parentEmploymentIncomeCY" -> "8000", "partnerEmploymentIncomeCY" -> "100000")
+        val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(formFieldMap)
+
+        val formWithError = inputForm.withError("partnerEmploymentIncomeCY", partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
+
+        objectUnderTest.validateBothMaxIncomeEarnings(Some(false), maxIncome, inputForm) mustBe formWithError
+      }
+
+      "validate both Max Income Earnings form with validation error boundary check " in {
+        val objectUnderTest = new TestObject()
+        val maximumIncome = 100
+        val formFieldMap = Map("parentEmploymentIncomeCY" -> "100", "partnerEmploymentIncomeCY" -> "101")
+        val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(formFieldMap)
+
+        val formWithError = inputForm.withError(parentEmpIncomeCYFormField, parentEmploymentIncomeBothInvalidMaxEarningsErrorKey)
+          .withError(partnerEmpIncomeCYFormField, partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey)
+
+        objectUnderTest.validateBothMaxIncomeEarnings(Some(false), maximumIncome, inputForm) mustBe formWithError
+      }
+
+      "validate both Max Income Earnings form with validation error boundary check no partner income" in {
+        val objectUnderTest = new TestObject()
+        val maximumIncome = 100
+        val formFieldMap = Map("parentEmploymentIncomeCY" -> "100")
+        val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(formFieldMap)
+
+        val formWithError = inputForm.withError(parentEmpIncomeCYFormField, parentEmploymentIncomeInvalidMaxEarningsErrorKey)
+
+        objectUnderTest.validateBothMaxIncomeEarnings(Some(false), maximumIncome, inputForm) mustBe formWithError
+      }
+
+      "validate both Max Income Earnings form with no validation errors" in {
+        val objectUnderTest = new TestObject()
+        val maximumIncome = 500
+        val formFieldMap = Map("parentEmploymentIncomeCY" -> "99", "partnerEmploymentIncomeCY" -> "100")
+        val inputForm = new EmploymentIncomeCYForm(frontendAppConfig).apply().bind(formFieldMap)
+        objectUnderTest.validateBothMaxIncomeEarnings(Some(false), maximumIncome, inputForm).errors mustBe empty
+      }
     }
   }
 }
