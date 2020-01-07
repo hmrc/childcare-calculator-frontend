@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -389,6 +389,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.childrenDisabilityBenefits).thenReturn(Some(true))
         when(answers.registeredBlind).thenReturn(Some(false))
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.now).thenReturn(testDate)
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
@@ -402,6 +403,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(false))
+        when(answers.now).thenReturn(testDate)
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
@@ -415,6 +417,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
         when(answers.registeredBlind).thenReturn(Some(true))
+        when(answers.now).thenReturn(testDate)
 
         val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
         result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)

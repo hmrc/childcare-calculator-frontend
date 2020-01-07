@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,9 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
   val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
 
-  val previousTaxYear = new TaxYear(LocalDate.now().getYear).previous.currentYear
+  val currentTaxYear =  TaxYear.current.startYear
 
-  val currentTaxYear =  new TaxYear(LocalDate.now().getYear).currentYear
+  val previousTaxYear = currentTaxYear - 1
 
   def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
@@ -283,7 +283,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
-      "has a single parent with statutory pay falling within previous year" in {
+      "has a single parent with statutory pay falling within previous tax year" in {
         val parent = Claimant(
           hours = Some(BigDecimal(54.9)),
           escVouchers = Some(YesNoUnsureEnum.YES),
