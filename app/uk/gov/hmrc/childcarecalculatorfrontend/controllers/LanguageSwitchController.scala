@@ -19,9 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import com.google.inject.Inject
 import play.api.Configuration
 import play.api.i18n.{I18nSupport, Lang, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, Controller}
+import play.api.mvc.{Action, AnyContent, Call, Controller, Flash}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.play.language.LanguageUtils
 
 // TODO, upstream this into play-language
 class LanguageSwitchController @Inject() (
@@ -40,12 +39,12 @@ class LanguageSwitchController @Inject() (
     implicit request =>
       val enabled = isWelshEnabled
       val lang = if (enabled) {
-        languageMap.getOrElse(language, LanguageUtils.getCurrentLang)
+        languageMap.getOrElse(language, Lang.defaultLang)
       } else {
         Lang("en")
       }
       val redirectURL = request.headers.get(REFERER).getOrElse(fallbackURL)
-      Redirect(redirectURL).withLang(Lang.apply(lang.code)).flashing(LanguageUtils.FlashWithSwitchIndicator)
+      Redirect(redirectURL).withLang(Lang.apply(lang.code)).flashing(Flash(Map("switching-language" -> "true")))
   }
 
   private def isWelshEnabled: Boolean =
