@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import javax.inject.Inject
-
 import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
+import scala.collection.immutable
 import scala.collection.immutable.ListMap
 
 class IncomeSummary @Inject()(utils: Utils) {
@@ -59,7 +59,8 @@ class IncomeSummary @Inject()(utils: Utils) {
                 case ChildcareConstants.partner => userAnswers.partnerOtherIncomeAmountCY.foldLeft(result)((result, otherIncome) => result + (Messages("incomeSummary.partnerOtherIncome") -> s"£${utils.valueFormatter(otherIncome)}"))
                 case ChildcareConstants.both => {
                   userAnswers.otherIncomeAmountCY.foldLeft(result)((result, otherIncomes) =>
-                    result + (Messages("incomeSummary.yourOtherIncome") -> s"£${utils.valueFormatter(otherIncomes.parentOtherIncome)}",
+
+                    result ++: ListMap(Messages("incomeSummary.yourOtherIncome") -> s"£${utils.valueFormatter(otherIncomes.parentOtherIncome)}",
                       Messages("incomeSummary.partnerOtherIncome") -> s"£${utils.valueFormatter(otherIncomes.partnerOtherIncome)}"))
                 }
               }
@@ -86,7 +87,7 @@ class IncomeSummary @Inject()(utils: Utils) {
                 case YouPartnerBothEnum.PARTNER => userAnswers.partnerBenefitsIncomeCY.foldLeft(result)((result, benefitAmount) => result + (Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefitAmount)}"))
                 case YouPartnerBothEnum.BOTH => {
                   userAnswers.benefitsIncomeCY.foldLeft(result)((result, benefits) =>
-                    result + (Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefits.parentBenefitsIncome)}",
+                    result ++: ListMap(Messages("incomeSummary.yourBenefitsIncome") -> s"£${utils.valueFormatter(benefits.parentBenefitsIncome)}",
                       Messages("incomeSummary.partnerBenefitsIncome") -> s"£${utils.valueFormatter(benefits.partnerBenefitsIncome)}"))
                 }
               }
@@ -140,7 +141,7 @@ class IncomeSummary @Inject()(utils: Utils) {
                         case ChildcareConstants.partner => userAnswers.howMuchPartnerPayPension.foldLeft(result)((result, pension) => result + (Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pension)}"))
                         case ChildcareConstants.both => {
                           userAnswers.howMuchBothPayPension.foldLeft(result)((result, pensions) =>
-                            result + (Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchYouPayPension)}",
+                            result ++: ListMap(Messages("incomeSummary.pensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchYouPayPension)}",
                               Messages("incomeSummary.partnerPensionPaymentsAmonth") -> s"£${utils.valueFormatter(pensions.howMuchPartnerPayPension)}"))
                         }
                       }
@@ -186,7 +187,7 @@ class IncomeSummary @Inject()(utils: Utils) {
 
   private def loadBothIncome(userAnswers: UserAnswers, result: ListMap[String, String])(implicit messages: Messages) = {
     userAnswers.employmentIncomeCY.foldLeft(result)((result, incomes) =>
-      result + (Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(incomes.parentEmploymentIncomeCY)}",
+      result ++: ListMap(Messages("incomeSummary.yourIncome") -> s"£${utils.valueFormatter(incomes.parentEmploymentIncomeCY)}",
         Messages("incomeSummary.partnersIncome") -> s"£${utils.valueFormatter(incomes.partnerEmploymentIncomeCY)}"))
   }
 
