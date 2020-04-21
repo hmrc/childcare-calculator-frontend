@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
-import play.api.data.format.Formatter
+import play.api.data.Form
 
 object YourStatutoryPayPerWeekForm extends FormErrorHelper {
 

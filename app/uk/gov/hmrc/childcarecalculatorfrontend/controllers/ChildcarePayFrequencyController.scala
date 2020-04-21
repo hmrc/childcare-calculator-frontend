@@ -19,14 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -79,19 +78,19 @@ class ChildcarePayFrequencyController @Inject()(
       }
   }
 
-  private def validateIndex[A](i: Int)(block: String => Future[Result])
-                           (implicit request: DataRequest[A]): Future[Result] = {
-
-    for {
-      model             <- request.userAnswers.aboutYourChild(i)
-      childrenWithCosts <- request.userAnswers.childrenWithCosts
-    } yield {
-      if (childrenWithCosts.contains(i)) {
-        block(model.name)
-      } else {
-        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri)))
-      }
-    }
-  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri))))
+//  private def validateIndex[A](i: Int)(block: String => Future[Result])
+//                           (implicit request: DataRequest[A]): Future[Result] = {
+//
+//    for {
+//      model             <- request.userAnswers.aboutYourChild(i)
+//      childrenWithCosts <- request.userAnswers.childrenWithCosts
+//    } yield {
+//      if (childrenWithCosts.contains(i)) {
+//        block(model.name)
+//      } else {
+//        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri)))
+//      }
+//    }
+//  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri))))
 
 }

@@ -17,16 +17,12 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import java.text.SimpleDateFormat
-import javax.inject.Singleton
 
 import org.joda.time.LocalDate
 import play.api.mvc.{AnyContent, Call}
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import play.api.Configuration
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.http.Request
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class Utils {

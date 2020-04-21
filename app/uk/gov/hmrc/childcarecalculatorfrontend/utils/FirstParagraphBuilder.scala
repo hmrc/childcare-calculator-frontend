@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import javax.inject.Inject
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum}
 
 class FirstParagraphBuilder @Inject()(utils: Utils){
 

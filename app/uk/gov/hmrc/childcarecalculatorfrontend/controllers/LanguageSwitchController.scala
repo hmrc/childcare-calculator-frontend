@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import com.google.inject.Inject
 import play.api.Configuration
 import play.api.i18n.{I18nSupport, Lang, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, Controller, Flash}
+import play.api.mvc.{Action, AnyContent, Controller, Flash}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
 // TODO, upstream this into play-language
@@ -28,8 +28,6 @@ class LanguageSwitchController @Inject() (
                                            appConfig: FrontendAppConfig,
                                            implicit val messagesApi: MessagesApi
                                          ) extends Controller with I18nSupport {
-
-  private def langToCall(lang: String): (String) => Call = appConfig.routeToSwitchLanguage
 
   private def fallbackURL: String = routes.WhatToTellTheCalculatorController.onPageLoad().url
 

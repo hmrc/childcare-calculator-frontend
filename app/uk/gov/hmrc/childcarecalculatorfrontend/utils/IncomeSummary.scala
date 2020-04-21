@@ -20,7 +20,6 @@ import javax.inject.Inject
 import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
-import scala.collection.immutable
 import scala.collection.immutable.ListMap
 
 class IncomeSummary @Inject()(utils: Utils) {
@@ -211,7 +210,7 @@ class IncomeSummary @Inject()(utils: Utils) {
     loadSectionAmount(userAnswers.youAnyTheseBenefits, result, (Messages("incomeSummary.incomeFromBenefits") -> Messages("site.no")), Messages("incomeSummary.yourBenefitsIncome"), userAnswers.youBenefitsIncomeCY)
   }
 
-  private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: ListMap[String, String], conditionNotMet: (String, String), textForIncome: String, incomeSection: Option[BigDecimal])(implicit messages: Messages) = {
+  private def loadSectionAmount(conditionToCheckAmount: Option[Boolean], result: ListMap[String, String], conditionNotMet: (String, String), textForIncome: String, incomeSection: Option[BigDecimal]) = {
     conditionToCheckAmount match {
       case Some(conditionMet) => {
         if (conditionMet) {
