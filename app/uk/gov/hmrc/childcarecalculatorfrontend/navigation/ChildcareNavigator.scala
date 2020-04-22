@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
 import org.joda.time.LocalDate
-import play.api.Logger
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes

@@ -18,8 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichChildrenDisabilityForm extends FormErrorHelper {
 

@@ -20,7 +20,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, YouPartnerBothNeitherEnum, YouPartnerBothNeitherNotSureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherNotSureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object WhoGetsVouchersForm extends FormErrorHelper {

@@ -19,8 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import javax.inject.{Inject, Singleton}
 
 import play.api.libs.json._
-import play.api.libs.json.JodaReads._
-import play.api.libs.json.JodaWrites._
 import uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts._
 import uk.gov.hmrc.http.cache.client.CacheMap
 

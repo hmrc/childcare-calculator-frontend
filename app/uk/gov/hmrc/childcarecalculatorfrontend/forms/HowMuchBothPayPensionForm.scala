@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms.{text, _}
+import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 
 object HowMuchBothPayPensionForm extends FormErrorHelper{

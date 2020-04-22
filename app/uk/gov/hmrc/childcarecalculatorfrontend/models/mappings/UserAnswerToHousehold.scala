@@ -30,8 +30,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils}
 
-import scala.math.BigDecimal.RoundingMode
-
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
   extends OverallIncome {
 

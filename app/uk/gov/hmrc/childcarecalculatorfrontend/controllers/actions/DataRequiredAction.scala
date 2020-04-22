@@ -21,15 +21,12 @@ import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.{DataRequest, OptionalDataRequest}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SessionExpiredRouter
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DataRequiredAction @Inject()()(implicit val executionContext: ExecutionContext) extends ActionRefiner[OptionalDataRequest, DataRequest] {
 
   override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     request.userAnswers match {
       case None => Future.successful(Left(Redirect(SessionExpiredRouter.route(getClass.getName,"refine",uri = request.uri, session = request.sessionId))))
