@@ -22,9 +22,9 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-class FeedbackSurveyController  @Inject()(appConfig: FrontendAppConfig,
-                                          mcc: MessagesControllerComponents) extends FrontendController(mcc) with I18nSupport {
+class FeedbackSurveyController @Inject()(appConfig: FrontendAppConfig,
+                                         mcc: MessagesControllerComponents) extends FrontendController(mcc) with I18nSupport {
   def loadFeedbackSurvey: Action[AnyContent] = Action {
-    implicit request => Redirect(appConfig.surveyUrl)
+    Redirect(appConfig.surveyUrl)
   }
 }

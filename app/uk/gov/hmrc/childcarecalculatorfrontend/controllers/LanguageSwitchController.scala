@@ -19,15 +19,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import com.google.inject.Inject
 import play.api.Configuration
 import play.api.i18n.{I18nSupport, Lang, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Controller, Flash}
+import play.api.mvc.{Action, AnyContent, Flash, InjectedController}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
 // TODO, upstream this into play-language
 class LanguageSwitchController @Inject() (
                                            configuration: Configuration,
                                            appConfig: FrontendAppConfig,
-                                           implicit val messagesApi: MessagesApi
-                                         ) extends Controller with I18nSupport {
+                                           override implicit val messagesApi: MessagesApi
+                                         ) extends InjectedController with I18nSupport {
 
   private def fallbackURL: String = routes.WhatToTellTheCalculatorController.onPageLoad().url
 
@@ -45,6 +45,7 @@ class LanguageSwitchController @Inject() (
       Redirect(redirectURL).withLang(Lang.apply(lang.code)).flashing(Flash(Map("switching-language" -> "true")))
   }
 
-  private def isWelshEnabled: Boolean =
-    configuration.getBoolean("microservice.services.features.welsh-translation").getOrElse(true)
+  private def isWelshEnabled: Boolean = {
+    configuration.getOptional[Boolean]("microservice.services.features.welsh-translation").getOrElse(true)
+  }
 }

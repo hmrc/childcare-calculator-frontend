@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 import org.mockito.Mockito._
 import org.scalatest.{MustMatchers, OptionValues}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoUnsureEnum, YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, YouPartnerBothNeitherEnum}
 
 class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
   

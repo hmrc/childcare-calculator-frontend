@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import org.joda.time.LocalDate
-import play.api.libs.json.JodaReads._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerPaidWorkPYId, _}
@@ -260,28 +259,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
 
-
-      // Partner earning more than minimum earnings
-      val originalCacheMap2 = new CacheMap("id", Map(PartnerWorkHoursId.toString -> JsString("12"),
-        YourPartnersAgeId.toString -> JsString("under18"), PartnerMinimumEarningsId.toString -> JsBoolean(true),
-        PartnerMaximumEarningsId.toString -> JsBoolean(true),
-
-        ParentPaidWorkCYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomeCYId.toString -> JsBoolean(true),
-        PartnerPaidPensionCYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(true),
-        PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
-
-        ParentPaidWorkPYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
-        PartnerPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
-        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
-
       val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
       result1.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(you),TaxOrUniversalCreditsId.toString-> JsString("tc"))
 
@@ -408,31 +385,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourAgeId.toString -> JsString("under18"), YourMinimumEarningsId.toString -> JsBoolean(false),
         AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
 
-
-        PartnerPaidWorkCYId.toString -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString -> JsBoolean(true),
-        YouPaidPensionCYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionId.toString -> JsNumber(BigDecimal(20)),
-        YourOtherIncomeThisYearId.toString -> JsBoolean(true),
-        YouAnyTheseBenefitsIdCY.toString ->JsBoolean(true),
-        YouBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
-
-        PartnerPaidWorkPYId .toString -> JsBoolean(true),
-        ParentEmploymentIncomePYId.toString -> JsBoolean(true),
-        YouPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        YourOtherIncomeLYId.toString -> JsBoolean(true),
-        YouAnyTheseBenefitsPYId.toString ->JsBoolean(true),
-        YouBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
-
-
-      // Parent earning less than minimum earnings
-      val originalCacheMap2 = new CacheMap("id", Map(ParentWorkHoursId.toString -> JsString("12"),
-        HasYourTaxCodeBeenAdjustedId.toString ->  JsString(yes), DoYouKnowYourAdjustedTaxCodeId.toString -> JsBoolean(true),
-        WhatIsYourTaxCodeId.toString -> JsString("1100L"), YourChildcareVouchersId.toString -> Json.toJson(YesNoUnsureEnum.YES),
-        YourAgeId.toString -> JsString("under18"), YourMinimumEarningsId.toString -> JsBoolean(true),
-        YourMaximumEarningsId.toString -> JsBoolean(true),
-        TaxOrUniversalCreditsId.toString-> JsString("tc"),
 
         PartnerPaidWorkCYId.toString -> JsBoolean(true),
         ParentEmploymentIncomeCYId.toString -> JsBoolean(true),

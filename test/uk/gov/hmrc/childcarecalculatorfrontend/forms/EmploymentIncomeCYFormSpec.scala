@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class EmploymentIncomeCYFormSpec extends FormBehaviours {
 

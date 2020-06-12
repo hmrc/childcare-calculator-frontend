@@ -23,11 +23,11 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{ageExactly15Relative, ageOf16WithBirthdayBefore31stAugust, ageOf19YearsAgo, ageOfOver16Relative}
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode, WhichBenefitsEnum, YouPartnerBothNeitherEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSugar {

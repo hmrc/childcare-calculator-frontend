@@ -18,17 +18,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.{JsBoolean, Json}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{EmploymentIncomeCYForm, FormErrorHelper}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -71,9 +71,6 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val validData = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -109,8 +106,6 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
-      val boundForm = form.bind(Map("value" -> "above limit"))
-
 
       val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
         ParentEmploymentIncomeCYId.toString -> Json.toJson("100000"),
@@ -129,7 +124,6 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000"))
-      val boundForm = form.bind(Map("value" -> "above limit"))
 
       val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
         ParentEmploymentIncomeCYId.toString -> Json.toJson("1000000"),

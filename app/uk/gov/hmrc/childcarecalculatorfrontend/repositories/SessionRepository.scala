@@ -17,19 +17,17 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
 
-import reactivemongo.bson.{BSONDocument, BSONObjectID, BSONValue}
 import javax.inject.{Inject, Singleton}
 import org.joda.time.{DateTime, DateTimeZone}
-import play.api.{Configuration, Logger}
-import play.api.libs.json.{JsValue, Json}
-import play.modules.reactivemongo.MongoDbConnection
-import reactivemongo.api.{Cursor, DefaultDB}
-import reactivemongo.bson._
-import uk.gov.hmrc.http.cache.client.CacheMap
 import play.api.libs.json.Writes.StringWrites
+import play.api.libs.json.{JsValue, Json}
+import play.api.{Configuration, Logger}
+import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
+import reactivemongo.api.{Cursor, DefaultDB}
+import reactivemongo.bson.{BSONDocument, BSONObjectID, BSONValue, _}
 import reactivemongo.play.json.ImplicitBSONHandlers._
+import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.mongo.ReactiveRepository
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 
@@ -48,12 +46,12 @@ object DatedCacheMap {
 }
 
 class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
-  extends ReactiveRepository[DatedCacheMap, BSONObjectID](config.getString("appName").get, mongo, DatedCacheMap.formats) {
+  extends ReactiveRepository[DatedCacheMap, BSONObjectID](config.get[String]("appName"), mongo, DatedCacheMap.formats) {
 
   val fieldName = "lastUpdated"
   val createdIndexName = "userAnswersExpiry"
   val expireAfterSeconds = "expireAfterSeconds"
-  val timeToLiveInSeconds: Int = config.getInt("mongodb.timeToLiveInSeconds").get
+  val timeToLiveInSeconds: Int = config.get[Int]("mongodb.timeToLiveInSeconds")
 
   createIndex(fieldName, createdIndexName, timeToLiveInSeconds)
 
@@ -93,11 +91,9 @@ class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
 }
 
 @Singleton
-class SessionRepository @Inject()(config: Configuration) {
+class SessionRepository @Inject()(config: Configuration, mongoComponent: ReactiveMongoComponent) {
 
-  class DbConnection extends MongoDbConnection
-
-  private lazy val sessionRepository = new ReactiveMongoRepository(config, new DbConnection().db)
+  private lazy val sessionRepository = new ReactiveMongoRepository(config, mongoComponent.mongoConnector.db)
 
   def apply(): ReactiveMongoRepository = sessionRepository
 }

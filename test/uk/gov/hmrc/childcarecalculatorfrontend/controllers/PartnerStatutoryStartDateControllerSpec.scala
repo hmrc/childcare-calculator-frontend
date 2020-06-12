@@ -18,15 +18,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.joda.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.{JsString, Json}
 import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
+import play.api.libs.json.{JsString, Json}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{PartnerStatutoryPayTypeForm, PartnerStatutoryStartDateForm, YourStatutoryPayTypeForm}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayTypeId, PartnerStatutoryStartDateId, YourStatutoryPayTypeId, YourStatutoryStartDateId}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{PartnerStatutoryPayTypeForm, PartnerStatutoryStartDateForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerStatutoryPayTypeId, PartnerStatutoryStartDateId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
 import uk.gov.hmrc.http.cache.client.CacheMap
