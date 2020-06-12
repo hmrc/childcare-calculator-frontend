@@ -24,8 +24,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-import scala.language.implicitConversions
-
 class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {
 
   def tfc(tfcHousehold: ModelFactory = new ModelFactory): TaxFreeChildcare = spy(new TaxFreeChildcare(tfcHousehold))

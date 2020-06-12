@@ -18,16 +18,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.JsNumber
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerBenefitsIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerBenefitsIncomePYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerBenefitsIncomePY
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

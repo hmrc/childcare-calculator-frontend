@@ -974,15 +974,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
       }
 
       "has a single parent who gets vouchers" in {
-        val parent = Claimant(
-          hours = Some(BigDecimal(54.9)),
-          escVouchers = Some(YesNoUnsureEnum.YES),
-          ageRange = Some(AgeEnum.OVERTWENTYFOUR),
-          minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.SELFEMPLOYED), selfEmployedIn12Months = Some(true))),
-          maximumEarnings = Some(false),
-          currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0))))
-        )
-        val household = Household(location = Location.SCOTLAND, parent = parent)
+
         val answers = spy(userAnswers())
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)

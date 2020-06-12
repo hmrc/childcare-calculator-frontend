@@ -43,11 +43,6 @@ class MoreInfoServiceSpec extends PlaySpec with SpecBase {
     tfc = None,
     freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
 
-  private val escSchemeInvalid = ResultsViewModel(
-    tc = Some(2.0),
-    tfc = Some(2.0),
-    freeHours = Some(2.0), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-
   private val freeHoursSchemeInvalid = ResultsViewModel(
     tc = Some(2.0),
     tfc = Some(2.0),

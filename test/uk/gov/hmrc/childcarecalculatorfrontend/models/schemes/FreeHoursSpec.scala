@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import play.api.libs.json.{JsBoolean, JsString}
+import play.api.libs.json.JsBoolean
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildAgedThreeOrFourId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers

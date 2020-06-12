@@ -18,17 +18,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.{JsBoolean, JsNumber, Json}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerEmploymentIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerEmploymentIncomeCYId, PartnerMaximumEarningsId, YourMaximumEarningsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerEmploymentIncomeCYId, PartnerMaximumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncomeCY
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -104,7 +104,6 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "100000"))
-      val boundForm = form.bind(Map("value" -> "above limit"))
 
       val validData = Map(PartnerMaximumEarningsId.toString -> JsBoolean(false),
         PartnerEmploymentIncomeCYId.toString -> Json.toJson("100000"))
@@ -119,7 +118,6 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "1000000"))
-      val boundForm = form.bind(Map("value" -> "above limit"))
 
       val validData = Map(PartnerMaximumEarningsId.toString -> JsBoolean(true),
         PartnerEmploymentIncomeCYId.toString -> Json.toJson("1000000"))

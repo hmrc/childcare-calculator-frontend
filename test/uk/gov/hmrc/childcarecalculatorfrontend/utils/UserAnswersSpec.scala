@@ -340,11 +340,6 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     }
 
     "returns empty list with children exactly 16 years with dob before august and not disable " in {
-      val ageOf16Over = if (testDate.getMonthOfYear < 8) {
-        testDate.minusYears(17)
-      } else {
-        testDate.minusYears(16)
-      }
       val ageOfUnder16 = testDate.minusYears(1)
 
       val answers: CacheMap = cacheMap(
@@ -593,7 +588,7 @@ class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
     yesNoNotYetPositive.foreach {
       costs =>
         s"return `false` if a user has costs: $costs, but they aren't approved" in {
-          val answers = helper(cacheMap(
+          helper(cacheMap(
             ChildcareCostsId.toString -> JsString(costs),
             ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.NO.toString)
           ))

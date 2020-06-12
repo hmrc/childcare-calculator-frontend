@@ -19,21 +19,20 @@ package uk.gov.hmrc.childcarecalculatorfrontend.services
 import org.joda.time.LocalDate
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
+import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.{ExecutionContext, Future}
-import org.scalatest.concurrent.ScalaFutures
-import play.api.mvc.Request
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutures {
 

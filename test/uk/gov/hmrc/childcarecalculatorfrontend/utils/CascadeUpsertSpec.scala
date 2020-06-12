@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouKnowYourAdjustedTaxCodeId, HasYourTaxCodeBeenAdjustedId, WhatIsYourTaxCodeId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 import uk.gov.hmrc.http.cache.client.CacheMap

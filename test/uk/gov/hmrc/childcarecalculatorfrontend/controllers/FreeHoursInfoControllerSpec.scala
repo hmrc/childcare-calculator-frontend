@@ -18,15 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.libs.json.{JsBoolean, JsString}
 import play.api.mvc.Call
-import uk.gov.hmrc.http.cache.client.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
+import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

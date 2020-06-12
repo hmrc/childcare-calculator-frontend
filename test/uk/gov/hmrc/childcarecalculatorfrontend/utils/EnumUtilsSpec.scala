@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.play.test.UnitSpec
 
 class EnumUtilsSpec extends UnitSpec {

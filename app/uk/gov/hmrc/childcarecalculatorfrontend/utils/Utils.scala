@@ -68,8 +68,8 @@ class Utils {
     */
   def getEarningsForAgeRange(configuration: Configuration,
                              currentDate: LocalDate,
-                             ageRange: Option[String]) = {
-    getOrException(getNMWConfig(configuration, currentDate).getInt(ageRange.getOrElse("non-existent-age")))
+                             ageRange: Option[String]): Int = {
+    getOrException(getNMWConfig(configuration, currentDate).getOptional[Int](ageRange.getOrElse("non-existent-age")))
   }
 
   /**
@@ -94,13 +94,13 @@ class Utils {
     val configs: Seq[Configuration] = configuration.getConfigSeq(configType).getOrElse(Seq())
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
-      _.getString(ruleDateConfigParam).contains("default")
+      _.get[String](ruleDateConfigParam).contains("default")
     ).sortWith(
-      (conf1, conf2) => dateFormat.parse(conf1.getString(ruleDateConfigParam).get).after(dateFormat.parse(conf2.getString(ruleDateConfigParam).get))
+      (conf1, conf2) => dateFormat.parse(conf1.getOptional[String](ruleDateConfigParam).get).after(dateFormat.parse(conf2.get[String](ruleDateConfigParam)))
     )
 
     val result = configsExcludingDefault.find { conf =>
-      val ruleDate = dateFormat.parse(conf.getString(ruleDateConfigParam).get)
+      val ruleDate = dateFormat.parse(conf.get[String](ruleDateConfigParam))
       currentDate.toDate.compareTo(ruleDate) >= 0
     }
 
@@ -109,7 +109,7 @@ class Utils {
       case Some(conf) =>
         conf
       case _ =>
-        configs.filter(_.getString(ruleDateConfigParam).contains("default")).head
+        configs.filter(_.getOptional[String](ruleDateConfigParam).contains("default")).head
     }
   }
 

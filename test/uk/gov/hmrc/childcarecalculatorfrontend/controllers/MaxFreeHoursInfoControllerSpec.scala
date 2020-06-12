@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsBoolean, JsNumber, JsString}
 import play.api.mvc.Call
@@ -27,7 +27,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{EmploymentSupportedChildcare, TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
