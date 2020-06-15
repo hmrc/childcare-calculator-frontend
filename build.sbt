@@ -12,6 +12,7 @@ lazy val appName = "childcare-calculator-frontend"
 lazy val appDependencies : Seq[ModuleID] = ???
 lazy val plugins : Seq[Plugins] = Seq.empty
 lazy val playSettings : Seq[Setting[_]] = Seq.empty
+val silencerVersion = "1.6.0"
 
 lazy val scoverageSettings: Seq[Def.Setting[_]] = {
 
@@ -40,7 +41,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     scalacOptions ++= Seq("-feature"),
     targetJvm := "jvm-1.8",
-    scalaVersion := "2.12.10",
+    scalaVersion := "2.12.11",
     libraryDependencies ++= AppDependencies(),
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12", //Handle invalid Base64 will be fixed in 1.15
     retrieveManaged := true,
@@ -53,8 +54,8 @@ lazy val microservice = Project(appName, file("."))
     // Use the silencer plugin to suppress warnings from unused imports in compiled twirl templates
     scalacOptions += "-P:silencer:pathFilters=views;routes",
     libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.4.4" cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % "1.4.4" % Provided cross CrossVersion.full
+      compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
+      "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
     ),
     // ***************
   )

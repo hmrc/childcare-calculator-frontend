@@ -65,13 +65,9 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
 
-    for (i <- 0 until totalChildren) {
+    for (i <- 0 until totalChildren; if answers.aboutYourChild(i).isDefined) {
       val (childName, childDob): (String, LocalDate) =
-        if (answers.aboutYourChild(i).isDefined) {
           (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
-        } else {
-          ("", null)
-        }
 
       val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
       val childcarePeriod: Option[PeriodEnum] = ccFrequencyToPeriod(answers.childcarePayFrequency(i))
