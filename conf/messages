@@ -2,6 +2,10 @@ date.day = Day
 date.month = Month
 date.year = Year
 
+ccc.error.InternalServerError500.title=Sorry, there is a problem with the service
+ccc.error.InternalServerError500.heading=Sorry, there is a problem with the service
+ccc.error.InternalServerError500.message=Try again later.
+
 error.boolean = Please give an answer
 error.invalid_date = Give a correct date
 error.date.day_blank = Enter a day

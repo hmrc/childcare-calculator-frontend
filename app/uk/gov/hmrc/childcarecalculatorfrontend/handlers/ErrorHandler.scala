@@ -38,5 +38,13 @@ class ErrorHandler @Inject()(
       Messages("global.error.InternalServerError500.title"),
       Messages("global.error.InternalServerError500.heading"),
       Messages("global.error.InternalServerError500.message"), appConfig)
+
+  override def internalServerErrorTemplate(implicit request: Request[_]): Html = {
+    uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template(
+      Messages("ccc.error.InternalServerError500.title"),
+      Messages("ccc.error.InternalServerError500.heading"),
+      Messages("ccc.error.InternalServerError500.message"),
+      appConfig)
+  }
 }
 
