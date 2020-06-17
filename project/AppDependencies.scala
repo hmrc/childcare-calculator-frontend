@@ -8,14 +8,14 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    hmrc        %% "simple-reactivemongo"               % "7.23.0-play-26",
-    hmrc        %% "govuk-template"                     % "5.48.0-play-26",
-    hmrc        %% "play-ui"                            % "8.8.0-play-26",
-    hmrc        %% "http-caching-client"                % "9.0.0-play-26",
+    hmrc        %% "simple-reactivemongo"               % "7.27.0-play-26",
+    hmrc        %% "govuk-template"                     % "5.55.0-play-26",
+    hmrc        %% "play-ui"                            % "8.11.0-play-26",
+    hmrc        %% "http-caching-client"                % "9.1.0-play-26",
     hmrc        %% "play-conditional-form-mapping"      % "1.2.0-play-26",
-    hmrc        %% "bootstrap-play-26"                  % "1.3.0",
-    hmrc        %% "play-language"                      % "4.2.0-play-26",
-    hmrc        %% "tax-year"                           % "1.0.0",
+    hmrc        %% "bootstrap-play-26"                  % "1.8.0",
+    hmrc        %% "play-language"                      % "4.3.0-play-26",
+    hmrc        %% "tax-year"                           % "1.1.0",
     typesafe    %% "play-json-joda"                     % "2.8.1"
   )
 
