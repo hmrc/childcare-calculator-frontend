@@ -61,46 +61,51 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     case _ => None
   }
 
+  private def childDOBFromChildData(answers: UserAnswers, index: Int): Option[(String, LocalDate)] = {
+      if (answers.aboutYourChild(index).isDefined) {
+        Some((answers.aboutYourChild(index).get.name, answers.aboutYourChild(index).get.dob))
+      } else {
+        None
+      }
+  }
+
   private def createChildren(answers: UserAnswers): List[Child] = {
     val totalChildren: Int = answers.noOfChildren.getOrElse(0)
     var childList: List[Child] = List()
 
     for (i <- 0 until totalChildren) {
-      val (childName, childDob): (String, LocalDate) =
-        if (answers.aboutYourChild(i).isDefined) {
-          (answers.aboutYourChild(i).get.name, answers.aboutYourChild(i).get.dob)
+      val childDOB: Option[(String, LocalDate)] = childDOBFromChildData(answers, i)
+
+      if(childDOB.nonEmpty) {
+        val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
+        val childcarePeriod: Option[PeriodEnum] = ccFrequencyToPeriod(answers.childcarePayFrequency(i))
+        val childcareCost = if (childcareAmt.isDefined) {
+          Some(ChildCareCost(childcareAmt, childcarePeriod))
         } else {
-          ("", null)
+          None
         }
 
-      val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
-      val childcarePeriod: Option[PeriodEnum] = ccFrequencyToPeriod(answers.childcarePayFrequency(i))
-      val childcareCost = if (childcareAmt.isDefined) {
-        Some(ChildCareCost(childcareAmt, childcarePeriod))
-      } else {
-        None
+        val childInEducation = answers.childApprovedEducation(i).getOrElse(false)
+        val childStartDate = answers.childStartEducation(i)
+        val childEducation = if (childInEducation) {
+          Some(Education(childInEducation, childStartDate))
+        } else {
+          None
+        }
+
+        val childIsBlindValue = childIsBlind(answers, totalChildren, i)
+
+        val child = Child(
+          id = i.toShort,
+          name = childDOB.get._1,
+          dob = childDOB.get._2,
+          disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childIsBlindValue),
+          childcareCost = childcareCost,
+          education = childEducation
+        )
+
+        childList ::= child
       }
-
-      val childInEducation = answers.childApprovedEducation(i).getOrElse(false)
-      val childStartDate = answers.childStartEducation(i)
-      val childEducation = if (childInEducation) {
-        Some(Education(childInEducation, childStartDate))
-      } else {
-        None
-      }
-
-      val childIsBlindValue = childIsBlind(answers, totalChildren, i)
-
-      val child = Child(
-        id = i.toShort,
-        name = childName,
-        dob = childDob,
-        disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childIsBlindValue),
-        childcareCost = childcareCost,
-        education = childEducation
-      )
-
-      childList ::= child
     }
 
     childList.sortWith(_.id < _.id)
