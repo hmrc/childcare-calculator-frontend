@@ -8,15 +8,15 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    hmrc        %% "simple-reactivemongo"               % "7.23.0-play-26",
-    hmrc        %% "govuk-template"                     % "5.48.0-play-26",
-    hmrc        %% "play-ui"                            % "8.8.0-play-26",
-    hmrc        %% "http-caching-client"                % "9.0.0-play-26",
+    hmrc        %% "simple-reactivemongo"               % "7.29.0-play-26",
+    hmrc        %% "govuk-template"                     % "5.55.0-play-26",
+    hmrc        %% "play-ui"                            % "8.11.0-play-26",
+    hmrc        %% "http-caching-client"                % "9.1.0-play-26",
     hmrc        %% "play-conditional-form-mapping"      % "1.2.0-play-26",
-    hmrc        %% "bootstrap-play-26"                  % "1.3.0",
-    hmrc        %% "play-language"                      % "4.2.0-play-26",
-    hmrc        %% "tax-year"                           % "1.0.0",
-    typesafe    %% "play-json-joda"                     % "2.8.1"
+    hmrc        %% "bootstrap-play-26"                  % "1.11.0",
+    hmrc        %% "play-language"                      % "4.3.0-play-26",
+    hmrc        %% "tax-year"                           % "1.1.0",
+    typesafe    %% "play-json-joda"                     % "2.9.0"
   )
 
   trait TestDependencies {
@@ -31,9 +31,9 @@ object AppDependencies {
         "org.scalatest"             %% "scalatest"                % "3.0.8"                 % scope,
         "org.scalatestplus.play"    %% "scalatestplus-play"       % "3.1.3"                 % scope,
         "org.pegdown"               % "pegdown"                   % "1.6.0"                 % scope,
-        "org.jsoup"                 % "jsoup"                     % "1.12.1"                % scope,
+        "org.jsoup"                 % "jsoup"                     % "1.13.1"                % scope,
         typesafe                    %% "play-test"                % PlayVersion.current     % scope,
-        "org.mockito"               % "mockito-core"              % "3.2.4"                 % scope,
+        "org.mockito"               % "mockito-core"              % "3.3.3"                 % scope,
         "org.scalacheck"            %% "scalacheck"               % "1.14.3"                % scope
       )
     }.test
