@@ -10,7 +10,7 @@ object AppDependencies {
     ws,
     hmrc        %% "simple-reactivemongo"               % "7.30.0-play-26",
     hmrc        %% "govuk-template"                     % "5.55.0-play-26",
-    hmrc        %% "play-ui"                            % "8.11.0-play-26",
+    hmrc        %% "play-ui"                            % "8.12.0-play-26",
     hmrc        %% "http-caching-client"                % "9.1.0-play-26",
     hmrc        %% "play-conditional-form-mapping"      % "1.2.0-play-26",
     hmrc        %% "bootstrap-play-26"                  % "1.11.0",
