@@ -20,7 +20,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 import javax.inject.{Inject, Singleton}
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.libs.json.Writes.StringWrites
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.{Configuration, Logger}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.indexes.{Index, IndexType}
@@ -73,13 +73,18 @@ class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
     val cmDocument = Json.toJson(DatedCacheMap(cm))
     val modifier = BSONDocument("$set" -> cmDocument.as[BSONValue])
 
-    collection.update(selector, modifier, upsert = true).map { lastError =>
+    collection.update.one(selector, modifier, true).map { lastError =>
       lastError.ok
     }
+
   }
 
   def get(id: String): Future[Option[CacheMap]] = {
-    collection.find(Json.obj("id" -> id)).cursor[CacheMap]().collect[Seq](Int.MaxValue, Cursor.FailOnError[Seq[CacheMap]]()).map { (cmSeq: Seq[CacheMap]) =>
+    collection.find(
+      selector = Json.obj("id" -> id),
+      projection = Option.empty[JsObject])
+    .cursor[CacheMap]()
+    .collect[Seq](Int.MaxValue, Cursor.FailOnError[Seq[CacheMap]]()).map { (cmSeq: Seq[CacheMap]) =>
 
     if (cmSeq.length != 1) {
         None

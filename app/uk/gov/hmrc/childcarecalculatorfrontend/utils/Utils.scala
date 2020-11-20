@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import org.joda.time.LocalDate
 import play.api.mvc.{AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import collection.JavaConverters._
 import play.api.Configuration
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -90,8 +91,11 @@ class Utils {
     * @return
     */
   def getLatestConfig(configuration: Configuration, configType: String, currentDate: LocalDate): Configuration = {
+
     val dateFormat = new SimpleDateFormat(ccDateFormat)
-    val configs: Seq[Configuration] = configuration.getConfigSeq(configType).getOrElse(Seq())
+
+    val configs: Seq[Configuration] = configuration.underlying.getConfigList(configType)
+      .asScala.map(Configuration(_))
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.get[String](ruleDateConfigParam).contains("default")
