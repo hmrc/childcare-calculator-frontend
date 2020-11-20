@@ -16,7 +16,7 @@ object AppDependencies {
     hmrc        %% "bootstrap-play-26"                  % "1.11.0",
     hmrc        %% "play-language"                      % "4.3.0-play-26",
     hmrc        %% "tax-year"                           % "1.1.0",
-    typesafe    %% "play-json-joda"                     % "2.9.0"
+    typesafe    %% "play-json-joda"                     % "2.9.1"
   )
 
   trait TestDependencies {

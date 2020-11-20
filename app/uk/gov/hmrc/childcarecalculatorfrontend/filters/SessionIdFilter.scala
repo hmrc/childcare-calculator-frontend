@@ -65,7 +65,7 @@ class SessionIdFilter (
           val cookies =
             Cookies.fromSetCookieHeader(result.header.headers.get(HeaderNames.SET_COOKIE))
 
-          val session = Session.decodeFromCookie(cookies.get(Session.COOKIE_NAME)).data
+          val session = Session.decodeFromCookie(cookies.get("PLAY_SESSION")).data
             .foldLeft(rh.session) {
               case (m, n) => m + n
             }
