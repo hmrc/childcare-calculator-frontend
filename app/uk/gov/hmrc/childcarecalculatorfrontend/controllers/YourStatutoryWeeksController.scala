@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, User
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

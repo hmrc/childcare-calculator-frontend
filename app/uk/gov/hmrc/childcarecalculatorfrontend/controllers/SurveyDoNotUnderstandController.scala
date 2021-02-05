@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-import play.api.Logger
+import play.api.Logger.logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -63,8 +63,8 @@ class SurveyDoNotUnderstandController @Inject()(
           val data = Map("reasonForNotUnderstanding" -> value)
 
           splunkSubmissionService.submit(data).map {
-            case SubmissionSuccessful => Logger.info("reasonForNotUnderstanding logged to Splunk")
-            case SubmissionFailed => Logger.warn("reasonForNotUnderstanding failed to log to Splunk")
+            case SubmissionSuccessful => logger.info("reasonForNotUnderstanding logged to Splunk")
+            case SubmissionFailed => logger.warn("reasonForNotUnderstanding failed to log to Splunk")
           }
 
           dataCacheConnector.save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value).map(cacheMap =>

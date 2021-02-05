@@ -21,7 +21,7 @@ import javax.inject.{Inject, Singleton}
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.libs.json.Writes.StringWrites
 import play.api.libs.json.{JsObject, JsValue, Json}
-import play.api.{Configuration, Logger}
+import play.api.Configuration
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.api.{Cursor, DefaultDB}
@@ -59,11 +59,11 @@ class ReactiveMongoRepository(config: Configuration, mongo: () => DefaultDB)
     collection.indexesManager.ensure(Index(Seq((field, IndexType.Ascending)), Some(indexName),
       options = BSONDocument(expireAfterSeconds -> ttl))) map {
       result => {
-        Logger.debug(s"set [$indexName] with value $ttl -> result : $result")
+        logger.debug(s"set [$indexName] with value $ttl -> result : $result")
         result
       }
     } recover {
-      case e => Logger.error("Failed to set TTL index", e)
+      case e => logger.error("Failed to set TTL index", e)
         false
     }
   }

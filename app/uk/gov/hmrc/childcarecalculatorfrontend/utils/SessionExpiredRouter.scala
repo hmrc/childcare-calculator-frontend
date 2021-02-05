@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.Logger
+import play.api.Logger.logger
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 object SessionExpiredRouter {
@@ -24,7 +24,8 @@ object SessionExpiredRouter {
 
     val isCacheMapAvailable = answers.fold("No")(c=>if (c.cacheMap == null) "No" else "")
 
-    Logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${isCacheMapAvailable} cachemap available - ${session}")
+
+    logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${isCacheMapAvailable} cachemap available - ${session}")
     routes.SessionExpiredController.onPageLoad()
   }
 }

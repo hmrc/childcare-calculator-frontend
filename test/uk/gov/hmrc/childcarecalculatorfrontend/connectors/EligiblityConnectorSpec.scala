@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, SchemeResults}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
+import org.scalatest.Matchers.convertToAnyShouldWrapper
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EligiblityConnectorSpec extends UnitSpec with MockitoSugar with ScalaFutures {
+class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutures {
   val mockHttp = mock[HttpClient]
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   implicit val request = FakeRequest()
@@ -39,7 +40,7 @@ class EligiblityConnectorSpec extends UnitSpec with MockitoSugar with ScalaFutur
 
   def mockConnector: EligibilityConnector = new EligibilityConnector(frontendAppConfig, mockHttp)
 
-  "Eligibility Connector" should {
+  "Eligibility Connector" must {
 
     "get eligibility result" in {
 

@@ -8,15 +8,15 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    hmrc        %% "simple-reactivemongo"               % "7.30.0-play-26",
-    hmrc        %% "govuk-template"                     % "5.55.0-play-26",
-    hmrc        %% "play-ui"                            % "8.12.0-play-26",
-    hmrc        %% "http-caching-client"                % "9.1.0-play-26",
-    hmrc        %% "play-conditional-form-mapping"      % "1.2.0-play-26",
-    hmrc        %% "bootstrap-play-26"                  % "1.11.0",
-    hmrc        %% "play-language"                      % "4.3.0-play-26",
-    hmrc        %% "tax-year"                           % "1.1.0",
-    typesafe    %% "play-json-joda"                     % "2.9.1"
+    "uk.gov.hmrc"        %% "bootstrap-frontend-play-27"         % "3.0.0",
+    "uk.gov.hmrc"        %% "simple-reactivemongo"               % "7.31.0-play-27",
+    "uk.gov.hmrc"        %% "govuk-template"                     % "5.61.0-play-27",
+    "uk.gov.hmrc"        %% "play-ui"                            % "8.20.0-play-27",
+    "uk.gov.hmrc"        %% "http-caching-client"                % "9.2.0-play-27",
+    "uk.gov.hmrc"        %% "play-conditional-form-mapping"      % "1.5.0-play-27",
+    "uk.gov.hmrc"        %% "play-language"                      % "4.10.0-play-27",
+    "uk.gov.hmrc"        %% "tax-year"                           % "1.1.0",
+    "com.typesafe.play"  %% "play-json-joda"                     % "2.6.14"
   )
 
   trait TestDependencies {
@@ -27,12 +27,11 @@ object AppDependencies {
   object Test {
     def apply(): Seq[ModuleID] = new TestDependencies {
       override lazy val test = Seq(
-        hmrc                        %% "hmrctest"                 % "3.9.0-play-26"         % scope,
-        "org.scalatest"             %% "scalatest"                % "3.0.8"                 % scope,
-        "org.scalatestplus.play"    %% "scalatestplus-play"       % "3.1.3"                 % scope,
+        "org.scalatest"             %% "scalatest"                % "3.0.9"                 % scope,
+        "org.scalatestplus.play"    %% "scalatestplus-play"       % "4.0.3"                 % scope,
         "org.pegdown"               % "pegdown"                   % "1.6.0"                 % scope,
         "org.jsoup"                 % "jsoup"                     % "1.13.1"                % scope,
-        typesafe                    %% "play-test"                % PlayVersion.current     % scope,
+        "com.typesafe.play"         %% "play-test"                % PlayVersion.current     % scope,
         "org.mockito"               % "mockito-core"              % "3.3.3"                 % scope,
         "org.scalacheck"            %% "scalacheck"               % "1.14.3"                % scope
       )
