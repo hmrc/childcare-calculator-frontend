@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
+import org.scalatest.Matchers.convertToAnyShouldWrapper
 
 class YourOtherIncomeAmountPYFormSpec extends FormSpec {
 

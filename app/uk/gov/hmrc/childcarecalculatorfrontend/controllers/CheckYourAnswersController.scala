@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CheckYourAnswersHelper
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.check_your_answers
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 class CheckYourAnswersController @Inject()(appConfig: FrontendAppConfig,
                                            mcc: MessagesControllerComponents,

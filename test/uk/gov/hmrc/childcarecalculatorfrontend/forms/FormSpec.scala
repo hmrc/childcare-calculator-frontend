@@ -20,9 +20,9 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.data.{Form, FormError}
 import play.api.inject.Injector
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
 
-trait FormSpec extends UnitSpec with GuiceOneAppPerSuite {
+trait FormSpec extends PlaySpec with GuiceOneAppPerSuite {
 
   def injector: Injector = app.injector
 
@@ -32,9 +32,9 @@ trait FormSpec extends UnitSpec with GuiceOneAppPerSuite {
     form.bind(data).fold(
       formWithErrors => {
         for (error <- expectedErrors) {
-          formWithErrors.errors should contain(error)
+          formWithErrors.errors must contain(error)
         }
-        formWithErrors.errors.size shouldBe expectedErrors.size
+        formWithErrors.errors.size mustBe expectedErrors.size
       },
       form => {
         fail("Expected a validation error when binding the form, but it was bound successfully.")

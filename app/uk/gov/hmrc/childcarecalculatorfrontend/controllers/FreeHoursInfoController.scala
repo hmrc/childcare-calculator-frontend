@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{NOTSURE, YES}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
                                         mcc: MessagesControllerComponents,

@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.areYouIn
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

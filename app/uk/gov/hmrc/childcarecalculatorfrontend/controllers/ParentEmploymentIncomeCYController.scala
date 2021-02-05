@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.parentEm
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

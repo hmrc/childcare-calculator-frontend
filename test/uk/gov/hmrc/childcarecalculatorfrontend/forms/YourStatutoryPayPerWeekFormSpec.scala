@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.scalatest.Matchers.convertToAnyShouldWrapper
+
 class YourStatutoryPayPerWeekFormSpec extends FormSpec {
 
   val statutoryType = "maternity"

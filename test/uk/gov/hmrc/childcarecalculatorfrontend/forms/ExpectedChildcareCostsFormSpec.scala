@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
+import org.scalatest.Matchers.convertToAnyShouldWrapper
 
 class ExpectedChildcareCostsFormSpec extends FormSpec {
 

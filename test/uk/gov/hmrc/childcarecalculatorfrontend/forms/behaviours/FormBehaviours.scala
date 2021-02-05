@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours
 import org.scalatest.{Assertion, OptionValues}
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
+import org.scalatest.Matchers.convertToAnyShouldWrapper
 
 trait FormBehaviours extends FormSpec with OptionValues {
 

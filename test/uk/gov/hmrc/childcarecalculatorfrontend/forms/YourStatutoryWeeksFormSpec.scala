@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
+import org.scalatest.Matchers.convertToAnyShouldWrapper
 
 class YourStatutoryWeeksFormSpec extends FormSpec {
 

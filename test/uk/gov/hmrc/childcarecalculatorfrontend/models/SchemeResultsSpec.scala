@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
 
-class SchemeResultsSpec extends UnitSpec {
+class SchemeResultsSpec extends PlaySpec {
 
   "SchemeResults" should {
     " throw an exception" when {

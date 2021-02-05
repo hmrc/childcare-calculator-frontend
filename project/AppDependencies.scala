@@ -8,7 +8,7 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    "uk.gov.hmrc"        %% "bootstrap-frontend-play-27"         % "3.0.0",
+    "uk.gov.hmrc"        %% "bootstrap-frontend-play-27"         % "3.3.0",
     "uk.gov.hmrc"        %% "simple-reactivemongo"               % "7.31.0-play-27",
     "uk.gov.hmrc"        %% "govuk-template"                     % "5.61.0-play-27",
     "uk.gov.hmrc"        %% "play-ui"                            % "8.20.0-play-27",
@@ -16,7 +16,7 @@ object AppDependencies {
     "uk.gov.hmrc"        %% "play-conditional-form-mapping"      % "1.5.0-play-27",
     "uk.gov.hmrc"        %% "play-language"                      % "4.10.0-play-27",
     "uk.gov.hmrc"        %% "tax-year"                           % "1.1.0",
-    "com.typesafe.play"  %% "play-json-joda"                     % "2.6.14"
+    "com.typesafe.play"  %% "play-json-joda"                     % "2.7.4"
   )
 
   trait TestDependencies {
@@ -32,7 +32,7 @@ object AppDependencies {
         "org.pegdown"               % "pegdown"                   % "1.6.0"                 % scope,
         "org.jsoup"                 % "jsoup"                     % "1.13.1"                % scope,
         "com.typesafe.play"         %% "play-test"                % PlayVersion.current     % scope,
-        "org.mockito"               % "mockito-core"              % "3.3.3"                 % scope,
+        "org.mockito"               % "mockito-core"              % "3.7.7"                 % scope,
         "org.scalacheck"            %% "scalacheck"               % "1.14.3"                % scope
       )
     }.test
