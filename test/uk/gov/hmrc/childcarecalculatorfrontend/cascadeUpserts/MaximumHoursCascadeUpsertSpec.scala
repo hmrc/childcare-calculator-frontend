@@ -36,8 +36,8 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   lazy val under18: String = AgeEnum.UNDER18.toString
   lazy val eighteenToTwenty: String = AgeEnum.EIGHTEENTOTWENTY.toString
-  lazy val twentyToTwentyFour: String = AgeEnum.TWENTYONETOTWENTYFOUR.toString
-  lazy val overTwentyFive: String = AgeEnum.OVERTWENTYFOUR.toString
+  lazy val twentyToTwentyFour: String = AgeEnum.TWENTYONETOTWENTYTWO.toString
+  lazy val overTwentyFive: String = AgeEnum.OVERTWENTYTWO.toString
 
 
   "saving the doYouLiveWithPartner" must {

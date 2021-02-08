@@ -109,8 +109,8 @@ object AgeEnum extends Enumeration {
 
   val UNDER18 = Value("UNDER18")
   val EIGHTEENTOTWENTY = Value("EIGHTEENTOTWENTY")
-  val TWENTYONETOTWENTYFOUR = Value("TWENTYONETOTWENTYFOUR")
-  val OVERTWENTYFOUR = Value("OVERTWENTYFOUR")
+  val TWENTYONETOTWENTYTWO= Value("TWENTYONETOTWENTYTWO")
+  val OVERTWENTYTWO = Value("OVERTWENTYTWO")
 
   val enumReads: Reads[AgeEnum] = EnumUtils.enumReads(AgeEnum)
   val enumWrites: Writes[AgeEnum] = EnumUtils.enumWrites

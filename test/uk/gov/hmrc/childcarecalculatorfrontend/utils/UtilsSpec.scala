@@ -195,27 +195,27 @@ class UtilsSpec extends SpecBase {
       }
 
       "return the 2019 earnings value for 21-24 year old on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("TWENTYONETOTWENTYFOUR")) mustBe 123
+        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("TWENTYONETOTWENTYTWO")) mustBe 123
       }
 
       "return the 2019 earnings value for 21-24 year old on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("TWENTYONETOTWENTYFOUR")) mustBe 123
+        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("TWENTYONETOTWENTYTWO")) mustBe 123
       }
 
       "return the 2018 earnings value for 21-24 year old on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("TWENTYONETOTWENTYFOUR")) mustBe 118
+        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("TWENTYONETOTWENTYTWO")) mustBe 118
       }
 
       "return the 2019 earnings value for over 24 year old on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("OVERTWENTYFOUR")) mustBe 131
+        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("OVERTWENTYTWO")) mustBe 131
       }
 
       "return the 2019 earnings value for over 24 year old on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("OVERTWENTYFOUR")) mustBe 131
+        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("OVERTWENTYTWO")) mustBe 131
       }
 
       "return the 2018 earnings value for over 24 old on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("OVERTWENTYFOUR")) mustBe 125
+        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("OVERTWENTYTWO")) mustBe 125
       }
     }
   }
