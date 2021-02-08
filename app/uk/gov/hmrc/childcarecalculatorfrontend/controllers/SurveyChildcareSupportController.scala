@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-import play.api.Logger
+import play.api.Logger.logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -31,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyCh
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -63,8 +63,8 @@ class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
           val data = Map("understandChildcareSupport" -> s"$value")
 
           splunkSubmissionService.submit(data) map {
-            case SubmissionSuccessful => Logger.info("understandChildcareSupport logged to Splunk")
-            case SubmissionFailed => Logger.warn("understandChildcareSupport failed to log to Splunk")
+            case SubmissionSuccessful => logger.info("understandChildcareSupport logged to Splunk")
+            case SubmissionFailed => logger.warn("understandChildcareSupport failed to log to Splunk")
           }
 
           dataCacheConnector.save[Boolean](request.sessionId, SurveyChildcareSupportId.toString, value).map(cacheMap =>

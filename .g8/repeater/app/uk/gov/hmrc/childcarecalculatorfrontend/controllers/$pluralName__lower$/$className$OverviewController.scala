@@ -9,7 +9,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{$className$OverviewI
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.$className$OverviewViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.$pluralName;format="lower"$.$className;format="decap"$Overview
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 class $className$OverviewController @Inject()(val appConfig: FrontendAppConfig,
                                           val messagesApi: MessagesApi,

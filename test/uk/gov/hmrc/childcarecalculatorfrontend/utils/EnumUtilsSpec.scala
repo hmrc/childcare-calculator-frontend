@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatest.Matchers.convertToAnyShouldWrapper
+import org.scalatestplus.play.PlaySpec
 
-class EnumUtilsSpec extends UnitSpec {
+class EnumUtilsSpec extends PlaySpec {
 
-  "EnumerationUtil" should {
+  "EnumerationUtil" must {
 
     "return a JsError when it cannot parse json object" in {
       val json = Json.parse(
