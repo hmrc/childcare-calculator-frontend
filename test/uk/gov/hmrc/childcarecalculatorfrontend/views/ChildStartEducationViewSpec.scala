@@ -27,12 +27,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 class ChildStartEducationViewSpec extends DateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "childStartEducation"
-
+  val view = application.injector.instanceOf[childStartEducation]
   val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
 
-  def createView = () => childStartEducation(frontendAppConfig, ChildStartEducationForm(validBirthday), NormalMode, 0, "Foo")(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, ChildStartEducationForm(validBirthday), NormalMode, 0, "Foo")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[LocalDate]) => childStartEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
 
   val form = ChildStartEducationForm(validBirthday)
 

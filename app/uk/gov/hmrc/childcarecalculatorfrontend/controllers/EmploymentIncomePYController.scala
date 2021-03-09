@@ -40,7 +40,8 @@ class EmploymentIncomePYController @Inject()(appConfig: FrontendAppConfig,
                                              getData: DataRetrievalAction,
                                              requireData: DataRequiredAction,
                                              form: EmploymentIncomePYForm,
-                                             taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
+                                             taxYearInfo: TaxYearInfo,
+                                             employmentIncomePY: employmentIncomePY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

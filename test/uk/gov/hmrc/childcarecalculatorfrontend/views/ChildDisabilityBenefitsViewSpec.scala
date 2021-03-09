@@ -27,9 +27,11 @@ class ChildDisabilityBenefitsViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childDisabilityBenefits"
 
-  def createView = () => childDisabilityBenefits(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
+  val view = application.injector.instanceOf[childDisabilityBenefits]
 
-  def createViewUsingForm = (form: Form[Boolean]) => childDisabilityBenefits(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildDisabilityBenefits view" must {
 

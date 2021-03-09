@@ -32,7 +32,8 @@ class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
                                            requireData: DataRequiredAction,
                                            tfc: TaxFreeChildcare,
                                            tc: TaxCredits,
-                                           esc: EmploymentSupportedChildcare
+                                           esc: EmploymentSupportedChildcare,
+                                           maxFreeHoursInfo: maxFreeHoursInfo
                                           ) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {

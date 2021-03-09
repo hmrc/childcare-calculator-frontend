@@ -39,7 +39,8 @@ class WhoPaidIntoPensionPYController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        whoPaidIntoPensionPY: whoPaidIntoPensionPY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

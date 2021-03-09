@@ -33,13 +33,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class YourMaximumEarningsControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[yourMaximumEarnings]
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YourMaximumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = yourMaximumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "YourMaximumEarnings Controller" must {
 

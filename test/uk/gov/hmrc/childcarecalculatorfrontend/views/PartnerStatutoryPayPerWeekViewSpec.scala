@@ -27,11 +27,13 @@ class PartnerStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayPerWeek"
 
+  val view = app.injector.instanceOf[partnerStatutoryPayPerWeek]
+
   val statutoryType = "maternity"
 
-  def createView = () => partnerStatutoryPayPerWeek(frontendAppConfig, PartnerStatutoryPayPerWeekForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, PartnerStatutoryPayPerWeekForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => partnerStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   val form = PartnerStatutoryPayPerWeekForm(statutoryType)
 

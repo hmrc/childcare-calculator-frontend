@@ -32,13 +32,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhoPaysIntoPensionControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[whoPaysIntoPension]
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhoPaysIntoPensionController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[String] = WhoPaysIntoPensionForm()) = whoPaysIntoPension(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = WhoPaysIntoPensionForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhoPaysIntoPension Controller" must {
 

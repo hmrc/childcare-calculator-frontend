@@ -39,7 +39,8 @@ class PartnerWorkHoursController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form : PartnerWorkHoursForm) extends FrontendController(mcc) with I18nSupport {
+                                        form : PartnerWorkHoursForm,
+                                        partnerWorkHours: partnerWorkHours) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

@@ -32,13 +32,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class YourStatutoryPayTypeControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[yourStatutoryPayType]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YourStatutoryPayTypeController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[_] = YourStatutoryPayTypeForm()) = yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = YourStatutoryPayTypeForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "YourStatutoryPayType Controller" must {
 

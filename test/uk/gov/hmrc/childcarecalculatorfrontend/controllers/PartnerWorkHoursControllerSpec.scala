@@ -32,14 +32,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[partnerWorkHours]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
   val partnerWorkHoursForm = new PartnerWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerWorkHoursController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new PartnerWorkHoursForm(frontendAppConfig))
+      dataRetrievalAction, new DataRequiredAction, new PartnerWorkHoursForm(frontendAppConfig), view)
 
-  def viewAsString(form: Form[BigDecimal] = partnerWorkHoursForm) = partnerWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = partnerWorkHoursForm) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 12
 

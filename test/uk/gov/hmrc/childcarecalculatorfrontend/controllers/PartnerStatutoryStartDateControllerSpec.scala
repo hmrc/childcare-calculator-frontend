@@ -35,6 +35,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[partnerStatutoryStartDate]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString -> JsString(statutoryType.toString))
@@ -48,10 +49,10 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[LocalDate] = PartnerStatutoryStartDateForm(statutoryType)) =
-    partnerStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   "PartnerStatutoryStartDate Controller" must {
 

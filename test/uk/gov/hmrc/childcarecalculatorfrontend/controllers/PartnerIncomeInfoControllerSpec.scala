@@ -30,6 +30,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[partnerIncomeInfo]
   val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
@@ -40,7 +41,8 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       dataRetrievalAction,
       new FakeNavigator(onwardRoute),
       new DataRequiredAction,
-      taxYearInfo)
+      taxYearInfo,
+      view)
 
   "PartnerIncomeInfo Controller" must {
     "return OK and the correct view for a GET" in {
@@ -55,7 +57,7 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        partnerIncomeInfo(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode), taxYearInfo)(fakeRequest, messages).toString
+        view(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode), taxYearInfo)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

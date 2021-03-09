@@ -36,10 +36,11 @@ import scala.concurrent.Future
 
 class AreYouInPaidWorkController @Inject()(appConfig: FrontendAppConfig,
                                            mcc: MessagesControllerComponents,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                           dataCacheConnector: DataCacheConnector,
+                                           navigator: Navigator,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           areYouInPaidWork: areYouInPaidWork) extends FrontendController(mcc) with I18nSupport {
 
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {

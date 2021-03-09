@@ -43,7 +43,8 @@ class ChildStartEducationController @Inject() (
                                                 dataCacheConnector: DataCacheConnector,
                                                 navigator: Navigator,
                                                 getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction
+                                                requireData: DataRequiredAction,
+                                                childStartEducation: childStartEducation
                                              ) extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =

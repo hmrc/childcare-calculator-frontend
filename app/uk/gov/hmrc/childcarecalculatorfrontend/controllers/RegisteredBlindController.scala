@@ -36,11 +36,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
-                                         mcc: MessagesControllerComponents,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                          mcc: MessagesControllerComponents,
+                                          dataCacheConnector: DataCacheConnector,
+                                          navigator: Navigator,
+                                          getData: DataRetrievalAction,
+                                          requireData: DataRequiredAction,
+                                          childRegisteredBlind: childRegisteredBlind,
+                                          registeredBlind: registeredBlind) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>

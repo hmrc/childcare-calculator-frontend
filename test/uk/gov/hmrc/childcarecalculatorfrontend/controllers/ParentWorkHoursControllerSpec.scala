@@ -32,15 +32,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ParentWorkHoursControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[parentWorkHours]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val parentWorkHoursForm = new ParentWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentWorkHoursController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new ParentWorkHoursForm(frontendAppConfig))
+      dataRetrievalAction, new DataRequiredAction, new ParentWorkHoursForm(frontendAppConfig), view)
 
-  def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = parentWorkHours(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 12
 

@@ -39,7 +39,8 @@ class WhoGetsBenefitsController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        whoGetsBenefits: whoGetsBenefits) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

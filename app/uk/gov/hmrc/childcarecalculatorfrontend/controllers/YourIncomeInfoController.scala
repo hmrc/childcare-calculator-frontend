@@ -30,7 +30,8 @@ class YourIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
                                          mcc: MessagesControllerComponents,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         taxYearInfo: TaxYearInfo) extends FrontendController(mcc)with I18nSupport {
+                                         taxYearInfo: TaxYearInfo,
+                                         yourIncomeInfo: yourIncomeInfo) extends FrontendController(mcc)with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
     Ok(yourIncomeInfo(appConfig, taxYearInfo))

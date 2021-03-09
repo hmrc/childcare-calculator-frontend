@@ -34,14 +34,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[childApprovedEducation]
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ChildApprovedEducationController =
     new ChildApprovedEducationController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()): String =
-    childApprovedEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
 
   private val testDate: LocalDate = LocalDate.parse("2019-01-01")
 

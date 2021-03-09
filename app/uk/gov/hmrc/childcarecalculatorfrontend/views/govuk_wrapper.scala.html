@@ -15,6 +15,19 @@
  *@
 
 @import play.twirl.api.HtmlFormat
+@import uk.gov.hmrc.play.views.html.layouts._
+@import views.html.layouts.GovUkTemplate
+
+@this(govuk_template: GovUkTemplate,
+        headUi: Head,
+        uiHead: HeadWithTrackingConsent,
+        header_nav: HeaderNav,
+        footer: Footer,
+        uiBetaBanner: BetaBanner,
+        uiServiceInfo: ServiceInfo,
+        main_content_header: MainContentHeader,
+        main_content: MainContent
+)
 
 @(appConfig: uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig,
         title: String,
@@ -34,30 +47,21 @@
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
 
 @head = {
-    @if(appConfig.googleTagManagerId != "N/A") {
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','@appConfig.googleTagManagerId');
-        </script>
-    }
-    @uiLayouts.head(
+    @headUi(
         linkElem = None,
         headScripts = None)
         <meta name="format-detection" content="telephone=no" />
         <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/childcarecalculatorfrontend-app.css")' />
 }
 
+@uiHead(
+    linkElem = None,
+    headScripts = None)
+
 @headerNavLinks = {}
 
 @insideHeader = {
-    @if(appConfig.googleTagManagerId != "N/A") {
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=@appConfig.googleTagManagerId" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    }
-    @uiLayouts.header_nav(
+    @header_nav(
         navTitle = Some(messages("site.service_name")),
         navTitleLink = None,
         showBetaLink = false,
@@ -67,9 +71,9 @@
 @afterHeader = {}
 
 @bodyEnd = {
-    @uiLayouts.footer(
-        analyticsToken = Some(appConfig.analyticsToken),
-        analyticsHost = appConfig.analyticsHost,
+    @footer(
+        analyticsToken = None,
+        analyticsHost = "",
         ssoUrl = None,
         scriptElem = scriptElem,
         gaCalls = gaCalls)
@@ -98,22 +102,22 @@
 
 @betaBanner = {
     @if(urBanner) {
-        <div id="urBanner" class="ur-panel" >
-            <div class="grid-row">
-                <div class="column-two-thirds">
-                    <p class="bold-small">@messages("urBanner.title")</p>
-                    <p><a target="_blank" rel="external" data-journey-click="link - click :@messages("urBanner.title"):@messages("urBanner.message")"
+    <div id="urBanner" class="ur-panel" >
+        <div class="grid-row">
+            <div class="column-two-thirds">
+                <p class="bold-small">@messages("urBanner.title")</p>
+                <p><a target="_blank" rel="external" data-journey-click="link - click :@messages("urBanner.title"):@messages("urBanner.message")"
                     href=@messages("urBanner.message.link")>@messages("urBanner.message")
-                        <span class="visually-hidden">@messages("site.opens.new.window ")</span></a></p>
-                </div>
-                <div class="column-one-third f-right">
-                    <p id="urBannerLinkNo">@messages("urBanner.message.noThanks.link")</p>
-                </div>
+                    <span class="visually-hidden">@messages("site.opens.new.window ")</span></a></p>
+            </div>
+            <div class="column-one-third f-right">
+                <p id="urBannerLinkNo">@messages("urBanner.message.noThanks.link")</p>
             </div>
         </div>
+    </div>
     }
 
-    @uiLayouts.betaBanner(
+    @uiBetaBanner(
         userLoggedIn = false,
         betaFeedbackUrl = appConfig.betaFeedbackUrl,
         betaFeedbackUnauthenticatedUrl = appConfig.betaFeedbackUnauthenticatedUrl,
@@ -122,12 +126,11 @@
 }
 
 
-@serviceInfo = {
-    @uiLayouts.serviceInfo(
-        betaBanner = betaBanner,
-        includeGridWrapper = false,
-        serviceInfoContent = Some(serviceInfoContent),
-        includeHMRCBranding = false)
+@serviceInfo() = {
+    @uiServiceInfo(betaBanner = betaBanner,
+                   includeGridWrapper = false,
+                   serviceInfoContent = Some(serviceInfoContent),
+                   includeHMRCBranding = false)
 }
 
 @mainContentHeader = {
@@ -139,13 +142,13 @@
     }
 
     @if(contentHeader.isDefined) {
-        @uiLayouts.main_content_header(contentHeader = contentHeader.get)
+        @main_content_header(contentHeader = contentHeader.get)
     }
 }
 
 
 @content = {
-    @uiLayouts.main_content(
+    @main_content(
         article = mainContent,
         mainClass = mainClass,
         mainDataAttributes = mainDataAttributes,
@@ -154,4 +157,4 @@
         sidebar = sidebar)
 }
 
-@hmrcGovUkTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links()), true)(content)
+@govuk_template(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links()), true)(content)

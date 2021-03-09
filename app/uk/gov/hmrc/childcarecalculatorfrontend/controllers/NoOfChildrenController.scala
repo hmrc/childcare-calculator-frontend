@@ -40,7 +40,8 @@ class NoOfChildrenController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: NoOfChildrenForm) extends FrontendController(mcc) with I18nSupport {
+                                        form: NoOfChildrenForm,
+                                        noOfChildren: noOfChildren) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

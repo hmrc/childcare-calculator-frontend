@@ -27,12 +27,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 class ChildAgedThreeOrFourViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childAgedThreeOrFour"
+  val view = application.injector.instanceOf[childAgedThreeOrFour]
 
   val location = Location.ENGLAND
 
-  def createView = () => childAgedThreeOrFour(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => childAgedThreeOrFour(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
 
   "ChildAgedThreeOrFour view" must {
 

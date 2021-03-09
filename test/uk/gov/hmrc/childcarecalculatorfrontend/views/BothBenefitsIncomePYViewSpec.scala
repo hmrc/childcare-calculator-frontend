@@ -26,10 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothBenefitsIncomePY
 class BothBenefitsIncomePYViewSpec extends QuestionViewBehaviours[BothBenefitsIncomePY] {
 
   val messageKeyPrefix = "bothBenefitsIncomePY"
+  val view = application.injector.instanceOf[bothBenefitsIncomePY]
 
-  def createView = () => bothBenefitsIncomePY(frontendAppConfig, BothBenefitsIncomePYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BothBenefitsIncomePYForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BothBenefitsIncomePY]) => bothBenefitsIncomePY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BothBenefitsIncomePY]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   override val form = BothBenefitsIncomePYForm()
 

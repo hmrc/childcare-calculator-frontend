@@ -32,13 +32,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[surveyChildcareSupport]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new SurveyChildcareSupportController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService)
+      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = surveyChildcareSupport(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form)(fakeRequest, messages).toString
 
   "SurveyChildcareSupport Controller" must {
 

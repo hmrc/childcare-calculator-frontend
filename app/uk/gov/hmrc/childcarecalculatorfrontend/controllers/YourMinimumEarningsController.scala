@@ -37,12 +37,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class YourMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
-                                         mcc: MessagesControllerComponents,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         utils: Utils) extends FrontendController(mcc) with I18nSupport {
+                                              mcc: MessagesControllerComponents,
+                                              dataCacheConnector: DataCacheConnector,
+                                              navigator: Navigator,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              utils: Utils,
+                                              yourMinimumEarnings: yourMinimumEarnings) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

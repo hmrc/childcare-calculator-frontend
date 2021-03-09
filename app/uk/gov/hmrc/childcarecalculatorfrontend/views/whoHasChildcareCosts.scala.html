@@ -19,6 +19,8 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.play.views.html._
 
+@this(main_template: main_template)
+
 @(appConfig: FrontendAppConfig, form: Form[_], mode: Mode, inputs: Map[String, String])(implicit request: Request[_], messages: Messages)
 
 @main_template(

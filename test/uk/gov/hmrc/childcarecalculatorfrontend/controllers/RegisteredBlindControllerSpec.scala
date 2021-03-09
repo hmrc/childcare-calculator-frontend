@@ -34,17 +34,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
+  val view1 = application.injector.instanceOf[registeredBlind]
+  val view2 = application.injector.instanceOf[childRegisteredBlind]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new RegisteredBlindController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view2, view1)
 
   def singleViewAsString(form: Form[Boolean] = BooleanForm()) =
-    childRegisteredBlind(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
+    view2(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    registeredBlind(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+    view1(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   def requiredData(number: Int): Map[String, JsValue] = Map(
     NoOfChildrenId.toString -> JsNumber(number),

@@ -17,30 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.handlers
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.Request
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 @Singleton
 class ErrorHandler @Inject()(
                               appConfig: FrontendAppConfig,
-                              val messagesApi: MessagesApi
+                              val messagesApi: MessagesApi,
+                              errorTemplate: error_template
                             ) extends FrontendErrorHandler with I18nSupport {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit rh: Request[_]): Html =
-    uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template(pageTitle, heading, message, appConfig)
+    errorTemplate(pageTitle, heading, message, appConfig)
 
   override def badRequestTemplate(implicit request: Request[_]): Html =
-    uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template(
+    errorTemplate(
       Messages("global.error.InternalServerError500.title"),
       Messages("global.error.InternalServerError500.heading"),
       Messages("global.error.InternalServerError500.message"), appConfig)
 
   override def internalServerErrorTemplate(implicit request: Request[_]): Html = {
-    uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template(
+    errorTemplate(
       Messages("ccc.error.InternalServerError500.title"),
       Messages("ccc.error.InternalServerError500.heading"),
       Messages("ccc.error.InternalServerError500.message"),

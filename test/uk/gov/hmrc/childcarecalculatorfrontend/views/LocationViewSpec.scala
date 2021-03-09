@@ -24,11 +24,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
 class LocationViewSpec extends ViewBehaviours {
 
+  val view = app.injector.instanceOf[location]
   val messageKeyPrefix = "location"
 
-  def createView = () => location(frontendAppConfig, LocationForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, LocationForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[_]) => location(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[_]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "Location view" must {
     behave like normalPage(createView, messageKeyPrefix, "guidance")

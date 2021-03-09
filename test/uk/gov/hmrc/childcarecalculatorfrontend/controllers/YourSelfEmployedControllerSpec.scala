@@ -33,13 +33,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class YourSelfEmployedControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[yourSelfEmployed]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YourSelfEmployedController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = yourSelfEmployed(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "YourSelfEmployed Controller" must {
 

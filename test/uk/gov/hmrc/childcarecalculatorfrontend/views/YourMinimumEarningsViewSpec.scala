@@ -26,13 +26,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 
 class YourMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
+  val view = app.injector.instanceOf[yourMinimumEarnings]
   val messageKeyPrefix = "yourMinimumEarnings"
 
-  def createView = () => yourMinimumEarnings(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => yourMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages)
 
-  def createViewWithAmount = (amount: BigDecimal) => yourMinimumEarnings(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
+  def createViewWithAmount = (amount: BigDecimal) => view(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
 
   "YourMinimumEarnings view" must {
 

@@ -27,6 +27,7 @@ import scala.util.Random
 
 class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBehaviours[DisabilityBenefits.Value] {
 
+  val view = app.injector.instanceOf[whichDisabilityBenefits]
   val messageKeyPrefix = "whichDisabilityBenefits"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
@@ -47,7 +48,7 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
                   index: Int,
                   name: String
                 ): Html =
-    whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang)
+    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang)
 
   lazy val cases: Seq[(Int, String)] = {
     val names: Stream[String] = Stream.continually(Random.alphanumeric.take(5).mkString)

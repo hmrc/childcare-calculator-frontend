@@ -29,12 +29,13 @@ import scala.collection.immutable.ListMap
 class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
+  val view = application.injector.instanceOf[bothGetSameIncomePreviousYear]
 
   val messageKeyPrefix = "bothGetSameIncomePreviousYear"
 
-  def createView = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "BothGetSameIncomePreviousYear view" must {
 
@@ -45,8 +46,8 @@ class BothGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours {
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
 
     "contain your income info" in {
-      val view = () => bothGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(ListMap("Income" -> "£250")))(fakeRequest, messages)
-      val doc = asDocument(view())
+      val view1 = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(ListMap("Income" -> "£250")))(fakeRequest, messages)
+      val doc = asDocument(view1())
       assertContainsText(doc, "£250")
     }
 

@@ -26,10 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 class AreYouInPaidWorkViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "areYouInPaidWork"
+  val view = application.injector.instanceOf[areYouInPaidWork]
 
-  def createView = () => areYouInPaidWork(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => areYouInPaidWork(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "AreYouInPaidWork view" must {
 

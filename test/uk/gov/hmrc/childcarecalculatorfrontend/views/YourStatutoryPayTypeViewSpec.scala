@@ -24,13 +24,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayType
 
 class YourStatutoryPayTypeViewSpec extends ViewBehaviours {
 
+  val view = app.injector.instanceOf[yourStatutoryPayType]
   val messageKeyPrefix = "yourStatutoryPayType"
 
   val statutoryType = StatutoryPayTypeEnum.MATERNITY
 
-  def createView = () => yourStatutoryPayType(frontendAppConfig, YourStatutoryPayTypeForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, YourStatutoryPayTypeForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[_]) => yourStatutoryPayType(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[_]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "YourStatutoryPayType view" must {
     behave like normalPage(createView, messageKeyPrefix)

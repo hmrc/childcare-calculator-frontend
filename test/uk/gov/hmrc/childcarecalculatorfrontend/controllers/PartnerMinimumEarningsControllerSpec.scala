@@ -36,15 +36,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar{
 
+  val view = application.injector.instanceOf[partnerMinimumEarnings]
   val mockUtils = mock[Utils]
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, mockUtils)
+      dataRetrievalAction, new DataRequiredAction, mockUtils, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerMinimumEarnings(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
 
   "PartnerMinimumEarnings Controller" must {
 

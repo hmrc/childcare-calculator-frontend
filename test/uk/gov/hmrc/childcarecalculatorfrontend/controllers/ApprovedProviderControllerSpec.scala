@@ -32,13 +32,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ApprovedProviderControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[approvedProvider]
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ApprovedProviderController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[String] = ApprovedProviderForm()) = approvedProvider(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = ApprovedProviderForm()) = view(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages).toString
 
   "ApprovedProvider Controller" must {
 
@@ -64,7 +66,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages).toString
     }
 
     "populate the view correctly on a GET when we have selected YES on childcare costs" in {
@@ -73,7 +75,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages).toString
     }
 
     "redirect to the next page when valid data is submitted" in {

@@ -34,6 +34,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[employmentIncomeCY]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val taxYearInfo = new TaxYearInfo
@@ -48,9 +49,10 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       dataRetrievalAction,
       new DataRequiredAction,
       new EmploymentIncomeCYForm(frontendAppConfig),
-      taxYearInfo)
+      taxYearInfo,
+      view)
 
-  def viewAsString(form: Form[EmploymentIncomeCY] = form) = employmentIncomeCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[EmploymentIncomeCY] = form) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "EmploymentIncomeCY Controller" must {
 

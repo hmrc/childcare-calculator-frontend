@@ -32,13 +32,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[whichBenefitsYouGet]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhichBenefitsYouGetController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = whichBenefitsYouGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang).toString
 
   "WhichBenefitsYouGet Controller" must {
 

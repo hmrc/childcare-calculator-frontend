@@ -25,9 +25,11 @@ class SurveyDoNotUnderstandViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "surveyDoNotUnderstand"
 
-  def createView = () => surveyDoNotUnderstand(frontendAppConfig, SurveyDoNotUnderstandForm())(fakeRequest, messages)
+  val view = app.injector.instanceOf[surveyDoNotUnderstand]
 
-  def createViewUsingForm = (form: Form[String]) => surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, SurveyDoNotUnderstandForm())(fakeRequest, messages)
+
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   val form = SurveyDoNotUnderstandForm()
 

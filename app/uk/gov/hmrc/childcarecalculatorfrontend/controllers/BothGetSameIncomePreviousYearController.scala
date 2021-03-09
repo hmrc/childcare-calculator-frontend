@@ -39,7 +39,9 @@ class BothGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCo
                                                         navigator: Navigator,
                                                         getData: DataRetrievalAction,
                                                         requireData: DataRequiredAction,
-                                                        taxYearInfo: TaxYearInfo, incomeSummary: IncomeSummary) extends FrontendController(mcc) with I18nSupport {
+                                                        taxYearInfo: TaxYearInfo,
+                                                        incomeSummary: IncomeSummary,
+                                                        bothGetSameIncomePreviousYear: bothGetSameIncomePreviousYear) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

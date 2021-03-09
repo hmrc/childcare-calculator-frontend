@@ -26,10 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 class ChildRegisteredBlindViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "childRegisteredBlind"
+  val view = application.injector.instanceOf[childRegisteredBlind]
 
-  def createView = () => childRegisteredBlind(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => childRegisteredBlind(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildRegisteredBlind view" must {
 

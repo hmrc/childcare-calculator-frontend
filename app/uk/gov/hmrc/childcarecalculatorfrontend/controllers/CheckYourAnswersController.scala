@@ -29,7 +29,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 class CheckYourAnswersController @Inject()(appConfig: FrontendAppConfig,
                                            mcc: MessagesControllerComponents,
                                            getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction) extends FrontendController(mcc)with I18nSupport {
+                                           requireData: DataRequiredAction,
+                                           check_your_answers: check_your_answers) extends FrontendController(mcc)with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

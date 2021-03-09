@@ -36,11 +36,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ChildrenDisabilityBenefitsController @Inject()(appConfig: FrontendAppConfig,
-                                         mcc: MessagesControllerComponents,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                                     mcc: MessagesControllerComponents,
+                                                     dataCacheConnector: DataCacheConnector,
+                                                     navigator: Navigator,
+                                                     getData: DataRetrievalAction,
+                                                     requireData: DataRequiredAction,
+                                                     childDisabilityBenefits: childDisabilityBenefits,
+                                                     childrenDisabilityBenefits: childrenDisabilityBenefits) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>

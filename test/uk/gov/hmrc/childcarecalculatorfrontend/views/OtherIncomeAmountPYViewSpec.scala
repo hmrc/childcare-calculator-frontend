@@ -27,11 +27,12 @@ class OtherIncomeAmountPYViewSpec extends QuestionViewBehaviours[OtherIncomeAmou
 
   override val form = new OtherIncomeAmountPYForm(frontendAppConfig).apply()
 
+  val view = app.injector.instanceOf[otherIncomeAmountPY]
   val messageKeyPrefix = "otherIncomeAmountPY"
 
-  def createView = () => otherIncomeAmountPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[OtherIncomeAmountPY]) => otherIncomeAmountPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[OtherIncomeAmountPY]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
 
   "OtherIncomeAmountPY view" must {

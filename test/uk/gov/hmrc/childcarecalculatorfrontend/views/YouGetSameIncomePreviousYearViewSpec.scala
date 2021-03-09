@@ -29,13 +29,14 @@ import scala.collection.immutable.ListMap
 
 class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours with GuiceOneAppPerSuite {
 
+  val view = app.injector.instanceOf[youGetSameIncomePreviousYear]
   val taxYearInfo = new TaxYearInfo
 
   val messageKeyPrefix = "youGetSameIncomePreviousYear"
 
-  def createView = () => youGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => youGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "YouGetSameIncomePreviousYear view" must {
 
@@ -46,8 +47,8 @@ class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours with Guic
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YouGetSameIncomePreviousYearController.onSubmit(NormalMode).url)
 
     "contain your income info" in {
-      val view = () => youGetSameIncomePreviousYear(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(ListMap("Income" -> "£250")))(fakeRequest, messages)
-      val doc = asDocument(view())
+      val view1 = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, Some(ListMap("Income" -> "£250")))(fakeRequest, messages)
+      val doc = asDocument(view1())
       assertContainsText(doc, "£250")
     }
 

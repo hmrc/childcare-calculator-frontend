@@ -24,9 +24,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
 
 class YourIncomeInfoPYViewSpec extends ViewBehaviours {
 
+  val view = app.injector.instanceOf[yourIncomeInfoPY]
   val taxYearInfo = new TaxYearInfo
 
-  def createView = () => yourIncomeInfoPY(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
   val messageKeyPrefix = "yourIncomeInfoPY"
 
   "Your Income Info PY view" must {

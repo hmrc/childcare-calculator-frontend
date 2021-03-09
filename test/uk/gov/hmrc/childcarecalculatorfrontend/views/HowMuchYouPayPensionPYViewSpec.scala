@@ -26,11 +26,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchYouPayPensionPY
 
 class HowMuchYouPayPensionPYViewSpec extends BigDecimalViewBehaviours {
 
+  val view = app.injector.instanceOf[howMuchYouPayPensionPY]
   val messageKeyPrefix = "howMuchYouPayPensionPY"
 
-  def createView = () => howMuchYouPayPensionPY(frontendAppConfig, HowMuchYouPayPensionPYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, HowMuchYouPayPensionPYForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => howMuchYouPayPensionPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   val form = HowMuchYouPayPensionPYForm()
 

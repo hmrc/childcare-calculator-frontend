@@ -35,11 +35,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DoYouGetAnyBenefitsController @Inject()(appConfig: FrontendAppConfig,
-                                         mcc: MessagesControllerComponents,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                              mcc: MessagesControllerComponents,
+                                              dataCacheConnector: DataCacheConnector,
+                                              navigator: Navigator,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              doYouGetAnyBenefits: doYouGetAnyBenefits) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

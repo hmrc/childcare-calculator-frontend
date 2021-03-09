@@ -26,13 +26,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
 class YourStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
 
+  val view = app.injector.instanceOf[yourStatutoryStartDate]
   val messageKeyPrefix = "yourStatutoryStartDate"
 
   val statutoryType = "maternity"
 
-  def createView = () => yourStatutoryStartDate(frontendAppConfig, YourStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, YourStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[LocalDate]) => yourStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   val form = YourStatutoryStartDateForm(statutoryType)
 

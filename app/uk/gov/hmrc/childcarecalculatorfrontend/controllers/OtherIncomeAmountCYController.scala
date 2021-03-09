@@ -34,12 +34,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class OtherIncomeAmountCYController @Inject()(appConfig: FrontendAppConfig,
-                                                  mcc: MessagesControllerComponents,
-                                                  dataCacheConnector: DataCacheConnector,
-                                                  navigator: Navigator,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  form : OtherIncomeAmountCYForm) extends FrontendController(mcc) with I18nSupport {
+                                              mcc: MessagesControllerComponents,
+                                              dataCacheConnector: DataCacheConnector,
+                                              navigator: Navigator,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              form : OtherIncomeAmountCYForm,
+                                              otherIncomeAmountCY: otherIncomeAmountCY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

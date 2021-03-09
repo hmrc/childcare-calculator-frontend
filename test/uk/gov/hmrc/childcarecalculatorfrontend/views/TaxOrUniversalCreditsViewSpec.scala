@@ -24,11 +24,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
 class TaxOrUniversalCreditsViewSpec extends ViewBehaviours {
 
+  val view = app.injector.instanceOf[taxOrUniversalCredits]
+
   val messageKeyPrefix = "taxOrUniversalCredits"
 
-  def createView = () => taxOrUniversalCredits(frontendAppConfig, TaxOrUniversalCreditsForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, TaxOrUniversalCreditsForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => taxOrUniversalCredits(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "TaxOrUniversalCredits view" must {
 

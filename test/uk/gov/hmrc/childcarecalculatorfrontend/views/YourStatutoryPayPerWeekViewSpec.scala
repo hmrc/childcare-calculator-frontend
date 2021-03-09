@@ -25,17 +25,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWee
 
 class YourStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
 
+  val view = app.injector.instanceOf[yourStatutoryPayPerWeek]
   val messageKeyPrefix = "yourStatutoryPayPerWeek"
 
   val statutoryType = "maternity"
 
   val form = YourStatutoryPayPerWeekForm(statutoryType)
 
-  def createView = () => yourStatutoryPayPerWeek(frontendAppConfig, YourStatutoryPayPerWeekForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, YourStatutoryPayPerWeekForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewWithStatutoryType = (statutoryType: String) => yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewWithStatutoryType = (statutoryType: String) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
 
   "YourStatutoryPayPerWeek view" must {

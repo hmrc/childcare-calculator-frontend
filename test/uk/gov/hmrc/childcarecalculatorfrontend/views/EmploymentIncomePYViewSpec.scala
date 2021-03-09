@@ -27,13 +27,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 class EmploymentIncomePYViewSpec extends QuestionViewBehaviours[EmploymentIncomePY] {
 
   val taxYearInfo = new TaxYearInfo
+  val view = application.injector.instanceOf[employmentIncomePY]
 
   override val form = new EmploymentIncomePYForm(frontendAppConfig).apply()
   val messageKeyPrefix = "employmentIncomePY"
 
-  def createView = () => employmentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[EmploymentIncomePY]) => employmentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[EmploymentIncomePY]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "EmploymentIncomePY view" must {
 

@@ -26,12 +26,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayBef
 class PartnerStatutoryPayBeforeTaxViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayBeforeTax"
+  val view = app.injector.instanceOf[partnerStatutoryPayBeforeTax]
 
   val statutoryType = "maternity"
 
-  def createView = () => partnerStatutoryPayBeforeTax(frontendAppConfig, BooleanForm("partnerStatutoryPayBeforeTax.error.notCompleted", statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm("partnerStatutoryPayBeforeTax.error.notCompleted", statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => partnerStatutoryPayBeforeTax(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
   "PartnerStatutoryPayBeforeTax view" must {
     behave like normalPageWithTitleAsString(

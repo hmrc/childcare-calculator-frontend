@@ -26,11 +26,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 class YourChildcareVouchersViewSpec extends ViewBehaviours with YesNoViewBehaviours {
 
+  val view = app.injector.instanceOf[yourChildcareVouchers]
   val messageKeyPrefix = "yourChildcareVouchers"
 
-  def createView = () => yourChildcareVouchers(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => yourChildcareVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "YourChildcareVouchers view" must {
     behave like normalPage(createView, messageKeyPrefix, "heading")

@@ -24,11 +24,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoWasInPaidWorkPY
 
 class WhoWasInPaidWorkPYViewSpec extends ViewBehaviours {
 
+  val view = app.injector.instanceOf[whoWasInPaidWorkPY]
   val messageKeyPrefix = "whoWasInPaidWorkPY"
 
-  def createView = () => whoWasInPaidWorkPY(frontendAppConfig, WhoWasInPaidWorkPYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, WhoWasInPaidWorkPYForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => whoWasInPaidWorkPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhoWasInPaidWorkPY view" must {
     behave like normalPage(createView, messageKeyPrefix, "checkYourAnswersLabel")

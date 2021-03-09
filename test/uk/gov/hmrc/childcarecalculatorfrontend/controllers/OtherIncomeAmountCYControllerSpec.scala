@@ -32,14 +32,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[otherIncomeAmountCY]
   val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new OtherIncomeAmountCYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new OtherIncomeAmountCYForm(frontendAppConfig))
+      dataRetrievalAction, new DataRequiredAction, new OtherIncomeAmountCYForm(frontendAppConfig), view)
 
-  def viewAsString(form: Form[OtherIncomeAmountCY] = form) = otherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[OtherIncomeAmountCY] = form) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "OtherIncomeAmountCY Controller" must {
 

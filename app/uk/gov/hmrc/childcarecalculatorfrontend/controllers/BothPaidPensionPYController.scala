@@ -35,11 +35,12 @@ import scala.concurrent.Future
 
 class BothPaidPensionPYController @Inject()(appConfig: FrontendAppConfig,
                                             mcc: MessagesControllerComponents,
-                                         dataCacheConnector: DataCacheConnector,
-                                         navigator: Navigator,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
+                                            dataCacheConnector: DataCacheConnector,
+                                            navigator: Navigator,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
+                                            taxYearInfo: TaxYearInfo,
+                                            bothPaidPensionPY: bothPaidPensionPY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

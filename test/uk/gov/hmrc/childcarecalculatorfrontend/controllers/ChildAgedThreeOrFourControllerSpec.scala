@@ -33,6 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[childAgedThreeOrFour]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val location = Location.ENGLAND
@@ -43,9 +44,9 @@ class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new ChildAgedThreeOrFourController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = childAgedThreeOrFour(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages).toString
 
   "ChildAgedThreeOrFour Controller" must {
 

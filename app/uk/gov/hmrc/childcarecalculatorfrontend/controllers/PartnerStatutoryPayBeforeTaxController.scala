@@ -40,7 +40,8 @@ class PartnerStatutoryPayBeforeTaxController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        partnerStatutoryPayBeforeTax: partnerStatutoryPayBeforeTax) extends FrontendController(mcc) with I18nSupport {
 
   val errorKey = "partnerStatutoryPayBeforeTax.error.notCompleted"
 

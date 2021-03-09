@@ -21,10 +21,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.unauthorised
 
 class UnauthorisedViewSpec extends ViewBehaviours {
 
-  def view = () => unauthorised(frontendAppConfig)(fakeRequest, messages)
+  val view = app.injector.instanceOf[unauthorised]
+
+  def createView = () => view(frontendAppConfig)(fakeRequest, messages)
 
   "Unauthorised view" must {
 
-    behave like normalPage(view, "unauthorised")
+    behave like normalPage(createView, "unauthorised")
   }
 }

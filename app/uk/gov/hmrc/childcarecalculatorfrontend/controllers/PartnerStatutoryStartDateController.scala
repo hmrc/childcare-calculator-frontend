@@ -43,7 +43,8 @@ class PartnerStatutoryStartDateController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction
+                                        requireData: DataRequiredAction,
+                                        partnerStatutoryStartDate: partnerStatutoryStartDate
                                       ) extends FrontendController(mcc) with I18nSupport {
 
 

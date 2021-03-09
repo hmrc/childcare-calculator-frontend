@@ -26,12 +26,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmou
 
 class PartnerOtherIncomeAmountPYViewSpec extends BigDecimalViewBehaviours {
 
+  val view = app.injector.instanceOf[partnerOtherIncomeAmountPY]
   val form = new PartnerOtherIncomeAmountPYForm(frontendAppConfig).apply()
   val messageKeyPrefix = "partnerOtherIncomeAmountPY"
 
-  def createView = () => partnerOtherIncomeAmountPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => partnerOtherIncomeAmountPY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "PartnerOtherIncomeAmountPY view" must {
     behave like normalPage(createView, messageKeyPrefix)

@@ -33,6 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[bothGetSameIncomePreviousYear]
   val taxYearInfo = new TaxYearInfo
 
   val incomeSummary = new IncomeSummary(new Utils())
@@ -43,9 +44,9 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new BothGetSameIncomePreviousYearController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, taxYearInfo, new IncomeSummary(new Utils()))
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo, new IncomeSummary(new Utils()), view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = bothGetSameIncomePreviousYear(frontendAppConfig, form, NormalMode, taxYearInfo, mapSummary)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, taxYearInfo, mapSummary)(fakeRequest, messages).toString
 
   "BothGetSameIncomePreviousYear Controller" must {
 

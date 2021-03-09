@@ -22,6 +22,7 @@ import play.api.i18n.Lang
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+import uk.gov.hmrc.play.views.html.layouts
 
 class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Configuration) {
 
@@ -32,8 +33,6 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
 
   lazy val eligibilityUrl: String =  config.baseUrl("cc-eligibility") + loadConfig("microservice.services.cc-eligibility.url")
 
-  lazy val analyticsToken: String = loadConfig("google-analytics.token")
-  lazy val analyticsHost: String = loadConfig("google-analytics.host")
   lazy val analyticsDimensionKey: String = loadConfig("google-analytics.dimensionKey")
   lazy val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   lazy val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
@@ -41,7 +40,6 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
   lazy val surveyUrl: String = loadConfig("feedback-survey-frontend.host")
   lazy val surveyThankYouUrl: String = loadConfig("feedback-survey-frontend.thankYou")
-  lazy val googleTagManagerId = loadConfig(s"google-tag-manager.id")
 
   lazy val authUrl: String = config.baseUrl("auth")
   lazy val loginUrl: String = loadConfig("urls.login")

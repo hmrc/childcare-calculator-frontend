@@ -33,6 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with MockitoSugar{
 
+  val view = application.injector.instanceOf[yourStatutoryPayPerWeek]
   private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType))
 
   private val retrievalAction = new FakeDataRetrievalAction(
@@ -47,10 +48,11 @@ class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with Mock
       FakeDataCacheConnector,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
-      new DataRequiredAction)
+      new DataRequiredAction,
+      view)
 
   def viewAsString(form: Form[BigDecimal] = YourStatutoryPayPerWeekForm(statutoryType)) =
-    yourStatutoryPayPerWeek(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   val testNumber = 92.22
 

@@ -35,9 +35,11 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
+  val aboutYourChild = application.injector.instanceOf[aboutYourChild]
+
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new AboutYourChildController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, aboutYourChild)
 
   def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()) = aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages).toString
 

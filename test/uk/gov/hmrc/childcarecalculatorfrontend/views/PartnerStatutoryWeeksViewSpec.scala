@@ -27,6 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryWeeks
 
 class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
 
+  val view = app.injector.instanceOf[partnerStatutoryWeeks]
 
   val statutoryType = MATERNITY
 
@@ -36,9 +37,9 @@ class PartnerStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, statutoryType)
 
-  def createView = () => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Int]) => view(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
   "PartnerStatutoryWeeks view" must {
     behave like normalPageWithTitleAsString(

@@ -21,6 +21,8 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
+@this(main_template: main_template)
+
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 @main_template(

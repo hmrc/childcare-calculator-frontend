@@ -39,7 +39,8 @@ class YourOtherIncomeLYController @Inject()(appConfig: FrontendAppConfig,
                                             navigator: Navigator,
                                             getData: DataRetrievalAction,
                                             requireData: DataRequiredAction,
-                                            taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
+                                            taxYearInfo: TaxYearInfo,
+                                            yourOtherIncomeLY: yourOtherIncomeLY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

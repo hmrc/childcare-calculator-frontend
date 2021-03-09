@@ -27,10 +27,11 @@ class PartnerOtherIncomeAmountCYViewSpec extends BigDecimalViewBehaviours {
 
   val form = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
   val messageKeyPrefix = "partnerOtherIncomeAmountCY"
+  val view = app.injector.instanceOf[partnerOtherIncomeAmountCY]
 
-  def createView = () => partnerOtherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => partnerOtherIncomeAmountCY(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "PartnerOtherIncomeAmountCY view" must {
     behave like normalPage(createView, messageKeyPrefix)

@@ -25,11 +25,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPension
 
 class HowMuchBothPayPensionViewSpec extends QuestionViewBehaviours[HowMuchBothPayPension] {
 
+  val view = application.injector.instanceOf[howMuchBothPayPension]
   val messageKeyPrefix = "howMuchBothPayPension"
 
-  def createView = () => howMuchBothPayPension(frontendAppConfig, HowMuchBothPayPensionForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, HowMuchBothPayPensionForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[HowMuchBothPayPension]) => howMuchBothPayPension(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[HowMuchBothPayPension]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   override val form = HowMuchBothPayPensionForm()
 

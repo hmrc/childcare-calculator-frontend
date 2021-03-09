@@ -34,13 +34,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[surveyDoNotUnderstand]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new SurveyDoNotUnderstandController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService())
+      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService(), view)
 
-  def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = surveyDoNotUnderstand(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = view(frontendAppConfig, form)(fakeRequest, messages).toString
 
   val testString = "feedback string"
 

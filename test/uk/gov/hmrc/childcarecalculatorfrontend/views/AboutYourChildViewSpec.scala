@@ -28,12 +28,14 @@ class AboutYourChildViewSpec extends QuestionViewBehaviours[AboutYourChild] with
 
   val messageKeyPrefix = "aboutYourChild"
 
+  val view = application.injector.instanceOf[aboutYourChild]
+
   def createView: () => Html = () => createView(0, 1)
 
-  def createViewUsingForm = (form: Form[AboutYourChild]) => aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[AboutYourChild]) => view(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
 
   def createView(index: Int, total: Int): Html =
-    aboutYourChild(frontendAppConfig, AboutYourChildForm(), NormalMode, index, total)(fakeRequest, messages)
+    view(frontendAppConfig, AboutYourChildForm(), NormalMode, index, total)(fakeRequest, messages)
 
   override val form = AboutYourChildForm()
 

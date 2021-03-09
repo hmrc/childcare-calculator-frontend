@@ -34,11 +34,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with OptionValues {
 
+  val view = application.injector.instanceOf[whichChildrenDisability]
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhichChildrenDisabilityController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   val requiredData: Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(
@@ -54,7 +56,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
   )
 
   def viewAsString(form: Form[_] = WhichChildrenDisabilityForm()): String =
-    whichChildrenDisability(frontendAppConfig, form, options, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, options, NormalMode)(fakeRequest, messages).toString
 
   "WhichChildrenDisability Controller" must {
 

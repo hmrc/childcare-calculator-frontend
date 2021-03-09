@@ -25,6 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
 class WhoHasChildcareCostsViewSpec extends ViewBehaviours with CheckboxViewBehaviours[Int] {
 
+  val view = app.injector.instanceOf[whoHasChildcareCosts]
   val messageKeyPrefix = "whoHasChildcareCosts"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
@@ -41,7 +42,7 @@ class WhoHasChildcareCostsViewSpec extends ViewBehaviours with CheckboxViewBehav
   def form: Form[Set[Int]] = WhoHasChildcareCostsForm(0, 1)
 
   def createView(form: Form[Set[Int]] = form): Html =
-    whoHasChildcareCosts(frontendAppConfig, form, NormalMode, strValues)(fakeRequest, messages)
+    view(frontendAppConfig, form, NormalMode, strValues)(fakeRequest, messages)
 
   "WhoHasChildcareCosts view" must {
 

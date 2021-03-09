@@ -30,10 +30,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[freeHoursInfo]
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new FreeHoursInfoController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction)
+    new FreeHoursInfoController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction, view)
 
   "FreeHoursInfo Controller" must {
 
@@ -44,7 +45,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
       }
     }
 
@@ -55,7 +56,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
       }
     }
 
@@ -66,7 +67,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedTwoData).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -84,7 +85,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
       }
 
       "we don't have a 2 year old" in {
@@ -94,7 +95,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig, isChildAgedTwo = false,false,false,false, location)(fakeRequest, messages).toString
       }
     }
     
@@ -105,7 +106,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig, isChildAgedTwo = true,false,false,false, location)(fakeRequest, messages).toString
     }
 
     "return OK with 30 hours" when {
@@ -116,7 +117,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, false,false, location, true)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig, false, true, false,false, location, true)(fakeRequest, messages).toString
       }
 
       "They have childcare costs and they are approved" in {
@@ -126,7 +127,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true,true,location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig,false,true,true,true,location)(fakeRequest, messages).toString
       }
 
       "They are not sure about having childcare costs or them being by an approved provider" in {
@@ -136,7 +137,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,true,true,location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig,false,true,true,true,location)(fakeRequest, messages).toString
       }
     }
 
@@ -148,7 +149,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,true,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig,false,true,false,false, location)(fakeRequest, messages).toString
       }
 
       "we don't have a 3 or 4 year old" in {
@@ -158,7 +159,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
       }
     }
 
@@ -169,7 +170,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,true,true, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig,false,false,true,true, location)(fakeRequest, messages).toString
     }
 
     "return OK with no childcare vouchers, tfc and tc when we don't have childcare costs" when {
@@ -180,7 +181,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
       }
 
       "we have childcare costs but they are not approved" in {
@@ -190,7 +191,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
         val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
         status(result) mustBe OK
-        contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,true,false, location)(fakeRequest, messages).toString
+        contentAsString(result) mustBe view(frontendAppConfig,false,false,true,false, location)(fakeRequest, messages).toString
       }
     }
 
@@ -201,7 +202,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig,false,false,false,false, location)(fakeRequest, messages).toString
     }
 
     "return OK with no approved childcare paragraph when they have childcare costs but not approved" in {
@@ -211,7 +212,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(childAgedFour).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
-      contentAsString(result) mustBe freeHoursInfo(frontendAppConfig, false, true, true, false,location, true)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view(frontendAppConfig, false, true, true, false,location, true)(fakeRequest, messages).toString
     }
 
     "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
