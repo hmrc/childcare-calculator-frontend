@@ -42,7 +42,8 @@ class PartnerStatutoryWeeksController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        partnerStatutoryWeeksForm: PartnerStatutoryWeeksForm) extends FrontendController(mcc) with I18nSupport {
+                                        partnerStatutoryWeeksForm: PartnerStatutoryWeeksForm,
+                                        partnerStatutoryWeeks: partnerStatutoryWeeks) extends FrontendController(mcc) with I18nSupport {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))

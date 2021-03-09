@@ -34,17 +34,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
 
+  val view1 = application.injector.instanceOf[childDisabilityBenefits]
+  val view2 = application.injector.instanceOf[childrenDisabilityBenefits]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ChildrenDisabilityBenefitsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view1, view2)
 
   def singleViewAsString(form: Form[Boolean] = BooleanForm()): String =
-    childDisabilityBenefits(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
+    view1(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
 
   def viewAsString(form: Form[Boolean] = BooleanForm()): String =
-    childrenDisabilityBenefits(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+    view2(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   def requiredData(number: Int): Map[String, JsValue] = Map(
     NoOfChildrenId.toString -> JsNumber(number),

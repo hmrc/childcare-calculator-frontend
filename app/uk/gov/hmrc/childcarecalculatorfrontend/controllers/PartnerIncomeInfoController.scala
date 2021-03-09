@@ -33,7 +33,8 @@ class PartnerIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
                                             getData: DataRetrievalAction,
                                             navigator: Navigator,
                                             requireData: DataRequiredAction,
-                                            taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
+                                            taxYearInfo: TaxYearInfo,
+                                            partnerIncomeInfo: partnerIncomeInfo) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
     Ok(partnerIncomeInfo(appConfig, navigator.nextPage(PartnerIncomeInfoId, NormalMode)(request.userAnswers), taxYearInfo))

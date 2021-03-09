@@ -43,7 +43,8 @@ class YourStatutoryStartDateController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction
+                                        requireData: DataRequiredAction,
+                                        yourStatutoryStartDate: yourStatutoryStartDate
                                       ) extends FrontendController(mcc) with I18nSupport {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =

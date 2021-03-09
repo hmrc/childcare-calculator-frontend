@@ -25,10 +25,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 class ApprovedProviderViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "approvedProvider"
+  val view = application.injector.instanceOf[approvedProvider]
 
-  def createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => approvedProvider(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages)
 
   "ApprovedProvider view" must {
     behave like normalPage(createView, messageKeyPrefix, "hint")
@@ -47,14 +48,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
       "contain right title" when {
         "we have selected 'Not Yet but maybe in the furure'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
+          val createView = () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title.future")+" - "+messages("site.service_name")+" - GOV.UK")
         }
 
         "we have selected 'Yes'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+          val createView = () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title")+" - "+messages("site.service_name")+" - GOV.UK")
@@ -63,14 +64,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
       "contain right heading" when {
         "cwe have selected 'Not Yet but maybe in the future'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
+          val createView = () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "h1", messages(s"$messageKeyPrefix.heading.future"))
         }
 
         "we have selected 'Yes'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+          val createView = () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "h1", messages(s"$messageKeyPrefix.heading"))
@@ -79,14 +80,14 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
 
       "contain right legend" when {
         "we have selected 'Not Yet but maybe in the future'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
+          val createView = () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "legend", messages(s"$messageKeyPrefix.heading.future"))
         }
 
         "we have selected 'Yes'" in {
-          val createView = () => approvedProvider(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+          val createView = () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "legend", messages(s"$messageKeyPrefix.heading"))

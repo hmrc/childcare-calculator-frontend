@@ -34,15 +34,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class BothPaidWorkCYControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[bothPaidWorkCY]
   val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new BothPaidWorkCYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, taxYearInfo)
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = bothPaidWorkCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "BothPaidWorkCY Controller" must {
 

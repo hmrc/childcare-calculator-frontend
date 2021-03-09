@@ -25,11 +25,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
 
 class ChildApprovedEducationViewSpec extends YesNoViewBehaviours {
 
+  val view = application.injector.instanceOf[childApprovedEducation]
   val messageKeyPrefix = "childApprovedEducation"
 
-  def createView = () => childApprovedEducation(frontendAppConfig, BooleanForm(), NormalMode, 0, "Foo")(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, 0, "Foo")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => childApprovedEducation(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
 
   "ChildApprovedEducation view" must {
 

@@ -30,10 +30,11 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 @Singleton
 class BothIncomeInfoPYController @Inject()(val appConfig: FrontendAppConfig,
                                            mcc: MessagesControllerComponents,
-                                              getData: DataRetrievalAction,
-                                              navigator: Navigator,
-                                              requireData: DataRequiredAction,
-                                              taxYearInfo: TaxYearInfo) extends FrontendController(mcc) with I18nSupport {
+                                           getData: DataRetrievalAction,
+                                           navigator: Navigator,
+                                           requireData: DataRequiredAction,
+                                           taxYearInfo: TaxYearInfo,
+                                           bothIncomeInfoPY: bothIncomeInfoPY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
     Ok(bothIncomeInfoPY(appConfig, navigator.nextPage(BothIncomeInfoPYId, NormalMode)(request.userAnswers), taxYearInfo))

@@ -32,13 +32,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildcareCostsControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[childcareCosts]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ChildcareCostsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[String] = ChildcareCostsForm()) = childcareCosts(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = ChildcareCostsForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "ChildcareCosts Controller" must {
 

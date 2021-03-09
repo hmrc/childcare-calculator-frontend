@@ -30,6 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -37,6 +38,7 @@ import scala.concurrent.Future
 
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
+  val view = application.injector.instanceOf[result]
   val mockMoreInfoService: MoreInfoService  = mock[MoreInfoService]
   val resultService: ResultsService         = mock[ResultsService]
 
@@ -67,7 +69,8 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       new DataRequiredAction,
       resultService,
       mockMoreInfoService,
-      new Utils)
+      new Utils,
+      view)
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {

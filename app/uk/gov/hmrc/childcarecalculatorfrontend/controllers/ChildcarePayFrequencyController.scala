@@ -39,7 +39,8 @@ class ChildcarePayFrequencyController @Inject()(
                                                  dataCacheConnector: DataCacheConnector,
                                                  navigator: Navigator,
                                                  getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction
+                                                 requireData: DataRequiredAction,
+                                                 childcarePayFrequency: childcarePayFrequency
                                                ) extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {

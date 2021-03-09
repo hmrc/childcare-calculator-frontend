@@ -33,6 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerEmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[partnerEmploymentIncomePY]
   val taxYearInfo = new TaxYearInfo
 
   val partnerEmpIncomeForm = new PartnerEmploymentIncomePYForm(frontendAppConfig).apply()
@@ -40,9 +41,9 @@ class PartnerEmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerEmploymentIncomePYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new PartnerEmploymentIncomePYForm(frontendAppConfig), taxYearInfo)
+      dataRetrievalAction, new DataRequiredAction, new PartnerEmploymentIncomePYForm(frontendAppConfig), taxYearInfo, view)
 
-  def viewAsString(form: Form[BigDecimal] = partnerEmpIncomeForm) = partnerEmploymentIncomePY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = partnerEmpIncomeForm) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   val testNumber = 123
 

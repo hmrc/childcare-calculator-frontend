@@ -39,7 +39,8 @@ class LocationController @Inject()(
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        location: location) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = getData {
     implicit request =>

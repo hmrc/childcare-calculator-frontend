@@ -32,13 +32,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class AreYouInPaidWorkControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[areYouInPaidWork]
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new AreYouInPaidWorkController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = areYouInPaidWork(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "AreYouInPaidWork Controller" must {
 

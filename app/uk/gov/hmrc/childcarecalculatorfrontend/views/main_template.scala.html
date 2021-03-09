@@ -16,6 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
+@this(govuk_wrapper: govuk_wrapper)
+
 @(title: String,
         appConfig: FrontendAppConfig,
         sidebarLinks: Option[Html] = None,
@@ -24,12 +26,13 @@
         mainClass: Option[String] = None,
         timeout: Boolean = true,
         urBanner: Boolean = false,
-        gaCalls: Option[(String, String) => play.twirl.api.Html] = None,
         scriptElem: Option[Html] = None)(mainContent: Html)(implicit request: Request[_], messages: Messages)
 
     @import uk.gov.hmrc.play.views.html.layouts
 
     @serviceInfoContent = {}
+
+    @betaBanner = {}
 
     @sidebar = {
         @if(sidebarLinks.isDefined) {
@@ -47,6 +50,5 @@
         serviceInfoContent = serviceInfoContent,
         timeout = timeout,
         urBanner = urBanner,
-        gaCalls = gaCalls,
         scriptElem = scriptElem
     )

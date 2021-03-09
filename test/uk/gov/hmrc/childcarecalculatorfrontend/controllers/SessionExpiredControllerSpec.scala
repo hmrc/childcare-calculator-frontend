@@ -21,15 +21,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.session_expired
 
 class SessionExpiredControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[session_expired]
+
   "SessionExpired Controller" must {
     "return 200 for a GET" in {
-      val result = new SessionExpiredController(frontendAppConfig, mcc).onPageLoad()(fakeRequest)
+      val result = new SessionExpiredController(frontendAppConfig, mcc, view).onPageLoad()(fakeRequest)
       status(result) mustBe OK
     }
 
     "return the correct view for a GET" in {
-      val result = new SessionExpiredController(frontendAppConfig, mcc).onPageLoad()(fakeRequest)
-      contentAsString(result) mustBe session_expired(frontendAppConfig)(fakeRequest, messages).toString
+      val result = new SessionExpiredController(frontendAppConfig, mcc, view).onPageLoad()(fakeRequest)
+      contentAsString(result) mustBe view(frontendAppConfig)(fakeRequest, messages).toString
     }
   }
 }

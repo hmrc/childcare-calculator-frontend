@@ -26,13 +26,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsCY
 
 class YouAnyTheseBenefitsCYViewSpec extends YesNoViewBehaviours {
 
+  val view = app.injector.instanceOf[youAnyTheseBenefitsCY]
   val taxYearInfo = new TaxYearInfo
 
   val messageKeyPrefix = "youAnyTheseBenefitsCY"
 
-  def createView = () => youAnyTheseBenefitsCY(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => youAnyTheseBenefitsCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "YouAnyTheseBenefits view" must {
 

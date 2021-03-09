@@ -34,6 +34,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[partnerStatutoryWeeks]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   private val statutoryTypeNameValuePair = Map(PartnerStatutoryPayTypeId.toString() -> JsString(statutoryType.toString))
@@ -48,9 +49,9 @@ class PartnerStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new PartnerStatutoryWeeksController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new PartnerStatutoryWeeksForm(frontendAppConfig))
+      dataRetrievalAction, new DataRequiredAction, new PartnerStatutoryWeeksForm(frontendAppConfig), view)
 
-  def viewAsString(form: Form[Int] = form) = partnerStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = form) = view(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages).toString
 
   val testNumber = 1
 

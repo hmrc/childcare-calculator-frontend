@@ -26,10 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouLiveWithPartner
 class DoYouLiveWithPartnerViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "doYouLiveWithPartner"
+  val view = application.injector.instanceOf[doYouLiveWithPartner]
 
-  def createView = () => doYouLiveWithPartner(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => doYouLiveWithPartner(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "DoYouLiveWithPartner view" must {
 

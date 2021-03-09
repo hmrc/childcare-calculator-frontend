@@ -32,13 +32,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[taxOrUniversalCredits]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new TaxOrUniversalCreditsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[String] = TaxOrUniversalCreditsForm()) = taxOrUniversalCredits(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = TaxOrUniversalCreditsForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "TaxOrUniversalCredits Controller" must {
 

@@ -34,6 +34,7 @@ import uk.gov.hmrc.time.TaxYear
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
+  val view = application.injector.instanceOf[yourStatutoryStartDate]
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
@@ -49,10 +50,10 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
     new YourStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)) =
-    yourStatutoryStartDate(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   "YourStatutoryStartDate Controller" must {
 

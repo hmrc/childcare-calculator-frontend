@@ -28,11 +28,13 @@ class BothOtherIncomeLYViewSpec extends YesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
 
+  val view = application.injector.instanceOf[bothOtherIncomeLY]
+
   val messageKeyPrefix = "bothOtherIncomeLY"
 
-  def createView = () => bothOtherIncomeLY(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => bothOtherIncomeLY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "BothOtherIncomeLY view" must {
 

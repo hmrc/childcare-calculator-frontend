@@ -30,6 +30,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[bothIncomeInfoPY]
   val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.PartnerPaidWorkPYController.onPageLoad(NormalMode)
@@ -40,7 +41,8 @@ class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
       dataRetrievalAction,
       new FakeNavigator(desiredRoute = onwardRoute),
       new DataRequiredAction,
-      taxYearInfo)
+      taxYearInfo,
+      view)
 
   "PartnerIncomeInfoPY Controller" must {
     "return OK and the correct view for a GET" in {
@@ -54,7 +56,7 @@ class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        bothIncomeInfoPY(frontendAppConfig,
+        view(frontendAppConfig,
           routes.PartnerPaidWorkPYController.onPageLoad(NormalMode), taxYearInfo)(fakeRequest, messages).toString
     }
 

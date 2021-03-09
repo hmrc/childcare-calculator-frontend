@@ -25,6 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
 class WhichChildrenBlindViewSpec extends ViewBehaviours with CheckboxViewBehaviours[Int] {
 
+  val view = app.injector.instanceOf[whichChildrenBlind]
   val messageKeyPrefix = "whichChildrenBlind"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
@@ -41,7 +42,7 @@ class WhichChildrenBlindViewSpec extends ViewBehaviours with CheckboxViewBehavio
   def form: Form[Set[Int]] = WhichChildrenBlindForm(0, 1)
 
   def createView(form: Form[Set[Int]] = form): Html =
-    whichChildrenBlind(frontendAppConfig, form, NormalMode, strValues)(fakeRequest, messages)
+    view(frontendAppConfig, form, NormalMode, strValues)(fakeRequest, messages)
 
   "WhichChildrenBlind view" must {
 

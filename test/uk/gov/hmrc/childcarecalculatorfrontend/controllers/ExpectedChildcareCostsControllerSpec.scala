@@ -36,13 +36,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[expectedChildcareCosts]
   private val testDate: LocalDate = LocalDate.parse("2019-01-01")
 
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ExpectedChildcareCostsController =
     new ExpectedChildcareCostsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(
                     form: Form[BigDecimal] = ExpectedChildcareCostsForm(WEEKLY, "Foo"),
@@ -51,7 +52,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
                     frequency: ChildcarePayFrequency.Value = WEEKLY,
                     name: String = "Foo"
                   ): String =
-    expectedChildcareCosts(frontendAppConfig, form, hasCosts, id, frequency, name, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, hasCosts, id, frequency, name, NormalMode)(fakeRequest, messages).toString
 
   val testNumber: Int = 123
 

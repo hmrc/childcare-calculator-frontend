@@ -40,7 +40,8 @@ class YourOtherIncomeAmountPYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: YourOtherIncomeAmountPYForm) extends FrontendController(mcc) with I18nSupport {
+                                        form: YourOtherIncomeAmountPYForm,
+                                        yourOtherIncomeAmountPY: yourOtherIncomeAmountPY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

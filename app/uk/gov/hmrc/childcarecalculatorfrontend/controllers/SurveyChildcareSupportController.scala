@@ -42,7 +42,8 @@ class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
                                                  navigator: Navigator,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
-                                                 splunkSubmissionService: SplunkSubmissionServiceInterface) extends FrontendController(mcc) with I18nSupport {
+                                                 splunkSubmissionService: SplunkSubmissionServiceInterface,
+                                                 surveyChildcareSupport: surveyChildcareSupport) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

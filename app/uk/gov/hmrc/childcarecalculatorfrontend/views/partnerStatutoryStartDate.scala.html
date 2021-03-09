@@ -20,6 +20,8 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import org.joda.time.LocalDate
 
+@this(main_template: main_template)
+
 @(appConfig: FrontendAppConfig, form: Form[LocalDate], mode: Mode, statutoryType: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(

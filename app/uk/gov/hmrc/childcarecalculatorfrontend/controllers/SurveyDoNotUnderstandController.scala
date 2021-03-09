@@ -42,7 +42,8 @@ class SurveyDoNotUnderstandController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        splunkSubmissionService: SplunkSubmissionServiceInterface) extends FrontendController(mcc) with I18nSupport {
+                                        splunkSubmissionService: SplunkSubmissionServiceInterface,
+                                        surveyDoNotUnderstand: surveyDoNotUnderstand) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

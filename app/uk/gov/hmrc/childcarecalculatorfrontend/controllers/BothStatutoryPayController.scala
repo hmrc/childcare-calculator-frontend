@@ -39,7 +39,8 @@ class BothStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
                                            navigator: Navigator,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
-                                           taxYearInfo: TaxYearInfo) extends FrontendController(mcc)with I18nSupport {
+                                           taxYearInfo: TaxYearInfo,
+                                           bothStatutoryPay: bothStatutoryPay) extends FrontendController(mcc)with I18nSupport {
 
   val requiredKey = "bothStatutoryPay.error.required"
   val requiredKeyArg = taxYearInfo.previousTaxYearStart

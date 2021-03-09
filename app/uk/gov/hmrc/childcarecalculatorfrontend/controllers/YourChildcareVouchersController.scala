@@ -40,7 +40,8 @@ class YourChildcareVouchersController @Inject()(
                                                  dataCacheConnector: DataCacheConnector,
                                                  navigator: Navigator,
                                                  getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                                 requireData: DataRequiredAction,
+                                                 yourChildcareVouchers: yourChildcareVouchers) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

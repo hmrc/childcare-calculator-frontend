@@ -34,15 +34,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[partnerAnyTheseBenefitsCY]
   val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerAnyTheseBenefitsCYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, taxYearInfo)
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = partnerAnyTheseBenefitsCY(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "PartnerAnyTheseBenefitsCY Controller" must {
 

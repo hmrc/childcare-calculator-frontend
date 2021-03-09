@@ -40,7 +40,8 @@ class ParentWorkHoursController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: ParentWorkHoursForm) extends FrontendController(mcc) with I18nSupport {
+                                        form: ParentWorkHoursForm,
+                                        parentWorkHours: parentWorkHours) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

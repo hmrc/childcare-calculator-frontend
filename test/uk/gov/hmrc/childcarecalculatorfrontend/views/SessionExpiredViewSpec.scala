@@ -16,15 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.session_expired
 
 class SessionExpiredViewSpec extends ViewBehaviours {
 
-  def view = () => session_expired(frontendAppConfig)(fakeRequest, messages)
+  val view = app.injector.instanceOf[session_expired]
+
+  def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig)(fakeRequest, messages)
 
   "Session Expired view" must {
 
-    behave like normalPage(view, "session_expired", "guidance","link.text")
+    behave like normalPage(createView, "session_expired", "guidance","link.text")
   }
 }

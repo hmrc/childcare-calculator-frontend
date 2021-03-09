@@ -40,7 +40,8 @@ class PartnerOtherIncomeAmountCYController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        form: PartnerOtherIncomeAmountCYForm) extends FrontendController(mcc) with I18nSupport {
+                                        form: PartnerOtherIncomeAmountCYForm,
+                                        partnerOtherIncomeAmountCY: partnerOtherIncomeAmountCY) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

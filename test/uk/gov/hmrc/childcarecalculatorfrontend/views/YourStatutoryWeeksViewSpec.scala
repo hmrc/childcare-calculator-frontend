@@ -27,6 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
 class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
 
+  val view = app.injector.instanceOf[yourStatutoryWeeks]
   val messageKeyPrefix = "yourStatutoryWeeks"
 
   val statutoryType = MATERNITY
@@ -35,9 +36,9 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
 
   val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, statutoryType)
 
-  def createView = () => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => yourStatutoryWeeks(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Int]) => view(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages)
 
   "YourStatutoryWeeks view" must {
 

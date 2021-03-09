@@ -35,6 +35,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionValues {
 
+  val view = application.injector.instanceOf[whichChildrenBlind]
+
   "WhichChildrenBlind Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -118,14 +120,14 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhichChildrenBlindController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   val defaultValues = Map("Foo" -> "0", "Bar" -> "1")
   def viewAsString(
                     form: Form[_] = WhichChildrenBlindForm(0, 1),
                     values: Map[String, String] = defaultValues
                   ) =
-    whichChildrenBlind(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(

@@ -28,15 +28,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
 
   val messageKeyPrefix = "expectedChildcareCosts"
+  val view = application.injector.instanceOf[expectedChildcareCosts]
 
   def createView = () =>
-    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
+    view(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
   def createViewNotYet = () =>
-    expectedChildcareCosts(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), NOTYET, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
+    view(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), NOTYET, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[BigDecimal]) =>
-    expectedChildcareCosts(frontendAppConfig, form, YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
+    view(frontendAppConfig, form, YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
   val form = ExpectedChildcareCostsForm(WEEKLY, "Foo")
 

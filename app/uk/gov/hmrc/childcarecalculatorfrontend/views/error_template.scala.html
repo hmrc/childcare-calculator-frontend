@@ -16,6 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
+@this(govuk_wrapper: govuk_wrapper)
+
 @(pageTitle: String, heading: String, message: String, appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
 @contentHeader = {

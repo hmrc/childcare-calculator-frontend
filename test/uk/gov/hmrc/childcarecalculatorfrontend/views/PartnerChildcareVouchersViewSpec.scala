@@ -28,10 +28,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{ViewBehaviours,
 class PartnerChildcareVouchersViewSpec extends ViewBehaviours with YesNoViewBehaviours {
 
   val messageKeyPrefix = "partnerChildcareVouchers"
+  val view = app.injector.instanceOf[partnerChildcareVouchers]
 
-  def createView = () => partnerChildcareVouchers(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => partnerChildcareVouchers(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "PartnerChildcareVouchers view" must {
     behave like normalPage(createView, messageKeyPrefix, "heading")

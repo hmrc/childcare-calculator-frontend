@@ -26,10 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherOfYouMaximumEarn
 class EitherOfYouMaximumEarningsViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "eitherOfYouMaximumEarnings"
+  val view = application.injector.instanceOf[eitherOfYouMaximumEarnings]
 
-  def createView = () => eitherOfYouMaximumEarnings(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => eitherOfYouMaximumEarnings(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "EitherOfYouMaximumEarnings view" must {
 

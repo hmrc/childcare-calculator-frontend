@@ -28,11 +28,13 @@ class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
 
+  val view = app.injector.instanceOf[partnerStatutoryPay]
+
   val messageKeyPrefix = "partnerStatutoryPay"
 
-  def createView = () => partnerStatutoryPay(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => partnerStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "PartnerStatutoryPay view" must {
 

@@ -28,11 +28,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{EmploymentSupportedChildcare, TaxCredits, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
 
+  val view = application.injector.instanceOf[maxFreeHoursInfo]
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val tfc = mock[TaxFreeChildcare]
@@ -47,7 +49,8 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       new DataRequiredAction,
       tfc,
       tc,
-      esc)
+      esc,
+      view)
 
   "MaxFreeHoursInfo Controller" must {
 

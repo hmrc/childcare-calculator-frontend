@@ -42,7 +42,8 @@ class ParentEmploymentIncomeCYController @Inject()(
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     form: ParentEmploymentIncomeCYForm,
-                                                    taxYearInfo: TaxYearInfo)
+                                                    taxYearInfo: TaxYearInfo,
+                                                    parentEmploymentIncomeCY: parentEmploymentIncomeCY)
   extends FrontendController(mcc) with I18nSupport with FormErrorHelper {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {

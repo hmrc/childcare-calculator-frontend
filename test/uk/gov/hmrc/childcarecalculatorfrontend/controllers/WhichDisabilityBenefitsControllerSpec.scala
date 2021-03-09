@@ -37,6 +37,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with OptionValues {
 
+  val view = application.injector.instanceOf[whichDisabilityBenefits]
+
   "WhichDisabilityBenefits Controller" must {
 
     val cases: Stream[(Int, String)] = {
@@ -155,7 +157,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhichDisabilityBenefitsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[Set[DisabilityBenefits.Value]]): String =
     viewAsString(form, 0, "Foo")
@@ -170,7 +172,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
                     index: Int,
                     name: String
                   ): String =
-    whichDisabilityBenefits(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang).toString
+    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang).toString
 
   def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = {
     if (cases.size == 1) {

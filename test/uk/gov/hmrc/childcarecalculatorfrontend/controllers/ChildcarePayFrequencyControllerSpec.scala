@@ -34,14 +34,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with OptionValues {
 
+  val view = application.injector.instanceOf[childcarePayFrequency]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ChildcarePayFrequencyController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[ChildcarePayFrequency.Value] = ChildcarePayFrequencyForm("Foo"), id: Int = 0, name: String = "Foo") =
-    childcarePayFrequency(frontendAppConfig, form, id, name, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, id, name, NormalMode)(fakeRequest, messages).toString
 
   val requiredData: Map[String, JsValue] = Map(
     WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 1)),

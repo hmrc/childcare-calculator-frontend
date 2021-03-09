@@ -44,7 +44,8 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                  requireData: DataRequiredAction,
                                  resultsService: ResultsService,
                                  moreInfoResults: MoreInfoService,
-                                 utils: Utils) extends FrontendController(mcc) with I18nSupport {
+                                 utils: Utils,
+                                 result: result) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>

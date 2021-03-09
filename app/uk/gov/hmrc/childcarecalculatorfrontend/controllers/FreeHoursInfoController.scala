@@ -30,7 +30,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
                                         mcc: MessagesControllerComponents,
                                         getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                        requireData: DataRequiredAction,
+                                        freeHoursInfo: freeHoursInfo) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

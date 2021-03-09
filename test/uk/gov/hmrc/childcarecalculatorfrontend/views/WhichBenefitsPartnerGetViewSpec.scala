@@ -25,6 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGe
 
 class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
 
+  val mockView = app.injector.instanceOf[whichBenefitsPartnerGet]
   val messageKeyPrefix = "whichBenefitsPartnerGet"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
@@ -34,7 +35,7 @@ class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours with CheckboxViewBe
   def form: Form[Set[String]] = WhichBenefitsPartnerGetForm()
 
   def createView(form: Form[Set[String]] = form): Html =
-    whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
+    mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
 
   "WhichBenefitsPartnerGet view" must {
 
@@ -48,7 +49,7 @@ class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours with CheckboxViewBe
 
   "WhichBenefitsPartnerGet view " must {
     s"display correct content when loaded" in {
-      val view = whichBenefitsPartnerGet(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
+      val view = mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.benefits"))
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.support"))
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.jobseeker.allowance"))

@@ -25,10 +25,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouSelfEmployedOrAp
 class AreYouSelfEmployedOrApprenticeViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "areYouSelfEmployedOrApprentice"
+  val view = application.injector.instanceOf[areYouSelfEmployedOrApprentice]
 
-  def createView = () => areYouSelfEmployedOrApprentice(frontendAppConfig, AreYouSelfEmployedOrApprenticeForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, AreYouSelfEmployedOrApprenticeForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => areYouSelfEmployedOrApprentice(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "AreYouSelfEmployedOrApprentice view" must {
     behave like normalPage(createView, messageKeyPrefix)

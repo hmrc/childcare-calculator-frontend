@@ -32,13 +32,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[whoIsInPaidEmployment]
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhoIsInPaidEmploymentController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[String] = WhoIsInPaidEmploymentForm()) = whoIsInPaidEmployment(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = WhoIsInPaidEmploymentForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhoIsInPaidEmployment Controller" must {
 

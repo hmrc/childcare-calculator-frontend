@@ -33,6 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class BothStatutoryPayControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[bothStatutoryPay]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
 
   val taxYearInfo = new TaxYearInfo()
@@ -41,9 +42,9 @@ class BothStatutoryPayControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new BothStatutoryPayController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, taxYearInfo)
+      dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
 
-  def viewAsString(form: Form[Boolean] = myForm) = bothStatutoryPay(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = myForm) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "BothStatutoryPay Controller" must {
 

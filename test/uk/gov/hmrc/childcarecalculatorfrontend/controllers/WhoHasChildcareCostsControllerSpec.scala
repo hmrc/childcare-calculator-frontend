@@ -37,6 +37,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionValues {
 
+  val view = application.injector.instanceOf[whoHasChildcareCosts]
+
   private val testDate: LocalDate           = LocalDate.parse("2019-01-01")
   private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
   private val ageOf16Before31Aug: LocalDate = ageOf16WithBirthdayBefore31stAugust(testDate)
@@ -152,7 +154,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): WhoHasChildcareCostsController =
     new WhoHasChildcareCostsController(frontendAppConfig, mcc,
       FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction)
+      dataRetrievalAction, new DataRequiredAction, view)
 
   val defaultValues: Map[String, String] = Map("Foo" -> "0", "Bar" ->"1")
 
@@ -160,7 +162,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
                     form: Form[_] = WhoHasChildcareCostsForm(0, 1),
                     values: Map[String, String] = defaultValues
                   ): String =
-    whoHasChildcareCosts(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
 
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(

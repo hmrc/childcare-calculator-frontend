@@ -21,11 +21,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculato
 
 class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
 
-  def view = () => whatToTellTheCalculator(frontendAppConfig)(fakeRequest, messages)
+  val view = app.injector.instanceOf[whatToTellTheCalculator]
+
+  def createView = () => view(frontendAppConfig)(fakeRequest, messages)
 
   "whatToTellTheCalculator view" must {
 
-    behave like normalPage(view, "whatToTellTheCalculator", "guidanceA", "guidanceB",
+    behave like normalPage(createView, "whatToTellTheCalculator", "guidanceA", "guidanceB",
       "li.dob", "li.costs", "li.benefits", "time", "indent", "tcUc", "p1.a", "p1.link", "p1.b", "p2.a", "p2.link")
   }
 }
