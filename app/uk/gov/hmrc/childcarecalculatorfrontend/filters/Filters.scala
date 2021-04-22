@@ -17,10 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.filters
 
 import com.google.inject.Inject
-import play.api.http.DefaultHttpFilters
-import uk.gov.hmrc.play.bootstrap.frontend.filters.FrontendFilters
+import play.api.http.{DefaultHttpFilters, EnabledFilters}
 
 class Filters @Inject() (
                           sessionIdFilter: SessionIdFilter,
-                          frontendFilters: FrontendFilters
-                        ) extends DefaultHttpFilters(frontendFilters.filters :+ sessionIdFilter: _*)
+                          enabledFilters: EnabledFilters,
+                        ) extends DefaultHttpFilters(enabledFilters.filters :+ sessionIdFilter: _*)
