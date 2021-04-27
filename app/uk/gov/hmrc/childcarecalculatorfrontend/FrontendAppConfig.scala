@@ -22,7 +22,6 @@ import play.api.i18n.Lang
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
-import uk.gov.hmrc.play.views.html.layouts
 
 class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Configuration) {
 
