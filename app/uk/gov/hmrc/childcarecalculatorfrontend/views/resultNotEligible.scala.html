@@ -106,12 +106,13 @@
         <div class="twoYearsOld">
             <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
             <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
-            <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href=@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
-                @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+            <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
+                @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
             </a>
                 @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
             </p>
         </div>
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
     }
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider || !model.isAnyoneInPaidEmployment) {
@@ -121,15 +122,13 @@
         <p>
         @if(!model.hasChildcareCosts) {
             @messages("freeHoursResult.toBeEligible.childcare.cost.start")
-            <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>
-            .
+            <a id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
             @messages("freeHoursResult.toBeEligible.childcare.cost.end")
 
         } else {
             @if(!model.hasCostsWithApprovedProvider) {
                 @messages("freeHoursResult.toBeEligible.approved.provider.start")
-                <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>
-                .
+                <a id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
                 @messages("freeHoursResult.toBeEligible.approved.provider.end")
             } else {
                 @if(!model.isAnyoneInPaidEmployment) {
@@ -144,4 +143,5 @@
             }
         }
         </p>
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
     }

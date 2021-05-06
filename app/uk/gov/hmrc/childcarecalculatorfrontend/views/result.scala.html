@@ -53,8 +53,9 @@
         }
         @resultsEstimateInformationContent
 
-        @if(model.noOfEligibleSchemes(hideTC) > 0) {
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
 
+        @if(model.noOfEligibleSchemes(hideTC) > 0) {
             <h2 class="resultEligibleHeading visuallyhidden">
             @if(model.noOfEligibleSchemes(hideTC) == 1) {
                 @messages("result.single.eligibility.heading")
@@ -62,11 +63,12 @@
                 @messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes(hideTC))
             }
             </h2>
-
+            <h2 class="heading-large">@messages("result.eligible.subheading")</h2>
             @resultEligible(model, utils, hideTC)
 
             @if(!model.isEligibleToAllSchemes(hideTC)) {
                 <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
+                <h2 class="heading-large">@messages("result.not.eligible.subheading")</h2>
                 @resultNotEligible(model, hideTC)
             }
 
@@ -75,8 +77,8 @@
                 <div class="twoYearsOld">
                     <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
                     <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
-                    <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href=@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")>
-                        @messages(s"results.two.years.old.guidance.${model.location}.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span>
+                    <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
+                        @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
                     </a>
                         @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
                     </p>
@@ -84,7 +86,7 @@
             }
 
             @if(model.noOfEligibleSchemes(hideTC) > 1) {
-
+                <h2 class="heading-large">@messages("result.further.information.subheading")</h2>
                 <h2 class="heading-medium">@messages("result.more.info.title")</h2>
 
                 @if(model.noOfEligibleSchemes(hideTC) == 4) {
@@ -142,6 +144,7 @@
                         <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
                     }
                 }
+                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
             }
 
             @if(links.nonEmpty){
@@ -150,20 +153,21 @@
                     <p>@messages("aboutYourResults.more.info.para1")</p>
                         <ul class="list list-bullet">
                         @for(link <- links) {
-                            <li><a target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href=@link("link")>@link("title") <span>@messages("site.opens.new.window")</span></a></li>
+                            <li><a target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href="@link("link")">@link("title") <span>@messages("site.opens.new.tab")</span></a></li>
                         }
                         </ul>
                     <p>@summary.getOrElse("")</p>
                 </div>
+                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
             }
         } else {
             <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
+            <h2 class="heading-large">@messages("result.not.eligible.subheading")</h2>
             @resultNotEligible(model, hideTC)
         }
-
         <div class="panel panel-border-wide survey">
             <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
-                @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.window")</span></a> @messages("results.feedback.survey.text.after.link")
+                @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span></a> @messages("results.feedback.survey.text.after.link")
             </p>
         </div>
     }

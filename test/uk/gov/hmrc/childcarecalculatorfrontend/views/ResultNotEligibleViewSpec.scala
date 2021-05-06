@@ -45,7 +45,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
         assertContainsMessages(view, "Tax credits")
         view.getElementById("notEligibleTC1").text() mustBe tcSchemeIneligibleMsg +" " +messages("result.tc.scheme.guidance.link") +
-          messages("feedback.hint.link.opens.new.window")
+          messages("feedback.hint.link.opens.new.tab")
       }
 
       "User answered UC to do you get tax credits or universal credits " in {

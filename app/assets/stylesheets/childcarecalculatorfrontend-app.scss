@@ -87,6 +87,10 @@ h2.heading-medium {
   display: block;
 }
 
+.result hr:last-of-type {
+	display: none
+}
+
 .results--heading {
 
   margin-bottom: 0.5em;
