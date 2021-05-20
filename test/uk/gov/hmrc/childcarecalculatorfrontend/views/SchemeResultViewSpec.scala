@@ -40,30 +40,6 @@ class SchemeResultViewSpec extends ViewBehaviours {
         assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
     }
 
-    "Contain eligibility class as green when user is eligible" in {
-        val view = asDocument(scheme_result(
-          title = "You are eligible",
-          couldGet = Some("you could get"),
-          eligibility = Some(EligibilityModel("100", "")),
-          periodText = Some("a month"),
-          para1 = Some("some text"),
-          para2 = Some(Html("some more text")),
-          para3 = Some("some even more text")
-        )(messages))
-
-      assert(view.getElementsByClass("panel").hasClass("green"))
-
-    }
-
-    "Contain not eligible class as red when user is not eligible" in {
-        val view = asDocument(scheme_result(
-          title = "You are not eligible"
-        )(messages))
-
-      assert(view.getElementsByClass("panel").hasClass("red"))
-
-    }
-
     "contain the hyper link next to Tax Credit ineligibility message" in {
       val view = asDocument(scheme_result(
         title = "You are eligible",
@@ -79,7 +55,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
       assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
       view.getElementById("tcGuidanceLink").attr("href") mustBe tcSchemeGuidanceLinkUrl
       view.getElementById("tcGuidanceLink").text mustBe messages("result.tc.scheme.guidance.link") +
-        messages("feedback.hint.link.opens.new.window")
+        messages("feedback.hint.link.opens.new.tab")
     }
   }
 }

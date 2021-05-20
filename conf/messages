@@ -78,7 +78,7 @@ site.service_name = Childcare calculator
 site.textarea.char_limit = (Limit is {0} characters)
 site.in.pounds = in pounds
 site.colon = :
-site.opens.new.window = (opens in a new window)
+site.opens.new.tab = (opens in new tab)
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -89,11 +89,14 @@ checkYourAnswers.guidance = Guidance for check your answers
 
 whatToTellTheCalculator.title = What you’ll need
 whatToTellTheCalculator.heading = What you’ll need
-whatToTellTheCalculator.guidanceA = To check if you are eligible for 30 free hours a week, or Tax-Free Childcare, you’ll need to know the working hours and income for yourself (and your partner if you have one).
-whatToTellTheCalculator.guidanceB = You’ll also need to give information about your children, including:
+whatToTellTheCalculator.guidanceA = Check if you are eligible for up to 30 free hours of childcare a week and Tax-Free Childcare for each child.
+whatToTellTheCalculator.guidanceB = You’ll need to know:
+whatToTellTheCalculator.guidanceC = You’ll also need information about your children, including:
+whatToTellTheCalculator.li.workingHours = your working hours and income
+whatToTellTheCalculator.li.workingHoursPartner = the working hours and income for your partner (if you have one)
 whatToTellTheCalculator.li.dob = their dates of birth
-whatToTellTheCalculator.li.costs = what you think your weekly or monthly approved childcare costs might be or what they are
-whatToTellTheCalculator.li.benefits = any benefits they get
+whatToTellTheCalculator.li.costs = your likely weekly or monthly approved childcare costs
+whatToTellTheCalculator.li.benefits = any disability benefits they get
 whatToTellTheCalculator.time = It should take around 5 minutes to complete.
 whatToTellTheCalculator.indent = You can change your answers as many times as you like to recalculate and compare your results.
 whatToTellTheCalculator.tcUc = Tax credits and Universal Credit
@@ -196,10 +199,10 @@ freeHoursResult.info.fh.lead = You could get up to
 freeHoursResult.info.fh.exit = free childcare a week
 
 freeHoursResult.partialEligible.guidance.england.period = free childcare a week
-freeHoursResult.partialEligible.guidance.england = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
-freeHoursResult.partialEligible.guidance.scotland = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time – this is 600 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
-freeHoursResult.partialEligible.guidance.wales = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - this is around 390 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
-freeHoursResult.partialEligible.guidance.northern-ireland = On this scheme, you can get free hours of free pre-school education for your 3 or 4 year old that can be used in term time – this is 475 hours a year. You can take up the offer the term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+freeHoursResult.partialEligible.guidance.england = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer for the school term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+freeHoursResult.partialEligible.guidance.scotland = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time – this is 600 hours a year. You can take up the offer for the school term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+freeHoursResult.partialEligible.guidance.wales = On this scheme, you can get free hours for your 3 or 4 year old that can be used in term time - this is around 390 hours a year. You can take up the offer for the school term following your child’s 3rd birthday. Your provider may apply charges for additional services.
+freeHoursResult.partialEligible.guidance.northern-ireland = On this scheme, you can get free hours of free pre-school education for your 3 or 4 year old that can be used in term time – this is 475 hours a year. You can take up the offer for the school term following your child’s 3rd birthday. Your provider may apply charges for additional services.
 freeHoursResult.toBeEligible.heading = How you could get help
 freeHoursResult.toBeEligible.free.hours = You are currently not eligible for any free hours because you do not have any children aged 3 or 4.
 
@@ -580,7 +583,7 @@ youAnyTheseBenefitsCY.li.jobseekers_allowance = Jobseeker’s Allowance (contrib
 youAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 youAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (contribution-based)
 youAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
-youAnyTheseBenefitsCY.li.disability = Widowed Parent's Allowance
+youAnyTheseBenefitsCY.li.disability = Widowed Parent’s Allowance
 
 youAnyTheseBenefitsCY.li.attendance = Attendance allowance
 youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
@@ -612,7 +615,7 @@ bothAnyTheseBenefitsCY.li.income_support = State Pension
 bothAnyTheseBenefitsCY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
 bothAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (contribution-based)
 bothAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
-bothAnyTheseBenefitsCY.li.disability = Widowed Parent's Allowance
+bothAnyTheseBenefitsCY.li.disability = Widowed Parent’s Allowance
 bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 
 bothAnyTheseBenefitsCY.li.attendance = Attendance allowance
@@ -848,7 +851,7 @@ youAnyTheseBenefitsPY.li.jobseekers_allowance = Jobseeker’s Allowance (contrib
 youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 youAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance (contribution-based)
 youAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
-youAnyTheseBenefitsPY.li.disability = Widowed Parent's Allowance
+youAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
 
 youAnyTheseBenefitsPY.li.attendance = Attendance allowance
 youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
@@ -1008,7 +1011,7 @@ aboutYourChild.title = About your child
 aboutYourChild.title.nth = About your {0} child
 aboutYourChild.heading = About your child
 aboutYourChild.heading.nth = About your {0} child
-aboutYourChild.lede = You can use a nickname if you want. Names are only used to make your questions and results clear - they won't be stored or shared with anyone.
+aboutYourChild.lede = You can use a nickname if you want. Names are only used to make your questions and results clear - they won’t be stored or shared with anyone.
 aboutYourChild.name = What’s their first name?
 aboutYourChild.dob = What’s their date of birth?
 aboutYourChild.hint = For example, 31 3 2015
@@ -1237,11 +1240,17 @@ result.free.hours.period.england =  free childcare a week - this is {0} hours a 
 result.free.hours.period.wales =  free childcare a week - this is around 390 hours a year.
 result.free.hours.period.scotland =  funded early learning and childcare a week - this is 600 hours a year.
 result.free.hours.period.northern-ireland = free childcare a week - this is 475 hours a year.
-result.free.hours.para1 = You can get free hours for your 3 or 4 year old that can be used in or outside of term time. Your provider may apply charges for additional services.
+result.free.hours.para1 = You can get free hours for your 3 or 4 year old that can be used in or outside of school term time. Your provider may apply charges for additional services.
 result.free.hours.not.eligible = You are currently not eligible for any free hours because you do not have any children aged 3 or 4.
-result.free.hours.detail.summary = How free childcare hours work
-result.free.hours.detailPara1 = You can take up the offer the term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
-result.free.hours.detailPara2 = You must use childcare from an approved provider. For example, a registered childminder, playscheme, nursery, out of school club or a home careworker working for a registered agency. You may be able to use your free hours between 2 different providers.
+result.free.hours.detail.summary = How free childcare hours works
+result.free.hours.detailPara1 = You can take up the offer for the school term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
+result.free.hours.detailPara2.p1 = You must use childcare from an approved provider. For example:
+result.free.hours.detailPara2.li.1 = a registered childminder
+result.free.hours.detailPara2.li.2 = playscheme
+result.free.hours.detailPara2.li.3 = nursery
+result.free.hours.detailPara2.li.4 = out of school club
+result.free.hours.detailPara2.li.5 = home careworker working for a registered agency
+result.free.hours.detailPara2.p2 = You may be able to use your free hours between 2 different providers.
 result.free.hours.detailPara3.you.can = You can
 result.free.hours.detailPara3.link.text = contact your childcare provider or your local council to find out more about free childcare hours
 result.free.hours.detailPara3.link = https://www.gov.uk/find-free-early-education
@@ -1251,14 +1260,17 @@ result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs.
 result.tc.para1 = You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances and uses your household income from the previous year.
 result.tc.detail.summary = How tax credits works
-result.tc.detailPara1 = How much childcare support you can get depends on your income, hours worked, what you pay for childcare, the number of children you have and whether you, your partner, or any of your children are disabled. You can get up to 70% of your childcare costs paid. For example, for 1 child, the maximum childcare cost covered is £175 a week and 70% of this would be £122.50 in tax credits. For more than 1 child, the maximum childcare cost covered is £300, which would be £210 in tax credits.
+result.tc.detailPara1 = How much childcare support you can get depends on your income, hours worked, what you pay for childcare, the number of children you have and whether you, your partner, or any of your children are disabled. You can get up to 70% of your childcare costs paid.
+result.tc.detailPara2 = For example:
+result.tc.detailPara2.li.1 = for 1 child, the maximum childcare cost covered is £175 a week and 70% of this would be £122.50 in tax credits
+result.tc.detailPara2.li.2 = for more than 1 child, the maximum childcare cost covered is £300, which would be £210 in tax credits
 result.tc.detailPara2.tax.credit.replace.uc = If you are not eligible to continue claiming tax credits or make a new claim, you may need to check separately if you are eligible to
 result.tc.detailPara2.tax.credit.replace.uc.link.text = get help with childcare costs using Universal Credit
 result.tc.detailPara2.tax.credit.replace.uc.link = https://www.gov.uk/help-with-childcare-costs/universal-credit
 result.tc.detailPara3 = It is for children under 16, under 18 if disabled, or under 19 if in approved education or training.
 
 result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
-result.uc.not.eligible.para = You wouldn't get help from Tax Credits as you have told us that you were already getting Universal Credit
+result.uc.not.eligible.para = You cannot get help from Tax Credits as you have told us that you were already getting Universal Credit
 result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get childcare support from tax credits as both you and your partner would need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits = You cannot get childcare support from tax credits. Although your partner gets a benefit that would make them eligible, you need to work 16 hours or more a week.
@@ -1270,8 +1282,9 @@ result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.
 result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child aged 11 or under, or up to £4,000 a year for each child aged 16 or under if they are disabled. You get a £2 government top-up for every £8 you pay in childcare.
 result.tfc.detail.summary = How Tax-Free Childcare works
-result.tfc.detailPara1 = You’ll create an online childcare account to pay into, get top-ups paid into and use it to pay your approved provider directly. For example, for every £8 paid into the account the government will pay a £2 top-up that would give you £10 towards your childcare costs for each child. You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 a year if they are disabled.
-result.tfc.detailPara2 = The child or children must usually live with you. They stop being eligible on 1 September after their 11th birthday.
+result.tfc.detailPara1 = You will create an online childcare account to pay into, get top-ups paid into it and use it to pay your approved provider directly. For example, for every £8 paid into the account, the government will pay a £2 top-up that would give you £10 towards your childcare costs for each child.
+result.tfc.detailPara2 = You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 a year if they are disabled.
+result.tfc.detailPara3 = The child or children must usually live with you. They stop being eligible on 1 September after their 11th birthday.
 
 result.tfc.not.eligible = You cannot get help from Tax-Free Childcare. To get help, you need to earn at least 16 times the National Minimum Wage a week and not earn more than £100,000 a year. This applies to both if you live with a partner.
 result.tfc.not.eligible2 = Children are not eligible from 1 September after their 11th birthday, or after their 16th birthday if disabled.
@@ -1280,18 +1293,27 @@ result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice.
 result.esc.para1 = Each parent can take some of their pay as childcare vouchers and not pay tax or National Insurance on that amount. You could take up to £55, £28 or £25 a week in vouchers, depending on how much you earn.
 result.esc.detail.summary = How childcare vouchers work
-result.esc.detailPara1 = The amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
+result.esc.detailPara1 = The amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice.
+result.esc.detailPara2 = For example:
+result.esc.detailPara2.li.1 = basic-rate taxpayers can take up to £55 a week
+result.esc.detailPara2.li.2 = higher-rate taxpayers can take up to £28 a week
+result.esc.detailPara2.li.3 = top-rate taxpayers can take up to £25 a week
+result.esc.detailPara3 = This is the amount you won’t pay tax or National Insurance on.
+result.esc.detailPara4 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
 
 result.esc.detailPara2.start = Childcare voucher schemes are
 result.esc.detailPara2.link.text = closed to new applicants
 result.esc.detailPara2.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
 result.esc.detailPara2.end = . You can keep getting vouchers if you are already in a scheme.
-result.esc.detailPara3 = They are for children under 16, or under 18 if disabled.
 
 result.esc.not.eligible.para1 = You cannot get help from childcare vouchers as you answered that you do not get them currently, and the scheme is now closed to new joiners.
 
 result.not.eligible.title = You are not eligible for:
 result.not.eligible.title.ga = You are not eligible for
+
+result.eligible.subheading = You could get this
+result.not.eligible.subheading = You cannot get this
+result.further.information.subheading = Further information
 
 whoWasInPaidWorkPY.title = Who was in paid work?
 whoWasInPaidWorkPY.heading = Who was in paid work?
@@ -1305,7 +1327,7 @@ aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
 aboutYourResults.about.the.schemes = About the schemes
 aboutYourResults.free.childcare.hours.title = Free childcare hours
-aboutYourResults.free.childcare.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of term time. You can take up the offer the term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
+aboutYourResults.free.childcare.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of school term time. You can take up the offer for the school term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
 aboutYourResults.free.childcare.hours.para2 = You can use your free hours between 2 different approved providers. For example, a registered childminder, playscheme, nursery, out of school club or a home careworker working for a registered agency. They may apply charges for additional services.
 aboutYourResults.free.childcare.hours.para3 = Free childcare hours stop when your child starts in reception class.
 
@@ -1313,14 +1335,14 @@ aboutYourResults.tc.title = Tax credits
 aboutYourResults.tc.para1 = With this scheme, how much help you can get depends on your income, the number of children you have, whether any of your children are disabled. It is made up of different payments or ‘elements’ to pay 70% of your childcare. For example, for 1 child, the maximum childcare cost covered is £175 a week – this is £122.50 in tax credits. For 2 or more children, the maximum childcare cost covered is £300, which is £210 in tax credits.
 aboutYourResults.tc.para2 = It will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live.
 aboutYourResults.tc.para3.part1 = All tax credits claims will eventually be moved over to Universal Credit. You can find out about
-aboutYourResults.tc.para3.eligibility.checker = your eligiblity and when you could be affected
+aboutYourResults.tc.para3.eligibility.checker = your eligibility and when you could be affected
 aboutYourResults.tc.para3.eligibility.checker.link = https://universalcreditinfo.net
 aboutYourResults.tc.para3.part2 = by the change.
 aboutYourResults.tc.para4 = It is for children under 16 or 18 if disabled or 19 if in higher education.
 aboutYourResults.return.link = Return to results
 
 aboutYourResults.tfc.title = Tax-Free Childcare
-aboutYourResults.tfc.para1 = With this scheme, you'll create an online childcare account to pay your provider. For example, every £8 paid into the account gets a £2 top-up to give you £10 towards your childcare costs for each child. You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 if they are disabled.
+aboutYourResults.tfc.para1 = With this scheme, you will create an online childcare account to pay your provider. For example, every £8 paid into the account gets a £2 top-up to give you £10 towards your childcare costs for each child. You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 if they are disabled.
 aboutYourResults.tfc.para2 = It is for children under 12, or 18 if disabled.
 
 aboutYourResults.esc.title = Childcare vouchers
@@ -1400,7 +1422,7 @@ surveyChildcareSupport.checkYourAnswersLabel = surveyChildcareSupport
 
 results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
-feedback.hint.link.opens.new.window = (opens in a new window)
+feedback.hint.link.opens.new.tab = (opens in new tab)
 
 
 timeout.heading = You are about to be timed out

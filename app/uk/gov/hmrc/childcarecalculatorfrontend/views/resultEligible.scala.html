@@ -23,15 +23,15 @@
 @(model: ResultsViewModel, utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
 @freeHoursContactCouncil = {
-    <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href=@messages("result.free.hours.detailPara3.link")>@messages("result.free.hours.detailPara3.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
+    <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">@messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>.</p>
 }
 
 @findoutAboutUC = {
-    <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" data-journey-click="link - click:@messages("result.tc.title"):@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text")" href=@messages("result.tc.detailPara2.tax.credit.replace.uc.link")>@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") <span class="visually-hidden">@messages("site.opens.new.window")</span></a>.</p>
+    <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" data-journey-click="link - click:@messages("result.tc.title"):@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text")" href="@messages("result.tc.detailPara2.tax.credit.replace.uc.link")">@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") @messages("site.opens.new.tab")</a>.</p>
 }
 
 @vouchersWork = {
-    <p>@messages("result.esc.detailPara2.start") <a id="vouchersClosed" href=@messages("result.esc.detailPara2.link")>@messages("result.esc.detailPara2.link.text")</a>@messages("result.esc.detailPara2.end")</p>
+    <p>@messages("result.esc.detailPara2.start") <a id="vouchersClosed" href="@messages("result.esc.detailPara2.link")">@messages("result.esc.detailPara2.link.text")</a>@messages("result.esc.detailPara2.end")</p>
 }
     @if(model.freeHours.isDefined) {
 
@@ -53,7 +53,9 @@
                 detailSummary = Some(messages("result.free.hours.detail.summary")),
                 detailClass = Some("freeHours"),
                 detailPara1 = Some(messages("result.free.hours.detailPara1")),
-                detailPara2 = Some(messages("result.free.hours.detailPara2")),
+                detailPara2 = Some(messages("result.free.hours.detailPara2.p1")),
+                detailPara2List = Seq(messages("result.free.hours.detailPara2.li.1"), messages("result.free.hours.detailPara2.li.2"), messages("result.free.hours.detailPara2.li.3"), messages("result.free.hours.detailPara2.li.4"), messages("result.free.hours.detailPara2.li.5")),
+                detailPara3 = Some(messages("result.free.hours.detailPara2.p2")),
                 detailPara3WithLink = Some(freeHoursContactCouncil),
                 detailPara4 = Some(messages("result.free.hours.detailPara4")))
         }
@@ -69,7 +71,9 @@
             detailSummary = Some(messages("result.tc.detail.summary")),
             detailClass = Some("tc"),
             detailPara1 = Some(messages("result.tc.detailPara1")),
-            detailPara2WithLink = Some(findoutAboutUC))
+            detailPara2 = Some(messages("result.tc.detailPara2")),
+            detailPara2List = Seq(messages("result.tc.detailPara2.li.1"), messages("result.tc.detailPara2.li.2")),
+            detailPara3WithLink = Some(findoutAboutUC))
     }
 
 
@@ -84,6 +88,7 @@
             detailClass = Some("tfc"),
             detailPara1 = Some(messages("result.tfc.detailPara1")),
             detailPara2 = Some(messages("result.tfc.detailPara2")),
+            detailPara3 = Some(messages("result.tfc.detailPara3")),
             displayWarning = model.showTFCWarning,
             warningMessage = model.tfcWarningMessage)
     }
@@ -98,6 +103,10 @@
             para2 = Some(vouchersWork),
             detailSummary = Some(messages("result.esc.detail.summary")),
             detailClass = Some("esc"),
-            detailPara1 = Some(messages("result.esc.detailPara1"))
+            detailPara1 = Some(messages("result.esc.detailPara1")),
+            detailPara2 = Some(messages("result.esc.detailPara2")),
+            detailPara2List = Seq(messages("result.esc.detailPara2.li.1"), messages("result.esc.detailPara2.li.2"), messages("result.esc.detailPara2.li.3")),
+            detailPara3 = Some(messages("result.esc.detailPara3"))
+
         )
     }
