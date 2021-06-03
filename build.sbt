@@ -1,8 +1,6 @@
 import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings, targetJvm}
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 import scoverage._
-import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 
@@ -27,7 +25,7 @@ lazy val scoverageSettings: Seq[Def.Setting[_]] = {
 }
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins : _*)
+  .enablePlugins(Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins : _*)
   .disablePlugins(JUnitXmlReportPlugin) // this is an experimental plugin that is (currently) enabled by default and prevents deployment to QA environment
   .settings(majorVersion := 1)
   .settings(playSettings : _*)
@@ -46,7 +44,6 @@ lazy val microservice = Project(appName, file("."))
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     resolvers ++= Seq(
-      Resolver.bintrayRepo("hmrc", "releases"),
       Resolver.jcenterRepo
     ),
     // ***************
