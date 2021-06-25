@@ -24,10 +24,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcScheme
 
 class SchemeResultViewSpec extends ViewBehaviours {
 
+  lazy val appSchemeResult = app.injector.instanceOf[scheme_result]
+
   "Scheme Result view" must {
 
     "Contain title and paragraph" in {
-        val view = asDocument(scheme_result(
+        val view = asDocument(appSchemeResult(
           title = "You are eligible",
           couldGet = Some("you could get"),
           eligibility = Some(EligibilityModel("100", "")),
@@ -41,7 +43,7 @@ class SchemeResultViewSpec extends ViewBehaviours {
     }
 
     "contain the hyper link next to Tax Credit ineligibility message" in {
-      val view = asDocument(scheme_result(
+      val view = asDocument(appSchemeResult(
         title = "You are eligible",
         couldGet = Some("you could get"),
         eligibility = Some(EligibilityModel("100", "")),

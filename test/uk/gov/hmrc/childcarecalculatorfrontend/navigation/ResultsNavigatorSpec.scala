@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.play.PlaySpec
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.Schemes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class ResultsNavigatorSpec extends WordSpec with MustMatchers with OptionValues with MockitoSugar {
+class ResultsNavigatorSpec extends PlaySpec with MockitoSugar {
 
   ".nextPage" must {
 
@@ -54,7 +54,7 @@ class ResultsNavigatorSpec extends WordSpec with MustMatchers with OptionValues 
     }
   }
 
-  lazy val resultPage: Call = routes.ResultController.onPageLoad()
+  lazy val resultPage: Call = routes.ResultController.onPageLoad
 
   def navigator(s: Schemes): SubNavigator = new SubNavigator with ResultsNavigator {
 

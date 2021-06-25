@@ -40,7 +40,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

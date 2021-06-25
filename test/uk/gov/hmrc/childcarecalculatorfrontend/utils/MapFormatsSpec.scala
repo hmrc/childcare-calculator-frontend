@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.scalatest.{EitherValues, MustMatchers, WordSpec}
+import org.scalatest.EitherValues
+import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsPath, Json, JsonValidationError}
 
-class MapFormatsSpec extends WordSpec with MustMatchers with EitherValues with MapFormats {
+class MapFormatsSpec extends PlaySpec with EitherValues with MapFormats {
 
   "map reads" must {
 

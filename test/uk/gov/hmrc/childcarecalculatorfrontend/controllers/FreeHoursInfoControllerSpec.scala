@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class FreeHoursInfoControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[freeHoursInfo]
-  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new FreeHoursInfoController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction, view)
@@ -74,7 +74,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "return OK with no free hours for 2 year old" when {

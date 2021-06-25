@@ -40,7 +40,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
   val mockUtils = mock[Utils]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new YourMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
@@ -102,7 +102,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
       setUpMock()
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -111,7 +111,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
       setUpMock()
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to the 'your age' view when session data does not hold this value" in {

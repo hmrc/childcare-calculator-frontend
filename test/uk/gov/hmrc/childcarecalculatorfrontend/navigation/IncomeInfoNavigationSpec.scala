@@ -72,7 +72,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
           when(answers.whoIsInPaidEmployment) thenReturn None
 
           navigator.nextPage(PartnerIncomeInfoId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.SessionExpiredController.onPageLoad
         }
       }
     }
@@ -101,7 +101,7 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
           when(answers.doYouLiveWithPartner) thenReturn None
 
           navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.SessionExpiredController.onPageLoad
         }
 
       }

@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 import org.joda.time.LocalDate
-import play.api.Logger.logger
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -43,7 +43,8 @@ class YourMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
                                               utils: Utils,
-                                              yourMinimumEarnings: yourMinimumEarnings) extends FrontendController(mcc) with I18nSupport {
+                                              yourMinimumEarnings: yourMinimumEarnings) extends FrontendController(mcc)
+  with I18nSupport with Logging {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
-import org.scalatest.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class WithRequiredBooleanMappingSpec extends FormSpec {
 

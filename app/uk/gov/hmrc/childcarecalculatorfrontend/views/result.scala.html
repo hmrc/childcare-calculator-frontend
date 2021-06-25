@@ -18,8 +18,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template)
+@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, resultEligible: resultEligible, resultNotEligible: resultNotEligible)
 
 @(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
@@ -44,9 +45,9 @@
         timeout = false,
         bodyClasses = Some("result")) {
 
-        @components.back_link()
+        @back_link()
 
-        @components.heading(pagetitle.toString, "heading-xlarge")
+        @heading(pagetitle.toString, "heading-xlarge")
 
         @if(!model.isEligibleOnlyToMinimumFreeHours && model.noOfEligibleSchemes(hideTC) > 0) {
             <p>@model.firstParagraph</p>

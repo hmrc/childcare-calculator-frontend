@@ -5,7 +5,7 @@ resolvers += "Typesafe Releases" at "https://repo.typesafe.com/typesafe/releases
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.0.0")
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.4")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.8")
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
 

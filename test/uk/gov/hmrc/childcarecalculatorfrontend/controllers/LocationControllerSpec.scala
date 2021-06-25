@@ -34,7 +34,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class LocationControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[location]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new LocationController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),

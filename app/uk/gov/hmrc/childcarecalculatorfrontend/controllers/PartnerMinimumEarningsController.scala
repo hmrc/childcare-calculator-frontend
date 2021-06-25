@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 import org.joda.time.LocalDate
-import play.api.Logger.logger
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerMinimumEarningsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{partnerMinimumEarningsErrorKey}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerMinimumEarningsErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -43,7 +43,8 @@ class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
                                                  utils: Utils,
-                                                 partnerMinimumEarnings: partnerMinimumEarnings) extends FrontendController(mcc) with I18nSupport {
+                                                 partnerMinimumEarnings: partnerMinimumEarnings) extends FrontendController(mcc)
+  with I18nSupport with Logging {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

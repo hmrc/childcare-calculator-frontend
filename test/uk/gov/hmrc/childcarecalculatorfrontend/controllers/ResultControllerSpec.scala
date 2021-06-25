@@ -100,7 +100,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
         val result = controller(dontGetAnyData, resultService).onPageLoad(fakeRequest)
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+        redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
       }
     }
 

@@ -31,7 +31,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     this(freeHours, new Schemes(schemes: _*))
   }
 
-  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
+  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
@@ -53,9 +53,9 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     val No = YesNoNotYetEnum.NO.toString
     if(answers.childcareCosts.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
-        routes.FreeHoursInfoController.onPageLoad()
+        routes.FreeHoursInfoController.onPageLoad
       } else {
-        routes.ResultController.onPageLoad()
+        routes.ResultController.onPageLoad
       }
     } else {
       routes.ApprovedProviderController.onPageLoad(NormalMode)
@@ -67,13 +67,13 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
 
     if(answers.approvedProvider.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
-        routes.FreeHoursInfoController.onPageLoad()
+        routes.FreeHoursInfoController.onPageLoad
       } else {
-        routes.ResultController.onPageLoad()
+        routes.ResultController.onPageLoad
       }
     } else {
       if (freeHours.eligibility(answers) == Eligible) {
-        routes.FreeHoursInfoController.onPageLoad()
+        routes.FreeHoursInfoController.onPageLoad
       } else {
         routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
       }

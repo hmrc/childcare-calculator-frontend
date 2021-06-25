@@ -37,7 +37,7 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
   val view = application.injector.instanceOf[parentEmploymentIncomeCY]
   val taxYearInfo = new TaxYearInfo
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentEmploymentIncomeCYController(frontendAppConfig,
@@ -98,7 +98,7 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -106,7 +106,7 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {

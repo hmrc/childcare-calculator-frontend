@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.scalatest.{MustMatchers, WordSpec}
+import org.scalatestplus.play.PlaySpec
 import play.api.data.FormError
 
-class WithPrefixSpec extends WordSpec with MustMatchers {
+class WithPrefixSpec extends PlaySpec {
 
   ".withPrefix" must {
 

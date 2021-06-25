@@ -17,12 +17,14 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.RepeaterAnswerSection
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
 
+@this(answer_row: components.answer_row)
+
 @(answerSection: RepeaterAnswerSection)(implicit messages: Messages)
 
 <h2>@messages(answerSection.headingKey)</h2>
 
 <ul class="tabular-data tabular-data--list">
-    @components.answer_row(answerSection.relevanceRow)
+    @answer_row(answerSection.relevanceRow)
 @for(row <- answerSection.rows){
     <li class="tabular-data__entry tabular-data__entry--grouped divider--bottom">
         <div class="tabular-data__data tabular-data__data--6-12">@row.answer</div>

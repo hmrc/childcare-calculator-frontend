@@ -17,6 +17,7 @@
 @import play.twirl.api.HtmlFormat
 @import uk.gov.hmrc.play.views.html.layouts._
 @import views.html.layouts.GovUkTemplate
+@import uk.gov.hmrc.play.views.html.layouts.FooterLinks
 
 @this(govuk_template: GovUkTemplate,
         headUi: Head,
@@ -26,7 +27,8 @@
         uiBetaBanner: BetaBanner,
         uiServiceInfo: ServiceInfo,
         main_content_header: MainContentHeader,
-        main_content: MainContent
+        main_content: MainContent,
+        footerLinks: FooterLinks
 )
 
 @(appConfig: uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig,
@@ -157,4 +159,4 @@
         sidebar = sidebar)
 }
 
-@govuk_template(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links()), true)(content)
+@govuk_template(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(footerLinks), true)(content)

@@ -53,7 +53,7 @@ class ChildcarePayFrequencyController @Inject()(
           }
           Future.successful(Ok(childcarePayFrequency(appConfig, preparedForm, childIndex, child.name, mode)))
         }
-        case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+        case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
       }
   }
 
@@ -75,7 +75,7 @@ class ChildcarePayFrequencyController @Inject()(
               }
           )
         }
-        case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+        case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
       }
   }
 

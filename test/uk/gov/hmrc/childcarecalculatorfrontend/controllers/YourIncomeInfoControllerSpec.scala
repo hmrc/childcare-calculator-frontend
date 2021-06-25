@@ -33,16 +33,16 @@ class YourIncomeInfoControllerSpec extends ControllerSpecBase {
 
   "YourIncomeInfo Controller" must {
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad()(fakeRequest)
+      val result = controller().onPageLoad(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe view(frontendAppConfig, taxYearInfo)(fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

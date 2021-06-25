@@ -53,7 +53,7 @@ class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
         view(frontendAppConfig,
@@ -61,10 +61,10 @@ class BothIncomeInfoPYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

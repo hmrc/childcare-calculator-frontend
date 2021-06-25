@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.time.TaxYear
-import org.scalatest.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 

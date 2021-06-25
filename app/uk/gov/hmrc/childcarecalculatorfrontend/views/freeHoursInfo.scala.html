@@ -19,7 +19,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
-@this(main_template: main_template)
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
 
 @(appConfig: FrontendAppConfig,
 isChildAgedTwo: Boolean,
@@ -34,9 +36,9 @@ isEligibleForOnlyOneScheme: Boolean = false)(implicit request: Request[_], messa
     appConfig = appConfig,
     bodyClasses = None) {
 
-    @components.back_link()
+    @back_link()
 
-    @components.heading("freeHoursInfo.heading", "heading-xlarge")
+    @heading("freeHoursInfo.heading", "heading-xlarge")
 
     <p>@messages(s"freeHoursInfo.para1.$location")</p>
 
@@ -71,7 +73,7 @@ isEligibleForOnlyOneScheme: Boolean = false)(implicit request: Request[_], messa
         <p>@messages("freeHoursInfo.no.approved.para") <a href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursInfo.no.approved.para.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
     }
 
-    @components.button_link(
+    @button_link(
         messageKey = "site.save_and_continue",
         href = routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
     )

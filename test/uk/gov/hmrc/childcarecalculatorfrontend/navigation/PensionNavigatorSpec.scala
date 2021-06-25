@@ -65,7 +65,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.YouPaidPensionCY) thenReturn None
 
-          navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(YouPaidPensionCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -88,7 +88,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.PartnerPaidPensionCY) thenReturn None
 
-          navigator.nextPage(PartnerPaidPensionCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(PartnerPaidPensionCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -111,7 +111,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothPaidPensionCY) thenReturn None
 
-          navigator.nextPage(BothPaidPensionCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(BothPaidPensionCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -141,7 +141,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoPaysIntoPension) thenReturn None
 
-          navigator.nextPage(WhoPaysIntoPensionId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(WhoPaysIntoPensionId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -167,7 +167,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
 
-          navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
 
         "redirects to benefits page when user provides valid input, lives with partner and" +
@@ -182,7 +182,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.howMuchYouPayPension) thenReturn None
 
-          navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(HowMuchYouPayPensionId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -243,7 +243,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.youPaidPensionPY) thenReturn None
 
-          navigator.nextPage(YouPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(YouPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -266,7 +266,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.partnerPaidPensionPY) thenReturn None
 
-          navigator.nextPage(PartnerPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(PartnerPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -289,7 +289,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.bothPaidPensionPY) thenReturn None
 
-          navigator.nextPage(BothPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(BothPaidPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -319,7 +319,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.whoPaidIntoPensionPY) thenReturn None
 
-          navigator.nextPage(WhoPaidIntoPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(WhoPaidIntoPensionPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 

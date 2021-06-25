@@ -28,26 +28,26 @@ class SessionExpiredRouterSpec extends SpecBase {
       val answers = spy(userAnswers())
       val result = SessionExpiredRouter.route("test","test",Some(answers))
 
-      result mustBe routes.SessionExpiredController.onPageLoad()
+      result mustBe routes.SessionExpiredController.onPageLoad
     }
 
     "Be able to cope with no UserAnswers" in {
       val result = SessionExpiredRouter.route("test","test",None)
 
-      result mustBe routes.SessionExpiredController.onPageLoad()
+      result mustBe routes.SessionExpiredController.onPageLoad
     }
 
     "Be able to cope with UserAnswers with populated cache map" in {
       val answers = spy(userAnswers())
       val result = SessionExpiredRouter.route("test","test",Some(answers))
 
-      result mustBe routes.SessionExpiredController.onPageLoad()
+      result mustBe routes.SessionExpiredController.onPageLoad
     }
 
     "Be able to cope with UserAnswers with no cache map" in {
       val result = SessionExpiredRouter.route("test","test",Some(new UserAnswers(null)))
 
-      result mustBe routes.SessionExpiredController.onPageLoad()
+      result mustBe routes.SessionExpiredController.onPageLoad
     }
   }
 

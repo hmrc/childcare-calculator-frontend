@@ -39,7 +39,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
   val view = application.injector.instanceOf[partnerMinimumEarnings]
   val mockUtils = mock[Utils]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
@@ -103,7 +103,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
       setUpMock()
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -113,7 +113,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to 'your partners age' view when session data does not hold this value" in {

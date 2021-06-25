@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import play.api.Logging
+
 import javax.inject.Inject
-import play.api.Logger.logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -43,7 +44,8 @@ class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
                                                  splunkSubmissionService: SplunkSubmissionServiceInterface,
-                                                 surveyChildcareSupport: surveyChildcareSupport) extends FrontendController(mcc) with I18nSupport {
+                                                 surveyChildcareSupport: surveyChildcareSupport) extends FrontendController(mcc)
+  with I18nSupport with Logging {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

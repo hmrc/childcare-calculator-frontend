@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatestplus.play.PlaySpec
 import play.api.data.validation.{Invalid, Valid}
 import play.api.data.{Form, FormError}
 
-class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Mappings {
+class MappingsSpec extends PlaySpec with Mappings {
 
   "decimal" must {
 

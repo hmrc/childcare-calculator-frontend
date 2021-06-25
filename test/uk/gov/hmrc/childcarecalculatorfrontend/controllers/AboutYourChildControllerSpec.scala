@@ -33,7 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class AboutYourChildControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   val aboutYourChild = application.injector.instanceOf[aboutYourChild]
 
@@ -98,7 +98,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -112,7 +112,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if the user hasn't said how many children they have" in {
@@ -120,7 +120,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val result = controller(getData).onPageLoad(NormalMode, 0)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if the user hasn't said how many children they have" in {
@@ -135,7 +135,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

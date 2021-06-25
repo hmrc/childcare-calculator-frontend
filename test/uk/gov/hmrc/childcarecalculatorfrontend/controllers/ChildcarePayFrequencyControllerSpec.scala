@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with OptionValues {
 
   val view = application.injector.instanceOf[childcarePayFrequency]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ChildcarePayFrequencyController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
@@ -63,7 +63,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     "redirect to session expired if we can't find name" in {
       val result = controller(getRequiredData).onPageLoad(NormalMode, 4)(fakeRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     cases.foreach {
@@ -104,20 +104,20 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
       val result = controller(getRequiredData).onSubmit(NormalMode, 4)(postRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

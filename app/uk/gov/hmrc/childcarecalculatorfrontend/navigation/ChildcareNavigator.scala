@@ -165,7 +165,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
 
   private def whichChildrenBlindRoute(answers:UserAnswers):Call=
-    handleRoutesIfChildrenOver16(answers, answers.noOfChildren.getOrElse(0)).getOrElse(routes.SessionExpiredController.onPageLoad())
+    handleRoutesIfChildrenOver16(answers, answers.noOfChildren.getOrElse(0)).getOrElse(routes.SessionExpiredController.onPageLoad)
 
   private def handleMultipleChildrenRoute(answers: UserAnswers,
                                           totalNumberOfChildren: Int,
@@ -209,8 +209,8 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
   private def routeToIncomeInfoPage(answers: UserAnswers) =
    utils.getCall(answers.doYouLiveWithPartner) {
-      case false => routes.YourIncomeInfoController.onPageLoad()
-      case true => routes.PartnerIncomeInfoController.onPageLoad()
+      case false => routes.YourIncomeInfoController.onPageLoad
+      case true => routes.PartnerIncomeInfoController.onPageLoad
     }
 
 
@@ -245,9 +245,9 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
   private def routeBasedIfPartnerOrNot(hasPartner: Boolean) = {
     if (hasPartner) {
-      routes.PartnerIncomeInfoController.onPageLoad()
+      routes.PartnerIncomeInfoController.onPageLoad
     } else {
-      routes.YourIncomeInfoController.onPageLoad()
+      routes.YourIncomeInfoController.onPageLoad
     }
   }
 
