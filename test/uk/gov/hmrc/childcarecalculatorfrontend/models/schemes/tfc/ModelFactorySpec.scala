@@ -17,13 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
 import org.mockito.Mockito._
-import org.scalatest.{MustMatchers, OptionValues}
+import org.scalatest.OptionValues
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class ModelFactorySpec extends SchemeSpec with MustMatchers with OptionValues {
+class ModelFactorySpec extends SchemeSpec with OptionValues {
   
   val factory = new ModelFactory
 

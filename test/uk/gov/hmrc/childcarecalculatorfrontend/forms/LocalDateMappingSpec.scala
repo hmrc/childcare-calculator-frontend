@@ -17,10 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import org.joda.time.LocalDate
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatest.OptionValues
+import org.scalatestplus.play.PlaySpec
 import play.api.data.{Form, FormError}
 
-class LocalDateMappingSpec extends WordSpec with MustMatchers with OptionValues {
+class LocalDateMappingSpec extends PlaySpec with OptionValues {
 
   import play.api.data.Forms._
   val form = Form(single("date" -> localDateMapping))

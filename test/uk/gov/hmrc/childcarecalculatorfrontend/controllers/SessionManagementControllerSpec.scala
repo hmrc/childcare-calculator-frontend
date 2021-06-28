@@ -26,7 +26,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class SessionManagementControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): SessionManagementController =
     new SessionManagementController(frontendAppConfig,

@@ -39,7 +39,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
   val view = application.injector.instanceOf[expectedChildcareCosts]
   private val testDate: LocalDate = LocalDate.parse("2019-01-01")
 
-  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ExpectedChildcareCostsController =
     new ExpectedChildcareCostsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
@@ -116,14 +116,14 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if no answer exists for `AboutYourChild`" in {
@@ -136,7 +136,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onPageLoad(NormalMode, 0)(fakeRequest)
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no answers exists for `AboutYourChild`" in {
@@ -150,7 +150,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if no answer exists for `ChildcarePayFrequency`" in {
@@ -166,7 +166,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onPageLoad(NormalMode, 0)(fakeRequest)
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no answer exists for `ChildcarePayFrequency`" in {
@@ -183,7 +183,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if no answer exists for `ChildcareCosts`" in {
@@ -199,7 +199,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onPageLoad(NormalMode, 0)(fakeRequest)
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no answer exists for `ChildcareCosts`" in {
@@ -216,7 +216,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

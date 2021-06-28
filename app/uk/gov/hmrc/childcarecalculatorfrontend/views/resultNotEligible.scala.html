@@ -21,6 +21,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
+@this(scheme_result: components.scheme_result)
 
 @(model: ResultsViewModel, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
@@ -47,7 +48,7 @@
 
 
     @if(model.freeHours.isEmpty) {
-        @components.scheme_result(
+        @scheme_result(
             title = messages("result.free.hours.title"),
             para1 = Some(messages("result.free.hours.not.eligible")),
             notEligibleID1 = Some("notEligibleFreeHours"))
@@ -59,7 +60,7 @@
 
     @if(!hideTC) {
         @if(model.taxCreditsOrUC.contains(universalCredits)) {
-            @components.scheme_result(
+            @scheme_result(
                 title = messages("result.tc.title"),
                 para1 = Some(messages("result.uc.not.eligible.para")),
                 notEligibleID1 = Some("notEligibleTC1")
@@ -67,7 +68,7 @@
         } else {
 
             @if(model.tc.isEmpty) {
-                @components.scheme_result(
+                @scheme_result(
                     title = messages("result.tc.title"),
                     para1 = Some(model.tcSchemeInEligibilityMsg),
                     notEligibleID1 = Some("notEligibleTC1"),
@@ -79,7 +80,7 @@
     }
 
         @if(model.tfc.isEmpty) {
-            @components.scheme_result(
+            @scheme_result(
                 title = messages("result.tfc.title"),
                 para1 = Some(messages("result.tfc.not.eligible")),
                 para3 = Some(messages("result.tfc.not.eligible2")),
@@ -87,7 +88,7 @@
         }
 
         @if(model.esc.isEmpty) {
-            @components.scheme_result(
+            @scheme_result(
                 title = messages("result.esc.title"),
                 para1 = Some(messages("result.esc.not.eligible.para1")),
                 notEligibleID1 = Some("notEligibleESC1"),
@@ -96,7 +97,7 @@
 
 
     }else{
-        @components.scheme_result(
+        @scheme_result(
             title = messages("freeHoursResult.info.OtherSchemes"),
             para1 = Some(otherChildcareSchemesContent.toString))
 

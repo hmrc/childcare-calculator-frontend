@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.scalatest.{EitherValues, MustMatchers, WordSpec}
+import org.scalatest.EitherValues
+import org.scalatestplus.play.PlaySpec
 import play.api.data.{FormError, Mapping}
 
-class WithErrorsSpec extends WordSpec with MustMatchers with EitherValues {
+class WithErrorsSpec extends PlaySpec with EitherValues {
 
   val mapping: Mapping[String] = {
     import play.api.data.Forms._

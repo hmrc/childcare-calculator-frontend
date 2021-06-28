@@ -31,11 +31,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers) {
   }
 
   def surveyDoNotUnderstand: Option[AnswerRow] = userAnswers.surveyDoNotUnderstand map {
-    x => AnswerRow("surveyDoNotUnderstand.checkYourAnswersLabel", s"$x", false, routes.SurveyDoNotUnderstandController.onPageLoad().url)
+    x => AnswerRow("surveyDoNotUnderstand.checkYourAnswersLabel", s"$x", false, routes.SurveyDoNotUnderstandController.onPageLoad.url)
   }
 
   def surveyChildcareSupport: Option[AnswerRow] = userAnswers.surveyChildcareSupport map {
-    x => AnswerRow("surveyChildcareSupport.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.SurveyChildcareSupportController.onPageLoad().url)
+    x => AnswerRow("surveyChildcareSupport.checkYourAnswersLabel", if(x) "site.yes" else "site.no", true, routes.SurveyChildcareSupportController.onPageLoad.url)
   }
 
   def whoWasInPaidWorkPY: Option[AnswerRow] = userAnswers.whoWasInPaidWorkPY map {

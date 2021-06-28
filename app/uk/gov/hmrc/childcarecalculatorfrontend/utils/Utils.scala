@@ -121,7 +121,7 @@ class Utils {
     * * Returns the call from the input function (f: A => Call) when optionalElement has some value otherwise
     * returns SessionExpired Page
     * Ex - getCall(Some(true)){case _ => Call("GET", "http://test.com")} returns Call("GET", "http://test.com")
-    *      getCall(None){case _ => Call("GET", "http://test.com")} returns routes.SessionExpiredController.onPageLoad()
+    *      getCall(None){case _ => Call("GET", "http://test.com")} returns routes.SessionExpiredController.onPageLoad
     *
     * @param optionalElement
     * @param f

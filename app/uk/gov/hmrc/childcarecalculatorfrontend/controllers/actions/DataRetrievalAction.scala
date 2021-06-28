@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
 import com.google.inject.{ImplementedBy, Inject}
-import play.api.Logger.logger
+import play.api.Logging
 import play.api.mvc.{ActionBuilder, ActionTransformer, AnyContent, BodyParser, MessagesControllerComponents, Request}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
@@ -31,7 +31,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnector,
                                         val mcc: MessagesControllerComponents,
                                         val appConfig: FrontendAppConfig)
-                                       (implicit ec: ExecutionContext) extends DataRetrievalAction {
+                                       (implicit ec: ExecutionContext) extends DataRetrievalAction
+with Logging {
 
   override protected def executionContext: ExecutionContext = mcc.executionContext
   override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser

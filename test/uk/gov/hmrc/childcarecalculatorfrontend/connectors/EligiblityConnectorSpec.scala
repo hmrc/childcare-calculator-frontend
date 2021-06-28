@@ -27,8 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, SchemeResults}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import org.scalatestplus.play.PlaySpec
-import org.scalatest.Matchers.convertToAnyShouldWrapper
-
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import scala.concurrent.{ExecutionContext, Future}
 
 class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutures {

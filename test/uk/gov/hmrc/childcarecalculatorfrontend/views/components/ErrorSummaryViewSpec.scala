@@ -22,11 +22,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.error_summa
 
 class ErrorSummaryViewSpec extends ViewSpecBase {
 
+  lazy val errorSummaryView = app.injector.instanceOf[error_summary]
 
   "ErrorSummary view" when {
     "contains errors" must {
       "display the correct title " in {
-        val doc = asDocument(error_summary(Seq(FormError("name", "aboutYourChild.error.maxLength"))))
+        val doc = asDocument(errorSummaryView(Seq(FormError("name", "aboutYourChild.error.maxLength"))))
         assertContainsText(doc, messages("error.summary.title"))
         assertContainsText(doc, messages("aboutYourChild.error.maxLength"))
         doc.getElementsByAttribute("href").text() mustBe messages("aboutYourChild.error.maxLength")
@@ -35,7 +36,7 @@ class ErrorSummaryViewSpec extends ViewSpecBase {
 
     "does not contains errors" must {
       "not display error related guidance" in {
-        val doc = asDocument(error_summary(Seq()))
+        val doc = asDocument(errorSummaryView(Seq()))
         assertNotContainsText(doc, messages("error.summary.title"))
 
       }

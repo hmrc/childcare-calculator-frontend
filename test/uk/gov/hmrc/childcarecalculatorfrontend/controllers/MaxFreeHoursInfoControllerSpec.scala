@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   val view = application.injector.instanceOf[maxFreeHoursInfo]
-  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   val tfc = mock[TaxFreeChildcare]
   val tc = mock[TaxCredits]
@@ -183,15 +183,15 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
       when(tc.eligibility(any())) thenReturn NotEligible
       when(esc.eligibility(any())) thenReturn NotEligible
 
-      val result = controller().onPageLoad()(fakeRequest)
+      val result = controller().onPageLoad(fakeRequest)
       status(result) mustBe OK
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

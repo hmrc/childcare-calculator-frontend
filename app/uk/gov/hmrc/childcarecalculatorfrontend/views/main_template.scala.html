@@ -15,8 +15,10 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.play.views.html.layouts.Sidebar
+@import uk.gov.hmrc.play.views.html.layouts.Article
 
-@this(govuk_wrapper: govuk_wrapper)
+@this(govuk_wrapper: govuk_wrapper, sidebar: Sidebar, article: Article)
 
 @(title: String,
         appConfig: FrontendAppConfig,
@@ -34,11 +36,7 @@
 
     @betaBanner = {}
 
-    @sidebar = {
-        @if(sidebarLinks.isDefined) {
-            @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
-        }
-    }
+    @sidebar = {}
 
     @govuk_wrapper(appConfig = appConfig,
         title = title + " - " + Messages("site.service_name") + " - GOV.UK",
@@ -46,7 +44,7 @@
         bodyClasses = bodyClasses,
         sidebar = sidebar,
         contentHeader = contentHeader,
-        mainContent = layouts.article(mainContent),
+        mainContent = article(mainContent),
         serviceInfoContent = serviceInfoContent,
         timeout = timeout,
         urBanner = urBanner,

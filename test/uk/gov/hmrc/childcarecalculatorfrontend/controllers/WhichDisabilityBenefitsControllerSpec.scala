@@ -96,7 +96,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a POST if no existing cacheMap is found" in {
@@ -104,14 +104,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if required cacheMap is missing" in {
       val result = controller().onPageLoad(NormalMode, 0)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a POST if required data is missing" in {
@@ -119,14 +119,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val result = controller().onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if index is negative" in {
       val result = controller(getRequiredData(0 -> "Foo")).onPageLoad(NormalMode, -1)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a POST if index is negative" in {
@@ -134,14 +134,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, -1)(postRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if index is out of bounds" in {
       val result = controller(getRequiredData(0 -> "Foo")).onPageLoad(NormalMode, 1)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a POST if index is out of bounds" in {
@@ -149,11 +149,11 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 1)(postRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhichDisabilityBenefitsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),

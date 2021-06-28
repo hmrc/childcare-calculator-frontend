@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[yourStatutoryWeeks]
-  private def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad()
+  private def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType.toString))
 
@@ -97,7 +97,7 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -105,7 +105,7 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
 }

@@ -17,7 +17,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.{Section, AnswerSection, RepeaterAnswerSection}
 
-@this(main_template: main_template)
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary, repeater_answer_section: components.repeater_answer_section, answer_section: components.answer_section)
 
 @(appConfig: FrontendAppConfig, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
@@ -33,8 +35,8 @@
     @for(section <- answerSections){
         @{
             section match {
-                case a: AnswerSection => components.answer_section(a)
-                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+                case a: AnswerSection => answer_section(a)
+                case r: RepeaterAnswerSection => repeater_answer_section(r)
             }
         }
     }

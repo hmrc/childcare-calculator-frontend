@@ -17,14 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import org.joda.time.LocalDate
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatest.OptionValues
+import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class UserAnswersSpec extends WordSpec with MustMatchers with OptionValues {
+class UserAnswersSpec extends PlaySpec with OptionValues {
 
   private val testDate: LocalDate           = LocalDate.parse("2019-01-01")
   private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)

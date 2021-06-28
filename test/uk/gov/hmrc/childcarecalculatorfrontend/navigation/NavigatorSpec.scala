@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatest.OptionValues
+import org.scalatestplus.play.PlaySpec
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.{NavigatorImpl, SubNavigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
@@ -25,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CheckMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class NavigatorSpec extends WordSpec with MustMatchers with OptionValues {
+class NavigatorSpec extends PlaySpec with OptionValues {
 
   "NavigatorImpl" must {
 
@@ -57,12 +58,12 @@ class NavigatorSpec extends WordSpec with MustMatchers with OptionValues {
 
       "return the default route when no route exists in the navigator" in {
         val result = navigator.nextPage(ApprovedProviderId, NormalMode)
-        result(answers) mustEqual routes.WhatToTellTheCalculatorController.onPageLoad()
+        result(answers) mustEqual routes.WhatToTellTheCalculatorController.onPageLoad
       }
 
       "return the default route when no edit route exists in the navigator" in {
         val result = navigator.nextPage(ApprovedProviderId, CheckMode)
-        result(answers) mustEqual routes.CheckYourAnswersController.onPageLoad()
+        result(answers) mustEqual routes.CheckYourAnswersController.onPageLoad
       }
 
       "normal mode" when {

@@ -29,7 +29,7 @@ class LanguageSwitchController @Inject() (
                                            override implicit val messagesApi: MessagesApi
                                          ) extends InjectedController with I18nSupport {
 
-  private def fallbackURL: String = routes.WhatToTellTheCalculatorController.onPageLoad().url
+  private def fallbackURL: String = routes.WhatToTellTheCalculatorController.onPageLoad.url
 
   private def languageMap: Map[String, Lang] = appConfig.languageMap
 

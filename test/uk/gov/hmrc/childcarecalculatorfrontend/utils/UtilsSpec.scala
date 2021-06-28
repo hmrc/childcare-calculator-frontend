@@ -109,8 +109,8 @@ class UtilsSpec extends SpecBase {
         }
 
         val utils = new Utils
-        utils.getCall(noneValue) { case _ => call1 } mustBe routes.SessionExpiredController.onPageLoad()
-        utils.getCall(optionalStringValue)(stringPf) mustBe routes.SessionExpiredController.onPageLoad()
+        utils.getCall(noneValue) { case _ => call1 } mustBe routes.SessionExpiredController.onPageLoad
+        utils.getCall(optionalStringValue)(stringPf) mustBe routes.SessionExpiredController.onPageLoad
 
       }
     }

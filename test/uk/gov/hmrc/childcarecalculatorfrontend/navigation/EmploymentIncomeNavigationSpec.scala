@@ -58,7 +58,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.partnerPaidWorkCY) thenReturn None
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
 
       }
@@ -82,7 +82,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.parentPaidWorkCY) thenReturn None
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -114,7 +114,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.parentEmploymentIncomeCY) thenReturn None
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -174,7 +174,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           when(answers.parentPaidWorkPY) thenReturn None
 
           navigator.nextPage(ParentPaidWorkPYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad()
+            routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -208,7 +208,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           val answers = spy(userAnswers())
           when(answers.bothPaidWorkPY) thenReturn None
 
-          navigator.nextPage(BothPaidWorkPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(BothPaidWorkPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
@@ -242,7 +242,7 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.whoWasInPaidWorkPY) thenReturn None
 
-          navigator.nextPage(WhoWasInPaidWorkPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad()
+          navigator.nextPage(WhoWasInPaidWorkPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
 
       }

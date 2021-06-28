@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.Logger.logger
+import play.api.Logging
 import play.api.libs.json._
+
 import scala.language.implicitConversions
 
-object EnumUtils {
+object EnumUtils extends Logging {
 
   def enumReads[E <: Enumeration](enum: E): Reads[E#Value] =
     new Reads[E#Value] {

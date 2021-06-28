@@ -14,7 +14,10 @@
  * limitations under the License.
  *@
 
+@this()
+
 @(errors: Seq[FormError])(implicit messages: Messages)
+
 @if(errors.nonEmpty) {
     <div class="error-summary error-summary--show" role="group" aria-labelledby="error-summary-heading" tabindex="-1">
 

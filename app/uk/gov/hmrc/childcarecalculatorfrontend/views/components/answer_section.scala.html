@@ -17,6 +17,8 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
 
+@this(answer_row: components.answer_row)
+
 @(answerSection: AnswerSection)(implicit messages: Messages)
 
 @if(answerSection.headingKey.isDefined){
@@ -25,6 +27,6 @@
 
 <ul class="tabular-data tabular-data--list">
     @for(row <- answerSection.rows){
-        @components.answer_row(row)
+        @answer_row(row)
     }
 </ul>

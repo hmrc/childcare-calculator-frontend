@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 
+@this(scheme_result: components.scheme_result)
 
 @(model: ResultsViewModel, utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
 
@@ -40,7 +41,7 @@
         } else {
             utils.valueFormatter(2 * totalNoOfHoursAYear)
         }) { noOfHoursInAYear =>
-            @components.scheme_result(
+            @scheme_result(
                 title = messages("result.free.hours.title"),
                 couldGet = Some(messages("result.you.could.get.up.to")),
                 eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours"),"freeHoursEligibility")),
@@ -62,7 +63,7 @@
     }
 
     @if(model.tc.isDefined && !hideTC) {
-        @components.scheme_result(
+        @scheme_result(
             title = messages("result.tc.title"),
             couldGet = Some(messages("result.you.could.get")),
             eligibility = Some(EligibilityModel("£" + model.tc.fold("")(value => utils.valueFormatter(value)),"taxCreditsEligibility")),
@@ -78,7 +79,7 @@
 
 
     @if(model.tfc.isDefined) {
-        @components.scheme_result(
+        @scheme_result(
             title = messages("result.tfc.title"),
             couldGet = Some(messages("result.you.could.get")),
             eligibility = Some(EligibilityModel("£" + model.tfc.fold("")(value => utils.valueFormatter(value)),"taxFreeChildcareEligibility")),
@@ -94,7 +95,7 @@
     }
 
     @if(model.esc.isDefined) {
-        @components.scheme_result(
+        @scheme_result(
             title = messages("result.esc.title"),
             couldGet = Some(messages("result.you.could.get")),
             eligibility = Some(EligibilityModel("£" + model.esc.fold("")(value => utils.valueFormatter(value)),"childcareVouchersEligibility")),

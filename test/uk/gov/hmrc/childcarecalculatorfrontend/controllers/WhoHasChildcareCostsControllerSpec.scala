@@ -121,7 +121,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
@@ -129,14 +129,14 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if required data is missing" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a POST if required data is missing" in {
@@ -144,11 +144,11 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
   def onwardRoute: Call = {
-    routes.WhatToTellTheCalculatorController.onPageLoad()
+    routes.WhatToTellTheCalculatorController.onPageLoad
   }
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): WhoHasChildcareCostsController =
