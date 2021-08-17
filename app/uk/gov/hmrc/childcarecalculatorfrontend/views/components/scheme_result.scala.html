@@ -71,6 +71,8 @@
                 <p @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
             }
 
+            @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
+
             @if(para3.isDefined) {
                 <p>@para3</p>
             }
@@ -88,7 +90,6 @@
                             </ul>
                         }
                         @if(detailPara3.isDefined) {<p>@detailPara3</p>}
-                        @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
                         @if(detailPara4.isDefined) {<p>@detailPara4</p>}
                     </div>
                 </details>
