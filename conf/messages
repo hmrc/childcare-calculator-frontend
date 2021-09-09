@@ -65,6 +65,11 @@ session_expired.heading = For your security, we cleared your details
 session_expired.guidance = You can
 session_expired.link.text= go back and start again.
 
+service.name = Childcare calculator
+phase.banner.phase = beta
+phase.banner.text.1 = This is a new service – your
+phase.banner.text.2 = feedback
+phase.banner.text.3 = will help us to improve it
 
 site.back = Back
 site.delete = Remove

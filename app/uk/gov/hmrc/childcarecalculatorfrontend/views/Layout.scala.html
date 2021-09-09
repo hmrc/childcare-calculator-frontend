@@ -1,0 +1,25 @@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers
+@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
+
+@this(
+    hmrcLayout: HmrcLayout,
+    standardBetaBanner: StandardBetaBanner,
+    appConfig: FrontendAppConfig
+)
+
+@(pageTitle: String)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+
+@mainContent = {
+    @contentBlock
+}
+
+
+@hmrcLayout(
+    pageTitle = Some(s"""$pageTitle - ${messages("service.name")} - GOV.UK"""),
+    isWelshTranslationAvailable = false,
+    serviceUrl =  Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url),
+    phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
+    backLinkUrl = Some("javascript:history.back()")
+)(mainContent)

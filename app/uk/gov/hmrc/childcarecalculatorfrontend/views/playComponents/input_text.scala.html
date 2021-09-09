@@ -1,0 +1,50 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
+
+@this()
+
+@(
+viewModel: InputViewModelBase,
+label: String,
+inputClass: Option[String] = None,
+hint: Option[String] = None,
+labelClass: Option[String] = None
+)(implicit messages: Messages)
+
+<div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
+    <label class="form-label @if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">@label</label>
+
+    @if(hint.nonEmpty){
+    <span class="form-hint">@hint</span>
+    }
+
+    @if(viewModel.errorKey.nonEmpty){
+    <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey, viewModel.args:_*)</span>
+    }
+
+    <div class="form-control-wrapper">
+        <input
+                class="form-control @inputClass"
+                type="text"
+                id="@{viewModel.id}"
+                name="@{viewModel.id}"
+                value="@{viewModel.value}"
+                @if(viewModel.errorKey.nonEmpty){aria-describedby="error-message-@{viewModel.id}-input"}
+        />
+    </div>
+</div>

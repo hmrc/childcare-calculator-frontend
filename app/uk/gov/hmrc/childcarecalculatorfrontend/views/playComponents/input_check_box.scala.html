@@ -1,0 +1,56 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this()
+
+@(
+  field: Field,
+  legend: String,
+  legendClass: Option[String] = None,
+  hint: Option[String] = None,
+  trackGa: Boolean = false,
+  inputs: Map[String, String]
+)(implicit messages: Messages)
+
+<div class="form-field @if(field.hasErrors){form-field--error}">
+    <fieldset id="@{field.id}">
+        <legend class="bold-small @legendClass">@legend</legend>
+        @hint.map { hint =>
+            <span class="form-hint">
+                @hint
+            </span>
+        }
+        @field.errors.map { error =>
+            <span class="error-notification" id="error-message-@field.id-input">
+                @messages(error.message, error.args: _*)
+            </span>
+        }
+        @for(((label, v), i) <- inputs.zipWithIndex) {
+            @defining(
+                (0 until inputs.size).flatMap { j =>
+                    field(s"[$j]").value
+                }
+            ) { answers =>
+                <div class="multiple-choice">
+                    <input id="@field(s"[$i]").id" type="checkbox" name="@field(s"[$i]").name" value="@v" @if(answers.contains(v)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@field(s"[$i]").id"} />
+                    <label for="@field(s"[$i]").id">
+                    @messages(label)
+                    </label>
+                </div>
+            }
+        }
+    </fieldset>
+</div>

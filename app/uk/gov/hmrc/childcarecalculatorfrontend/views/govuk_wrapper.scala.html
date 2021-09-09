@@ -23,7 +23,7 @@
         headUi: Head,
         uiHead: HeadWithTrackingConsent,
         header_nav: HeaderNav,
-        footer: Footer,
+        footer: uk.gov.hmrc.play.views.html.layouts.Footer,
         uiBetaBanner: BetaBanner,
         uiServiceInfo: ServiceInfo,
         main_content_header: MainContentHeader,
@@ -55,7 +55,6 @@
         <meta name="format-detection" content="telephone=no" />
         <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/childcarecalculatorfrontend-app.css")' />
 }
-
 @uiHead(
     linkElem = None,
     headScripts = None)
@@ -150,6 +149,7 @@
 
 
 @content = {
+    <h1 style="text-align: center">This view still uses play-ui</h1>
     @main_content(
         article = mainContent,
         mainClass = mainClass,
