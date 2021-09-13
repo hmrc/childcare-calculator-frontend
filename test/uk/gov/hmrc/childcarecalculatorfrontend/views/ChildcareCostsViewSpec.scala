@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 
-class ChildcareCostsViewSpec extends ViewBehaviours {
+class ChildcareCostsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "childcareCosts"
   val view = application.injector.instanceOf[childcareCosts]
