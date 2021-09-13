@@ -14,37 +14,30 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
 
-@this()
+@this(govukRadios : GovukRadios)
 
 @(
-viewModel: InputViewModelBase,
-legend: String,
-legendClass: Option[String] = None,
-hint: Option[String] = None,
-trackGa: Boolean = false,
-inputs: Seq[InputOption]
-)(implicit messages: Messages)
+    viewModel: InputViewModelBase,
+    legend: Html,
+    legendClass: Option[String] = None,
+    hint: Option[String] = None,
+    trackGa: Boolean = false,
+    inputs: Seq[RadioItem],
+    field: Field)(implicit messages: Messages)
 
-<div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
-    <fieldset id="@{viewModel.id}">
-        <legend class="bold-small @if(legendClass.nonEmpty){@{legendClass.get}}">@legend</legend>
-        @if(hint.nonEmpty){
-        <span class="form-hint">@{hint.get}</span>
-        }
-        @if(viewModel.errorKey.nonEmpty){
-        <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey)</span>
-        }
-        @for(input <- inputs) {
-        <div class="multiple-choice">
-            <input id="@{input.id}" type="radio" name="@{viewModel.id}" value="@{input.value}" @if(viewModel.value == Some(input.value)){checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@{input.id}"} />
 
-            <label for="@{input.id}">
-                @messages(input.messageKey)
-            </label>
-        </div>
-        }
-    </fieldset>
-</div>
+@govukRadios(
+    Radios(
+        fieldset = Some(Fieldset(
+            legend = Some(Legend(
+                classes = "govuk-fieldset__legend--xl",
+                content = HtmlContent(legend),
+                isPageHeading = false
+            ))
+        )),
+        hint = hint.map(hintString => Hint(content = Text(hintString))),
+        items = inputs
+    ).withFormField(field)
+)
