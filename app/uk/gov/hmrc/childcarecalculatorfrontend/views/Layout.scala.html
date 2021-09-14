@@ -4,22 +4,43 @@
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 
 @this(
-    hmrcLayout: HmrcLayout,
-    standardBetaBanner: StandardBetaBanner,
+    govukLayout: GovukLayout,
+    hmrcAccountMenu: HmrcAccountMenu,
+    hmrcHead: HmrcHead,
+    hmrcStandardHeader: HmrcStandardHeader,
+    hmrcStandardFooter: HmrcStandardFooter,
+    hmrcScripts: HmrcScripts,
+    hmrcStandardBetaBanner: StandardBetaBanner,
+    backLink: playComponents.back_link,
     appConfig: FrontendAppConfig
 )
 
-@(pageTitle: String)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+@(
+    pageTitle: String,
+    backLinkEnabled: Boolean = true,
+    accountMenuEnabled: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+
+@accountMenu = {
+    @if(backLinkEnabled) { @backLink() }
+}
+
+@head = {}
 
 @mainContent = {
     @contentBlock
 }
 
 
-@hmrcLayout(
+@govukLayout(
     pageTitle = Some(s"""$pageTitle - ${messages("service.name")} - GOV.UK"""),
-    isWelshTranslationAvailable = false,
-    serviceUrl =  Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url),
-    phaseBanner = Some(standardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
-    backLinkUrl = Some("javascript:history.back()")
+    headBlock = Some(hmrcHead(
+        headBlock = Some(head)
+    )),
+    headerBlock = Some(hmrcStandardHeader(
+        serviceUrl = Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url),
+        phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl))
+    )),
+    beforeContentBlock = Some(accountMenu),
+    scriptsBlock = Some(hmrcScripts()),
+    footerBlock = Some(hmrcStandardFooter())
 )(mainContent)
