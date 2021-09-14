@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 
-class FreeHoursInfoViewSpec extends ViewBehaviours {
+class FreeHoursInfoViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "freeHoursInfo"
   val view = application.injector.instanceOf[freeHoursInfo]
