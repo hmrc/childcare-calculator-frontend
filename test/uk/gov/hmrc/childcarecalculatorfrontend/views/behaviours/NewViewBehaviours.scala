@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
+import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.views.ViewSpecBase
 
-trait NewViewBehaviours extends ViewSpecBase {
+trait NewViewBehaviours extends NewViewSpecBase {
 
   def normalPage(view: () => HtmlFormat.Appendable,
                  messageKeyPrefix: String,
@@ -29,8 +29,8 @@ trait NewViewBehaviours extends ViewSpecBase {
       "rendered" must {
         "have the correct banner title" in {
           val doc = asDocument(view())
-          val nav = doc.getElementsByClass("govuk-header__content")
-          nav.text mustBe messages("service.name")
+          val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+          nav.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -47,7 +47,7 @@ trait NewViewBehaviours extends ViewSpecBase {
           val doc = asDocument(view())
           for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
         }
-        
+
         "display a beta banner" in {
           val doc = asDocument(view())
           assertRenderedByCssSelector(doc, ".govuk-phase-banner")
@@ -62,8 +62,8 @@ trait NewViewBehaviours extends ViewSpecBase {
   }
 
   def normalPageWithCurrencySymbol(view: () => HtmlFormat.Appendable,
-                             messageKeyPrefix: String,
-                             expectedGuidanceKeys: String*) {
+                                   messageKeyPrefix: String,
+                                   expectedGuidanceKeys: String*) {
 
     normalPage(view, messageKeyPrefix, expectedGuidanceKeys: _*)
 
