@@ -18,11 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
-class ApprovedProviderViewSpec extends ViewBehaviours {
+class ApprovedProviderViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "approvedProvider"
   val view = application.injector.instanceOf[approvedProvider]
@@ -63,7 +63,7 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
       }
 
       "contain right heading" when {
-        "cwe have selected 'Not Yet but maybe in the future'" in {
+        "we have selected 'Not Yet but maybe in the future'" in {
           val createView = () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
 
@@ -82,15 +82,15 @@ class ApprovedProviderViewSpec extends ViewBehaviours {
         "we have selected 'Not Yet but maybe in the future'" in {
           val createView = () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
-
-          assertEqualsValue(doc, "legend", messages(s"$messageKeyPrefix.heading.future"))
+          val text = messages(s"$messageKeyPrefix.heading.future")
+          assertEqualsValue(doc, "legend", s"<h1 class=${'"'}govuk-heading-xl govuk-!-margin-top-0 govuk-!-margin-bottom-5${'"'}>$text</h1>")
         }
 
         "we have selected 'Yes'" in {
           val createView = () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
           val doc = asDocument(createView())
-
-          assertEqualsValue(doc, "legend", messages(s"$messageKeyPrefix.heading"))
+          val text = messages(s"$messageKeyPrefix.heading")
+          assertEqualsValue(doc, "legend", s"<h1 class=${'"'}govuk-heading-xl govuk-!-margin-top-0 govuk-!-margin-bottom-5${'"'}>$text</h1>")
         }
       }
     }
