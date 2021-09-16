@@ -23,31 +23,39 @@
 
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    inputYesNo: playComponents.input_yes_no,
+    submitButton: playComponents.submit_button
+)
 
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("childAgedThreeOrFour.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@title = @{messages("childAgedThreeOrFour.title")}
 
-    @back_link()
-
-    @error_summary(form.errors)
-
-    @heading("childAgedThreeOrFour.heading", "heading-xlarge")
+@layout(
+    pageTitle = title,
+) {
 
     @formWithCSRF(action = ChildAgedThreeOrFourController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages(s"childAgedThreeOrFour.guidance.$location")</p>
+        @errorSummary(form.errors)
 
-        @input_yes_no(
-            InputViewModel[Boolean]("value", form),
+        @heading(messages("childAgedThreeOrFour.heading"))
+
+
+        <p class="govuk-body">@messages(s"childAgedThreeOrFour.guidance.$location")</p>
+
+        @inputYesNo(
+            viewModel = InputViewModel("value", form),
             label = messages("childAgedThreeOrFour.heading"),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("govuk-visually-hidden"),
+            field = form("value")
         )
 
-        @submit_button()
+        @submitButton()
     }
 }
