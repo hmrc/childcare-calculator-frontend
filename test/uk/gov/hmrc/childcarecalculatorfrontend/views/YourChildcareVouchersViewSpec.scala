@@ -19,13 +19,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{ViewBehaviours, YesNoViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, NewYesNoViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourChildcareVouchers
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 
-class YourChildcareVouchersViewSpec extends ViewBehaviours with YesNoViewBehaviours {
+class YourChildcareVouchersViewSpec extends NewViewBehaviours with NewYesNoViewBehaviours {
 
+  override val form = BooleanForm()
   val view = app.injector.instanceOf[yourChildcareVouchers]
   val messageKeyPrefix = "yourChildcareVouchers"
 
