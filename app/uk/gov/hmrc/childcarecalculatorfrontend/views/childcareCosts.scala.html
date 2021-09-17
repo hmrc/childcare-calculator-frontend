@@ -34,7 +34,9 @@
 
 @(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@title = @{messages("childcareCosts.title")}
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("childcareCosts.title")) else messages("childcareCosts.title")
+}
 
 @layout(
     pageTitle = title,
@@ -49,7 +51,6 @@
             legendClass = Some("visually-hidden"),
             inputs = ChildcareCostsForm.options map { radioOption =>
                 RadioItem(
-                    id = Some(radioOption.id),
                     value = Some(radioOption.value),
                     content = HtmlContent(messages(radioOption.messageKey))
                 )

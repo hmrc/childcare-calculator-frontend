@@ -38,10 +38,18 @@ object ChildcareCostsForm extends FormErrorHelper {
   def apply(): Form[String] = Form(single("value" -> of(ChildcareCostsFormatter)))
 
   def options = Seq(
-    InputOption("childcareCosts", YesNoNotYetEnum.YES.toString),
-    InputOption("childcareCosts", YesNoNotYetEnum.NO.toString),
-    InputOption("childcareCosts", YesNoNotYetEnum.NOTYET.toString)
+    childcareCostsInputOption("value", YesNoNotYetEnum.YES.toString),
+    childcareCostsInputOption("value-2", YesNoNotYetEnum.NO.toString),
+    childcareCostsInputOption("value-3", YesNoNotYetEnum.NOTYET.toString)
   )
+
+  private def childcareCostsInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"childcareCosts.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
