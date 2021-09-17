@@ -43,7 +43,7 @@
 )
 
 @title = @{
-    messages("childAgedTwo.title")
+    if(form.errors.nonEmpty) messages("site.title.error", messages("childAgedTwo.title")) else messages("childAgedTwo.title")
 }
 
 @layout(pageTitle = title) {

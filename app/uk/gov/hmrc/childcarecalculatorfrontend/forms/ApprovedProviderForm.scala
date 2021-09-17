@@ -39,10 +39,18 @@ object ApprovedProviderForm extends FormErrorHelper {
     Form(single("value" -> of(ApprovedProviderFormatter)))
 
   def options = Seq(
-    InputOption("approvedProvider", YesNoUnsureEnum.YES.toString),
-    InputOption("approvedProvider", YesNoUnsureEnum.NO.toString),
-    InputOption("approvedProvider", YesNoUnsureEnum.NOTSURE.toString)
+    approvedProviderInputOption("value", YesNoUnsureEnum.YES.toString),
+    approvedProviderInputOption("value-2", YesNoUnsureEnum.NO.toString),
+    approvedProviderInputOption("value-3", YesNoUnsureEnum.NOTSURE.toString)
   )
+
+  private def approvedProviderInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"approvedProvider.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

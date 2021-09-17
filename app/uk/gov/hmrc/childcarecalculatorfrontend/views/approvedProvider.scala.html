@@ -34,7 +34,14 @@
 
 @(appConfig: FrontendAppConfig, form: Form[String], childcareCostsMaybeInFuture: Boolean, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@title = @{if(childcareCostsMaybeInFuture) messages("approvedProvider.title.future") else messages("approvedProvider.title")}
+@title = @{
+    if(childcareCostsMaybeInFuture) {
+        if(form.errors.nonEmpty) messages("site.title.error", messages("approvedProvider.title.future")) else messages("approvedProvider.title.future")
+    } else {
+        if(form.errors.nonEmpty) messages("site.title.error", messages("approvedProvider.title")) else messages("approvedProvider.title")
+    }
+}
+
 @layout(
     pageTitle = title,
 ){
@@ -49,7 +56,6 @@
             hint = Some(messages("approvedProvider.hint")),
             inputs = ApprovedProviderForm.options map { radioOptions =>
                 RadioItem(
-                    id = Some(radioOptions.id),
                     value = Some(radioOptions.value),
                     content = HtmlContent(messages(radioOptions.messageKey))
                 )

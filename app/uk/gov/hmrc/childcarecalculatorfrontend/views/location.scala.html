@@ -35,7 +35,7 @@
 @(appConfig: FrontendAppConfig, form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @title = @{
-    messages("location.title")
+    if(form.errors.nonEmpty) messages("site.title.error", messages("location.title")) else messages("location.title")
 }
 
 @layout(
@@ -52,7 +52,6 @@
             hint = Some(messages("location.guidance")),
             inputs = LocationForm.options map { radioOption =>
                 RadioItem(
-                    id = Some(radioOption.id),
                     value = Some(radioOption.value),
                     content = HtmlContent(messages(radioOption.messageKey))
                 )
