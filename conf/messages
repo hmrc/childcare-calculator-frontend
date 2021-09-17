@@ -84,6 +84,7 @@ site.textarea.char_limit = (Limit is {0} characters)
 site.in.pounds = in pounds
 site.colon = :
 site.opens.new.tab = (opens in new tab)
+site.title.error = Error: {0}
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
