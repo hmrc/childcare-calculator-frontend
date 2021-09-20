@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *@
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@this()
+@this(govukDetails : GovukDetails)
 
 @(
-    summary: String = "",
-    detailsInner: Boolean = true,
-    summaryClasses: Seq[String] = Seq("summary")
+    summary: String,
 )(content: Html)(implicit lang:Lang,  m: Messages)
 
-@* http://hmrc.github.io/assets-frontend/section-details.html *@
-<div class="form-group">
-    <details role="group">
-        <summary class="@summaryClasses.mkString(" ")"><span class="summary">@summary</span></summary>
-        <div @if(detailsInner) { class="panel-indent"}>
-            @content
-        </div>
-    </details>
-</div>
+<details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      @{summary}
+    </span>
+    </summary>
+    <div class="govuk-details__text">
+        @content
+    </div>
+</details>
