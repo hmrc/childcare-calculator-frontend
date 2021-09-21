@@ -90,9 +90,8 @@ trait NewViewBehaviours extends NewViewSpecBase {
       "rendered" must {
         "have the correct banner title" in {
           val doc = asDocument(view())
-          val nav = doc.getElementById("proposition-menu")
-          val span = nav.children.first
-          span.text mustBe messages("site.service_name")
+          val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+          nav.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -102,7 +101,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsString(doc, heading.getOrElse(title))
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", 0)
         }
 
         "display the correct guidance" in {
@@ -112,7 +111,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display a beta banner" in {
           val doc = asDocument(view())
-          assertRenderedByCssSelector(doc, ".beta-banner")
+          assertRenderedByCssSelector(doc, ".govuk-phase-banner")
         }
 
         "not display HMRC branding" in {
