@@ -50,10 +50,10 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
           .verifying(constraint())
       )
 
-  lazy val options: ListMap[String, String] = ListMap.empty ++ WhichBenefitsEnum.values.map {
+  lazy val options: Seq[(String, String)] = WhichBenefitsEnum.sortedWhichBenefits.map {
     value =>
       s"whichBenefitsYouGet.$value" -> value.toString
   }
 
-  def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
+  def optionIsValid(value: String): Boolean = WhichBenefitsEnum.sortedWhichBenefits.map(_.toString).contains(value)
 }

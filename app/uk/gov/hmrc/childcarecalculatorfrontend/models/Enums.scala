@@ -144,6 +144,15 @@ object WhichBenefitsEnum extends Enumeration {
   val enumWrites: Writes[WhichBenefitsEnum] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[WhichBenefitsEnum] = EnumUtils.enumFormat(WhichBenefitsEnum)
+
+  val sortedWhichBenefits =
+    Seq(
+      INCOMEBENEFITS,
+      DISABILITYBENEFITS,
+      HIGHRATEDISABILITYBENEFITS,
+      SEVEREDISABILITYPREMIUM,
+      CARERSALLOWANCE
+    )
 }
 
 object DisabilityBenefits extends Enumeration {

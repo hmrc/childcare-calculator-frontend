@@ -14,43 +14,32 @@
  * limitations under the License.
  *@
 
-@this()
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
+
+@this(govukCheckboxes : GovukCheckboxes)
 
 @(
-  field: Field,
-  legend: String,
-  legendClass: Option[String] = None,
-  hint: Option[String] = None,
-  trackGa: Boolean = false,
-  inputs: Map[String, String]
+    viewModel: InputViewModelBase,
+    field: Field,
+    legend: String,
+    isPageHeading: Boolean = true,
+    legendClass: Option[String] = None,
+    hint: Option[String] = None,
+    trackGa: Boolean = false,
+    inputs: Seq[CheckboxItem]
 )(implicit messages: Messages)
 
-<div class="form-field @if(field.hasErrors){form-field--error}">
-    <fieldset id="@{field.id}">
-        <legend class="bold-small @legendClass">@legend</legend>
-        @hint.map { hint =>
-            <span class="form-hint">
-                @hint
-            </span>
-        }
-        @field.errors.map { error =>
-            <span class="error-notification" id="error-message-@field.id-input">
-                @messages(error.message, error.args: _*)
-            </span>
-        }
-        @for(((label, v), i) <- inputs.zipWithIndex) {
-            @defining(
-                (0 until inputs.size).flatMap { j =>
-                    field(s"[$j]").value
-                }
-            ) { answers =>
-                <div class="multiple-choice">
-                    <input id="@field(s"[$i]").id" type="checkbox" name="@field(s"[$i]").name" value="@v" @if(answers.contains(v)){ checked="checked"} @if(trackGa){data-journey-click="childcare-calculator-frontend:click:@field(s"[$i]").id"} />
-                    <label for="@field(s"[$i]").id">
-                    @messages(label)
-                    </label>
-                </div>
-            }
-        }
-    </fieldset>
-</div>
+
+@govukCheckboxes(
+    Checkboxes(
+        fieldset = Some(Fieldset(
+            legend = Some(Legend(
+                content = Text(legend),
+                classes = s"""govuk-fieldset__legend--xl ${legendClass.getOrElse("")}""",
+                isPageHeading = isPageHeading
+            ))
+        )),
+        hint = hint.map(hintString => Hint(content = Text(hintString))),
+        items = inputs,
+    ).withFormField(field)
+)
