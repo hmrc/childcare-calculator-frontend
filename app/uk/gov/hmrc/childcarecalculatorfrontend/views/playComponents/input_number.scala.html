@@ -1,57 +1,47 @@
 @*
- * Copyright 2021 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *@
+* Copyright 2021 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
 
-@this()
+@this(govukInput : GovukInput)
 
 @(
-viewModel: InputViewModelBase,
-label: String,
+label: Html,
 currencySymbol: Option[Boolean] = None,
 inputClass: Option[String] = None,
 hint: Option[String] = None,
-labelClass: Option[String] = None
+labelClass: Option[String] = None,
+currency: Boolean = false,
+inputType: String = "text",
+autoComplete: Option[String] = None,
+largeText: Boolean = true,
+field: Field
 )(implicit messages: Messages)
 
-<div class="form-field @if(viewModel.errorKey.nonEmpty){form-field--error}">
-    <label class="form-label @if(labelClass.nonEmpty){@labelClass}" for="@{viewModel.id}">
-        @label @if(currencySymbol){<span class="visually-hidden">@messages("site.in.pounds")</span>}
-    </label>
+@govukInput(Input(
+        label = Label(
+        isPageHeading = false,
+        classes = if(largeText) "govuk-label--xl" else "govuk-label--m",
+        content = HtmlContent(label)
+        ),
+        hint = hint.map(hintString => Hint(content = Text(hintString))),
+        classes = "govuk-input--width-10",
+        spellcheck = Some(!currency),
+        autocomplete = autoComplete,
+        inputType = inputType,
+        prefix = if(false) Some(PrefixOrSuffix(content = Text("£"))) else None
+).withFormField(field))
 
-    @if(hint.nonEmpty){
-    <span class="form-hint">@hint</span>
-    }
-
-    @if(viewModel.errorKey.nonEmpty){
-    <span class="error-notification" id="error-message-@{viewModel.id}-input">@messages(viewModel.errorKey, viewModel.args:_*)</span>
-    }
-
-    <div>
-        @if(currencySymbol) {
-            <span class="currencySymbol" aria-hidden="true">£</span>
-        }
-        <input
-                class="form-control @inputClass input--no-spinner @if(currencySymbol){currencyInput}"
-                type="tel"
-                step="any"
-                id="@{viewModel.id}"
-                name="@{viewModel.id}"
-                value="@{viewModel.value}"
-                @if(viewModel.errorKey.nonEmpty){aria-describedby="error-message-@{viewModel.id}-input"}
-        />
-    </div>
-</div>
