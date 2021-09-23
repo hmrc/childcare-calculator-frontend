@@ -40,7 +40,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading")
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", 0)
         }
 
         "display the correct guidance" in {
@@ -81,9 +81,11 @@ trait NewViewBehaviours extends NewViewSpecBase {
   def normalPageWithTitleAsString(
                                    view: () => HtmlFormat.Appendable,
                                    messageKeyPrefix: String,
+                                   messageKeyPostfix: String,
                                    title: String,
-                                   heading: Option[String] = None,
-                                   expectedGuidanceKeys: Seq[String] = Seq()
+                                   heading: Option[String],
+                                   expectedGuidanceKeys: Seq[String],
+                                   args: Any*
                                  ) {
 
     "behave like a normal page" when {
@@ -101,7 +103,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", 0)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args: _*)
         }
 
         "display the correct guidance" in {
