@@ -101,7 +101,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          if (messageKeyPrefix.equals("yourMinimumEarnings")) {
+          if(title.contains("£0")) {
             assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", 0)
           } else {
             assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", "Foo")
