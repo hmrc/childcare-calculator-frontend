@@ -37,7 +37,13 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
 
   "YourMinimumEarnings view" must {
 
-    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messages("yourMinimumEarnings.heading", 0))
+    behave like normalPageWithTitleAsString(
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      title = messages("yourMinimumEarnings.heading", 0),
+      args = 0
+    )
+
 
     behave like pageWithBackLink(createView)
 

@@ -83,7 +83,8 @@ trait NewViewBehaviours extends NewViewSpecBase {
                                    messageKeyPrefix: String,
                                    title: String,
                                    heading: Option[String] = None,
-                                   expectedGuidanceKeys: Seq[String] = Seq()
+                                   expectedGuidanceKeys: Seq[String] = Seq(),
+                                   args: Any = None
                                  ) {
 
     "behave like a normal page" when {
@@ -101,11 +102,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          if(title.contains("£0")) {
-            assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", 0)
-          } else {
-            assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", "Foo")
-          }
+            assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", args)
         }
 
         "display the correct guidance" in {
