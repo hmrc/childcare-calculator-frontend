@@ -27,9 +27,17 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
   def apply(name: String): Form[ChildcarePayFrequency.Value] =
     Form(single("value" -> of(ChildcarePayFrequencyFormatter(name))))
 
-  lazy val options: Seq[InputOption] = ChildcarePayFrequency.values.toSeq.map {
-    value =>
-      InputOption("childcarePayFrequency", value.toString)
+  lazy val options: Seq[InputOption] = Seq(
+    payFrequencyInputOption(ChildcarePayFrequency.WEEKLY_KEY, ChildcarePayFrequency.WEEKLY.toString),
+    payFrequencyInputOption(ChildcarePayFrequency.MONTHLY_KEY, ChildcarePayFrequency.MONTHLY.toString)
+  )
+
+  private def payFrequencyInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"$option"
+    )
   }
 
   private def ChildcarePayFrequencyFormatter(name: String) = new Formatter[ChildcarePayFrequency.Value] {

@@ -168,6 +168,9 @@ object DisabilityBenefits extends Enumeration {
 
 object ChildcarePayFrequency extends Enumeration {
 
+  val WEEKLY_KEY = "value"
+  val MONTHLY_KEY = "value-2"
+
   val WEEKLY = Value("weekly")
   val MONTHLY = Value("monthly")
 
