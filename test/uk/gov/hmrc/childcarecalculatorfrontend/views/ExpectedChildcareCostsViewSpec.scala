@@ -22,12 +22,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectedChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 
-class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
+class ExpectedChildcareCostsViewSpec extends NewBigDecimalViewBehaviours {
 
   val messageKeyPrefix = "expectedChildcareCosts"
+  val messageKeyPostfix = ".notYet"
   val view = application.injector.instanceOf[expectedChildcareCosts]
 
   def createView = () =>
@@ -48,9 +49,11 @@ class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
       behave like normalPageWithTitleAsString(
         createView,
         messageKeyPrefix,
+        messageKeyPostfix = "",
         messages(s"$messageKeyPrefix.title"),
         Some(messages(s"$messageKeyPrefix.heading", WEEKLY, "Foo")),
-        Seq("info")
+        Seq("info"),
+        args = {WEEKLY},{"Foo"}
       )
     }
 
@@ -59,9 +62,11 @@ class ExpectedChildcareCostsViewSpec extends BigDecimalViewBehaviours {
       behave like normalPageWithTitleAsString(
         createViewNotYet,
         messageKeyPrefix,
+        messageKeyPostfix,
         messages(s"$messageKeyPrefix.title"),
-        Some(messages(s"$messageKeyPrefix.heading.notYet", WEEKLY, "Foo")),
-        Seq("info.notYet")
+        Some(messages(s"$messageKeyPrefix.heading$messageKeyPostfix", WEEKLY, "Foo")),
+        Seq(s"info$messageKeyPostfix"),
+        args = {WEEKLY}, {"Foo"}
       )
     }
 
