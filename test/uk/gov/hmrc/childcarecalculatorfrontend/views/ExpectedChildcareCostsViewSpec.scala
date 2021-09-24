@@ -76,7 +76,7 @@ class ExpectedChildcareCostsViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.ExpectedChildcareCostsController.onSubmit(NormalMode, 0).url,
-      Some(messages(s"$messageKeyPrefix.label", WEEKLY, "Foo") + " " + messages("site.in.pounds"))
+      Some(messages(s"$messageKeyPrefix.label", WEEKLY, "Foo"))
     )
   }
 }

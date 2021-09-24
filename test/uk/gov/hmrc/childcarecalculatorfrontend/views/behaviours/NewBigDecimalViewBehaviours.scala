@@ -28,7 +28,7 @@ trait NewBigDecimalViewBehaviours extends NewQuestionViewBehaviours[BigDecimal] 
                      expectedFormAction: String,
                      label: Option[String] = None,
                      messageDynamicValue: Option[String] = None
-             ) = {
+             ): Unit = {
 
     "behave like a page with an bigDecimal value field" when {
       "rendered" must {
@@ -55,13 +55,13 @@ trait NewBigDecimalViewBehaviours extends NewQuestionViewBehaviours[BigDecimal] 
 
         "show an error summary" in {
           val doc = asDocument(createView(form.withError(error)))
-          assertRenderedById(doc, "error-summary-heading")
+          assertRenderedById(doc, "error-summary-title")
         }
 
         "show an error in the value field's label" in {
           val doc = asDocument(createView(form.withError(error)))
-          val errorSpan = doc.getElementsByClass("error-notification").first
-          errorSpan.text mustBe messages(errorMessage)
+          val errorSpan = doc.getElementsByClass("govuk-error-message").first
+          errorSpan.text mustBe s"Error: ${messages(errorMessage)}"
         }
       }
     }
