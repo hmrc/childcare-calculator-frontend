@@ -18,10 +18,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 
-class PartnerIncomeInfoViewSpec extends ViewBehaviours {
+class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
   val view = app.injector.instanceOf[partnerIncomeInfo]
@@ -44,7 +44,7 @@ class PartnerIncomeInfoViewSpec extends ViewBehaviours {
     val testCall = Call("GET", "http://google.com")
 
     val doc = asDocument(createViewWithNextPageLink(testCall))
-    val continueLink = doc.getElementById("target-page-link")
+    val continueLink = doc.getElementsByClass("govuk-button")
 
     assertContainsText(doc, messages("site.save_and_continue"))
     continueLink.attr("href") mustBe testCall.url

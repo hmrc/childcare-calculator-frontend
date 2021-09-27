@@ -127,7 +127,7 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
       val frequency = frequencies.get(elements._1)
       frequency.getOrElse(costs) match {
         case ChildcarePayFrequency.WEEKLY => {
-          costs + (elements._2 * 52)
+           costs + (elements._2 * 52)
         }
         case ChildcarePayFrequency.MONTHLY => {
           costs + (elements._2 * 12)
