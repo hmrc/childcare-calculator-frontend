@@ -85,7 +85,6 @@ trait NewViewBehaviours extends NewViewSpecBase {
                                    title: String,
                                    heading: Option[String],
                                    expectedGuidanceKeys: Seq[String],
-
                                    args: Any*
                                  ) {
 
