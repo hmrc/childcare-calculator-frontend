@@ -21,12 +21,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerChildcareVouchers
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{ViewBehaviours, YesNoViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 
 
 
-class PartnerChildcareVouchersViewSpec extends ViewBehaviours with YesNoViewBehaviours {
+class PartnerChildcareVouchersViewSpec extends NewYesNoViewBehaviours {
 
+  override val form: Form[Boolean] = BooleanForm()
   val messageKeyPrefix = "partnerChildcareVouchers"
   val view = app.injector.instanceOf[partnerChildcareVouchers]
 
