@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ChildcarePayFrequencyForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, ViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
 class ChildcarePayFrequencyViewSpec extends NewViewBehaviours {
@@ -36,10 +36,13 @@ class ChildcarePayFrequencyViewSpec extends NewViewBehaviours {
   "ChildcarePayFrequency view" must {
 
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
-      messages(s"$messageKeyPrefix.title"),
-      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages(s"$messageKeyPrefix.title"),
+      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+      expectedGuidanceKeys = Seq(),
+      args = "Foo"
     )
 
     behave like pageWithBackLink(createView)

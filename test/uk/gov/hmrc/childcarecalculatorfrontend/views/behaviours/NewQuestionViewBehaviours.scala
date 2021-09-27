@@ -68,13 +68,13 @@ trait NewQuestionViewBehaviours[A] extends NewViewBehaviours {
         s"rendered with an error with field '$field'" must {
           "show an error summary" in {
             val doc = asDocument(createView(form.withError(FormError(field, "error"))))
-            assertRenderedById(doc, "error-summary-heading")
+            assertRenderedById(doc, "error-summary-title")
           }
 
           s"show an error in the label for field '$field'" in {
             val doc = asDocument(createView(form.withError(FormError(field, "error"))))
-            val errorSpan = doc.getElementsByClass("error-notification").first.parent.getElementsByClass("form-label")
-            errorSpan.attr("for") mustBe field
+            val errorSpan = doc.getElementsByClass("govuk-form-group govuk-form-group--error").first
+            errorSpan.getElementById(field).attr("name") mustBe field
           }
         }
       }
