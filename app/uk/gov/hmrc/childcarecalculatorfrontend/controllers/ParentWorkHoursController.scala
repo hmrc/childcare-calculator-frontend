@@ -34,7 +34,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ParentWorkHoursController @Inject()(
-                                        appConfig: FrontendAppConfig,
                                         mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
@@ -49,14 +48,14 @@ class ParentWorkHoursController @Inject()(
         case None => form()
         case Some(value) => form().fill(value)
       }
-      Ok(parentWorkHours(appConfig, preparedForm, mode))
+      Ok(parentWorkHours(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(parentWorkHours(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(parentWorkHours(formWithErrors, mode))),
         value =>
           dataCacheConnector.save[BigDecimal](request.sessionId, ParentWorkHoursId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(ParentWorkHoursId, mode)(new UserAnswers(cacheMap))))

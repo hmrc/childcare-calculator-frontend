@@ -21,7 +21,7 @@
 @this(
     layout: Layout,
     button_link: components.button_link,
-    hmrcHmrcPageHeading: HmrcPageHeading,
+    pageHeading: playComponents.heading,
     buttonLink: playComponents.button_link
 )
 
@@ -30,7 +30,7 @@
 @layout(
     pageTitle = messages("whatToTellTheCalculator.title")
 ){
-    @hmrcHmrcPageHeading(PageHeading(text = messages("whatToTellTheCalculator.heading")))
+    @pageHeading(messages("whatToTellTheCalculator.heading"))
 
     <p class="govuk-body">@messages("whatToTellTheCalculator.guidanceA")</p>
     <p class="govuk-body">@messages("whatToTellTheCalculator.guidanceB")</p>

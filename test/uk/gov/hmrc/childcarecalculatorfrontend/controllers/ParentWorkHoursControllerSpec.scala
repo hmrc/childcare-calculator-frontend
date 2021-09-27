@@ -38,10 +38,10 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
   val parentWorkHoursForm = new ParentWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ParentWorkHoursController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new ParentWorkHoursController(mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, new ParentWorkHoursForm(frontendAppConfig), view)
 
-  def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = view(form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 12
 
