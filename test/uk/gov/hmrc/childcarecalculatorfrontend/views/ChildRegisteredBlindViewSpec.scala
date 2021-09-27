@@ -38,8 +38,11 @@ class ChildRegisteredBlindViewSpec extends NewYesNoViewBehaviours {
     behave like normalPageWithTitleAsString(
       createView,
       messageKeyPrefix,
+      messageKeyPostfix = "",
       messages(s"$messageKeyPrefix.title"),
-      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+      expectedGuidanceKeys = Seq(),
+      args = ("Foo")
     )
 
     behave like pageWithBackLink(createView)
