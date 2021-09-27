@@ -37,10 +37,13 @@ class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
   "ChildDisabilityBenefits view" must {
 
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
-      messages(s"$messageKeyPrefix.title"),
-      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages(s"$messageKeyPrefix.title"),
+      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+      expectedGuidanceKeys = Seq(),
+      args = "Foo"
     )
 
     behave like pageWithBackLink(createView)
