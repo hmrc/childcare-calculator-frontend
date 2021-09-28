@@ -17,12 +17,12 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ChildcarePayFrequencyForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, ViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
-class ChildcarePayFrequencyViewSpec extends ViewBehaviours {
+class ChildcarePayFrequencyViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "childcarePayFrequency"
   val view = application.injector.instanceOf[childcarePayFrequency]
@@ -36,10 +36,13 @@ class ChildcarePayFrequencyViewSpec extends ViewBehaviours {
   "ChildcarePayFrequency view" must {
 
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
-      messages(s"$messageKeyPrefix.title"),
-      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages(s"$messageKeyPrefix.title"),
+      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+      expectedGuidanceKeys = Seq(),
+      args = "Foo"
     )
 
     behave like pageWithBackLink(createView)
