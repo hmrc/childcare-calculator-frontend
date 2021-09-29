@@ -37,7 +37,15 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
 
   "PartnerMinimumEarnings view" must {
 
-    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messages("partnerMinimumEarnings.heading", 0))
+    behave like normalPageWithTitleAsString(
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages("partnerMinimumEarnings.heading", 0),
+      heading = Some(""),
+      expectedGuidanceKeys= Seq(),
+      args = 0
+    )
 
     behave like pageWithBackLink(createView)
 
