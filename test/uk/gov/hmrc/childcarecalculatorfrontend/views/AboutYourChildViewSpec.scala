@@ -19,12 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{AboutYourChildForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{DateViewBehaviours, QuestionViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewDateViewBehaviours, NewQuestionViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 
-class AboutYourChildViewSpec extends QuestionViewBehaviours[AboutYourChild] with DateViewBehaviours[AboutYourChild] {
+class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] with NewDateViewBehaviours[AboutYourChild] {
 
   val messageKeyPrefix = "aboutYourChild"
 
