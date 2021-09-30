@@ -340,6 +340,7 @@ whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsYouGet.error.notCompleted = Select which benefits you get
 whichBenefits.select.all = Select all that apply.
+whichBenefitsYouGet.help = Help with benefits
 
 whichBenefitsPartnerGet.title = Which benefits does your partner get?
 whichBenefitsPartnerGet.heading = Which benefits does your partner get?
@@ -350,6 +351,7 @@ whichBenefitsPartnerGet.severeDisabilityPremium = Severe disability premium
 whichBenefitsPartnerGet.carersAllowance = Carer’s Allowance
 whichBenefitsPartnerGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsPartnerGet.error.notCompleted = Select which benefits your partner gets
+whichBenefitsPartnerGet.help = Help with benefits
 
 whichBenefitsList.typeof.income.benefits = Types of income benefits
 whichBenefitsList.typeof.income.support = Income Support
@@ -552,9 +554,9 @@ partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but 
 partnerPaidWorkCY.error.notCompleted = Select yes if your partner had any paid work this year
 partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
-bothPaidWorkCY.title = You and your partner isn’t working now, but have they had any paid work this year?
-bothPaidWorkCY.heading = You and your partner isn’t working now, but have they had any paid work this year?
-bothPaidWorkCY.checkYourAnswersLabel = You and your partner isn’t working now, but have they had any paid work this year?
+bothPaidWorkCY.title = You and your partner aren’t working now, but have you and your partner had any paid work this year?
+bothPaidWorkCY.heading = You and your partner aren’t working now, but have you and your partner had any paid work this year?
+bothPaidWorkCY.checkYourAnswersLabel = You and your partner aren’t working now, but have you and your partner had any paid work this year?
 bothPaidWorkCY.error.notCompleted = Select yes if you and your partner had any paid work this year
 bothPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
@@ -949,8 +951,8 @@ childDisabilityBenefits.error.notCompleted = Select yes if {0} gets any of these
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.heading = How often do you pay or expect to pay {0}’s childcare costs?
-childcarePayFrequency.weekly = Weekly
-childcarePayFrequency.monthly = Monthly
+childcarePayFrequency.weekly = weekly
+childcarePayFrequency.monthly = monthly
 childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.error.notCompleted = Select how often you pay or expect to pay for childcare costs
 
