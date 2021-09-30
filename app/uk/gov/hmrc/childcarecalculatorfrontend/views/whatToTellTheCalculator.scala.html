@@ -28,7 +28,9 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("whatToTellTheCalculator.title")
+    pageTitle = messages("whatToTellTheCalculator.title"),
+    timeoutEnabled = false,
+    backLinkEnabled = false
 ){
     @pageHeading(messages("whatToTellTheCalculator.heading"))
 
