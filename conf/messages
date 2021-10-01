@@ -546,7 +546,7 @@ partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 
 employmentIncome.error.invalid = Enter a number between 0 and 999999.99
 
-parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.title = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.error.notCompleted = Select yes if you had any paid work this year
