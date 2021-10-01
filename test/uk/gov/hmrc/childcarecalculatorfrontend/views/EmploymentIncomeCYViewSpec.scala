@@ -21,10 +21,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 
-class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncomeCY] {
+class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentIncomeCY] {
 
   val messageKeyPrefix = "employmentIncomeCY"
   val view = application.injector.instanceOf[employmentIncomeCY]
@@ -58,7 +58,7 @@ class EmploymentIncomeCYViewSpec extends QuestionViewBehaviours[EmploymentIncome
     "contain the currencySymbol class and £ " in {
       val doc = asDocument(createView())
 
-      assertRenderedByCssSelector(doc, ".currencySymbol")
+      assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 
       val parentCurrencySymbol = doc.getElementById("parentEmploymentIncomeCY").firstElementSibling().text()
       val partnerCurrencySymbol = doc.getElementById("partnerEmploymentIncomeCY").firstElementSibling().text()
