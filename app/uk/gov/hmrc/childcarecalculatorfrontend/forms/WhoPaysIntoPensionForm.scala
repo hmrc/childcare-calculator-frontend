@@ -49,7 +49,7 @@ object WhoPaysIntoPensionForm extends FormErrorHelper {
     new InputOption(
       id = id,
       value = option,
-      messageKey = s"yourAge.$option"
+      messageKey = s"whoPaysIntoPensions.$option"
     )
   }
 
