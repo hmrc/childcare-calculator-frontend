@@ -36,7 +36,7 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
     new InputOption(
       id = id,
       value = option,
-      messageKey = s"$option"
+      messageKey = s"childcarePayFrequency.$option"
     )
   }
 
