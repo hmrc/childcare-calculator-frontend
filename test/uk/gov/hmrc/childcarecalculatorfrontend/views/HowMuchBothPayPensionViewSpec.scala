@@ -19,11 +19,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchBothPayPensionForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, HowMuchBothPayPension}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPension
 
-class HowMuchBothPayPensionViewSpec extends QuestionViewBehaviours[HowMuchBothPayPension] {
+class HowMuchBothPayPensionViewSpec extends NewQuestionViewBehaviours[HowMuchBothPayPension] {
 
   val view = application.injector.instanceOf[howMuchBothPayPension]
   val messageKeyPrefix = "howMuchBothPayPension"
@@ -48,7 +48,7 @@ class HowMuchBothPayPensionViewSpec extends QuestionViewBehaviours[HowMuchBothPa
     "contain the currencySymbol class and £ for parent and partner input text boxes" in {
       val doc = asDocument(createView())
 
-      assertRenderedByCssSelector(doc, ".currencySymbol")
+      assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 
       val parentCurrencySymbol = doc.getElementById("howMuchYouPayPension").firstElementSibling().text()
       val partnerCurrencySymbol = doc.getElementById("howMuchPartnerPayPension").firstElementSibling().text()
