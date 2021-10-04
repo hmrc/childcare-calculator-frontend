@@ -1,0 +1,49 @@
+@*
+* Copyright 2021 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@(
+pageKey: Option[String] = None,
+addCssClass: Option[String] = None,
+bulletList: Seq[String]
+)(implicit messages: Messages)
+
+@cssClass = @{
+if(addCssClass.isDefined) s"form-group ${addCssClass.get}" else "form-group"
+}
+
+@text(bullet: String) = @{
+if(pageKey.isDefined) messages(s"${pageKey.get}.$bullet") else bullet
+}
+
+@list = {
+    <ul class="govuk-list govuk-list--bullet">
+        @for(bullet <- bulletList) {
+        <li id="bullet-@bullet">@text(bullet)</li>
+        }
+    </ul>
+}
+
+@single = {
+<p id="bullet-@{bulletList.head}">@text(bulletList.head)</p>
+}
+
+<div class="@cssClass" id="component-bullet-list">
+    @if(bulletList.size == 1) {
+    @single
+    } else {
+    @list
+    }
+</div>
