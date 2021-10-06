@@ -19,16 +19,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youPaidPensionCY
 
-class YouPaidPensionCYViewSpec extends YesNoViewBehaviours {
+class YouPaidPensionCYViewSpec extends NewYesNoViewBehaviours {
 
   val view = app.injector.instanceOf[youPaidPensionCY]
   val taxYearInfo = new TaxYearInfo
-
+  override val form = BooleanForm()
   val messageKeyPrefix = "YouPaidPensionCY"
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
