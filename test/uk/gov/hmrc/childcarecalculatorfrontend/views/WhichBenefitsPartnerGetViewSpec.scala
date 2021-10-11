@@ -20,19 +20,18 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsPartnerGet
 
-class WhichBenefitsPartnerGetViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
+class WhichBenefitsPartnerGetViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[String] {
 
+  override val form = WhichBenefitsPartnerGetForm()
   val mockView = app.injector.instanceOf[whichBenefitsPartnerGet]
   val messageKeyPrefix = "whichBenefitsPartnerGet"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, String] = WhichBenefitsPartnerGetForm.options
-
-  def form: Form[Set[String]] = WhichBenefitsPartnerGetForm()
+  val values: Seq[(String, String)] = WhichBenefitsPartnerGetForm.options
 
   def createView(form: Form[Set[String]] = form): Html =
     mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
