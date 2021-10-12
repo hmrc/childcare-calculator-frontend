@@ -19,11 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewYesNoViewBehaviours, YesNoViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
-class DoYouGetAnyBenefitsViewSpec extends YesNoViewBehaviours {
+class DoYouGetAnyBenefitsViewSpec extends NewYesNoViewBehaviours {
+
+  override val form = BooleanForm()
 
   val messageKeyPrefix = "doYouGetAnyBenefits"
   val view = application.injector.instanceOf[doYouGetAnyBenefits]
@@ -41,4 +43,5 @@ class DoYouGetAnyBenefitsViewSpec extends YesNoViewBehaviours {
 
     behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.DoYouGetAnyBenefitsController.onSubmit(NormalMode).url)
   }
+
 }

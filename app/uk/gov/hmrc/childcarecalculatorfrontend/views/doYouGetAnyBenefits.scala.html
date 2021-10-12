@@ -20,42 +20,50 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
-
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    heading: playComponents.heading,
+    submit_button: playComponents.submit_button,
+    error_summary: playComponents.error_summary,
+    inputYesNo: playComponents.input_yes_no)
 
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("doYouGetAnyBenefits.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@bulletList = @{
+Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
+    messages("doYouGetAnyBenefits.li.disabilityAllowance"),
+    messages("doYouGetAnyBenefits.li.attendanceAllowance"),
+    messages("doYouGetAnyBenefits.li.independencePayment"),
+    messages("doYouGetAnyBenefits.li.pensionCredit"),
+    messages("doYouGetAnyBenefits.li.incomeSupport"),
+    messages("doYouGetAnyBenefits.li.jsa"),
+    messages("doYouGetAnyBenefits.li.esa"))
+}
 
-    @back_link()
+@layout(
+    pageTitle= if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("doYouGetAnyBenefits.title"))
+    } else {
+        messages("doYouGetAnyBenefits.title")
+    }
+) {
 
     @error_summary(form.errors)
 
-    @heading("doYouGetAnyBenefits.heading", "heading-xlarge")
+    @heading(messages("doYouGetAnyBenefits.heading"))
 
     @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <ul class="bullets">
-            <li>@messages("doYouGetAnyBenefits.li.carersAllowance")</li>
-            <li>@messages("doYouGetAnyBenefits.li.disabilityAllowance")</li>
-            <li>@messages("doYouGetAnyBenefits.li.attendanceAllowance")</li>
-            <li>@messages("doYouGetAnyBenefits.li.independencePayment")</li>
-            <li>@messages("doYouGetAnyBenefits.li.pensionCredit")</li>
-            <li>@messages("doYouGetAnyBenefits.li.incomeSupport")</li>
-            <li>@messages("doYouGetAnyBenefits.li.jsa")</li>
-            <li>@messages("doYouGetAnyBenefits.li.esa")</li>
-        </ul>
+    @playComponents.list(pageKey = None, addCssClass = None, bulletList)
 
-        @input_yes_no(
-            InputViewModel[Boolean]("value", form),
-            label = messages("doYouGetAnyBenefits.heading"),
-            labelClass = Some("visually-hidden")
-        )
+    @inputYesNo(
+        viewModel = InputViewModel("value", form),
+        label = messages("doYouGetAnyBenefits.heading"),
+        labelClass = Some("govuk-visually-hidden"),
+        field = form("value")
+    )
 
-        @submit_button()
+    @submit_button()
+
     }
 }
