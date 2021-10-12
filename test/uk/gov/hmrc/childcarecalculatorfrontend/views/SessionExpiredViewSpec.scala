@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.session_expired
 
-class SessionExpiredViewSpec extends ViewBehaviours {
+class SessionExpiredViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[session_expired]
 
