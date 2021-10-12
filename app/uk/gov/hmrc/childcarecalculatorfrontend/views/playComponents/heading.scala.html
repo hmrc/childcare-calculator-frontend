@@ -18,9 +18,9 @@
 
 @(
     heading: String,
-    headingSize: String = "heading-xlarge",
+    headingSize: String = "heading-xl",
     taxYear: Option[String] = None
 )(implicit messages: Messages)
 
 
-<h1 class="govuk-heading-xl govuk-!-margin-top-0 govuk-!-margin-bottom-5">@heading</h1>
+<h1 class="govuk-@headingSize govuk-!-margin-top-0 govuk-!-margin-bottom-5">@heading</h1>

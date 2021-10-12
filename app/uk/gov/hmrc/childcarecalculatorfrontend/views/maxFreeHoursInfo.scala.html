@@ -23,87 +23,96 @@
 
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@import scala.collection.mutable.ListBuffer
 
-@(appConfig: FrontendAppConfig,
-tfcEligibility: Eligibility,
-childcareVouchersEligibility: Eligibility,
-taxCreditsEligibility: Eligibility,
-userAnswers: UserAnswers
+@this(
+    layout: Layout,
+    heading: playComponents.heading,
+    buttonLink: playComponents.button_link
+)
+
+@(
+    appConfig: FrontendAppConfig,
+    tfcEligibility: Eligibility,
+    childcareVouchersEligibility: Eligibility,
+    taxCreditsEligibility: Eligibility,
+    userAnswers: UserAnswers
 )(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("maxFreeHoursInfo.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@title = @{
+    messages("maxFreeHoursInfo.title")
+}
 
-    @back_link()
+@layout(
+    pageTitle = title,
+) {
 
-    @heading("maxFreeHoursInfo.heading", "heading-xlarge")
+    @heading(messages("maxFreeHoursInfo.heading"))
 
-    <p>@messages("maxFreeHoursInfo.could.get.max.hours")</p>
-    <p>@messages("maxFreeHoursInfo.info")
-        <a href="@messages("maxFreeHoursInfo.info.link.url")" data-journey-click="link - click:@messages("maxFreeHoursInfo.heading"):@messages("maxFreeHoursInfo.info.link")">
+    <p class="govuk-body">@messages("maxFreeHoursInfo.could.get.max.hours")</p>
+    <p class="govuk-body">@messages("maxFreeHoursInfo.info")
+        <a class="govuk-link" href="@messages("maxFreeHoursInfo.info.link.url")" data-journey-click="link - click:@messages("maxFreeHoursInfo.heading"):@messages("maxFreeHoursInfo.info.link")">
             @messages("maxFreeHoursInfo.info.link")</a>.
     </p>
 
-    <h2 class="pageHeading2">@messages("maxFreeHoursInfo.still.to.check")</h2>
+    @heading(messages("maxFreeHoursInfo.still.to.check"), headingSize = "heading-m")
 
 
     @if(userAnswers.max30HoursEnglandContent.isDefined){
         @if(userAnswers.max30HoursEnglandContent.contains(true)){
-            <p>@messages("maxFreeHoursInfo.england.hasVouchers.info")</p>
+            <p class="govuk-body">@messages("maxFreeHoursInfo.england.hasVouchers.info")</p>
         }
 
         @if(userAnswers.max30HoursEnglandContent.contains(false)){
-            <p>@messages("maxFreeHoursInfo.england.noVouchers.info")</p>
+            <p class="govuk-body">@messages("maxFreeHoursInfo.england.noVouchers.info")</p>
         }
 
-        <ul class="bullets">
-            <li>@messages("maxFreeHoursInfo.england.li.childcare")</li>
-            <li>@messages("maxFreeHoursInfo.england.li.otherChildren")</li>
-        </ul>
+        @playComponents.list(
+            bulletList = Seq(
+                messages("maxFreeHoursInfo.england.li.childcare"),
+                messages("maxFreeHoursInfo.england.li.otherChildren")
+            )
+        )
 
         @if(userAnswers.max30HoursEnglandContent.contains(true)){
-        <p>
+        <p class="govuk-body">
             @messages("maxFreeHoursInfo.england.p1.voucher")
-            <a href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
+            <a class="govuk-link" href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
             @messages("maxFreeHoursInfo.england.p1.only")
             @messages("maxFreeHoursInfo.england.p2")
-            <a href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
+            <a class="govuk-link" href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
         </p>
         }
 
         @if(userAnswers.max30HoursEnglandContent.contains(false)){
-        <p>
+        <p class="govuk-body">
             @messages("maxFreeHoursInfo.england.p1")
-            <a href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
+            <a class="govuk-link" href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
             @messages("maxFreeHoursInfo.england.p1.only")
             @messages("maxFreeHoursInfo.england.p2")
-            <a href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
+            <a class="govuk-link" href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
         </p>
         }
     }
 
     @if(userAnswers.max30HoursEnglandContent.isEmpty){
-        <p>@messages("maxFreeHoursInfo.give.more.info")</p>
+        <p class="govuk-body">@messages("maxFreeHoursInfo.give.more.info")</p>
 
-        <ul class="bullets">
-            @if(childcareVouchersEligibility == Eligible) {
-                <li>@messages("maxFreeHoursInfo.li.vouchers")</li>
-            }
 
-            @if(tfcEligibility == Eligible) {
-                <li>@messages("maxFreeHoursInfo.li.tfc")</li>
-            }
+        @if(childcareVouchersEligibility == Eligible) {
+            @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.vouchers")))
+        }
 
-            @if(userAnswers.taxOrUniversalCredits.getOrElse("") != universalCredits && taxCreditsEligibility.equals(Eligible)) {
-                <li>@messages("maxFreeHoursInfo.li.tax_credits")</li>
-            }
+        @if(tfcEligibility == Eligible) {
+            @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tfc")))
+        }
 
-        </ul>
+        @if(userAnswers.taxOrUniversalCredits.getOrElse("") != universalCredits && taxCreditsEligibility.equals(Eligible)) {
+            @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tax_credits")))
+        }
+
     }
 
-    @button_link(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+    @buttonLink(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
 
 }

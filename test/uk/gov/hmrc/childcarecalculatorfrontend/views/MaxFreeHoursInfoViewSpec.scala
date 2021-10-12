@@ -18,13 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.libs.json.{JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-class MaxFreeHoursInfoViewSpec extends ViewBehaviours {
+class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[maxFreeHoursInfo]
   val messageKeyPrefix = "maxFreeHoursInfo"
