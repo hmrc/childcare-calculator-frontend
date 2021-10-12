@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AreYouSelfEmployedOrApprenticeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouSelfEmployedOrApprentice
 
-class AreYouSelfEmployedOrApprenticeViewSpec extends ViewBehaviours {
+class AreYouSelfEmployedOrApprenticeViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "areYouSelfEmployedOrApprentice"
   val view = application.injector.instanceOf[areYouSelfEmployedOrApprentice]
