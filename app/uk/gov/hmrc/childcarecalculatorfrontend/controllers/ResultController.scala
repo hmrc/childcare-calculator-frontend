@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
-import play.api.i18n.I18nSupport
+import play.api.i18n.{I18nSupport, Lang}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
@@ -49,6 +49,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
+      implicit val lang: Lang = request.lang
       request.userAnswers.location match {
         case Some(location) => renderResultsPage(hideTC = request.userAnswers.notEligibleForTaxCredits, location)
         case None           => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
@@ -56,6 +57,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
   }
 
   def onPageLoadHideTC: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+    implicit val lang: Lang = request.lang
     request.userAnswers.location match {
       case Some(location) => renderResultsPage(hideTC = true, location)
       case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
@@ -66,6 +68,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
     resultsService.getResultsViewModel(request.userAnswers, location).map(model => {
       dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
 
+      implicit val lang: Lang = request.lang
       val amendedModel = if (hideTC) model.copy(tc = None) else model
       Ok(result(appConfig, amendedModel,
         moreInfoResults.getSchemeContent(location, amendedModel, hideTC)(request.lang),

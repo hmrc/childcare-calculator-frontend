@@ -30,6 +30,8 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   private lazy val contactHost = loadConfig("contact-frontend.host")
   private val contactFormServiceIdentifier = loadConfig("contact-frontend.serviceId")
 
+  lazy val urBannerUrl = loadConfig("user-research-banner-url")
+
   lazy val eligibilityUrl: String =  config.baseUrl("cc-eligibility") + loadConfig("microservice.services.cc-eligibility.url")
 
   lazy val analyticsDimensionKey: String = loadConfig("google-analytics.dimensionKey")

@@ -35,7 +35,8 @@
     pageTitle: String,
     timeoutEnabled: Boolean = true,
     backLinkEnabled: Boolean = true,
-    accountMenuEnabled: Boolean = true)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+    accountMenuEnabled: Boolean = true,
+    urBanner: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @accountMenu = {
     @if(backLinkEnabled) { @backLink() }
@@ -66,7 +67,8 @@
     )),
     headerBlock = Some(hmrcStandardHeader(
         serviceUrl = Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url),
-        phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl))
+        phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
+        userResearchBanner = if (urBanner) {Some(UserResearchBanner(url = appConfig.urBannerUrl))} else None
     )),
     beforeContentBlock = Some(accountMenu),
     scriptsBlock = Some(hmrcScripts()),

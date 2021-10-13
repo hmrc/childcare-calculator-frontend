@@ -19,9 +19,10 @@
 
 @(
     summary: String,
+    id: Option[String] = None
 )(content: Html)(implicit lang:Lang,  m: Messages)
 
-<details class="govuk-details" data-module="govuk-details">
+<details class="govuk-details" data-module="govuk-details" @if(id.isDefined) {id="@id"}>
     <summary class="govuk-details__summary">
     <span class="govuk-details__summary-text">
       @{summary}
