@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object WhoPaidIntoPensionPYForm extends FormErrorHelper {
 
-  def WhoPaidIntoPensionPYFormatter = new Formatter[String] {
+  def WhoPaidIntoPensionPYFormatter: Formatter[String] = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
       case None => produceError(key, whoPaidIntoPensionErrorKey)
@@ -35,14 +35,22 @@ object WhoPaidIntoPensionPYForm extends FormErrorHelper {
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(WhoPaidIntoPensionPYFormatter)))
 
-  def options = Seq(
-    InputOption("whoPaidIntoPensionPY", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoPaidIntoPensionPY", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoPaidIntoPensionPY", YouPartnerBothEnum.BOTH.toString)
+  def options: Seq[InputOption] = Seq(
+    whoPaidIntoPensionInputOption("value", YouPartnerBothEnum.YOU.toString),
+    whoPaidIntoPensionInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
+    whoPaidIntoPensionInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  private def whoPaidIntoPensionInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"whoPaidIntoPensionPY.$option"
+    )
+  }
+
+  def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }

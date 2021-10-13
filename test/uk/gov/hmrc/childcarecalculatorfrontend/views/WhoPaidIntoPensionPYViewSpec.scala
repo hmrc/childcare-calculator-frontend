@@ -17,19 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoPaidIntoPensionPYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaidIntoPensionPY
 
-class WhoPaidIntoPensionPYViewSpec extends ViewBehaviours {
+class WhoPaidIntoPensionPYViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[whoPaidIntoPensionPY]
   val messageKeyPrefix = "whoPaidIntoPensionPY"
 
-  def createView = () => view(frontendAppConfig, WhoPaidIntoPensionPYForm(), NormalMode)(fakeRequest, messages)
+  def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig, WhoPaidIntoPensionPYForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm: Form[String] => HtmlFormat.Appendable = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhoPaidIntoPensionPY view" must {
     behave like normalPage(createView, messageKeyPrefix)
