@@ -17,10 +17,14 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
 
-@this()
+@this(
+    heading: heading,
+    detailSummaryComponent: detail_summary,
+)
 
 @(
         title: String,
+        id: Option[String] = None,
         couldGet: Option[String] = None,
         eligibility: Option[EligibilityModel] = None,
         periodText: Option[String] = None,
@@ -28,7 +32,6 @@
         para2: Option[Html] = None,
         para3: Option[String] = None,
         detailSummary: Option[String] = None,
-        detailClass: Option[String] = None,
         detailPara1: Option[String] = None,
         detailPara2: Option[String] = None,
         detailPara2List: Seq[String] = Nil,
@@ -38,63 +41,59 @@
         detailPara4: Option[String] = None,
         notEligibleID1: Option[String] = None,
         notEligibleID2: Option[String] = None,
-        displayWarning: Boolean = false,
-        warningMessage: String = "",
+        warningMessage: Option[String] = None,
         displayTCGuidanceLink: Boolean = false
-)(implicit messages: Messages)
+)(implicit messages: Messages, lang: Lang)
 
-<div class="grid-row">
-    <div class="column-full">
-        <div>
-            <h3 class="heading-medium results--heading">@title</h3>
-            @if(displayWarning) {
-            <div class="notice">
-                <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-                <strong class="bold-small">
-                    <p>@warningMessage</p>
-                </strong>
-            </div>
-            }
-            @if(couldGet.isDefined){
-                <p class="panel panel-border-wide">@couldGet <strong class="bold-small" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
-                    @periodText</p>
-            }
-            @if(para1.isDefined) {
-            <p @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a rel="external" target="_blank"
-                id="tcGuidanceLink" data-journey-click="link - click:@messages("result.not.eligible.title.ga") @title:@messages("result.tc.scheme.guidance.link")" href="@tcSchemeGuidanceLinkUrl">
-                @messages("result.tc.scheme.guidance.link")<span class="visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span>
-                </a>
-                }
-            </p>
-            }
-            @if(para2.isDefined) {
-                <p @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
-            }
+@heading(heading=title, headingSize = "heading-m", id = Some("id"))
 
-            @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
-
-            @if(para3.isDefined) {
-                <p>@para3</p>
-            }
-
-            @if(detailSummary.isDefined) {
-                <details @if(detailClass.isDefined) {class="@detailClass"}>
-                    <summary data-journey-click="accordion - click:@title:@detailSummary"><span class="summary">@detailSummary</span></summary>
-                    <div class="panel">
-                        <p>@detailPara1</p>
-                        @if(detailPara2.isDefined) {<p>@detailPara2</p>}
-                        @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
-                        @if(detailPara2List.nonEmpty) {
-                            <ul class="bullets">
-                                @for(li <- detailPara2List) {<li>@li</li>}
-                            </ul>
-                        }
-                        @if(detailPara3.isDefined) {<p>@detailPara3</p>}
-                        @if(detailPara4.isDefined) {<p>@detailPara4</p>}
-                    </div>
-                </details>
-            }
-        </div>
-    </div>
+@if(warningMessage.isDefined) {
+<div class="notice">
+    <i class="icon icon-important"><span class="govuk-visually-hidden">Warning</span></i>
+    <strong class="govuk-bold">
+        <p>@warningMessage</p>
+    </strong>
 </div>
+}
+
+@if(couldGet.isDefined){
+<p class="govuk-details__text govuk-body">@couldGet <strong class="govuk-bold" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
+    @periodText</p>
+}
+
+@if(para1.isDefined) {
+<p class="govuk-body" @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a class="govuk-link" rel="external" target="_blank"
+                                                                                             id="tcGuidanceLink" data-journey-click="link - click:@messages("result.not.eligible.title.ga") @title:@messages("result.tc.scheme.guidance.link")" href="@tcSchemeGuidanceLinkUrl">
+    @messages("result.tc.scheme.guidance.link")<span class="govuk-visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span>
+    </a>
+    }
+</p>
+}
+
+@if(para2.isDefined) {
+<p class="govuk-body" @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
+}
+
+@if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
+
+@if(para3.isDefined) {
+    <p class="govuk-body">@para3</p>
+}
+
+@if(id.isDefined) {
+    @detailSummaryComponent(
+        summary = detailSummary.get,
+        id = id
+    ){
+        <p class="govuk-body">@detailPara1</p>
+        @if(detailPara2.isDefined) {<p class="govuk-body">@detailPara2</p>}
+        @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
+        @if(detailPara2List.nonEmpty) {
+            @list(bulletList = detailPara2List)
+        }
+        @if(detailPara3.isDefined) {<p class="govuk-body">@detailPara3</p>}
+        @if(detailPara4.isDefined) {<p class="govuk-body">@detailPara4</p>}
+    }
+}
+
 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">

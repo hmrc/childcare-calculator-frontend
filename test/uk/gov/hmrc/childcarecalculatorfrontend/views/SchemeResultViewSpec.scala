@@ -18,11 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.scheme_result
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
 
-class SchemeResultViewSpec extends ViewBehaviours {
+class SchemeResultViewSpec extends NewViewBehaviours {
 
   lazy val appSchemeResult = app.injector.instanceOf[scheme_result]
 
