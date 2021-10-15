@@ -23,31 +23,42 @@
 
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(
+    layout: Layout,
+    formWithCSRF: FormWithCSRF, back_link: components.back_link,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    inputYesNo: playComponents.input_yes_no,
+    submitButton: playComponents.submit_button,
+)
 
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("youPaidPensionPY.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("youPaidPensionPY.title")) else messages("youPaidPensionPY.title")
+}
 
-    @back_link()
+@layout(
+    pageTitle = title
+) {
 
-    @error_summary(form.errors)
+        @formWithCSRF(action = YouPaidPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-    @heading("youPaidPensionPY.heading", "heading-xlarge")
+        @errorSummary(form.errors)
 
-    @formWithCSRF(action = YouPaidPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
+        @heading(messages("youPaidPensionPY.heading"))
 
-    <p>@messages("youPaidPensionPY.tax.year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-
-        @input_yes_no(
-            InputViewModel[Boolean]("value", form),
+        @inputYesNo(
+            viewModel = InputViewModel("value", form),
             label = messages("youPaidPensionPY.heading"),
-            labelClass = Some("visually-hidden")
+            hint = Some(messages("youPaidPensionPY.tax.year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)),
+            labelClass = Some("govuk-visually-hidden"),
+            field = form("value")
         )
 
-        @submit_button()
+        @submitButton()
+
     }
+
 }
+
