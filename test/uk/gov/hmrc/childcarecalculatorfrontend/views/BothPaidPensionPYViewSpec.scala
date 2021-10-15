@@ -19,12 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidPensionPY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-class BothPaidPensionPYViewSpec extends YesNoViewBehaviours {
+class BothPaidPensionPYViewSpec extends NewYesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
   val view = application.injector.instanceOf[bothPaidPensionPY]
@@ -48,4 +48,5 @@ class BothPaidPensionPYViewSpec extends YesNoViewBehaviours {
     val doc = asDocument(createView())
     assertContainsText(doc, messages(s"$messageKeyPrefix.tax.year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd))
   }
+  override val form: Form[Boolean] = BooleanForm()
 }
