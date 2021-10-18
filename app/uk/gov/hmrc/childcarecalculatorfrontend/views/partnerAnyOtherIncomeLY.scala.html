@@ -48,10 +48,10 @@
 
     @heading(messages("partnerAnyOtherIncomeLY.heading"))
     <p class="govuk-body">@messages("partnerAnyOtherIncomeLY.year.start.end.date", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-    @inputYesNo(
+    <p class="govuk-body">@messages("partnerAnyOtherIncomeLY.hint.text")</p>
+@inputYesNo(
         viewModel = InputViewModel("value", form),
         label = messages("partnerAnyOtherIncomeLY.heading"),
-        hint = Some(messages("partnerAnyOtherIncomeLY.hint.text")),
         labelClass = Some("govuk-visually-hidden"),
         field = form("value")
     )
