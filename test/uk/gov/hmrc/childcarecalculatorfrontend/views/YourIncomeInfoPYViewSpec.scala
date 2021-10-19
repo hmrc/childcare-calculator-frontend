@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, ViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
 
-class YourIncomeInfoPYViewSpec extends ViewBehaviours {
+class YourIncomeInfoPYViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[yourIncomeInfoPY]
   val taxYearInfo = new TaxYearInfo
