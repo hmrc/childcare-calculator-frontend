@@ -23,40 +23,50 @@
 
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    inputYesNo: playComponents.input_yes_no,
+    submitButton: playComponents.submit_button
+)
 
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("bothAnyTheseBenefitsPY.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
-
-    @back_link()
-
-    @error_summary(form.errors)
-
-    @heading("bothAnyTheseBenefitsPY.heading", "heading-xlarge")
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages(s"bothAnyTheseBenefitsPY.title")) else messages(s"bothAnyTheseBenefitsPY.title")
+}
+@layout(
+    pageTitle = title
+) {
 
     @formWithCSRF(action = BothAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("bothAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+        @errorSummary(form.errors)
 
-        <ul class="bullets">
-            <li>@messages("bothAnyTheseBenefitsPY.li.income_support")</li>
-            <li>@messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
-            <li>@messages("bothAnyTheseBenefitsPY.li.carers")</li>
-            <li>@messages("bothAnyTheseBenefitsPY.li.employment_support")</li>
-            <li>@messages("bothAnyTheseBenefitsPY.li.pensions")</li>
-            <li>@messages("bothAnyTheseBenefitsPY.li.disability")</li>
-        </ul>
+        @heading(messages("bothAnyTheseBenefitsPY.heading"))
 
-        @input_yes_no(
-            InputViewModel[Boolean]("value", form),
-            label = messages("bothAnyTheseBenefitsPY.heading"),
-            labelClass = Some("visually-hidden")
+        <p class="govuk-body">@messages("bothAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+
+        @playComponents.list(
+            bulletList = Seq(
+                messages("bothAnyTheseBenefitsPY.li.income_support"),
+                messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance"),
+                messages("bothAnyTheseBenefitsPY.li.carers"),
+                messages("bothAnyTheseBenefitsPY.li.employment_support"),
+                messages("bothAnyTheseBenefitsPY.li.pensions"),
+                messages("bothAnyTheseBenefitsPY.li.disability")
+            )
         )
 
-        @submit_button()
+        @inputYesNo(
+            InputViewModel[Boolean]("value", form),
+            label = messages("bothAnyTheseBenefitsPY.heading"),
+            labelClass = Some("govuk-visually-hidden"),
+            field = form("value")
+        )
+
+        @submitButton()
     }
 }
