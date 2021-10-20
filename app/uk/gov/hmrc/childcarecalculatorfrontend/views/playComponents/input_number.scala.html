@@ -20,7 +20,7 @@
 
 @(
 label: Html,
-currencySymbol: Option[Boolean] = None,
+stringLabel: Option[String] = None,
 inputClass: Option[String] = None,
 hint: Option[String] = None,
 labelClass: Option[String] = None,
@@ -34,7 +34,7 @@ field: Field
         label = Label(
                 isPageHeading = false,
                 classes = s"""govuk-fieldset__legend--xl ${labelClass.getOrElse("")}""",
-                content = HtmlContent(label)
+                content = if(stringLabel.isDefined) Text(stringLabel.get) else HtmlContent(label)
         ),
         hint = hint.map(hintString => Hint(content = Text(hintString))),
         classes = "govuk-input--width-10",
