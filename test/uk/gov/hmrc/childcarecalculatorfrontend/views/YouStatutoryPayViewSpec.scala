@@ -17,36 +17,37 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youStatutoryPay
 
-class YouStatutoryPayViewSpec extends YesNoViewBehaviours {
+class YouStatutoryPayViewSpec extends NewYesNoViewBehaviours {
 
+  override val form = BooleanForm()
   val view = app.injector.instanceOf[youStatutoryPay]
   val taxYearInfo = new TaxYearInfo
 
   val messageKeyPrefix = "youStatutoryPay"
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm: Form[Boolean] => HtmlFormat.Appendable = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "youStatutoryPay view" must {
 
     "have the correct banner title" in {
       val doc = asDocument(createView())
-      val nav = doc.getElementById("proposition-menu")
-      val span = nav.children.first
-      span.text mustBe messages("site.service_name")
+      val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+      nav.text mustBe messages("site.service_name")
     }
 
     "display the correct browser title" in {
       val doc = asDocument(createView())
-      assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title", taxYearInfo.previousTaxYearStart) + " - " + messages("site.service_name")+" - GOV.UK")
+      assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title", taxYearInfo.previousTaxYearStart) + " - " + messages("site.service_name") + " - GOV.UK")
     }
 
     "display the correct page title" in {
@@ -61,7 +62,7 @@ class YouStatutoryPayViewSpec extends YesNoViewBehaviours {
 
     "display a beta banner" in {
       val doc = asDocument(createView())
-      assertRenderedByCssSelector(doc, ".beta-banner")
+      assertRenderedByCssSelector(doc, ".govuk-phase-banner")
     }
 
     "not display HMRC branding" in {
