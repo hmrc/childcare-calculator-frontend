@@ -37,6 +37,16 @@
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerAnyTheseBenefitsPY.title")) else messages("partnerAnyTheseBenefitsPY.title")
 }
+@bulletList = @{
+    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
+    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
+    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
+    messages("partnerAnyTheseBenefitsPY.li.pensions"),
+    messages("partnerAnyTheseBenefitsPY.li.disability"),
+    messages("partnerAnyTheseBenefitsPY.li.attendance"),
+    messages("partnerAnyTheseBenefitsPY.li.independance"),
+    messages("partnerAnyTheseBenefitsPY.li.carers"))
+}
 @layout(
     pageTitle = title
 ) {
@@ -47,18 +57,8 @@
 
         @heading(messages("partnerAnyTheseBenefitsPY.heading"))
         <p class="govuk-body">@messages("partnerAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+        @playComponents.list(pageKey = None, addCssClass = None, bulletList)
 
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("partnerAnyTheseBenefitsPY.li.income_support")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.employment_support")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.pensions")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.disability")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.attendance")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.independance")</li>
-            <li>@messages("partnerAnyTheseBenefitsPY.li.carers")</li>
-
-        </ul>
         @inputYesNo(
             viewModel = InputViewModel("value", form),
             label = messages("partnerAnyTheseBenefitsPY.heading"),
