@@ -34,7 +34,9 @@
 
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, location: Location.Value)(implicit request: Request[_], messages: Messages)
 
-@title = @{messages("childAgedThreeOrFour.title")}
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("childAgedThreeOrFour.title")) else messages("childAgedThreeOrFour.title")
+}
 
 @layout(
     pageTitle = title,
