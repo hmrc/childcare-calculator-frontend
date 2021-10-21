@@ -19,12 +19,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchYouPayPensionPYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchYouPayPensionPY
 
-class HowMuchYouPayPensionPYViewSpec extends BigDecimalViewBehaviours {
+class HowMuchYouPayPensionPYViewSpec extends NewBigDecimalViewBehaviours {
 
   val view = app.injector.instanceOf[howMuchYouPayPensionPY]
   val messageKeyPrefix = "howMuchYouPayPensionPY"
@@ -44,7 +43,7 @@ class HowMuchYouPayPensionPYViewSpec extends BigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.HowMuchYouPayPensionPYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+      Some(messages(s"$messageKeyPrefix.info"))
     )
   }
 }
