@@ -35,7 +35,7 @@ class YourIncomeInfoPYViewSpec extends NewViewBehaviours {
 
     "contain the link for parent paid work for previous year" in {
       val doc = asDocument(createView())
-      val continueLink = doc.getElementById("target-page-link")
+      val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))
       continueLink.attr("href") mustBe routes.YouGetSameIncomePreviousYearController.onPageLoad(NormalMode).url
