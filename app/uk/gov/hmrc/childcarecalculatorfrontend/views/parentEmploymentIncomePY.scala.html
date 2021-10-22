@@ -42,13 +42,13 @@
     pageTitle = title
 ) {
 
-    @formWithCSRF(action = ParentEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        <p class = "govuk-body">@messages("parentEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-        <p class = "govuk-body">@messages("parentEmploymentIncomePY.hint")</p>
+    @formWithCSRF(action = ParentEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
         @errorSummary(form.errors)
 
         @heading(messages("parentEmploymentIncomePY.heading"))
+        <p class = "govuk-body">@messages("parentEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+        <p class = "govuk-body">@messages("parentEmploymentIncomePY.hint")</p>
 
         @inputNumber(
             label = heading(messages("parentEmploymentIncomePY.info")),
