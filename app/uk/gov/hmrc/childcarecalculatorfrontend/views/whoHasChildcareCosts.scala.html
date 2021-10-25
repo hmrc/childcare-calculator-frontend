@@ -17,36 +17,56 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.play.views.html._
-
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(
+        layout: Layout,
+        formWithCSRF: FormWithCSRF,
+        errorSummary: playComponents.error_summary,
+        inputCheckBox: playComponents.input_check_box,
+        heading: playComponents.heading,
+        submitButton: playComponents.submit_button
+)
 
-@(appConfig: FrontendAppConfig, form: Form[_], mode: Mode, inputs: Map[String, String])(implicit request: Request[_], messages: Messages)
+@(
+        appConfig: FrontendAppConfig,
+        form: Form[_],
+        mode: Mode,
+        inputs: Seq[(String, String)]
+)(
+        implicit request: Request[_],
+        messages: Messages
+)
 
-@main_template(
-    title = messages("whoHasChildcareCosts.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("whoHasChildcareCosts.title")) else messages("whoHasChildcareCosts.title")
+}
 
-    @back_link()
-
-    @error_summary(form.errors)
-
-    @heading("whoHasChildcareCosts.heading")
-
-    <p>@messages("whichBenefits.select.all")</p>
-
+@layout(
+    pageTitle = title
+){
     @formWithCSRF(action = WhoHasChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @input_check_box(
-            form("value"),
-            legend = messages("whoHasChildcareCosts.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = inputs
-        )
+    @errorSummary(form.errors)
 
-        @submit_button()
+    @heading(messages("whoHasChildcareCosts.heading"))
+
+    <p class="govuk-body">@messages("whichBenefits.select.all")</p>
+
+        @inputCheckBox(
+            viewModel = InputViewModel("value", form),
+            field = form("value"),
+            legend = messages("whoHasChildcareCosts.heading"),
+            legendClass = Some("govuk-visually-hidden"),
+            inputs = inputs.map { checkboxOption =>
+                CheckboxItem(
+                    content = HtmlContent((s"${checkboxOption._1}")),
+                    value = checkboxOption._2.toString
+           )
+        }.toSeq
+    )
+
+        @submitButton()
     }
 }
