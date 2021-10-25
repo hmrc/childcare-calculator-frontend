@@ -17,14 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.joda.time.LocalDate
-import play.api.data.Form
+import play.api.data.{Form, Forms}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.DateViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewDateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 
-class ChildStartEducationViewSpec extends DateViewBehaviours[LocalDate] {
+class ChildStartEducationViewSpec extends NewDateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "childStartEducation"
   val view = application.injector.instanceOf[childStartEducation]
@@ -39,10 +39,13 @@ class ChildStartEducationViewSpec extends DateViewBehaviours[LocalDate] {
   "ChildStartEducation view" must {
 
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
       title = messages(s"$messageKeyPrefix.title"),
-      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+      expectedGuidanceKeys = Seq(),
+      args = "Foo"
     )
 
     behave like pageWithBackLink(createView)
