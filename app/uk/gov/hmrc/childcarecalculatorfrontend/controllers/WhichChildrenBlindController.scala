@@ -52,7 +52,7 @@ class WhichChildrenBlindController @Inject()(
             case None => WhichChildrenBlindForm()
             case Some(value) => WhichChildrenBlindForm().fill(value)
           }
-          Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, mode, options(values))))
+          Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, mode, options(values).toSeq)))
       }
   }
 
@@ -62,7 +62,7 @@ class WhichChildrenBlindController @Inject()(
         values =>
           WhichChildrenBlindForm(values.values.toSeq: _*).bindFromRequest().fold(
             (formWithErrors: Form[_]) => {
-              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, options(values))))
+              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, options(values).toSeq)))
             },
             value => {
               dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenBlindId.toString, value).map {
