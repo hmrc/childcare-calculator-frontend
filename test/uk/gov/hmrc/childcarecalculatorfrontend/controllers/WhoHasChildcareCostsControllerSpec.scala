@@ -162,7 +162,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
                     form: Form[_] = WhoHasChildcareCostsForm(0, 1),
                     values: Map[String, String] = defaultValues
                   ): String =
-    view(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, values.toSeq)(fakeRequest, messages).toString
 
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
