@@ -16,10 +16,12 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @this(
     heading: heading,
     detailSummaryComponent: detail_summary,
+    govukWarningText : GovukWarningText
 )
 
 @(
@@ -48,16 +50,14 @@
 @heading(heading=title, headingSize = "heading-m", id = Some("id"))
 
 @if(warningMessage.isDefined) {
-<div class="notice">
-    <i class="icon icon-important"><span class="govuk-visually-hidden">Warning</span></i>
-    <strong class="govuk-bold">
-        <p>@warningMessage</p>
-    </strong>
-</div>
+    @govukWarningText(WarningText(
+        iconFallbackText = "Warning",
+        content = Text(warningMessage.get)
+    ))
 }
 
 @if(couldGet.isDefined){
-<p class="govuk-details__text govuk-body">@couldGet <strong class="govuk-bold" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
+<p class="govuk-inset-text">@couldGet <strong class="govuk-bold" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
     @periodText</p>
 }
 
