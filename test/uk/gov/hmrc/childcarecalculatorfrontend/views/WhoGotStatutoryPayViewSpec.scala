@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGotStatutoryPayForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGotStatutoryPay
 
-class WhoGotStatutoryPayViewSpec extends ViewBehaviours {
+class WhoGotStatutoryPayViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[whoGotStatutoryPay]
   val messageKeyPrefix = "whoGotStatutoryPay"
