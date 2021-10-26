@@ -26,4 +26,5 @@ object WhichChildrenBlindForm extends FormErrorHelper {
       "value" -> set(number.verifying("error.unknown", options.contains _))
         .verifying("whichChildrenBlind.error.notCompleted", _.nonEmpty)
     )
+
 }
