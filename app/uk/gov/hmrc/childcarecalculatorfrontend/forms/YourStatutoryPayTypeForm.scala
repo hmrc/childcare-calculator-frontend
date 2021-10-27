@@ -31,10 +31,20 @@ object YourStatutoryPayTypeForm extends FormErrorHelper {
   def apply(): Form[StatutoryPayTypeEnum.Value] =
     Form(single("value" -> of(StatutoryPayTypeFormatter)))
 
-  def options: Seq[InputOption] = StatutoryPayTypeEnum.values.map {
-    value =>
-      InputOption("statutoryPayType", value.toString)
-  }.toSeq
+  def options = Seq(
+    yourStatutoryPayTypeInputOption("value", StatutoryPayTypeEnum.MATERNITY.toString),
+    yourStatutoryPayTypeInputOption("value-2", StatutoryPayTypeEnum.PATERNITY.toString),
+    yourStatutoryPayTypeInputOption("value-3", StatutoryPayTypeEnum.ADOPTION.toString),
+    yourStatutoryPayTypeInputOption("value-4", StatutoryPayTypeEnum.SHARED_PARENTAL.toString)
+  )
+
+  private def yourStatutoryPayTypeInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"statutoryPayType.$option"
+    )
+  }
 
   private def StatutoryPayTypeFormatter = new Formatter[StatutoryPayTypeEnum.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
