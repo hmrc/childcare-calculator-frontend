@@ -22,10 +22,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum.MATERNITY
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.IntViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewIntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
-class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
+class YourStatutoryWeeksViewSpec extends NewIntViewBehaviours {
 
   val view = app.injector.instanceOf[yourStatutoryWeeks]
   val messageKeyPrefix = "yourStatutoryWeeks"
@@ -43,11 +43,15 @@ class YourStatutoryWeeksViewSpec extends IntViewBehaviours {
   "YourStatutoryWeeks view" must {
 
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
       title = messages(s"$messageKeyPrefix.title", statutoryType),
-      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType)),
+      expectedGuidanceKeys = Seq(),
+      statutoryType
     )
+
     behave like pageWithBackLink(createView)
 
     behave like intPage(
