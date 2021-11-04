@@ -20,11 +20,12 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayBeforeTax
 
-class PartnerStatutoryPayBeforeTaxViewSpec extends YesNoViewBehaviours {
+class PartnerStatutoryPayBeforeTaxViewSpec extends NewYesNoViewBehaviours {
 
+  override val form = BooleanForm()
   val messageKeyPrefix = "partnerStatutoryPayBeforeTax"
   val view = app.injector.instanceOf[partnerStatutoryPayBeforeTax]
 
@@ -36,10 +37,13 @@ class PartnerStatutoryPayBeforeTaxViewSpec extends YesNoViewBehaviours {
 
   "PartnerStatutoryPayBeforeTax view" must {
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
       title = messages(s"$messageKeyPrefix.title", statutoryType),
-      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType)),
+      expectedGuidanceKeys = Seq(),
+      args = (statutoryType)
     )
 
     behave like pageWithBackLink(createView)
