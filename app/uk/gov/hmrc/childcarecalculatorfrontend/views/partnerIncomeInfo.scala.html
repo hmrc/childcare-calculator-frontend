@@ -20,14 +20,21 @@
 
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(layout: Layout, formWithCSRF: FormWithCSRF,
+@this(
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
     heading: playComponents.heading,
-    hmrcHmrcPageHeading: HmrcPageHeading,
-    button_link: playComponents.button_link)
+    button_link: playComponents.button_link
+)
 
-@(appConfig: FrontendAppConfig,
-nextPage: Call,
-taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    nextPage: Call,
+    taxYearInfo: TaxYearInfo
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @bulletList = @{
     Seq(messages("partnerIncomeInfo.li.income_paid_work"),
@@ -40,9 +47,9 @@ taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 @layout(
     pageTitle = messages("partnerIncomeInfo.title")
 ) {
-    @hmrcHmrcPageHeading(PageHeading(text = messages("partnerIncomeInfo.heading")))
+    @heading(messages("partnerIncomeInfo.heading"))
 
-    <p class="govuk-body">@messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
+    <p class="govuk-inset-text">@messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
     <p class="govuk-body">@messages("partnerIncomeInfo.guidance")</p>
 
