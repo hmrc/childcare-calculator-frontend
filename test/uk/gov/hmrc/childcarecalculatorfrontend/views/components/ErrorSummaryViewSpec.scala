@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views.components
 
 import play.api.data.FormError
-import uk.gov.hmrc.childcarecalculatorfrontend.views.ViewSpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.error_summary
 
-class ErrorSummaryViewSpec extends ViewSpecBase {
+class ErrorSummaryViewSpec extends NewViewSpecBase {
 
   lazy val errorSummaryView = app.injector.instanceOf[error_summary]
 

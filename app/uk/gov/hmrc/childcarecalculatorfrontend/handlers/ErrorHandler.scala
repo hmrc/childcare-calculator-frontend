@@ -26,26 +26,25 @@ import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 @Singleton
 class ErrorHandler @Inject()(
-                              appConfig: FrontendAppConfig,
                               val messagesApi: MessagesApi,
                               errorTemplate: error_template
                             ) extends FrontendErrorHandler with I18nSupport {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit rh: Request[_]): Html =
-    errorTemplate(pageTitle, heading, message, appConfig)
+    errorTemplate(pageTitle, heading, message)
 
   override def badRequestTemplate(implicit request: Request[_]): Html =
     errorTemplate(
       Messages("global.error.InternalServerError500.title"),
       Messages("global.error.InternalServerError500.heading"),
-      Messages("global.error.InternalServerError500.message"), appConfig)
+      Messages("global.error.InternalServerError500.message"))
 
   override def internalServerErrorTemplate(implicit request: Request[_]): Html = {
     errorTemplate(
       Messages("ccc.error.InternalServerError500.title"),
       Messages("ccc.error.InternalServerError500.heading"),
       Messages("ccc.error.InternalServerError500.message"),
-      appConfig)
+      )
   }
 }
 
