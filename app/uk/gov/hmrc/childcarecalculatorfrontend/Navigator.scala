@@ -50,8 +50,6 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
         mode match {
           case NormalMode =>
             _ => routes.WhatToTellTheCalculatorController.onPageLoad
-          case CheckMode =>
-            _ => routes.CheckYourAnswersController.onPageLoad
         }
       }
   }
@@ -67,8 +65,6 @@ trait Navigator {
       mode match {
         case NormalMode =>
           routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad)(answers)
-        case CheckMode =>
-          editRouteMap.getOrElse(id, (_: UserAnswers) => routes.CheckYourAnswersController.onPageLoad)(answers)
       }
   }
 }
