@@ -61,11 +61,6 @@ class NavigatorSpec extends PlaySpec with OptionValues {
         result(answers) mustEqual routes.WhatToTellTheCalculatorController.onPageLoad
       }
 
-      "return the default route when no edit route exists in the navigator" in {
-        val result = navigator.nextPage(ApprovedProviderId, CheckMode)
-        result(answers) mustEqual routes.CheckYourAnswersController.onPageLoad
-      }
-
       "normal mode" when {
 
         "return a route which only exists in the first sub navigator" in {
