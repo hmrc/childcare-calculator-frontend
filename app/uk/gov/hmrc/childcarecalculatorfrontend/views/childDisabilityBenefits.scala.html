@@ -25,12 +25,10 @@
 @this(
     layout: Layout,
     formWithCSRF: FormWithCSRF,
-    back_link: components.back_link,
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
     submitButton: playComponents.submit_button,
     inputYesNo: playComponents.input_yes_no,
-    button_link: components.button_link,
 )
 @(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 

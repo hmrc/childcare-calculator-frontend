@@ -147,11 +147,11 @@ object WhichBenefitsEnum extends Enumeration {
 
   val sortedWhichBenefits =
     Seq(
-      INCOMEBENEFITS,
       DISABILITYBENEFITS,
       HIGHRATEDISABILITYBENEFITS,
       SEVEREDISABILITYPREMIUM,
-      CARERSALLOWANCE
+      CARERSALLOWANCE,
+      INCOMEBENEFITS,
     )
 }
 

@@ -20,11 +20,10 @@ import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.scheme_result
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
 
-class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
+class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
   lazy val appResultNotEligible = app.injector.instanceOf[resultNotEligible]
 

@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewQuestionViewBehaviours, QuestionViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 
 class EmploymentIncomePYViewSpec extends NewQuestionViewBehaviours[EmploymentIncomePY] {

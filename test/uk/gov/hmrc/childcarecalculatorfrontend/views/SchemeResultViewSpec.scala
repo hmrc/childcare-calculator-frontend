@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.scheme_result
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.scheme_result
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
 
 class SchemeResultViewSpec extends NewViewBehaviours {
@@ -37,7 +37,7 @@ class SchemeResultViewSpec extends NewViewBehaviours {
           para1 = Some("some text"),
           para2 = Some(Html("some more text")),
           para3 = Some("some even more text")
-        )(messages))
+        )(messages, lang))
 
         assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
     }
@@ -52,7 +52,7 @@ class SchemeResultViewSpec extends NewViewBehaviours {
         para2 = Some(Html("some more text")),
         para3 = Some("some even more text"),
         displayTCGuidanceLink = true
-      )(messages))
+      )(messages, lang))
 
       assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
       view.getElementById("tcGuidanceLink").attr("href") mustBe tcSchemeGuidanceLinkUrl

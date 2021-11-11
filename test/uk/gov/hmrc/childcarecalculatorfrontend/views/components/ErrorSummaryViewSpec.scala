@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.components
 
 import play.api.data.FormError
 import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.error_summary
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.error_summary
 
 class ErrorSummaryViewSpec extends NewViewSpecBase {
 

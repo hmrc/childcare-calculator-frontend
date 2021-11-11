@@ -20,7 +20,7 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.NoOfChildrenForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{IntViewBehaviours, NewIntViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewIntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
 class NoOfChildrenViewSpec extends NewIntViewBehaviours {
