@@ -20,10 +20,10 @@ import java.text.DecimalFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{resultEligible, resultNotEligible}
 
-class ResultEligibleViewSpec extends ViewBehaviours {
+class ResultEligibleViewSpec extends NewViewBehaviours {
 
   lazy val appResultEligible = app.injector.instanceOf[resultEligible]
 
