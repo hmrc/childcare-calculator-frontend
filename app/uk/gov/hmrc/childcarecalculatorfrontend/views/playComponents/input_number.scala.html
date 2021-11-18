@@ -27,6 +27,7 @@ labelClass: Option[String] = None,
 currency: Boolean = false,
 inputType: String = "text",
 autoComplete: Option[String] = None,
+shortAnswer: Boolean = false,
 field: Field
 )(implicit messages: Messages)
 
@@ -37,7 +38,7 @@ field: Field
                 content = if(stringLabel.isDefined) Text(stringLabel.get) else HtmlContent(label)
         ),
         hint = hint.map(hintString => Hint(content = Text(hintString))),
-        classes = "govuk-input--width-10",
+        classes = if (shortAnswer) "govuk-input--width-5" else "govuk-input--width-10" ,
         spellcheck = Some(!currency),
         autocomplete = autoComplete,
         inputType = inputType,
