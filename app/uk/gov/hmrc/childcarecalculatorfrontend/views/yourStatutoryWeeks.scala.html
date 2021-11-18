@@ -50,12 +50,10 @@
 
     @heading(messages("yourStatutoryWeeks.heading", viewModel.statutoryTypeMessage))
 
-    <p class="govuk-body">@messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)</p>
-
-
         @inputNumber(
             label = heading(messages("yourStatutoryWeeks.heading", viewModel.statutoryTypeMessage)),
             labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)),
             currency = false,
             field = form("value")
         )
