@@ -78,14 +78,12 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(freeHours = Some(15), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
 
-        assertContainsMessages(view, "You are eligible for help from 1 scheme")
       }
 
       "user is eligible for more than one of the schemes" in {
         val model = ResultsViewModel(freeHours = Some(15), tc = Some(200),location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
 
-        assertContainsMessages(view, "You are eligible for help from 2 schemes")
       }
     }
 
