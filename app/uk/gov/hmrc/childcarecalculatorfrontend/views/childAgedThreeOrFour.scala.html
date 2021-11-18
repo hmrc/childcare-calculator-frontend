@@ -46,13 +46,11 @@
 
         @heading(messages("childAgedThreeOrFour.heading"))
 
-
-        <p class="govuk-body">@messages(s"childAgedThreeOrFour.guidance.$location")</p>
-
         @inputYesNo(
             viewModel = InputViewModel("value", form),
             label = messages("childAgedThreeOrFour.heading"),
             labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages(s"childAgedThreeOrFour.guidance.$location")),
             field = form("value")
         )
 
