@@ -59,12 +59,6 @@
 
         @if(model.noOfEligibleSchemes(hideTC) > 0) {
 
-            @if(model.noOfEligibleSchemes(hideTC) == 1) {
-                @heading(heading = messages("result.single.eligibility.heading"), headingSize = "heading-l")
-            } else {
-                @heading(heading = messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes(hideTC)), headingSize = "heading-l")
-            }
-
             @heading(heading = messages("result.eligible.subheading"), headingSize = "heading-l")
             @resultEligible(model, utils, hideTC)
 
