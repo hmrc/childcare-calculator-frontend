@@ -51,7 +51,7 @@
 
     @heading(messages("areYouInPaidWork.heading", "heading-xlarge"))
 
-    <p class="govuk-body">@messages("areYouInPaidWork.para1")</p>
+    <p class="govuk-body">@messages("")</p>
 
     @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(mode), 'autoComplete -> "off") {
 
@@ -59,6 +59,7 @@
             viewModel = InputViewModel("value", form),
             label = messages("areYouInPaidWork.heading"),
             labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("areYouInPaidWork.para1")),
             field = form("value")
         )
 
