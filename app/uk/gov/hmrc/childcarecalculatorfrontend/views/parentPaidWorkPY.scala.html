@@ -54,11 +54,12 @@
 
     @formWithCSRF(action = ParentPaidWorkPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p class="govuk-body">@messages("parentPaidWorkPY.previousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+        <p class="govuk-body">@messages()</p>
 
         @inputYesNo(
             viewModel = InputViewModel("value", form),
             label = messages("parentPaidWorkPY.heading"),
+            hint = Some(messages("parentPaidWorkPY.previousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

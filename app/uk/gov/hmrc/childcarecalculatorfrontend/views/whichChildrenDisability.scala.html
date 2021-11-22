@@ -42,8 +42,6 @@
 
     @heading(messages("whichChildrenDisability.heading"))
 
-    <p class="govuk-body">@messages("whichBenefits.select.all")</p>
-
     @formWithCSRF(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputCheckBox(
@@ -51,6 +49,7 @@
             field = form("value"),
             legend = messages("whichChildrenDisability.heading"),
             legendClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("whichBenefits.select.all")),
             inputs = options.map { checkboxOption =>
                 CheckboxItem(
                     content = HtmlContent((s"${checkboxOption._1}")),

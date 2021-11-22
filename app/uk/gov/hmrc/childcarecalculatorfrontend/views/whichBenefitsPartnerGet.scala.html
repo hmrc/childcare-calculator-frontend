@@ -53,13 +53,12 @@
 
     @formWithCSRF(action = WhichBenefitsPartnerGetController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p class="govuk-body">@messages("whichBenefits.select.all")</p>
-
         @inputCheckBox(
             viewModel = InputViewModel("value", form),
             field = form("value"),
             legend = messages("whichBenefitsPartnerGet.heading"),
             legendClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("whichBenefits.select.all")),
             inputs = WhichBenefitsEnum.sortedWhichBenefits.map { checkboxOption =>
                 CheckboxItem(
                 content = HtmlContent(messages(s"whichBenefitsPartnerGet.${checkboxOption}")),

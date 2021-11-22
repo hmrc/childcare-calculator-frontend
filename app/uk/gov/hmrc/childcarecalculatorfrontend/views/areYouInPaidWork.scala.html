@@ -51,8 +51,6 @@
 
     @heading(messages("areYouInPaidWork.heading", "heading-xlarge"))
 
-    <p class="govuk-body">@messages("")</p>
-
     @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputYesNo(
