@@ -27,6 +27,7 @@
     isPageHeading: Boolean = false,
     smallText: Boolean = false,
     largeText: Boolean = true,
+    shortAnswer: Boolean = false,
     field: Field
 )(implicit messages: Messages)
 
@@ -44,7 +45,7 @@
         content = Text(label)
     ),
     hint = hint.map(hintString => Hint(content = Text(hintString))),
-    classes = "govuk-input--width-10",
+    classes = if (shortAnswer) "govuk-input--width-5" else "govuk-input--width-10" ,
     spellcheck = Some(!currency),
     autocomplete = autoComplete,
     inputType = inputType,

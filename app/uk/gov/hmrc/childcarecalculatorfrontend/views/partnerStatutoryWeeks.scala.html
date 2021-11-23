@@ -47,6 +47,7 @@
             label = heading(messages("partnerStatutoryWeeks.heading", viewModel.statutoryTypeMessage)),
             labelClass = Some("govuk-visually-hidden"),
             hint = Some(messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)),
+            shortAnswer = true,
             field = form("value")
         )
 
