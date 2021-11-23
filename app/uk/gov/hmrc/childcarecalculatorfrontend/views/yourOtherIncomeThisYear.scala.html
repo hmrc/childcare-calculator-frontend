@@ -47,12 +47,11 @@
 
         <p class="govuk-body">@messages("yourOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-        <p class="govuk-body">@messages("yourOtherIncomeThisYear.hint.text")</p>
-
         @inputYesNo(
             viewModel = InputViewModel[Boolean]("value", form),
             label = messages("yourOtherIncomeThisYear.heading"),
             labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("yourOtherIncomeThisYear.hint.text")),
             field = form("value")
         )
 

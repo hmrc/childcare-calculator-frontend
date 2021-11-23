@@ -44,12 +44,12 @@
     @formWithCSRF(action = PartnerAnyOtherIncomeThisYearController.onSubmit(mode), 'autoComplete -> "off") {
 
     <p class="govuk-body">@messages("partnerAnyOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
-    <p class="govuk-body">@messages("partnerAnyOtherIncomeThisYear.hint.text")</p>
 
     @inputYesNo(
         viewModel = InputViewModel("value", form),
         label = messages("partnerAnyOtherIncomeThisYear.heading"),
         labelClass = Some("govuk-visually-hidden"),
+        hint = Some(messages("partnerAnyOtherIncomeThisYear.hint.text")),
         field = form("value")
     )
     @submit_button()

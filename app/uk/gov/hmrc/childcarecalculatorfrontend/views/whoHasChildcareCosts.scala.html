@@ -51,13 +51,12 @@
 
     @heading(messages("whoHasChildcareCosts.heading"))
 
-    <p class="govuk-body">@messages("whichBenefits.select.all")</p>
-
         @inputCheckBox(
             viewModel = InputViewModel("value", form),
             field = form("value"),
             legend = messages("whoHasChildcareCosts.heading"),
             legendClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("whichBenefits.select.all")),
             inputs = inputs.map { checkboxOption =>
                 CheckboxItem(
                     content = HtmlContent((s"${checkboxOption._1}")),

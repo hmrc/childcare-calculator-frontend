@@ -46,12 +46,11 @@
 
         @heading(messages("doYouLiveWithPartner.heading"))
 
-        <p class="govuk-body">@messages("doYouLiveWithPartner.para1")</p>
-
         @inputYesNo(
             viewModel = InputViewModel("value", form),
             label = messages("doYouLiveWithPartner.heading"),
             labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("doYouLiveWithPartner.para1")),
             field = form("value")
         )
 

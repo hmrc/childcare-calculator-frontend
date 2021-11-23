@@ -50,12 +50,11 @@
 
     @heading(messages("partnerMaximumEarnings.heading"))
 
-        <p class="govuk-body">@messages("partnerMaximumEarnings.hint")</p>
-
         @inputYesNo(
             viewModel = InputViewModel("value", form),
             label = messages("partnerMaximumEarnings.heading"),
             labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("partnerMaximumEarnings.hint")),
             field = form("value")
         )
 
