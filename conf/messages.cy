@@ -1256,10 +1256,6 @@ urBanner.title=Helpwch i wella GOV.UK
 urBanner.message=Gallwch fod yn rhan o wneud gwasanaethau’r llywodraeth yn well
 urBanner.message.link=https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143
 urBanner.message.noThanks.link=Dim diolch
-childDisabilityBenefits.child.disability.payment = Taliad Anabledd Plant
-childrenDisabilityBenefits.child.disability.payment = Taliad Anabledd Plant
-whichDisabilityBenefits.cdp = Taliad Anabledd Plant
-whichDisabilityBenefits.cdp.higher = Taliad Anabledd Plant (elfen gofal ar y gyfradd uchaf)
 
 global.error.badRequest400.title=Cais annilys – 400
 global.error.badRequest400.heading=Cais annilys
