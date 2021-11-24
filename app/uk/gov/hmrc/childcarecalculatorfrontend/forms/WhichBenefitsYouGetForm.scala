@@ -23,8 +23,6 @@ import play.api.data.validation.{Invalid, Valid, Constraint}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsYouGetErrorKey}
 
-import scala.collection.immutable.ListMap
-
 object WhichBenefitsYouGetForm extends FormErrorHelper {
 
   def WhichBenefitsYouGetFormatter = new Formatter[String] {
