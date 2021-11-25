@@ -127,7 +127,7 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
                     form: Form[_] = WhichChildrenBlindForm(0, 1),
                     values: Map[String, String] = defaultValues
                   ) =
-    view(frontendAppConfig, form, NormalMode, values)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, NormalMode, values.toSeq)(fakeRequest, messages).toString
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(

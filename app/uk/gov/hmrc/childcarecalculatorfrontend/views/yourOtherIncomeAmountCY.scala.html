@@ -15,36 +15,38 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
-
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
-
+@this(
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    inputNumber: playComponents.input_number,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button
+)
 @(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("yourOtherIncomeAmountCY.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@title = @{if(form.errors.nonEmpty) messages("site.title.error", messages("yourOtherIncomeAmountCY.title")) else messages("yourOtherIncomeAmountCY.title")}
 
-    @back_link()
-
-    @error_summary(form.errors)
-
-    @heading("yourOtherIncomeAmountCY.heading", "heading-xlarge")
-
+@layout(
+    pageTitle = title,
+) {
     @formWithCSRF(action = YourOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @input_number(
-            InputViewModel[BigDecimal]("value", form),
-            label = messages("yourOtherIncomeAmountCY.info"),
-            labelClass=Some("visually-hidden"),
-            currencySymbol = Some(true))
+        @errorSummary(form.errors)
 
-        @submit_button()
+        @heading(messages("yourOtherIncomeAmountCY.heading"))
+
+        @inputNumber(
+            label = heading(messages("yourOtherIncomeAmountCY.info")),
+            labelClass = Some("govuk-visually-hidden"),
+            currency = true,
+            field = form("value")
+        )
+
+        @submitButton()
     }
 }

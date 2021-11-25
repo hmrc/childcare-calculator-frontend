@@ -20,22 +20,19 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{DisabilityBenefits, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
 
 import scala.util.Random
 
-class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBehaviours[DisabilityBenefits.Value] {
+class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[DisabilityBenefits.Value] {
 
   val view = app.injector.instanceOf[whichDisabilityBenefits]
   val messageKeyPrefix = "whichDisabilityBenefits"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, DisabilityBenefits.Value] =
-    WhichDisabilityBenefitsForm.options.map {
-      case (k, v) => k -> DisabilityBenefits.withName(v)
-    }
+  val values: Seq[(String, String)] = WhichDisabilityBenefitsForm.options
 
   def form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm("Foo")
 
@@ -70,9 +67,11 @@ class WhichDisabilityBenefitsViewSpec extends ViewBehaviours with CheckboxViewBe
           behave like normalPageWithTitleAsString(
             () => createView(WhichDisabilityBenefitsForm(name), index, name),
             messageKeyPrefix,
+            messageKeyPostfix = "",
             messages("whichDisabilityBenefits.title"),
             Some(messages("whichDisabilityBenefits.heading", name)),
-            Seq("help", "types", "dla", "pip", "types.higher", "dla.higher", "pip.higher")
+            Seq("help", "types", "dla", "pip", "types.higher", "dla.higher", "pip.higher"),
+            args = name
           )
         }
     }

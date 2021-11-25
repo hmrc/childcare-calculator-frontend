@@ -16,25 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
-import play.api.data.{Form, FormError}
+import play.api.data.Form
 import play.twirl.api.HtmlFormat
 
-trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
+trait NewBigDecimalViewBehaviours extends NewQuestionViewBehaviours[BigDecimal] {
 
   val number = 12
 
-  def intPage(createView: (Form[Int]) => HtmlFormat.Appendable,
-              messageKeyPrefix: String,
-              expectedFormAction: String,
-              messageDynamicValue: Option[String] = None) = {
+  def bigDecimalPage(createView: (Form[BigDecimal]) => HtmlFormat.Appendable,
+                     messageKeyPrefix: String,
+                     expectedFormAction: String,
+                     label: Option[String] = None,
+                     messageDynamicValue: Option[String] = None
+             ): Unit = {
 
-    "behave like a page with an integer value field" when {
+    "behave like a page with an bigDecimal value field" when {
       "rendered" must {
 
         "contain a label for the value" in {
           val doc = asDocument(createView(form))
-          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse(""))
-          )
+          assertContainsLabel(doc, "value", label.getOrElse(messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse(""))))
         }
 
         "contain an input for the value" in {
@@ -54,13 +55,13 @@ trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
 
         "show an error summary" in {
           val doc = asDocument(createView(form.withError(error)))
-          assertRenderedById(doc, "error-summary-heading")
+          assertRenderedById(doc, "error-summary-title")
         }
 
         "show an error in the value field's label" in {
           val doc = asDocument(createView(form.withError(error)))
-          val errorSpan = doc.getElementsByClass("error-notification").first
-          errorSpan.text mustBe messages(errorMessage)
+          val errorSpan = doc.getElementsByClass("govuk-error-message").first
+          errorSpan.text mustBe s"Error: ${messages(errorMessage)}"
         }
       }
     }

@@ -17,17 +17,11 @@
 @this()
 
 @(
-    summary: String = "",
-    detailsInner: Boolean = true,
-    summaryClasses: Seq[String] = Seq("summary")
-)(content: Html)(implicit lang:Lang,  m: Messages)
+    heading: String,
+    headingSize: String = "heading-xl",
+    taxYear: Option[String] = None,
+    id: Option[String] = None
+)(implicit messages: Messages)
 
-@* http://hmrc.github.io/assets-frontend/section-details.html *@
-<div class="form-group">
-    <details role="group">
-        <summary class="@summaryClasses.mkString(" ")"><span class="summary">@summary</span></summary>
-        <div @if(detailsInner) { class="panel-indent"}>
-            @content
-        </div>
-    </details>
-</div>
+
+<h1 class="govuk-@headingSize govuk-!-margin-top-0 govuk-!-margin-bottom-5" @if(id.isDefined) {id="@id"}>@heading</h1>

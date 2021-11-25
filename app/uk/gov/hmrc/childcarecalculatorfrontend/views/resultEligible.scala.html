@@ -19,20 +19,20 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 
-@this(scheme_result: components.scheme_result)
+@this(schemeResult: playComponents.scheme_result)
 
-@(model: ResultsViewModel, utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
+@(model: ResultsViewModel, utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages, lang: Lang)
 
 @freeHoursContactCouncil = {
-    <p>@messages("result.free.hours.detailPara3.you.can") <a id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">@messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>.</p>
+    <p class="govuk-body">@messages("result.free.hours.detailPara3.you.can") <a class="govuk-link" id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">@messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>.</p>
 }
 
 @findoutAboutUC = {
-    <p>@messages("result.tc.detailPara2.tax.credit.replace.uc") <a id="findOutUCEligibility" target="_blank" rel="external" data-journey-click="link - click:@messages("result.tc.title"):@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text")" href="@messages("result.tc.detailPara2.tax.credit.replace.uc.link")">@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") @messages("site.opens.new.tab")</a>.</p>
+    <p class="govuk-body">@messages("result.tc.detailPara2.tax.credit.replace.uc") <a class="govuk-link" id="findOutUCEligibility" target="_blank" rel="external" data-journey-click="link - click:@messages("result.tc.title"):@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text")" href="@messages("result.tc.detailPara2.tax.credit.replace.uc.link")">@messages("result.tc.detailPara2.tax.credit.replace.uc.link.text") @messages("site.opens.new.tab")</a>.</p>
 }
 
 @vouchersWork = {
-    <p>@messages("result.esc.detailPara2.start") <a id="vouchersClosed" href="@messages("result.esc.detailPara2.link")">@messages("result.esc.detailPara2.link.text")</a>@messages("result.esc.detailPara2.end")</p>
+    <p class="govuk-body">@messages("result.esc.detailPara2.start") <a class="govuk-link" id="vouchersClosed" href="@messages("result.esc.detailPara2.link")">@messages("result.esc.detailPara2.link.text")</a>@messages("result.esc.detailPara2.end")</p>
 }
     @if(model.freeHours.isDefined) {
 
@@ -41,8 +41,9 @@
         } else {
             utils.valueFormatter(2 * totalNoOfHoursAYear)
         }) { noOfHoursInAYear =>
-            @scheme_result(
+            @schemeResult(
                 title = messages("result.free.hours.title"),
+                id = Some("freeHours"),
                 couldGet = Some(messages("result.you.could.get.up.to")),
                 eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours"),"freeHoursEligibility")),
                 periodText = if(model.location == Location.ENGLAND) {
@@ -52,7 +53,6 @@
                 },
                 para1 = Some(messages("result.free.hours.para1")),
                 detailSummary = Some(messages("result.free.hours.detail.summary")),
-                detailClass = Some("freeHours"),
                 detailPara1 = Some(messages("result.free.hours.detailPara1")),
                 detailPara2 = Some(messages("result.free.hours.detailPara2.p1")),
                 detailPara2List = Seq(messages("result.free.hours.detailPara2.li.1"), messages("result.free.hours.detailPara2.li.2"), messages("result.free.hours.detailPara2.li.3"), messages("result.free.hours.detailPara2.li.4"), messages("result.free.hours.detailPara2.li.5")),
@@ -63,14 +63,14 @@
     }
 
     @if(model.tc.isDefined && !hideTC) {
-        @scheme_result(
+        @schemeResult(
             title = messages("result.tc.title"),
+            id = Some("tc"),
             couldGet = Some(messages("result.you.could.get")),
             eligibility = Some(EligibilityModel("£" + model.tc.fold("")(value => utils.valueFormatter(value)),"taxCreditsEligibility")),
             periodText = Some(messages("result.tc.period")),
             para1 = Some(messages("result.tc.para1")),
             detailSummary = Some(messages("result.tc.detail.summary")),
-            detailClass = Some("tc"),
             detailPara1 = Some(messages("result.tc.detailPara1")),
             detailPara2 = Some(messages("result.tc.detailPara2")),
             detailPara2List = Seq(messages("result.tc.detailPara2.li.1"), messages("result.tc.detailPara2.li.2")),
@@ -79,31 +79,31 @@
 
 
     @if(model.tfc.isDefined) {
-        @scheme_result(
+        @schemeResult(
             title = messages("result.tfc.title"),
+            id = Some("tfc"),
             couldGet = Some(messages("result.you.could.get")),
             eligibility = Some(EligibilityModel("£" + model.tfc.fold("")(value => utils.valueFormatter(value)),"taxFreeChildcareEligibility")),
             periodText = Some(messages("result.tfc.period")),
             para1 = Some(messages("result.tfc.para1")),
             detailSummary = Some(messages("result.tfc.detail.summary")),
-            detailClass = Some("tfc"),
             detailPara1 = Some(messages("result.tfc.detailPara1")),
             detailPara2 = Some(messages("result.tfc.detailPara2")),
             detailPara3 = Some(messages("result.tfc.detailPara3")),
-            displayWarning = model.showTFCWarning,
-            warningMessage = model.tfcWarningMessage)
+            warningMessage = if(model.showTFCWarning) {Some(model.tfcWarningMessage)} else {None}
+        )
     }
 
     @if(model.esc.isDefined) {
-        @scheme_result(
+        @schemeResult(
             title = messages("result.esc.title"),
+            id = Some("esc"),
             couldGet = Some(messages("result.you.could.get")),
             eligibility = Some(EligibilityModel("£" + model.esc.fold("")(value => utils.valueFormatter(value)),"childcareVouchersEligibility")),
             periodText = Some(messages("result.esc.period")),
             para1 = Some(messages("result.esc.para1")),
             para2 = Some(vouchersWork),
             detailSummary = Some(messages("result.esc.detail.summary")),
-            detailClass = Some("esc"),
             detailPara1 = Some(messages("result.esc.detailPara1")),
             detailPara2 = Some(messages("result.esc.detailPara2")),
             detailPara2List = Seq(messages("result.esc.detailPara2.li.1"), messages("result.esc.detailPara2.li.2"), messages("result.esc.detailPara2.li.3")),

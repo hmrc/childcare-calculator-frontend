@@ -19,16 +19,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 @Singleton
-class WhatToTellTheCalculatorController @Inject()(val appConfig: FrontendAppConfig,
-                                                  mcc: MessagesControllerComponents,
+class WhatToTellTheCalculatorController @Inject()(mcc: MessagesControllerComponents,
                                                   whatToTellTheCalculator: whatToTellTheCalculator) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action { implicit request =>
-    Ok(whatToTellTheCalculator(appConfig))
+    Ok(whatToTellTheCalculator())
   }
 }

@@ -39,10 +39,18 @@ object AreYouSelfEmployedOrApprenticeForm extends FormErrorHelper {
     Form(single("value" -> of(AreYouSelfEmployedOrApprenticeFormatter)))
 
   def options = Seq(
-    InputOption("areYouSelfEmployedOrApprentice", SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-    InputOption("areYouSelfEmployedOrApprentice", SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString),
-    InputOption("areYouSelfEmployedOrApprentice", SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
+    areYouSelfEmployedOrApprenticeInputOption("value", SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
+    areYouSelfEmployedOrApprenticeInputOption("value-2", SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString),
+    areYouSelfEmployedOrApprenticeInputOption("value-3", SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
   )
+
+  def areYouSelfEmployedOrApprenticeInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"areYouSelfEmployedOrApprentice.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

@@ -20,17 +20,17 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
 
-class WhichBenefitsYouGetViewSpec extends ViewBehaviours with CheckboxViewBehaviours[String] {
+class WhichBenefitsYouGetViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[String] {
 
   val mockView = app.injector.instanceOf[whichBenefitsYouGet]
   val messageKeyPrefix = "whichBenefitsYouGet"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, String] = WhichBenefitsYouGetForm.options
+  val values: Seq[(String, String)] = WhichBenefitsYouGetForm.options
 
   def form: Form[Set[String]] = WhichBenefitsYouGetForm()
 

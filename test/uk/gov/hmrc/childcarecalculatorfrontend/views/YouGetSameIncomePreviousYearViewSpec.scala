@@ -20,14 +20,16 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePreviousYear
 
 import scala.collection.immutable.ListMap
 
-class YouGetSameIncomePreviousYearViewSpec extends YesNoViewBehaviours with GuiceOneAppPerSuite {
+class YouGetSameIncomePreviousYearViewSpec extends NewYesNoViewBehaviours with GuiceOneAppPerSuite {
+
+  override val form = BooleanForm()
 
   val view = app.injector.instanceOf[youGetSameIncomePreviousYear]
   val taxYearInfo = new TaxYearInfo

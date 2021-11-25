@@ -27,13 +27,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerWorkHoursId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
+import uk.gov.hmrc.childcarecalculatorfrontend.Navigator
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PartnerWorkHoursController @Inject()(
-                                        appConfig: FrontendAppConfig,
                                         mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
@@ -48,14 +47,14 @@ class PartnerWorkHoursController @Inject()(
         case None => form()
         case Some(value) => form().fill(value)
       }
-      Ok(partnerWorkHours(appConfig, preparedForm, mode))
+      Ok(partnerWorkHours(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       form().bindFromRequest().fold(
         (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(partnerWorkHours(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerWorkHours(formWithErrors, mode))),
         value =>
           dataCacheConnector.save[BigDecimal](request.sessionId, PartnerWorkHoursId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(PartnerWorkHoursId, mode)(new UserAnswers(cacheMap))))

@@ -50,7 +50,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
   )
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
-  val options = Map(
+  val options = Seq(
     "Foo" -> "0",
     "Bar" -> "1"
   )

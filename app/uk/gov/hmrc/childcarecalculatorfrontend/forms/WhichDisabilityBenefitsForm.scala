@@ -34,7 +34,7 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
     def unbind(key: String, value: DisabilityBenefits.Value) = Map(key -> value.toString)
   }
 
-  private def optionIsValid(value: String): Boolean = options.values.toSeq.contains(value)
+  private def optionIsValid(value: String): Boolean = DisabilityBenefits.sortedDisabilityBenefits.map(_.toString).contains(value)
 
   private def constraint(name: String): Constraint[Set[DisabilityBenefits.Value]] = Constraint {
     case set if set.nonEmpty =>
@@ -49,8 +49,8 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
         .verifying(constraint(name))
     )
 
-  def options: Map[String, String] = DisabilityBenefits.values.map {
+  def options: Seq[(String, String)] = DisabilityBenefits.sortedDisabilityBenefits.map {
     value =>
       s"whichDisabilityBenefits.$value" -> value.toString
-  }.toMap
+  }
 }

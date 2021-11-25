@@ -14,9 +14,16 @@
  * limitations under the License.
  *@
 
-@this()
+@this(
+    govukButton : GovukButton
+)
 
-@()(implicit request: Request[_], messages: Messages)
+@(
+    messageKey: String = "",
+    href: Call,
+)(implicit request: Request[_], messages: Messages)
 
-    <button id="submit" class="button" onclick="ga('send', 'event', 'button-click', '@request.uri', 'Continue')">@messages("site.save_and_continue")</button>
-
+@govukButton(Button(
+    content = Text(messages(messageKey)),
+    href = Some(href.toString)
+))

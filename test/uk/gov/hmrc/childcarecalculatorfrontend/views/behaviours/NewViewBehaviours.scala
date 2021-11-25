@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
+import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.views.ViewSpecBase
 
-trait ViewBehaviours extends ViewSpecBase {
+trait NewViewBehaviours extends NewViewSpecBase {
 
   def normalPage(view: () => HtmlFormat.Appendable,
                  messageKeyPrefix: String,
@@ -29,9 +29,8 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
         "have the correct banner title" in {
           val doc = asDocument(view())
-          val nav = doc.getElementById("proposition-menu")
-          val span = nav.children.first
-          span.text mustBe messages("site.service_name")
+          val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+          nav.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -41,17 +40,17 @@ trait ViewBehaviours extends ViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading")
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", 0)
         }
 
         "display the correct guidance" in {
           val doc = asDocument(view())
           for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
         }
-        
+
         "display a beta banner" in {
           val doc = asDocument(view())
-          assertRenderedByCssSelector(doc, ".beta-banner")
+          assertRenderedByCssSelector(doc, ".govuk-phase-banner")
         }
 
         "not display HMRC branding" in {
@@ -63,8 +62,8 @@ trait ViewBehaviours extends ViewSpecBase {
   }
 
   def normalPageWithCurrencySymbol(view: () => HtmlFormat.Appendable,
-                             messageKeyPrefix: String,
-                             expectedGuidanceKeys: String*) {
+                                   messageKeyPrefix: String,
+                                   expectedGuidanceKeys: String*) {
 
     normalPage(view, messageKeyPrefix, expectedGuidanceKeys: _*)
 
@@ -82,18 +81,19 @@ trait ViewBehaviours extends ViewSpecBase {
   def normalPageWithTitleAsString(
                                    view: () => HtmlFormat.Appendable,
                                    messageKeyPrefix: String,
+                                   messageKeyPostfix: String,
                                    title: String,
-                                   heading: Option[String] = None,
-                                   expectedGuidanceKeys: Seq[String] = Seq()
+                                   heading: Option[String],
+                                   expectedGuidanceKeys: Seq[String],
+                                   args: Any*
                                  ) {
 
     "behave like a normal page" when {
       "rendered" must {
         "have the correct banner title" in {
           val doc = asDocument(view())
-          val nav = doc.getElementById("proposition-menu")
-          val span = nav.children.first
-          span.text mustBe messages("site.service_name")
+          val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+          nav.text mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -103,7 +103,7 @@ trait ViewBehaviours extends ViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsString(doc, heading.getOrElse(title))
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args: _*)
         }
 
         "display the correct guidance" in {
@@ -113,7 +113,7 @@ trait ViewBehaviours extends ViewSpecBase {
 
         "display a beta banner" in {
           val doc = asDocument(view())
-          assertRenderedByCssSelector(doc, ".beta-banner")
+          assertRenderedByCssSelector(doc, ".govuk-phase-banner")
         }
 
         "not display HMRC branding" in {

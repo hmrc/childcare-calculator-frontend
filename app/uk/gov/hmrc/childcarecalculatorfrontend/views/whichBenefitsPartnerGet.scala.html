@@ -15,42 +15,60 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+@this(
+        layout: Layout,
+        formWithCSRF: FormWithCSRF,
+        errorSummary: playComponents.error_summary,
+        heading: playComponents.heading,
+        inputCheckBox: playComponents.input_check_box,
+        detailSummary: playComponents.detail_summary,
+        submitButton: playComponents.submit_button
+)
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@(
+        appConfig: FrontendAppConfig,
+        form: Form[Set[String]],
+        mode: Mode
+)(
+        implicit request: Request[_],
+        messages: Messages,
+        lang: Lang
+)
 
-@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages, lang: Lang)
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("whichBenefitsPartnerGet.title")) else messages("whichBenefitsPartnerGet.title")
+}
 
-@main_template(
-    title = messages("whichBenefitsPartnerGet.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@layout(pageTitle = title) {
 
-    @back_link()
+    @errorSummary(form.errors)
 
-    @error_summary(form.errors)
-
-    @heading("whichBenefitsPartnerGet.heading", "heading-xlarge")
+    @heading(messages("whichBenefitsPartnerGet.heading"))
 
     @formWithCSRF(action = WhichBenefitsPartnerGetController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("whichBenefits.select.all")</p>
-
-        @input_check_box(
-            form("value"),
+        @inputCheckBox(
+            viewModel = InputViewModel("value", form),
+            field = form("value"),
             legend = messages("whichBenefitsPartnerGet.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = WhichBenefitsPartnerGetForm.options
+            legendClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("whichBenefits.select.all")),
+            inputs = WhichBenefitsEnum.sortedWhichBenefits.map { checkboxOption =>
+                CheckboxItem(
+                content = HtmlContent(messages(s"whichBenefitsPartnerGet.${checkboxOption}")),
+                value = checkboxOption.toString
+                )
+            }
         )
 
-        @detail_summary(
-            summary = messages("whichBenefitsPartnerGet.help"),
-            detailsInner = true
+        @detailSummary(
+            messages("whichBenefitsPartnerGet.help"),
         ) {
             <h2 class="heading-small">@messages("whichBenefitsList.typeof.income.benefits")</h2>
             <ul class="list list-bullet">
@@ -77,6 +95,6 @@
         }
 
 
-        @submit_button()
+        @submitButton()
     }
 }

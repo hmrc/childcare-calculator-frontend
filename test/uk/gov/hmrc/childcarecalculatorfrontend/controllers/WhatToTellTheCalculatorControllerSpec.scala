@@ -25,13 +25,13 @@ class WhatToTellTheCalculatorControllerSpec extends ControllerSpecBase {
 
   "WhatToTellTheCalculator Controller" must {
     "return 200 for a GET" in {
-      val result = new WhatToTellTheCalculatorController(frontendAppConfig, mcc, view).onPageLoad(fakeRequest)
+      val result = new WhatToTellTheCalculatorController(mcc, view).onPageLoad(fakeRequest)
       status(result) mustBe OK
     }
 
     "return the correct view for a GET" in {
-      val result = new WhatToTellTheCalculatorController(frontendAppConfig, mcc, view).onPageLoad(fakeRequest)
-      contentAsString(result) mustBe view(frontendAppConfig)(fakeRequest, messages).toString
+      val result = new WhatToTellTheCalculatorController(mcc, view).onPageLoad(fakeRequest)
+      contentAsString(result) mustBe view()(fakeRequest, messages).toString
     }
   }
 }

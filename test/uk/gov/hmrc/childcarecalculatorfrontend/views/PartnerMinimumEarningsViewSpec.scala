@@ -19,12 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
-class PartnerMinimumEarningsViewSpec extends YesNoViewBehaviours {
+class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
 
+  override val form: Form[Boolean] = BooleanForm()
   val messageKeyPrefix = "partnerMinimumEarnings"
   val view = app.injector.instanceOf[partnerMinimumEarnings]
 
@@ -36,7 +37,15 @@ class PartnerMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
   "PartnerMinimumEarnings view" must {
 
-    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messages("partnerMinimumEarnings.heading", 0))
+    behave like normalPageWithTitleAsString(
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages("partnerMinimumEarnings.heading", 0),
+      heading = Some(""),
+      expectedGuidanceKeys= Seq(),
+      args = 0
+    )
 
     behave like pageWithBackLink(createView)
 

@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchBothPayPensionPYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, HowMuchBothPayPensionPY}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPensionPY
 
-class HowMuchBothPayPensionPYViewSpec extends QuestionViewBehaviours[HowMuchBothPayPensionPY] {
+class HowMuchBothPayPensionPYViewSpec extends NewQuestionViewBehaviours[HowMuchBothPayPensionPY] {
 
   val messageKeyPrefix = "howMuchBothPayPensionPY"
   val view = application.injector.instanceOf[howMuchBothPayPensionPY]
@@ -49,7 +49,7 @@ class HowMuchBothPayPensionPYViewSpec extends QuestionViewBehaviours[HowMuchBoth
   "contain the currencySymbol class and £ " in {
     val doc = asDocument(createView())
 
-    assertRenderedByCssSelector(doc, ".currencySymbol")
+    assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 
     val parentCurrencySymbol = doc.getElementById("howMuchYouPayPensionPY").firstElementSibling().text()
     val partnerCurrencySymbol = doc.getElementById("howMuchPartnerPayPensionPY").firstElementSibling().text()

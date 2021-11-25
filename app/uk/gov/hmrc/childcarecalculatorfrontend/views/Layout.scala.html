@@ -1,0 +1,78 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers
+@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
+
+@this(
+    govukLayout: GovukLayout,
+    hmrcAccountMenu: HmrcAccountMenu,
+    hmrcHead: HmrcHead,
+    hmrcStandardHeader: HmrcStandardHeader,
+    hmrcStandardFooter: HmrcStandardFooter,
+    hmrcScripts: HmrcScripts,
+    hmrcStandardBetaBanner: StandardBetaBanner,
+    hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
+    hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
+    backLink: playComponents.back_link,
+    appConfig: FrontendAppConfig,
+)
+
+@(
+    pageTitle: String,
+    timeoutEnabled: Boolean = true,
+    backLinkEnabled: Boolean = true,
+    accountMenuEnabled: Boolean = true,
+    urBanner: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+
+@accountMenu = {
+    @Some(hmrcLanguageSelectHelper())
+    @if(backLinkEnabled) { @backLink() }
+}
+
+@head = {
+    @if(timeoutEnabled) {
+        @hmrcTimeoutDialogHelper(
+            signOutUrl = controllers.routes.SessionExpiredController.onPageLoad.url,
+            timeout = Some(1800),
+            countdown = Some(120),
+            message = Some(Messages("timeout.message")),
+            keepAliveButtonText = Some(Messages("timeout.continue")),
+            signOutButtonText = Some(Messages("timeout.exit"))
+        )
+    }
+}
+
+@mainContent = {
+    @contentBlock
+}
+
+
+@govukLayout(
+    pageTitle = Some(s"""$pageTitle - ${messages("site.service_name")} - GOV.UK"""),
+    headBlock = Some(hmrcHead(
+        headBlock = Some(head)
+    )),
+    headerBlock = Some(hmrcStandardHeader(
+        serviceUrl = Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url),
+        phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
+        userResearchBanner = if (urBanner) {Some(UserResearchBanner(url = appConfig.urBannerUrl))} else None
+    )),
+    beforeContentBlock = Some(accountMenu),
+    scriptsBlock = Some(hmrcScripts()),
+    footerBlock = Some(hmrcStandardFooter())
+)(mainContent)

@@ -37,10 +37,18 @@ object TaxOrUniversalCreditsForm extends FormErrorHelper {
     Form(single("value" -> of(TaxOrUniversalCreditsFormatter)))
 
   def options = Seq(
-    InputOption("taxOrUniversalCredits", "tc"),
-    InputOption("taxOrUniversalCredits", "uc"),
-    InputOption("taxOrUniversalCredits", "none")
+    taxOrUniversalCreditsInputOption("value", "tc"),
+    taxOrUniversalCreditsInputOption("value-2", "uc"),
+    taxOrUniversalCreditsInputOption("value-3", "none")
   )
+
+  private def taxOrUniversalCreditsInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"taxOrUniversalCredits.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

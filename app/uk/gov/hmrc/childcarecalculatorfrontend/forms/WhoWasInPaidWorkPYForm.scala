@@ -39,10 +39,18 @@ object WhoWasInPaidWorkPYForm extends FormErrorHelper {
     Form(single("value" -> of(WhoWasInPaidWorkPYFormatter)))
 
   def options = Seq(
-    InputOption("whoWasInPaidWorkPY", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoWasInPaidWorkPY", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoWasInPaidWorkPY", YouPartnerBothEnum.BOTH.toString)
+    whoWasInPaidWorkPYInputOption("value", YouPartnerBothEnum.YOU.toString),
+    whoWasInPaidWorkPYInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
+    whoWasInPaidWorkPYInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
   )
+
+  private def whoWasInPaidWorkPYInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"whoWasInPaidWorkPY.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

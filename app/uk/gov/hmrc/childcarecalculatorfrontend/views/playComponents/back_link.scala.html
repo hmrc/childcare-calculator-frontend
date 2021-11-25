@@ -14,10 +14,16 @@
  * limitations under the License.
  *@
 
-@this()
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@()(implicit request: Request[_], messages: Messages)
+@this(govukBackLink : GovukBackLink)
 
-<div class="js-visible">
-  <p><a id="back-link" class="link-back" href="#" onclick="ga('send', 'event', 'link-click', '@request.uri', 'Back')">@messages("site.back")</a></p>
-</div>
+@()(implicit messages: Messages)
+
+@govukBackLink(BackLink(
+ href = "javascript:history.back()",
+ content = Text(messages("site.back")),
+ attributes = Map(
+  "id" -> "back-link"
+ )
+))
